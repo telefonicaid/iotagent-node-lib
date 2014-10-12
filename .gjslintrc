@@ -1,0 +1,9 @@
+--jsdoc
+--summary
+--beep
+--check_html
+--nomultiprocess
+--debug_indentation
+--time
+--disable=210,220
+--max_line_length=120
