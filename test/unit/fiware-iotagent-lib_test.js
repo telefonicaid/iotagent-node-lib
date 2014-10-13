@@ -36,6 +36,8 @@ describe('IoT Agent NGSI Integration', function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
                     utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
@@ -61,6 +63,8 @@ describe('IoT Agent NGSI Integration', function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
                     utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
@@ -86,7 +90,6 @@ describe('IoT Agent NGSI Integration', function() {
             });
         });
         it('should subscribe to data modification in the Context Broker side for the device');
-        it('should send the appropriate service headers');
     });
     describe('When a device is removed from the IoT Agent', function() {
         it('should cancel its registration in the Context Broker');
