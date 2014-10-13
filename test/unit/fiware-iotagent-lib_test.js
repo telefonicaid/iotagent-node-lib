@@ -89,7 +89,6 @@ describe('IoT Agent NGSI Integration', function() {
                 done();
             });
         });
-        it('should subscribe to data modification in the Context Broker side for the device');
     });
     describe('When a device is removed from the IoT Agent', function() {
         it('should cancel its registration in the Context Broker');
@@ -97,7 +96,38 @@ describe('IoT Agent NGSI Integration', function() {
         it('should send the appropriate service headers');
     });
     describe('When the IoT Agent receives new information from a device', function() {
-        it('should change the value of the corresponding attribute in the context broker');
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI10/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            var values = [
+                {
+                    "name": "state",
+                    "type": "Boolean",
+                    "value": "true"
+                },
+                {
+                    "name": "dimming",
+                    "type": "Percentage",
+                    "value": "87"
+                }
+            ];
+
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done()
+            });
+        });
     });
     describe('When the IoT Agent receives an update on the device data', function() {
         it('should call the device handler with the received data');
