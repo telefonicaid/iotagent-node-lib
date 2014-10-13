@@ -149,7 +149,7 @@ describe('IoT Agent NGSI Integration', function() {
         it('should update the devices information in the Context Broker');
     });
     describe('When the IoT Agent receives new information from a device', function() {
-        beforeEach(function () {
+        beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
@@ -164,21 +164,21 @@ describe('IoT Agent NGSI Integration', function() {
         it('should change the value of the corresponding attribute in the context broker', function(done) {
             var values = [
                 {
-                    "name": "state",
-                    "type": "Boolean",
-                    "value": "true"
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
                 },
                 {
-                    "name": "dimming",
-                    "type": "Percentage",
-                    "value": "87"
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: '87'
                 }
             ];
 
             iotAgentLib.update('light1', 'Light', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
-                done()
+                done();
             });
         });
     });
