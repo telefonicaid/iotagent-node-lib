@@ -4,6 +4,7 @@ var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
     nock = require('nock'),
+    async = require('async'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -146,7 +147,52 @@ describe('IoT Agent NGSI Integration', function() {
     });
 
     describe('When a device is removed from the IoT Agent', function() {
-        it('should update the devices information in the Context Broker');
+        beforeEach(function(done) {
+            var expectedPayload3 = utils
+                    .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice1.json');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                expectedPayload3.registrationId = iotAgentLib.getRegistrationId();
+
+                contextBrokerMock
+                    .post('/NGSI9/registerContext')
+                    .reply(200, utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
+
+                contextBrokerMock
+                    .post('/NGSI9/registerContext')
+                    .reply(200, utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
+
+                contextBrokerMock
+                    .post('/NGSI9/registerContext', expectedPayload3)
+                    .reply(200, utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/unregisterDevice1Success.json'));
+
+                async.series([
+                    async.apply(iotAgentLib.register, device1.id, device1.type, device1.attributes),
+                    async.apply(iotAgentLib.register, device2.id, device2.type, device2.attributes)
+                ], done);
+            });
+        });
+
+        it('should update the devices information in the Context Broker', function(done) {
+            iotAgentLib.unregister(device2.id, device2.type, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
     describe('When the IoT Agent receives new information from a device', function() {
         beforeEach(function() {
