@@ -23,6 +23,5 @@
             "providingApplication": "http://smartGondor.com/garden"
         }
     ],
-    "registrationId": "@REGISTRATION_ID",
     "duration": "P1M"
 }
