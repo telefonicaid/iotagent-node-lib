@@ -274,24 +274,24 @@ describe('IoT Agent NGSI Integration', function() {
     });
     describe('When the IoT Agent receives an update on the device data', function() {
         var options = {
-            url: 'http://localhost:' +  iotAgentConfig.server.port + '/NGSI10/updateContext',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/updateContext',
             method: 'POST',
             json: {
-                "contextElements": [
+                contextElements: [
                     {
-                        "type": "Light",
-                        "isPattern": "false",
-                        "id": "light1",
-                        "attributes": [
+                        type: 'Light',
+                        isPattern: 'false',
+                        id: 'light1',
+                        attributes: [
                             {
-                                "name": "dimming",
-                                "type": "Percentage",
-                                "value": 12
+                                name: 'dimming',
+                                type: 'Percentage',
+                                value: 12
                             }
                         ]
                     }
                 ],
-                "updateAction": "APPEND"
+                updateAction: 'APPEND'
             }
         };
 
@@ -313,7 +313,7 @@ describe('IoT Agent NGSI Integration', function() {
             var expectedResponse = utils
                 .readExampleFile('./test/unit/contextProviderResponses/updateInformationResponse.json');
 
-            iotAgentLib.setDataUpdateHandler(function (id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal(12);
