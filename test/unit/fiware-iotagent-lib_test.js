@@ -187,7 +187,7 @@ describe('IoT Agent NGSI Integration', function() {
         });
 
         it('should update the devices information in the Context Broker', function(done) {
-            iotAgentLib.unregister(device2.id, device2.type, function (error) {
+            iotAgentLib.unregister(device2.id, device2.type, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
