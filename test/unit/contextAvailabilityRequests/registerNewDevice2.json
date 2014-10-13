@@ -1,0 +1,44 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "Light",
+                    "isPattern": "false",
+                    "id": "light1"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "state",
+                    "type": "Boolean",
+                    "isDomain": "false"
+                },
+                {
+                    "name": "dimming",
+                    "type": "Percentage",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com/garden"
+        },
+        {
+            "entities": [
+                {
+                    "type": "Termometer",
+                    "isPattern": "false",
+                    "id": "term2"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "temperature",
+                    "type": "Centigrades",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com/garden"
+        }
+    ],
+    "duration": "P1M"
+}
