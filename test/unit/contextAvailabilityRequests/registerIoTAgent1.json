@@ -1,0 +1,12 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+            ],
+            "attributes": [
+            ],
+            "providingApplication": "http://smartGondor.com/garden"
+        }
+    ],
+    "duration": "P1M"
+}
