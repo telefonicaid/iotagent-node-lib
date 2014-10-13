@@ -1,3 +1,25 @@
+/*
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, seehttp://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ */
 'use strict';
 
 var iotAgentLib = require('../../'),
@@ -5,11 +27,15 @@ var iotAgentLib = require('../../'),
     should = require('should'),
     nock = require('nock'),
     async = require('async'),
+    request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
             host: '10.11.128.16',
             port: '1026'
+        },
+        server: {
+            port: 4041
         },
         service: 'smartGondor',
         subservice: 'gardens',
@@ -42,6 +68,10 @@ var iotAgentLib = require('../../'),
     };
 
 describe('IoT Agent NGSI Integration', function() {
+    afterEach(function(done) {
+        iotAgentLib.deactivate(done);
+    });
+
     describe('When an IoT Agent is started', function() {
         beforeEach(function(done) {
             nock.cleanAll();
@@ -194,17 +224,31 @@ describe('IoT Agent NGSI Integration', function() {
             });
         });
     });
+    describe('When the IoT Agent is deactivated', function() {
+        it('should update the registration with expiration time 0s');
+    });
+
     describe('When the IoT Agent receives new information from a device', function() {
-        beforeEach(function() {
+        beforeEach(function(done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI10/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
         });
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
@@ -229,8 +273,64 @@ describe('IoT Agent NGSI Integration', function() {
         });
     });
     describe('When the IoT Agent receives an update on the device data', function() {
-        it('should call the device handler with the received data');
+        var options = {
+            url: 'http://localhost:' +  iotAgentConfig.server.port + '/NGSI10/updateContext',
+            method: 'POST',
+            json: {
+                "contextElements": [
+                    {
+                        "type": "Light",
+                        "isPattern": "false",
+                        "id": "light1",
+                        "attributes": [
+                            {
+                                "name": "dimming",
+                                "type": "Percentage",
+                                "value": 12
+                            }
+                        ]
+                    }
+                ],
+                "updateAction": "APPEND"
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should call the device handler with the received data', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/contextProviderResponses/updateInformationResponse.json');
+
+            iotAgentLib.setDataUpdateHandler(function (id, type, attributes, callback) {
+                id.should.equal(device1.id);
+                type.should.equal(device1.type);
+                attributes[0].value.should.equal(12);
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
     });
+    describe('When a IoT Agent receives an update on multiple contexts', function() {
+        it('should call the device handler for each of the contexts');
+    });
+
     describe('When a context query arrives to the IoT Agent', function() {
         it('should return the information querying the underlying devices');
     });
