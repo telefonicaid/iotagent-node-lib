@@ -3,6 +3,7 @@
 var readline = require('readline'),
     iotAgentLib = require('../lib/fiware-iotagent-lib'),
     config = require('../config'),
+    async = require('async'),
     separator = '\n\n\t';
 
 var rl = readline.createInterface({
@@ -24,7 +25,7 @@ var commands = {
     'register': {
         parameters: ['id', 'type', 'attributes'],
         description: '\tRegister a new device in the IoT Agent. The attributes should be triads with the following\n' +
-            '\tformat: (name type id) sepparated by commas.',
+            '\tformat: "name/type/value" sepparated by commas.',
         handler: registerDevice
     },
     'unregister': {
@@ -33,8 +34,9 @@ var commands = {
         handler: unregisterDevice
     },
     'updatevalue': {
-        parameters: [],
-        description: '\tUpdate a device value in the Context Broker',
+        parameters: ['deviceId', 'deviceType', 'attributes'],
+        description: '\tUpdate a device value in the Context Broker. The attributes should be triads with the following\n' +
+            '\tformat: "name/type/value" sepparated by commas.',
         handler: updateDeviceValue
     }
 };
@@ -51,24 +53,53 @@ function handleError(message) {
     };
 }
 
-function startApp() {
+function extractAttributes(attributeString, callback) {
+    var attributes = attributeString.split(','),
+        attributesResult = [];
+
+    for (var i = 0; i < attributes.length; i++) {
+        var fields = attributes[i].split('/'),
+            attribute = {
+                name: fields[0],
+                type: fields[1]
+            };
+
+
+        if (fields[2]) {
+            attribute.value = fields[2];
+        }
+
+        attributesResult.push(attribute);
+    }
+
+    callback(null, attributesResult);
+}
+
+function startApp(command) {
     iotAgentLib.activate(config, handleError('Application started'));
 }
 
-function stopApp() {
+function stopApp(command) {
     iotAgentLib.activate(handleError('Application stopped'));
 }
 
-function registerDevice() {
+function registerDevice(command) {
     console.log('Registering device');
+    async.waterfall([
+        async.apply(extractAttributes, command[2]),
+        async.apply(iotAgentLib.register, command[0], command[1])
+    ], handleError('Device value updated'));
 }
 
-function unregisterDevice() {
+function unregisterDevice(command) {
     console.log('Unregistering device');
 }
 
-function updateDeviceValue() {
-    console.log('Updating device value');
+function updateDeviceValue(command) {
+    async.waterfall([
+        async.apply(extractAttributes, command[2]),
+        async.apply(iotAgentLib.update, command[0], command[1])
+    ], handleError('Device value updated'));
 }
 
 function initialize() {
@@ -79,7 +110,7 @@ function showHelp() {
     var keyList = Object.keys(commands);
 
     console.log('\n');
-    
+
     for (var i = 0; i < keyList.length; i++) {
         var parameters = '';
 
@@ -97,7 +128,7 @@ function executeCommander(command) {
     if (command[0]=='help') {
         showHelp();
     } else if (commands[command[0]]) {
-        commands[command[0]].handler();
+        commands[command[0]].handler(command.slice(1));
     } else if (command[0].length == 0) {
         rl.prompt();
     } else {
