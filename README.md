@@ -16,6 +16,8 @@ These are the features an IoT Agent is supposed to expose:
 
 Almost all of these features are common for every agent, so they can be abstracted into a library or external module. The objective of this project is to provide that abstraction. As all this common tasks are abstracted, the main task of the concrete IoT Agent implementations will be to map between the native device protocol and the library API.
 
+![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
+
 ## Operations
 
 ## Usage
