@@ -1,6 +1,25 @@
 # fiware-iotagent-lib
 
-IoT Agent library to interface with NGSI Context Broker
+## Overview
+This project aims to provide a node.js module to enable IoT Agent developers to build custom agents for their devices that can 
+easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). To allow this
+interaction, the following mapping is supposed:
+
+* Each Device is mapped as an Entity associated to a Context Provider: the Device Id will correspond to the entity ID; the type of the entity with a custom dependent on the device's service; and the measures obtained from the device will be matched each one to a different attribute.
+* Each IoT Agent is mapped as a Context Provider: the IoTA is then responsible of mantaining its availability information, and answers requests about its own devices.
+
+These are the features an IoT Agent is supposed to expose:
+* IoT Agent registration management on the Context Broker: the IoT Agent should register itself as a Context Provider in the Context Broker, being able to resolve NGSI update and query requests redirected from remote Context Brokers.
+* Device registration: multiple devices will be connected to each IoT Agent, each one of those mapped to a CB entity. The IoT Agent should update its NGSI9 registration to reflect what devices are connected to the agent.
+* Device information update: whenever a device haves new measures to publish, it should send the information to the IoT Agent in its own native language. This message should , in turn, be should sent as an `updateContext` request to the Context Broker, were the measures will be updated in the device entity. 
+* Device command execution and value updates: as a Context Provider, the IoT Agent should receive update operations from the Context Broker subscriptions, and relay them to the corresponding device (decoding it using its ID and Type, and other possible metadata).
+
+Almost all of these features are common for every agent, so they can be abstracted into a library or external module. The objective of this project is to provide that abstraction. As all this common tasks are abstracted, the main task of the concrete IoT Agent implementations will be to map between the native device protocol and the library API.
+
+## Operations
+
+## Usage
+
 
 ## Development documentation
 ### Project build
