@@ -22,6 +22,7 @@
  */
 
 var config = {
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '10.11.128.16',
         port: '1026'

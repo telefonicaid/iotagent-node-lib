@@ -25,6 +25,7 @@
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
+    logger = require('fiware-node-logger'),
     nock = require('nock'),
     async = require('async'),
     request = require('request'),
@@ -68,6 +69,10 @@ var iotAgentLib = require('../../'),
     };
 
 describe('IoT Agent NGSI Integration', function() {
+    beforeEach(function() {
+        logger.setLevel('FATAL');
+    });
+
     afterEach(function(done) {
         iotAgentLib.deactivate(done);
     });

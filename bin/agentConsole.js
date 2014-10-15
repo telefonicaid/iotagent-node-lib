@@ -26,6 +26,7 @@
 var readline = require('readline'),
     iotAgentLib = require('../lib/fiware-iotagent-lib'),
     config = require('../config'),
+    logger = require('fiware-node-logger'),
     async = require('async'),
     separator = '\n\n\t';
 
@@ -161,10 +162,12 @@ function queryHandler() {
 }
 
 function updateHandler(id, type, attributes, callback) {
-
+    
 }
 
 function initialize() {
+    logger.setLevel(config.logLevel);
+
     iotAgentLib.setDataQueryHandler(queryHandler);
     iotAgentLib.setDataUpdateHandler(updateHandler);
 

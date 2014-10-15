@@ -27,7 +27,8 @@
     "request": "2.39.0",
     "sax": "0.6.0",
     "mustache": "0.8.2",
-    "node-uuid": "1.4.1"
+    "node-uuid": "1.4.1",
+    "fiware-node-logger": "https://github.com/telefonicaid/fiware-node-logger/tarball/81fdcb213db99eb61acecfd293c45d3fa144cf36"
   },
   "devDependencies": {
     "nock": "*",
