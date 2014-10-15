@@ -21,6 +21,41 @@ Almost all of these features are common for every agent, so they can be abstract
 ## Operations
 
 ## Usage
+### IoT Library testing
+As this library is still a prototype, a command line client to experiment with its data is packed with it. The command line client can be started using the following command:
+```
+bin/agentConsole.js
+```
+The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, send measures mimicking the device 
+
+The command line client offers the following options:
+
+```
+start  
+
+	Start the IoT Agent
+
+stop  
+
+	Stop the IoT Agent
+
+register <id> <type> <attributes>  
+
+	Register a new device in the IoT Agent. The attributes should be triads with
+	the following format: (name type value) sepparated by commas.
+
+unregister <id> <type>  
+
+	Unregister the selected device
+
+updatevalue <deviceId> <deviceType> <attributes>  
+
+	Update a device value in the Context Broker. The attributes should be
+	triads with the following format: (name type value) sepparated by commas.
+```
+
+### Library usage
+
 
 
 ## Development documentation
@@ -33,7 +68,6 @@ grunt --help
 ```
 
 The following sections show the available options in detail.
-
 
 ### Testing
 [Mocha](http://visionmedia.github.io/mocha/) Test Runner + [Chai](http://chaijs.com/) Assertion Library + [Sinon](http://sinonjs.org/) Spies, stubs.
