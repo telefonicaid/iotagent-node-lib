@@ -1,6 +1,7 @@
 # fiware-iotagent-lib
 
 ## Overview
+### Description
 This project aims to provide a node.js module to enable IoT Agent developers to build custom agents for their devices that can 
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). To allow this
 interaction, the following mapping is supposed:
@@ -13,10 +14,17 @@ These are the features an IoT Agent is supposed to expose:
 * Device registration: multiple devices will be connected to each IoT Agent, each one of those mapped to a CB entity. The IoT Agent should update its NGSI9 registration to reflect what devices are connected to the agent.
 * Device information update: whenever a device haves new measures to publish, it should send the information to the IoT Agent in its own native language. This message should , in turn, be should sent as an `updateContext` request to the Context Broker, were the measures will be updated in the device entity. 
 * Device command execution and value updates: as a Context Provider, the IoT Agent should receive update operations from the Context Broker subscriptions, and relay them to the corresponding device (decoding it using its ID and Type, and other possible metadata).
+* IoT remote configuration: some pieces of configuration of the IoT Agent should should be able to be overriden using an external API (authentication data for the IdM, service and subservice information and so).
 
 Almost all of these features are common for every agent, so they can be abstracted into a library or external module. The objective of this project is to provide that abstraction. As all this common tasks are abstracted, the main task of the concrete IoT Agent implementations will be to map between the native device protocol and the library API.
 
 ![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
+
+### Implementation decisions
+Given the aforementioned requirements, there are some aspects of the implementation that were chosen, and are particularly under consideration:
+* The IoT Agent Lib will save its configuration as a text file, and it will be updated using an external API (the API consisting in a single REST resource with a JSON object, that will be in the internal configuration format).
+* Aside from its text configuration, the IoT Agent Lib is considered to be stateless. To be precise, the library mantains a state (the list of entities/devices whose information the agent can provide) but that state is considered to be transient. It's up to the particular implementation of the agent to consider whether it should have a persistent storage to hold the device information (so the internal list of devices is read from a DB) or to register the devices each time a device sends a measure.
+* The IoT Agent does not care about the origin of the data, its type or structure. The mapping from raw data to the entity model, if there is any, is a responsability of the IoT Agent implementation, or of another third party library.
 
 ## Operations
 
@@ -26,7 +34,7 @@ As this library is still a prototype, a command line client to experiment with i
 ```
 bin/agentConsole.js
 ```
-The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, send measures mimicking the device 
+The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, register and unregister devices, send measures mimicking the device and receive updates of the device data.
 
 The command line client offers the following options:
 
