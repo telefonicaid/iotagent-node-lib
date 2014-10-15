@@ -349,7 +349,7 @@ describe('IoT Agent NGSI Integration', function() {
                     ]
                 }
             },
-            sensorData= [
+            sensorData = [
                 {
                     id: 'light1',
                     type: 'Light',
