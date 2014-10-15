@@ -327,11 +327,72 @@ describe('IoT Agent NGSI Integration', function() {
             });
         });
     });
+
     describe('When a IoT Agent receives an update on multiple contexts', function() {
         it('should call the device handler for each of the contexts');
     });
 
     describe('When a context query arrives to the IoT Agent', function() {
-        it('should return the information querying the underlying devices');
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+            method: 'POST',
+            json: {
+                    entities: [
+                        {
+                            type: 'Light',
+                            isPattern: 'false',
+                            id: 'light1'
+                        }
+                    ],
+                    attributes: [
+                        'dimming'
+                    ]
+                }
+            },
+            sensorData= [
+                {
+                    id: 'light1',
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'dimming',
+                            type: 'Percentage',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should return the information querying the underlying devices', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponse.json');
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                id.should.equal(device1.id);
+                type.should.equal(device1.type);
+                attributes[0].should.equal('dimming');
+                callback(null, sensorData);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
     });
 });

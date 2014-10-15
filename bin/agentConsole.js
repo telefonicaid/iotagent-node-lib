@@ -125,10 +125,6 @@ function updateDeviceValue(command) {
     ], handleError('Device value updated'));
 }
 
-function initialize() {
-
-}
-
 function showHelp() {
     var keyList = Object.keys(commands);
 
@@ -160,11 +156,24 @@ function executeCommander(command) {
     }
 }
 
-rl.setPrompt('\033[36mIoTAgent> \033[0m');
-rl.prompt();
+function queryHandler() {
 
-rl.on('line', function (cmd) {
-    executeCommander(cmd.split(' '));
-});
+}
 
+function updateHandler(id, type, attributes, callback) {
 
+}
+
+function initialize() {
+    iotAgentLib.setDataQueryHandler(queryHandler);
+    iotAgentLib.setDataUpdateHandler(updateHandler);
+
+    rl.setPrompt('\033[36mIoTAgent> \033[0m');
+    rl.prompt();
+
+    rl.on('line', function (cmd) {
+        executeCommander(cmd.split(' '));
+    });
+}
+
+initialize();
