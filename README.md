@@ -36,7 +36,7 @@ bin/agentConsole.js
 ```
 The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, register and unregister devices, send measures mimicking the device and receive updates of the device data.
 
-The command line client offers the following options:
+The command line client creates a console that offers the following options:
 
 ```
 start  
