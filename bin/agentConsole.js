@@ -157,12 +157,28 @@ function executeCommander(command) {
     }
 }
 
-function queryHandler() {
+function queryHandler(id, type, attributes, callback) {
+    var sensorData = [
+        {
+            id: 'light1',
+            type: 'Light',
+            attributes: [
+                {
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: 19
+                }
+            ]
+        }
+    ];
 
+    callback(null, sensorData);
 }
 
 function updateHandler(id, type, attributes, callback) {
-    
+    console.log("Update message received for device with id [%s] and type [%s]", id, type);
+
+    callback(null);
 }
 
 function initialize() {
