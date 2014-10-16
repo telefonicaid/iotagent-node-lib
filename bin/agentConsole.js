@@ -49,7 +49,7 @@ var commands = {
     'register': {
         parameters: ['id', 'type', 'attributes'],
         description: '\tRegister a new device in the IoT Agent. The attributes should be triads with the following\n' +
-            '\tformat: "name/type/value" sepparated by commas.',
+            '\tformat: "name/type" sepparated by commas.',
         handler: registerDevice
     },
     'unregister': {
@@ -62,6 +62,11 @@ var commands = {
         description: '\tUpdate a device value in the Context Broker. The attributes should be triads with the following\n' +
             '\tformat: "name/type/value" sepparated by commas.',
         handler: updateDeviceValue
+    },
+    'listDevices': {
+        parameters: [],
+        description: '\tList all the devices that have been registered in this IoT Agent session\n',
+        handler: listDevices
     }
 };
 
@@ -75,6 +80,16 @@ function handleError(message) {
 
         rl.prompt();
     };
+}
+
+
+function listDevices() {
+    var devices = iotAgentLib.listDevices(),
+        keys = Object.keys(devices);
+
+    for (var i = 0; i < keys.length; i++) {
+        console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
+    }
 }
 
 function extractAttributes(attributeString, callback) {
@@ -112,11 +127,12 @@ function registerDevice(command) {
     async.waterfall([
         async.apply(extractAttributes, command[2]),
         async.apply(iotAgentLib.register, command[0], command[1])
-    ], handleError('Device value updated'));
+    ], handleError('Device registered in the Context Broker'));
 }
 
 function unregisterDevice(command) {
     console.log('Unregistering device');
+    iotAgentLib.unregister(command[0], command[1], handleError('Device unregistered'));
 }
 
 function updateDeviceValue(command) {
