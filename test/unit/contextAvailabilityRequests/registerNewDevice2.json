@@ -20,7 +20,7 @@
                     "isDomain": "false"
                 }
             ],
-            "providingApplication": "http://smartGondor.com/garden"
+            "providingApplication": "http://smartGondor.com"
         },
         {
             "entities": [
@@ -37,7 +37,7 @@
                     "isDomain": "false"
                 }
             ],
-            "providingApplication": "http://smartGondor.com/garden"
+            "providingApplication": "http://smartGondor.com"
         }
     ],
     "duration": "P1M"

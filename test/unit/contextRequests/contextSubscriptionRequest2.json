@@ -6,7 +6,7 @@
             "id": "term2"
         }
     ],
-    "reference": "http://smartGondor.com/garden",
+    "reference": "http://smartGondor.com/notification",
     "duration": "P1M",
     "notifyConditions": [
         {
