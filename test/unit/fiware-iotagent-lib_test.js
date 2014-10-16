@@ -41,7 +41,8 @@ var iotAgentLib = require('../../'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com/garden',
-        deviceRegistrationDuration: 'P1M'
+        deviceRegistrationDuration: 'P1M',
+        throttling: 'PT5S'
     },
     device1 = {
         id: 'light1',
@@ -120,20 +121,31 @@ describe('IoT Agent NGSI Integration', function() {
                 expectedPayload1.registrationId = iotAgentLib.getRegistrationId();
 
                 contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
                     .post('/NGSI9/registerContext', expectedPayload1)
                     .reply(200, utils.readExampleFile(
                         './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post('/NGSI10/subscribeContext',
+                        utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest.json'))
+                    .reply(200,
+                        utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequestSuccess.json'));
 
                 done();
             });
         });
 
-        it('should register the device context in the Context Broker', function(done) {
-            iotAgentLib.register(device1.id, device1.type, device1.attributes, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+        it('should register the device context in the Context Broker, and subscribe to its "actions" attribute',
+            function(done) {
+                iotAgentLib.register(device1.id, device1.type, device1.attributes, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
         });
     });
 
@@ -167,6 +179,23 @@ describe('IoT Agent NGSI Integration', function() {
                     .post('/NGSI9/registerContext', expectedPayload2)
                     .reply(200, utils.readExampleFile(
                         './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post('/NGSI10/subscribeContext',
+                        utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest.json'))
+                    .reply(200,
+                        utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequestSuccess.json'));
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post('/NGSI10/subscribeContext',
+                        utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest2.json'))
+                    .reply(200,
+                        utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequest2Success.json'));
+
 
                 iotAgentLib.register(device1.id, device1.type, device1.attributes, done);
             });
@@ -208,6 +237,22 @@ describe('IoT Agent NGSI Integration', function() {
                     .post('/NGSI9/registerContext')
                     .reply(200, utils.readExampleFile(
                         './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post('/NGSI10/subscribeContext',
+                        utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest.json'))
+                    .reply(200,
+                        utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequestSuccess.json'));
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post('/NGSI10/subscribeContext',
+                        utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest2.json'))
+                    .reply(200,
+                        utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequest2Success.json'));
 
                 contextBrokerMock
                     .post('/NGSI9/registerContext', expectedPayload3)

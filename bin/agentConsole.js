@@ -63,7 +63,7 @@ var commands = {
             '\tformat: "name/type/value" sepparated by commas.',
         handler: updateDeviceValue
     },
-    'listDevices': {
+    'listdevices': {
         parameters: [],
         description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices
@@ -90,6 +90,8 @@ function listDevices() {
     for (var i = 0; i < keys.length; i++) {
         console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
     }
+
+    rl.prompt();
 }
 
 function extractAttributes(attributeString, callback) {
