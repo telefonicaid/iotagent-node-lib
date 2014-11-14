@@ -2,10 +2,18 @@
     "contextRegistrations": [
         {
             "entities": [
-                "light1"
+                {
+                    "type": "Light",
+                    "isPattern": "false",
+                    "id": "light1"
+                }
             ],
             "attributes": [
-                "temperature"
+                {
+                    "name": "temperature",
+                    "type": "centigrades",
+                    "isDomain": "false"
+                }
             ],
             "providingApplication": "http://smartGondor.com"
         }

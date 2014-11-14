@@ -116,61 +116,13 @@ describe('IoT Agent NGSI Integration', function() {
             });
         });
 
-        it('should create the device entity in the Context Broker',
+        it('should register as ContextProvider of its lazy attributes',
             function(done) {
                 iotAgentLib.register(device1.id, device1.type, function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
                 });
-        });
-        it('should register as ContextProvider of its lazy attributes')
-    });
-
-    describe('When a new device is connected to an IoT Agent with more devices', function() {
-        beforeEach(function(done) {
-            var expectedPayload1 = utils
-                    .readExampleFile('./test/unit/contextAvailabilityRequests/registerNewDevice1.json'),
-                expectedPayload2 = utils
-                    .readExampleFile('./test/unit/contextAvailabilityRequests/registerNewDevice2.json');
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                expectedPayload1.registrationId = iotAgentLib.getRegistrationId();
-                expectedPayload2.registrationId = iotAgentLib.getRegistrationId();
-
-                contextBrokerMock
-                    .post('/NGSI9/registerContext', expectedPayload1)
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
-
-                contextBrokerMock
-                    .post('/NGSI9/registerContext', expectedPayload2)
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
-
-                mockSubscription1();
-                mockSubscription2();
-
-                iotAgentLib.register(device1.id, device1.type, device1.attributes, done);
-            });
-        });
-
-        it('should update the IoT Agent registration with all the devices', function(done) {
-            iotAgentLib.register(device2.id, device2.type, device2.attributes, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
         });
     });
 
@@ -181,17 +133,7 @@ describe('IoT Agent NGSI Integration', function() {
 
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
-
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                expectedPayload3.registrationId = iotAgentLib.getRegistrationId();
-
                 contextBrokerMock
                     .post('/NGSI9/registerContext')
                     .reply(200, utils.readExampleFile(
@@ -201,9 +143,6 @@ describe('IoT Agent NGSI Integration', function() {
                     .post('/NGSI9/registerContext')
                     .reply(200, utils.readExampleFile(
                         './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
-
-                mockSubscription1();
-                mockSubscription2();
 
                 contextBrokerMock
                     .post('/NGSI9/registerContext', expectedPayload3)
