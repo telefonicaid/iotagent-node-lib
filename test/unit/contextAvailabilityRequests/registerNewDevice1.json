@@ -10,13 +10,8 @@
             ],
             "attributes": [
                 {
-                    "name": "state",
-                    "type": "Boolean",
-                    "isDomain": "false"
-                },
-                {
-                    "name": "dimming",
-                    "type": "Percentage",
+                    "name": "temperature",
+                    "type": "centigrades",
                     "isDomain": "false"
                 }
             ],

@@ -53,6 +53,17 @@ var iotAgentLib = require('../../'),
                         type: 'Hgmm'
                     }
                 ]
+            },
+            'Termometer': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'temp',
+                        type: 'kelvin'
+                    }
+                ],
+                active: [
+                ]
             }
         },
         service: 'smartGondor',
@@ -70,26 +81,6 @@ var iotAgentLib = require('../../'),
         type: 'Termometer'
     };
 
-function mockSubscription1() {
-    contextBrokerMock
-        .matchHeader('fiware-service', 'smartGondor')
-        .matchHeader('fiware-servicepath', 'gardens')
-        .post('/NGSI10/subscribeContext',
-            utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest.json'))
-        .reply(200,
-            utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequestSuccess.json'));
-}
-
-function mockSubscription2() {
-    contextBrokerMock
-        .matchHeader('fiware-service', 'smartGondor')
-        .matchHeader('fiware-servicepath', 'gardens')
-        .post('/NGSI10/subscribeContext',
-            utils.readExampleFile('./test/unit/contextRequests/contextSubscriptionRequest2.json'))
-        .reply(200,
-            utils.readExampleFile('./test/unit/contextResponses/contextSubscriptionRequest2Success.json'));
-}
-
 describe('IoT Agent NGSI Integration', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
@@ -99,7 +90,7 @@ describe('IoT Agent NGSI Integration', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe.only('When a new device is connected to the IoT Agent', function() {
+    describe('When a new device is connected to the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -132,32 +123,31 @@ describe('IoT Agent NGSI Integration', function() {
                     .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice1.json');
 
             nock.cleanAll();
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
+
+            contextBrokerMock
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
+
+            contextBrokerMock
+                .post('/NGSI9/registerContext', expectedPayload3)
+                .reply(200, utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/unregisterDevice1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                contextBrokerMock
-                    .post('/NGSI9/registerContext')
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
-
-                contextBrokerMock
-                    .post('/NGSI9/registerContext')
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
-
-                contextBrokerMock
-                    .post('/NGSI9/registerContext', expectedPayload3)
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/unregisterDevice1Success.json'));
-
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type, device1.attributes),
-                    async.apply(iotAgentLib.register, device2.id, device2.type, device2.attributes)
+                    async.apply(iotAgentLib.register, device1.id, device1.type),
+                    async.apply(iotAgentLib.register, device2.id, device2.type)
                 ], done);
             });
         });
 
         it('should update the devices information in the Context Broker', function(done) {
-            iotAgentLib.unregister(device2.id, device2.type, function(error) {
+            iotAgentLib.unregister(device1.id, device1.type, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -168,7 +158,7 @@ describe('IoT Agent NGSI Integration', function() {
         it('should update the registration with expiration time 0s');
     });
 
-    describe('When the IoT Agent receives new information from a device', function() {
+    describe.skip('When the IoT Agent receives new information from a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -335,7 +325,7 @@ describe('IoT Agent NGSI Integration', function() {
         });
     });
 
-    describe('When a context query arrives to the IoT Agent', function() {
+    describe.skip('When a context query arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
             method: 'POST',
