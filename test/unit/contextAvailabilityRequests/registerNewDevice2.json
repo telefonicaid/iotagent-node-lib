@@ -3,28 +3,6 @@
         {
             "entities": [
                 {
-                    "type": "Light",
-                    "isPattern": "false",
-                    "id": "light1"
-                }
-            ],
-            "attributes": [
-                {
-                    "name": "state",
-                    "type": "Boolean",
-                    "isDomain": "false"
-                },
-                {
-                    "name": "dimming",
-                    "type": "Percentage",
-                    "isDomain": "false"
-                }
-            ],
-            "providingApplication": "http://smartGondor.com"
-        },
-        {
-            "entities": [
-                {
                     "type": "Termometer",
                     "isPattern": "false",
                     "id": "term2"
@@ -32,8 +10,8 @@
             ],
             "attributes": [
                 {
-                    "name": "temperature",
-                    "type": "Centigrades",
+                    "name": "temp",
+                    "type": "kelvin",
                     "isDomain": "false"
                 }
             ],
