@@ -380,4 +380,18 @@ describe('IoT Agent NGSI Integration', function() {
             });
         });
     });
+
+    describe('When the Context Broker returns an error while registering a device', function() {
+        it('should not register the device in the internal registry');
+        it('should return a REGISTRATION_ERROR error to the caller');
+    });
+
+    describe('When the Context Broker returns an error while unregistering a device', function() {
+        it('should not remove the device from the internal registry');
+        it('should return a UNREGISTRATION_ERROR error to the caller');
+    });
+
+    describe('When the Context Broker returns an error updating an entity', function() {
+        it('should return ENTITY_UPDATE_ERROR an error to the caller');
+    });
 });
