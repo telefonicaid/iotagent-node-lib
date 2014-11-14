@@ -158,17 +158,9 @@ describe('IoT Agent NGSI Integration', function() {
         it('should update the registration with expiration time 0s');
     });
 
-    describe.skip('When the IoT Agent receives new information from a device', function() {
+    describe('When the IoT Agent receives new information from a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -325,7 +317,7 @@ describe('IoT Agent NGSI Integration', function() {
         });
     });
 
-    describe.skip('When a context query arrives to the IoT Agent', function() {
+    describe('When a context query arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
             method: 'POST',
