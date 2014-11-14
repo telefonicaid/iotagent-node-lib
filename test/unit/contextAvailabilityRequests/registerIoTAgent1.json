@@ -2,8 +2,10 @@
     "contextRegistrations": [
         {
             "entities": [
+                "light1"
             ],
             "attributes": [
+                "temperature"
             ],
             "providingApplication": "http://smartGondor.com"
         }

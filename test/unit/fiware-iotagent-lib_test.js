@@ -38,6 +38,23 @@ var iotAgentLib = require('../../'),
         server: {
             port: 4041
         },
+        types: {
+            'Light': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'temperature',
+                        type: 'centigrades'
+                    }
+                ],
+                active: [
+                    {
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    }
+                ]
+            }
+        },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
@@ -46,27 +63,11 @@ var iotAgentLib = require('../../'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light',
-        attributes: [
-            {
-                name: 'state',
-                type: 'Boolean'
-            },
-            {
-                name: 'dimming',
-                type: 'Percentage'
-            }
-        ]
+        type: 'Light'
     },
     device2 = {
         id: 'term2',
-        type: 'Termometer',
-        attributes: [
-            {
-                name: 'temperature',
-                type: 'Centigrades'
-            }
-        ]
+        type: 'Termometer'
     };
 
 function mockSubscription1() {
@@ -98,7 +99,7 @@ describe('IoT Agent NGSI Integration', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When an IoT Agent is started', function() {
+    describe.only('When a new device is connected to the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -110,57 +111,20 @@ describe('IoT Agent NGSI Integration', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-            done();
-        });
-
-        it('should register itself in the contextBroker, and save the returned ID', function(done) {
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                should.not.exist(error);
-                iotAgentLib.getRegistrationId().should.equal('6319a7f5254b05844116584d');
-                done();
-            });
-        });
-    });
-
-    describe('When a new device is connected to the IoT Agent', function() {
-        beforeEach(function(done) {
-            var expectedPayload1 = utils
-                    .readExampleFile('./test/unit/contextAvailabilityRequests/registerNewDevice1.json');
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                expectedPayload1.registrationId = iotAgentLib.getRegistrationId();
-
-                contextBrokerMock
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .matchHeader('fiware-servicepath', 'gardens')
-                    .post('/NGSI9/registerContext', expectedPayload1)
-                    .reply(200, utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
-
-                mockSubscription1();
-
                 done();
             });
         });
 
-        it('should register the device context in the Context Broker, and subscribe to its "actions" attribute',
+        it('should create the device entity in the Context Broker',
             function(done) {
-                iotAgentLib.register(device1.id, device1.type, device1.attributes, function(error) {
+                iotAgentLib.register(device1.id, device1.type, function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
                 });
         });
+        it('should register as ContextProvider of its lazy attributes')
     });
 
     describe('When a new device is connected to an IoT Agent with more devices', function() {
