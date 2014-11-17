@@ -30,6 +30,9 @@ var config = {
     server: {
         port: 4041
     },
+    deviceRegistry: {
+        type: 'memory'
+    },
     service: 'smartGondor',
     subservice: 'gardens',
     providerUrl: 'http://localhost:4041',
