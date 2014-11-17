@@ -73,7 +73,7 @@ var commands = {
 function handleError(message) {
     return function (error) {
         if (error) {
-            console.log('\n\033[31mERROR:\033[0m %s', error);
+            console.log('\n\033[31mERROR:\033[0m %s', error.message);
         } else {
             console.log(message)
         }

@@ -222,4 +222,32 @@ describe('IoT Agent Device Registration', function() {
             });
         });
     });
+
+    describe('When a device is registered in the Context Broker and its type is not configured', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(500,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should raise a TYPE_NOT_FOUND error', function(done) {
+            iotAgentLib.register(device1.id, 'UnexistentType', function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.name.should.equal('TYPE_NOT_FOUND');
+
+                done();
+            });
+        });
+    });
 });
