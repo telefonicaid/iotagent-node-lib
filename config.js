@@ -33,6 +33,7 @@ var config = {
     deviceRegistry: {
         type: 'memory'
     },
+    types: {},
     service: 'smartGondor',
     subservice: 'gardens',
     providerUrl: 'http://localhost:4041',
