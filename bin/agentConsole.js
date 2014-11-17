@@ -47,9 +47,9 @@ var commands = {
         handler: stopApp
     },
     'register': {
-        parameters: ['id', 'type', 'attributes'],
-        description: '\tRegister a new device in the IoT Agent. The attributes should be triads with the following\n' +
-            '\tformat: "name/type" sepparated by commas.',
+        parameters: ['id', 'type'],
+        description: '\tRegister a new device in the IoT Agent. The attributes to register will be extracted from then\n' +
+            ' type configuration',
         handler: registerDevice
     },
     'unregister': {
@@ -84,14 +84,19 @@ function handleError(message) {
 
 
 function listDevices() {
-    var devices = iotAgentLib.listDevices(),
-        keys = Object.keys(devices);
+    iotAgentLib.listDevices(function (error, devices) {
+        if (error) {
+            console.log('\n\033[31mERROR:\033[0m %s', error.message);
+        } else {
+            var keys = Object.keys(devices);
 
-    for (var i = 0; i < keys.length; i++) {
-        console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
-    }
+            for (var i = 0; i < keys.length; i++) {
+                console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
+            }
 
-    rl.prompt();
+            rl.prompt();
+        }
+    });
 }
 
 function extractAttributes(attributeString, callback) {
@@ -126,10 +131,7 @@ function stopApp(command) {
 
 function registerDevice(command) {
     console.log('Registering device');
-    async.waterfall([
-        async.apply(extractAttributes, command[2]),
-        async.apply(iotAgentLib.register, command[0], command[1])
-    ], handleError('Device registered in the Context Broker'));
+    iotAgentLib.register(command[0], command[1], handleError('Device registered in the Context Broker'));
 }
 
 function unregisterDevice(command) {

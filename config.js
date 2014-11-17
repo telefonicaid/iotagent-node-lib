@@ -33,7 +33,23 @@ var config = {
     deviceRegistry: {
         type: 'memory'
     },
-    types: {},
+    types: {
+        'Light': {
+            commands: [],
+            lazy: [
+                {
+                    name: 'luminescence',
+                    type: 'Lumens'
+                }
+            ],
+            active: [
+                {
+                    name: 'status',
+                    type: 'Boolean'
+                }
+            ]
+        }
+    },
     service: 'smartGondor',
     subservice: '/gardens',
     providerUrl: 'http://localhost:4041',
