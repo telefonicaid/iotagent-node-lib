@@ -72,6 +72,19 @@ var iotAgentLib = require('../../'),
     };
 
 describe('IoT Agent Device Registration', function() {
+    var values = [
+        {
+            name: 'state',
+            type: 'Boolean',
+            value: 'true'
+        },
+        {
+            name: 'dimming',
+            type: 'Percentage',
+            value: '87'
+        }
+    ];
+
     beforeEach(function() {
         logger.setLevel('FATAL');
     });
@@ -81,6 +94,8 @@ describe('IoT Agent Device Registration', function() {
     });
 
     describe('When the IoT Agent receives new information from a device', function() {
+
+
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -96,19 +111,6 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
-            var values = [
-                {
-                    name: 'state',
-                    type: 'Boolean',
-                    value: 'true'
-                },
-                {
-                    name: 'dimming',
-                    type: 'Percentage',
-                    value: '87'
-                }
-            ];
-
             iotAgentLib.update('light1', 'Light', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -118,6 +120,27 @@ describe('IoT Agent Device Registration', function() {
     });
 
     describe('When the Context Broker returns an error updating an entity', function() {
-        it('should return ENTITY_UPDATE_ERROR an error to the caller');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI10/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(413,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.name.should.equal('ENTITY_UPDATE_ERROR');
+                done();
+            });
+        });
     });
 });

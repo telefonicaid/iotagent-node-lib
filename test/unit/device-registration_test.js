@@ -222,8 +222,4 @@ describe('IoT Agent Device Registration', function() {
             });
         });
     });
-
-    describe('When the Context Broker returns an error updating an entity', function() {
-        it('should return ENTITY_UPDATE_ERROR an error to the caller');
-    });
 });
