@@ -82,7 +82,6 @@ function handleError(message) {
     };
 }
 
-
 function listDevices() {
     iotAgentLib.listDevices(function (error, devices) {
         if (error) {
