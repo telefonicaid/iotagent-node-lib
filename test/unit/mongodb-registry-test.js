@@ -52,7 +52,9 @@ var iotAgentLib = require('../../'),
                         name: 'pressure',
                         type: 'Hgmm'
                     }
-                ]
+                ],
+                service: 'smartGondor',
+                subservice: 'gardens'
             },
             'Termometer': {
                 commands: [],
@@ -63,7 +65,9 @@ var iotAgentLib = require('../../'),
                     }
                 ],
                 active: [
-                ]
+                ],
+                service: 'smartGondor',
+                subservice: 'gardens'
             }
         },
         deviceRegistry: {
@@ -124,7 +128,9 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be registered in mongodb', function(done) {
-            iotAgentLib.register(device1.id, device1.type, function(error) {
+            iotAgentLib.register(device1.id, device1.type, null, null, null, function(error) {
+                should.not.exist(error);
+
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -159,8 +165,8 @@ describe('MongoDB Device Registry', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type),
-                    async.apply(iotAgentLib.register, device2.id, device2.type)
+                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null),
+                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null)
                 ], done);
             });
         });
