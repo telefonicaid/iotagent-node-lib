@@ -145,69 +145,6 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         it('should call the device handler for each of the contexts');
     });
 
-    describe('When a notification of a change in a device arrives to the IoT Agent', function() {
-        var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/notification',
-            method: 'POST',
-            json: {
-                subscriptionId: '51c0ac9ed714fb3b37d7d5a8',
-                originator: 'localhost',
-                contextResponses: [
-                    {
-                        contextElement: {
-                            attributes: [
-                                {
-                                    name: 'dimming',
-                                    type: 'Percentage',
-                                    value: 12
-                                }
-                            ],
-                            type: 'Light',
-                            isPattern: 'false',
-                            id: 'light1'
-                        },
-                        statusCode: {
-                            code: '200',
-                            reasonPhrase: 'OK'
-                        }
-                    }
-                ]
-            }
-        };
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should call the device update handler for the device', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/contextProviderResponses/updateInformationResponse.json');
-
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
-                id.should.equal(device1.id);
-                type.should.equal(device1.type);
-                attributes[0].value.should.equal(12);
-                callback(null);
-            });
-
-            request(options, function(error, response, body) {
-                should.not.exist(error);
-                body.should.eql(expectedResponse);
-                done();
-            });
-        });
-    });
-
     describe('When a context query arrives to the IoT Agent', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
