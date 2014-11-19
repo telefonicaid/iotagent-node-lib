@@ -25,9 +25,7 @@
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
-    logger = require('fiware-node-logger'),
     nock = require('nock'),
-    async = require('async'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
@@ -75,20 +73,20 @@ describe('Device provisioning API', function() {
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         };
 
-        it('should add the device to the devices list', function (done) {
+        it('should add the device to the devices list', function(done) {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                iotAgentLib.listDevices(function (error, results) {
+                iotAgentLib.listDevices(function(error, results) {
                     results.length.should.equal(1);
                     done();
                 });
             });
         });
-        it('should store the device with the provided entity name and type', function (done) {
+        it('should store the device with the provided entity name and type', function(done) {
             request(options, function(error, response, body) {
-                iotAgentLib.listDevices(function (error, results) {
+                iotAgentLib.listDevices(function(error, results) {
                     results[0].id.should.equal('TheFirstLight');
                     results[0].type.should.equal('TheLightType');
                     done();
