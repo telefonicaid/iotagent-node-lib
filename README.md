@@ -15,6 +15,26 @@ be configured by the user. Device measures can have two different behaviors:
 * Active attributes: are measures that are pushed from the device to the IoT agent. This measure changes will be sent to the Context Broker as updateContext requests over the device entity.
 * Lazy attributes: some sensors will be passive, and will wait for the IoT Agent to request for data. For those measures, the IoT Agent will register itself in the Context Broker as a Context Provider (for all the lazy measures of that device), so if any component asks the Context Broker for the value of that sensor, its request will be redirected to the IoT Agent. Updates over this measure will be transformed into commands over the device by the IoT Agent.
 
+The following sequence diagram shows the different NGSI interactions an IoT Agent makes with the Context Broker, explained in the following subsections (using the example of a OMA Lightweight M2M device).
+
+![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/ngsiInteractions.png "NGSI Interactions")
+
+#### Registration
+Whenever a device is registered, the IoT Agent reads the device's entity information from the request or, it that information is not in the request, from the default values for that type of device. Among this information, theres should be the list of device values that will be considered lazy (or passive). With this information, the IoT Agent sends a new `registerContext` request to the Context Broker, registering itself as ContextProvider of all the lazy attributes of the device. The `registrationId` is then stored along the other device information inside the IoT Agent device regitry.
+
+As NGSI9 does not allow the context registrations to be removed, when the device is removed from the IoT Agent, the registration is updated to an expiration date of 1s, so it is effectively disabled. Once it has been disabled, the device is removed from the IoT Agent's internal registry.
+
+#### Lazy attributes
+When a request for data from a lazy attribute arrives to the Context Broker, it forwards the request to the Context Provider of that entity, in this case the IoT Agent. The IoT Agent will in turn ask the device for the information needed, transform that information to a NSGI format and return it to the Context Broker. The latter will the forward the response to the caller, transparently.
+
+#### Commands
+Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the requested action. Parameters for the command will be passed inside the command value.
+
+It's up to the agent whether to make the update synchronous or asynchronous. In the latter case, the update request will end in a `200OK` response, and the IoT Agent will have to create a new attribute in the device entity (with the same name of the command attribute and the suffix `_status`) with the current status of the command and subsequent updates of the same.
+
+#### Active attributes
+Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI format, and send it to the Context Broker as an `updateContext` request.
+
 ### Features
 These are the features an IoT Agent is supposed to expose:
 * Device registration: multiple devices will be connected to each IoT Agent, each one of those mapped to a CB entity. The IoT Agent will register itself as a Context Provider for each device, answering to requests and updates on any lazy attribute of the device.
@@ -36,11 +56,115 @@ Given the aforementioned requirements, there are some aspects of the implementat
 * Aside from its text configuration, the IoT Agent Lib is considered to be stateless. To be precise, the library mantains a state (the list of entities/devices whose information the agent can provide) but that state is considered to be transient. It's up to the particular implementation of the agent to consider whether it should have a persistent storage to hold the device information (so the internal list of devices is read from a DB) or to register the devices each time a device sends a measure.
 * The IoT Agent does not care about the origin of the data, its type or structure. The mapping from raw data to the entity model, if there is any, is a responsability of the IoT Agent implementation, or of another third party library.
 
-## Operations
-
 ## Usage
+### Library usage
+#### General review
+Note: as it is not yet published in npm repositories, this module has to be currently used as a github dependency in the package.json. To do so, add the following dependency to your package.json file, indicating the commit you want to use:
+```
+"iotagent-node-lib": "https://github.com/dmoranj/iotagent-node-lib/tarball/8f0e42fc02971fe7d05e75687b988f3ee9e9de13"
+```
+In order to use this library, first you must require it:
+```
+var iotagentLib = require('iotagent-node-lib');
+```
+As a Lightweight M2M Server, the library supports four groups of features, one for each direction of the communication: client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined in the following sections.
+
+#### Operations
+##### iotagentLib.activate
+###### Signature
+```
+function activate(newConfig, callback)
+```
+###### Description
+Activates the IoT Agent to start listening for NGSI Calls (to act as a Context Provider). It also creates the device registry for the IoT Agent (based on the deviceRegistry.type configuration option).
+###### Params
+* newConfig: Configuration of the Context Server
+
+##### iotagentLib.deactivate()
+###### Signature
+```
+function deactivate(callback)
+```
+###### Description
+Stops the HTTP server.
+###### Params
+
+##### iotagentLib.register()
+###### Signature
+```
+registerDevice(id, type, service, subservice, lazyAttributes, callback)
+```
+###### Description
+Register a new device identified by the Id and Type in the Context Broker, and the internal registry.
+
+The device id and type are required fields for any registration. The rest of the parameters are optional, but, if they are not present in the function call arguments, the type must be registered in the configuration, so the service can infer their default values from the configured type. If an optional attribute is not given in the parameter list and there isn't a default configuration for the given type, a TypeNotFound error is raised.
+
+When an optional parameter is not included in the call, a null value must be given in its place.
+###### Params
+ * id: Device ID of the device to register (mandatory).
+ * type: Type of device to register (mandatory).
+ * service: Service where the device will be added (optional).
+ * subservice: Subservice where the device will be added (optional).
+ * lazyAttributes: List of the lazy attributes of the device with their types (optional).
+
+##### iotagentLib.unregister()
+###### Signature
+```
+function unregisterDevice(id, type, callback)
+```
+###### Description
+Unregister a device from the Context broker and the internal registry.
+###### Params
+ * id: Device ID of the device to register.
+ * type: Type of device to register.
+
+##### iotagentLib.update()
+###### Signature
+```
+updateValue(deviceId, deviceType, attributes, callback)
+```
+###### Description
+Makes an update in the Device's entity in the context broker, with the values given in the 'attributes' array. This array should comply to the NGSI's attribute format.
+###### Params
+ * deviceId: Device ID of the device to register.
+ * deviceType: Type of device to register.
+ * attributes: Attribute array containing the values to update.
+
+##### iotagentLib.listDevices()
+###### Signature
+```
+function listDevices(callback)
+```
+###### Description
+Return a list of all the devices registered in the system.
+###### Params
+
+##### iotagentLib.setDataUpdateHandler()
+###### Signature
+```
+function setUpdateHandler(newHandler)
+```
+###### Description
+Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives with the following parameters: (id, type, attributes, callback). The callback is in charge of updating the corresponding values in the devices with the appropriate protocol.
+
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
+###### Params
+ * newHandler: User handler for update requests
+
+##### iotagentLib.setDataQueryHandler()
+###### Signature
+```
+function setQueryHandler(newHandler)
+```
+###### Description
+Sets the new user handler for Entity query requests. This handler will be called whenever an update request arrives with the following parameters: (id, type, attributes, callback). The handler must retrieve all the corresponding information from the devices and return a NGSI entity with the requested values.
+
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
+###### Params
+ * newHandler: User handler for query requests.
+
 ### IoT Library testing
-As this library is still a prototype, a command line client to experiment with its data is packed with it. The command line client can be started using the following command:
+A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
 ```
 bin/agentConsole.js
 ```
@@ -57,10 +181,10 @@ stop
 
 	Stop the IoT Agent
 
-register <id> <type> <attributes>  
+register <id> <type>  
 
-	Register a new device in the IoT Agent. The attributes should be triads with
-	the following format: (name type value) sepparated by commas.
+	Register a new device in the IoT Agent. The attributes to register will be extracted from then
+ type configuration
 
 unregister <id> <type>  
 
@@ -68,14 +192,13 @@ unregister <id> <type>
 
 updatevalue <deviceId> <deviceType> <attributes>  
 
-	Update a device value in the Context Broker. The attributes should be
-	triads with the following format: (name type value) sepparated by commas.
+	Update a device value in the Context Broker. The attributes should be triads with the following
+	format: "name/type/value" sepparated by commas.
+
+listdevices  
+
+	List all the devices that have been registered in this IoT Agent session
 ```
-
-### Library usage
-
-
-
 ## Development documentation
 ### Project build
 The project is managed using Grunt Task Runner.
