@@ -106,6 +106,7 @@ When an optional parameter is not included in the call, a null value must be giv
  * service: Service where the device will be added (optional).
  * subservice: Subservice where the device will be added (optional).
  * lazyAttributes: List of the lazy attributes of the device with their types (optional).
+
 ##### iotagentLib.unregister()
 ###### Signature
 ```
@@ -116,6 +117,7 @@ Unregister a device from the Context broker and the internal registry.
 ###### Params
  * id: Device ID of the device to register.
  * type: Type of device to register.
+
 ##### iotagentLib.update()
 ###### Signature
 ```
@@ -127,6 +129,7 @@ Makes an update in the Device's entity in the context broker, with the values gi
  * deviceId: Device ID of the device to register.
  * deviceType: Type of device to register.
  * attributes: Attribute array containing the values to update.
+
 ##### iotagentLib.listDevices()
 ###### Signature
 ```
@@ -147,6 +150,7 @@ Sets the new user handler for Entity update requests. This handler will be calle
 In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
 ###### Params
  * newHandler: User handler for update requests
+
 ##### iotagentLib.setDataQueryHandler()
 ###### Signature
 ```
@@ -158,6 +162,7 @@ Sets the new user handler for Entity query requests. This handler will be called
 In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
 ###### Params
  * newHandler: User handler for query requests.
+
 ### IoT Library testing
 A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
 ```
