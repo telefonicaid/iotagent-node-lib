@@ -66,7 +66,7 @@ describe('Device provisioning API', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a device provisioning request arrives to the IoT Agent', function() {
+    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -91,6 +91,24 @@ describe('Device provisioning API', function() {
                     results[0].type.should.equal('TheLightType');
                     done();
                 });
+            });
+        });
+    });
+    describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+        };
+
+        it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes', function(done) {
+            request(options, function(error, response, body) {
+                should.exist(body);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_ATTRIBUTES');
+                body.message.should.match(/.*service_path.*/);
+                body.message.should.match(/.*entity_type.*/);
+                done();
             });
         });
     });
