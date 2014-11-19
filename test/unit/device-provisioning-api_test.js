@@ -35,7 +35,8 @@ var iotAgentLib = require('../../'),
             port: '1026'
         },
         server: {
-            port: 4041
+            port: 4041,
+            baseRoot: '/'
         },
         types: {},
         service: 'smartGondor',
@@ -113,6 +114,33 @@ describe('Device provisioning API', function() {
         });
     });
     describe('When an agent is activated with a different base root', function() {
-        it('should listen to requests in the new root');
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.deactivate(function() {
+                iotAgentConfig.server.baseRoot = '/newBaseRoot';
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function() {
+            iotAgentConfig.server.baseRoot = '/';
+        });
+
+        it('should listen to requests in the new root', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+
+                iotAgentLib.listDevices(function(error, results) {
+                    results.length.should.equal(1);
+                    done();
+                });
+            });
+        });
     });
 });
