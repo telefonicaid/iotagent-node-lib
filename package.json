@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "async": "0.9.0",
-    "express": "3.5.1",
+    "express": "*",
+    "body-parser": "*",
     "request": "2.39.0",
     "sax": "0.6.0",
     "mustache": "0.8.2",

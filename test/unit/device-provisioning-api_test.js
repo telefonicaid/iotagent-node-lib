@@ -112,4 +112,7 @@ describe('Device provisioning API', function() {
             });
         });
     });
+    describe('When an agent is activated with a different base root', function() {
+        it('should listen to requests in the new root');
+    });
 });
