@@ -29,11 +29,11 @@
     "mustache": "0.8.2",
     "node-uuid": "1.4.1",
     "fiware-node-logger": "https://github.com/telefonicaid/fiware-node-logger/tarball/81fdcb213db99eb61acecfd293c45d3fa144cf36",
-    "mongoose": "*"
+    "mongoose": "3.8.19"
   },
   "devDependencies": {
-    "nock": "*",
-    "should": "*",
+    "nock": "0.48.0",
+    "should": "4.0.4",
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-gjslint": "~0.1.0",
@@ -52,7 +52,7 @@
     "grunt-mkdir": "~0.1.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-githooks": "~0.3.1",
-    "mongodb": "*"
+    "mongodb": "1.4.20"
   },
   "keywords": []
 }
