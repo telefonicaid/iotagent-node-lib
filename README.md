@@ -15,6 +15,26 @@ be configured by the user. Device measures can have two different behaviors:
 * Active attributes: are measures that are pushed from the device to the IoT agent. This measure changes will be sent to the Context Broker as updateContext requests over the device entity.
 * Lazy attributes: some sensors will be passive, and will wait for the IoT Agent to request for data. For those measures, the IoT Agent will register itself in the Context Broker as a Context Provider (for all the lazy measures of that device), so if any component asks the Context Broker for the value of that sensor, its request will be redirected to the IoT Agent. Updates over this measure will be transformed into commands over the device by the IoT Agent.
 
+The following sequence diagram shows the different NGSI interactions an IoT Agent makes with the Context Broker, explained in the following subsections (using the example of a OMA Lightweight M2M device).
+
+![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/ngsiInteractions.png "NGSI Interactions")
+
+#### Registration
+Whenever a device is registered, the IoT Agent reads the device's entity information from the request or, it that information is not in the request, from the default values for that type of device. Among this information, theres should be the list of device values that will be considered lazy (or passive). With this information, the IoT Agent sends a new `registerContext` request to the Context Broker, registering itself as ContextProvider of all the lazy attributes of the device. The `registrationId` is then stored along the other device information inside the IoT Agent device regitry.
+
+As NGSI9 does not allow the context registrations to be removed, when the device is removed from the IoT Agent, the registration is updated to an expiration date of 1s, so it is effectively disabled. Once it has been disabled, the device is removed from the IoT Agent's internal registry.
+
+#### Lazy attributes
+When a request for data from a lazy attribute arrives to the Context Broker, it forwards the request to the Context Provider of that entity, in this case the IoT Agent. The IoT Agent will in turn ask the device for the information needed, transform that information to a NSGI format and return it to the Context Broker. The latter will the forward the response to the caller, transparently.
+
+#### Commands
+Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the requested action. Parameters for the command will be passed inside the command value.
+
+It's up to the agent whether to make the update synchronous or asynchronous. In the latter case, the update request will end in a `200OK` response, and the IoT Agent will have to create a new attribute in the device entity (with the same name of the command attribute and the suffix `_status`) with the current status of the command and subsequent updates of the same.
+
+#### Active attributes
+Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI format, and send it to the Context Broker as an `updateContext` request.
+
 ### Features
 These are the features an IoT Agent is supposed to expose:
 * Device registration: multiple devices will be connected to each IoT Agent, each one of those mapped to a CB entity. The IoT Agent will register itself as a Context Provider for each device, answering to requests and updates on any lazy attribute of the device.
