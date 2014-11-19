@@ -5,7 +5,7 @@
 This project aims to provide a node.js module to enable IoT Agent developers to build custom agents for their devices that can 
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). 
 
-An IoT Agent is a FIWARE component that lets groups of devices send their data to and be managed from a NGSI Context Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the fiware platform (authentication and authorization of the channel) and provide other common services to the device programmer.
+An IoT Agent is a component that lets groups of devices send their data to and be managed from a FIWARE NGSI Context Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the fiware platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
 ### Device to NGSI Mapping
 Each Device will be mapped as an Entity associated to a Context Provider: the Device Id will be mapped to the entity ID and the type of the entity with a custom dependent on the device's service. Both the name and type will be configurable by the user.
