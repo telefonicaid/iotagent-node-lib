@@ -85,10 +85,12 @@ describe('Device provisioning API', function() {
                 });
             });
         });
-        it('should store the device with the provided entity name and type', function(done) {
+        it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
                 iotAgentLib.listDevices(function(error, results) {
-                    results[0].id.should.equal('TheFirstLight');
+                    results[0].id.should.equal('Light1');
+                    results[0].name.should.equal('TheFirstLight');
                     results[0].type.should.equal('TheLightType');
                     done();
                 });
