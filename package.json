@@ -26,6 +26,7 @@
     "revalidator": "*",
     "express": "*",
     "body-parser": "*",
+    "xmldom": "*",
     "request": "2.39.0",
     "sax": "0.6.0",
     "mustache": "0.8.2",
