@@ -168,19 +168,68 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
 
         it('should call the device handler with the received data', function(done) {
+            var handlerCalled = false;
+
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal('12');
+                handlerCalled = true;
                 callback(null);
             });
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
+                handlerCalled.should.equal(true);
                 done();
             });
         });
     });
+
+    describe.skip('When the IoT Agent receives a query on the device data in XML format', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+            method: 'POST',
+            body: utils.readExampleFile('./test/unit/contextRequests/queryLights.xml', true),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens',
+                'content-type': 'application/xml'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should call the device handler with the received data', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                id.should.equal(device1.id);
+                type.should.equal(device1.type);
+                attributes[0].name.should.equal('dimming');
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+    });
+
 
     describe('When a IoT Agent receives an update on multiple contexts', function() {
         it('should call the device handler for each of the contexts');
