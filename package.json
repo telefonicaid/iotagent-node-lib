@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "async": "0.9.0",
+    "revalidator": "*",
     "express": "*",
     "body-parser": "*",
     "request": "2.39.0",

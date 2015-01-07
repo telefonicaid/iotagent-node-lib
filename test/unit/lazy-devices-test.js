@@ -263,11 +263,54 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
     });
 
-    describe('When a context query arrives to the IoT Agent with an empty body', function() {
-        it('should fail with a 400 error');
-    });
+    describe.only('When a context query arrives to the IoT Agent with an invalid body', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                method: 'POST',
+                json: {}
+            },
+            sensorData = [
+                {
+                    id: 'light1',
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'dimming',
+                            type: 'Percentage',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
 
-    describe('When a context query arrives to the IoT Agent without an entity list', function() {
-        it('should fail with a 400 error');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 400 error', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                handlerCalled.should.equal(false);
+                done();
+            });
+        });
     });
 });
