@@ -99,7 +99,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
                             {
                                 name: 'dimming',
                                 type: 'Percentage',
-                                value: 12
+                                value: '12'
                             }
                         ]
                     }
@@ -129,7 +129,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
-                attributes[0].value.should.equal(12);
+                attributes[0].value.should.equal('12');
                 callback(null);
             });
 
@@ -209,13 +209,13 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
     });
 
-    describe('When a context query arrives to the IoT Agent with XML payload', function() {
+    describe('When a context query arrives to the IoT Agent with a payload that is not XML nor JSON', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
                 method: 'POST',
                 body: utils.readExampleFile('./test/unit/contextRequests/contextQuery.xml', true),
                 headers: {
-                    'Content-Type': 'application/xml'
+                    'Content-Type': 'application/anotherFormat'
                 }
             },
             sensorData = [
@@ -263,7 +263,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
     });
 
-    describe.only('When a context query arrives to the IoT Agent with an invalid body', function() {
+    describe('When a context query arrives to the IoT Agent with an invalid body', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
                 method: 'POST',

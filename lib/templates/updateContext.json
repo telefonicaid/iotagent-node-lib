@@ -1,6 +1,6 @@
 {
   "properties": {
-    "entities": {
+    "contextElements": {
       "description": "The objects the request is applied to.",
       "type": "array",
       "items": {
@@ -16,6 +16,27 @@
           "id": {
             "type": "string",
             "required": true
+          },
+          "attributes": {
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "required": true
+                },
+                "type": {
+                  "type": "string",
+                  "required": true
+                },
+                "value": {
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
           }
         }
       },
