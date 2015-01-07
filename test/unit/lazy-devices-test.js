@@ -213,9 +213,9 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
                 method: 'POST',
-                body: utils.readExampleFile('./test/unit/contextRequests/contextQuery.xml', true),
+                body: 'This is a body in text format',
                 headers: {
-                    'Content-Type': 'application/anotherFormat'
+                    'Content-Type': 'text/plain'
                 }
             },
             sensorData = [
