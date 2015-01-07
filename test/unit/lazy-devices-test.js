@@ -168,9 +168,6 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
 
         it('should call the device handler with the received data', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/contextProviderResponses/updateInformationResponse.json');
-
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
