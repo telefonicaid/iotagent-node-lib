@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queryContextRequest>
+    <entityIdList>
+        <entityId type="Light" isPattern="false">
+            <id>light1</id>
+        </entityId>
+    </entityIdList>
+    <attributeList>
+        <attribute>dimming</attribute>
+    </attributeList>
+</queryContextRequest>
