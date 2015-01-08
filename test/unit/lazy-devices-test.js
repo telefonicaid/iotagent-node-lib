@@ -186,7 +186,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         });
     });
 
-    describe.skip('When the IoT Agent receives a query on the device data in XML format', function() {
+    describe('When the IoT Agent receives a query on the device data in XML format', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
             method: 'POST',
@@ -218,7 +218,8 @@ describe('IoT Agent Lazy Devices and Commands', function() {
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
-                attributes[0].name.should.equal('dimming');
+                attributes[0].should.equal('dimming');
+                handlerCalled = true;
                 callback(null);
             });
 
