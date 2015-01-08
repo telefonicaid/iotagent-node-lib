@@ -119,6 +119,62 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
+    describe('When the Context Broker returns a NGSI error while registering a device', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should register as ContextProvider of its lazy attributes', function(done) {
+            iotAgentLib.register(device1.id, device1.type, null, null, null, null, function(error) {
+                should.exist(error);
+                error.name.should.equal('BAD_REQUEST');
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the Context Broker returns an HTTP transport error while registering a device', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(500,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should not register the device in the internal registry');
+        it('should return a REGISTRATION_ERROR error to the caller', function(done) {
+            iotAgentLib.register(device1.id, device1.type, null, null, null, null, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.name.should.equal('REGISTRATION_ERROR');
+
+                done();
+            });
+        });
+    });
+
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
             var expectedPayload3 = utils
@@ -152,35 +208,6 @@ describe('IoT Agent Device Registration', function() {
             iotAgentLib.unregister(device1.id, device1.type, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the Context Broker returns an error while registering a device', function() {
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(500,
-                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
-            });
-        });
-
-        it('should not register the device in the internal registry');
-        it('should return a REGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.register(device1.id, device1.type, null, null, null, null, function(error) {
-                should.exist(error);
-                should.exist(error.name);
-                error.name.should.equal('REGISTRATION_ERROR');
-
                 done();
             });
         });

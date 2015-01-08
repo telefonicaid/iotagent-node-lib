@@ -85,7 +85,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives an update on the device data', function() {
+    describe('When the IoT Agent receives an update on the device data in JSON format', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -99,7 +99,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
                             {
                                 name: 'dimming',
                                 type: 'Percentage',
-                                value: 12
+                                value: '12'
                             }
                         ]
                     }
@@ -129,7 +129,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
-                attributes[0].value.should.equal(12);
+                attributes[0].value.should.equal('12');
                 callback(null);
             });
 
@@ -140,6 +140,97 @@ describe('IoT Agent Lazy Devices and Commands', function() {
             });
         });
     });
+
+    describe('When the IoT Agent receives an update on the device data in XML format', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/updateContext',
+            method: 'POST',
+            body: utils.readExampleFile('./test/unit/contextRequests/updateContext.xml', true),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens',
+                'content-type': 'application/xml'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should call the device handler with the received data', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+                id.should.equal(device1.id);
+                type.should.equal(device1.type);
+                attributes[0].value.should.equal('12');
+                handlerCalled = true;
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives a query on the device data in XML format', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+            method: 'POST',
+            body: utils.readExampleFile('./test/unit/contextRequests/queryLights.xml', true),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens',
+                'content-type': 'application/xml'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should call the device handler with the received data', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                id.should.equal(device1.id);
+                type.should.equal(device1.type);
+                attributes[0].should.equal('dimming');
+                handlerCalled = true;
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+    });
+
 
     describe('When a IoT Agent receives an update on multiple contexts', function() {
         it('should call the device handler for each of the contexts');
@@ -204,6 +295,111 @@ describe('IoT Agent Lazy Devices and Commands', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a context query arrives to the IoT Agent with a payload that is not XML nor JSON', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                method: 'POST',
+                body: 'This is a body in text format',
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            },
+            sensorData = [
+                {
+                    id: 'light1',
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'dimming',
+                            type: 'Percentage',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 400 error', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                handlerCalled.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('When a context query arrives to the IoT Agent with an invalid body', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                method: 'POST',
+                json: {}
+            },
+            sensorData = [
+                {
+                    id: 'light1',
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'dimming',
+                            type: 'Percentage',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 400 error', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                handlerCalled.should.equal(false);
                 done();
             });
         });
