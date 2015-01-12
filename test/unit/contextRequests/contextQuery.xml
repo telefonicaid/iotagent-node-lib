@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<queryContextResponse>
+    <contextResponseList>
+        <contextElementResponse>
+            <contextElement>
+                <entityId type="Room" isPattern="false">
+                    <id>Room1</id>
+                </entityId>
+                <contextAttributeList>
+                    <contextAttribute>
+                        <name>temperature</name>
+                        <type>float</type>
+                        <contextValue>23</contextValue>
+                    </contextAttribute>
+                    <contextAttribute>
+                        <name>pressure</name>
+                        <type>integer</type>
+                        <contextValue>720</contextValue>
+                    </contextAttribute>
+                </contextAttributeList>
+            </contextElement>
+            <statusCode>
+                <code>200</code>
+                <reasonPhrase>OK</reasonPhrase>
+            </statusCode>
+        </contextElementResponse>
+    </contextResponseList>
+</queryContextResponse>
