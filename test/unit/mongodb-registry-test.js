@@ -29,6 +29,7 @@ var iotAgentLib = require('../../'),
     mongo = require('mongodb').MongoClient,
     nock = require('nock'),
     async = require('async'),
+    mongoUtils = require('./mongoDBUtils'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -96,16 +97,20 @@ describe('MongoDB Device Registry', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
-        mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
-            iotAgentDb = db;
-            done();
+        mongoUtils.cleanDbs(function() {
+            mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
+                iotAgentDb = db;
+                done();
+            });
         });
     });
 
     afterEach(function(done) {
         iotAgentLib.deactivate(function(error) {
             iotAgentDb.collection('devices').remove(function(error) {
-                iotAgentDb.close(done);
+                iotAgentDb.close(function(error) {
+                    mongoUtils.cleanDbs(done);
+                });
             });
         });
     });
@@ -128,7 +133,7 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be registered in mongodb', function(done) {
-            iotAgentLib.register(device1.id, device1.type, null, null, null, null, function(error) {
+            iotAgentLib.register(device1.id, device1.type, null, null, null, null, null, function(error) {
                 should.not.exist(error);
 
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
@@ -165,8 +170,8 @@ describe('MongoDB Device Registry', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null, null),
-                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null, null)
+                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null, null, null),
+                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null, null, null)
                 ], done);
             });
         });
