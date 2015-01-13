@@ -18,28 +18,28 @@
  * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::daniel.moranjimenez@telefonica.com
+ * please contact with::[contacto@tid.es]
  */
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var MongoClient = require('mongodb').MongoClient,
+    async = require('async');
 
-var Device = new Schema({
-    id: String,
-    type: String,
-    name: String,
-    lazy: Array,
-    service: String,
-    subservice: String,
-    registrationId: String,
-    internalId: String,
-    creationDate: { type: Date, default: Date.now }
-});
+function cleanDb(host, name, callback) {
+    var url = 'mongodb://' + host + ':27017/' + name;
 
-function load(db) {
-    module.exports.model = db.model('Device', Device);
-    module.exports.internalSchema = Device;
+    MongoClient.connect(url, function(err, db) {
+        db.dropDatabase();
+        db.close();
+        callback();
+    });
 }
 
-module.exports.load = load;
+function cleanDbs(callback) {
+    async.series([
+        async.apply(cleanDb, 'localhost', 'iotagent')
+    ], callback);
+}
+
+exports.cleanDb = cleanDb;
+exports.cleanDbs = cleanDbs;
