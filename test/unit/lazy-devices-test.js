@@ -289,7 +289,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
-                callback(null, sensorData);
+                callback(null, sensorData[0]);
             });
 
             request(options, function(error, response, body) {
