@@ -38,7 +38,7 @@ var config = require('../config'),
 
 function queryContext(commands) {
     var options = {
-        url: 'http://' + config.host + ':' + config.port + '/v1/queryContext',
+        url: 'http://' + config.host + ':' + config.port + '/NGSI10/queryContext',
         method: 'POST',
         json: {
             entities: [
@@ -100,7 +100,7 @@ function parseAttributes(payload) {
 
 function updateContext(commands) {
     var options = {
-        url: 'http://' + config.host + ':' + config.port + '/v1/updateContext',
+        url: 'http://' + config.host + ':' + config.port + '/NGSI10/updateContext',
         method: 'POST',
         json: {
             contextElements: [
