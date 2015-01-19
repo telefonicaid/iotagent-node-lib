@@ -28,6 +28,7 @@ var iotAgentLib = require('../../'),
     logger = require('fiware-node-logger'),
     nock = require('nock'),
     contextBrokerMock,
+    keystoneMock,
     iotAgentConfig = {
         contextBroker: {
             host: '10.11.128.16',
@@ -36,8 +37,18 @@ var iotAgentLib = require('../../'),
         server: {
             port: 4041
         },
+        authentication: {
+            host: '128.16.109.11',
+            port: '5000',
+            user: 'iotagent',
+            password: 'iotagent',
+            enabled: true
+        },
         types: {
             'Light': {
+                service: 'smartGondor',
+                subservice: 'gardens',
+                trust: 'BBBB987654321',
                 commands: [],
                 lazy: [
                     {
@@ -71,7 +82,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('IoT Agent Device Registration', function() {
+describe('Secured access to the Context Broker', function() {
     var values = [
         {
             name: 'state',
@@ -91,24 +102,44 @@ describe('IoT Agent Device Registration', function() {
 
     afterEach(function(done) {
         iotAgentLib.deactivate(done);
+        nock.cleanAll();
     });
 
-    describe('When the IoT Agent receives new information from a device', function() {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
         beforeEach(function(done) {
             nock.cleanAll();
+
+            keystoneMock = nock('http://128.16.109.11:5000')
+                .post('/v3/auth/tokens',
+                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                .reply(
+                    201,
+                    utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                    {
+                        'X-Subject-Token': '12345679ABCDEF'
+                    });
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
+                .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/NGSI10/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
-                .reply(200,
+                .reply(
+                    200,
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
+        it('should ask Keystone for a token based on the trust token', function(done) {
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.not.exist(error);
+                keystoneMock.done();
+                done();
+            });
+        });
+        it('should send the generated token in the x-auth header', function(done) {
             iotAgentLib.update('light1', 'Light', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -116,29 +147,10 @@ describe('IoT Agent Device Registration', function() {
             });
         });
     });
-
-    describe('When the Context Broker returns an error updating an entity', function() {
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://10.11.128.16:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI10/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
-                .reply(413,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Failed.json'));
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
-                should.exist(error);
-                should.exist(error.name);
-                error.name.should.equal('ENTITY_UPDATE_ERROR');
-                done();
-            });
-        });
+    describe('When a mesure is sent to the Context Broker with an invalid token', function() {
+        it('should ask Keystone for a new token');
+    });
+    describe('When a measure is sent to the context broker and the trust token is rejected', function() {
+        it('should return an error to the caller');
     });
 });

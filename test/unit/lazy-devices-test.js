@@ -76,7 +76,7 @@ var iotAgentLib = require('../../'),
         type: 'Light'
     };
 
-describe('IoT Agent Lazy Devices and Commands', function() {
+describe('IoT Agent Lazy Devices', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });
@@ -87,7 +87,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When the IoT Agent receives an update on the device data in JSON format', function() {
         var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/updateContext',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             json: {
                 contextElements: [
@@ -143,7 +143,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When the IoT Agent receives an update on the device data in XML format', function() {
         var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/updateContext',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             body: utils.readExampleFile('./test/unit/contextRequests/updateContext.xml', true),
             headers: {
@@ -188,7 +188,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When the IoT Agent receives a query on the device data in XML format', function() {
         var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
             method: 'POST',
             body: utils.readExampleFile('./test/unit/contextRequests/queryLights.xml', true),
             headers: {
@@ -238,7 +238,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When a context query arrives to the IoT Agent', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
                 method: 'POST',
                 json: {
                     entities: [
@@ -302,7 +302,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When a context query arrives to the IoT Agent with a payload that is not XML nor JSON', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
                 method: 'POST',
                 body: 'This is a body in text format',
                 headers: {
@@ -356,7 +356,7 @@ describe('IoT Agent Lazy Devices and Commands', function() {
 
     describe('When a context query arrives to the IoT Agent with an invalid body', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/NGSI10/queryContext',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
                 method: 'POST',
                 json: {}
             },

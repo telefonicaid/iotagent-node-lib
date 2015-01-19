@@ -1,0 +1,37 @@
+{
+  "token": {
+    "OS-TRUST:trust": {
+      "impersonation": false,
+      "trustee_user": {"id": "49f770c333e844e6a2c631d39dc2e982"},
+      "id": "3e7d03f96d404d009463efda0ffb0fce",
+      "trustor_user": {"id": "699ad5c7f9b248a5a30e0134fb4fb29c"}
+    },
+    "methods": ["password"],
+    "roles": [
+      {
+        "id": "c6ebfe0444e34e5b8dae648390e772b3",
+        "name": "d4cd67093f1d4ce89cb850ae71d84817#SubServiceIngester"
+      }
+    ],
+    "expires_at": "2015-01-19T17:15:06.742547Z",
+    "project": {
+      "domain": {
+        "id": "d4cd67093f1d4ce89cb850ae71d84817",
+        "name": "SmartValencia"
+      },
+      "id": "25d3ebd9c1b1417d994b90f37cf3f1be",
+      "name": "/Electricidad"
+    },
+    "catalog": [],
+    "extras": {},
+    "user": {
+      "domain": {
+        "id": "default",
+        "name": "Default"
+      },
+      "id": "49f770c333e844e6a2c631d39dc2e982",
+      "name": "iotagent"
+    },
+    "issued_at": "2015-01-19T16:15:06.742601Z"
+  }
+}
