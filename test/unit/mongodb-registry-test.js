@@ -133,7 +133,7 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be registered in mongodb', function(done) {
-            iotAgentLib.register(device1.id, device1.type, null, null, null, null, null, function(error) {
+            iotAgentLib.register(device1, function(error) {
                 should.not.exist(error);
 
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
@@ -170,8 +170,8 @@ describe('MongoDB Device Registry', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null, null, null),
-                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null, null, null)
+                    async.apply(iotAgentLib.register, device1),
+                    async.apply(iotAgentLib.register, device2)
                 ], done);
             });
         });

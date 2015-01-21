@@ -41,6 +41,13 @@ var config = {
     },
     types: {
         'Light': {
+            url: '/',
+            apikey: '',
+            type: 'Light',
+            // service: '',
+            // subservice: '',
+            // trust: ''
+            // cbHost: '',
             commands: [],
             lazy: [
                 {

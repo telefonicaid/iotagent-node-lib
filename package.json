@@ -32,7 +32,8 @@
     "mustache": "0.8.2",
     "node-uuid": "1.4.1",
     "fiware-node-logger": "https://github.com/telefonicaid/fiware-node-logger/tarball/81fdcb213db99eb61acecfd293c45d3fa144cf36",
-    "mongoose": "3.8.19"
+    "mongoose": "3.8.19",
+    "underscore": "*"
   },
   "devDependencies": {
     "nock": "0.48.0",
