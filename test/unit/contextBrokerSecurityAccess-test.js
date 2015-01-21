@@ -47,7 +47,7 @@ var iotAgentLib = require('../../'),
         types: {
             'Light': {
                 service: 'smartGondor',
-                subservice: 'gardens',
+                subservice: 'electricity',
                 trust: 'BBBB987654321',
                 commands: [],
                 lazy: [
@@ -82,7 +82,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Secured access to the Context Broker', function() {
+describe.only('Secured access to the Context Broker', function() {
     var values = [
         {
             name: 'state',
@@ -121,7 +121,7 @@ describe('Secured access to the Context Broker', function() {
 
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
+                .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/NGSI10/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
