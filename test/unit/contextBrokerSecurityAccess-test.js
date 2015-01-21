@@ -151,6 +151,35 @@ describe.only('Secured access to the Context Broker', function() {
         it('should ask Keystone for a new token');
     });
     describe('When a measure is sent to the context broker and the trust token is rejected', function() {
-        it('should return an error to the caller');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            keystoneMock = nock('http://128.16.109.11:5000')
+                .post('/v3/auth/tokens',
+                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                .reply(
+                401,
+                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrustUnauthorized.json'));
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .post('/NGSI10/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(
+                200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.exist(error);
+                error.name.should.equal('ACCESS_FORBIDDEN');
+                done();
+            });
+        });
     });
 });
