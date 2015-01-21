@@ -111,10 +111,10 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
-                iotAgentLib.register(device1.id, device1.type, null, null, null, null, null, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
+                iotAgentLib.register(device1, function(error) {
+                        should.not.exist(error);
+                        contextBrokerMock.done();
+                        done();
                 });
         });
     });
@@ -137,7 +137,7 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
-            iotAgentLib.register(device1.id, device1.type, null, null, null, null, null, function(error) {
+            iotAgentLib.register(device1, function(error) {
                 should.exist(error);
                 error.name.should.equal('BAD_REQUEST');
                 contextBrokerMock.done();
@@ -165,7 +165,7 @@ describe('IoT Agent Device Registration', function() {
 
         it('should not register the device in the internal registry');
         it('should return a REGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.register(device1.id, device1.type, null, null, null, null, null, function(error) {
+            iotAgentLib.register(device1, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('REGISTRATION_ERROR');
@@ -198,8 +198,8 @@ describe('IoT Agent Device Registration', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null, null, null),
-                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null, null, null)
+                    async.apply(iotAgentLib.register, device1),
+                    async.apply(iotAgentLib.register, device2)
                 ], done);
             });
         });
@@ -236,8 +236,8 @@ describe('IoT Agent Device Registration', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
-                    async.apply(iotAgentLib.register, device1.id, device1.type, null, null, null, null, null),
-                    async.apply(iotAgentLib.register, device2.id, device2.type, null, null, null, null, null)
+                    async.apply(iotAgentLib.register, device1),
+                    async.apply(iotAgentLib.register, device2)
                 ], done);
             });
         });
@@ -255,6 +255,11 @@ describe('IoT Agent Device Registration', function() {
     });
 
     describe('When a device is registered in the Context Broker and its type is not configured', function() {
+        var unexistentDevice = {
+            id: device1.id,
+            type: 'UnexistentType'
+        };
+
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -272,7 +277,7 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should raise a TYPE_NOT_FOUND error', function(done) {
-            iotAgentLib.register(device1.id, 'UnexistentType', null, null, null, null, null, function(error) {
+            iotAgentLib.register(unexistentDevice, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('TYPE_NOT_FOUND');

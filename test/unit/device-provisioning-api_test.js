@@ -96,6 +96,22 @@ describe('Device provisioning API', function() {
                 });
             });
         });
+        it('should store the device with the per device information', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                iotAgentLib.listDevices(function(error, results) {
+                    should.exist(results[0].timezone);
+                    results[0].timezone.should.equal('America/Santiago');
+                    should.exist(results[0].staticAttributes);
+                    results[0].staticAttributes.length.should.equal(1);
+                    results[0].staticAttributes[0].name.should.equal('attr_name');
+                    should.exist(results[0].internalAttributes);
+                    results[0].internalAttributes.length.should.equal(1);
+                    results[0].internalAttributes[0]['customField'].should.equal('customValue');
+                    done();
+                });
+            });
+        });
     });
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
         var options = {
@@ -114,6 +130,9 @@ describe('Device provisioning API', function() {
                 done();
             });
         });
+    });
+    describe('When a device provisioning request is missing the "name" attribute', function() {
+        it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes');
     });
     describe('When an agent is activated with a different base root', function() {
         var options = {

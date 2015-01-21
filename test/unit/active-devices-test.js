@@ -71,7 +71,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('IoT Agent Device Registration', function() {
+describe('Active attributes test', function() {
     var values = [
         {
             name: 'state',
