@@ -107,7 +107,7 @@ describe('Device provisioning API', function() {
                     results[0].staticAttributes[0].name.should.equal('attr_name');
                     should.exist(results[0].internalAttributes);
                     results[0].internalAttributes.length.should.equal(1);
-                    results[0].internalAttributes[0]['customField'].should.equal('customValue');
+                    results[0].internalAttributes[0].customField.should.equal('customValue');
                     done();
                 });
             });
