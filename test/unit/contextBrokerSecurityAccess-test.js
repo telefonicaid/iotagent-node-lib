@@ -82,7 +82,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Secured access to the Context Broker', function() {
+describe('Secured access to the Context Broker', function() {
     var values = [
         {
             name: 'state',
@@ -147,10 +147,42 @@ describe.only('Secured access to the Context Broker', function() {
             });
         });
     });
-    describe('When a mesure is sent to the Context Broker with an invalid token', function() {
-        it('should ask Keystone for a new token');
+    describe('When a measure is sent to the Context Broker and the access is forbidden', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            keystoneMock = nock('http://128.16.109.11:5000')
+                .post('/v3/auth/tokens',
+                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                .reply(
+                201,
+                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                {
+                    'X-Subject-Token': '12345679ABCDEF'
+                });
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .post('/NGSI10/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(
+                403,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.exist(error);
+                error.name.should.equal('ACCESS_FORBIDDEN');
+                done();
+            });
+        });
     });
-    describe('When a measure is sent to the context broker and the trust token is rejected', function() {
+    describe('When a measure is sent and the trust is rejected asking for the token', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -174,10 +206,10 @@ describe.only('Secured access to the Context Broker', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
             iotAgentLib.update('light1', 'Light', values, function(error) {
                 should.exist(error);
-                error.name.should.equal('ACCESS_FORBIDDEN');
+                error.name.should.equal('AUTHENTICATION_ERROR');
                 done();
             });
         });
