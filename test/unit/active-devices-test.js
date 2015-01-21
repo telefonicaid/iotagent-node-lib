@@ -62,6 +62,20 @@ var iotAgentLib = require('../../'),
                 ],
                 active: [
                 ]
+            },
+            'Humidity': {
+                contextBroker: {
+                    host: '192.168.1.1',
+                    port: '3024'
+                },
+                commands: [],
+                lazy: [],
+                active: [
+                    {
+                        name: 'humidity',
+                        type: 'percentage'
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -141,4 +155,29 @@ describe('Active attributes test', function() {
             });
         });
     });
+
+    describe('When the IoT Agent recieves information for a type with a configured Context Broker', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:3024')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI10/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext2.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should use the Context Broker defined by the type', function(done) {
+            iotAgentLib.update('humSensor', 'Humidity', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
 });
