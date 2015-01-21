@@ -94,8 +94,6 @@ describe('IoT Agent Device Registration', function() {
     });
 
     describe('When the IoT Agent receives new information from a device', function() {
-
-
         beforeEach(function(done) {
             nock.cleanAll();
 

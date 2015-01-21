@@ -30,6 +30,12 @@ var config = {
     server: {
         port: 4041
     },
+    authentication: {
+        host: 'localhost',
+        port: '5000',
+        user: 'iotagent',
+        password: 'iotagent'
+    },
     deviceRegistry: {
         type: 'memory'
     },
