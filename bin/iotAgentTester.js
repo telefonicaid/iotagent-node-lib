@@ -25,6 +25,7 @@
 'use strict';
 
 var config = require('../config'),
+    fs = require('fs'),
     clUtils = require('../lib/commandLineUtils'),
     request = require('request'),
     async = require('async'),
@@ -172,6 +173,63 @@ function discoverContext(commands) {
         clUtils.prompt();
     });}
 
+function provisionDevice(commands) {
+    function generateOptions(deviceConfig, callback) {
+        var options = {
+            uri: 'http://' + commands[0] + ':' + commands[1] + '/iot/devices',
+            method: 'POST'
+        };
+
+        try {
+            var payload = JSON.parse(deviceConfig);
+            options.json = payload;
+            callback(null, options);
+        } catch (e) {
+            callback('Wrong JSON. Couldn\'t parse');
+        }
+    }
+
+    function sendProvisionRequest(options, callback) {
+        request(options, function(error, result, body) {
+            if (error) {
+                callback('Couldn\'t connect with the provisioning server: ' + error.toString());
+            } else if (result.statusCode === 200 && body) {
+                callback(null, 'Device successfully provisioned');
+            } else {
+                callback('Unexpected application error. Status: ' + result.statusCode);
+            }
+        });
+    }
+
+    function handleOut(error, msg) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(msg);
+        }
+        clUtils.prompt();
+    }
+
+    fs.readFile(commands[2], 'utf8', function (error, deviceConfig) {
+        if (error && error.code === 'ENOENT') {
+            console.error('File not found');
+            clUtils.prompt();
+        } else {
+            async.waterfall([
+                async.apply(generateOptions, deviceConfig),
+                sendProvisionRequest
+            ], handleOut);
+        }
+    });
+}
+
+function showConfig(commands) {
+    console.log('\nCurrent configuration:\n\n');
+    console.log(JSON.stringify(config, null, 4));
+    console.log('\n');
+    clUtils.prompt();
+}
+
 var commands = {
     'update': {
         parameters: ['entity', 'type', 'attributes'],
@@ -191,8 +249,19 @@ var commands = {
     },
     'config': {
         parameters: ['host', 'port', 'service', 'subservice'],
-        description: '\tConfig a new host and port for the remote Contect Broker.',
+        description: '\tConfig a new host and port for the remote Context Broker.',
         handler: configure
+    },
+    'showConfig': {
+        parameters: [],
+        description: '\tShow the current configuration of the client.',
+        handler: showConfig
+    },
+    'provision': {
+        parameters: ['host', 'port', 'filename'],
+        description: '\tProvision a new device using the Device Provisioning API. The device configuration is \n' +
+            '\tread from the script location.',
+        handler: provisionDevice
     }
 };
 
