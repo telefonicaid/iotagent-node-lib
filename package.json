@@ -1,7 +1,7 @@
 {
   "name": "fiware-iotagent-lib",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/telefonicaid/fiware-iotagent-lib",
   "author": {
     "name": "Daniel Moran",
