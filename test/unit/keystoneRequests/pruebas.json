@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "identity": {
+      "methods": [
+        "password"
+      ],
+      "password": {
+        "user": {
+          "domain": {
+            "name": "Default"
+          },
+          "name": "iotagent",
+          "password": "iotagent"
+        }
+      }
+    },
+    "scope": {
+      "OS-TRUST:trust": {
+        "id": "BBBB987654321"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "Termometer",
+                    "isPattern": "false",
+                    "id": "term2"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "temp",
+                    "type": "kelvin",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com"
+        }
+    ],
+    "duration": "P1M"
+}

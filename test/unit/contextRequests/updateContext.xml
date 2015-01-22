@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateContextRequest>
+    <contextElementList>
+        <contextElement>
+            <entityId type="Light" isPattern="false">
+                <id>light1</id>
+            </entityId>
+            <contextAttributeList>
+                <contextAttribute>
+                    <name>dimming</name>
+                    <type>Percentage</type>
+                    <contextValue>12</contextValue>
+                </contextAttribute>
+            </contextAttributeList>
+        </contextElement>
+    </contextElementList>
+    <updateAction>APPEND</updateAction>
+</updateContextRequest>

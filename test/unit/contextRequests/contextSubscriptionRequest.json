@@ -1,0 +1,20 @@
+{
+    "entities": [
+        {
+            "type": "Light",
+            "isPattern": "false",
+            "id": "light1"
+        }
+    ],
+    "reference": "http://smartGondor.com/notification",
+    "duration": "P1M",
+    "notifyConditions": [
+        {
+            "type": "ONCHANGE",
+            "condValues": [
+                "actions"
+            ]
+        }
+    ],
+    "throttling": "PT5S"
+}

@@ -1,0 +1,31 @@
+{
+    "name": "Light1",
+    "service" : "smartGondor",
+    "service_path": "gardens",
+    "entity_name": "TheFirstLight",
+    "entity_type": "TheLightType",
+    "timezone": "America/Santiago",
+    "attributes": [
+        {
+            "name": "attr_name",
+            "type": "string"
+        }
+    ],
+    "static_attributes": [
+        {
+            "name": "attr_name",
+            "type": "string"
+        }
+    ],
+    "commands": [
+        {
+            "name": "luminance",
+            "type": "lumens"
+        }
+    ],
+    "internal_attributes": [
+        {
+            "customField": "customValue"
+        }
+    ]
+}

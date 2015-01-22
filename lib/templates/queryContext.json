@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "entities": {
+      "description": "The objects the request is applied to.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "required": true
+          },
+          "isPattern": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "required": true
+          }
+        }
+      },
+      "required": true
+    }
+  }
+}

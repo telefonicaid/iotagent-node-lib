@@ -1,0 +1,8 @@
+{
+    "errorCode": {
+        "code": "404",
+        "reasonPhrase": "No context element registrations found",
+        "details": "registration id: '6319a7f5254b05844116584d"
+    },
+    "registrationId": "6319a7f5254b05844116584d"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Light1",
+  "service" : "smartGondor",
+  "entity_name": "TheFirstLight",
+  "attributes": [],
+  "commands": [
+    {
+      "name": "luminance",
+      "type": "lumens"
+    }
+  ]
+}

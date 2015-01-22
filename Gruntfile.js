@@ -64,7 +64,7 @@ module.exports = function(grunt) {
             lib: {
                 src: ['lib/**/*.js'],
                 options: {
-                    jshintrc: 'lib/.jshintrc'
+                    jshintrc: '.jshintrc'
                 }
             },
             test: {
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
                 options: {
                     reporter: 'checkstyle',
                     reporterOutput: '<%= clean.reportLint[0] %>/jshint-lib.xml',
-                    jshintrc: 'lib/.jshintrc'
+                    jshintrc: '.jshintrc'
                 }
             },
             reportTest: {
@@ -276,6 +276,6 @@ module.exports = function(grunt) {
     grunt.registerTask('init-dev-env', ['githooks']);
 
     // Default task.
-    grunt.registerTask('default', ['lint-jshint', 'test']);
+    grunt.registerTask('default', ['lint', 'test']);
 
 };
