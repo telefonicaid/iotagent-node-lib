@@ -123,7 +123,7 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(
                     200,
@@ -165,7 +165,7 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                 utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(
                 403,
@@ -197,7 +197,7 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                 utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(
                 200,
