@@ -114,7 +114,7 @@ describe('Active attributes test', function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
@@ -138,7 +138,7 @@ describe('Active attributes test', function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
                 .reply(413,
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Failed.json'));
@@ -163,7 +163,7 @@ describe('Active attributes test', function() {
             contextBrokerMock = nock('http://192.168.1.1:3024')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI10/updateContext',
+                .post('/v1/updateContext',
                 utils.readExampleFile('./test/unit/contextRequests/updateContext2.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
