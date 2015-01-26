@@ -1,0 +1,22 @@
+{
+    "contextElements": [
+        {
+            "type": "Humidity",
+            "isPattern": "false",
+            "id": "humSensor",
+            "attributes": [
+                {
+                    "name": "state",
+                    "type": "Boolean",
+                    "value": "true"
+                },
+                {
+                    "name": "dimming",
+                    "type": "Percentage",
+                    "value": "87"
+                }
+            ]
+        }
+    ],
+    "updateAction": "APPEND"
+}

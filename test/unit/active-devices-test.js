@@ -131,7 +131,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the Context Broker returns an error updating an entity', function() {
+    describe('When the Context Broker returns an HTTP error code updating an entity', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -151,6 +151,31 @@ describe('Active attributes test', function() {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_UPDATE_ERROR');
+                done();
+            });
+        });
+    });
+
+    describe('When the Context Broker returns an application error code updating an entity', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext2Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should return BAD_REQUEST an error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', values, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.name.should.equal('BAD_REQUEST');
                 done();
             });
         });
