@@ -206,7 +206,7 @@ function initialize() {
     iotAgentLib.setDataQueryHandler(queryHandler);
     iotAgentLib.setDataUpdateHandler(updateHandler);
 
-    rl.setPrompt('\033[36mIoTAgent> \033[0m');
+    rl.setPrompt('IoTAgent> ');
     rl.prompt();
 
     rl.on('line', function (cmd) {
