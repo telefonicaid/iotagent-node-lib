@@ -27,7 +27,6 @@ var iotAgentLib = require('../../'),
     should = require('should'),
     logger = require('fiware-node-logger'),
     nock = require('nock'),
-    async = require('async'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -153,7 +152,7 @@ describe('IoT Agent Device Update Registration', function() {
         });
     });
     describe('When a update action is executed in a non registered device', function() {
-        it('should return a DEVICE_NOT_FOUND error')
+        it('should return a DEVICE_NOT_FOUND error');
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         it('should return a CONTEXT_BROKER_CONNECTION error in the update action');
