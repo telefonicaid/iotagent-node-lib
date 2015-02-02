@@ -1,0 +1,23 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "Light",
+                    "isPattern": "false",
+                    "id": "light1"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "pressure",
+                    "type": "Hgmm",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com"
+        }
+    ],
+    "registrationId": "6319a7f5254b05844116584d",
+    "duration": "P1M"
+}
