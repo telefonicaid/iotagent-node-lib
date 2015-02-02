@@ -146,6 +146,9 @@ describe('MongoDB Device Registry', function() {
                     docs.length.should.equal(1);
                     should.exist(docs[0].internalAttributes);
                     should.exist(docs[0].internalAttributes.customAttribute);
+                    should.exist(docs[0].active);
+                    docs[0].active.length.should.equal(1);
+                    docs[0].active[0].name.should.equal('pressure');
                     docs[0].internalAttributes.customAttribute.should.equal('customValue');
                     done();
                 });
