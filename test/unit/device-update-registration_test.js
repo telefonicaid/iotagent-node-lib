@@ -97,6 +97,16 @@ var iotAgentLib = require('../../'),
                 type: 'centigrades'
             }
         ]
+    },
+    unknownDevice = {
+        id: 'rotationSensor4',
+        type: 'Rotation',
+        name: 'Rotation4',
+        service: 'dumbMordor',
+        subservice: 'gardens',
+        internalId: 'unknownInternalId',
+        lazy: [],
+        active: []
     };
 
 describe('IoT Agent Device Update Registration', function() {
@@ -152,7 +162,13 @@ describe('IoT Agent Device Update Registration', function() {
         });
     });
     describe('When a update action is executed in a non registered device', function() {
-        it('should return a DEVICE_NOT_FOUND error');
+        it('should return a DEVICE_NOT_FOUND error', function(done) {
+            iotAgentLib.updateRegister(unknownDevice, function(error) {
+                should.exist(error);
+                error.name.should.equal('DEVICE_NOT_FOUND');
+                done();
+            });
+        });
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         it('should return a CONTEXT_BROKER_CONNECTION error in the update action');
