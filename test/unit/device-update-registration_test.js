@@ -123,12 +123,6 @@ describe('IoT Agent Device Update Registration', function() {
             .reply(200,
             utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-        contextBrokerMock
-            .post('/NGSI9/registerContext',
-            utils.readExampleFile('./test/unit/contextAvailabilityRequests/updateIoTAgent1.json'))
-            .reply(200,
-            utils.readExampleFile('./test/unit/contextAvailabilityResponses/updateIoTAgent1Success.json'));
-
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.register(device1, function(error) {
                 done();
@@ -137,10 +131,20 @@ describe('IoT Agent Device Update Registration', function() {
     });
 
     afterEach(function(done) {
+        nock.cleanAll();
+
         iotAgentLib.deactivate(done);
     });
 
     describe('When a device is preregistered and its registration information updated', function() {
+        beforeEach(function() {
+            contextBrokerMock
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/updateIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+        });
+
         it('should register as ContextProvider of its lazy attributes', function(done) {
             iotAgentLib.updateRegister(deviceUpdated, function(error) {
                 should.not.exist(error);
@@ -162,6 +166,14 @@ describe('IoT Agent Device Update Registration', function() {
         });
     });
     describe('When a update action is executed in a non registered device', function() {
+        beforeEach(function() {
+            contextBrokerMock
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/updateIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+        });
+
         it('should return a DEVICE_NOT_FOUND error', function(done) {
             iotAgentLib.updateRegister(unknownDevice, function(error) {
                 should.exist(error);
@@ -171,7 +183,20 @@ describe('IoT Agent Device Update Registration', function() {
         });
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
-        it('should return a CONTEXT_BROKER_CONNECTION error in the update action');
+        beforeEach(function() {
+            contextBrokerMock
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/updateIoTAgent1.json'))
+                .reply(500, {});
+        });
+
+        it('should return a REGISTRATION_ERROR error in the update action', function(done) {
+            iotAgentLib.updateRegister(deviceUpdated, function(error) {
+                should.exist(error);
+                error.name.should.equal('REGISTRATION_ERROR');
+                done();
+            });
+        });
     });
     describe('When a device register is updated in the Context Broker and the registration is not found', function() {
         it('should create the registration anew');
