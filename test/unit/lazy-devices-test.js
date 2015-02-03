@@ -220,7 +220,19 @@ describe('IoT Agent Lazy Devices', function() {
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
                 handlerCalled = true;
-                callback(null);
+                callback(null, [
+                    {
+                        id: id,
+                        type: type,
+                        attributes: [
+                            {
+                                name: 'dimming',
+                                type: 'string',
+                                value: '89'
+                            }
+                        ]
+                    }
+                ]);
             });
 
             request(options, function(error, response, body) {
@@ -229,8 +241,38 @@ describe('IoT Agent Lazy Devices', function() {
                 done();
             });
         });
-    });
 
+        it('should return the response in XML format', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function testQueryHandler(id, type, attributes, callback) {
+                handlerCalled = true;
+                callback(null, [
+                    {
+                    id: id,
+                    type: type,
+                    attributes: [
+                            {
+                                name: 'dimming',
+                                type: 'string',
+                                value: '89'
+                            }
+                        ]
+                    }
+                ]);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                response.headers['content-type'].should.match(/application\/xml.*/);
+                body.should.match(/<queryContextResponse>/);
+                body.should.match(/<entityId type="Light" isPattern="false">/);
+                body.should.match(/<name>dimming<\/name>/);
+                done();
+            });
+        });
+    });
 
     describe('When a IoT Agent receives an update on multiple contexts', function() {
         it('should call the device handler for each of the contexts');
