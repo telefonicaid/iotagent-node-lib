@@ -1,0 +1,5 @@
+<contextAttribute>
+<name>{{{name}}}</name>
+<type>{{{type}}}</type>
+<contextValue>{{{value}}}</contextValue>
+</contextAttribute>
