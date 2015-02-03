@@ -220,8 +220,7 @@ describe('IoT Agent Lazy Devices', function() {
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
                 handlerCalled = true;
-                callback(null, [
-                    {
+                callback(null, {
                         id: id,
                         type: type,
                         attributes: [
@@ -231,8 +230,7 @@ describe('IoT Agent Lazy Devices', function() {
                                 value: '89'
                             }
                         ]
-                    }
-                ]);
+                    });
             });
 
             request(options, function(error, response, body) {
@@ -247,8 +245,7 @@ describe('IoT Agent Lazy Devices', function() {
 
             iotAgentLib.setDataQueryHandler(function testQueryHandler(id, type, attributes, callback) {
                 handlerCalled = true;
-                callback(null, [
-                    {
+                callback(null, {
                     id: id,
                     type: type,
                     attributes: [
@@ -258,8 +255,7 @@ describe('IoT Agent Lazy Devices', function() {
                                 value: '89'
                             }
                         ]
-                    }
-                ]);
+                    });
             });
 
             request(options, function(error, response, body) {
