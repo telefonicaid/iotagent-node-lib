@@ -47,7 +47,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Device provisioning API: List provisioned devices', function() {
+describe('Device provisioning API: List provisioned devices', function() {
     var provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -82,6 +82,7 @@ describe.only('Device provisioning API: List provisioned devices', function() {
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             async.series([
+                iotAgentLib.clearAll,
                 async.apply(request, provisioning1Options),
                 async.apply(request, provisioning2Options)
             ], function(error, results) {
@@ -132,6 +133,17 @@ describe.only('Device provisioning API: List provisioned devices', function() {
         });
     });
     describe('When a request for an unexistent device arrives', function() {
-        it('should return a 404 error');
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
+            method: 'GET'
+        };
+
+        it('should return a 404 error', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(404);
+                done();
+            });
+        });
     });
 });
