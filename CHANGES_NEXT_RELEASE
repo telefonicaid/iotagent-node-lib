@@ -1,1 +1,2 @@
 - Complete the Provisioning API with CRUD Operations.
+- Change signature of unregister() funciton to remove unneeded type.
