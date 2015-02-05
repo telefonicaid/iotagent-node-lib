@@ -1,6 +1,12 @@
 # fiware-iotagent-lib
 
-## Overview
+## Index
+
+* [Overview](#overview)
+* [Usage](#usage)
+* [Development Documentation](#development)
+
+## <a name="overview"/> Overview
 ### Description
 This project aims to provide a node.js module to enable IoT Agent developers to build custom agents for their devices that can 
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). 
@@ -56,7 +62,7 @@ Given the aforementioned requirements, there are some aspects of the implementat
 * Aside from its text configuration, the IoT Agent Lib is considered to be stateless. To be precise, the library mantains a state (the list of entities/devices whose information the agent can provide) but that state is considered to be transient. It's up to the particular implementation of the agent to consider whether it should have a persistent storage to hold the device information (so the internal list of devices is read from a DB) or to register the devices each time a device sends a measure.
 * The IoT Agent does not care about the origin of the data, its type or structure. The mapping from raw data to the entity model, if there is any, is a responsability of the IoT Agent implementation, or of another third party library.
 
-## Usage
+## <a name="usage"/> Usage
 ### Library usage
 #### General review
 Note: as it is not yet published in npm repositories, this module has to be currently used as a github dependency in the package.json. To do so, add the following dependency to your package.json file, indicating the commit you want to use:
@@ -199,7 +205,7 @@ listdevices
 
 	List all the devices that have been registered in this IoT Agent session
 ```
-## Development documentation
+## <a name="development"/> Development documentation
 ### Project build
 The project is managed using Grunt Task Runner.
 
