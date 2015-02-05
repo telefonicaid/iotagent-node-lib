@@ -46,7 +46,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Device provisioning API', function() {
+describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
