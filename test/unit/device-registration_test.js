@@ -119,7 +119,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe.skip('When the Context Broker returns a NGSI error while registering a device', function() {
+    describe('When the Context Broker returns a NGSI error while registering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
