@@ -1,6 +1,13 @@
 # fiware-iotagent-lib
 
-## Overview
+## Index
+
+* [Overview](#overview)
+* [Usage](#usage)
+* [Device Provisioning API](#provisioningapi)
+* [Development Documentation](#development)
+
+## <a name="overview"/> Overview
 ### Description
 This project aims to provide a node.js module to enable IoT Agent developers to build custom agents for their devices that can 
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). 
@@ -56,7 +63,7 @@ Given the aforementioned requirements, there are some aspects of the implementat
 * Aside from its text configuration, the IoT Agent Lib is considered to be stateless. To be precise, the library mantains a state (the list of entities/devices whose information the agent can provide) but that state is considered to be transient. It's up to the particular implementation of the agent to consider whether it should have a persistent storage to hold the device information (so the internal list of devices is read from a DB) or to register the devices each time a device sends a measure.
 * The IoT Agent does not care about the origin of the data, its type or structure. The mapping from raw data to the entity model, if there is any, is a responsability of the IoT Agent implementation, or of another third party library.
 
-## Usage
+## <a name="usage"/> Usage
 ### Library usage
 #### General review
 Note: as it is not yet published in npm repositories, this module has to be currently used as a github dependency in the package.json. To do so, add the following dependency to your package.json file, indicating the commit you want to use:
@@ -199,7 +206,65 @@ listdevices
 
 	List all the devices that have been registered in this IoT Agent session
 ```
-## Development documentation
+## <a name="provisioningapi"/> Device Provisioning API
+### Overview
+The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and subservice mapping, security information and attribute configuration can be specified in a per device way instead of relaying on the type configuration. The following section specified the format of the device payload; this will be the payload accepted by all the write operations and that will be returned by all the read operations.
+
+### Device model
+| Attribute           | Definition                                     | Example of value                      |
+| ------------------- |:---------------------------------------------- |:------------------------------------- |
+| name       	      | Device ID that will be used to identify the device. | UO834IO   |
+| service             | Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
+| service_path        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
+| entity_name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
+| entity_type         | Type of the entity in the Context Broker | Lamplights |
+| timezone            | Time zone of the sensor if it has any | America/Santiago |
+| attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| static_attributes   | List of active lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| commands            | List of active commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| internal_attributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
+
+### API Actions
+#### POST /iot/devices
+Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload. 
+
+Returns: 
+* 200 OK if successful.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### GET /iot/devices
+Returns a list of all the devices in the device registry with all its data.
+
+Returns: 
+* 200 OK if successful, and the selected Device payload in JSON format.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### GET /iot/devices/:deviceId
+Returns all the information about a particular device.
+
+Returns: 
+* 200 OK if successful, and the selected Device payload in JSON format.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### DELETE /iot/devices/:deviceId
+Remove a device from the device registry.
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### PUT /iot/devices/:deviceId
+Changes the stored values for the device with the provided Device payload. 
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+## <a name="development"/> Development documentation
 ### Project build
 The project is managed using Grunt Task Runner.
 
