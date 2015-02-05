@@ -186,7 +186,7 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be removed from MongoDB', function(done) {
-            iotAgentLib.unregister(device1.id, device1.type, function(error) {
+            iotAgentLib.unregister(device1.id, function(error) {
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
