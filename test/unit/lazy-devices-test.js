@@ -184,6 +184,18 @@ describe('IoT Agent Lazy Devices', function() {
                 done();
             });
         });
+
+        it('should return the response in XML Format', function(done) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                response.headers['content-type'].should.match(/application\/xml.*/);
+                done();
+            });
+        });
     });
 
     describe('When the IoT Agent receives a query on the device data in XML format', function() {
