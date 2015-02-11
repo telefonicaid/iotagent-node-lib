@@ -324,6 +324,43 @@ provision <host> <port> <filename>
 	Provision a new device using the Device Provisioning API. The device configuration is 
 	read from the script location.
 ```
+## <a name="configuration"/> Configuration
+The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent. The Agent Console reads the same configuration from the `config.js` file.
+
+### Global Configuration
+These are the parameters that can be configured in the global section:
+* logLevel: E.g.: 'DEBUG'.
+* contextBroker: E.g.: 
+```
+	{
+	host: '192.168.56.101',
+	port: '1026'
+    	}
+```
+* server: E.g.: 
+```
+	{
+        port: 4041
+    	}
+```    	 
+* authentication: E.g.:
+```	{
+        host: 'localhost',
+        port: '5000',
+        user: 'iotagent',
+        password: 'iotagent'
+	}
+* deviceRegistry: E.g.:
+	{
+        type: 'memory'
+    	}
+* types: See **Type Configuration** section below.
+* service: E.g.: 'smartGondor'.
+* subservice: E.g.: '/gardens'.
+* providerUrl: E.g.: 'http://192.168.56.1:4041'.
+* deviceRegistrationDuration: E.g.: 'P1M'.
+
+### Type Configuration
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
