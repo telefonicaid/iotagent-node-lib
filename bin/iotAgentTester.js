@@ -133,39 +133,41 @@ function parseAttributes(payload) {
     return payload.split(',').map(split).reduce(group, []);
 }
 
-function updateContext(commands) {
-    var options = {
-        url: 'http://' + config.host + ':' + config.port + '/NGSI10/updateContext',
-        method: 'POST',
-        json: {
-            contextElements: [
-                {
-                    type: commands[1],
-                    isPattern: 'false',
-                    id: commands[0],
-                    attributes: parseAttributes(commands[2])
-                }
-            ],
-            updateAction: 'APPEND'
-        },
-        headers: {
-            'fiware-service': config.service,
-            'fiware-servicepath': config.subservice
-        }
-    };
+function modifyContext(action) {
+    return function (commands) {
+        var options = {
+            url: 'http://' + config.host + ':' + config.port + '/NGSI10/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: commands[1],
+                        isPattern: 'false',
+                        id: commands[0],
+                        attributes: parseAttributes(commands[2])
+                    }
+                ],
+                updateAction: action
+            },
+            headers: {
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
 
-    request(options, function(error, response, body) {
-        if (error) {
-            console.error('\nConnection error updating context: ' + error);
-        } else if (body && body.orionError) {
-            console.error('\nApplication error updating context:\n ' + JSON.stringify(body.orionError.details, null, 4));
-        } else if (response && body && response.statusCode === 200) {
-            console.log('\nEntity successfully updated:\n', JSON.stringify(body, null, 4));
-        } else {
-            console.log('\nTransport error updating context: ' + response.statusCode);
-        }
-        clUtils.prompt();
-    });
+        request(options, function(error, response, body) {
+            if (error) {
+                console.error('\nConnection error updating context: ' + error);
+            } else if (body && body.orionError) {
+                console.error('\nApplication error updating context:\n ' + JSON.stringify(body.orionError.details, null, 4));
+            } else if (response && body && response.statusCode === 200) {
+                console.log('\nEntity successfully updated:\n', JSON.stringify(body, null, 4));
+            } else {
+                console.log('\nTransport error updating context: ' + response.statusCode);
+            }
+            clUtils.prompt();
+        });
+    }
 }
 
 function configure(commands) {
@@ -269,7 +271,13 @@ var commands = {
         parameters: ['entity', 'type', 'attributes'],
         description: '\tUpdate the values of the defined set of attributes, using the following format: ' +
             'name:type=value(,name:type=value)*',
-        handler: updateContext
+        handler: modifyContext('UPDATE')
+    },
+    'append': {
+        parameters: ['entity', 'type', 'attributes'],
+        description: '\tAppend a new Entity with the defined set of attributes, using the following format: ' +
+        'name:type=value(,name:type=value)*',
+        handler: modifyContext('APPEND')
     },
     'query': {
         parameters: ['entity', 'type'],
