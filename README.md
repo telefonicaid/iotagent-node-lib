@@ -113,6 +113,7 @@ Register a new device in the IoT Agent. This registration will also trigger a Co
 The device Object can have the following attributes:
 * id: Device ID of the device.
 * type: type to be assigned to the device.
+* name: name that will be used for the Entity representing the device in the Context Broker.
 * service: name of the service associated with the device.
 * subservice: name of the subservice associated with th device.
 * lazy:	list of lazy attributes with their types.
@@ -337,9 +338,10 @@ These are the parameters that can be configured in the global section:
 	port: '1026'
     	}
 ```
-* **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider). E.g.: 
+* **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.: 
 ```
 	{
+	baseRoot: '/',
         port: 4041
     	}
 ```    	 
@@ -368,6 +370,16 @@ These are the parameters that can be configured in the global section:
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
 
 ### Type Configuration
+The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
+
+* service: service of the devices of this type.
+* subservice: subservice of the devices of this type.
+* active: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* lazy: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
+* commands: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
+* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* trust: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
+* contextBroker: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
