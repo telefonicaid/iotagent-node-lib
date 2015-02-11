@@ -329,21 +329,21 @@ The `activate()` function that starts the IoT Agent receives as single parameter
 
 ### Global Configuration
 These are the parameters that can be configured in the global section:
-* logLevel: minimum log level to log. May take one of the following values: DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
-* contextBroker: connection data to the Context Broker (host and port). E.g.: 
+* **logLevel**: minimum log level to log. May take one of the following values: DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
+* **contextBroker**: connection data to the Context Broker (host and port). E.g.: 
 ```
 	{
 	host: '192.168.56.101',
 	port: '1026'
     	}
 ```
-* server: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider). E.g.: 
+* **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider). E.g.: 
 ```
 	{
         port: 4041
     	}
 ```    	 
-* authentication: authentication data, for use in retrieving tokens for devices with a trust token (just needed in scenarios with security enabled in the Context Broker side). E.g.:
+* **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (just needed in scenarios with security enabled in the Context Broker side). E.g.:
 ```	
 	{
         host: 'localhost',
@@ -352,7 +352,7 @@ These are the parameters that can be configured in the global section:
         password: 'iotagent'
 	}
 ```
-* deviceRegistry: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other (take into account that, in the case of the MongoDB registry, multiple fields has to be completed). E.g.:
+* **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other (take into account that, in the case of the MongoDB registry, multiple fields has to be completed). E.g.:
 ```
 	{
             type: 'mongodb',
@@ -361,11 +361,11 @@ These are the parameters that can be configured in the global section:
             db: 'iotagent'
         }
 ```
-* types: See **Type Configuration** section below.
-* service: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
-* subservice: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
-* providerUrl: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
-* deviceRegistrationDuration: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
+* **types**: See **Type Configuration** section below.
+* **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
+* **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
+* **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
+* **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
 
 ### Type Configuration
 
