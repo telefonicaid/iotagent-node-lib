@@ -125,17 +125,22 @@ function startApp(command) {
 }
 
 function stopApp(command) {
-    iotAgentLib.activate(handleError('Application stopped'));
+    iotAgentLib.deactivate(handleError('Application stopped'));
 }
 
 function registerDevice(command) {
+    var device =  {
+        id: command[0],
+        type: command[1]
+    };
+
     console.log('Registering device');
-    iotAgentLib.register(command[0], command[1], handleError('Device registered in the Context Broker'));
+    iotAgentLib.register(device, handleError('Device registered in the Context Broker'));
 }
 
 function unregisterDevice(command) {
     console.log('Unregistering device');
-    iotAgentLib.unregister(command[0], command[1], handleError('Device unregistered'));
+    iotAgentLib.unregister(command[0], handleError('Device unregistered'));
 }
 
 function updateDeviceValue(command) {
@@ -177,27 +182,25 @@ function executeCommander(command) {
 }
 
 function queryHandler(id, type, attributes, callback) {
-    var sensorData = [
-        {
-            id: 'light1',
-            type: 'Light',
-            attributes: [
-                {
-                    name: 'dimming',
-                    type: 'Percentage',
-                    value: 19
-                }
-            ]
-        }
-    ];
+    console.log('Handling query for [%s] of type [%s]:\n%s', JSON.stringify(attributes));
 
-    callback(null, sensorData);
+    callback(null, {
+        type: type,
+        isPattern: false,
+        id: id,
+        attributes: []
+    });
 }
 
 function updateHandler(id, type, attributes, callback) {
     console.log("Update message received for device with id [%s] and type [%s]", id, type);
 
-    callback(null);
+    callback(null, {
+        type: type,
+        isPattern: false,
+        id: id,
+        attributes: []
+    });
 }
 
 function initialize() {
