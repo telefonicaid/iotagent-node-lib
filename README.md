@@ -7,6 +7,7 @@
 * [IoT Library testing](#librarytesting)
 * [Configuration](#configuration)
 * [Device Provisioning API](#provisioningapi)
+* [Secured access to the Context Broker](#securedaccess)
 * [Development Documentation](#development)
 
 ## <a name="overview"/> Overview
@@ -438,6 +439,38 @@ Returns:
 * 200 OK if successful, with no payload.
 * 404 NOT FOUND if the device was not found in the database.
 * 500 SERVER ERROR if there was any error not contemplated above.
+
+## <a name="securedaccess"/> Secured access to the Context Broker
+For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
+
+For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully configured, and the `authentication.enabled` subattribute should have the value `true`.
+
+When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured Context Broker, he should follow this steps:
+* First, a Trust token should be requested to Keystone, using the service administrator credentials, the role ID and the IOT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
+```
+curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
+    -s \
+    -H "X-Auth-Token: $ADMIN_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '
+{
+    "trust": {
+        "impersonation": false,
+        "project_id": "'$SUBSERVICE_ID'",
+        "roles": [
+            {
+                "id": "'$ID_ROLE'"
+            }
+        ],
+        "trustee_user_id": "'$ID_IOTAGENT_USER'",
+        "trustor_user_id": "'$ID_ADM1'"
+    }
+}'
+```
+* Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token in its configuration.
+* Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust token to generate a temporary access token, that is attached to the request (in the `X-Auth-token` header).
+
+Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
 
 ## <a name="development"/> Development documentation
 ### Project build
