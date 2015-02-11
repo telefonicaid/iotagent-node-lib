@@ -4,6 +4,7 @@
 
 * [Overview](#overview)
 * [Usage](#usage)
+* [IoT Library testing](#librarytesting)
 * [Configuration](#configuration)
 * [Device Provisioning API](#provisioningapi)
 * [Development Documentation](#development)
@@ -244,7 +245,8 @@ Retrieve a device from the registry based on its entity name.
 ###### Params
 * deviceName: Name of the entity associated to a device.
 
-### IoT Library testing
+## <a name="librarytesting"/> IoT Library testing
+### Agent Console
 A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
 ```
 bin/agentConsole.js
@@ -280,6 +282,49 @@ listdevices
 
 	List all the devices that have been registered in this IoT Agent session
 ```
+### Agent tester
+The library also offers a Context Broker client that can be used to simulate queries and other operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy attributes and checking the appropriate values for active ones.
+
+The tester can be started with the following command, from the root folder of the project:
+```
+bin/iotAgentTester.js
+```
+From the command line, the `help` command can be used to show a description of the currently supported features. These are the following:
+```
+update <entity> <type> <attributes>  
+
+	Update the values of the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+
+append <entity> <type> <attributes>  
+
+	Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+
+query <entity> <type>  
+
+	Get all the information on the selected object.
+
+queryAttr <entity> <type> <attributes>  
+
+	Get information on the selected object for the selected attributes.
+
+discover <entity> <type>  
+
+	Get all the context providers for a entity and type.
+
+config <host> <port> <service> <subservice>  
+
+	Config a new host and port for the remote Context Broker.
+
+showConfig  
+
+	Show the current configuration of the client.
+
+provision <host> <port> <filename>  
+
+	Provision a new device using the Device Provisioning API. The device configuration is 
+	read from the script location.
+```
+
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and subservice mapping, security information and attribute configuration can be specified in a per device way instead of relaying on the type configuration. The following section specified the format of the device payload; this will be the payload accepted by all the write operations and that will be returned by all the read operations.
