@@ -1,2 +1,5 @@
 - Complete the Provisioning API with CRUD Operations.
 - Change signature of unregister() funciton to remove unneeded type.
+- Support XML in Context Provider updates and queries.
+- Fix multiple errors found during preparation of CPBR8 Workshop.
+- Improve the documentation to add: Configuration, Security, and IoT Library testing sections.
