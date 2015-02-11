@@ -119,7 +119,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe.skip('When the Context Broker returns a NGSI error while registering a device', function() {
+    describe('When the Context Broker returns a NGSI error while registering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -205,7 +205,7 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should update the devices information inontext Broker', function(done) {
-            iotAgentLib.unregister(device1.id, device1.type, function(error) {
+            iotAgentLib.unregister(device1.id, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -244,7 +244,7 @@ describe('IoT Agent Device Registration', function() {
 
         it('should not remove the device from the internal registry');
         it('should return a UNREGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.unregister(device1.id, device1.type, function(error) {
+            iotAgentLib.unregister(device1.id, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('UNREGISTRATION_ERROR');

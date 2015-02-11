@@ -1,0 +1,14 @@
+<contextElementResponse>
+    <contextElement>
+        <entityId type="{{{type}}}" isPattern="false">
+            <id>{{{id}}}</id>
+        </entityId>
+        <contextAttributeList>
+            {{{attributeList}}}
+        </contextAttributeList>
+    </contextElement>
+    <statusCode>
+        <code>200</code>
+        <reasonPhrase>OK</reasonPhrase>
+    </statusCode>
+</contextElementResponse>

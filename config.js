@@ -22,9 +22,9 @@
  */
 
 var config = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
-        host: '130.206.85.208',
+        host: '192.168.56.101',
         port: '1026'
     },
     server: {
@@ -65,7 +65,7 @@ var config = {
     },
     service: 'smartGondor',
     subservice: '/gardens',
-    providerUrl: 'http://localhost:4041',
+    providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M'
 };
 

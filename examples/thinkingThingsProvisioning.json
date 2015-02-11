@@ -1,0 +1,9 @@
+{
+    "name": "ypoz7",
+    "service" : "dumbMordor",
+    "service_path": "/swamps",
+    "entity_name": "TheTotem",
+    "entity_type": "WeatherMachine",
+    "attributes": [],
+    "commands": []
+}

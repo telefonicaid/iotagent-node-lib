@@ -1,0 +1,15 @@
+{
+    "name": "Light1",
+    "service" : "smartGondor",
+    "service_path": "/gardens",
+    "entity_name": "TheFirstLight",
+    "entity_type": "TheLightType",
+    "attributes": [],
+    "commands": [
+        {
+            "name": "luminance",
+            "type": "lumens"
+        }
+    ]
+}
+

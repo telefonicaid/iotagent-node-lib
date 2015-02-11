@@ -1,0 +1,22 @@
+{
+  "contextRegistrations": [
+    {
+      "entities": [
+        {
+          "type": "TheLightType",
+          "isPattern": "false",
+          "id": "TheSecondLight"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "luminance",
+          "type": "lumens",
+          "isDomain": "false"
+        }
+      ],
+      "providingApplication": "http://smartGondor.com"
+    }
+  ],
+  "duration": "P1M"
+}

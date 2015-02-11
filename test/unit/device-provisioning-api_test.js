@@ -46,7 +46,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Device provisioning API', function() {
+describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
@@ -105,6 +105,9 @@ describe('Device provisioning API', function() {
                     should.exist(results[0].staticAttributes);
                     results[0].staticAttributes.length.should.equal(1);
                     results[0].staticAttributes[0].name.should.equal('attr_name');
+                    should.exist(results[0].active);
+                    results[0].active.length.should.equal(1);
+                    results[0].active[0].name.should.equal('attr_name');
                     should.exist(results[0].internalAttributes);
                     results[0].internalAttributes.length.should.equal(1);
                     results[0].internalAttributes[0].customField.should.equal('customValue');

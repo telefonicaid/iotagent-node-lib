@@ -55,7 +55,10 @@ var iotAgentLib = require('../../'),
                     }
                 ],
                 service: 'smartGondor',
-                subservice: 'gardens'
+                subservice: 'gardens',
+                internalAttributes: {
+                    customAttribute: 'customValue'
+                }
             },
             'Termometer': {
                 commands: [],
@@ -132,7 +135,7 @@ describe('MongoDB Device Registry', function() {
             });
         });
 
-        it('should be registered in mongodb', function(done) {
+        it('should be registered in mongodb with all its attributes', function(done) {
             iotAgentLib.register(device1, function(error) {
                 should.not.exist(error);
 
@@ -141,6 +144,12 @@ describe('MongoDB Device Registry', function() {
                     should.exist(docs);
                     should.exist(docs.length);
                     docs.length.should.equal(1);
+                    should.exist(docs[0].internalAttributes);
+                    should.exist(docs[0].internalAttributes.customAttribute);
+                    should.exist(docs[0].active);
+                    docs[0].active.length.should.equal(1);
+                    docs[0].active[0].name.should.equal('pressure');
+                    docs[0].internalAttributes.customAttribute.should.equal('customValue');
                     done();
                 });
             });
@@ -177,7 +186,7 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be removed from MongoDB', function(done) {
-            iotAgentLib.unregister(device1.id, device1.type, function(error) {
+            iotAgentLib.unregister(device1.id, function(error) {
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
