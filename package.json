@@ -1,18 +1,18 @@
 {
-  "name": "fiware-iotagent-lib",
+  "name": "iotagent-node-lib",
   "description": "IoT Agent library to interface with NGSI Context Broker",
   "version": "0.2.0",
-  "homepage": "https://github.com/telefonicaid/fiware-iotagent-lib",
+  "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
   "author": {
     "name": "Daniel Moran",
-    "email": "dmj@tid.es"
+    "email": "daniel.moranjimenez@telefonica.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dmoranj/fiware-iotagent-lib.git"
+    "url": "git://github.com/telefonicaid/iotagent-node-lib.git"
   },
   "bugs": {
-    "url": "https://github.com/dmoranj/fiware-iotagent-lib/issues"
+    "url": "https://github.com/telefonicaid/iotagent-node-lib/issues"
   },
   "main": "lib/fiware-iotagent-lib",
   "engines": {
@@ -23,17 +23,17 @@
   },
   "dependencies": {
     "async": "0.9.0",
-    "revalidator": "*",
-    "express": "*",
-    "body-parser": "*",
-    "xmldom": "*",
+    "revalidator": "0.3.1",
+    "express": "4.11.2",
+    "body-parser": "1.11.0",
+    "xmldom": "0.1.19",
     "request": "2.39.0",
     "sax": "0.6.0",
     "mustache": "0.8.2",
     "node-uuid": "1.4.1",
     "fiware-node-logger": "https://github.com/telefonicaid/fiware-node-logger/tarball/81fdcb213db99eb61acecfd293c45d3fa144cf36",
     "mongoose": "3.8.19",
-    "underscore": "*"
+    "underscore": "1.7.0"
   },
   "devDependencies": {
     "nock": "0.48.0",
