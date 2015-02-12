@@ -73,9 +73,9 @@ Given the aforementioned requirements, there are some aspects of the implementat
 ## <a name="usage"/> Usage
 ### Library usage
 #### General review
-Note: as it is not yet published in npm repositories, this module has to be currently used as a github dependency in the package.json. To do so, add the following dependency to your package.json file, indicating the branch you want to use:
+In order to use the library, add the following dependency to your package.json file:
 ```
-"iotagent-node-lib": "https://github.com/telefonicaid/iotagent-node-lib/tarball/develop"
+"iotagent-node-lib": "*"
 ```
 In order to use this library, first you must require it:
 ```
