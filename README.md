@@ -1,4 +1,4 @@
-# fiware-iotagent-lib
+# FIWARE IoT Agent Framework
 
 ## Index
 
