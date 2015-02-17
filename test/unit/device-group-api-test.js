@@ -23,6 +23,7 @@
 'use strict';
 
 var iotAgentLib = require('../../'),
+    groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
     request = require('request'),
     should = require('should'),
     iotAgentConfig = {
@@ -123,16 +124,29 @@ var iotAgentLib = require('../../'),
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
+    },
+    optionsList = {
+        url: 'http://localhost:4041/iot/agents/testAgent',
+        method: 'GET',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/*'
+        }
     };
 
 describe.only('Device Group Configuration API', function() {
 
     beforeEach(function(done) {
-        iotAgentLib.activate(iotAgentConfig, done);
+        iotAgentLib.activate(iotAgentConfig, function() {
+            groupRegistryMemory.clear(done);
+        });
     });
 
     afterEach(function(done) {
-        iotAgentLib.deactivate(done);
+        iotAgentLib.deactivate(function() {
+            groupRegistryMemory.clear(done);
+        });
     });
     describe('When a new device group creation request arrives', function() {
         it('should return a 200 OK', function(done) {
@@ -142,8 +156,25 @@ describe.only('Device Group Configuration API', function() {
                 done();
             });
         });
-        it('should store it in the DB');
-        it('should store the service information from the headers into the DB');
+        it('should store it in the DB', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    done();
+                });
+            });
+        });
+        it('should store the service information from the headers into the DB', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].service.should.equal('TestService');
+                    body.services[0].subservice.should.equal('/testingPath');
+                    done();
+                });
+            });
+        });
         it('should add the device group to the statically configured ones');
     });
     describe('When a creation request arrives without the fiware-service header', function() {
@@ -263,18 +294,8 @@ describe.only('Device Group Configuration API', function() {
     });
 
     describe('When a device group listing request arrives', function() {
-        var options = {
-            url: 'http://localhost:4041/iot/agents/testAgent',
-            method: 'GET',
-            json: {},
-            headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/*'
-            }
-        };
-
         it('should return a 200 OK', function(done) {
-            request(options, function(error, response, body) {
+            request(optionsList, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
