@@ -434,13 +434,105 @@ For some services, there will be no need to provision individual devices, but it
 
 The IoT Agents provide two means to define those device groups:
 * Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
-* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/agent/:agentName/services`.
+* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/agent/:agentName/services`. Please, note that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
-Both approaches are better described in the sections bellow.
+Both approaches provide the same configuration information for the types (and they, in fact, end up in the same configuration collection), but, for the moment, the file and API nomenclatures differ (to be fixed soon, issue #33). 
+
+Both approaches are better described in the sections bellow. 
 
 ### Configuration API
+The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
+#### Device Group Model
+Device groups contain the following attributes:
+* **service**: service of the devices of this type.
+* **subservice**: subservice of the devices of this type.
+* **resource**: string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).
+* **apikey**: API Key string.
+* **type**: name of the type to assign to the group.
+* **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
+* **cbHost**: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
+* **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
 
+#### POST /iot/agent/:agentName/services
+Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
+
+Body params:
+* services: list of device groups to create. Each one adheres to the Device Group Model.
+
+E.g.:
+```
+{
+	services: [
+	{
+	    resource: '/deviceTest',
+	    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+	    type: 'Light',
+	    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+	    cbHost: 'http://unexistentHost:1026',
+	    commands: [
+	        {
+	            name: 'wheel1',
+	            type: 'Wheel'
+	        }
+	    ],
+	    lazy: [
+	        {
+	            name: 'luminescence',
+	            type: 'Lumens'
+	        }
+	    ],
+	    active: [
+	        {
+	            name: 'status',
+	            type: 'Boolean'
+	        }
+	    ]
+	}
+	]
+}
+```
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 400 WRONG_SYNTAX if the body doesn't comply with the schema.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### GET /iot/agent/:agentName/services
+Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
+
+Returns: 
+* 200 OK if successful, returning a device group body.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### PUT /iot/agent/:agentName/services
+Modifies the information for a device group configuration, identified by its service and subservice. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
+
+E.g.:
+```
+{
+            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+            cbHost: 'http://anotherUnexistentHost:1026'
+        }
+```
+
+Returns: 
+* 200 OK if successful, returning the updated body.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### DELETE /iot/agent/:agentName/services
+Removes a device group configuration from the DB, specified by the service and subservice headers. 
+
+Returns: 
+* 200 OK if successful.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
 
 ### Type Configuration
 The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
