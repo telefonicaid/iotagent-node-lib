@@ -24,7 +24,6 @@
 
 var iotAgentLib = require('../../'),
     async = require('async'),
-    groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
     request = require('request'),
     should = require('should'),
     iotAgentConfig = {
