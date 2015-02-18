@@ -95,7 +95,6 @@ var iotAgentLib = require('../../'),
         url: 'http://localhost:4041/iot/agents/testAgent',
         method: 'PUT',
         json: {
-            type: 'LampLight',
             trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
             cbHost: 'http://anotherUnexistentHost:1026',
             commands: [
@@ -172,7 +171,12 @@ describe.only('Device Group Configuration API', function() {
                 });
             });
         });
-        it('should add the device group to the statically configured ones');
+        it('should add the device group to the statically configured ones', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                should.exist(iotAgentConfig.types['Light']);
+                done();
+            });
+        });
     });
     describe('When a creation request arrives without the fiware-service header', function() {
         beforeEach(function() {
@@ -248,7 +252,12 @@ describe.only('Device Group Configuration API', function() {
                 });
             });
         });
-        it('should remove it from the configuration');
+        it('should remove it from the configuration', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                should.not.exist(iotAgentConfig.types['Light']);
+                done();
+            });
+        });
     });
 
     describe('When a device group removal request arrives without the mandatory headers', function() {
@@ -287,13 +296,17 @@ describe.only('Device Group Configuration API', function() {
             request(optionsUpdate, function(error, response, body) {
                 request(optionsList, function(error, response, body) {
                     body.count.should.equal(1);
-                    body.services[0].type.should.equal('LampLight');
                     body.services[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
                     done();
                 });
             });
         });
-        it('should update the values in the configuration');
+        it('should update the values in the configuration', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                iotAgentConfig.types['Light'].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                done();
+            });
+        });
     });
 
     describe('When a device group update request arrives without the mandatory headers', function() {
