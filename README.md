@@ -7,6 +7,7 @@
 * [IoT Library testing](#librarytesting)
 * [Configuration](#configuration)
 * [Device Provisioning API](#provisioningapi)
+* [Configuration API](#configurationapi)
 * [Secured access to the Context Broker](#securedaccess)
 * [Development Documentation](#development)
 
@@ -364,23 +365,11 @@ These are the parameters that can be configured in the global section:
             db: 'iotagent'
         }
 ```
-* **types**: See **Type Configuration** section below.
+* **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
 * **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
-
-### Type Configuration
-The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
-
-* service: service of the devices of this type.
-* subservice: subservice of the devices of this type.
-* active: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
-* lazy: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
-* commands: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
-* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
-* trust: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
-* contextBroker: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
@@ -439,6 +428,31 @@ Returns:
 * 200 OK if successful, with no payload.
 * 404 NOT FOUND if the device was not found in the database.
 * 500 SERVER ERROR if there was any error not contemplated above.
+
+## <a name="configurationapi"/> Configuration API
+For some services, there will be no need to provision individual devices, but it will make more sense to provision different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an assigned type, its configuration values can be extracted from those of the type.
+
+The IoT Agents provide two means to define those device groups:
+* Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
+* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/agent/:agentName/services`.
+
+Both approaches are better described in the sections bellow.
+
+### Configuration API
+
+
+
+### Type Configuration
+The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
+
+* service: service of the devices of this type.
+* subservice: subservice of the devices of this type.
+* active: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* lazy: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
+* commands: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
+* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* trust: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
+* contextBroker: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
 
 ## <a name="securedaccess"/> Secured access to the Context Broker
 For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
