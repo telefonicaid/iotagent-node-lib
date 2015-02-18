@@ -129,6 +129,15 @@ var iotAgentLib = require('../../'),
             'fiware-service': 'TestService',
             'fiware-servicepath': '/*'
         }
+    },
+    optionsGet = {
+        url: 'http://localhost:4041/iot/agents/testAgent',
+        method: 'GET',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
 describe.only('Device Group Configuration API', function() {
@@ -347,6 +356,28 @@ describe.only('Device Group Configuration API', function() {
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
                 body.count.should.equal(3);
+                done();
+            });
+        });
+    });
+
+    describe('When a device info request arrives', function() {
+        beforeEach(function(done) {
+            async.series([
+                async.apply(request, optionsCreation)
+            ], done);
+        });
+
+        it('should return a 200 OK', function(done) {
+            request(optionsGet, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGet, function(error, response, body) {
+                body.service.should.equal('TestService');
                 done();
             });
         });
