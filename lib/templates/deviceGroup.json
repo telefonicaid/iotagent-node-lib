@@ -1,0 +1,52 @@
+{
+  "title": "Service",
+  "description": "A service",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "services": {
+      "type": "array",
+      "id": "services",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "description": "default entity_type, if a device has not got entity_type uses this",
+            "type": "string"
+          },
+          "apikey": {
+            "description": "apikey",
+            "type": "string",
+            "required": true
+          },
+          "token": {
+            "description": "token",
+            "type": "string"
+          },
+          "cbroker": {
+            "description": "uri for the context broker",
+            "type": "string"
+          },
+          "resource": {
+            "description": "uri for the iotagent",
+            "type": "string",
+            "required": true
+          },
+          "lazy": {
+            "description": "list of lazy attributes of the devices",
+            "type": "array"
+          },
+          "attributes": {
+            "description": "list of active attributes of the devices",
+            "type": "array"
+          },
+          "commands": {
+            "description": "list of commands of the devices",
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+}
