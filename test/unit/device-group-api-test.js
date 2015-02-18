@@ -23,6 +23,7 @@
 'use strict';
 
 var iotAgentLib = require('../../'),
+    async = require('async'),
     groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
     request = require('request'),
     should = require('should'),
@@ -87,36 +88,32 @@ var iotAgentLib = require('../../'),
         json: {},
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
+            'fiware-servicepath': '/testingPath'
         }
     },
     optionsUpdate = {
         url: 'http://localhost:4041/iot/agents/testAgent',
         method: 'PUT',
         json: {
-            services: [
+            type: 'LampLight',
+            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+            cbHost: 'http://anotherUnexistentHost:1026',
+            commands: [
                 {
-                    type: 'Light',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    active: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ]
+                    name: 'wheel1',
+                    type: 'Wheel'
+                }
+            ],
+            lazy: [
+                {
+                    name: 'luminescence',
+                    type: 'Lumens'
+                }
+            ],
+            active: [
+                {
+                    name: 'status',
+                    type: 'Boolean'
                 }
             ]
         },
@@ -232,6 +229,10 @@ describe.only('Device Group Configuration API', function() {
         });
     });
     describe('When a device group removal request arrives', function() {
+        beforeEach(function(done) {
+            request(optionsCreation, done);
+        });
+
         it('should return a 200 OK', function(done) {
             request(optionsDelete, function(error, response, body) {
                 should.not.exist(error);
@@ -239,7 +240,14 @@ describe.only('Device Group Configuration API', function() {
                 done();
             });
         });
-        it('should remove it from the database');
+        it('should remove it from the database', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(0);
+                    done();
+                });
+            });
+        });
         it('should remove it from the configuration');
     });
 
@@ -263,6 +271,10 @@ describe.only('Device Group Configuration API', function() {
     });
 
     describe('When a device group update request arrives', function() {
+        beforeEach(function(done) {
+            request(optionsCreation, done);
+        });
+
         it('should return a 200 OK', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 should.not.exist(error);
@@ -270,7 +282,17 @@ describe.only('Device Group Configuration API', function() {
                 done();
             });
         });
-        it('should update the values in the database');
+
+        it('should update the values in the database', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].type.should.equal('LampLight');
+                    body.services[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    done();
+                });
+            });
+        });
         it('should update the values in the configuration');
     });
 
@@ -294,6 +316,14 @@ describe.only('Device Group Configuration API', function() {
     });
 
     describe('When a device group listing request arrives', function() {
+        beforeEach(function(done) {
+            async.series([
+                async.apply(request, optionsCreation),
+                async.apply(request, optionsCreation),
+                async.apply(request, optionsCreation)
+            ], done);
+        });
+
         it('should return a 200 OK', function(done) {
             request(optionsList, function(error, response, body) {
                 should.not.exist(error);
@@ -301,6 +331,11 @@ describe.only('Device Group Configuration API', function() {
                 done();
             });
         });
-        it('should return all the configured device groups from the database');
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsList, function(error, response, body) {
+                body.count.should.equal(3);
+                done();
+            });
+        });
     });
 });
