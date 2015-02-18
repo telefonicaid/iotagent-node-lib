@@ -140,7 +140,7 @@ var iotAgentLib = require('../../'),
         }
     };
 
-describe.only('Device Group Configuration API', function() {
+describe('Device Group Configuration API', function() {
 
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, function() {
@@ -182,6 +182,8 @@ describe.only('Device Group Configuration API', function() {
         });
         it('should add the device group to the statically configured ones', function(done) {
             request(optionsCreation, function(error, response, body) {
+                /* jshint sub:true */
+
                 should.exist(iotAgentConfig.types['Light']);
                 done();
             });
@@ -263,6 +265,8 @@ describe.only('Device Group Configuration API', function() {
         });
         it('should remove it from the configuration', function(done) {
             request(optionsDelete, function(error, response, body) {
+                /* jshint sub:true */
+
                 should.not.exist(iotAgentConfig.types['Light']);
                 done();
             });
@@ -312,6 +316,8 @@ describe.only('Device Group Configuration API', function() {
         });
         it('should update the values in the configuration', function(done) {
             request(optionsUpdate, function(error, response, body) {
+                /* jshint sub:true */
+
                 iotAgentConfig.types['Light'].cbHost.should.equal('http://anotherUnexistentHost:1026');
                 done();
             });
