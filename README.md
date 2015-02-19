@@ -286,7 +286,9 @@ listdevices
 	List all the devices that have been registered in this IoT Agent session
 ```
 ### Agent tester
-The library also offers a Context Broker client that can be used to simulate queries and other operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy attributes and checking the appropriate values for active ones.
+The library also offers a Context Broker and IoT Agent client that can be used to:
+* Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy attributes and checking the appropriate values for active ones.
+* Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
 
 The tester can be started with the following command, from the root folder of the project:
 ```
@@ -314,19 +316,50 @@ discover <entity> <type>
 
 	Get all the context providers for a entity and type.
 
-config <host> <port> <service> <subservice>  
+configCb <host> <port> <service> <subservice>  
 
 	Config a new host and port for the remote Context Broker.
 
-showConfig  
+showConfigCb  
 
-	Show the current configuration of the client.
+	Show the current configuration of the client for the Context Broker.
 
-provision <host> <port> <filename>  
+configIot <host> <port> <service> <subservice>  
+
+	Config a new host and port for the remote IoT Agent.
+
+showConfigIot  
+
+	Show the current configuration of the client for the IoT Agent.
+
+provision <filename>  
 
 	Provision a new device using the Device Provisioning API. The device configuration is 
-	read from the script location.
+	read from the file specified in the "filename" parameter.
+
+listProvisioned  
+
+	List all the provisioned devices in an IoT Agent.
+
+removeProvisioned <deviceId>  
+
+	Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
+
+addGroup <filename>  
+
+	Add a new device group to the specified IoT Agent through the Configuration API. The 
+	body is taken from the file specified in the "filename" parameter.
+
+listGroups  
+
+	List all the device groups created in the selected IoT Agent for the configured service
+
+removeGroup  
+
+	Remove the device group corresponding to the current configured subservice.
 ```
+The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively. Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be deleted upon startup.
+
 ## <a name="configuration"/> Configuration
 The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent. The Agent Console reads the same configuration from the `config.js` file.
 

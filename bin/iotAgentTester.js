@@ -35,6 +35,13 @@ var config = require('../config'),
         service: 'tester',
         subservice: '/test'
     },
+    configIot = {
+        host: 'localhost',
+        port: 4041,
+        name: 'default',
+        service: 'tester',
+        subservice: '/test'
+    },
     separator = '\n\n\t';
 
 function queryContext(commands) {
@@ -177,6 +184,27 @@ function configure(commands) {
     config.subservice = commands[3];
 }
 
+function showConfig(commands) {
+    console.log('\nCurrent configuration:\n\n');
+    console.log(JSON.stringify(config, null, 4));
+    console.log('\n');
+    clUtils.prompt();
+}
+
+function configureIot(commands) {
+    configIot.host = commands[0];
+    configIot.port = commands[1];
+    config.service = commands[2];
+    config.subservice = commands[3];
+}
+
+function showConfigIot(commands) {
+    console.log('\nCurrent configuration:\n\n');
+    console.log(JSON.stringify(configIot, null, 4));
+    console.log('\n');
+    clUtils.prompt();
+}
+
 function discoverContext(commands) {
     var options = {
         url: 'http://' + config.host + ':' + config.port + '/v1/registry/discoverContextAvailability',
@@ -212,7 +240,7 @@ function discoverContext(commands) {
 function provisionDevice(commands) {
     function generateOptions(deviceConfig, callback) {
         var options = {
-            uri: 'http://' + commands[0] + ':' + commands[1] + '/iot/devices',
+            uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
             method: 'POST'
         };
 
@@ -246,7 +274,7 @@ function provisionDevice(commands) {
         clUtils.prompt();
     }
 
-    fs.readFile(commands[2], 'utf8', function (error, deviceConfig) {
+    fs.readFile(commands[0], 'utf8', function (error, deviceConfig) {
         if (error && error.code === 'ENOENT') {
             console.error('File not found');
             clUtils.prompt();
@@ -259,11 +287,157 @@ function provisionDevice(commands) {
     });
 }
 
-function showConfig(commands) {
-    console.log('\nCurrent configuration:\n\n');
-    console.log(JSON.stringify(config, null, 4));
-    console.log('\n');
-    clUtils.prompt();
+function listProvisioned(commands) {
+    var options = {
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
+        method: 'GET'
+    };
+
+    console.log('Devices provisioned in host [%s:%s]', configIot.host, configIot.port);
+    console.log('----------------------------------------------------------------');
+
+    request(options, function(error, result, body) {
+        if (error) {
+            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+        } else if (result.statusCode === 200 && body) {
+            var parsedBody = JSON.parse(body);
+            console.log(JSON.stringify(parsedBody, null, 4));
+        } else {
+            console.log('Unexpected application error. Status: ' + result.statusCode);
+        }
+        clUtils.prompt();
+    });
+}
+
+function removeProvisioned(commands) {
+    var options = {
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices/' + commands[0],
+        method: 'DELETE'
+    };
+
+    console.log('Removing device [%s] [%s:%s]', commands[0], configIot.host, configIot.port);
+    console.log('----------------------------------------------------------------');
+
+    request(options, function(error, result, body) {
+        if (error) {
+            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+        } else if (result.statusCode === 200 && body) {
+            var parsedBody = JSON.parse(body);
+            console.log('Device [%s] removed successfully', commands[0]);
+        } else {
+            console.log('Unexpected application error. Status: ' + result.statusCode);
+        }
+        clUtils.prompt();
+    });
+}
+
+function addGroup(commands) {
+    console.log('Adding device groups to host [%s:%s] from file [%s]', configIot.host, configIot.port, commands[0]);
+
+    function generateOptions(deviceConfig, callback) {
+        var options = {
+            uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+            method: 'POST',
+            headers: {
+                'fiware-service': configIot.service,
+                'fiware-servicepath': configIot.subservice
+            }
+        };
+
+        try {
+            var payload = JSON.parse(deviceConfig);
+            options.json = payload;
+            callback(null, options);
+        } catch (e) {
+            callback('Wrong JSON. Couldn\'t parse');
+        }
+    }
+
+    function sendProvisionRequest(options, callback) {
+        request(options, function(error, result, body) {
+            if (error) {
+                callback('Couldn\'t connect with the provisioning server: ' + error.toString());
+            } else if (result.statusCode === 200 && body) {
+                callback(null, 'Device group successfully provisioned');
+            } else {
+                callback('Unexpected application error. Status: ' + result.statusCode);
+            }
+        });
+    }
+
+    function handleOut(error, msg) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log(msg);
+        }
+        clUtils.prompt();
+    }
+
+    fs.readFile(commands[0], 'utf8', function (error, deviceConfig) {
+        if (error && error.code === 'ENOENT') {
+            console.error('File not found');
+            clUtils.prompt();
+        } else {
+            async.waterfall([
+                async.apply(generateOptions, deviceConfig),
+                sendProvisionRequest
+            ], handleOut);
+        }
+    });
+}
+
+function removeGroup(commands) {
+    var options = {
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+        method: 'DELETE',
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': configIot.subservice
+        }
+    };
+
+    console.log('Removing device group for subservice [%s] from [%s:%s]',
+        configIot.subservice, configIot.host, configIot.port);
+
+    console.log('----------------------------------------------------------------');
+
+    request(options, function(error, result, body) {
+        if (error) {
+            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+        } else if (result.statusCode === 200 && body) {
+            console.log('Device group for subservice [%s] removed successfully', configIot.subservice);
+        } else {
+            console.log('Unexpected application error. Status: ' + result.statusCode);
+        }
+        clUtils.prompt();
+    });
+}
+
+function listGroups(commands) {
+    console.log('Devices groups provisioned in host [%s:%s]', configIot.host, configIot.port);
+    console.log('----------------------------------------------------------------');
+    var options = {
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+        method: 'GET',
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': '/*'
+        }
+    };
+
+    request(options, function(error, result, body) {
+        console.log(JSON.stringify(result.headers));
+        if (error) {
+            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+        } else if (result.statusCode === 200 && body) {
+            var parsedBody = JSON.parse(body);
+            console.log(JSON.stringify(parsedBody, null, 4));
+        } else {
+            console.log('Unexpected application error. Status: ' + result.statusCode);
+        }
+        clUtils.prompt();
+    });
 }
 
 var commands = {
@@ -294,21 +468,57 @@ var commands = {
         description: '\tGet all the context providers for a entity and type.',
         handler: discoverContext
     },
-    'config': {
+    'configCb': {
         parameters: ['host', 'port', 'service', 'subservice'],
         description: '\tConfig a new host and port for the remote Context Broker.',
         handler: configure
     },
-    'showConfig': {
+    'showConfigCb': {
         parameters: [],
-        description: '\tShow the current configuration of the client.',
+        description: '\tShow the current configuration of the client for the Context Broker.',
         handler: showConfig
     },
+    'configIot': {
+        parameters: ['host', 'port', 'service', 'subservice'],
+        description: '\tConfig a new host and port for the remote IoT Agent.',
+        handler: configureIot
+    },
+    'showConfigIot': {
+        parameters: [],
+        description: '\tShow the current configuration of the client for the IoT Agent.',
+        handler: showConfigIot
+    },
     'provision': {
-        parameters: ['host', 'port', 'filename'],
+        parameters: ['filename'],
         description: '\tProvision a new device using the Device Provisioning API. The device configuration is \n' +
-            '\tread from the script location.',
+            '\tread from the file specified in the "filename" parameter.',
         handler: provisionDevice
+    },
+    'listProvisioned': {
+        parameters: [],
+        description: '\tList all the provisioned devices in an IoT Agent.',
+        handler: listProvisioned
+    },
+    'removeProvisioned': {
+        parameters: ['deviceId'],
+        description: '\tRemove the selected provisioned device from the IoT Agent, specified by its Device ID.',
+        handler: removeProvisioned
+    },
+    'addGroup': {
+        parameters: ['filename'],
+        description: '\tAdd a new device group to the specified IoT Agent through the Configuration API. The \n' +
+            '\tbody is taken from the file specified in the "filename" parameter.',
+        handler: addGroup
+    },
+    'listGroups': {
+        parameters: [],
+        description: '\tList all the device groups created in the selected IoT Agent for the configured service',
+        handler: listGroups
+    },
+    'removeGroup': {
+        parameters: [],
+        description: '\tRemove the device group corresponding to the current configured subservice.',
+        handler: removeGroup
     }
 };
 
