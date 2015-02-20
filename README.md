@@ -375,6 +375,8 @@ These are the parameters that can be configured in the global section:
 ### Overview
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and subservice mapping, security information and attribute configuration can be specified in a per device way instead of relaying on the type configuration. The following section specified the format of the device payload; this will be the payload accepted by all the write operations and that will be returned by all the read operations.
 
+Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and outgoing requests).
+
 ### Device model
 | Attribute           | Definition                                     | Example of value                      |
 | ------------------- |:---------------------------------------------- |:------------------------------------- |
