@@ -222,11 +222,13 @@ In the case of NGSI requests affecting multiple entities, this handler will be c
 ###### Signature
 ```
 function listDevices(callback)
+function listDevices(limit, offset, callback)
 ```
 ###### Description
-Return a list of all the devices registered in the system. 
+Return a list of all the devices registered in the system. If invoked with three parameters, it limits the number of devices to return and the first device to be returned.
 ###### Params
-
+* limit: maximum number of devices to return in the results.
+* offset: number of results to skip before returning the results.
 ##### iotagentLib.getDevice()
 ###### Signature
 ```
@@ -434,6 +436,10 @@ Returns:
 
 #### GET /iot/devices
 Returns a list of all the devices in the device registry with all its data.
+
+Query parameters:
+* limit: if present, limits the number of devices returned in the list.
+* offset: if present, skip that number of devices from the original query.
 
 Returns: 
 * 200 OK if successful, and the selected Device payload in JSON format.
