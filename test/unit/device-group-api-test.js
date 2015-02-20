@@ -414,7 +414,7 @@ describe('Device Group Configuration API', function() {
             done();
         });
 
-        afterEach(function(done){
+        afterEach(function(done) {
             nock.cleanAll();
             done();
         });
