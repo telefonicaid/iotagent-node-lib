@@ -51,7 +51,7 @@ describe('Device provisioning API: Provision devices', function() {
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
+                .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
@@ -73,8 +73,8 @@ describe('Device provisioning API: Provision devices', function() {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json'),
             headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
             }
         };
 
@@ -119,14 +119,26 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
+        it('should store service and subservice info from the headers along with the device data', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                iotAgentLib.listDevices(function(error, results) {
+                    should.exist(results[0].service);
+                    results[0].service.should.equal('smartGondor');
+                    should.exist(results[0].subservice);
+                    results[0].subservice.should.equal('/gardens');
+                    done();
+                });
+            });
+        });
     });
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
         };
@@ -150,8 +162,8 @@ describe('Device provisioning API: Provision devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
             method: 'POST',
             headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         };
