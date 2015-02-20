@@ -224,4 +224,63 @@ describe('Device provisioning API: List provisioned devices', function() {
             });
         });
     });
+
+    describe('When a request for listing all the devices with a offset of 3 arrives', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'GET'
+        };
+
+        function createDeviceRequest(i, callback) {
+            var provisioningDeviceOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                },
+                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            };
+
+            provisioningDeviceOptions.json.name = provisioningDeviceOptions.json.name + '_' + i;
+
+            request(provisioningDeviceOptions, callback);
+        }
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .times(10)
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            iotAgentLib.clearAll(function() {
+                async.times(10, createDeviceRequest, function(error, results) {
+                    done();
+                });
+            });
+        });
+
+        it('should skip the first 3 devices', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                should.not.exist(error);
+
+                for (var i = 0; i < parsedBody.length; i++) {
+                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody[i].id).should.equal(-1);
+                }
+
+                done();
+            });
+        });
+    });
 });
