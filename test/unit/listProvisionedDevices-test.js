@@ -48,7 +48,11 @@ var iotAgentLib = require('../../'),
     };
 
 describe('Device provisioning API: List provisioned devices', function() {
-    var provisioning1Options = {
+    var provisioning1Options,
+        provisioning2Options;
+
+    beforeEach(function(done) {
+        provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
@@ -56,7 +60,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
-        },
+        };
+
         provisioning2Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -67,7 +72,6 @@ describe('Device provisioning API: List provisioned devices', function() {
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
         };
 
-    beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -162,6 +166,60 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
+                done();
+            });
+        });
+    });
+    describe('When a request for listing all the devices with a limit of 3 arrives', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'GET'
+        };
+
+        function createDeviceRequest(i, callback) {
+            var provisioningDeviceOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                },
+                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            };
+
+            provisioningDeviceOptions.json.name = provisioningDeviceOptions.json.name + '_' + i;
+
+            request(provisioningDeviceOptions, callback);
+        }
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .times(10)
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            iotAgentLib.clearAll(function() {
+                async.times(10, createDeviceRequest, function(error, results) {
+                    done();
+                });
+            });
+        });
+
+        it('should return just 3 devices', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                should.not.exist(error);
+                parsedBody.length.should.equal(3);
                 done();
             });
         });
