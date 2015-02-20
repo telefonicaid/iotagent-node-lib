@@ -572,14 +572,14 @@ Returns:
 ### Type Configuration
 The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
 
-* service: service of the devices of this type.
-* subservice: subservice of the devices of this type.
-* active: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
-* lazy: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
-* commands: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
-* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
-* trust: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
-* contextBroker: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
+* **service**: service of the devices of this type.
+* **subservice**: subservice of the devices of this type.
+* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
+* **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific types of devices.
 
 ## <a name="securedaccess"/> Secured access to the Context Broker
 For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
