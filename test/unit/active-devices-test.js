@@ -64,10 +64,7 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Humidity': {
-                contextBroker: {
-                    host: '192.168.1.1',
-                    port: '3024'
-                },
+                cbHost: 'http://192.168.1.1:3024',
                 commands: [],
                 lazy: [],
                 active: [

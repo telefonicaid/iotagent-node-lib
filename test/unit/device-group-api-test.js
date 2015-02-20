@@ -24,6 +24,8 @@
 
 var iotAgentLib = require('../../'),
     async = require('async'),
+    nock = require('nock'),
+    utils = require('../tools/utils'),
     groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
     request = require('request'),
     should = require('should'),
@@ -53,7 +55,7 @@ var iotAgentLib = require('../../'),
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    type: 'Light',
+                    type: 'SensorMachine',
                     trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                     cbHost: 'http://unexistentHost:1026',
                     commands: [
@@ -184,7 +186,7 @@ describe('Device Group Configuration API', function() {
             request(optionsCreation, function(error, response, body) {
                 /* jshint sub:true */
 
-                should.exist(iotAgentConfig.types['Light']);
+                should.exist(iotAgentConfig.types['SensorMachine']);
                 done();
             });
         });
@@ -267,7 +269,7 @@ describe('Device Group Configuration API', function() {
             request(optionsDelete, function(error, response, body) {
                 /* jshint sub:true */
 
-                should.not.exist(iotAgentConfig.types['Light']);
+                should.not.exist(iotAgentConfig.types['SensorMachine']);
                 done();
             });
         });
@@ -318,7 +320,7 @@ describe('Device Group Configuration API', function() {
             request(optionsUpdate, function(error, response, body) {
                 /* jshint sub:true */
 
-                iotAgentConfig.types['Light'].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                iotAgentConfig.types['SensorMachine'].cbHost.should.equal('http://anotherUnexistentHost:1026');
                 done();
             });
         });
@@ -384,6 +386,43 @@ describe('Device Group Configuration API', function() {
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
                 body.service.should.equal('TestService');
+                done();
+            });
+        });
+    });
+    describe('When a new device from a created group arrives to the IoT Agent and sends a measure', function() {
+        var contextBrokerMock,
+            values = [
+                {
+                    name: 'status',
+                    type: 'String',
+                    value: 'STARTING'
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext3.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            done();
+        });
+
+        afterEach(function(done) {
+            nock.cleanAll();
+            done();
+        });
+
+        it('should use the configured data', function(done) {
+            iotAgentLib.update('machine1', 'SensorMachine', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
