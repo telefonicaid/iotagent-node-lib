@@ -51,11 +51,19 @@ describe('Device provisioning API: List provisioned devices', function() {
     var provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         },
         provisioning2Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
         };
 
@@ -98,6 +106,10 @@ describe('Device provisioning API: List provisioned devices', function() {
     describe('When a request for the list of provisioned devices arrive', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             method: 'GET'
         };
 
@@ -114,6 +126,10 @@ describe('Device provisioning API: List provisioned devices', function() {
     describe('When a request for the information about a specific device arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             method: 'GET'
         };
 
@@ -135,6 +151,10 @@ describe('Device provisioning API: List provisioned devices', function() {
     describe('When a request for an unexistent device arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             method: 'GET'
         };
 

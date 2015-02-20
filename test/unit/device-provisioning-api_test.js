@@ -71,7 +71,11 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
         };
 
         it('should add the device to the devices list', function(done) {
@@ -120,6 +124,10 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
         };
 
@@ -141,6 +149,10 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         };
 
@@ -164,6 +176,23 @@ describe('Device provisioning API: Provision devices', function() {
                     results.length.should.equal(1);
                     done();
                 });
+            });
+        });
+    });
+    describe('When a device provisioning request without the mandatory headers arrives to the Agent', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            headers: {},
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+        };
+
+        it('should raise a MISSING_HEADERS error, indicating the missing attributes', function(done) {
+            request(options, function(error, response, body) {
+                should.exist(body);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
             });
         });
     });

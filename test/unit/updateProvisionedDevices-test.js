@@ -51,11 +51,19 @@ describe('Device provisioning API: Update provisioned devices', function() {
     var provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         },
         provisioning2Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
         };
 
@@ -109,6 +117,10 @@ describe('Device provisioning API: Update provisioned devices', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateProvisionDevice.json')
         };
 
@@ -124,6 +136,10 @@ describe('Device provisioning API: Update provisioned devices', function() {
             request(optionsUpdate, function(error, response, body) {
                 var options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+                    headers: {
+                        'fiware-service': 'TestService',
+                        'fiware-servicepath': '/testingPath'
+                    },
                     method: 'GET'
                 };
 
@@ -142,6 +158,10 @@ describe('Device provisioning API: Update provisioned devices', function() {
             request(optionsUpdate, function(error, response, body) {
                 var options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+                    headers: {
+                        'fiware-service': 'TestService',
+                        'fiware-servicepath': '/testingPath'
+                    },
                     method: 'GET'
                 };
 
@@ -160,6 +180,10 @@ describe('Device provisioning API: Update provisioned devices', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateProvisionDeviceWithId.json')
         };
 
