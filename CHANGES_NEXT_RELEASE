@@ -1,3 +1,4 @@
 - ADD Keywords to the package.json.
 - ADD Configuration API for dynamically creating configuration groups.
 - ADD Device Provisioning API and Device Configuration API commands in the testing clients.
+- ADD Pagination in the Device List operations.
