@@ -11,16 +11,22 @@
             "type": "string"
         }
     ],
+    "lazy": [
+        {
+            "name": "luminance",
+            "type": "lumens"
+        }
+    ],
     "static_attributes": [
         {
-            "name": "attr_name",
-            "type": "string"
+            "name": "hardcodedAttr",
+            "type": "hardcodedType"
         }
     ],
     "commands": [
         {
-            "name": "luminance",
-            "type": "lumens"
+            "name": "commandAttr",
+            "type": "commandType"
         }
     ],
     "internal_attributes": [

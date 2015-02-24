@@ -106,9 +106,15 @@ describe('Device provisioning API: Provision devices', function() {
                 iotAgentLib.listDevices(function(error, results) {
                     should.exist(results[0].timezone);
                     results[0].timezone.should.equal('America/Santiago');
+                    should.exist(results[0].lazy);
+                    results[0].lazy.length.should.equal(1);
+                    results[0].lazy[0].name.should.equal('luminance');
+                    should.exist(results[0].staticAttributes);
+                    results[0].commands.length.should.equal(1);
+                    results[0].commands[0].name.should.equal('commandAttr');
                     should.exist(results[0].staticAttributes);
                     results[0].staticAttributes.length.should.equal(1);
-                    results[0].staticAttributes[0].name.should.equal('attr_name');
+                    results[0].staticAttributes[0].name.should.equal('hardcodedAttr');
                     should.exist(results[0].active);
                     results[0].active.length.should.equal(1);
                     results[0].active[0].name.should.equal('attr_name');
