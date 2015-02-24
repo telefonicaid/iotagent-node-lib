@@ -496,6 +496,7 @@ Device groups contain the following attributes:
 * **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **staticAttributes**: this attributes will be added to all the entities of this group 'as is'.
 * **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
 
 #### POST /iot/agent/:agentName/services
@@ -584,6 +585,7 @@ The IoT Agent can be configured to expect certain kinds of devices, with preconf
 * **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* **staticAttributes**: this array of attributes will be added to every entity of this type 'as is'.
 * **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
 * **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific types of devices.
 
