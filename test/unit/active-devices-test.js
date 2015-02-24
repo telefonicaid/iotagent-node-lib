@@ -79,9 +79,9 @@ var iotAgentLib = require('../../'),
                 lazy: [],
                 staticAttributes: [
                     {
-                        "name": "location",
-                        "type": "Vector",
-                        "value": "(123,523)"
+                        'name': 'location',
+                        'type': 'Vector',
+                        'value': '(123,523)'
                     }
                 ],
                 active: [
