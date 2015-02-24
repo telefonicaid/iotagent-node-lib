@@ -73,6 +73,23 @@ var iotAgentLib = require('../../'),
                         type: 'percentage'
                     }
                 ]
+            },
+            'Motion': {
+                commands: [],
+                lazy: [],
+                staticAttributes: [
+                    {
+                        "name": "location",
+                        "type": "Vector",
+                        "value": "(123,523)"
+                    }
+                ],
+                active: [
+                    {
+                        name: 'humidity',
+                        type: 'percentage'
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -202,4 +219,34 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When an IoT Agent receives information for a type with static attributes', function() {
+        var newValues = [
+            {
+                name: 'moving',
+                type: 'Boolean',
+                value: 'true'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextStaticAttributes.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+        it('should decorate the entity with the static attributes', function(done) {
+            iotAgentLib.update('motion1', 'Motion', newValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });
