@@ -2,3 +2,4 @@
 - ADD Configuration API for dynamically creating configuration groups.
 - ADD Device Provisioning API and Device Configuration API commands in the testing clients.
 - ADD Pagination in the Device List operations.
+- FIX Remove mandatory constraint for service, servicepath and commands in Device Provisioning (#46).
