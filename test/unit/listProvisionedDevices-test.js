@@ -287,7 +287,7 @@ describe('Device provisioning API: List provisioned devices', function() {
             method: 'GET'
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             provisioning3Options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -304,7 +304,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
-            request(provisioning3Options, function (error) {
+            request(provisioning3Options, function(error) {
                 done();
             });
         });
