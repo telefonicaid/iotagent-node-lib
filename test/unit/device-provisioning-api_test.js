@@ -154,7 +154,6 @@ describe('Device provisioning API: Provision devices', function() {
                 should.exist(body);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_ATTRIBUTES');
-                body.message.should.match(/.*service_path.*/);
                 body.message.should.match(/.*entity_type.*/);
                 done();
             });
