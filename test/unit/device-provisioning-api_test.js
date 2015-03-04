@@ -24,6 +24,7 @@
 
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
+
     should = require('should'),
     nock = require('nock'),
     request = require('request'),
@@ -59,7 +60,7 @@ describe('Device provisioning API: Provision devices', function() {
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
-            done();
+            iotAgentLib.clearAll(done);
         });
     });
 
@@ -133,6 +134,54 @@ describe('Device provisioning API: Provision devices', function() {
                     results[0].service.should.equal('smartGondor');
                     should.exist(results[0].subservice);
                     results[0].subservice.should.equal('/gardens');
+                    done();
+                });
+            });
+        });
+    });
+    describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should add the device to the devices list', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results.length.should.equal(1);
+                    done();
+                });
+            });
+        });
+        it('should store the device with the provided entity id, name and type', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results[0].id.should.equal('MicroLight1');
+                    results[0].name.should.equal('FirstMicroLight');
+                    results[0].type.should.equal('MicroLights');
                     done();
                 });
             });

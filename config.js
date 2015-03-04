@@ -66,7 +66,8 @@ var config = {
     service: 'smartGondor',
     subservice: '/gardens',
     providerUrl: 'http://192.168.56.1:4041',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    defaultType: 'Thing'
 };
 
 module.exports = config;
