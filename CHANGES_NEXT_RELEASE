@@ -3,4 +3,5 @@
 - ADD Device Provisioning API and Device Configuration API commands in the testing clients.
 - ADD Pagination in the Device List operations.
 - FIX Remove mandatory constraint for service, servicepath and commands in Device Provisioning (#46).
-- FIX List devices based on the service and servicepath (#45);
+- FIX List devices based on the service and servicepath (#45).
+- FIX Lazy attributes mandatory in Device Provisioning (#51).
