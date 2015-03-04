@@ -157,11 +157,15 @@ can be invoked with an externally added deviceInformation object to overwrite th
 ##### iotagentLib.listDevices()
 ###### Signature
 ```
-function listDevices(callback)
+function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
-Return a list of all the devices registered in the system.
+Return a list of all the devices registered in the specified service and subservice.
 ###### Params
+* service: service from where the devices will be retrieved.
+* subservice: subservice from where the devices will be retrieved.
+* limit: maximum number of results to retrieve (optional).
+* offset: number of results to skip from the listing (optional).
 
 ##### iotagentLib.setDataUpdateHandler()
 ###### Signature

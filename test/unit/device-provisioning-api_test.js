@@ -83,7 +83,7 @@ describe('Device provisioning API: Provision devices', function() {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results.length.should.equal(1);
                     done();
                 });
@@ -92,7 +92,7 @@ describe('Device provisioning API: Provision devices', function() {
         it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results[0].id.should.equal('Light1');
                     results[0].name.should.equal('TheFirstLight');
                     results[0].type.should.equal('TheLightType');
@@ -103,7 +103,7 @@ describe('Device provisioning API: Provision devices', function() {
         it('should store the device with the per device information', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     should.exist(results[0].timezone);
                     results[0].timezone.should.equal('America/Santiago');
                     should.exist(results[0].lazy);
@@ -128,7 +128,7 @@ describe('Device provisioning API: Provision devices', function() {
         it('should store service and subservice info from the headers along with the device data', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     should.exist(results[0].service);
                     results[0].service.should.equal('smartGondor');
                     should.exist(results[0].subservice);
@@ -189,7 +189,7 @@ describe('Device provisioning API: Provision devices', function() {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results.length.should.equal(1);
                     done();
                 });
