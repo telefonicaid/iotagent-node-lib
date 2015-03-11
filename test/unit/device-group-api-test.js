@@ -195,7 +195,7 @@ describe('Device Group Configuration API', function() {
         it('should call the configuration creation handler', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
                 should.exist(newConfiguration);
                 should.exist(callback);
                 newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
@@ -346,7 +346,7 @@ describe('Device Group Configuration API', function() {
         it('should call the configuration creation handler', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
                 should.exist(newConfiguration);
                 should.exist(callback);
                 newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
