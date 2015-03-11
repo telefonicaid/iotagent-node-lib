@@ -520,7 +520,7 @@ Device groups contain the following attributes:
 * **staticAttributes**: this attributes will be added to all the entities of this group 'as is'.
 * **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
 
-#### POST /iot/agent/:agentName/services
+#### POST /iot/agents/:agentName/services
 Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
 
 Body params:
@@ -565,7 +565,7 @@ Returns:
 * 400 WRONG_SYNTAX if the body doesn't comply with the schema.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### GET /iot/agent/:agentName/services
+#### GET /iot/agents/:agentName/services
 Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns: 
@@ -573,7 +573,7 @@ Returns:
 * 400 MISSING_HEADERS if any of the mandatory headers is not present.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### PUT /iot/agent/:agentName/services
+#### PUT /iot/agents/:agentName/services
 Modifies the information for a device group configuration, identified by its service and subservice. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
 
 E.g.:
@@ -589,7 +589,7 @@ Returns:
 * 400 MISSING_HEADERS if any of the mandatory headers is not present.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### DELETE /iot/agent/:agentName/services
+#### DELETE /iot/agents/:agentName/services
 Removes a device group configuration from the DB, specified by the service and subservice headers. 
 
 Returns: 
