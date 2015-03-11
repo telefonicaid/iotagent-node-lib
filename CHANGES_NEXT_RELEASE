@@ -6,3 +6,4 @@
 - FIX List devices based on the service and servicepath (#45).
 - FIX Lazy attributes mandatory in Device Provisioning (#51).
 - FIX Should allow to provision devices with unconfigured type (#50)
+- ADD Handler for configuration changes from the Configuration API.
