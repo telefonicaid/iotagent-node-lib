@@ -190,6 +190,23 @@ describe('Device Group Configuration API', function() {
                 done();
             });
         });
+        it('should call the configuration creation handler', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
+                should.exist(newConfiguration);
+                should.exist(callback);
+                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                handlerCalled = true;
+                callback();
+            });
+
+            request(optionsCreation, function(error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
     });
     describe('When a creation request arrives without the fiware-service header', function() {
         beforeEach(function() {
