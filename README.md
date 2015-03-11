@@ -222,7 +222,23 @@ The callback must be invoked with the updated Context Element, using the informa
 In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
 ###### Params
  * newHandler: User handler for query requests.
- 
+
+##### iotagentLib.setConfigurationHandler()
+###### Signature
+```
+function setConfigurationHandler(newHandler)
+```
+###### Description
+Sets the new user handler for the configuration updates. This handler will be called every time a new configuration is created or an old configuration is updated. 
+
+The handler must adhere to the following signature:
+```
+function(newConfiguration, callback)
+```
+The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
+
+For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the handler will be called once for each of the configurations (both in the case of the creatinos and the updates).
+
 ##### iotagentLib.listDevices()
 ###### Signature
 ```

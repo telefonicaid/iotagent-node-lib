@@ -151,6 +151,8 @@ describe('Device Group Configuration API', function() {
     });
 
     afterEach(function(done) {
+        iotAgentLib.setConfigurationHandler();
+
         iotAgentLib.deactivate(function() {
             groupRegistryMemory.clear(done);
         });
@@ -187,6 +189,23 @@ describe('Device Group Configuration API', function() {
                 /* jshint sub:true */
 
                 should.exist(iotAgentConfig.types['SensorMachine']);
+                done();
+            });
+        });
+        it('should call the configuration creation handler', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+                should.exist(newConfiguration);
+                should.exist(callback);
+                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                handlerCalled = true;
+                callback();
+            });
+
+            request(optionsCreation, function(error, response, body) {
+                handlerCalled.should.equal(true);
                 done();
             });
         });
@@ -321,6 +340,23 @@ describe('Device Group Configuration API', function() {
                 /* jshint sub:true */
 
                 iotAgentConfig.types['SensorMachine'].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                done();
+            });
+        });
+        it('should call the configuration creation handler', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+                should.exist(newConfiguration);
+                should.exist(callback);
+                newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
+                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                handlerCalled = true;
+                callback();
+            });
+
+            request(optionsUpdate, function(error, response, body) {
+                handlerCalled.should.equal(true);
                 done();
             });
         });
