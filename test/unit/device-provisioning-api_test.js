@@ -49,6 +49,8 @@ var iotAgentLib = require('../../'),
 
 describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
+        nock.cleanAll();
+
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -65,6 +67,8 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     afterEach(function(done) {
+        nock.cleanAll();
+
         iotAgentLib.deactivate(done);
     });
 
@@ -205,6 +209,42 @@ describe('Device provisioning API: Provision devices', function() {
                 body.name.should.equal('MISSING_ATTRIBUTES');
                 body.message.should.match(/.*entity_type.*/);
                 done();
+            });
+        });
+    });
+    describe('When two device provisioning requests with the same service and Device ID arrive', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should raise a DUPLICATE_ID error, indicating the ID was already in use', function(done) {
+            request(options, function(error, response, body) {
+                request(options, function(error, response, body) {
+                    should.exist(body);
+                    response.statusCode.should.equal(400);
+                    body.name.should.equal('DUPLICATE_DEVICE_ID');
+                    done();
+                });
             });
         });
     });
