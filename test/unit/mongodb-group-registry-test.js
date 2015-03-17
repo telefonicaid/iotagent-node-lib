@@ -23,6 +23,7 @@
 'use strict';
 
 var iotAgentLib = require('../../'),
+    _ = require('underscore'),
     async = require('async'),
     request = require('request'),
     should = require('should'),
@@ -196,6 +197,18 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
+    describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
+        it('should return a DUPLICATE_GROUP error', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                request(optionsCreation, function(error, response, body) {
+                    response.statusCode.should.equal(400);
+                    body.name.should.equal('DUPLICATE_GROUP');
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a device group removal request arrives', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
@@ -234,11 +247,27 @@ describe('MongoDB Group Registry test', function() {
 
     describe('When a device group listing request arrives', function() {
         beforeEach(function(done) {
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+
+            optionsCreation2.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation2.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation2.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
             async.series([
-                async.apply(request, optionsCreation),
-                async.apply(request, optionsCreation),
-                async.apply(request, optionsCreation)
-            ], done);
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
+            ], function (error, results) {
+                done();
+            });
         });
 
         it('should return all the configured device groups from the database', function(done) {
