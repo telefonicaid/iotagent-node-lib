@@ -8,3 +8,4 @@
 - FIX Should allow to provision devices with unconfigured type (#50)
 - ADD Handler for configuration changes from the Configuration API.
 - ADD Constraint to forbid multiple devices with the same ID (#48).
+- ADD Constraint to ensure uniqueness of device configurations (#53).
