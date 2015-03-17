@@ -165,6 +165,42 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
+    describe('When a device with the same Device ID tries to register to the IOT Agent', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should be registered in mongodb with all its attributes', function(done) {
+            iotAgentLib.register(device1, function(error) {
+                iotAgentLib.register(device1, function(error) {
+                    should.exist(error);
+                    error.name.should.equal('DUPLICATE_DEVICE_ID');
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
             var expectedPayload3 = utils
