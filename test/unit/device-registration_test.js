@@ -106,7 +106,7 @@ describe('IoT Agent Device Registration', function() {
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
+                iotAgentLib.clearAll(done);
             });
         });
 
@@ -132,7 +132,7 @@ describe('IoT Agent Device Registration', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
+                iotAgentLib.clearAll(done);
             });
         });
 
@@ -159,7 +159,7 @@ describe('IoT Agent Device Registration', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
+                iotAgentLib.clearAll(done);
             });
         });
 
@@ -198,6 +198,7 @@ describe('IoT Agent Device Registration', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
+                    async.apply(iotAgentLib.clearAll),
                     async.apply(iotAgentLib.register, device1),
                     async.apply(iotAgentLib.register, device2)
                 ], done);
@@ -236,6 +237,7 @@ describe('IoT Agent Device Registration', function() {
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
+                    async.apply(iotAgentLib.clearAll),
                     async.apply(iotAgentLib.register, device1),
                     async.apply(iotAgentLib.register, device2)
                 ], done);
