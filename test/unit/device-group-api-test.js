@@ -23,6 +23,7 @@
 'use strict';
 
 var iotAgentLib = require('../../'),
+    _ = require('underscore'),
     async = require('async'),
     nock = require('nock'),
     utils = require('../tools/utils'),
@@ -210,6 +211,18 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
+    describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function() {
+        it('should return a 400 DUPLICATE_GROUP error', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                request(optionsCreation, function(error, response, body) {
+                    should.not.exist(error);
+                    response.statusCode.should.equal(400);
+                    body.name.should.equal('DUPLICATE_GROUP');
+                    done();
+                });
+            });
+        });
+    });
     describe('When a creation request arrives without the fiware-service header', function() {
         beforeEach(function() {
             delete optionsCreation.headers['fiware-service'];
@@ -383,10 +396,24 @@ describe('Device Group Configuration API', function() {
 
     describe('When a device group listing request arrives', function() {
         beforeEach(function(done) {
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+
+            optionsCreation2.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation2.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation2.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
             async.series([
-                async.apply(request, optionsCreation),
-                async.apply(request, optionsCreation),
-                async.apply(request, optionsCreation)
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
             ], done);
         });
 
