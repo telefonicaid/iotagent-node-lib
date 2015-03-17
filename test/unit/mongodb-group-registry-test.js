@@ -265,9 +265,7 @@ describe('MongoDB Group Registry test', function() {
                 async.apply(request, optionsCreation1),
                 async.apply(request, optionsCreation2),
                 async.apply(request, optionsCreation3)
-            ], function (error, results) {
-                done();
-            });
+            ], done);
         });
 
         it('should return all the configured device groups from the database', function(done) {

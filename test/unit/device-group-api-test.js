@@ -414,9 +414,7 @@ describe('Device Group Configuration API', function() {
                 async.apply(request, optionsCreation1),
                 async.apply(request, optionsCreation2),
                 async.apply(request, optionsCreation3)
-            ], function (error, results) {
-                done();
-            });
+            ], done);
         });
 
         it('should return a 200 OK', function(done) {
