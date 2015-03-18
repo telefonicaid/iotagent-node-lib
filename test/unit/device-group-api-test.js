@@ -328,7 +328,25 @@ describe('Device Group Configuration API', function() {
 
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
-            request(optionsCreation, done);
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+
+            optionsCreation1.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation1.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
+            async.series([
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
+            ], done);
         });
 
         it('should return a 200 OK', function(done) {
@@ -339,11 +357,21 @@ describe('Device Group Configuration API', function() {
             });
         });
 
-        it('should update the values in the database', function(done) {
+        it('should update the appropriate values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 request(optionsList, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    var found = false;
+                    body.count.should.equal(3);
+
+                    for (var i = 0; i < body.services.length; i++) {
+                        if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
+                            body.services[i].resource === '/deviceTest') {
+                            body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                            found = true;
+                        }
+                    }
+
+                    found.should.equal(true);
                     done();
                 });
             });
