@@ -49,6 +49,7 @@ var iotAgentLib = require('../../'),
                 service: 'smartGondor',
                 subservice: 'electricity',
                 trust: 'BBBB987654321',
+                type: 'Light',
                 commands: [],
                 lazy: [
                     {
@@ -65,6 +66,7 @@ var iotAgentLib = require('../../'),
             },
             'Termometer': {
                 commands: [],
+                type: 'Termometer',
                 lazy: [
                     {
                         name: 'temp',
@@ -133,14 +135,14 @@ describe('Secured access to the Context Broker', function() {
         });
 
         it('should ask Keystone for a token based on the trust token', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 keystoneMock.done();
                 done();
             });
         });
         it('should send the generated token in the x-auth header', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -175,7 +177,7 @@ describe('Secured access to the Context Broker', function() {
         });
 
         it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 error.name.should.equal('ACCESS_FORBIDDEN');
                 done();
@@ -207,7 +209,7 @@ describe('Secured access to the Context Broker', function() {
         });
 
         it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 error.name.should.equal('AUTHENTICATION_ERROR');
                 done();

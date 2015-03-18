@@ -185,14 +185,6 @@ describe('Device Group Configuration API', function() {
                 });
             });
         });
-        it('should add the device group to the statically configured ones', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                /* jshint sub:true */
-
-                should.exist(iotAgentConfig.types['SensorMachine']);
-                done();
-            });
-        });
         it('should call the configuration creation handler', function(done) {
             var handlerCalled = false;
 
@@ -348,14 +340,6 @@ describe('Device Group Configuration API', function() {
                 });
             });
         });
-        it('should update the values in the configuration', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                /* jshint sub:true */
-
-                iotAgentConfig.types['SensorMachine'].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                done();
-            });
-        });
         it('should call the configuration creation handler', function(done) {
             var handlerCalled = false;
 
@@ -474,7 +458,9 @@ describe('Device Group Configuration API', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
 
-            done();
+            async.series([
+                async.apply(request, optionsCreation)
+            ], done);
         });
 
         afterEach(function(done) {
@@ -483,11 +469,12 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should use the configured data', function(done) {
-            iotAgentLib.update('machine1', 'SensorMachine', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            iotAgentLib.update('machine1', '/deviceTest', '801230BJKL23Y9090DSFL123HJK09H324HV8732', values,
+                function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
         });
     });
 });
