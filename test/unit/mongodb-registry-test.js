@@ -94,11 +94,15 @@ var iotAgentLib = require('../../'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light'
+        type: 'Light',
+        resource: '/test',
+        apikey: '2345678ikjhgfr678i'
     },
     device2 = {
         id: 'term2',
-        type: 'Termometer'
+        type: 'Termometer',
+        resource: '/',
+        apikey: 'dsf8yy789iyushu786'
     },
     iotAgentDb;
 
@@ -154,11 +158,15 @@ describe('MongoDB Device Registry', function() {
                     should.exist(docs[0].staticAttributes);
                     should.exist(docs[0].internalAttributes.customAttribute);
                     should.exist(docs[0].active);
+                    should.exist(docs[0].resource);
+                    should.exist(docs[0].apikey);
                     docs[0].active.length.should.equal(1);
                     docs[0].staticAttributes.length.should.equal(1);
                     docs[0].staticAttributes[0].name.should.equal('location');
                     docs[0].active[0].name.should.equal('pressure');
                     docs[0].internalAttributes.customAttribute.should.equal('customValue');
+                    docs[0].resource.should.equal('/test');
+                    docs[0].apikey.should.equal('2345678ikjhgfr678i');
                     done();
                 });
             });
