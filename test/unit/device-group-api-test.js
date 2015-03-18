@@ -92,6 +92,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsUpdate = {
@@ -122,6 +126,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsList = {
@@ -366,6 +374,25 @@ describe('Device Group Configuration API', function() {
 
         afterEach(function() {
             optionsUpdate.headers['fiware-servicepath'] = '/testingPath';
+        });
+
+        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
+            });
+        });
+    });
+
+    describe('When a device group update request arrives without the mandatory parameters', function() {
+        beforeEach(function() {
+            delete optionsUpdate.qs.resource;
+        });
+
+        afterEach(function() {
+            optionsUpdate.qs.resource = '/deviceTest';
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {

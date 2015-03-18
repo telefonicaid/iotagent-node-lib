@@ -97,6 +97,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsUpdate = {
@@ -127,6 +131,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsList = {
