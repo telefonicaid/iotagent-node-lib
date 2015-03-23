@@ -255,8 +255,7 @@ describe('MongoDB Group Registry test', function() {
     });
 
     describe('When a multiple device group creation arrives', function() {
-        var optionsMultipleCreation = _.clone(optionsCreation),
-            optionsMultipleUpdate = _.clone(optionsUpdate);
+        var optionsMultipleCreation = _.clone(optionsCreation);
 
         beforeEach(function(done) {
             optionsMultipleCreation.json = utils.readExampleFile(
