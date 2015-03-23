@@ -369,7 +369,7 @@ describe('Device Group Configuration API', function() {
         });
 
         afterEach(function() {
-            optionsDelete.qs =  {
+            optionsDelete.qs = {
                 resource: '/deviceTest',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
             };
