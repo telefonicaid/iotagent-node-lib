@@ -53,6 +53,21 @@ var iotAgentLib = require('../../'),
                     }
                 ]
             },
+            'BrokenLight': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'temperature',
+                        type: 'centigrades'
+                    }
+                ],
+                active: [
+                    {
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    }
+                ]
+            },
             'Termometer': {
                 type: 'Termometer',
                 commands: [],
@@ -144,6 +159,23 @@ describe('Active attributes test', function() {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 500 TYPE_NOT_FOUND error', function(done) {
+            iotAgentLib.update('light1', 'BrokenLight', '', values, function(error) {
+                should.exist(error);
+                error.code.should.equal(500);
+                error.name.should.equal('TYPE_NOT_FOUND');
                 done();
             });
         });
