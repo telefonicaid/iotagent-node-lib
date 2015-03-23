@@ -505,6 +505,8 @@ Both approaches are better described in the sections bellow.
 ### Configuration API
 The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
+For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
+
 #### Device Group Model
 Device groups contain the following attributes:
 * **service**: service of the devices of this type.
@@ -574,7 +576,7 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 #### PUT /iot/agents/:agentName/services
-Modifies the information for a device group configuration, identified by its service and subservice. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
+Modifies the information for a device group configuration, identified by the `resource` and `apikey` query parameters. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
 
 E.g.:
 ```
@@ -590,7 +592,7 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 #### DELETE /iot/agents/:agentName/services
-Removes a device group configuration from the DB, specified by the service and subservice headers. 
+Removes a device group configuration from the DB, specified by the `resource` and `apikey` query parameters. 
 
 Returns: 
 * 200 OK if successful.
