@@ -501,6 +501,51 @@ describe('Device Group Configuration API', function() {
         });
     });
 
+
+
+
+    describe('When a device group update request arrives declaring a different service', function() {
+        beforeEach(function(done) {
+            optionsUpdate.headers['fiware-service'] = 'UnexistentService';
+            request(optionsCreation, done);
+        });
+
+        afterEach(function() {
+            optionsUpdate.headers['fiware-service'] = 'TestService';
+        });
+
+
+        it('should return a 200 OK', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(403);
+                body.name.should.equal('MISMATCHED_SERVICE');
+                done();
+            });
+        });
+    });
+
+    describe('When a device group update request arrives declaring a different subservice', function() {
+        beforeEach(function(done) {
+            optionsUpdate.headers['fiware-servicepath'] = '/UnexistentServicepath';
+            request(optionsCreation, done);
+        });
+
+        afterEach(function() {
+            optionsUpdate.headers['fiware-servicepath'] = '/testingPath';
+        });
+
+
+        it('should return a 200 OK', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(403);
+                body.name.should.equal('MISMATCHED_SERVICE');
+                done();
+            });
+        });
+    });
+
     describe('When a device group update request arrives without the mandatory headers', function() {
         beforeEach(function() {
             delete optionsUpdate.headers['fiware-servicepath'];
