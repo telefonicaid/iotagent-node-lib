@@ -92,6 +92,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsUpdate = {
@@ -122,6 +126,10 @@ var iotAgentLib = require('../../'),
         headers: {
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
     optionsList = {
@@ -183,14 +191,6 @@ describe('Device Group Configuration API', function() {
                     body.services[0].subservice.should.equal('/testingPath');
                     done();
                 });
-            });
-        });
-        it('should add the device group to the statically configured ones', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                /* jshint sub:true */
-
-                should.exist(iotAgentConfig.types['SensorMachine']);
-                done();
             });
         });
         it('should call the configuration creation handler', function(done) {
@@ -307,6 +307,43 @@ describe('Device Group Configuration API', function() {
         });
     });
 
+    describe('When a device group removal arrives to a DB with three groups', function() {
+        beforeEach(function(done) {
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+            optionsCreation1.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation1.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
+            async.series([
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
+            ], done);
+        });
+
+        it('should remove just the selected group', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(2);
+
+                    for (var i = 0; i < body.services.length; i++) {
+                        body.services[i].apikey.should.not.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    }
+
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a device group removal request arrives without the mandatory headers', function() {
         beforeEach(function() {
             delete optionsDelete.headers['fiware-servicepath'];
@@ -326,9 +363,49 @@ describe('Device Group Configuration API', function() {
         });
     });
 
+    describe('When a device group removal request arrives without the mandatory parameters', function() {
+        beforeEach(function() {
+            delete optionsDelete.qs;
+        });
+
+        afterEach(function() {
+            optionsDelete.qs =  {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+            };
+        });
+
+        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
+            });
+        });
+    });
+
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
-            request(optionsCreation, done);
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+
+            optionsCreation1.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation1.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
+            async.series([
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
+            ], done);
         });
 
         it('should return a 200 OK', function(done) {
@@ -339,21 +416,23 @@ describe('Device Group Configuration API', function() {
             });
         });
 
-        it('should update the values in the database', function(done) {
+        it('should update the appropriate values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 request(optionsList, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    var found = false;
+                    body.count.should.equal(3);
+
+                    for (var i = 0; i < body.services.length; i++) {
+                        if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
+                            body.services[i].resource === '/deviceTest') {
+                            body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                            found = true;
+                        }
+                    }
+
+                    found.should.equal(true);
                     done();
                 });
-            });
-        });
-        it('should update the values in the configuration', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                /* jshint sub:true */
-
-                iotAgentConfig.types['SensorMachine'].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                done();
             });
         });
         it('should call the configuration creation handler', function(done) {
@@ -382,6 +461,25 @@ describe('Device Group Configuration API', function() {
 
         afterEach(function() {
             optionsUpdate.headers['fiware-servicepath'] = '/testingPath';
+        });
+
+        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
+            });
+        });
+    });
+
+    describe('When a device group update request arrives without the mandatory parameters', function() {
+        beforeEach(function() {
+            delete optionsUpdate.qs.resource;
+        });
+
+        afterEach(function() {
+            optionsUpdate.qs.resource = '/deviceTest';
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
@@ -474,7 +572,9 @@ describe('Device Group Configuration API', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
 
-            done();
+            async.series([
+                async.apply(request, optionsCreation)
+            ], done);
         });
 
         afterEach(function(done) {
@@ -483,11 +583,12 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should use the configured data', function(done) {
-            iotAgentLib.update('machine1', 'SensorMachine', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            iotAgentLib.update('machine1', '/deviceTest', '801230BJKL23Y9090DSFL123HJK09H324HV8732', values,
+                function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
         });
     });
 });

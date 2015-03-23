@@ -39,6 +39,7 @@ var iotAgentLib = require('../../'),
         types: {
             'Light': {
                 commands: [],
+                type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
@@ -53,6 +54,7 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Termometer': {
+                type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
@@ -64,6 +66,7 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Humidity': {
+                type: 'Humidity',
                 cbHost: 'http://192.168.1.1:3024',
                 commands: [],
                 lazy: [],
@@ -75,6 +78,7 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Motion': {
+                type: 'Motion',
                 commands: [],
                 lazy: [],
                 staticAttributes: [
@@ -137,7 +141,7 @@ describe('Active attributes test', function() {
         });
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -161,7 +165,7 @@ describe('Active attributes test', function() {
         });
 
         it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_UPDATE_ERROR');
@@ -186,7 +190,7 @@ describe('Active attributes test', function() {
         });
 
         it('should return BAD_REQUEST an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('BAD_REQUEST');
@@ -211,7 +215,7 @@ describe('Active attributes test', function() {
         });
 
         it('should use the Context Broker defined by the type', function(done) {
-            iotAgentLib.update('humSensor', 'Humidity', values, function(error) {
+            iotAgentLib.update('humSensor', 'Humidity', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -242,7 +246,7 @@ describe('Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
         it('should decorate the entity with the static attributes', function(done) {
-            iotAgentLib.update('motion1', 'Motion', newValues, function(error) {
+            iotAgentLib.update('motion1', 'Motion', '', newValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
