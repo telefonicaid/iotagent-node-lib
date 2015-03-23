@@ -307,6 +307,53 @@ describe('Device Group Configuration API', function() {
         });
     });
 
+    describe('When a device group removal arrives declaring a different service', function() {
+        var optionsDeleteDifferentService = _.clone(optionsDelete);
+
+        beforeEach(function(done) {
+            optionsDeleteDifferentService.headers['fiware-service'] = 'unexistentService';
+            request(optionsCreation, done);
+        });
+
+        afterEach(function(done) {
+            optionsDeleteDifferentService.headers['fiware-service'] = 'TestService';
+            done();
+        });
+
+        it('should return a 403 MISMATCHED_SERVICE error', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(403);
+                body.name.should.equal('MISMATCHED_SERVICE');
+                done();
+            });
+        });
+    });
+
+    describe('When a device group removal arrives declaring a different subservice', function() {
+        var optionsDeleteDifferentService = _.clone(optionsDelete);
+
+        beforeEach(function(done) {
+            optionsDeleteDifferentService.headers['fiware-servicepath'] = '/unexistentSubservice';
+            request(optionsCreation, done);
+        });
+
+        afterEach(function(done) {
+            optionsDeleteDifferentService.headers['fiware-servicepath'] = '/testingPath';
+            done();
+        });
+
+        it('should return a 403 MISMATCHED_SERVICE error', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(403);
+                body.name.should.equal('MISMATCHED_SERVICE');
+                done();
+            });
+        });
+    });
+
+
     describe('When a device group removal arrives to a DB with three groups', function() {
         beforeEach(function(done) {
             var optionsCreation1 = _.clone(optionsCreation),

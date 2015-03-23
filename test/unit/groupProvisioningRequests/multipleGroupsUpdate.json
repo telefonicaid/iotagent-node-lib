@@ -1,0 +1,16 @@
+{
+  "services": [
+    {
+      "resource": "/deviceTest",
+      "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+      "type": "Light",
+      "trust": "TheNewTrust"
+    },
+    {
+      "resource": "/deviceTest",
+      "apikey": "23HJK3Y9090DSFL173209HV8801232",
+      "type": "Termometer",
+      "trust": "TheNewTrust"
+    }
+  ]
+}
