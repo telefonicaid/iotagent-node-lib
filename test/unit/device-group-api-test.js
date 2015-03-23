@@ -307,6 +307,43 @@ describe('Device Group Configuration API', function() {
         });
     });
 
+    describe('When a device group removal arrives to a DB with three groups', function() {
+        beforeEach(function(done) {
+            var optionsCreation1 = _.clone(optionsCreation),
+                optionsCreation2 = _.clone(optionsCreation),
+                optionsCreation3 = _.clone(optionsCreation);
+
+            optionsCreation1.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation1.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
+            async.series([
+                async.apply(request, optionsCreation1),
+                async.apply(request, optionsCreation2),
+                async.apply(request, optionsCreation3)
+            ], done);
+        });
+
+        it('should remove just the selected group', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(2);
+
+                    for (var i = 0; i < body.services.length; i++) {
+                        body.services[i].apikey.should.not.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    }
+
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a device group removal request arrives without the mandatory headers', function() {
         beforeEach(function() {
             delete optionsDelete.headers['fiware-servicepath'];
@@ -314,6 +351,28 @@ describe('Device Group Configuration API', function() {
 
         afterEach(function() {
             optionsDelete.headers['fiware-servicepath'] = '/testingPath';
+        });
+
+        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
+            request(optionsDelete, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
+            });
+        });
+    });
+
+    describe('When a device group removal request arrives without the mandatory parameters', function() {
+        beforeEach(function() {
+            delete optionsDelete.qs;
+        });
+
+        afterEach(function() {
+            optionsDelete.qs =  {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+            };
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {

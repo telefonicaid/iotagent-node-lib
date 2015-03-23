@@ -24,6 +24,7 @@
 
 var iotAgentLib = require('../../'),
     _ = require('underscore'),
+    utils = require('../tools/utils'),
     async = require('async'),
     request = require('request'),
     should = require('should'),
@@ -247,6 +248,29 @@ describe('MongoDB Group Registry test', function() {
                     should.exist(docs);
                     should.exist(docs[0].cbHost);
                     docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a multiple device group creation arrives', function() {
+        var optionsMultipleCreation = _.clone(optionsCreation),
+            optionsMultipleUpdate = _.clone(optionsUpdate);
+
+        beforeEach(function(done) {
+            optionsMultipleCreation.json = utils.readExampleFile(
+                './test/unit/groupProvisioningRequests/multipleGroupsCreation.json');
+
+            done();
+        });
+
+        it('should create the values in the database', function(done) {
+            request(optionsMultipleCreation, function(error, response, body) {
+                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    should.exist(docs);
+                    docs.length.should.equal(2);
                     done();
                 });
             });
