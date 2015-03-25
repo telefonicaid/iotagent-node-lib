@@ -385,7 +385,7 @@ describe('IoT Agent Lazy Devices', function() {
         });
     });
 
-    describe.skip('When a query arrives to the IoT Agent without any attributes', function() {
+    describe('When a query arrives to the IoT Agent without any attributes', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
                 method: 'POST',
@@ -406,8 +406,8 @@ describe('IoT Agent Lazy Devices', function() {
                     type: 'Light',
                     attributes: [
                         {
-                            name: 'dimming',
-                            type: 'Percentage',
+                            name: 'temperature',
+                            type: 'centigrades',
                             value: 19
                         }
                     ]
@@ -425,16 +425,20 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-            iotAgentLib.activate(iotAgentConfig, done);
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
         });
 
         it('should return the information of all the attributes', function(done) {
             var expectedResponse = utils
-                .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponse.json');
+                .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                should.exist(attributes);
                 attributes.length.should.equal(1);
-                attributes[0].should.equal('dimming');
+                attributes[0].should.equal('temperature');
                 callback(null, sensorData[0]);
             });
 
