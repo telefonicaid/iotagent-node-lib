@@ -106,7 +106,7 @@ describe('IoT Agent Lazy Devices', function() {
     });
 
     afterEach(function(done) {
-        iotAgentLib.clearAll(function () {
+        iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {
                 mongoUtils.cleanDbs(done);
             });
