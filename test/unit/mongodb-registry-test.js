@@ -54,6 +54,12 @@ var iotAgentLib = require('../../'),
                         type: 'Hgmm'
                     }
                 ],
+                staticAttributes: [
+                    {
+                        name: 'location',
+                        type: 'Vector'
+                    }
+                ],
                 service: 'smartGondor',
                 subservice: 'gardens',
                 internalAttributes: {
@@ -88,11 +94,15 @@ var iotAgentLib = require('../../'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light'
+        type: 'Light',
+        resource: '/test',
+        apikey: '2345678ikjhgfr678i'
     },
     device2 = {
         id: 'term2',
-        type: 'Termometer'
+        type: 'Termometer',
+        resource: '/',
+        apikey: 'dsf8yy789iyushu786'
     },
     iotAgentDb;
 
@@ -145,11 +155,54 @@ describe('MongoDB Device Registry', function() {
                     should.exist(docs.length);
                     docs.length.should.equal(1);
                     should.exist(docs[0].internalAttributes);
+                    should.exist(docs[0].staticAttributes);
                     should.exist(docs[0].internalAttributes.customAttribute);
                     should.exist(docs[0].active);
+                    should.exist(docs[0].resource);
+                    should.exist(docs[0].apikey);
                     docs[0].active.length.should.equal(1);
+                    docs[0].staticAttributes.length.should.equal(1);
+                    docs[0].staticAttributes[0].name.should.equal('location');
                     docs[0].active[0].name.should.equal('pressure');
                     docs[0].internalAttributes.customAttribute.should.equal('customValue');
+                    docs[0].resource.should.equal('/test');
+                    docs[0].apikey.should.equal('2345678ikjhgfr678i');
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device with the same Device ID tries to register to the IOT Agent', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should be registered in mongodb with all its attributes', function(done) {
+            iotAgentLib.register(device1, function(error) {
+                iotAgentLib.register(device1, function(error) {
+                    should.exist(error);
+                    error.name.should.equal('DUPLICATE_DEVICE_ID');
                     done();
                 });
             });

@@ -1,8 +1,15 @@
 {
   "name": "iotagent-node-lib",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
+  "keywords": [
+    "fiware",
+    "iotagent",
+    "ngsi",
+    "context broker",
+    "browser"
+  ],
   "author": {
     "name": "Daniel Moran",
     "email": "daniel.moranjimenez@telefonica.com"

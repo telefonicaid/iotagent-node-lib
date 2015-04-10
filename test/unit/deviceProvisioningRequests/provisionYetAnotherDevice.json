@@ -1,7 +1,5 @@
 {
-  "name": "Light2",
-  "service" : "smartGondor",
-  "service_path": "gardens",
+  "name": "Light3",
   "entity_name": "TheSecondLight",
   "entity_type": "TheLightType",
   "timezone": "America/Santiago",

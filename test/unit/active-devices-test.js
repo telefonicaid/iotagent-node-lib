@@ -39,6 +39,22 @@ var iotAgentLib = require('../../'),
         types: {
             'Light': {
                 commands: [],
+                type: 'Light',
+                lazy: [
+                    {
+                        name: 'temperature',
+                        type: 'centigrades'
+                    }
+                ],
+                active: [
+                    {
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    }
+                ]
+            },
+            'BrokenLight': {
+                commands: [],
                 lazy: [
                     {
                         name: 'temperature',
@@ -53,6 +69,7 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Termometer': {
+                type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
@@ -64,12 +81,28 @@ var iotAgentLib = require('../../'),
                 ]
             },
             'Humidity': {
-                contextBroker: {
-                    host: '192.168.1.1',
-                    port: '3024'
-                },
+                type: 'Humidity',
+                cbHost: 'http://192.168.1.1:3024',
                 commands: [],
                 lazy: [],
+                active: [
+                    {
+                        name: 'humidity',
+                        type: 'percentage'
+                    }
+                ]
+            },
+            'Motion': {
+                type: 'Motion',
+                commands: [],
+                lazy: [],
+                staticAttributes: [
+                    {
+                        'name': 'location',
+                        'type': 'Vector',
+                        'value': '(123,523)'
+                    }
+                ],
                 active: [
                     {
                         name: 'humidity',
@@ -123,9 +156,26 @@ describe('Active attributes test', function() {
         });
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 500 TYPE_NOT_FOUND error', function(done) {
+            iotAgentLib.update('light1', 'BrokenLight', '', values, function(error) {
+                should.exist(error);
+                error.code.should.equal(500);
+                error.name.should.equal('TYPE_NOT_FOUND');
                 done();
             });
         });
@@ -147,7 +197,7 @@ describe('Active attributes test', function() {
         });
 
         it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_UPDATE_ERROR');
@@ -172,7 +222,7 @@ describe('Active attributes test', function() {
         });
 
         it('should return BAD_REQUEST an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('BAD_REQUEST');
@@ -197,7 +247,7 @@ describe('Active attributes test', function() {
         });
 
         it('should use the Context Broker defined by the type', function(done) {
-            iotAgentLib.update('humSensor', 'Humidity', values, function(error) {
+            iotAgentLib.update('humSensor', 'Humidity', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -205,4 +255,34 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When an IoT Agent receives information for a type with static attributes', function() {
+        var newValues = [
+            {
+                name: 'moving',
+                type: 'Boolean',
+                value: 'true'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextStaticAttributes.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+        it('should decorate the entity with the static attributes', function(done) {
+            iotAgentLib.update('motion1', 'Motion', '', newValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });

@@ -24,9 +24,12 @@
 
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
+    async = require('async'),
+    apply = async.apply,
     should = require('should'),
     logger = require('fiware-node-logger'),
     nock = require('nock'),
+    mongoUtils = require('./mongoDBUtils'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
@@ -63,6 +66,23 @@ var iotAgentLib = require('../../'),
                 ],
                 active: [
                 ]
+            },
+            'Motion': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'moving',
+                        type: 'Boolean'
+                    }
+                ],
+                staticAttributes: [
+                    {
+                        'name': 'location',
+                        'type': 'Vector',
+                        'value': '(123,523)'
+                    }
+                ],
+                active: []
             }
         },
         service: 'smartGondor',
@@ -74,6 +94,10 @@ var iotAgentLib = require('../../'),
     device1 = {
         id: 'light1',
         type: 'Light'
+    },
+    device2 = {
+        id: 'motion1',
+        type: 'Motion'
     };
 
 describe('IoT Agent Lazy Devices', function() {
@@ -82,7 +106,11 @@ describe('IoT Agent Lazy Devices', function() {
     });
 
     afterEach(function(done) {
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(function() {
+                mongoUtils.cleanDbs(done);
+            });
+        });
     });
 
     describe('When the IoT Agent receives an update on the device data in JSON format', function() {
@@ -221,7 +249,10 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-            iotAgentLib.activate(iotAgentConfig, done);
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
         });
 
         it('should call the device handler with the received data', function(done) {
@@ -306,6 +337,7 @@ describe('IoT Agent Lazy Devices', function() {
             sensorData = [
                 {
                     id: 'light1',
+                    isPattern: false,
                     type: 'Light',
                     attributes: [
                         {
@@ -328,7 +360,10 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-            iotAgentLib.activate(iotAgentConfig, done);
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
         });
 
         it('should return the information querying the underlying devices', function(done) {
@@ -339,6 +374,206 @@ describe('IoT Agent Lazy Devices', function() {
                 id.should.equal(device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
+                callback(null, sensorData[0]);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a query arrives to the IoT Agent without any attributes', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
+                method: 'POST',
+                json: {
+                    entities: [
+                        {
+                            type: 'Light',
+                            isPattern: 'false',
+                            id: 'light1'
+                        }
+                    ]
+                }
+            },
+            sensorData = [
+                {
+                    id: 'light1',
+                    isPattern: false,
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'temperature',
+                            type: 'centigrades',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
+        });
+
+        it('should return the information of all the attributes', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                should.exist(attributes);
+                attributes.length.should.equal(1);
+                attributes[0].should.equal('temperature');
+                callback(null, sensorData[0]);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a query arrives to the IoT Agent with an empty attributes array', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
+                method: 'POST',
+                json: {
+                    entities: [
+                        {
+                            type: 'Light',
+                            isPattern: 'false',
+                            id: 'light1'
+                        }
+                    ],
+                    attributes: []
+                }
+            },
+            sensorData = [
+                {
+                    id: 'light1',
+                    isPattern: false,
+                    type: 'Light',
+                    attributes: [
+                        {
+                            name: 'temperature',
+                            type: 'centigrades',
+                            value: 19
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
+        });
+
+        it('should return the information of all the attributes', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                should.exist(attributes);
+                attributes.length.should.equal(1);
+                attributes[0].should.equal('temperature');
+                callback(null, sensorData[0]);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
+                method: 'POST',
+                json: {
+                    entities: [
+                        {
+                            type: 'Motion',
+                            isPattern: 'false',
+                            id: 'motion1'
+                        }
+                    ],
+                    attributes: [
+                        'moving',
+                        'location'
+                    ]
+                }
+            },
+            sensorData = [
+                {
+                    id: 'motion1',
+                    type: 'Motion',
+                    attributes: [
+                        {
+                            name: 'moving',
+                            type: 'Boolean',
+                            value: 'true'
+                        }
+                    ]
+                }
+            ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent2.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device2)
+            ], done);
+        });
+
+        it('should return the information adding the static attributes', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/contextProviderResponses/queryInformationStaticAttributesResponse.json');
+
+            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+                id.should.equal('motion1');
+                type.should.equal('Motion');
+                attributes[0].should.equal('moving');
+                attributes[1].should.equal('location');
                 callback(null, sensorData[0]);
             });
 

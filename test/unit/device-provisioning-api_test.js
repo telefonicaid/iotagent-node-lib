@@ -24,6 +24,7 @@
 
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
+
     should = require('should'),
     nock = require('nock'),
     request = require('request'),
@@ -48,10 +49,12 @@ var iotAgentLib = require('../../'),
 
 describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
+        nock.cleanAll();
+
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
+                .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
@@ -59,11 +62,13 @@ describe('Device provisioning API: Provision devices', function() {
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
-            done();
+            iotAgentLib.clearAll(done);
         });
     });
 
     afterEach(function(done) {
+        nock.cleanAll();
+
         iotAgentLib.deactivate(done);
     });
 
@@ -71,7 +76,11 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
         };
 
         it('should add the device to the devices list', function(done) {
@@ -79,7 +88,7 @@ describe('Device provisioning API: Provision devices', function() {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results.length.should.equal(1);
                     done();
                 });
@@ -88,7 +97,7 @@ describe('Device provisioning API: Provision devices', function() {
         it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results[0].id.should.equal('Light1');
                     results[0].name.should.equal('TheFirstLight');
                     results[0].type.should.equal('TheLightType');
@@ -99,12 +108,18 @@ describe('Device provisioning API: Provision devices', function() {
         it('should store the device with the per device information', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     should.exist(results[0].timezone);
                     results[0].timezone.should.equal('America/Santiago');
+                    should.exist(results[0].lazy);
+                    results[0].lazy.length.should.equal(1);
+                    results[0].lazy[0].name.should.equal('luminance');
+                    should.exist(results[0].staticAttributes);
+                    results[0].commands.length.should.equal(1);
+                    results[0].commands[0].name.should.equal('commandAttr');
                     should.exist(results[0].staticAttributes);
                     results[0].staticAttributes.length.should.equal(1);
-                    results[0].staticAttributes[0].name.should.equal('attr_name');
+                    results[0].staticAttributes[0].name.should.equal('hardcodedAttr');
                     should.exist(results[0].active);
                     results[0].active.length.should.equal(1);
                     results[0].active[0].name.should.equal('attr_name');
@@ -115,11 +130,75 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
+        it('should store service and subservice info from the headers along with the device data', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    should.exist(results[0].service);
+                    results[0].service.should.equal('smartGondor');
+                    should.exist(results[0].subservice);
+                    results[0].subservice.should.equal('/gardens');
+                    done();
+                });
+            });
+        });
+    });
+    describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should add the device to the devices list', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results.length.should.equal(1);
+                    done();
+                });
+            });
+        });
+        it('should store the device with the provided entity id, name and type', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results[0].id.should.equal('MicroLight1');
+                    results[0].name.should.equal('FirstMicroLight');
+                    results[0].type.should.equal('MicroLights');
+                    done();
+                });
+            });
+        });
     });
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
         };
 
@@ -128,9 +207,44 @@ describe('Device provisioning API: Provision devices', function() {
                 should.exist(body);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_ATTRIBUTES');
-                body.message.should.match(/.*service_path.*/);
                 body.message.should.match(/.*entity_type.*/);
                 done();
+            });
+        });
+    });
+    describe('When two device provisioning requests with the same service and Device ID arrive', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should raise a DUPLICATE_ID error, indicating the ID was already in use', function(done) {
+            request(options, function(error, response, body) {
+                request(options, function(error, response, body) {
+                    should.exist(body);
+                    response.statusCode.should.equal(400);
+                    body.name.should.equal('DUPLICATE_DEVICE_ID');
+                    done();
+                });
             });
         });
     });
@@ -141,6 +255,10 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
             method: 'POST',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
         };
 
@@ -160,10 +278,27 @@ describe('Device provisioning API: Provision devices', function() {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                iotAgentLib.listDevices(function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     results.length.should.equal(1);
                     done();
                 });
+            });
+        });
+    });
+    describe('When a device provisioning request without the mandatory headers arrives to the Agent', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            headers: {},
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+        };
+
+        it('should raise a MISSING_HEADERS error, indicating the missing attributes', function(done) {
+            request(options, function(error, response, body) {
+                should.exist(body);
+                response.statusCode.should.equal(400);
+                body.name.should.equal('MISSING_HEADERS');
+                done();
             });
         });
     });
