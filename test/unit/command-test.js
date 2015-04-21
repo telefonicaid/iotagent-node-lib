@@ -115,7 +115,7 @@ var iotAgentLib = require('../../'),
         type: 'Robot'
     };
 
-describe.only('Command functionalities', function() {
+describe('Command functionalities', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });
