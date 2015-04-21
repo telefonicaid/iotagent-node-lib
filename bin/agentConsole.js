@@ -83,7 +83,7 @@ function handleError(message) {
 }
 
 function listDevices() {
-    iotAgentLib.listDevices(function (error, devices) {
+    iotAgentLib.listDevices(config.service, config.subservice, function (error, devices) {
         if (error) {
             console.log('\n\033[31mERROR:\033[0m %s', error.message);
         } else {
@@ -117,7 +117,7 @@ function extractAttributes(attributeString, callback) {
         attributesResult.push(attribute);
     }
 
-    callback(null, attributesResult);
+    callback(null, '', attributesResult);
 }
 
 function startApp(command) {
