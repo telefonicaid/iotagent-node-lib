@@ -232,7 +232,51 @@ describe('Command functionalities', function() {
         });
     });
     describe('When an update arrives from the south bound for a registered command', function() {
-        it('should update its value in the Context Broker');
-        it('should update its status in the Context Broker');
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextCommandFinish.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContextCommandFinishSuccess.json'));
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should update its value and status in the Context Broker', function(done) {
+            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', '[72, 368, 1]', 'FINISHED',
+                function(error) {
+                    should.not.exist(error);
+                    statusAttributeMock.done();
+                    done();
+                });
+        });
+    });
+    describe('When an error command arrives from the south bound for a registered command', function() {
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextCommandError.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContextCommandStatusSuccess.json'));
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should update its status in the Context Broker', function(done) {
+            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', 'Stalled', 'ERROR',
+                function(error) {
+                    should.not.exist(error);
+                    statusAttributeMock.done();
+                    done();
+                });
+        });
     });
 });
