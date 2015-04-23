@@ -3,20 +3,15 @@
     {
       "entities": [
         {
-          "type": "TheLightType",
+          "type": "Robot",
           "isPattern": "false",
-          "id": "TheFirstLight"
+          "id": "r2d2"
         }
       ],
       "attributes": [
         {
-          "name": "luminance",
-          "type": "lumens",
-          "isDomain": "false"
-        },
-        {
-          "name": "commandAttr",
-          "type": "commandType",
+          "name": "position",
+          "type": "Array",
           "isDomain": "false"
         }
       ],

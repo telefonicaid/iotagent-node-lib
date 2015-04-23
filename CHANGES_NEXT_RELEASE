@@ -1,1 +1,2 @@
 - Fix signature problems in agent console (#69 and #70).
+- Add implementation for the command attributes (#67).
