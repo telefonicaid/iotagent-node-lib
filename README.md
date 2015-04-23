@@ -141,7 +141,7 @@ Unregister a device from the Context broker and the internal registry.
 ##### iotagentLib.update()
 ###### Signature
 ```
-updateValue(deviceId, deviceType, attributes, deviceInformation, callback)
+updateValue(deviceId, resource, apikey, attributes, deviceInformation, callback)
 ```
 ###### Description
 Launches the updating process, getting the security token in case the authorization sequence is enabled. This method
@@ -150,9 +150,29 @@ can be invoked with an externally added deviceInformation object to overwrite th
 
 ###### Params
  * deviceId: Device ID of the device to register.
- * deviceType: Type of device to register.
+ * resource: Resource name of the endpoint the device is calling.
+ * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
  * attributes: Attribute array containing the values to update.
  * deviceInformation: Device information object (containing security and service information).
+
+##### iotagentLib.setCommandResult()
+###### Signature
+```
+setCommandResult(deviceId, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
+```
+###### Description
+Update the result of a command in the Context Broker. The result of the command has two components: the result
+of the command itself will be represented with the sufix '_result' in the entity while the status is updated in the
+attribute with the '_status' sufix.
+
+###### Params
+ * deviceId: Device ID of the device to register.
+ * resource: Resource name of the endpoint the device is calling.
+ * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
+ * commandName: Name of the command whose result is being updated.
+ * commandResult: Result of the command in string format.
+ * deviceInformation: Device information, including security and service information. (optional).
+
 
 ##### iotagentLib.listDevices()
 ###### Signature
