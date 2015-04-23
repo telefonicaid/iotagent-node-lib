@@ -1,0 +1,22 @@
+{
+  "contextElements": [
+    {
+      "type": "Robot",
+      "isPattern": "false",
+      "id": "r2d2",
+      "attributes": [
+        {
+          "name": "position_status",
+          "type": "Status",
+          "value": "ERROR"
+        },
+        {
+          "name": "position_result",
+          "type": "Array",
+          "value": "Stalled"
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
