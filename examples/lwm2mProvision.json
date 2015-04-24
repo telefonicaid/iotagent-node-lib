@@ -1,0 +1,10 @@
+{
+    "name": "Light1",
+    "service" : "smartGondor",
+    "service_path": "/gardens",
+    "entity_name": "TheFirstLightweightDevice",
+    "entity_type": "LWM2M-Device",
+    "attributes": [],
+    "commands": []
+}
+
