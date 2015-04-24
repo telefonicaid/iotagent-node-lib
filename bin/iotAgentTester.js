@@ -241,7 +241,11 @@ function provisionDevice(commands) {
     function generateOptions(deviceConfig, callback) {
         var options = {
             uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'fiware-service': configIot.service,
+                'fiware-servicepath': configIot.subservice
+            }
         };
 
         try {

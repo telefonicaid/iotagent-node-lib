@@ -1,2 +1,3 @@
 - Fix signature problems in agent console (#69 and #70).
 - Add implementation for the command attributes (#67).
+- Add missing headers in device provisioning with the IoT Agent Tester (#73).
