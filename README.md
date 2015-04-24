@@ -43,9 +43,10 @@ When a request for data from a lazy attribute arrives to the Context Broker, it 
 #### Commands
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the requested action. Parameters for the command will be passed inside the command value.
 
-It's up to the agent whether to make the update synchronous or asynchronous. In the latter case, the update request will end in a `200OK` response, and the IoT Agent will have to create a new attribute in the device entity (with the same name of the command attribute and the suffix `_status`) with the current status of the command and subsequent updates of the same.
-
-NOTE: this behavior is not yet implemented in the current version and it's only described for documentation.
+There are two differences with the lazy attributes:
+* First of all, for every command defined in a device, two new attributes are created in the entity with the same name as the command but with a prefix:
+	* '_status': this attribute reflect the current execution status of the command. When a command request is issued by the Context Broker, the IoT Agent library generates this attribute with 'PENDING' value. The value of this attribute will be changed each time a command error or result is issued to the IoT Agent.
+	* '_result': this attribute reflect the result of the execution of the defined command.
 
 #### Active attributes
 Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI format, and send it to the Context Broker as an `updateContext` request.
