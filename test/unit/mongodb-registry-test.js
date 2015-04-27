@@ -41,7 +41,12 @@ var iotAgentLib = require('../../'),
         },
         types: {
             'Light': {
-                commands: [],
+                commands: [
+                    {
+                        name: 'position',
+                        type: 'Array'
+                    }
+                ],
                 lazy: [
                     {
                         name: 'temperature',
@@ -136,7 +141,7 @@ describe('MongoDB Device Registry', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent3.json'))
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
@@ -158,12 +163,14 @@ describe('MongoDB Device Registry', function() {
                     should.exist(docs[0].staticAttributes);
                     should.exist(docs[0].internalAttributes.customAttribute);
                     should.exist(docs[0].active);
+                    should.exist(docs[0].commands);
                     should.exist(docs[0].resource);
                     should.exist(docs[0].apikey);
                     docs[0].active.length.should.equal(1);
                     docs[0].staticAttributes.length.should.equal(1);
                     docs[0].staticAttributes[0].name.should.equal('location');
                     docs[0].active[0].name.should.equal('pressure');
+                    docs[0].commands[0].name.should.equal('position');
                     docs[0].internalAttributes.customAttribute.should.equal('customValue');
                     docs[0].resource.should.equal('/test');
                     docs[0].apikey.should.equal('2345678ikjhgfr678i');
@@ -181,7 +188,7 @@ describe('MongoDB Device Registry', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent3.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
@@ -189,7 +196,7 @@ describe('MongoDB Device Registry', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent3.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
@@ -212,7 +219,7 @@ describe('MongoDB Device Registry', function() {
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
             var expectedPayload3 = utils
-                .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice1.json');
+                .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice3.json');
 
             nock.cleanAll();
             contextBrokerMock = nock('http://10.11.128.16:1026')
