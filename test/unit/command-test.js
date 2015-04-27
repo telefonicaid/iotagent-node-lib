@@ -128,7 +128,8 @@ describe('Command functionalities', function() {
             iotAgentLib.deactivate(function() {
                 mongoUtils.cleanDbs(function() {
                     nock.cleanAll();
-
+                    iotAgentLib.setDataUpdateHandler();
+                    iotAgentLib.setCommandHandler();
                     done();
                 });
             });
@@ -185,6 +186,15 @@ describe('Command functionalities', function() {
             var handlerCalled = false;
 
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+                callback(null, {
+                    id: id,
+                    type: type,
+                    attributes: []
+                });
+            });
+
+
+            iotAgentLib.setCommandHandler(function(id, type, attributes, callback) {
                 id.should.equal(device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');

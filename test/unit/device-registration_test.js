@@ -90,7 +90,9 @@ describe('IoT Agent Device Registration', function() {
     });
 
     afterEach(function(done) {
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
     });
 
     describe('When a new device is connected to the IoT Agent', function() {

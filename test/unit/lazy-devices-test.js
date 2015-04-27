@@ -101,8 +101,9 @@ var iotAgentLib = require('../../'),
     };
 
 describe('IoT Agent Lazy Devices', function() {
-    beforeEach(function() {
+    beforeEach(function(done) {
         logger.setLevel('FATAL');
+        mongoUtils.cleanDbs(done);
     });
 
     afterEach(function(done) {
@@ -147,7 +148,10 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
-            iotAgentLib.activate(iotAgentConfig, done);
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
         });
 
         it('should call the device handler with the received data', function(done) {
