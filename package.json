@@ -40,7 +40,8 @@
     "node-uuid": "1.4.1",
     "fiware-node-logger": "https://github.com/telefonicaid/fiware-node-logger/tarball/81fdcb213db99eb61acecfd293c45d3fa144cf36",
     "mongoose": "3.8.19",
-    "underscore": "1.7.0"
+    "underscore": "1.7.0",
+    "command-node": "*"
   },
   "devDependencies": {
     "nock": "0.48.0",
