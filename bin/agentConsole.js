@@ -25,15 +25,11 @@
 
 var readline = require('readline'),
     iotAgentLib = require('../lib/fiware-iotagent-lib'),
+    commandUtils = require('command-node'),
     config = require('../config'),
     logger = require('fiware-node-logger'),
     async = require('async'),
     separator = '\n\n\t';
-
-var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
 var commands = {
     'start': {
@@ -78,7 +74,7 @@ function handleError(message) {
             console.log(message)
         }
 
-        rl.prompt();
+        commandUtils.prompt();
     };
 }
 
@@ -93,7 +89,7 @@ function listDevices() {
                 console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
             }
 
-            rl.prompt();
+            commandUtils.prompt();
         }
     });
 }
@@ -150,37 +146,6 @@ function updateDeviceValue(command) {
     ], handleError('Device value updated'));
 }
 
-function showHelp() {
-    var keyList = Object.keys(commands);
-
-    console.log('\n');
-
-    for (var i = 0; i < keyList.length; i++) {
-        var parameters = '';
-
-        for (var j = 0; j < commands[keyList[i]].parameters.length; j++) {
-            parameters += '<' + commands[keyList[i]].parameters[j] + '> ';
-        }
-
-        console.log("%s %s \n\n%s\n", keyList[i], parameters, commands[keyList[i]].description);
-    }
-
-    rl.prompt();
-}
-
-function executeCommander(command) {
-    if (command[0]=='help') {
-        showHelp();
-    } else if (commands[command[0]]) {
-        commands[command[0]].handler(command.slice(1));
-    } else if (command[0].length == 0) {
-        rl.prompt();
-    } else {
-        console.log('Unrecognized command');
-        rl.prompt();
-    }
-}
-
 function queryHandler(id, type, attributes, callback) {
     console.log('Handling query for [%s] of type [%s]:\n%s', JSON.stringify(attributes));
 
@@ -203,18 +168,4 @@ function updateHandler(id, type, attributes, callback) {
     });
 }
 
-function initialize() {
-    logger.setLevel(config.logLevel);
-
-    iotAgentLib.setDataQueryHandler(queryHandler);
-    iotAgentLib.setDataUpdateHandler(updateHandler);
-
-    rl.setPrompt('IoTAgent> ');
-    rl.prompt();
-
-    rl.on('line', function (cmd) {
-        executeCommander(cmd.split(' '));
-    });
-}
-
-initialize();
+commandUtils.initialize(commands, 'IoTAgent> ');

@@ -26,7 +26,7 @@
 
 var config = require('../config'),
     fs = require('fs'),
-    clUtils = require('../lib/commandLineUtils'),
+    clUtils = require('command-node'),
     request = require('request'),
     async = require('async'),
     config = {
