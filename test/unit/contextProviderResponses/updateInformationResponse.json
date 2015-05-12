@@ -9,7 +9,7 @@
                         "value": ""
                     }
                 ],
-                "id": "light1",
+                "id": "light1:Light",
                 "isPattern": false,
                 "type": "Light"
             },

@@ -11,7 +11,7 @@
         ],
         "id": "Robot",
         "isPattern": "false",
-        "type": "r2d2"
+        "type": "r2d2:Robot"
       },
       "statusCode": {
         "code": "200",
