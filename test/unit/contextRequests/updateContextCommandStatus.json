@@ -3,7 +3,7 @@
     {
       "type": "Robot",
       "isPattern": "false",
-      "id": "r2d2",
+      "id": "r2d2:Robot",
       "attributes": [
         {
           "name": "position_status",

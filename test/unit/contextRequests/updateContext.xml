@@ -3,7 +3,7 @@
     <contextElementList>
         <contextElement>
             <entityId type="Light" isPattern="false">
-                <id>light1</id>
+                <id>light1:Light</id>
             </entityId>
             <contextAttributeList>
                 <contextAttribute>
