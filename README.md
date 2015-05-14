@@ -124,6 +124,8 @@ The device Object can have the following attributes:
 * lazy:	list of lazy attributes with their types.
 * active: list of active attributes with their types.
 * staticAttributes: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
+* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+
 
 The device id and type are required fields for any registration. The rest of the attributes are optional, but, if they are not present in the function call arguments, the type must be registered in the configuration, so the service can infer their default values from the configured type. If an optional attribute is not given in the parameter list and there isn't a default configuration for the given type, a TypeNotFound error is raised.
 
