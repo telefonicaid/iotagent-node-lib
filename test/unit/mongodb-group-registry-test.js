@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/*jshint camelcase:false */
+
 var iotAgentLib = require('../../'),
     _ = require('underscore'),
     utils = require('../tools/utils'),
