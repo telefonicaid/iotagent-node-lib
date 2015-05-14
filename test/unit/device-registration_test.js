@@ -113,11 +113,11 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
-                iotAgentLib.register(device1, function(error) {
-                        should.not.exist(error);
-                        contextBrokerMock.done();
-                        done();
-                });
+            iotAgentLib.register(device1, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+            });
         });
     });
 
@@ -173,6 +173,65 @@ describe('IoT Agent Device Registration', function() {
                 error.name.should.equal('REGISTRATION_ERROR');
 
                 done();
+            });
+        });
+    });
+
+    describe('When a device is requested to the library using its ID', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                iotAgentLib.clearAll(done);
+            });
+        });
+
+        it('should return all the device\'s information', function(done) {
+            iotAgentLib.register(device1, function(error) {
+                iotAgentLib.getDevice('light1', function(error, data) {
+                    should.not.exist(error);
+                    should.exist(data);
+                    data.type.should.equal('Light');
+                    data.name.should.equal('light1:Light');
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When an unexistent device is requested to the library using its ID', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                iotAgentLib.clearAll(done);
+            });
+        });
+
+        it('should return a ENTITY_NOT_FOUND error', function(done) {
+            iotAgentLib.register(device1, function(error) {
+                iotAgentLib.getDevice('lightUnexistent', function(error, data) {
+                    should.exist(error);
+                    should.not.exist(data);
+
+                    done();
+                });
             });
         });
     });
