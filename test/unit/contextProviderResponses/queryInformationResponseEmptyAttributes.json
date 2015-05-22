@@ -4,8 +4,8 @@
             "contextElement": {
                 "attributes": [
                     {
-                        "name": "dimming",
-                        "type": "Percentage",
+                        "name": "temperature",
+                        "type": "centigrades",
                         "value": "19"
                     }
                 ],

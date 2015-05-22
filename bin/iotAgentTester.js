@@ -26,7 +26,7 @@
 
 var config = require('../config'),
     fs = require('fs'),
-    clUtils = require('../lib/commandLineUtils'),
+    clUtils = require('command-node'),
     request = require('request'),
     async = require('async'),
     config = {
@@ -194,8 +194,8 @@ function showConfig(commands) {
 function configureIot(commands) {
     configIot.host = commands[0];
     configIot.port = commands[1];
-    config.service = commands[2];
-    config.subservice = commands[3];
+    configIot.service = commands[2];
+    configIot.subservice = commands[3];
 }
 
 function showConfigIot(commands) {
@@ -241,7 +241,11 @@ function provisionDevice(commands) {
     function generateOptions(deviceConfig, callback) {
         var options = {
             uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'fiware-service': configIot.service,
+                'fiware-servicepath': configIot.subservice
+            }
         };
 
         try {

@@ -1,0 +1,18 @@
+{
+  "name": "8405",
+  "service" : "dumbMordor",
+  "service_path": "/deserts",
+  "entity_name": "sigApp2",
+  "entity_type": "SIGFOX",
+  "timezone": "America/Santiago",
+  "attributes": [],
+  "lazy": [],
+  "static_attributes": [],
+  "commands": [],
+  "internal_attributes": [
+    {
+      "mapping": "theCounter::uint:32  theParam1::uint:32 param2::uint:8 tempDegreesCelsius::uint:8  voltage::uint:16"
+    }
+  ]
+}
+

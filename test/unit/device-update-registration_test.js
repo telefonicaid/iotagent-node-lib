@@ -132,8 +132,9 @@ describe('IoT Agent Device Update Registration', function() {
 
     afterEach(function(done) {
         nock.cleanAll();
-
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
     });
 
     describe('When a device is preregistered and its registration information updated', function() {

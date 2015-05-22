@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/*jshint camelcase:false */
+
 var iotAgentLib = require('../../'),
     _ = require('underscore'),
     utils = require('../tools/utils'),
@@ -81,6 +83,11 @@ var iotAgentLib = require('../../'),
                         {
                             name: 'status',
                             type: 'Boolean'
+                        }
+                    ],
+                    internal_attributes: [
+                        {
+                            customField: 'customValue'
                         }
                     ]
                 }
@@ -185,9 +192,12 @@ describe('MongoDB Group Registry test', function() {
                     should.exist(docs.length);
                     docs.length.should.equal(1);
                     should.exist(docs[0].type);
+                    should.exist(docs[0].internalAttributes);
                     should.exist(docs[0].apikey);
                     docs[0].type.should.equal('Light');
                     docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    docs[0].internalAttributes.length.should.equal(1);
+                    docs[0].internalAttributes[0].customField.should.equal('customValue');
                     done();
                 });
             });

@@ -43,9 +43,12 @@ When a request for data from a lazy attribute arrives to the Context Broker, it 
 #### Commands
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the requested action. Parameters for the command will be passed inside the command value.
 
-It's up to the agent whether to make the update synchronous or asynchronous. In the latter case, the update request will end in a `200OK` response, and the IoT Agent will have to create a new attribute in the device entity (with the same name of the command attribute and the suffix `_status`) with the current status of the command and subsequent updates of the same.
+There are two differences with the lazy attributes:
+* First of all, for every command defined in a device, two new attributes are created in the entity with the same name as the command but with a prefix:
+	* '_status': this attribute reflect the current execution status of the command. When a command request is issued by the Context Broker, the IoT Agent library generates this attribute with 'PENDING' value. The value of this attribute will be changed each time a command error or result is issued to the IoT Agent.
+	* '_result': this attribute reflect the result of the execution of the defined command.
 
-NOTE: this behavior is not yet implemented in the current version and it's only described for documentation.
+* Commands can also be updated when new information about its execution arrives to the agent. This information will be mapped to the command's utility attributes `_status` and `_result` leaving alone the command attribute itself. The values for this attributes are stored locally in the Context Broker (instead of being redirected with the Context Provider operations).
 
 #### Active attributes
 Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI format, and send it to the Context Broker as an `updateContext` request.
@@ -121,6 +124,8 @@ The device Object can have the following attributes:
 * lazy:	list of lazy attributes with their types.
 * active: list of active attributes with their types.
 * staticAttributes: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
+* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+
 
 The device id and type are required fields for any registration. The rest of the attributes are optional, but, if they are not present in the function call arguments, the type must be registered in the configuration, so the service can infer their default values from the configured type. If an optional attribute is not given in the parameter list and there isn't a default configuration for the given type, a TypeNotFound error is raised.
 
@@ -141,7 +146,7 @@ Unregister a device from the Context broker and the internal registry.
 ##### iotagentLib.update()
 ###### Signature
 ```
-updateValue(deviceId, deviceType, attributes, deviceInformation, callback)
+updateValue(deviceId, resource, apikey, attributes, deviceInformation, callback)
 ```
 ###### Description
 Launches the updating process, getting the security token in case the authorization sequence is enabled. This method
@@ -150,9 +155,29 @@ can be invoked with an externally added deviceInformation object to overwrite th
 
 ###### Params
  * deviceId: Device ID of the device to register.
- * deviceType: Type of device to register.
+ * resource: Resource name of the endpoint the device is calling.
+ * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
  * attributes: Attribute array containing the values to update.
  * deviceInformation: Device information object (containing security and service information).
+
+##### iotagentLib.setCommandResult()
+###### Signature
+```
+setCommandResult(deviceId, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
+```
+###### Description
+Update the result of a command in the Context Broker. The result of the command has two components: the result
+of the command itself will be represented with the sufix '_result' in the entity while the status is updated in the
+attribute with the '_status' sufix.
+
+###### Params
+ * deviceId: Device ID of the device to register.
+ * resource: Resource name of the endpoint the device is calling.
+ * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
+ * commandName: Name of the command whose result is being updated.
+ * commandResult: Result of the command in string format.
+ * deviceInformation: Device information, including security and service information. (optional).
+
 
 ##### iotagentLib.listDevices()
 ###### Signature

@@ -1,0 +1,22 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "position_status",
+            "type": "Array",
+            "value": ""
+          }
+        ],
+        "id": "Robot",
+        "isPattern": "false",
+        "type": "r2d2:Robot"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
