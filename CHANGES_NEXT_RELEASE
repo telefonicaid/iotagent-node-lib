@@ -4,3 +4,4 @@
 - Support for string quotes in IoT Agent Tester (#75)
 - Remove commandlineUtils files and substitute with command-node module.
 - Add InternalAttributes attribute for Configuration groups (#85).
+- Add configuration checks at startup (#84 and #83).
