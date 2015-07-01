@@ -30,7 +30,6 @@ var iotAgentLib = require('../../'),
     mongoUtils = require('./mongoDBUtils'),
     request = require('request'),
     contextBrokerMock,
-    statusAttributeMock,
     iotAgentConfig = {
         contextBroker: {
             host: '10.11.128.16',
@@ -58,14 +57,14 @@ var iotAgentLib = require('../../'),
     },
     device = {
         id: 'somelight',
-        type: 'Light' 
+        type: 'Light'
     };
 
 describe('Update attribute functionalities', function() {
-    
+
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-        
+
         nock.cleanAll();
 
         contextBrokerMock = nock('http://10.11.128.16:1026')
@@ -117,8 +116,9 @@ describe('Update attribute functionalities', function() {
 
         beforeEach(function(done) {
             iotAgentLib.register(device, function(error) {
-                if(error)
-                    done("Device registration failed");
+                if (error) {
+                    done('Device registration failed');
+                }
                 done();
             });
         });
