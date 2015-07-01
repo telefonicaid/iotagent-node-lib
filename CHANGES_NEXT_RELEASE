@@ -5,3 +5,4 @@
 - Remove commandlineUtils files and substitute with command-node module.
 - Add InternalAttributes attribute for Configuration groups (#85).
 - Add configuration checks at startup (#84 and #83).
+- Fix for a problem with active attribute updates coming from Context Broker
