@@ -670,6 +670,19 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
 
 ## <a name="development"/> Development documentation
+### Branches and release process
+The project have two standard branches:
+* **master**: is the branch with the code of the last stable release.
+* **develop**: is the official branch for current development.
+
+All the contributions to the repository by the developer team will be developed in a branch created from the `develop` branch, and will be merged with the same one, with a publicly reviewed Pull Request. External contributions to the repository must also be performed against `develop`. No contribution will be accepted targeting `master`.
+
+Releases will be created periodically from develop contents. The process of a release will involve:
+* Creating a tag for the release.
+* Merging `develop` into `master`.
+* Changing the version number in `develop`.
+* Publishing `master` to the NPM registry.
+
 ### Project build
 The project is managed using Grunt Task Runner.
 
