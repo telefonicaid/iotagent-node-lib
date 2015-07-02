@@ -1,1 +1,2 @@
 - ADD Documentation about the release process.
+- FIX Crash when an update arrives and commands attribute is not defined.
