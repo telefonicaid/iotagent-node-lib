@@ -133,6 +133,7 @@ If the device has been previously preprovisioned, the missing data will be compl
 
 ###### Params
  * deviceObj: object containing all the information about the device to be registered (mandatory).
+
 ##### iotagentLib.unregister()
 ###### Signature
 ```
