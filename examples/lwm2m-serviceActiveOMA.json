@@ -1,0 +1,17 @@
+{
+"services": [
+   {
+       "resource": "/hidroponic",
+       "apikey": "",
+       "type": "HidroponicPot",
+       "commands": [ ],
+       "lazy": [ ],
+       "active": [
+           {
+               "name": "Temperature Sensor",
+               "type": "float"
+           }
+       ]
+   }
+]
+}
