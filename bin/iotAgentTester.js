@@ -294,7 +294,11 @@ function provisionDevice(commands) {
 function listProvisioned(commands) {
     var options = {
         uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': configIot.subservice
+        }
     };
 
     console.log('Devices provisioned in host [%s:%s]', configIot.host, configIot.port);
@@ -444,6 +448,10 @@ function listGroups(commands) {
     });
 }
 
+function exitAgent(command) {
+    process.exit(0);
+}
+
 var commands = {
     'update': {
         parameters: ['entity', 'type', 'attributes'],
@@ -523,6 +531,11 @@ var commands = {
         parameters: [],
         description: '\tRemove the device group corresponding to the current configured subservice.',
         handler: removeGroup
+    },
+    'exit': {
+        parameters: [],
+        description: '\tExit the process\n',
+        handler: exitAgent
     }
 };
 
