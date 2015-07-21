@@ -73,6 +73,11 @@ var commands = {
         parameters: [],
         description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices
+    },
+    'exit': {
+        parameters: [],
+        description: '\tExit the process\n',
+        handler: exitAgent
     }
 };
 
@@ -140,6 +145,10 @@ function startApp(command) {
 
 function stopApp(command) {
     iotAgentLib.deactivate(handleError('Application stopped'));
+}
+
+function exitAgent(command) {
+    process.exit(0);
 }
 
 function registerDevice(command) {
