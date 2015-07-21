@@ -1,0 +1,15 @@
+{
+    "name": "ws2",
+    "entity_name": "weather2",
+    "entity_type": "weatherStation",
+    "attributes": [
+        {
+            "name": "Temperature Sensor",
+            "type": "float"
+        },
+        {
+            "name": "Humidity Sensor",
+            "type": "float"
+        }
+    ]
+}

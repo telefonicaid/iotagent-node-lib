@@ -44,14 +44,24 @@ var commands = {
     },
     'register': {
         parameters: ['id', 'type'],
-        description: '\tRegister a new device in the IoT Agent. The attributes to register will be extracted from then\n' +
-            ' type configuration',
+        description: '\tRegister a new device in the IoT Agent. The attributes to register will be extracted from the\n' +
+            '\ttype configuration',
         handler: registerDevice
     },
     'unregister': {
         parameters: ['id', 'type'],
         description: '\tUnregister the selected device',
         handler: unregisterDevice
+    },
+    'showConfig': {
+        parameters: [],
+        description: '\tShow the current configuration file',
+        handler: showConfig
+    },
+    'config': {
+        parameters: ['newConfig'],
+        description: '\tChange the configuration file to a new one',
+        handler: changeConfig
     },
     'updatevalue': {
         parameters: ['deviceId', 'deviceType', 'attributes'],
@@ -63,6 +73,11 @@ var commands = {
         parameters: [],
         description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices
+    },
+    'exit': {
+        parameters: [],
+        description: '\tExit the process\n',
+        handler: exitAgent
     }
 };
 
@@ -116,12 +131,24 @@ function extractAttributes(attributeString, callback) {
     callback(null, '', attributesResult);
 }
 
+function showConfig() {
+    console.log('Current configuration file:\n\n%s', JSON.stringify(config, null, 4));
+}
+
+function changeConfig(command) {
+    config = require(command[0]);
+}
+
 function startApp(command) {
     iotAgentLib.activate(config, handleError('Application started'));
 }
 
 function stopApp(command) {
     iotAgentLib.deactivate(handleError('Application stopped'));
+}
+
+function exitAgent(command) {
+    process.exit(0);
 }
 
 function registerDevice(command) {
