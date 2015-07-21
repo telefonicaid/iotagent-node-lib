@@ -3,3 +3,4 @@
 - ADD `exit` commands.
 - FIX missing headers in group operations.
 - ADD command to show and change IoTAgent console configuration.
+- FIX missing device in 'store()' function of the Memory Registry.
