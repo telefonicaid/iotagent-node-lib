@@ -21,6 +21,10 @@
   "bugs": {
     "url": "https://github.com/telefonicaid/iotagent-node-lib/issues"
   },
+  "bin": {
+    "agentConsole": "bin/agentConsole.js",
+    "iotAgentTester": "bin/iotAgentTester.js"
+  },
   "main": "lib/fiware-iotagent-lib",
   "engines": {
     "node": ">=0.10.8"
