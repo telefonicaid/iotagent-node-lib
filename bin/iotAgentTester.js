@@ -435,14 +435,20 @@ function listGroups(commands) {
     };
 
     request(options, function(error, result, body) {
-        console.log(JSON.stringify(result.headers));
         if (error) {
-            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
-        } else if (result.statusCode === 200 && body) {
-            var parsedBody = JSON.parse(body);
-            console.log(JSON.stringify(parsedBody, null, 4));
+            console.log('Error requesting groups list.\n');
+        } else if (result) {
+            console.log(JSON.stringify(result.headers));
+            if (error) {
+                console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+            } else if (result.statusCode === 200 && body) {
+                var parsedBody = JSON.parse(body);
+                console.log(JSON.stringify(parsedBody, null, 4));
+            } else {
+                console.log('Unexpected application error. Status: ' + result.statusCode);
+            }
         } else {
-            console.log('Unexpected application error. Status: ' + result.statusCode);
+            console.log('No result was returned while listing groups.\n');
         }
         clUtils.prompt();
     });
