@@ -294,7 +294,11 @@ function provisionDevice(commands) {
 function listProvisioned(commands) {
     var options = {
         uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': configIot.subservice
+        }
     };
 
     console.log('Devices provisioned in host [%s:%s]', configIot.host, configIot.port);
@@ -431,17 +435,27 @@ function listGroups(commands) {
     };
 
     request(options, function(error, result, body) {
-        console.log(JSON.stringify(result.headers));
         if (error) {
-            console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
-        } else if (result.statusCode === 200 && body) {
-            var parsedBody = JSON.parse(body);
-            console.log(JSON.stringify(parsedBody, null, 4));
+            console.log('Error requesting groups list.\n');
+        } else if (result) {
+            console.log(JSON.stringify(result.headers));
+            if (error) {
+                console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
+            } else if (result.statusCode === 200 && body) {
+                var parsedBody = JSON.parse(body);
+                console.log(JSON.stringify(parsedBody, null, 4));
+            } else {
+                console.log('Unexpected application error. Status: ' + result.statusCode);
+            }
         } else {
-            console.log('Unexpected application error. Status: ' + result.statusCode);
+            console.log('No result was returned while listing groups.\n');
         }
         clUtils.prompt();
     });
+}
+
+function exitAgent(command) {
+    process.exit(0);
 }
 
 var commands = {
@@ -523,6 +537,11 @@ var commands = {
         parameters: [],
         description: '\tRemove the device group corresponding to the current configured subservice.',
         handler: removeGroup
+    },
+    'exit': {
+        parameters: [],
+        description: '\tExit the process\n',
+        handler: exitAgent
     }
 };
 

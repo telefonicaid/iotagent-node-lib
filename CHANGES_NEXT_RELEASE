@@ -1,7 +1,5 @@
-- Fix signature problems in agent console (#69 and #70).
-- Add implementation for the command attributes (#67).
-- Add missing headers in device provisioning with the IoT Agent Tester (#73).
-- Support for string quotes in IoT Agent Tester (#75)
-- Remove commandlineUtils files and substitute with command-node module.
-- Add InternalAttributes attribute for Configuration groups (#85).
-- Add configuration checks at startup (#84 and #83).
+- ADD Documentation about the release process.
+- FIX Crash when an update arrives and commands attribute is not defined.
+- ADD `exit` commands.
+- FIX missing headers in group operations.
+- ADD command to show and change IoTAgent console configuration.
