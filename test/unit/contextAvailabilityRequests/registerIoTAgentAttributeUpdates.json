@@ -1,0 +1,16 @@
+{
+  "contextRegistrations": [
+    {
+      "entities": [
+        {
+          "type": "Light",
+          "isPattern": "false",
+          "id": "somelight:Light"
+        }
+      ],
+      "attributes": [],
+      "providingApplication": "http://smartGondor.com"
+    }
+  ],
+  "duration": "P1M"
+}
