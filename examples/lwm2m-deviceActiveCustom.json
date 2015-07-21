@@ -1,0 +1,29 @@
+{
+    "name": "ws7",
+    "entity_name": "weather7",
+    "entity_type": "weatherStation",
+    "attributes": [
+        {
+            "name": "TheTemperature",
+            "type": "TheType"
+        },
+        {
+            "name": "TheHumidity",
+            "type": "TheOtherType"
+        }
+    ],
+  "internal_attributes": {
+    "lwm2mResourceMapping": {
+      "TheTemperature" : {
+        "objectType": 34000,
+        "objectInstance": 0,
+        "objectResource": 5
+      },
+      "TheHumidity" : {
+        "objectType": 34000,
+        "objectInstance": 0,
+        "objectResource": 6
+      }
+    }
+  }
+}
