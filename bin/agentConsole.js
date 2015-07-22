@@ -167,7 +167,7 @@ function readHandler(id, type, attributes, callback) {
         ]
     };
 
-    callback();
+    callback(null, sensorData);
 }
 
 function startApp(command) {
