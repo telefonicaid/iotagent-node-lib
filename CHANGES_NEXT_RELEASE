@@ -1,1 +1,1 @@
-- Add package.json bin information to publish library commands.
+- Add Fake handlers for incoming updates and queries in the Agent Console.

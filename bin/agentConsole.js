@@ -128,7 +128,7 @@ function extractAttributes(attributeString, callback) {
         attributesResult.push(attribute);
     }
 
-    callback(null, '', attributesResult);
+    callback(null, attributesResult);
 }
 
 function showConfig() {
@@ -139,7 +139,41 @@ function changeConfig(command) {
     config = require(command[0]);
 }
 
+function writeHandler(id, type, attributes, callback) {
+    console.log('\n\nFake WRITE handler for update in entity [%s] with type [%s]\n%s\n',
+        id, type, JSON.stringify(attributes, null, 4));
+
+    callback(null, {
+        id: id,
+        type: type,
+        attributes: attributes
+    });
+}
+
+function readHandler(id, type, attributes, callback) {
+    console.log('\n\nFake READ handler for update in entity [%s] with type [%s]\n%s\n'
+        , id, type, JSON.stringify(attributes, null, 4));
+
+    var sensorData = {
+        id: 'light1:Light',
+        isPattern: false,
+        type: 'Light',
+        attributes: [
+            {
+                name: 'dimming',
+                type: 'Percentage',
+                value: 19
+            }
+        ]
+    };
+
+    callback();
+}
+
 function startApp(command) {
+    iotAgentLib.setDataUpdateHandler(writeHandler);
+    iotAgentLib.setCommandHandler(writeHandler);
+    iotAgentLib.setDataQueryHandler(readHandler);
     iotAgentLib.activate(config, handleError('Application started'));
 }
 
@@ -167,10 +201,19 @@ function unregisterDevice(command) {
 }
 
 function updateDeviceValue(command) {
-    async.waterfall([
-        async.apply(extractAttributes, command[2]),
-        async.apply(iotAgentLib.update, command[0], command[1])
-    ], handleError('Device value updated'));
+    iotAgentLib.getDevice(command[0], function(error, device) {
+        if (device) {
+            extractAttributes(command[2], function(error, attributes) {
+                iotAgentLib.update(device.name, device.type, '', attributes, device,
+                    handleError('Device value updated'));
+            });
+        } else {
+            async.waterfall([
+                async.apply(extractAttributes, command[2]),
+                async.apply(iotAgentLib.update, command[0], command[1], '')
+            ], handleError('Device value updated'));
+        }
+    });
 }
 
 function queryHandler(id, type, attributes, callback) {
