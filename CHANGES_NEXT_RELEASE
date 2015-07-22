@@ -1,1 +1,1 @@
-- Add Fake handlers for incoming updates and queries in the Agent Console.
+- Fix static attributes concatenation on a null context attributes array caused a crash.
