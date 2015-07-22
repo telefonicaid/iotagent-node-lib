@@ -4,8 +4,13 @@
     "service_path": "/gardens",
     "entity_name": "TheFirstLight",
     "entity_type": "TheLightType",
-    "attributes": [],
-    "commands": [
+    "attributes": [
+        {
+            "name": "temperature",
+            "type": "celsius"
+        }
+    ],
+    "lazy": [
         {
             "name": "luminance",
             "type": "lumens"
