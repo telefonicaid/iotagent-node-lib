@@ -1,1 +1,1 @@
-- Fix static attributes concatenation on a null context attributes array caused a crash.
+- Query handler didn't call callback in testing tools.
