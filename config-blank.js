@@ -35,8 +35,8 @@ var config = {
     },
     types: {
     },
-    service: 'smartGondor',
-    subservice: '/gardens',
+    service: 'tester',
+    subservice: '/test',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing'
