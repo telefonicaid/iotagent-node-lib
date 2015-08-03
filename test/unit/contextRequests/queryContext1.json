@@ -1,0 +1,13 @@
+{
+  "entities": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "light1"
+    }
+  ],
+  "attributes" : [
+    "state",
+    "dimming"
+  ]
+}
