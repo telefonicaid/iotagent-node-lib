@@ -179,8 +179,4 @@ describe('Query device information in the Context Broker', function() {
             });
         });
     });
-
-    describe('When the user requests information about a device in a protected CB', function() {
-        it('should send the Auth Token along with the information query');
-    });
 });

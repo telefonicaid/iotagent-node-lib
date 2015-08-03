@@ -216,4 +216,45 @@ describe('Secured access to the Context Broker', function() {
             });
         });
     });
+
+    describe('When the user requests information about a device in a protected CB', function() {
+        var attributes = [
+            'state',
+            'dimming'
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            keystoneMock = nock('http://128.16.109.11:5000')
+                .post('/v3/auth/tokens',
+                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                .reply(
+                201,
+                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                {
+                    'X-Subject-Token': '12345679ABCDEF'
+                });
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should send the Auth Token along with the information query', function(done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
 });
