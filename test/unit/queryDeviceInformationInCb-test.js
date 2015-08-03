@@ -118,7 +118,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Query device information in the Context Broker', function() {
+describe('Query device information in the Context Broker', function() {
     var attributes = [
         'state',
         'dimming'
