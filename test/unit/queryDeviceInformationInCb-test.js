@@ -126,15 +126,7 @@ describe('Query device information in the Context Broker', function() {
 
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-        nock.cleanAll();
 
-        contextBrokerMock = nock('http://10.11.128.16:1026')
-            .matchHeader('fiware-service', 'smartGondor')
-            .matchHeader('fiware-servicepath', 'gardens')
-            .post('/v1/queryContext',
-            utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
-            .reply(200,
-            utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -144,6 +136,18 @@ describe('Query device information in the Context Broker', function() {
     });
 
     describe('When the user requests information about a registered device', function() {
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+        });
+
         it('should return the information about the desired attributes', function(done) {
             iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
                 should.not.exist(error);
@@ -154,7 +158,26 @@ describe('Query device information in the Context Broker', function() {
     });
 
     describe('When the user requests information about a device that it\'s not in the CB', function() {
-        it('should return a DEVICE_NOT_FOUND_ERROR');
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext2Error.json'));
+
+        });
+
+        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+                should.exist(error);
+                error.name.should.equal('DEVICE_NOT_FOUND');
+                done();
+            });
+        });
     });
 
     describe('When the user requests information about a device in a protected CB', function() {
