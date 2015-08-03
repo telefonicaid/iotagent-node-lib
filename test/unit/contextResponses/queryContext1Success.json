@@ -1,0 +1,27 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "state",
+            "type": "Boolean",
+            "value": "False"
+          },
+          {
+            "name": "dimming",
+            "type": "Percentage",
+            "value": "23"
+          }
+        ],
+        "id": "light1",
+        "isPattern": "false",
+        "type": "Light"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
