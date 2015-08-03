@@ -131,7 +131,7 @@ describe.only('Query device information in the Context Broker', function() {
         contextBrokerMock = nock('http://10.11.128.16:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/v1/queryContextQ',
+            .post('/v1/queryContext',
             utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
             .reply(200,
             utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
