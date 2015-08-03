@@ -155,13 +155,13 @@ function readHandler(id, type, attributes, callback) {
         , id, type, JSON.stringify(attributes, null, 4));
 
     var sensorData = {
-        id: 'light1:Light',
+        id: id,
         isPattern: false,
-        type: 'Light',
+        type: type,
         attributes: [
             {
-                name: 'dimming',
-                type: 'Percentage',
+                name: 'luminance',
+                type: 'lumens',
                 value: 19
             }
         ]
