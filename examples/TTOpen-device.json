@@ -1,0 +1,25 @@
+{
+  "devices": [
+    {
+      "device_id": "thinker",
+      "entity_name": "TheThinker",
+      "entity_type": "ThinkingThing",
+      "protocol": "PDI-IoTA-ThinkingThings",
+      "timezone": "America/Santiago",
+      "attributes": [
+        {
+          "object_id": "attr1",
+          "name": "TheAttribute",
+          "type": "integer"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "TheStaticValue",
+          "type": "string",
+          "value": "thisisthevalue"
+        }
+      ]
+    }
+  ]
+}
