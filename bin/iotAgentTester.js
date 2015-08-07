@@ -267,7 +267,7 @@ function provisionDevice(commands) {
         request(options, function(error, result, body) {
             if (error) {
                 callback('Couldn\'t connect with the provisioning server: ' + error.toString());
-            } else if ( (result.statusCode === 200 || result.statusCode === 201) && body) {
+            } else if ((result.statusCode === 200 || result.statusCode === 201) && body) {
                 callback(null, 'Device successfully provisioned');
             } else {
                 console.log('Error body: %s', JSON.stringify(body, null, 4));
