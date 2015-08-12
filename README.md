@@ -195,7 +195,7 @@ Return a list of all the devices registered in the specified service and subserv
 ##### iotagentLib.setDataUpdateHandler()
 ###### Signature
 ```
-function setUpdateHandler(newHandler)
+function setDataUpdateHandler(newHandler)
 ```
 ###### Description
 Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives with the following parameters: (id, type, attributes, callback). The handler is in charge of updating the corresponding values in the devices with the appropriate protocol. 
@@ -223,7 +223,7 @@ In the case of NGSI requests affecting multiple entities, this handler will be c
 ##### iotagentLib.setDataQueryHandler()
 ###### Signature
 ```
-function setQueryHandler(newHandler)
+function setDataQueryHandler(newHandler)
 ```
 ###### Description
 Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives, with the following parameters: (id, type, attributes, callback). The handler must retrieve all the corresponding information from the devices and return a NGSI entity with the requested values.
