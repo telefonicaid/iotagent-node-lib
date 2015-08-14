@@ -196,14 +196,14 @@ describe('Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
+        it('should return ENTITY_GENERIC_ERROR an error to the caller', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.details.code.should.equal('413');
                 error.details.details.should.equal('payload size: 1500000, max size supported: 1048576');
                 error.details.reasonPhrase.should.equal('Request Entity Too Large');
-                error.name.should.equal('ENTITY_UPDATE_ERROR');
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
                 done();
             });
         });
@@ -224,11 +224,11 @@ describe('Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
+        it('should return ENTITY_GENERIC_ERROR an error to the caller', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
-                error.name.should.equal('ENTITY_UPDATE_ERROR');
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
                 done();
             });
         });

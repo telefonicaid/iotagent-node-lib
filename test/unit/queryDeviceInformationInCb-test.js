@@ -194,13 +194,13 @@ describe('Query device information in the Context Broker', function() {
 
         });
 
-        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
+        it('should return a ENTITY_GENERIC_ERROR', function(done) {
             iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 should.exist(error.details.code);
                 should.exist(error.details.reasonPhrase);
-                error.name.should.equal('ENTITY_UPDATE_ERROR');
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
                 error.details.code.should.equal('516');
                 error.details.reasonPhrase.should.equal('A new and unknown error');
                 done();
