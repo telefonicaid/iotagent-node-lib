@@ -190,7 +190,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
-                .reply(413,
+                .reply(200,
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -200,6 +200,9 @@ describe('Active attributes test', function() {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
+                error.details.code.should.equal('413');
+                error.details.details.should.equal('payload size: 1500000, max size supported: 1048576');
+                error.details.reasonPhrase.should.equal('Request Entity Too Large');
                 error.name.should.equal('ENTITY_UPDATE_ERROR');
                 done();
             });
@@ -221,11 +224,11 @@ describe('Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return BAD_REQUEST an error to the caller', function(done) {
+        it('should return ENTITY_UPDATE_ERROR an error to the caller', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.exist(error);
                 should.exist(error.name);
-                error.name.should.equal('BAD_REQUEST');
+                error.name.should.equal('ENTITY_UPDATE_ERROR');
                 done();
             });
         });
