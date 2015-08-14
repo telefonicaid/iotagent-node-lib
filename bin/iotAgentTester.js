@@ -42,7 +42,8 @@ var config = require('../config'),
         service: 'tester',
         subservice: '/test'
     },
-    separator = '\n\n\t';
+    separator = '\n\n\t',
+    token;
 
 function queryContext(commands) {
     var options = {
@@ -59,7 +60,8 @@ function queryContext(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice
+            'fiware-servicepath': config.subservice,
+            'X-Auth-Token': token
         }
     };
 
@@ -93,7 +95,8 @@ function queryContextAttribute(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice
+            'fiware-servicepath': config.subservice,
+            'X-Auth-Token': token
         }
     };
 
@@ -158,7 +161,8 @@ function modifyContext(action) {
             },
             headers: {
                 'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
+                'fiware-servicepath': config.subservice,
+                'X-Auth-Token': token
             }
         };
 
@@ -220,7 +224,8 @@ function discoverContext(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice
+            'fiware-servicepath': config.subservice,
+            'X-Auth-Token': token
         }
     };
 
@@ -244,7 +249,8 @@ function provisionDevice(commands) {
             method: 'POST',
             headers: {
                 'fiware-service': configIot.service,
-                'fiware-servicepath': configIot.subservice
+                'fiware-servicepath': configIot.subservice,
+                'X-Auth-Token': token
             }
         };
 
@@ -261,9 +267,11 @@ function provisionDevice(commands) {
         request(options, function(error, result, body) {
             if (error) {
                 callback('Couldn\'t connect with the provisioning server: ' + error.toString());
-            } else if (result.statusCode === 200 && body) {
+            } else if ((result.statusCode === 200 || result.statusCode === 201) && body) {
                 callback(null, 'Device successfully provisioned');
             } else {
+                console.log('Error body: %s', JSON.stringify(body, null, 4));
+
                 callback('Unexpected application error. Status: ' + result.statusCode);
             }
         });
@@ -297,7 +305,8 @@ function listProvisioned(commands) {
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': configIot.subservice
+            'fiware-servicepath': configIot.subservice,
+            'X-Auth-Token': token
         }
     };
 
@@ -344,11 +353,12 @@ function addGroup(commands) {
 
     function generateOptions(deviceConfig, callback) {
         var options = {
-            uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+            uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/services',
             method: 'POST',
             headers: {
                 'fiware-service': configIot.service,
-                'fiware-servicepath': configIot.subservice
+                'fiware-servicepath': configIot.subservice,
+                'X-Auth-Token': token
             }
         };
 
@@ -368,6 +378,7 @@ function addGroup(commands) {
             } else if (result.statusCode === 200 && body) {
                 callback(null, 'Device group successfully provisioned');
             } else {
+                console.log('Error body: %s', JSON.stringify(body, null, 4));
                 callback('Unexpected application error. Status: ' + result.statusCode);
             }
         });
@@ -397,11 +408,12 @@ function addGroup(commands) {
 
 function removeGroup(commands) {
     var options = {
-        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/services',
         method: 'DELETE',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': configIot.subservice
+            'fiware-servicepath': configIot.subservice,
+            'X-Auth-Token': token
         }
     };
 
@@ -426,11 +438,12 @@ function listGroups(commands) {
     console.log('Devices groups provisioned in host [%s:%s]', configIot.host, configIot.port);
     console.log('----------------------------------------------------------------');
     var options = {
-        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/agents/' + configIot.name + '/services',
+        uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/services',
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': '/*'
+            'fiware-servicepath': '/*',
+            'X-Auth-Token': token
         }
     };
 
@@ -450,6 +463,55 @@ function listGroups(commands) {
         } else {
             console.log('No result was returned while listing groups.\n');
         }
+        clUtils.prompt();
+    });
+}
+
+function authenticate(command) {
+    var options = {
+        uri: 'http://' + command[0] + ':' + command[1] + '/v3/auth/tokens',
+        method: 'POST',
+        headers: {
+
+        },
+        json: {
+            auth: {
+                identity: {
+                    methods: [
+                        'password'
+                    ],
+                    password: {
+                        user: {
+                            domain: {
+                                name: command[4]
+                            },
+                            name: command[2],
+                            password: command[3]
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    console.log('Authenticating to host [%s:%s] with user [%s] in service [%s]',
+        command[0], command[1], command[2], commands[4]);
+
+    console.log('----------------------------------------------------------------');
+
+    console.log(JSON.stringify(options, null, 4));
+
+    request(options, function(error, result, body) {
+        if (error) {
+            console.log('Error sending authentication request: %s', error);
+        } else if (result.statusCode === 201) {
+            console.log('Authentication successful');
+            console.log('The new token is: [%s]', result.headers['x-subject-token']);
+            token = result.headers['x-subject-token'];
+        } else {
+            console.log('Unexpected return code during authentication: %s.', result.statusCode)
+        }
+
         clUtils.prompt();
     });
 }
@@ -537,6 +599,11 @@ var commands = {
         parameters: [],
         description: '\tRemove the device group corresponding to the current configured subservice.',
         handler: removeGroup
+    },
+    'authenticate': {
+        parameters: ['host', 'port', 'user', 'password', 'service'],
+        description: '\tAuthenticates to the given authentication server, and use the token in subsequent requests.',
+        handler: authenticate
     },
     'exit': {
         parameters: [],

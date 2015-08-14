@@ -1,0 +1,10 @@
+{
+  "services": [
+    {
+      "resource": "/iot/d",
+      "apikey": "pipopi",
+      "cbroker": "http://127.0.0.1:10026",
+      "entity_type": "ThinkingThing"
+    }
+  ]
+}
