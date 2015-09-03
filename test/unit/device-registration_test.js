@@ -25,7 +25,7 @@
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
-    logger = require('fiware-node-logger'),
+    logger = require('logops'),
     nock = require('nock'),
     async = require('async'),
     contextBrokerMock,
