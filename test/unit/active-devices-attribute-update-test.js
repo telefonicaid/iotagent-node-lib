@@ -31,6 +31,7 @@ var iotAgentLib = require('../../'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
+        logLevel: 'FATAL',
         contextBroker: {
             host: '10.11.128.16',
             port: '1026'
