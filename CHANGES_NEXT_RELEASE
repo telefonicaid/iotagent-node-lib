@@ -1,3 +1,4 @@
 - ADD Authentication mechanisms for the IoT Agent tester.
 - ADD Examples of service and device provisioning for Thinking Things IOTAs.
 - FIX Add error information to generic NGSI errors in updates and queries (#125).
+- FIX Improve general maintainability (#126).
