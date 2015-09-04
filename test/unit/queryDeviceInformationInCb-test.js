@@ -25,7 +25,7 @@
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
-    logger = require('fiware-node-logger'),
+    logger = require('logops'),
     nock = require('nock'),
     contextBrokerMock,
     iotAgentConfig = {
@@ -179,4 +179,33 @@ describe('Query device information in the Context Broker', function() {
             });
         });
     });
+
+    describe('When the user requests information and there is an unknown errorCode in the response', function() {
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext2UnknownError.json'));
+
+        });
+
+        it('should return a ENTITY_GENERIC_ERROR', function(done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                should.exist(error.details.code);
+                should.exist(error.details.reasonPhrase);
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
+                error.details.code.should.equal('516');
+                error.details.reasonPhrase.should.equal('A new and unknown error');
+                done();
+            });
+        });
+    });
+
 });
