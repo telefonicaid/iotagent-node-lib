@@ -234,6 +234,34 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When there is a transport error connecting to the Context Broker', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                .reply(500,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext2Failed.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should return a ENTITY_GENERIC_ERROR error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
+                should.exist(error.details);
+                should.exist(error.details.code);
+                error.details.code.should.equal(500);
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent recieves information for a type with a configured Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
