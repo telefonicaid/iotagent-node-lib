@@ -257,7 +257,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             iotAgentLib.clearAll(function() {
-                async.times(10, createDeviceRequest, function(error, results) {
+                async.timesSeries(10, createDeviceRequest, function(error, results) {
                     done();
                 });
             });
