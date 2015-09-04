@@ -1,1 +1,2 @@
 - FIX Return meaningful JSON error in ENTITY_GENERIC_ERROR.
+- FIX Add information to generic transport errors (#139).
