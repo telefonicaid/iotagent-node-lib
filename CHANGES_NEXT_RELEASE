@@ -4,3 +4,4 @@
 - FIX Improve general maintainability (#126).
 - ADD Continuous integration using Travis (#131).
 - FIX Change the old temporary fiware-node-logger to use logops (#95).
+- ADD Device provisioning handler (#86).
