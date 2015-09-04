@@ -68,7 +68,7 @@ describe('Device provisioning API: Provision devices', function() {
 
     afterEach(function(done) {
         nock.cleanAll();
-
+        iotAgentLib.setProvisioningHandler();
         iotAgentLib.deactivate(done);
     });
 
@@ -94,6 +94,21 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
+
+        it('should call the device provisioning handler if present', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setProvisioningHandler(function(device, callback) {
+                handlerCalled = true;
+                callback(null, device);
+            });
+
+            request(options, function(error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+
         it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(200);
