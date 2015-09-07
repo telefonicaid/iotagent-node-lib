@@ -1,11 +1,15 @@
 {
-    "name": "MicroLight1",
-    "entity_name": "FirstMicroLight",
-    "entity_type": "MicroLights",
-    "attributes": [
+  "devices": [
+    {
+      "name": "MicroLight1",
+      "entity_name": "FirstMicroLight",
+      "entity_type": "MicroLights",
+      "attributes": [
         {
-            "name": "attr_name",
-            "type": "string"
+          "name": "attr_name",
+          "type": "string"
         }
-    ]
+      ]
+    }
+  ]
 }
