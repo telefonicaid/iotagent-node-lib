@@ -23,6 +23,7 @@
 'use strict';
 
 var iotAgentLib = require('../../'),
+    request = require('request'),
     nock = require('nock'),
     utils = require('../tools/utils'),
     groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
@@ -92,6 +93,43 @@ var iotAgentLib = require('../../'),
                 type: 'Boolean'
             }
         ]
+    },
+    optionsCreation = {
+        url: 'http://localhost:4041/iot/agents/default/services',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    lazy: [
+                        {
+                            name: 'luminescence',
+                            type: 'Lumens'
+                        }
+                    ],
+                    active: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        }
     },
     iotamMock;
 
@@ -175,7 +213,39 @@ describe('IoT Manager autoregistration', function() {
     });
 
     describe('When a new service is created in the IoT Agent', function() {
-        it('should update the registration in the IoT Manager');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols',
+                utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post('/protocols',
+                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        afterEach(function(done) {
+            groupRegistryMemory.clear(function() {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreation, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
     });
 
     describe('When a service is removed from the IoT Agent', function() {
