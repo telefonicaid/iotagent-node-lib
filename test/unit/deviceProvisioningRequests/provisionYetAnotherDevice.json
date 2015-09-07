@@ -1,7 +1,7 @@
 {
   "devices": [
     {
-      "name": "Light3",
+      "device_id": "Light3",
       "protocol": "GENERIC_PROTO",
       "entity_name": "TheSecondLight",
       "entity_type": "TheLightType",

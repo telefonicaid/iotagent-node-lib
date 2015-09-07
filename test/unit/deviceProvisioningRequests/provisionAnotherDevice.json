@@ -1,7 +1,7 @@
 {
   "devices": [
     {
-      "name": "Light2",
+      "device_id": "Light2",
       "protocol": "GENERIC_PROTO",
       "service" : "smartGondor",
       "service_path": "gardens",
