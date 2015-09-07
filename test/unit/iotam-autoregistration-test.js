@@ -25,6 +25,7 @@
 var iotAgentLib = require('../../'),
     nock = require('nock'),
     utils = require('../tools/utils'),
+    groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
     should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',
@@ -64,6 +65,33 @@ var iotAgentLib = require('../../'),
             description: 'A generic protocol',
             defaultResource: '/iot/d'
         }
+    },
+    groupCreation = {
+        service: 'theService',
+        subservice: 'theSubService',
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+        type: 'SensorMachine',
+        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+        cbHost: 'http://unexistentHost:1026',
+        commands: [
+            {
+                name: 'wheel1',
+                type: 'Wheel'
+            }
+        ],
+        lazy: [
+            {
+                name: 'luminescence',
+                type: 'Lumens'
+            }
+        ],
+        active: [
+            {
+                name: 'status',
+                type: 'Boolean'
+            }
+        ]
     },
     iotamMock;
 
@@ -119,7 +147,31 @@ describe('IoT Manager autoregistration', function() {
     });
 
     describe('When the IoT Agents is started with "iotManager" config and multiple services', function() {
-        it('should send all the service information to the IoT Manager in the registration');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols',
+                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+
+            groupRegistryMemory.create(groupCreation, done);
+        });
+
+        afterEach(function(done) {
+            groupRegistryMemory.clear(function() {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should send all the service information to the IoT Manager in the registration', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
     });
 
     describe('When a new service is created in the IoT Agent', function() {
