@@ -2,6 +2,7 @@
   "devices": [
     {
       "name": "MicroLight1",
+      "protocol": "GENERIC_PROTO",
       "entity_name": "FirstMicroLight",
       "entity_type": "MicroLights",
       "attributes": [
