@@ -1,2 +1,3 @@
 - ADD Discrimination between transport and application error codes.
 - ADD Compatibility with CPP implementation (#123).
+- ADD Implement Autoregistration in IOTA Manager (#124).
