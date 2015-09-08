@@ -131,6 +131,19 @@ var iotAgentLib = require('../../'),
             'fiware-servicepath': 'theSubService'
         }
     },
+    optionsDelete = {
+        url: 'http://localhost:4041/iot/agents/default/services',
+        method: 'DELETE',
+        json: {},
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
+    },
     iotamMock;
 
 describe('IoT Manager autoregistration', function() {
@@ -249,6 +262,38 @@ describe('IoT Manager autoregistration', function() {
     });
 
     describe('When a service is removed from the IoT Agent', function() {
-        it('should update the registration in the IoT Manager');
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols',
+                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post('/protocols',
+                utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+
+            groupRegistryMemory.create(groupCreation, function() {
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function(done) {
+            groupRegistryMemory.clear(function() {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsDelete, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
     });
 });
