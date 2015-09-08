@@ -1,2 +1,3 @@
-- FIX Return meaningful JSON error in ENTITY_GENERIC_ERROR.
-- FIX Add information to generic transport errors (#139).
+- ADD Discrimination between transport and application error codes.
+- ADD Compatibility with CPP implementation (#123).
+- ADD Implement Autoregistration in IOTA Manager (#124).

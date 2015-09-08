@@ -1,37 +1,42 @@
 {
-    "name": "Light1",
-    "service" : "smartGondor",
-    "service_path": "gardens",
-    "entity_name": "TheFirstLight",
-    "entity_type": "TheLightType",
-    "timezone": "America/Santiago",
-    "attributes": [
+  "devices": [
+    {
+      "device_id": "Light1",
+      "protocol": "GENERIC_PROTO",
+      "service" : "smartGondor",
+      "service_path": "gardens",
+      "entity_name": "TheFirstLight",
+      "entity_type": "TheLightType",
+      "timezone": "America/Santiago",
+      "attributes": [
         {
-            "name": "attr_name",
-            "type": "string"
+          "name": "attr_name",
+          "type": "string"
         }
-    ],
-    "lazy": [
+      ],
+      "lazy": [
         {
-            "name": "luminance",
-            "type": "lumens"
+          "name": "luminance",
+          "type": "lumens"
         }
-    ],
-    "static_attributes": [
+      ],
+      "static_attributes": [
         {
-            "name": "hardcodedAttr",
-            "type": "hardcodedType"
+          "name": "hardcodedAttr",
+          "type": "hardcodedType"
         }
-    ],
-    "commands": [
+      ],
+      "commands": [
         {
-            "name": "commandAttr",
-            "type": "commandType"
+          "name": "commandAttr",
+          "type": "commandType"
         }
-    ],
-    "internal_attributes": [
+      ],
+      "internal_attributes": [
         {
-            "customField": "customValue"
+          "customField": "customValue"
         }
-    ]
+      ]
+    }
+  ]
 }

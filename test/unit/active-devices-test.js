@@ -255,8 +255,8 @@ describe('Active attributes test', function() {
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
                 should.exist(error.details);
-                should.exist(error.details.code);
-                error.details.code.should.equal(500);
+                should.exist(error.code);
+                error.code.should.equal(500);
                 done();
             });
         });

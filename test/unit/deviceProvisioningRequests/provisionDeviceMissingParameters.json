@@ -1,12 +1,17 @@
 {
-  "name": "Light1",
-  "service" : "smartGondor",
-  "entity_name": "TheFirstLight",
-  "attributes": [],
-  "commands": [
+  "devices": [
     {
-      "name": "luminance",
-      "type": "lumens"
+      "device_id": "Light1",
+      "protocol": "GENERIC_PROTO",
+      "service" : "smartGondor",
+      "entity_name": "TheFirstLight",
+      "attributes": [],
+      "commands": [
+        {
+          "name": "luminance",
+          "type": "lumens"
+        }
+      ]
     }
   ]
 }
