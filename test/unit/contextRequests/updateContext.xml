@@ -14,5 +14,5 @@
             </contextAttributeList>
         </contextElement>
     </contextElementList>
-    <updateAction>APPEND</updateAction>
+    <updateAction>UPDATE</updateAction>
 </updateContextRequest>
