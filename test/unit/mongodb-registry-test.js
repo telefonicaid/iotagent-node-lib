@@ -147,6 +147,12 @@ describe('MongoDB Device Registry', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
             });
@@ -197,12 +203,24 @@ describe('MongoDB Device Registry', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent3.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
@@ -232,9 +250,21 @@ describe('MongoDB Device Registry', function() {
                     './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
 
             contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
                 .post('/NGSI9/registerContext')
                 .reply(200, utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerNewDevice2Success.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .post('/NGSI9/registerContext', expectedPayload3)

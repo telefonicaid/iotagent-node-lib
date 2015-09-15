@@ -252,7 +252,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe.only('When a device is removed from the IoT Agent', function() {
+    describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
             var expectedPayload3 = utils
                     .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice1.json');
@@ -285,11 +285,6 @@ describe('IoT Agent Device Registration', function() {
                 .reply(200, utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/unregisterDevice1Success.json'));
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 async.series([
