@@ -62,6 +62,14 @@ describe('Device provisioning API: Provision devices', function() {
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             iotAgentLib.clearAll(done);
         });
     });
@@ -73,6 +81,31 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext',
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile(
+                    './test/unit/contextRequests/createProvisionedDevice.json'))
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+        });
+
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -157,6 +190,16 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
+
+        it('should create the initial entity in the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(201);
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    contextBrokerMock.done()
+                    done();
+                });
+            });
+        });
     });
     describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
         var options = {
@@ -179,6 +222,14 @@ describe('Device provisioning API: Provision devices', function() {
                 .reply(200,
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             done();
         });
@@ -248,6 +299,14 @@ describe('Device provisioning API: Provision devices', function() {
                 .reply(200,
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             done();
         });

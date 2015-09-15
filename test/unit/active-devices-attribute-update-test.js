@@ -76,6 +76,14 @@ describe('Update attribute functionalities', function() {
             .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v1/updateContext')
+            .reply(200,
+            utils.readExampleFile(
+                './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
