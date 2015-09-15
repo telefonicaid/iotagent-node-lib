@@ -194,7 +194,7 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    contextBrokerMock.done()
+                    contextBrokerMock.done();
                     done();
                 });
             });
