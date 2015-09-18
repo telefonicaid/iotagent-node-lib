@@ -1,1 +1,4 @@
 - ADD /iot/about northbound path for version information.
+- ADD Creation of the initial entity of the device.
+- ADD Use of UPDATE instead of APPEND in context updates.
+- FIX Don't send context provider registration when there are no Lazy attributes.
