@@ -120,7 +120,7 @@ function queryContextAttribute(commands) {
 function parseAttributes(payload) {
     function split(pair) {
         var fields = [],
-            colon = pair.indexOf(':'),
+            colon = pair.indexOf('#'),
             equal = pair.indexOf('=');
 
         fields.push(pair.substr(0, colon));
@@ -135,7 +135,7 @@ function parseAttributes(payload) {
                 name: current[0],
                 type: current[1],
                 value: current[2]
-            }
+            };
 
             previous.push(attributes);
         }
@@ -143,7 +143,7 @@ function parseAttributes(payload) {
         return previous;
     }
 
-    return payload.split(',').map(split).reduce(group, []);
+    return payload.split('|').map(split).reduce(group, []);
 }
 
 function modifyContext(action) {
@@ -553,7 +553,7 @@ var commands = {
     'update': {
         parameters: ['entity', 'type', 'attributes'],
         description: '\tUpdate the values of the defined set of attributes, using the following format: ' +
-            'name:type=value(,name:type=value)*',
+            'name#type=value(|name#type=value)*',
         handler: modifyContext('UPDATE')
     },
     'append': {
