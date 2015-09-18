@@ -1,0 +1,22 @@
+{
+  "contextElements": [
+    {
+      "type": "TheLightType",
+      "isPattern": "false",
+      "id": "TheFirstLight",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string",
+          "value": " "
+        },
+        {
+          "name": "hardcodedAttr",
+          "type": "hardcodedType",
+          "value": "hardcodedValue"
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}

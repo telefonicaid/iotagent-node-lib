@@ -1,0 +1,6 @@
+- ADD /iot/about northbound path for version information.
+- ADD Creation of the initial entity of the device.
+- ADD Use of UPDATE instead of APPEND in context updates.
+- FIX Don't send context provider registration when there are no Lazy attributes.
+- FIX Don't send token if unneeded in IoT Agent Tester.
+- FIX Creation operations should return a 201 instead of a 200.

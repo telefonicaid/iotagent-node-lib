@@ -123,6 +123,14 @@ describe('IoT Agent Device Update Registration', function() {
             .reply(200,
             utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v1/updateContext')
+            .reply(200,
+            utils.readExampleFile(
+                './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.register(device1, function(error) {
                 done();

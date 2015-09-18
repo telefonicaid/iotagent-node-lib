@@ -23,7 +23,8 @@
       "static_attributes": [
         {
           "name": "hardcodedAttr",
-          "type": "hardcodedType"
+          "type": "hardcodedType",
+          "value": "hardcodedValue"
         }
       ],
       "commands": [

@@ -148,6 +148,14 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
                 apply(iotAgentLib.register, device1)
@@ -195,6 +203,14 @@ describe('IoT Agent Lazy Devices', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
@@ -255,6 +271,14 @@ describe('IoT Agent Lazy Devices', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
@@ -367,6 +391,14 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                     utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
                 apply(iotAgentLib.register, device1)
@@ -431,6 +463,14 @@ describe('IoT Agent Lazy Devices', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
@@ -497,6 +537,14 @@ describe('IoT Agent Lazy Devices', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
@@ -566,6 +614,14 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
                 apply(iotAgentLib.register, device2)
@@ -626,6 +682,14 @@ describe('IoT Agent Lazy Devices', function() {
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
@@ -676,6 +740,14 @@ describe('IoT Agent Lazy Devices', function() {
                 utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

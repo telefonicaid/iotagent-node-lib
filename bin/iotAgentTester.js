@@ -60,10 +60,13 @@ function queryContext(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': config.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, response, body) {
         if (error) {
@@ -117,7 +120,7 @@ function queryContextAttribute(commands) {
 function parseAttributes(payload) {
     function split(pair) {
         var fields = [],
-            colon = pair.indexOf(':'),
+            colon = pair.indexOf('#'),
             equal = pair.indexOf('=');
 
         fields.push(pair.substr(0, colon));
@@ -132,7 +135,7 @@ function parseAttributes(payload) {
                 name: current[0],
                 type: current[1],
                 value: current[2]
-            }
+            };
 
             previous.push(attributes);
         }
@@ -140,7 +143,7 @@ function parseAttributes(payload) {
         return previous;
     }
 
-    return payload.split(',').map(split).reduce(group, []);
+    return payload.split('|').map(split).reduce(group, []);
 }
 
 function modifyContext(action) {
@@ -161,10 +164,13 @@ function modifyContext(action) {
             },
             headers: {
                 'fiware-service': config.service,
-                'fiware-servicepath': config.subservice,
-                'X-Auth-Token': token
+                'fiware-servicepath': config.subservice
             }
         };
+
+        if (token) {
+            options.headers['X-Auth-Token'] = token;
+        }
 
         request(options, function(error, response, body) {
             if (error) {
@@ -224,10 +230,13 @@ function discoverContext(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': config.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, response, body) {
         if (error) {
@@ -249,10 +258,13 @@ function provisionDevice(commands) {
             method: 'POST',
             headers: {
                 'fiware-service': configIot.service,
-                'fiware-servicepath': configIot.subservice,
-                'X-Auth-Token': token
+                'fiware-servicepath': configIot.subservice
             }
         };
+
+        if (token) {
+            options.headers['X-Auth-Token'] = token;
+        }
 
         try {
             var payload = JSON.parse(deviceConfig);
@@ -305,10 +317,13 @@ function listProvisioned(commands) {
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': configIot.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': configIot.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     console.log('Devices provisioned in host [%s:%s]', configIot.host, configIot.port);
     console.log('----------------------------------------------------------------');
@@ -329,8 +344,13 @@ function listProvisioned(commands) {
 function removeProvisioned(commands) {
     var options = {
         uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices/' + commands[0],
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {}
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     console.log('Removing device [%s] [%s:%s]', commands[0], configIot.host, configIot.port);
     console.log('----------------------------------------------------------------');
@@ -357,10 +377,13 @@ function addGroup(commands) {
             method: 'POST',
             headers: {
                 'fiware-service': configIot.service,
-                'fiware-servicepath': configIot.subservice,
-                'X-Auth-Token': token
+                'fiware-servicepath': configIot.subservice
             }
         };
+
+        if (token) {
+            options.headers['X-Auth-Token'] = token;
+        }
 
         try {
             var payload = JSON.parse(deviceConfig);
@@ -412,10 +435,13 @@ function removeGroup(commands) {
         method: 'DELETE',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': configIot.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': configIot.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     console.log('Removing device group for subservice [%s] from [%s:%s]',
         configIot.subservice, configIot.host, configIot.port);
@@ -442,10 +468,13 @@ function listGroups(commands) {
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': '/*',
-            'X-Auth-Token': token
+            'fiware-servicepath': '/*'
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, result, body) {
         if (error) {
@@ -524,7 +553,7 @@ var commands = {
     'update': {
         parameters: ['entity', 'type', 'attributes'],
         description: '\tUpdate the values of the defined set of attributes, using the following format: ' +
-            'name:type=value(,name:type=value)*',
+            'name#type=value(|name#type=value)*',
         handler: modifyContext('UPDATE')
     },
     'append': {
