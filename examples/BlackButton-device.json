@@ -1,0 +1,28 @@
+{
+  "devices": [
+    {
+      "device_id": "STACK1",
+      "protocol": "TT_BLACKBUTTON",
+      "entity_type": "ThinkingThing",
+      "timezone": "America/Santiago",
+      "attributes": [
+        {
+          "name": "internalId",
+          "type": "string"
+        },
+        {
+          "name": "last_operation",
+          "type": "string"
+        },
+        {
+          "name": "op_action",
+          "type": "string"
+        },
+        {
+          "name": "op_extra",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -27,7 +27,7 @@ var readline = require('readline'),
     iotAgentLib = require('../lib/fiware-iotagent-lib'),
     commandUtils = require('command-node'),
     config = require('../config'),
-    logger = require('fiware-node-logger'),
+    logger = require('logops'),
     async = require('async'),
     separator = '\n\n\t';
 

@@ -81,10 +81,22 @@ describe('Device provisioning API: List provisioned devices', function() {
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 iotAgentLib.clearAll,
@@ -202,6 +214,13 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .reply(200,
                     utils.readExampleFile(
                         './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .times(10)
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.clearAll(function() {
                 async.times(10, createDeviceRequest, function(error, results) {
