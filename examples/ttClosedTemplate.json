@@ -1,0 +1,82 @@
+{
+  "device_id": "{{deviceId}}",
+  "protocol": "TT_CLOSED",
+  "entity_name": "{{deviceName}}",
+  "entity_type": "{{deviceType}}",
+  "attributes": [
+                  {
+                      "name": "mcc",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "mnc",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "lac",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "cellid",
+                      "type": "string"
+                  },
+                  {
+                      "name": "dbm",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "temperature",
+                      "type": "float"
+                  },
+                  {
+                      "name": "humidity",
+                      "type": "float"
+                  },
+                  {
+                      "name": "luminance",
+                      "type": "float"
+                  },
+                  {
+                      "name": "voltage",
+                      "type": "float"
+                  },
+                  {
+                      "name": "state",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "charger",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "charging",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "mode",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "desconnection",
+                      "type": "integer"
+                  },
+                  {
+                      "name": "sleepcondition",
+                      "type": "string"
+                  },
+                  {
+                      "name": "color",
+                      "type": "string"
+                  },
+                  {
+                      "name": "melody",
+                      "type": "string"
+                  },
+                  {
+                      "name": "sleeptime",
+                      "type": "string"
+                  }
+  ],
+  "commands": [],
+  "lazy": []
+}
