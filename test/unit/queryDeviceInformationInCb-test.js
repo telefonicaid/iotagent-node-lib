@@ -180,6 +180,29 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
+    describe('When the user requests information and there are multiple responses, one of them a failure', function() {
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext3Error.json'));
+
+        });
+
+        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+                should.exist(error);
+                error.name.should.equal('DEVICE_NOT_FOUND');
+                done();
+            });
+        });
+    });
+
     describe('When the user requests information and there is an unknown errorCode in the response', function() {
         beforeEach(function() {
             nock.cleanAll();
