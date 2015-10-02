@@ -29,6 +29,7 @@ var config = require('../config'),
     clUtils = require('command-node'),
     request = require('request'),
     async = require('async'),
+    mu = require('mu2'),
     config = {
         host: 'localhost',
         port: 1026,
@@ -309,6 +310,95 @@ function provisionDevice(commands) {
             ], handleOut);
         }
     });
+}
+
+function provisionGroup(commands) {
+    function createDeviceObj(rawData) {
+        var deviceData = rawData.split(' ');
+
+        return {
+            deviceId: deviceData[0],
+            deviceName: deviceData[1],
+            deviceType: commands[2]
+        };
+    }
+
+    function parseDataFile(data) {
+        var lines = data.split('\n').slice(1, -1);
+
+        return lines.map(createDeviceObj);
+    }
+
+    function createPayload(csvData, callback) {
+        var dataList = parseDataFile(csvData),
+            payloadList = [];
+
+        async.map(dataList, function (item, innerCallback) {
+            var buffer;
+
+            mu
+                .compileAndRender(commands[0], item)
+                .on('data', function(data) {
+                    if (buffer) {
+                        buffer += data;
+                    } else {
+                        buffer = data;
+                    }
+                })
+                .on('end', function(data) {
+                    innerCallback(null, JSON.parse(buffer.toString()));
+                });
+        }, callback);
+    }
+
+    function sendFiles(payloadList, callback) {
+        var options = {
+            uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices',
+            method: 'POST',
+            headers: {
+                'fiware-service': configIot.service,
+                'fiware-servicepath': configIot.subservice
+            },
+            json: {
+                devices: payloadList
+            }
+        };
+
+        if (token) {
+            options.headers['X-Auth-Token'] = token;
+        }
+
+        request(options, callback);
+    }
+
+    function processProvisioningResults(result, body, callback) {
+        if (result.statusCode !== 200 && result.statusCode !== 201) {
+            callback('Error sending provisioning request to the IoT Agent. StatusCode [' + result.statusCode + ']');
+        } else {
+            callback(null);
+        }
+    }
+
+    function processResult(error, result) {
+        if (error) {
+            console.log("Error processing group of files [%s]. Skipping.", error);
+        } else {
+            console.log("Devices provisioned successfully");
+        }
+    }
+
+    function getFiles(callback) {
+        fs.readFile(commands[1], 'utf8', callback);
+    }
+
+    console.log('Creating group of devices of type [%s]', commands[2]);
+
+    async.waterfall([
+            getFiles,
+            createPayload,
+            sendFiles,
+            processProvisioningResults
+        ], processResult);
 }
 
 function listProvisioned(commands) {
@@ -602,6 +692,14 @@ var commands = {
         description: '\tProvision a new device using the Device Provisioning API. The device configuration is \n' +
             '\tread from the file specified in the "filename" parameter.',
         handler: provisionDevice
+    },
+    'provisionGroup': {
+        parameters: ['template', 'data', 'type'],
+        description: '\tProvision a group of devices with the selected template, taking the information needed to\n' +
+            '\tfill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type\n' +
+            '\twill be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned\n' +
+            '\tto the same IoT Agent, once the templates have been fulfilled.',
+        handler: provisionGroup
     },
     'listProvisioned': {
         parameters: [],
