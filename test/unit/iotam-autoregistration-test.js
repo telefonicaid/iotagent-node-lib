@@ -95,7 +95,7 @@ var iotAgentLib = require('../../'),
         ]
     },
     optionsCreation = {
-        url: 'http://localhost:4041/iot/agents/default/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'POST',
         json: {
             services: [
@@ -132,7 +132,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsDelete = {
-        url: 'http://localhost:4041/iot/agents/default/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
         json: {},
         headers: {

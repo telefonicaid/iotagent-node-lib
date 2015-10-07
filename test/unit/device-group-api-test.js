@@ -49,7 +49,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     },
     optionsCreation = {
-        url: 'http://localhost:4041/iot/agents/testAgent/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'POST',
         json: {
             services: [
@@ -86,7 +86,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsDelete = {
-        url: 'http://localhost:4041/iot/agents/testAgent/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
         json: {},
         headers: {
@@ -99,7 +99,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsUpdate = {
-        url: 'http://localhost:4041/iot/agents/testAgent/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'PUT',
         json: {
             trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
@@ -133,7 +133,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsList = {
-        url: 'http://localhost:4041/iot/agents/testAgent/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'GET',
         json: {},
         headers: {
@@ -142,7 +142,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsGet = {
-        url: 'http://localhost:4041/iot/agents/testAgent/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'GET',
         json: {},
         headers: {
