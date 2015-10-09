@@ -47,7 +47,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Device provisioning API: Remove provisioned devices', function() {
+describe('Device provisioning API: Remove provisioned devices', function() {
     var provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
