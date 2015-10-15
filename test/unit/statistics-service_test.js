@@ -45,7 +45,7 @@ var statsService = require('../../lib/services/statsRegistry'),
         throttling: 'PT5S'
     };
 
-describe.only('Statistics service', function() {
+describe('Statistics service', function() {
     beforeEach(function(done) {
         statsService.init(iotAgentConfig);
 
@@ -162,5 +162,5 @@ describe.only('Statistics service', function() {
                 }, 480);
             });
         });
-    })
+    });
 });
