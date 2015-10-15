@@ -26,7 +26,7 @@ var iotAgentLib = require('../../'),
     request = require('request'),
     nock = require('nock'),
     utils = require('../tools/utils'),
-    groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
+    groupRegistryMemory = require('../../lib/services/groups/groupRegistryMemory'),
     should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',

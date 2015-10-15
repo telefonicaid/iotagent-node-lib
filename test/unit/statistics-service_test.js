@@ -22,7 +22,7 @@
  */
 'use strict';
 
-var statsService = require('../../lib/services/statsRegistry'),
+var statsService = require('../../lib/services/stats/statsRegistry'),
     should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',
