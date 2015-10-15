@@ -22,14 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    statsService = require('../../lib/services/statsRegistry'),
-    utils = require('../tools/utils'),
+var statsService = require('../../lib/services/statsRegistry'),
     should = require('should'),
-    nock = require('nock'),
-    async = require('async'),
-    request = require('request'),
-    contextBrokerMock,
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -50,6 +44,8 @@ var iotAgentLib = require('../../'),
 
 describe.only('Statistics service', function() {
     beforeEach(function(done) {
+        statsService.init(iotAgentConfig);
+
         statsService.globalLoad({}, done);
     });
 
