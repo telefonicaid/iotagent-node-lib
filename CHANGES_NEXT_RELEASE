@@ -1,3 +1,4 @@
 - FIX 500 error while removing devices (#151)
 - FIX Change Device Not Found to 404 instead of 500 (#161).
 - ADD First version of the stats registry (#160).
+- FIX Reestructure files and folders (#164).
