@@ -61,12 +61,28 @@ describe.only('Statistics service', function() {
         var statName = 'fakeStat',
             statValue = 2;
 
+        beforeEach(function(done) {
+            statsService.globalLoad({
+                fakeStat: 30
+            }, done);
+        });
+
         it('should appear the modified value in the getCurrent() statistics', function(done) {
             statsService.add(statName, statValue, function() {
                 statsService.getCurrent(statName, function(error, value) {
                     should.not.exist(error);
                     should.exist(value);
                     value.should.equal(statValue);
+                    done();
+                });
+            });
+        });
+        it('should add the value to the global values', function(done) {
+            statsService.add(statName, statValue, function() {
+                statsService.getGlobal(statName, function(error, value) {
+                    should.not.exist(error);
+                    should.exist(value);
+                    value.should.equal(30 + statValue);
                     done();
                 });
             });
@@ -81,7 +97,7 @@ describe.only('Statistics service', function() {
         });
 
         it('should return all the statistics that were created', function(done) {
-            statsService.getAll(function(error, stats) {
+            statsService.getAllGlobal(function(error, stats) {
                 should.not.exist(error);
                 should.exist(stats);
                 should.exist(stats.stat1);
@@ -90,6 +106,28 @@ describe.only('Statistics service', function() {
                 stats.stat2.should.equal(38789);
 
                 done();
+            });
+        });
+    });
+    describe('When the current statistics are reset', function() {
+        beforeEach(function(done) {
+            statsService.add('statA', 42, function() {
+                statsService.add('statB', 52, done);
+            });
+        });
+
+        it('should return a value of zero for any of the individual statistics', function(done) {
+            statsService.resetCurrent(function(error) {
+                should.not.exist(error);
+
+                statsService.getAllCurrent(function(error, data) {
+                    should.exist(data);
+                    should.exist(data.statA);
+                    should.exist(data.statB);
+                    data.statA.should.equal(0);
+                    data.statB.should.equal(0);
+                    done();
+                });
             });
         });
     });
