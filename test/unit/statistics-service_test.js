@@ -34,6 +34,9 @@ var statsService = require('../../lib/services/statsRegistry'),
             port: 4041,
             baseRoot: '/'
         },
+        stats: {
+            interval: 100
+        },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
@@ -127,4 +130,37 @@ describe.only('Statistics service', function() {
             });
         });
     });
+    describe('When a new periodic stats action is set', function() {
+        var valueCurrent = 0,
+            valueGlobal = 0,
+            times = 0;
+
+        beforeEach(function(done) {
+            statsService.globalLoad({
+                stat1: 10
+            }, function() {
+                statsService.add('stat1', 5, done);
+            });
+        });
+
+        function mockedAction(current, global, callback) {
+            valueCurrent = current.stat1;
+            valueGlobal = global.stat1;
+            times++;
+            callback();
+        }
+
+        it('should be triggered with the periodicity stated in the config.stats.interval parameter', function(done) {
+            statsService.addTimerAction(mockedAction, function() {
+                setInterval(function() {
+                    statsService.clearTimers(function() {
+                        valueCurrent.should.equal(5);
+                        valueGlobal.should.equal(15);
+                        times.should.equal(4);
+                        done();
+                    });
+                }, 480);
+            });
+        });
+    })
 });
