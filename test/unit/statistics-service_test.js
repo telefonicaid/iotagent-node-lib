@@ -151,7 +151,7 @@ describe('Statistics service', function() {
         }
 
         it('should be triggered with the periodicity stated in the config.stats.interval parameter', function(done) {
-            statsService.addTimerAction(statsService.mongodbPersistence, function() {
+            statsService.addTimerAction(mockedAction, function() {
                 setInterval(function() {
                     statsService.clearTimers(function() {
                         valueCurrent.should.equal(5);
