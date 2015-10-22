@@ -47,9 +47,11 @@ var statsService = require('../../lib/services/stats/statsRegistry'),
 
 describe('Statistics service', function() {
     beforeEach(function(done) {
-        statsService.init(iotAgentConfig);
-
-        statsService.globalLoad({}, done);
+        statsService.init(iotAgentConfig, function() {
+            statsService.globalLoad({}, function() {
+                statsService.clearTimers(done);
+            });
+        });
     });
 
     afterEach(function(done) {
@@ -152,7 +154,7 @@ describe('Statistics service', function() {
 
         it('should be triggered with the periodicity stated in the config.stats.interval parameter', function(done) {
             statsService.addTimerAction(mockedAction, function() {
-                setInterval(function() {
+                setTimeout(function() {
                     statsService.clearTimers(function() {
                         valueCurrent.should.equal(5);
                         valueGlobal.should.equal(15);
