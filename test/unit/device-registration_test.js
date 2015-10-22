@@ -245,7 +245,8 @@ describe('IoT Agent Device Registration', function() {
                 iotAgentLib.getDevice('lightUnexistent', function(error, data) {
                     should.exist(error);
                     should.not.exist(data);
-
+                    error.code.should.equal(404);
+                    error.name.should.equal('DEVICE_NOT_FOUND');
                     done();
                 });
             });

@@ -26,7 +26,7 @@ var iotAgentLib = require('../../'),
     request = require('request'),
     nock = require('nock'),
     utils = require('../tools/utils'),
-    groupRegistryMemory = require('../../lib/services/groupRegistryMemory'),
+    groupRegistryMemory = require('../../lib/services/groups/groupRegistryMemory'),
     should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',
@@ -95,7 +95,7 @@ var iotAgentLib = require('../../'),
         ]
     },
     optionsCreation = {
-        url: 'http://localhost:4041/iot/agents/default/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'POST',
         json: {
             services: [
@@ -132,7 +132,7 @@ var iotAgentLib = require('../../'),
         }
     },
     optionsDelete = {
-        url: 'http://localhost:4041/iot/agents/default/services',
+        url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
         json: {},
         headers: {
