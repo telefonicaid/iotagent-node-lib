@@ -3,3 +3,4 @@
 - ADD First version of the stats registry (#160).
 - FIX Reestructure files and folders (#164).
 - ADD Mongodb action to persist stats.
+- FIX Use Express Methods to check content type (#170).
