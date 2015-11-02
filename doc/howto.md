@@ -17,12 +17,12 @@ will be used, so it can be tested with simple command line instructions as `curl
 The invented protocol will be freely adapted from Ultralight 2.0. Whenever a device wants to send an update, it will
 send a request as the following:
 ```
-curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15#l|19.6' -i
+curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 ```
 Where:
 * **i**: is the device ID.
 * **k**: the API Key for the device's service.
-* **d**: the data payload, consisting of key/value pairs separated by a pipe ('|'), with each pair separated by hash ('#');
+* **d**: the data payload, consisting of key/value pairs separated by a pipe ('|'), with each pair separated by comma (',');
 
 ### Requirements
 
@@ -169,7 +169,7 @@ function parseUl(data, device) {
         return attribute;
     }
     
-    return data.split("#").map(createAttribute);
+    return data.split(",").map(createAttribute);
 }
 ```
 
@@ -197,10 +197,90 @@ Once the IOTA is finished the last thing to do is to test it. To do so, launch t
 (an example for provisioning can be found in the `examples/howtoProvisioning1.json` file). Once the device is 
 provisioned, send a new measure by using the example command:
 ```
-curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15#l|19.6' -i
+curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 ```
+Now you should be able to see the measures in the Context Broker entity of the device.
 
 ## <a name="lazy"/> IOTA With Lazy attributes
+
+### Previous considerations
+The IoT Agents also give the possibility for the device to be asked about the value of one of its measures, instead of 
+reporting it. In order to do so, the device must be capable of receiving messages of some kind. In this case, we are 
+going to simulate an HTTP server with `nc` in order to see the values sent by the IOTA. We also have to decide a syntax
+for the protocol request for asking the device about a measure. For clarity, we will use the same HTTP GET request we
+used to report a measure, but indicating the attribute to ask instead of the data payload. Something like:
+```
+curl -X GET 'http://127.0.0.1:9999/iot/d?i=ULSensor&k=abc&q=t,l' -i
+```
+In a real implementation, the server will need to know the URL and port where the devices are listening, in order to
+send the request to the appropriate device. For this example, we will assume that the device is listening in port 9999
+in localhost. For more complex cases, the mechanism to bind devices to addresses would be IOTA-specific (e.g.: the 
+OMA Lightweight M2M IOTA captures the address of the device in the device registration, and stores the device-specific
+information in a MongoDB document).
+
+Being lazy attributes of a read/write nature, another syntax has to be declared for updating. This syntax will mimic
+the one used for updating the server:
+```
+curl -X GET 'http://127.0.0.1:9999/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
+```
+Both types of calls to the device will be distinguished by the presence or absence of the `d` and `q` attributes.
+
+A HTTP request library will be needed in order to make those calls. To this extent, `mikeal/request` library will be used.
+In order to do so, add the following require statement to the initialiation code:
+```
+    request = require('request');
+```
+and add the `request` dependency to the `package.json` file: 
+```
+  "dependencies": [
+  [...]
+  
+    "request": "*",
+    
+  ] 
+```
+
+### Implementation
+
+The main step to completo to implement the Lazy attributes mechanism in the IOTA is to provide handlers for the context
+provisioning requests. At this point, we should provide two handlers: the updateContext and the queryContext handlers.
+To do so, we must first define the handlers themselves:
+```
+function queryContextHandler(id, type, attributes, callback) {
+   
+}
+```
+The queryContext handler is called whenever a queryContext request arrives to the IOTA Northbound API. It is invoked once
+for each entity requested, passing the entity ID and Type as the parameters, as well as a list of the attributes that are
+requested. In our case, the handler uses this parameters to compose a request to the device. Once the results of the device
+are returned, the values are returned to the caller, in the NGSI attribute format. 
+
+```
+function updateContextHandler(id, type, attributes, callback) {
+
+}
+```
+The updateContext handler deals with the modification requests that arrive to the IOTA Northbound API. It is invoked once
+for each entity requested (note that a single request can contain multiple entity updates), with the same parameters used
+in the queryContext handler. The only difference is the value of the attributes array, now containing a list of attribute
+objects, each containing name, type and value. The handler must also make use of the callback to return a list of updated
+attributes.
+
+In order to test it, we need to create an HTTP server simulating the device. The quickest way to do that may be using 
+netcat. In order to start it just run the following command from the command line (Linux and Mac only):
+```
+nc -l 9999
+```
+This will open a simple TCP server listening on port 9999, where the requests from the IOTA will be printed. In order for
+the complete workflow to work (and to receive the response in the application side), the HTTP response has to be written
+in the `nc` console (although for testing purposes this is not needed).  
+
+Once the mock server has been started, proceed with the following steps to test your implementation:
+1. Provision a device with two lazy attributes. You can see an example of this in the `examples/howtoProvisioning2.json" file.
+2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
+3. Check the received request in the nc console is the expected one.
+4. Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
+is the expected one.
 
 ## <a name="commands"/> IOTA With commands
 
