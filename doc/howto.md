@@ -119,7 +119,7 @@ function initSouthbound(callback) {
 }
 ```
 
-This Express code set up a HTTP server, listening in the 8080 port, that will handle incoming requests targeting 
+This Express code sets up a HTTP server, listening in the 8080 port, that will handle incoming requests targeting 
 path `/iot/d` using the middleware `manageULRequest()`. This middleware will contain all the Southbound logic, and 
 the library methods we need in order to progress the information to the Context Broker. The code of this middleware
 would be as follows:
