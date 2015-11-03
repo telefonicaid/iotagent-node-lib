@@ -14,8 +14,8 @@ This document's goal is to show how to develop a new IOT Agent step by step. To 
 will be used, so it can be tested with simple command line instructions as `curl` and `nc`. 
 
 ### Protocol
-The invented protocol will be freely adapted from Ultralight 2.0. Whenever a device wants to send an update, it will
-send a request as the following:
+The invented protocol will be freely adapted from [Ultralight 2.0](https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus/blob/develop/doc/modules.md#ultra-light-agent). 
+Whenever a device wants to send an update, it will send a request as the following:
 ```
 curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 ```
@@ -52,6 +52,10 @@ And install the dependencies, executing, as usual:
 npm install
 ```
 
+The first step is to write a configuration file, that will be used to tune the behavior of our IOTA. The contents
+can be copied from the `config-basic-example.js` file, in this same folder. Create a `config.js` file with it 
+in the root folder of your project. Remember to change the Context Broker IP to your local Context Broker.
+
 Now we can begin with the code of our IOTA. The very minimum code we need to start a IOTA is the following:
 ```
 var iotAgentLib = require('iotagent-node-lib'),
@@ -64,10 +68,6 @@ iotAgentLib.activate(config, function(error) {
   }
 });
 ```
-
-The last step is to write a configuration file, that will be used to tune the behavior of our IOTA. The contents
-can be copied from the `config-basic-example.js` file, in this same folder. Create a `config.js` file with it 
-in the root folder of your project. Remember to change the Context Broker IP to your local Context Broker.
 
 The IOTA is now ready to be used. Execute it with the following command:
 ```
