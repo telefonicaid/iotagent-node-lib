@@ -31,7 +31,7 @@ access to a Context Broker (without any security proxies).
 
 ## <a name="basic"/> Basic IOTA
 In this first chapter, we will develop an IOT Agent with a fully working northbound API and no southbound
-API. This may seem useless (and indeed it is) but will serve us weel on showing the basic steps in the creation
+API. This may seem useless (and indeed it is) but will serve us well on showing the basic steps in the creation
 of a IOTA.
  
 First of all, we have to create the Node project. Create a folder to hold your project and type the following 
@@ -88,6 +88,13 @@ In order to add the Express dependency to your project, add the following line t
 `package.json`:
 ```
     "express": "*",
+```
+The require section would end up like this (the standard `http` module is also needed):
+```
+var iotAgentLib = require('iotagent-node-lib'),
+    http = require('http'),
+    express = require('express'),
+    config = require('./config');
 ```
 And install the dependencies as usual with `npm install`. You will have to require both `express` and `http` in
 your code as well.
@@ -240,6 +247,14 @@ and add the `request` dependency to the `package.json` file:
   ] 
 ```
 
+The require section should now look like this:
+```
+var iotAgentLib = require('iotagent-node-lib'),
+    http = require('http'),
+    express = require('express'),
+    request = require('request'),
+    config = require('./config');
+```
 ### Implementation
 
 #### QueryContext implementation
