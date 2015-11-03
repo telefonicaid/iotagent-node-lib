@@ -379,7 +379,7 @@ the complete workflow to work (and to receive the response in the application si
 in the `nc` console (although for testing purposes this is not needed).  
 
 Once the mock server has been started, proceed with the following steps to test your implementation:
-1. Provision a device with two lazy attributes. You can see an example of this in the `examples/howtoProvisioning2.json" file.
+1. Provision a device with two lazy attributes. You can see an example of this in the `examples/howtoProvisioning2.json` file.
 2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
 3. Check the received request in the nc console is the expected one.
 4. Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
