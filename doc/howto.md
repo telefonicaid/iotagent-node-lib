@@ -152,8 +152,7 @@ function manageULRequest(req, res, next) {
 ```
 
 For this middleware we have made use of a function `parseUl()` that parses the data payload and transforms it 
-in the data map expected by the update function:
-
+in the data object expected by the update function (i.e.: an attribute array with NGSI syntax):
 ``` javascript
 function parseUl(data, device) {
     function findType(name) {
@@ -179,6 +178,22 @@ function parseUl(data, device) {
     
     return data.split(",").map(createAttribute);
 }
+```
+
+Here as an example of the output of the function return for the UL payload `t|15,l|19.6`:
+``` javascript
+[
+    {
+        "name": "t",
+        "type": "celsius",
+        "value": "15"
+    },
+    {
+        "name": "l",
+        "type": "meters",
+        "value": "19.6"
+    }
+]
 ```
 
 The last thing to do is to invoke the initialization function inside the IOTA startup function. The next excerpt
