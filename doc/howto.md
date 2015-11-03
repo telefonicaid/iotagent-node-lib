@@ -242,12 +242,27 @@ and add the `request` dependency to the `package.json` file:
 
 ### Implementation
 
-The main step to completo to implement the Lazy attributes mechanism in the IOTA is to provide handlers for the context
+#### QueryContext implementation
+The main step to complete in order to implement the Lazy attributes mechanism in the IOTA is to provide handlers for the context
 provisioning requests. At this point, we should provide two handlers: the updateContext and the queryContext handlers.
 To do so, we must first define the handlers themselves:
 ```
 function queryContextHandler(id, type, attributes, callback) {
-   
+    var options = {
+        url: 'http://127.0.0.1:9999/iot/d',
+        method: 'GET',
+        qs: {
+            q: attributes.join()
+        }
+    };
+
+    request(options, function (error, response, body) {
+        if (error) {
+            callback(error);
+        } else {
+            callback(null, createResponse(id, type, attributes, body));
+        }
+    });
 }
 ```
 The queryContext handler is called whenever a queryContext request arrives to the IOTA Northbound API. It is invoked once
@@ -255,9 +270,53 @@ for each entity requested, passing the entity ID and Type as the parameters, as 
 requested. In our case, the handler uses this parameters to compose a request to the device. Once the results of the device
 are returned, the values are returned to the caller, in the NGSI attribute format. 
 
+In order to format the response from the device in a readable way, we created a `createResponse()` function that maps
+the values to its correspondent attributes. This function assumes the type of all the attributes is "string" (this will
+not be the case in a real scenario, where the IOTA should retrieve the associated device to guess the type of its 
+attributes). Here is the code for the `createResponse()` function:
+```
+function createResponse(id, type, attributes, body) {
+    var values = body.split(','),
+        responses = [];
+
+    for (var i = 0; i < attributes.length; i++) {
+        responses.push({
+                name: attributes[i],
+                type: "string",
+                value: values[i]
+        });
+    }
+
+    return {
+        id: id,
+        type: type,
+        attributes: responses
+    };
+}
+```
+
+#### UpdateContext implementation
 ```
 function updateContextHandler(id, type, attributes, callback) {
+    var options = {
+        url: 'http://127.0.0.1:9999/iot/d',
+        method: 'GET',
+        qs: {
+            d: createQueryFromAttributes(attributes)
+        }
+    };
 
+    request(options, function (error, response, body) {
+        if (error) {
+            callback(error);
+        } else {
+            callback(null, {
+                id: id,
+                type: type,
+                attributes: attributes
+            });
+        }
+    });
 }
 ```
 The updateContext handler deals with the modification requests that arrive to the IOTA Northbound API. It is invoked once
@@ -266,6 +325,33 @@ in the queryContext handler. The only difference is the value of the attributes 
 objects, each containing name, type and value. The handler must also make use of the callback to return a list of updated
 attributes.
 
+For this handler we have used a helper function called `createQueryFromAttributes()`, that transforms the NGSI representation
+of the attributes to the UL type expected by the device:
+```
+function createQueryFromAttributes(attributes) {
+    var query = "";
+
+    for (var i in attributes) {
+        query += attributes[i].name + '|' + attributes[i].value;
+
+        if (i != attributes.length -1) {
+            query += ',';
+        }
+    }
+
+    return query;
+}
+```
+
+#### Handler registration
+Once both handlers have been defined, they have to be registered in the IOTA, adding the following code to the setup
+function:
+```
+    iotAgentLib.setDataUpdateHandler(updateContextHandler);
+    iotAgentLib.setDataQueryHandler(queryContextHandler);
+```
+
+#### IOTA Testing
 In order to test it, we need to create an HTTP server simulating the device. The quickest way to do that may be using 
 netcat. In order to start it just run the following command from the command line (Linux and Mac only):
 ```
@@ -281,6 +367,17 @@ Once the mock server has been started, proceed with the following steps to test 
 3. Check the received request in the nc console is the expected one.
 4. Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
 is the expected one.
+
+An example of HTTP response, for a query to the t and l attributes would be:
+```
+HTTP/1.0 200 OK
+Content-Type: text/plain
+Content-Length: 3
+
+5,6
+```
+This same response can be used both for updates and queries for testing purposes (even though in the former the body won't 
+be read).
 
 ## <a name="commands"/> IOTA With commands
 

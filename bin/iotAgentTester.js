@@ -99,10 +99,13 @@ function queryContextAttribute(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': config.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, response, body) {
         if (error) {
