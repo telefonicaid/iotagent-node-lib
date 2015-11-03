@@ -57,7 +57,7 @@ can be copied from the `config-basic-example.js` file, in this same folder. Crea
 in the root folder of your project. Remember to change the Context Broker IP to your local Context Broker.
 
 Now we can begin with the code of our IOTA. The very minimum code we need to start a IOTA is the following:
-```
+``` javascript
 var iotAgentLib = require('iotagent-node-lib'),
     config = require('./config');
 
@@ -90,7 +90,7 @@ In order to add the Express dependency to your project, add the following line t
     "express": "*",
 ```
 The require section would end up like this (the standard `http` module is also needed):
-```
+``` javascript
 var iotAgentLib = require('iotagent-node-lib'),
     http = require('http'),
     express = require('express'),
@@ -100,8 +100,8 @@ And install the dependencies as usual with `npm install`. You will have to requi
 your code as well.
 
 Now, in order to accept connections in our code, we have to start express first. With this purpose in mind, we will
-create a new functino `initSouthbound()`, that will be called from the initialization code of our IOTA:
-```
+create a new function `initSouthbound()`, that will be called from the initialization code of our IOTA:
+``` javascript
 function initSouthbound(callback) {
     southboundServer = {
         server: null,
@@ -124,7 +124,7 @@ path `/iot/d` using the middleware `manageULRequest()`. This middleware will con
 the library methods we need in order to progress the information to the Context Broker. The code of this middleware
 would be as follows:
 
-```
+``` javascript
 function manageULRequest(req, res, next) {
     var values;
 
@@ -153,7 +153,8 @@ function manageULRequest(req, res, next) {
 
 For this middleware we have made use of a function `parseUl()` that parses the data payload and transforms it 
 in the data map expected by the update function:
-```
+
+``` javascript
 function parseUl(data, device) {
     function findType(name) {
         for (var i=0; i < device.active.length; i++) {
@@ -182,7 +183,8 @@ function parseUl(data, device) {
 
 The last thing to do is to invoke the initialization function inside the IOTA startup function. The next excerpt
 show the modifications in the `activate()` function:
-```
+
+``` javascript
 iotAgentLib.activate(config, function(error) {
     if (error) {
         console.log('There was an error activating the IOTA');
@@ -248,7 +250,7 @@ and add the `request` dependency to the `package.json` file:
 ```
 
 The require section should now look like this:
-```
+``` javascript
 var iotAgentLib = require('iotagent-node-lib'),
     http = require('http'),
     express = require('express'),
@@ -261,7 +263,7 @@ var iotAgentLib = require('iotagent-node-lib'),
 The main step to complete in order to implement the Lazy attributes mechanism in the IOTA is to provide handlers for the context
 provisioning requests. At this point, we should provide two handlers: the updateContext and the queryContext handlers.
 To do so, we must first define the handlers themselves:
-```
+``` javascript
 function queryContextHandler(id, type, attributes, callback) {
     var options = {
         url: 'http://127.0.0.1:9999/iot/d',
@@ -289,7 +291,7 @@ In order to format the response from the device in a readable way, we created a 
 the values to its correspondent attributes. This function assumes the type of all the attributes is "string" (this will
 not be the case in a real scenario, where the IOTA should retrieve the associated device to guess the type of its 
 attributes). Here is the code for the `createResponse()` function:
-```
+``` javascript
 function createResponse(id, type, attributes, body) {
     var values = body.split(','),
         responses = [];
@@ -311,7 +313,7 @@ function createResponse(id, type, attributes, body) {
 ```
 
 #### UpdateContext implementation
-```
+``` javascript
 function updateContextHandler(id, type, attributes, callback) {
     var options = {
         url: 'http://127.0.0.1:9999/iot/d',
@@ -342,7 +344,7 @@ attributes.
 
 For this handler we have used a helper function called `createQueryFromAttributes()`, that transforms the NGSI representation
 of the attributes to the UL type expected by the device:
-```
+``` javascript
 function createQueryFromAttributes(attributes) {
     var query = "";
 
@@ -361,7 +363,7 @@ function createQueryFromAttributes(attributes) {
 #### Handler registration
 Once both handlers have been defined, they have to be registered in the IOTA, adding the following code to the setup
 function:
-```
+``` javascript
     iotAgentLib.setDataUpdateHandler(updateContextHandler);
     iotAgentLib.setDataQueryHandler(queryContextHandler);
 ```
@@ -409,7 +411,7 @@ are receiving whenever a new device or configuration is provisioned.
 
 We need to complete two steps to have a working set of provisioning handlers. First of all, defining the handlers themselves.
 Here we can see the definition of the configuration handler:
-```
+``` javascript
 function configurationHandler(configuration, callback) {
     console.log('\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n', JSON.stringify(configuration, null, 4));
     callback(null, configuration);
@@ -424,7 +426,7 @@ Note also that the same `device` or `configuration` object is passed along to th
 of the values provisioned by the user, to add or restrict information in the provisioning. To test this feature, let's 
 use the provisioning handler to change the value of the type of the provisioning device to 'CertifiedType' (reflecting
 some validation process performed on the provisioning):
-```
+``` javascript
 function provisioningHandler(device, callback) {
     console.log('\n\n* REGISTERING A NEW DEVICE:\n%s\n\n', JSON.stringify(device, null, 4));
     device.type = 'CertifiedType';
@@ -433,7 +435,7 @@ function provisioningHandler(device, callback) {
 ```
 
 Once the handlers are defined, the new set of handlers has to be registered into the IOTAgent:
-```
+``` javascript
     iotAgentLib.setConfigurationHandler(configurationHandler);
     iotAgentLib.setProvisioningHandler(provisioningHandler);
 ```
