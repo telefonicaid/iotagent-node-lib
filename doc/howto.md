@@ -379,6 +379,50 @@ Content-Length: 3
 This same response can be used both for updates and queries for testing purposes (even though in the former the body won't 
 be read).
 
-## <a name="commands"/> IOTA With commands
+## <a name="configuration"/> Configuration management
 
-## <a name="configuration"/> Configuration control
+For some IoT Agents, it will be useful to know what devices or configurations were registered in the Agent, or to do some
+actions whenever a new device is registered. All this configuration and provisioning actions can be performed using two
+mechanisms: the provisioning handlers and the provisioning API.
+
+### Provisioning handlers
+
+The handlers provide a way for the IOTA to act whenever a new device, or configuration is provisioned. This can be used 
+for registering the device in external services, for storing important information about the device, or to listen in new 
+ports in the case of new configuration. For the simple example we are developing, we will just print the information we 
+are receiving whenever a new device or configuration is provisioned.
+
+We need to complete two steps to have a working set of provisioning handlers. First of all, defining the handlers themselves.
+Here we can see the definition of the configuration handler:
+```
+function configurationHandler(configuration, callback) {
+    console.log('\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n', JSON.stringify(configuration, null, 4));
+    callback(null, configuration);
+}
+```
+As we can see, the handlers receive the device or configuration that is being provisioned, as well as a callback. The 
+handler MUST call the callback once in order for the IOTA to work properly. If an error is passed as a parameter to the
+callback, the provisioning will be aborted. If no error is passed, the provisioning process will continue. This mechanism
+can be used to implement security mechanisms or to filter the provisioning of devices to the IOTA. 
+
+Note also that the same `device` or `configuration` object is passed along to the callback. This lets the IOTA change some 
+of the values provisioned by the user, to add or restrict information in the provisioning. To test this feature, let's 
+use the provisioning handler to change the value of the type of the provisioning device to 'CertifiedType' (reflecting
+some validation process performed on the provisioning):
+```
+function provisioningHandler(device, callback) {
+    console.log('\n\n* REGISTERING A NEW DEVICE:\n%s\n\n', JSON.stringify(device, null, 4));
+    device.type = 'CertifiedType';
+    callback(null, device);
+}
+```
+
+Once the handlers are defined, the new set of handlers has to be registered into the IOTAgent:
+```
+    iotAgentLib.setConfigurationHandler(configurationHandler);
+    iotAgentLib.setProvisioningHandler(provisioningHandler);
+```
+
+Now we can test our implementation by sending provisioning requests to the Northbound API. If we provision a new device
+into the platform, and then we ask for the list of provisioned devices, we shall see the type of the provisioned device
+has changed to 'CertifiedType'.
