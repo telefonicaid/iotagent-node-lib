@@ -32,7 +32,7 @@ access to a Context Broker (without any security proxies).
 ## <a name="basic"/> Basic IOTA
 In this first chapter, we will develop an IOT Agent with a fully working northbound API and no southbound
 API. This may seem useless (and indeed it is) but will serve us well on showing the basic steps in the creation
-of a IOTA.
+of an IOTA.
  
 First of all, we have to create the Node project. Create a folder to hold your project and type the following 
 instruction:
@@ -56,7 +56,7 @@ The first step is to write a configuration file, that will be used to tune the b
 can be copied from the `config-basic-example.js` file, in this same folder. Create a `config.js` file with it 
 in the root folder of your project. Remember to change the Context Broker IP to your local Context Broker.
 
-Now we can begin with the code of our IOTA. The very minimum code we need to start a IOTA is the following:
+Now we can begin with the code of our IOTA. The very minimum code we need to start an IOTA is the following:
 ``` javascript
 var iotAgentLib = require('iotagent-node-lib'),
     config = require('./config');
@@ -78,7 +78,7 @@ The northbound interface should now be fully functional, i.e.: management of dev
 
 ## <a name="active"/> IOTA With Active attributes
 
-In the previous section we created a IOTA that exposed just the Northbound interface, but that was pretty useless
+In the previous section we created an IOTA that exposed just the Northbound interface, but that was pretty useless
 (aside from its didactic use). In this section we are going to create a simple Southbound interface. It's important
 to remark that the nature of the Southbound API itself has nothing to do with the creation process of an IoT Agent.
 Each device protocol will use its own mechanisms and it is up to the IoTA developer to find any libraries that would 
