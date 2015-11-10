@@ -207,7 +207,11 @@ attribute with the '_status' sufix.
 function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
-Return a list of all the devices registered in the specified service and subservice.
+Return a list of all the devices registered in the specified service and subservice. This function can be invoked in 
+three different ways:
+* with just one parameter (the callback)
+* with three parameters (service, subservice and callback) 
+* or with five parameters (including limit and offset).
 ###### Params
 * service: service from where the devices will be retrieved.
 * subservice: subservice from where the devices will be retrieved.
