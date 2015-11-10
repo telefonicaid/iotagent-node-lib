@@ -1,0 +1,1 @@
+- Allow listDevices() to use a single param (#180).
