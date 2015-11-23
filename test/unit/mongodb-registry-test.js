@@ -292,7 +292,7 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When a the registry is queried for a device using an arbitrary attribute', function() {
+    describe('When the registry is queried for a device using an arbitrary attribute', function() {
         beforeEach(function(done) {
             contextBrokerMock = nock('http://10.11.128.16:1026')
                 .post('/v1/updateContext')
