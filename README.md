@@ -109,7 +109,7 @@ var iotagentLib = require('iotagent-node-lib');
 As a Lightweight M2M Server, the library supports four groups of features, one for each direction of the communication: client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined in the following sections.
 
 #### Operations
-##### iotagentLib.activate
+##### iotagentLib.activate()
 ###### Signature
 ```
 function activate(newConfig, callback)
@@ -321,6 +321,18 @@ Retrieve a device from the registry based on its entity name.
 
 ###### Params
 * deviceName: Name of the entity associated to a device.
+
+##### iotagentLib.getDevicesByAttribute()
+###### Signature
+```
+function getDevicesByAttribute(name, value, callback)
+```
+###### Description
+Retrieve all the devices having an attribute named `name` with value `value`.
+
+###### Params
+* name: name of the attribute to match.
+* value: value to match in the attribute.
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console

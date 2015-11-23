@@ -1,1 +1,2 @@
 - Allow listDevices() to use a single param (#180).
+- Implement generic find function for the device registries.
