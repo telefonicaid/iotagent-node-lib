@@ -33,7 +33,7 @@ var iotAgentLib = require('../../'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -139,7 +139,7 @@ describe('MongoDB Device Registry', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
@@ -194,7 +194,7 @@ describe('MongoDB Device Registry', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
@@ -244,7 +244,7 @@ describe('MongoDB Device Registry', function() {
                 .readExampleFile('./test/unit/contextAvailabilityRequests/unregisterDevice3.json');
 
             nock.cleanAll();
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
                 .reply(200, utils.readExampleFile(
                     './test/unit/contextAvailabilityResponses/registerNewDevice1Success.json'));
@@ -294,7 +294,7 @@ describe('MongoDB Device Registry', function() {
 
     describe('When the registry is queried for a device using an arbitrary attribute', function() {
         beforeEach(function(done) {
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')

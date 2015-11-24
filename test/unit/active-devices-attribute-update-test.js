@@ -33,7 +33,7 @@ var iotAgentLib = require('../../'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -68,7 +68,7 @@ describe('Update attribute functionalities', function() {
 
         nock.cleanAll();
 
-        contextBrokerMock = nock('http://10.11.128.16:1026')
+        contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext',

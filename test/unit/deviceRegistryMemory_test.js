@@ -30,7 +30,7 @@ var iotAgentLib = require('../../'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -61,7 +61,7 @@ describe('In memory device registry', function() {
 
     describe('When a the registry is queried for a device using an arbitrary attribute', function() {
         beforeEach(function(done) {
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
