@@ -76,7 +76,7 @@ Given the aforementioned requirements, there are some aspects of the implementat
 
 ## <a name="usage"/> Usage
 ### Library usage
-### Stats Registry
+#### Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
 the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration) 
 section.
@@ -106,10 +106,12 @@ In order to use this library, first you must require it:
 ```
 var iotagentLib = require('iotagent-node-lib');
 ```
-As a Lightweight M2M Server, the library supports four groups of features, one for each direction of the communication: client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined in the following sections.
+The library supports four groups of features, one for each direction of the communication: 
+client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined 
+in the following sections.
 
 #### Operations
-##### iotagentLib.activate
+##### iotagentLib.activate()
 ###### Signature
 ```
 function activate(newConfig, callback)
@@ -207,7 +209,11 @@ attribute with the '_status' sufix.
 function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
-Return a list of all the devices registered in the specified service and subservice.
+Return a list of all the devices registered in the specified service and subservice. This function can be invoked in 
+three different ways:
+* with just one parameter (the callback)
+* with three parameters (service, subservice and callback) 
+* or with five parameters (including limit and offset).
 ###### Params
 * service: service from where the devices will be retrieved.
 * subservice: subservice from where the devices will be retrieved.
@@ -317,6 +323,18 @@ Retrieve a device from the registry based on its entity name.
 
 ###### Params
 * deviceName: Name of the entity associated to a device.
+
+##### iotagentLib.getDevicesByAttribute()
+###### Signature
+```
+function getDevicesByAttribute(name, value, callback)
+```
+###### Description
+Retrieve all the devices having an attribute named `name` with value `value`.
+
+###### Params
+* name: name of the attribute to match.
+* value: value to match in the attribute.
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console
@@ -479,6 +497,20 @@ These are the parameters that can be configured in the global section:
 * **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
+* **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
+
+## <a name="aboutapi"/> About API
+The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
+to the `/iot/about` path, will show a payload like the following:
+```
+{
+“version”:”0.5.2”,
+“libVersion”:”0.8.4”,
+"port":4041,
+"baseRoot":"/"
+}
+```
+the `version` field will be read from the `iotaVersion` field of the config, if it exists.
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview

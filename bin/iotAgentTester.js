@@ -99,10 +99,13 @@ function queryContextAttribute(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': config.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, response, body) {
         if (error) {
@@ -558,7 +561,7 @@ function listGroups(commands) {
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': '/*'
+            'fiware-servicepath': configIot.subservice
         }
     };
 
@@ -614,7 +617,7 @@ function authenticate(command) {
     };
 
     console.log('Authenticating to host [%s:%s] with user [%s] in service [%s]',
-        command[0], command[1], command[2], commands[4]);
+        command[0], command[1], command[2], command[4]);
 
     console.log('----------------------------------------------------------------');
 

@@ -1,6 +1,3 @@
-- FIX 500 error while removing devices (#151)
-- FIX Change Device Not Found to 404 instead of 500 (#161).
-- ADD First version of the stats registry (#160).
-- FIX Reestructure files and folders (#164).
-- ADD Mongodb action to persist stats.
-- FIX Use Express Methods to check content type (#170).
+- Allow listDevices() to use a single param (#180).
+- Implement generic find function for the device registries.
+- Get info about iotA Version in IoTA-lib request (#184).

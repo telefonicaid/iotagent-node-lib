@@ -291,4 +291,52 @@ describe('MongoDB Device Registry', function() {
             });
         });
     });
+
+    describe('When the registry is queried for a device using an arbitrary attribute', function() {
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://10.11.128.16:1026')
+                .post('/v1/updateContext')
+                .times(10)
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            var devices = [];
+
+            for (var i = 0; i < 10; i++) {
+                devices.push({
+                    id: 'id' + i,
+                    type: 'Light' + i,
+                    internalId: 'internal' + i,
+                    active: [
+                        {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }
+                    ]
+                });
+            }
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                async.map(devices, iotAgentLib.register, function(error, results) {
+                    done();
+                });
+            });
+        });
+        afterEach(function(done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return the appropriate device', function(done) {
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', function(error, devices) {
+                should.not.exist(error);
+                should.exist(devices);
+                devices.length.should.equal(1);
+                devices[0].id.should.equal('id3');
+                done();
+            });
+        });
+    });
 });
