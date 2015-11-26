@@ -438,7 +438,10 @@ function removeProvisioned(commands) {
     var options = {
         uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices/' + commands[0],
         method: 'DELETE',
-        headers: {}
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': configIot.subservice
+        }
     };
 
     if (token) {
@@ -544,7 +547,7 @@ function removeGroup(commands) {
     request(options, function(error, result, body) {
         if (error) {
             console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
-        } else if (result.statusCode === 200 && body) {
+        } else if (result.statusCode === 200) {
             console.log('Device group for subservice [%s] removed successfully', configIot.subservice);
         } else {
             console.log('Unexpected application error. Status: ' + result.statusCode);
