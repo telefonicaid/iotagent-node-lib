@@ -336,6 +336,31 @@ Retrieve all the devices having an attribute named `name` with value `value`.
 * name: name of the attribute to match.
 * value: value to match in the attribute.
 
+##### iotagentLib.getConfiguration()
+###### Signature
+```
+function getConfiguration(resource, apikey, callback)
+```
+###### Description
+Gets the device group identified by the given (`resource`, `apikey`) pair.
+
+###### Params
+* resource: representation of the configuration in the IoT Agent (dependent on the protocol) .
+* apikey: special key the devices will present to prove they belong to a particular configuration.
+
+
+##### iotagentLib.findConfiguration()
+###### Signature
+```
+function findConfiguration(service, subservice, callback)
+```
+###### Description
+Find a device group based on its service and subservice.
+
+###### Params
+* service: name of the service of the configuration.
+* subservice: name of the subservice of the configuration.
+
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console
 A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
