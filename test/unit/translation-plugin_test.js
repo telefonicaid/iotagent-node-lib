@@ -118,7 +118,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Translation middleware tests', function() {
+describe('Translation middleware tests', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -233,7 +233,7 @@ describe.only('Translation middleware tests', function() {
                     entity.contextResponses[0].contextElement.attributes[1].value + '%';
 
                 called = true;
-                
+
                 callback(null, entity);
             }
 
