@@ -1,0 +1,22 @@
+{
+    "contextElements": [
+        {
+            "type": "Light",
+            "isPattern": "false",
+            "id": "light1",
+            "attributes": [
+                {
+                    "name": "state",
+                    "type": "Boolean",
+                    "value": "true"
+                },
+                {
+                    "name": "dimming",
+                    "type": "Percentage",
+                    "value": "87%"
+                }
+            ]
+        }
+    ],
+    "updateAction": "UPDATE"
+}
