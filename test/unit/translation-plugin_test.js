@@ -118,9 +118,13 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Translation middleware tests', function() {
-    beforeEach(function() {
+describe.only('Translation middleware tests', function() {
+    beforeEach(function(done) {
         logger.setLevel('FATAL');
+
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(done);
+        });
     });
 
     afterEach(function(done) {
@@ -129,8 +133,8 @@ describe('Translation middleware tests', function() {
         });
     });
 
-    describe('When a new translation middleware is added to the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new update translation middleware is added to the IoT Agent', function() {
+        beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -140,10 +144,6 @@ describe('Translation middleware tests', function() {
                 utils.readExampleFile('./test/unit/contextRequests/updateContextMiddleware1.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function() {
-                iotAgentLib.clearAll(done);
-            });
         });
 
         it('should execute the middlewares', function(done) {
@@ -201,6 +201,63 @@ describe('Translation middleware tests', function() {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+
+    describe('When a new query translation middleware is added to the IoT Agent', function() {
+        var attributes = [
+            'state',
+            'dimming'
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+        });
+
+        it('should call the middleware', function(done) {
+            var called = false;
+
+            function testMiddleware(entity, callback) {
+                entity.contextResponses[0].contextElement.attributes[1].value =
+                    entity.contextResponses[0].contextElement.attributes[1].value + '%';
+
+                called = true;
+                
+                callback(null, entity);
+            }
+
+            iotAgentLib.addQueryMiddleware(testMiddleware);
+
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
+                should.not.exist(error);
+                called.should.equal(true);
+                done();
+            });
+        });
+        it('should call the middleware', function(done) {
+            function testMiddleware(entity, callback) {
+                entity.contextResponses[0].contextElement.attributes[1].value =
+                    entity.contextResponses[0].contextElement.attributes[1].value + '%';
+
+                callback(null, entity);
+            }
+
+            iotAgentLib.addQueryMiddleware(testMiddleware);
+
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
+                should.not.exist(error);
+                result.contextResponses[0].contextElement.attributes[1].value.should.equal('23%');
                 done();
             });
         });
