@@ -158,7 +158,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
 
                 request(options, function(error, response, body) {
                     var parsedBody = JSON.parse(body);
-                    parsedBody.length.should.equal(1);
+                    parsedBody.devices.length.should.equal(1);
                     done();
                 });
             });

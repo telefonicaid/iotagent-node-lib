@@ -126,8 +126,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
+                should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
-                parsedBody.length.should.equal(2);
+                parsedBody.devices.length.should.equal(2);
                 done();
             });
         });
@@ -233,7 +234,7 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
-                parsedBody.length.should.equal(3);
+                parsedBody.devices.length.should.equal(3);
                 done();
             });
         });
@@ -289,8 +290,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
 
-                for (var i = 0; i < parsedBody.length; i++) {
-                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody[i].id).should.equal(-1);
+                for (var i = 0; i < parsedBody.devices.length; i++) {
+                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody.devices[i].id).should.equal(-1);
                 }
 
                 done();
@@ -335,7 +336,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-                parsedBody.length.should.equal(2);
+                parsedBody.devices.length.should.equal(2);
                 done();
             });
         });

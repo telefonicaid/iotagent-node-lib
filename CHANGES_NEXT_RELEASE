@@ -1,2 +1,4 @@
 - Add groupRegistry.clear() to the clearAll function.
 - Add a plugin mechanism to perform translations in the entity data (#193).
+- Add /iot prefix in IOTA url for IOTAM integration.
+- Modify the answer for the GET devices and GET groups operations (#196).
