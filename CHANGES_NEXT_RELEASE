@@ -1,1 +1,2 @@
 - Add groupRegistry.clear() to the clearAll function.
+- Add a plugin mechanism to perform translations in the entity data (#193).

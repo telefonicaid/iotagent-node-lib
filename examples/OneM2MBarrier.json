@@ -1,0 +1,17 @@
+{
+  "devices": [
+    {
+      "device_id": "barrier1",
+      "protocol": "ONEM2M",
+      "entity_name": "sensors:Barrier1",
+      "entity_type": "Barrier",
+      "timezone": "America/Santiago",
+      "lazy": [
+        {
+          "name": "Barrier",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
