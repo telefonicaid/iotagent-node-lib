@@ -119,7 +119,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.only('Timestamp compression plugin', function() {
+describe('Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -172,6 +172,32 @@ describe.only('Timestamp compression plugin', function() {
         });
     });
     describe('When a query comes for a timestamp through the plugin', function() {
-        it('should return an entity with all its timestamps without separators (basic format)');
+        var values = [
+            'state',
+            'The Target Value'
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/contextRequests/queryContextCompressTimestamp1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/queryContextCompressTimestamp1Success.json'));
+        });
+
+        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
+            iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
+                should.not.exist(error);
+                should.exist(response);
+                should.exist(response.contextResponses);
+                response.contextResponses.length.should.equal(1);
+                response.contextResponses[0].contextElement.attributes[1].value.should.equal('20071103T131805');
+                done();
+            });
+        });
     });
 });
