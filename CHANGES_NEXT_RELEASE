@@ -2,3 +2,5 @@
 - Add a plugin mechanism to perform translations in the entity data (#193).
 - Add /iot prefix in IOTA url for IOTAM integration.
 - Modify the answer for the GET devices and GET groups operations (#196).
+- Add APPEND Mode for Context Broker updates.
+- Add Timestamp compression plugin.
