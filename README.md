@@ -524,6 +524,8 @@ These are the parameters that can be configured in the global section:
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
 * **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
+* **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
+have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
