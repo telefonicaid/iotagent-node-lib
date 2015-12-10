@@ -164,6 +164,37 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextAppendMode.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.appendMode = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            iotAgentConfig.appendMode = false;
+
+            done();
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
         beforeEach(function(done) {
             nock.cleanAll();
