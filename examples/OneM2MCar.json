@@ -1,0 +1,18 @@
+{
+    "devices": [
+    {
+        "device_id": "oneM2MCar",
+        "protocol": "ONEM2M",
+        "entity_name": "cars:car1",
+        "entity_type": "http://www.neclab.eu/ontology/oneM2M2fiware#Car",
+        "timezone": "Europe/Paris",
+        "lazy": [
+            {
+                "name": "con",
+                "type": "text"
+            }
+        ]
+    }
+    ]
+}
+

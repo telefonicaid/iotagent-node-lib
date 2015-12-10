@@ -756,6 +756,7 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
 
 ## <a name="datamapping"/> Data mapping plugins
+### Overview
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
 incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
 i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but taking care of
@@ -773,6 +774,7 @@ an error object (the usual convention). If any of the updateContext middlewares 
 to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()` 
 function will end up in an error if any of the queryContext middlewares report an error.
 
+### Development
 All the middlewares have the same signature:
 ```
 function middlewareName(entity, callback) {}
@@ -795,6 +797,22 @@ to every call to the `query()` function.
 
 Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they 
 should not change a lot during the IoT lifetime.
+
+### Provided plugins
+The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
+use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
+```
+var iotaLib = require('iotagent-node-lib');
+
+iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
+iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
+```
+
+#### Timestamp Compression plugin (compressTimestamp)
+This plugins change all the timestamp attributes found in the entity, and all the timestamp metadata found in any 
+attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended
+complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
+updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
 
 ## <a name="development"/> Development documentation
 ### Branches and release process
