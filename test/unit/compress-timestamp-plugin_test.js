@@ -243,6 +243,4 @@ describe('Timestamp compression plugin', function() {
             });
         });
     });
-
-
 });
