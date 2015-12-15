@@ -171,6 +171,49 @@ describe('Timestamp compression plugin', function() {
             });
         });
     });
+
+    describe('When an update comes with a timestamp through the plugin with metadatas', function() {
+        var values = [
+            {
+                name: 'state',
+                type: 'Boolean',
+                value: 'true',
+                metadata: [
+                    {
+                        name: 'timeInstant',
+                        type: 'timestamp',
+                        value: '20071103T131805'
+                    }
+                ]
+            },
+            {
+                name: 'The Target Value',
+                type: 'timestamp',
+                value: '20071103T131805'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContextCompressTimestamp2.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContextCompressTimestamp2Success.json'));
+        });
+
+        it('should return an entity with all its timestamps expanded to have separators', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a query comes for a timestamp through the plugin', function() {
         var values = [
             'state',
