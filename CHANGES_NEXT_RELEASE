@@ -5,3 +5,4 @@
 - Add APPEND Mode for Context Broker updates.
 - Add Timestamp compression plugin.
 - Add Metadata filtering to data filtering plugins (#204).
+- Fix Device DELETE should return 204 instead of 200 (#203).
