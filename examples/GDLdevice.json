@@ -1,0 +1,12 @@
+{
+    "devices": [
+      {
+        "device_id": "The Device Id",
+        "protocol": "PDI-IoTA-ThinkingThings",
+        "entity_name": "Name in the Context Broker",
+        "entity_type": "TTOpen.1",
+        "attributes": []
+      }
+    ]
+}
+
