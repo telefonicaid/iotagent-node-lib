@@ -6,3 +6,4 @@
 - Add Timestamp compression plugin.
 - Add Metadata filtering to data filtering plugins (#204).
 - Fix Device DELETE should return 204 instead of 200 (#203).
+- Refactor the generic functions used in the time compression plugin to a common module (#205)
