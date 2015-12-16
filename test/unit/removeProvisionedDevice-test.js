@@ -140,7 +140,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
         it('should return a 200 OK and no errors', function(done) {
             request(options, function(error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(200);
+                response.statusCode.should.equal(204);
                 done();
             });
         });
