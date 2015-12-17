@@ -353,7 +353,6 @@ describe('Device Group Configuration API', function() {
         });
     });
 
-
     describe('When a device group removal arrives to a DB with three groups', function() {
         beforeEach(function(done) {
             var optionsCreation1 = _.clone(optionsCreation),
@@ -501,9 +500,6 @@ describe('Device Group Configuration API', function() {
         });
     });
 
-
-
-
     describe('When a device group update request arrives declaring a different service', function() {
         beforeEach(function(done) {
             optionsUpdate.headers['fiware-service'] = 'UnexistentService';
@@ -616,7 +612,10 @@ describe('Device Group Configuration API', function() {
         });
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
+                should.exist(body.count);
+                should.exist(body.services);
                 body.count.should.equal(3);
+                body.services.length.should.equal(3);
                 done();
             });
         });

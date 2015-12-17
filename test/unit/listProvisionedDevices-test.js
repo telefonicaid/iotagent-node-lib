@@ -129,6 +129,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
                 parsedBody.devices.length.should.equal(2);
+                parsedBody.count.should.equal(2);
                 done();
             });
         });
