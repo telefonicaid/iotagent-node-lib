@@ -8,3 +8,4 @@
 - Fix Device DELETE should return 204 instead of 200 (#203).
 - Refactor the generic functions used in the time compression plugin to a common module (#205).
 - Modify the answer for the GET devices and GET groups operations (#196).
+- List devices: the returned count value should be the total count of registered devices (#199).

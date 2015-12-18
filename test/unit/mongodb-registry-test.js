@@ -339,4 +339,59 @@ describe('MongoDB Device Registry', function() {
             });
         });
     });
+
+    describe('When the list of devices is retrieved', function() {
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v1/updateContext')
+                .times(10)
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            var devices = [];
+
+            for (var i = 0; i < 10; i++) {
+                devices.push({
+                    id: 'id' + i,
+                    type: 'Light' + i,
+                    internalId: 'internal' + i,
+                    active: [
+                        {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }
+                    ]
+                });
+            }
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                async.map(devices, iotAgentLib.register, function(error, results) {
+                    done();
+                });
+            });
+        });
+        afterEach(function(done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return the limited nunmber of devices', function(done) {
+            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function(error, result) {
+                should.not.exist(error);
+                should.exist(result.devices);
+                result.devices.length.should.equal(3);
+                done();
+            });
+        });
+        it('should return the total number of devices', function(done) {
+            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function(error, result) {
+                should.not.exist(error);
+                should.exist(result.count);
+                result.count.should.equal(10);
+                done();
+            });
+        });
+    });
 });
