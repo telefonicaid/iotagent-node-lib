@@ -10,3 +10,4 @@
 - Modify the answer for the GET devices and GET groups operations (#196).
 - Fix List devices: the returned count value should be the total count of registered devices (#199).
 - Fix Asking for the list of configurations of a subservice return results for all services #(209).
+- Fix Integrate Node.js IOTAgents with the IOTA Manager (and the administration portal) (#159).

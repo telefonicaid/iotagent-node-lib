@@ -133,6 +133,31 @@ describe('Device provisioning API: List provisioned devices', function() {
                 done();
             });
         });
+
+        it('should return all the appropriate field names', function(done) {
+            /* jshint camelcase:false */
+
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+
+                should.exist(parsedBody.devices[0].attributes);
+                parsedBody.devices[0].attributes.length.should.equal(1);
+
+                should.exist(parsedBody.devices[0].device_id);
+                parsedBody.devices[0].device_id.should.equal('Light1');
+
+                should.exist(parsedBody.devices[0].entity_name);
+                parsedBody.devices[0].entity_name.should.equal('TheFirstLight');
+
+                should.exist(parsedBody.devices[0].protocol);
+                parsedBody.devices[0].protocol.should.equal('GENERIC_PROTO');
+
+                should.exist(parsedBody.devices[0].static_attributes);
+                parsedBody.devices[0].static_attributes.length.should.equal(1);
+
+                done();
+            });
+        });
     });
     describe('When a request for the information about a specific device arrives', function() {
         var options = {
@@ -155,6 +180,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
                 parsedBody = JSON.parse(body);
                 parsedBody.entity_name.should.equal('TheFirstLight');
+                parsedBody.device_id.should.equal('Light1');
                 done();
             });
         });
