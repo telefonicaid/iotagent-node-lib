@@ -700,10 +700,7 @@ describe('Device Group Configuration API', function() {
             };
 
         beforeEach(function(done) {
-            var optionsCreation1 = _.clone(optionsCreation),
-                optionsCreation2 = _.clone(optionsCreation),
-                optionsCreation3 = _.clone(optionsCreation),
-                optionsCreationList = [],
+            var optionsCreationList = [],
                 creationFns = [];
 
             for (var i = 0; i < 10; i++) {
@@ -729,6 +726,14 @@ describe('Device Group Configuration API', function() {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.services.length.should.equal(3);
+                done();
+            });
+        });
+        it('should use return the total number of entities', function(done) {
+            request(optConstrainedList, function(error, response, body) {
+                should.exist(body.count);
+                should.exist(body.services);
+                body.count.should.equal(10);
                 done();
             });
         });
