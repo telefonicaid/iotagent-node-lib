@@ -377,7 +377,7 @@ describe('MongoDB Device Registry', function() {
         afterEach(function(done) {
             iotAgentLib.clearRegistry(done);
         });
-        it('should return the limited nunmber of devices', function(done) {
+        it('should return the limited number of devices', function(done) {
             iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function(error, result) {
                 should.not.exist(error);
                 should.exist(result.devices);
