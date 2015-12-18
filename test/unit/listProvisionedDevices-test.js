@@ -129,6 +129,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
                 parsedBody.devices.length.should.equal(2);
+                parsedBody.count.should.equal(2);
                 done();
             });
         });
@@ -176,6 +177,7 @@ describe('Device provisioning API: List provisioned devices', function() {
             });
         });
     });
+
     describe('When a request for listing all the devices with a limit of 3 arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
@@ -235,6 +237,15 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 parsedBody.devices.length.should.equal(3);
+                done();
+            });
+        });
+
+        it('should return a count with the complete number of devices', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                should.not.exist(error);
+                parsedBody.count.should.equal(10);
                 done();
             });
         });

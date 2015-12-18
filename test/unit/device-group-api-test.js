@@ -353,7 +353,6 @@ describe('Device Group Configuration API', function() {
         });
     });
 
-
     describe('When a device group removal arrives to a DB with three groups', function() {
         beforeEach(function(done) {
             var optionsCreation1 = _.clone(optionsCreation),
@@ -501,9 +500,6 @@ describe('Device Group Configuration API', function() {
         });
     });
 
-
-
-
     describe('When a device group update request arrives declaring a different service', function() {
         beforeEach(function(done) {
             optionsUpdate.headers['fiware-service'] = 'UnexistentService';
@@ -616,7 +612,10 @@ describe('Device Group Configuration API', function() {
         });
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
+                should.exist(body.count);
+                should.exist(body.services);
                 body.count.should.equal(3);
+                body.services.length.should.equal(3);
                 done();
             });
         });
@@ -643,6 +642,7 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
+
     describe('When a new device from a created group arrives to the IoT Agent and sends a measure', function() {
         var contextBrokerMock,
             values = [
@@ -681,6 +681,61 @@ describe('Device Group Configuration API', function() {
                     contextBrokerMock.done();
                     done();
                 });
+        });
+    });
+
+    describe('When a group listing request arrives with offset and limit parameters', function() {
+        var optConstrainedList = {
+                url: 'http://localhost:4041/iot/services',
+                method: 'GET',
+                qs: {
+                    limit: 3,
+                    offset: 2
+                },
+                json: {},
+                headers: {
+                    'fiware-service': 'TestService',
+                    'fiware-servicepath': '/*'
+                }
+            };
+
+        beforeEach(function(done) {
+            var optionsCreationList = [],
+                creationFns = [];
+
+            for (var i = 0; i < 10; i++) {
+                optionsCreationList[i] = _.clone(optionsCreation);
+                optionsCreationList[i].json = { services: [] };
+                optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
+                optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
+                creationFns.push(async.apply(request, optionsCreationList[i]));
+            }
+
+            async.series(creationFns, done);
+        });
+
+        it('should return a 200 OK', function(done) {
+            request(optConstrainedList, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should use the limit parameter to constrain the number of entries', function(done) {
+            request(optConstrainedList, function(error, response, body) {
+                should.exist(body.count);
+                should.exist(body.services);
+                body.services.length.should.equal(3);
+                done();
+            });
+        });
+        it('should use return the total number of entities', function(done) {
+            request(optConstrainedList, function(error, response, body) {
+                should.exist(body.count);
+                should.exist(body.services);
+                body.count.should.equal(10);
+                done();
+            });
         });
     });
 });
