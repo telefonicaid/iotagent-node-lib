@@ -817,6 +817,11 @@ attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 2007
 complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
 updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
 
+#### Attribute Alias plugin (attributeAlias)
+In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as 
+the left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and
+name attributes are used in this way, this plugin makes the translation from one to the other automatically.
+
 ## <a name="development"/> Development documentation
 ### Branches and release process
 The project have two standard branches:
