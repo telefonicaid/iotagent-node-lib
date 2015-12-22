@@ -13,3 +13,4 @@
 - Fix Integrate Node.js IOTAgents with the IOTA Manager (and the administration portal) (#159).
 - Fix Service based filtering in MongoDB registries won't work.
 - Add attribute aliases in updates (#182).
+- Fix bug when trying to stop an unstarted agent (#179).
