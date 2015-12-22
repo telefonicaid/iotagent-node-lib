@@ -779,13 +779,14 @@ function will end up in an error if any of the queryContext middlewares report a
 ### Development
 All the middlewares have the same signature:
 ```
-function middlewareName(entity, callback) {}
+function middlewareName(entity, typeInformation, callback) {}
 ```
-The only arguments for any middleware are the NGSI data over which it can operate: an updateContext payload in the case of
-an updateContext middleware and a queryContext payload otherwise; and the customary `callback` parameter, with the usual
-meaning. It's really important for the library user to call this callback, as failing to do so may hang the IoT Agent
-completely. The callback must be called with the an optional error in the first argument and the modified payload as 
-the second.
+The arguments for any middleware are the NGSI data over which it can operate:
+- An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise; 
+- a typeInformation object containing all the information about the device stored during registration.
+- and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call 
+this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an optional 
+error in the first argument and the same arguments recieved (potentially modified) as the following.
 
 In order to manage the middlewares to the system, the following functions can be used:
 - `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be 

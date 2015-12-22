@@ -1,0 +1,22 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "light1",
+      "attributes": [
+        {
+          "name": "temperature",
+          "type": "centigrades",
+          "value": "52"
+        },
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": "20071103T131805"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}

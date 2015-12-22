@@ -1,0 +1,27 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "t",
+            "type": "centigrades",
+            "value": "52"
+          },
+          {
+            "name": "p",
+            "type": "Hgmm",
+            "value": "20071103T131805"
+          }
+        ],
+        "id": "light1",
+        "isPattern": "false",
+        "type": "Light"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
