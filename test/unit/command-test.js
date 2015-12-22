@@ -33,7 +33,7 @@ var iotAgentLib = require('../../'),
     statusAttributeMock,
     iotAgentConfig = {
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -112,7 +112,7 @@ describe('Command functionalities', function() {
 
         nock.cleanAll();
 
-        contextBrokerMock = nock('http://10.11.128.16:1026')
+        contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext',
@@ -177,7 +177,7 @@ describe('Command functionalities', function() {
         };
 
         beforeEach(function(done) {
-            statusAttributeMock = nock('http://10.11.128.16:1026')
+            statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -251,7 +251,7 @@ describe('Command functionalities', function() {
     });
     describe('When an update arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
-            statusAttributeMock = nock('http://10.11.128.16:1026')
+            statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -275,7 +275,7 @@ describe('Command functionalities', function() {
     });
     describe('When an error command arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
-            statusAttributeMock = nock('http://10.11.128.16:1026')
+            statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',

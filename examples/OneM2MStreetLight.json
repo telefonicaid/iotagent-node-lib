@@ -1,0 +1,17 @@
+{
+  "devices": [
+    {
+      "device_id": "streetlight1",
+      "protocol": "ONEM2M",
+      "entity_name": "sensors:streetlight1",
+      "entity_type": "StreetLight",
+      "timezone": "America/Santiago",
+      "lazy": [
+        {
+          "name": "streetlight",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}

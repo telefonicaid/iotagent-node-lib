@@ -9,6 +9,7 @@
 * [Device Provisioning API](#provisioningapi)
 * [Configuration API](#configurationapi)
 * [Secured access to the Context Broker](#securedaccess)
+* [Data mapping plugins](#datamapping)
 * [Development Documentation](#development)
 
 ## <a name="overview"/> Overview
@@ -76,7 +77,7 @@ Given the aforementioned requirements, there are some aspects of the implementat
 
 ## <a name="usage"/> Usage
 ### Library usage
-### Stats Registry
+#### Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
 the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration) 
 section.
@@ -106,10 +107,12 @@ In order to use this library, first you must require it:
 ```
 var iotagentLib = require('iotagent-node-lib');
 ```
-As a Lightweight M2M Server, the library supports four groups of features, one for each direction of the communication: client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined in the following sections.
+The library supports four groups of features, one for each direction of the communication: 
+client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined 
+in the following sections.
 
 #### Operations
-##### iotagentLib.activate
+##### iotagentLib.activate()
 ###### Signature
 ```
 function activate(newConfig, callback)
@@ -207,7 +210,11 @@ attribute with the '_status' sufix.
 function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
-Return a list of all the devices registered in the specified service and subservice.
+Return a list of all the devices registered in the specified service and subservice. This function can be invoked in 
+three different ways:
+* with just one parameter (the callback)
+* with three parameters (service, subservice and callback) 
+* or with five parameters (including limit and offset).
 ###### Params
 * service: service from where the devices will be retrieved.
 * subservice: subservice from where the devices will be retrieved.
@@ -317,6 +324,43 @@ Retrieve a device from the registry based on its entity name.
 
 ###### Params
 * deviceName: Name of the entity associated to a device.
+
+##### iotagentLib.getDevicesByAttribute()
+###### Signature
+```
+function getDevicesByAttribute(name, value, callback)
+```
+###### Description
+Retrieve all the devices having an attribute named `name` with value `value`.
+
+###### Params
+* name: name of the attribute to match.
+* value: value to match in the attribute.
+
+##### iotagentLib.getConfiguration()
+###### Signature
+```
+function getConfiguration(resource, apikey, callback)
+```
+###### Description
+Gets the device group identified by the given (`resource`, `apikey`) pair.
+
+###### Params
+* resource: representation of the configuration in the IoT Agent (dependent on the protocol) .
+* apikey: special key the devices will present to prove they belong to a particular configuration.
+
+
+##### iotagentLib.findConfiguration()
+###### Signature
+```
+function findConfiguration(service, subservice, callback)
+```
+###### Description
+Find a device group based on its service and subservice.
+
+###### Params
+* service: name of the service of the configuration.
+* subservice: name of the subservice of the configuration.
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console
@@ -479,6 +523,22 @@ These are the parameters that can be configured in the global section:
 * **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
+* **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
+* **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
+have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
+## <a name="aboutapi"/> About API
+The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
+to the `/iot/about` path, will show a payload like the following:
+```
+{
+“version”:”0.5.2”,
+“libVersion”:”0.8.4”,
+"port":4041,
+"baseRoot":"/"
+}
+```
+the `version` field will be read from the `iotaVersion` field of the config, if it exists.
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
@@ -549,7 +609,7 @@ For some services, there will be no need to provision individual devices, but it
 
 The IoT Agents provide two means to define those device groups:
 * Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
-* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/agent/:agentName/services`. Please, note that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
+* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
 Both approaches provide the same configuration information for the types (and they, in fact, end up in the same configuration collection), but, for the moment, the file and API nomenclatures differ (to be fixed soon, issue #33). 
 
@@ -575,7 +635,7 @@ Device groups contain the following attributes:
 * **staticAttributes**: this attributes will be added to all the entities of this group 'as is'.
 * **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
 
-#### POST /iot/agents/:agentName/services
+#### POST /iot/services
 Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
 
 Body params:
@@ -620,7 +680,7 @@ Returns:
 * 400 WRONG_SYNTAX if the body doesn't comply with the schema.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### GET /iot/agents/:agentName/services
+#### GET /iot/services
 Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns: 
@@ -628,7 +688,7 @@ Returns:
 * 400 MISSING_HEADERS if any of the mandatory headers is not present.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### PUT /iot/agents/:agentName/services
+#### PUT /iot/services
 Modifies the information for a device group configuration, identified by the `resource` and `apikey` query parameters. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
 
 E.g.:
@@ -644,7 +704,7 @@ Returns:
 * 400 MISSING_HEADERS if any of the mandatory headers is not present.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
-#### DELETE /iot/agents/:agentName/services
+#### DELETE /iot/services
 Removes a device group configuration from the DB, specified by the `resource` and `apikey` query parameters. 
 
 Returns: 
@@ -696,6 +756,65 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 * Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust token to generate a temporary access token, that is attached to the request (in the `X-Auth-token` header).
 
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
+
+## <a name="datamapping"/> Data mapping plugins
+### Overview
+The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
+incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
+i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but taking care of
+returning a valid entity, that can be used as the input for other middlewares; this way, allo those pieces of 
+code can be chained together in order to make all the needed transformations in the target entity.
+
+There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext middlewares
+are applied before the information is sent to the Context Broker, modifiying the entity before it is sent to Orion. The 
+queryContext middlewares are applied on the received data, whenever the IoT Agent queries the Context Broker for information.
+I.e.: both middlewares will be automatically applied whenever the `update()` or `query()` functions are called in the 
+library.
+
+All the middlewares have the opportunity to break the chain of middleware applications by calling the `callback()` with
+an error object (the usual convention). If any of the updateContext middlewares raise an error, no request will be sent
+to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()` 
+function will end up in an error if any of the queryContext middlewares report an error.
+
+### Development
+All the middlewares have the same signature:
+```
+function middlewareName(entity, callback) {}
+```
+The only arguments for any middleware are the NGSI data over which it can operate: an updateContext payload in the case of
+an updateContext middleware and a queryContext payload otherwise; and the customary `callback` parameter, with the usual
+meaning. It's really important for the library user to call this callback, as failing to do so may hang the IoT Agent
+completely. The callback must be called with the an optional error in the first argument and the modified payload as 
+the second.
+
+In order to manage the middlewares to the system, the following functions can be used:
+- `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be 
+applied to every call to the `update()` function. The final payload of the updateContext request will be the result
+of applying all this middlewares in the order they have been defined.
+
+- `addQueryMiddleware`: adds a queryContext middleware to the stack of middlewares. All the middlewares will be applied 
+to every call to the `query()` function.
+
+- `resetMiddlewares`: remove all the middlewares from the system.
+
+Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they 
+should not change a lot during the IoT lifetime.
+
+### Provided plugins
+The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
+use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
+```
+var iotaLib = require('iotagent-node-lib');
+
+iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
+iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
+```
+
+#### Timestamp Compression plugin (compressTimestamp)
+This plugins change all the timestamp attributes found in the entity, and all the timestamp metadata found in any 
+attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended
+complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
+updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
 
 ## <a name="development"/> Development documentation
 ### Branches and release process

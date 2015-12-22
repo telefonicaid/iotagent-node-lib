@@ -33,7 +33,7 @@ var iotAgentLib = require('../../'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -111,6 +111,15 @@ var iotAgentLib = require('../../'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
+    optionsList = {
+        url: 'http://localhost:4041/iot/services',
+        method: 'GET',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/*'
+        }
+    },
     optionsUpdate = {
         url: 'http://localhost:4041/iot/services',
         method: 'PUT',
@@ -143,15 +152,6 @@ var iotAgentLib = require('../../'),
         qs: {
             resource: '/deviceTest',
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    optionsList = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
         }
     },
     optionsGet = {
@@ -312,6 +312,44 @@ describe('MongoDB Group Registry test', function() {
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
                 body.count.should.equal(3);
+                done();
+            });
+        });
+    });
+
+    describe('When a device group listing request arrives with limit', function() {
+        var optionsConstrained = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'GET',
+            qs: {
+                limit: 3,
+                offset: 2
+            },
+            json: {},
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/*'
+            }
+        };
+
+        beforeEach(function(done) {
+            var optionsCreationList = [],
+                creationFns = [];
+
+            for (var i = 0; i < 10; i++) {
+                optionsCreationList[i] = _.clone(optionsCreation);
+                optionsCreationList[i].json = { services: [] };
+                optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
+                optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
+                creationFns.push(async.apply(request, optionsCreationList[i]));
+            }
+
+            async.series(creationFns, done);
+        });
+
+        it('should return the appropriate count of services', function(done) {
+            request(optionsConstrained, function(error, response, body) {
+                body.count.should.equal(10);
                 done();
             });
         });

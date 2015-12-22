@@ -27,7 +27,7 @@ var statsService = require('../../lib/services/stats/statsRegistry'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {

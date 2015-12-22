@@ -1,0 +1,22 @@
+{
+    "devices": [
+      {
+        "device_id": "ULSensor",
+        "entity_name": "Sensor01",
+        "entity_type": "BasicULSensor",
+        "lazy": [
+            {
+                "name": "t",
+                "type": "celsius"
+            },
+            {
+                "name": "l",
+                "type": "meters"
+            }
+        ],
+        "attributes": [
+        ]
+      }
+    ]
+}
+

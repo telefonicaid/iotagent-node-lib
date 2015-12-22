@@ -99,10 +99,13 @@ function queryContextAttribute(commands) {
         },
         headers: {
             'fiware-service': config.service,
-            'fiware-servicepath': config.subservice,
-            'X-Auth-Token': token
+            'fiware-servicepath': config.subservice
         }
     };
+
+    if (token) {
+        options.headers['X-Auth-Token'] = token;
+    }
 
     request(options, function(error, response, body) {
         if (error) {
@@ -435,7 +438,10 @@ function removeProvisioned(commands) {
     var options = {
         uri: 'http://' + configIot.host + ':' + configIot.port + '/iot/devices/' + commands[0],
         method: 'DELETE',
-        headers: {}
+        headers: {
+            'fiware-service': configIot.service,
+            'fiware-servicepath': configIot.subservice
+        }
     };
 
     if (token) {
@@ -541,7 +547,7 @@ function removeGroup(commands) {
     request(options, function(error, result, body) {
         if (error) {
             console.log('Couldn\'t connect with the provisioning server: ' + error.toString());
-        } else if (result.statusCode === 200 && body) {
+        } else if (result.statusCode === 200) {
             console.log('Device group for subservice [%s] removed successfully', configIot.subservice);
         } else {
             console.log('Unexpected application error. Status: ' + result.statusCode);
@@ -558,7 +564,7 @@ function listGroups(commands) {
         method: 'GET',
         headers: {
             'fiware-service': configIot.service,
-            'fiware-servicepath': '/*'
+            'fiware-servicepath': configIot.subservice
         }
     };
 
@@ -614,7 +620,7 @@ function authenticate(command) {
     };
 
     console.log('Authenticating to host [%s:%s] with user [%s] in service [%s]',
-        command[0], command[1], command[2], commands[4]);
+        command[0], command[1], command[2], command[4]);
 
     console.log('----------------------------------------------------------------');
 

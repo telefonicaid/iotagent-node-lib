@@ -32,7 +32,7 @@ var iotAgentLib = require('../../'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -52,7 +52,7 @@ describe('Device provisioning API: Provision devices', function() {
         nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig, function() {
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
@@ -84,7 +84,7 @@ describe('Device provisioning API: Provision devices', function() {
         beforeEach(function() {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
@@ -121,7 +121,7 @@ describe('Device provisioning API: Provision devices', function() {
                 response.statusCode.should.equal(201);
 
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results.length.should.equal(1);
+                    results.devices.length.should.equal(1);
                     done();
                 });
             });
@@ -145,9 +145,9 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results[0].id.should.equal('Light1');
-                    results[0].name.should.equal('TheFirstLight');
-                    results[0].type.should.equal('TheLightType');
+                    results.devices[0].id.should.equal('Light1');
+                    results.devices[0].name.should.equal('TheFirstLight');
+                    results.devices[0].type.should.equal('TheLightType');
                     done();
                 });
             });
@@ -156,23 +156,23 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    should.exist(results[0].timezone);
-                    results[0].timezone.should.equal('America/Santiago');
-                    should.exist(results[0].lazy);
-                    results[0].lazy.length.should.equal(1);
-                    results[0].lazy[0].name.should.equal('luminance');
-                    should.exist(results[0].staticAttributes);
-                    results[0].commands.length.should.equal(1);
-                    results[0].commands[0].name.should.equal('commandAttr');
-                    should.exist(results[0].staticAttributes);
-                    results[0].staticAttributes.length.should.equal(1);
-                    results[0].staticAttributes[0].name.should.equal('hardcodedAttr');
-                    should.exist(results[0].active);
-                    results[0].active.length.should.equal(1);
-                    results[0].active[0].name.should.equal('attr_name');
-                    should.exist(results[0].internalAttributes);
-                    results[0].internalAttributes.length.should.equal(1);
-                    results[0].internalAttributes[0].customField.should.equal('customValue');
+                    should.exist(results.devices[0].timezone);
+                    results.devices[0].timezone.should.equal('America/Santiago');
+                    should.exist(results.devices[0].lazy);
+                    results.devices[0].lazy.length.should.equal(1);
+                    results.devices[0].lazy[0].name.should.equal('luminance');
+                    should.exist(results.devices[0].staticAttributes);
+                    results.devices[0].commands.length.should.equal(1);
+                    results.devices[0].commands[0].name.should.equal('commandAttr');
+                    should.exist(results.devices[0].staticAttributes);
+                    results.devices[0].staticAttributes.length.should.equal(1);
+                    results.devices[0].staticAttributes[0].name.should.equal('hardcodedAttr');
+                    should.exist(results.devices[0].active);
+                    results.devices[0].active.length.should.equal(1);
+                    results.devices[0].active[0].name.should.equal('attr_name');
+                    should.exist(results.devices[0].internalAttributes);
+                    results.devices[0].internalAttributes.length.should.equal(1);
+                    results.devices[0].internalAttributes[0].customField.should.equal('customValue');
                     done();
                 });
             });
@@ -181,10 +181,10 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    should.exist(results[0].service);
-                    results[0].service.should.equal('smartGondor');
-                    should.exist(results[0].subservice);
-                    results[0].subservice.should.equal('/gardens');
+                    should.exist(results.devices[0].service);
+                    results.devices[0].service.should.equal('smartGondor');
+                    should.exist(results.devices[0].subservice);
+                    results.devices[0].subservice.should.equal('/gardens');
                     done();
                 });
             });
@@ -214,7 +214,7 @@ describe('Device provisioning API: Provision devices', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
@@ -239,7 +239,7 @@ describe('Device provisioning API: Provision devices', function() {
                 response.statusCode.should.equal(201);
 
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results.length.should.equal(1);
+                    results.devices.length.should.equal(1);
                     done();
                 });
             });
@@ -248,9 +248,9 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results[0].id.should.equal('MicroLight1');
-                    results[0].name.should.equal('FirstMicroLight');
-                    results[0].type.should.equal('MicroLights');
+                    results.devices[0].id.should.equal('MicroLight1');
+                    results.devices[0].name.should.equal('FirstMicroLight');
+                    results.devices[0].type.should.equal('MicroLights');
                     done();
                 });
             });
@@ -352,7 +352,7 @@ describe('Device provisioning API: Provision devices', function() {
                 response.statusCode.should.equal(201);
 
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results.length.should.equal(1);
+                    results.devices.length.should.equal(1);
                     done();
                 });
             });

@@ -1,0 +1,34 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "state",
+            "type": "Boolean",
+            "value": "",
+            "metadata": [
+              {
+                "name": "timeInstant",
+                "type": "timestamp",
+                "value": ""
+              }
+            ]
+          },
+          {
+            "name": "dimming",
+            "type": "Percentage",
+            "value": ""
+          }
+        ],
+        "id": "light1",
+        "isPattern": "false",
+        "type": "Light"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
