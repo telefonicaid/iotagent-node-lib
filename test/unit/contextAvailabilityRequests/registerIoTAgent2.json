@@ -5,7 +5,7 @@
                 {
                     "type": "Motion",
                     "isPattern": "false",
-                    "id": "motion1:Motion"
+                    "id": "Motion:motion1"
                 }
             ],
             "attributes": [

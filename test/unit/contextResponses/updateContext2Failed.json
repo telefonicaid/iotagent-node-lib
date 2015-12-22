@@ -4,7 +4,7 @@
             "contextElement": {
                 "type": "ThinkingThing",
                 "isPattern": "false",
-                "id": "ITgAY:ThinkingThing",
+                "id": "ThinkingThing:ITgAY",
                 "attributes": [
                     {
                         "name": "attr0",

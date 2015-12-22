@@ -123,7 +123,7 @@ describe('IoT Agent Lazy Devices', function() {
                     {
                         type: 'Light',
                         isPattern: 'false',
-                        id: 'light1:Light',
+                        id: 'Light:light1',
                         attributes: [
                             {
                                 name: 'dimming',
@@ -167,7 +167,7 @@ describe('IoT Agent Lazy Devices', function() {
                 .readExampleFile('./test/unit/contextProviderResponses/updateInformationResponse.json');
 
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
-                id.should.equal(device1.id + ':' + device1.type);
+                id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal('12');
                 callback(null);
@@ -222,7 +222,7 @@ describe('IoT Agent Lazy Devices', function() {
             var handlerCalled = false;
 
             iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
-                id.should.equal(device1.id + ':' + device1.type);
+                id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal('12');
                 handlerCalled = true;
@@ -290,7 +290,7 @@ describe('IoT Agent Lazy Devices', function() {
             var handlerCalled = false;
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
-                id.should.equal(device1.id + ':' + device1.type);
+                id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
                 handlerCalled = true;
@@ -357,7 +357,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'light1:Light'
+                            id: 'Light:light1'
                         }
                     ],
                     attributes: [
@@ -367,7 +367,7 @@ describe('IoT Agent Lazy Devices', function() {
             },
             sensorData = [
                 {
-                    id: 'light1:Light',
+                    id: 'Light:light1',
                     isPattern: false,
                     type: 'Light',
                     attributes: [
@@ -410,7 +410,7 @@ describe('IoT Agent Lazy Devices', function() {
                 .readExampleFile('./test/unit/contextProviderResponses/queryInformationResponse.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
-                id.should.equal(device1.id + ':' + device1.type);
+                id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
                 callback(null, sensorData[0]);
@@ -433,14 +433,14 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'light1:Light'
+                            id: 'Light:light1'
                         }
                     ]
                 }
             },
             sensorData = [
                 {
-                    id: 'light1:Light',
+                    id: 'Light:light1',
                     isPattern: false,
                     type: 'Light',
                     attributes: [
@@ -506,7 +506,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'light1:Light'
+                            id: 'Light:light1'
                         }
                     ],
                     attributes: []
@@ -514,7 +514,7 @@ describe('IoT Agent Lazy Devices', function() {
             },
             sensorData = [
                 {
-                    id: 'light1:Light',
+                    id: 'Light:light1',
                     isPattern: false,
                     type: 'Light',
                     attributes: [
@@ -580,7 +580,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Motion',
                             isPattern: 'false',
-                            id: 'motion1:Motion'
+                            id: 'Motion:motion1'
                         }
                     ],
                     attributes: [
@@ -591,7 +591,7 @@ describe('IoT Agent Lazy Devices', function() {
             },
             sensorData = [
                 {
-                    id: 'motion1:Motion',
+                    id: 'Motion:motion1',
                     type: 'Motion',
                     attributes: [
                         {
@@ -633,7 +633,7 @@ describe('IoT Agent Lazy Devices', function() {
                 .readExampleFile('./test/unit/contextProviderResponses/queryInformationStaticAttributesResponse.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
-                id.should.equal('motion1:Motion');
+                id.should.equal('Motion:motion1');
                 type.should.equal('Motion');
                 attributes[0].should.equal('moving');
                 attributes[1].should.equal('location');
@@ -659,7 +659,7 @@ describe('IoT Agent Lazy Devices', function() {
             },
             sensorData = [
                 {
-                    id: 'light1:Light',
+                    id: 'Light:light1',
                     type: 'Light',
                     attributes: [
                         {
@@ -718,7 +718,7 @@ describe('IoT Agent Lazy Devices', function() {
             },
             sensorData = [
                 {
-                    id: 'light1:Light',
+                    id: 'Light:light1',
                     type: 'Light',
                     attributes: [
                         {

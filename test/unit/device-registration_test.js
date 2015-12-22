@@ -216,7 +216,7 @@ describe('IoT Agent Device Registration', function() {
                     should.not.exist(error);
                     should.exist(data);
                     data.type.should.equal('Light');
-                    data.name.should.equal('light1:Light');
+                    data.name.should.equal('Light:light1');
                     done();
                 });
             });

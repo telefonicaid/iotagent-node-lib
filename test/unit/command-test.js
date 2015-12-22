@@ -162,7 +162,7 @@ describe('Command functionalities', function() {
                     {
                         type: 'Robot',
                         isPattern: 'false',
-                        id: 'r2d2:Robot',
+                        id: 'Robot:r2d2',
                         attributes: [
                             {
                                 name: 'position',
@@ -203,7 +203,7 @@ describe('Command functionalities', function() {
 
 
             iotAgentLib.setCommandHandler(function(id, type, attributes, callback) {
-                id.should.equal(device3.id + ':' + device3.type);
+                id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
                 attributes[0].value.should.equal('[28, -104, 23]');

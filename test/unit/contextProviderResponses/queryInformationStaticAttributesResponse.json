@@ -14,7 +14,7 @@
                       "value": "(123,523)"
                     }
                 ],
-                "id": "motion1:Motion",
+                "id": "Motion:motion1",
                 "isPattern": false,
                 "type": "Motion"
             },
