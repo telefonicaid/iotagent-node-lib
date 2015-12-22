@@ -2,7 +2,7 @@
 <queryContextRequest>
     <entityIdList>
         <entityId type="Light" isPattern="false">
-            <id>light1:Light</id>
+            <id>Light:light1</id>
         </entityId>
     </entityIdList>
     <attributeList>

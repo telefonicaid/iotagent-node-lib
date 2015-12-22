@@ -14,3 +14,4 @@
 - Fix Service based filtering in MongoDB registries won't work.
 - Add attribute aliases in updates (#182).
 - Fix bug when trying to stop an unstarted agent (#179).
+- Fix create device: the default value for entity_name should be [entity_type]:[device_id] (#215).
