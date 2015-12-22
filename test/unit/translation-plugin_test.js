@@ -162,7 +162,7 @@ describe('Translation middleware tests', function() {
 
             var executed = false;
 
-            function testMiddleware(entity, callback) {
+            function testMiddleware(entity, typeInformation, callback) {
                 entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
                 executed = true;
                 callback(null, entity);
@@ -191,7 +191,7 @@ describe('Translation middleware tests', function() {
                 }
             ];
 
-            function testMiddleware(entity, callback) {
+            function testMiddleware(entity, typeInformation, callback) {
                 entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
                 callback(null, entity);
             }
@@ -228,13 +228,13 @@ describe('Translation middleware tests', function() {
         it('should call the middleware', function(done) {
             var called = false;
 
-            function testMiddleware(entity, callback) {
+            function testMiddleware(entity, typeInformation, callback) {
                 entity.contextResponses[0].contextElement.attributes[1].value =
                     entity.contextResponses[0].contextElement.attributes[1].value + '%';
 
                 called = true;
 
-                callback(null, entity);
+                callback(null, entity, typeInformation);
             }
 
             iotAgentLib.addQueryMiddleware(testMiddleware);
@@ -246,11 +246,12 @@ describe('Translation middleware tests', function() {
             });
         });
         it('should call the middleware', function(done) {
-            function testMiddleware(entity, callback) {
+            function testMiddleware(entity, typeInformation,
+                                    callback) {
                 entity.contextResponses[0].contextElement.attributes[1].value =
                     entity.contextResponses[0].contextElement.attributes[1].value + '%';
 
-                callback(null, entity);
+                callback(null, entity, typeInformation);
             }
 
             iotAgentLib.addQueryMiddleware(testMiddleware);

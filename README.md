@@ -779,13 +779,14 @@ function will end up in an error if any of the queryContext middlewares report a
 ### Development
 All the middlewares have the same signature:
 ```
-function middlewareName(entity, callback) {}
+function middlewareName(entity, typeInformation, callback) {}
 ```
-The only arguments for any middleware are the NGSI data over which it can operate: an updateContext payload in the case of
-an updateContext middleware and a queryContext payload otherwise; and the customary `callback` parameter, with the usual
-meaning. It's really important for the library user to call this callback, as failing to do so may hang the IoT Agent
-completely. The callback must be called with the an optional error in the first argument and the modified payload as 
-the second.
+The arguments for any middleware are the NGSI data over which it can operate:
+- An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise; 
+- a typeInformation object containing all the information about the device stored during registration.
+- and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call 
+this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an optional 
+error in the first argument and the same arguments recieved (potentially modified) as the following.
 
 In order to manage the middlewares to the system, the following functions can be used:
 - `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be 
@@ -815,6 +816,11 @@ This plugins change all the timestamp attributes found in the entity, and all th
 attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended
 complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
 updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
+
+#### Attribute Alias plugin (attributeAlias)
+In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as 
+the left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and
+name attributes are used in this way, this plugin makes the translation from one to the other automatically.
 
 ## <a name="development"/> Development documentation
 ### Branches and release process
