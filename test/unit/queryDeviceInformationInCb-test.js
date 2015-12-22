@@ -30,7 +30,7 @@ var iotAgentLib = require('../../'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -139,7 +139,7 @@ describe('Query device information in the Context Broker', function() {
         beforeEach(function() {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
@@ -161,7 +161,7 @@ describe('Query device information in the Context Broker', function() {
         beforeEach(function() {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
@@ -184,7 +184,7 @@ describe('Query device information in the Context Broker', function() {
         beforeEach(function() {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
@@ -207,7 +207,7 @@ describe('Query device information in the Context Broker', function() {
         beforeEach(function() {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',

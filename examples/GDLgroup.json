@@ -1,0 +1,9 @@
+{
+  "services": [
+    {
+      "resource": "/iot/tt",
+      "entity_type": "TT_Open.1",
+      "apikey": ""
+    }
+  ]
+}

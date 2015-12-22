@@ -30,7 +30,7 @@ var iotAgentLib = require('../../'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -144,7 +144,7 @@ describe('Active attributes test', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -153,6 +153,37 @@ describe('Active attributes test', function() {
                     utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/contextRequests/updateContextAppendMode.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.appendMode = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            iotAgentConfig.appendMode = false;
+
+            done();
         });
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
@@ -185,7 +216,7 @@ describe('Active attributes test', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -213,7 +244,7 @@ describe('Active attributes test', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -238,7 +269,7 @@ describe('Active attributes test', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
@@ -298,7 +329,7 @@ describe('Active attributes test', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',

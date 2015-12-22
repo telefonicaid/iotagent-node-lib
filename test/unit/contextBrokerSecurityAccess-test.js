@@ -31,7 +31,7 @@ var iotAgentLib = require('../../'),
     keystoneMock,
     iotAgentConfig = {
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -121,7 +121,7 @@ describe('Secured access to the Context Broker', function() {
                         'X-Subject-Token': '12345679ABCDEF'
                     });
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
@@ -163,7 +163,7 @@ describe('Secured access to the Context Broker', function() {
                     'X-Subject-Token': '12345679ABCDEF'
                 });
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
@@ -195,7 +195,7 @@ describe('Secured access to the Context Broker', function() {
                 401,
                 utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrustUnauthorized.json'));
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
@@ -236,7 +236,7 @@ describe('Secured access to the Context Broker', function() {
                     'X-Subject-Token': '12345679ABCDEF'
                 });
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')

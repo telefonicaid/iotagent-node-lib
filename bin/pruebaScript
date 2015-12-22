@@ -1,3 +1,0 @@
-authenticate 52.17.64.28 5001 test "e=mc^2" ThinkingThings
-configIot 52.17.106.105 8082 ThinkingThings /test
-configCb 52.17.106.105 1026 ThinkingThings /test

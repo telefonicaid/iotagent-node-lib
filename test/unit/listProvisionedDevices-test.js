@@ -32,7 +32,7 @@ var iotAgentLib = require('../../'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
-            host: '10.11.128.16',
+            host: '192.168.1.1',
             port: '1026'
         },
         server: {
@@ -74,7 +74,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         };
 
         iotAgentLib.activate(iotAgentConfig, function() {
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
@@ -126,8 +126,35 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
+                should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
-                parsedBody.length.should.equal(2);
+                parsedBody.devices.length.should.equal(2);
+                parsedBody.count.should.equal(2);
+                done();
+            });
+        });
+
+        it('should return all the appropriate field names', function(done) {
+            /* jshint camelcase:false */
+
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+
+                should.exist(parsedBody.devices[0].attributes);
+                parsedBody.devices[0].attributes.length.should.equal(1);
+
+                should.exist(parsedBody.devices[0].device_id);
+                parsedBody.devices[0].device_id.should.equal('Light1');
+
+                should.exist(parsedBody.devices[0].entity_name);
+                parsedBody.devices[0].entity_name.should.equal('TheFirstLight');
+
+                should.exist(parsedBody.devices[0].protocol);
+                parsedBody.devices[0].protocol.should.equal('GENERIC_PROTO');
+
+                should.exist(parsedBody.devices[0].static_attributes);
+                parsedBody.devices[0].static_attributes.length.should.equal(1);
+
                 done();
             });
         });
@@ -153,6 +180,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
                 parsedBody = JSON.parse(body);
                 parsedBody.entity_name.should.equal('TheFirstLight');
+                parsedBody.device_id.should.equal('Light1');
                 done();
             });
         });
@@ -175,6 +203,7 @@ describe('Device provisioning API: List provisioned devices', function() {
             });
         });
     });
+
     describe('When a request for listing all the devices with a limit of 3 arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
@@ -206,7 +235,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
@@ -233,7 +262,16 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
-                parsedBody.length.should.equal(3);
+                parsedBody.devices.length.should.equal(3);
+                done();
+            });
+        });
+
+        it('should return a count with the complete number of devices', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                should.not.exist(error);
+                parsedBody.count.should.equal(10);
                 done();
             });
         });
@@ -268,7 +306,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://10.11.128.16:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
@@ -289,8 +327,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
 
-                for (var i = 0; i < parsedBody.length; i++) {
-                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody[i].id).should.equal(-1);
+                for (var i = 0; i < parsedBody.devices.length; i++) {
+                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody.devices[i].id).should.equal(-1);
                 }
 
                 done();
@@ -335,7 +373,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-                parsedBody.length.should.equal(2);
+                parsedBody.devices.length.should.equal(2);
                 done();
             });
         });
