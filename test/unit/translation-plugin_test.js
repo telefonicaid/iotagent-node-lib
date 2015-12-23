@@ -165,7 +165,7 @@ describe('Translation middleware tests', function() {
             function testMiddleware(entity, typeInformation, callback) {
                 entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
                 executed = true;
-                callback(null, entity);
+                callback(null, entity, typeInformation);
             }
 
             iotAgentLib.addUpdateMiddleware(testMiddleware);
@@ -193,7 +193,7 @@ describe('Translation middleware tests', function() {
 
             function testMiddleware(entity, typeInformation, callback) {
                 entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
-                callback(null, entity);
+                callback(null, entity, typeInformation);
             }
 
             iotAgentLib.addUpdateMiddleware(testMiddleware);

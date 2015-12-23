@@ -1,17 +1,1 @@
-- Add groupRegistry.clear() to the clearAll function.
-- Add a plugin mechanism to perform translations in the entity data (#193).
-- Add /iot prefix in IOTA url for IOTAM integration.
-- Modify the answer for the GET devices and GET groups operations (#196).
-- Add APPEND Mode for Context Broker updates.
-- Add Timestamp compression plugin.
-- Add Metadata filtering to data filtering plugins (#204).
-- Fix Device DELETE should return 204 instead of 200 (#203).
-- Refactor the generic functions used in the time compression plugin to a common module (#205).
-- Modify the answer for the GET devices and GET groups operations (#196).
-- Fix List devices: the returned count value should be the total count of registered devices (#199).
-- Fix Asking for the list of configurations of a subservice return results for all services #(209).
-- Fix Integrate Node.js IOTAgents with the IOTA Manager (and the administration portal) (#159).
-- Fix Service based filtering in MongoDB registries won't work.
-- Add attribute aliases in updates (#182).
-- Fix bug when trying to stop an unstarted agent (#179).
-- Fix create device: the default value for entity_name should be [entity_type]:[device_id] (#215).
+- Query middlewares won't work due to an extra parameter in callbacks (#220).
