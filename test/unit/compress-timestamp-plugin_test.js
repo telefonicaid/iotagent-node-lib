@@ -178,7 +178,7 @@ describe('Timestamp compression plugin', function() {
                 name: 'state',
                 type: 'Boolean',
                 value: 'true',
-                metadata: [
+                metadatas: [
                     {
                         name: 'timeInstant',
                         type: 'timestamp',

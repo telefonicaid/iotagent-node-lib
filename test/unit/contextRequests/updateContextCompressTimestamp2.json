@@ -9,7 +9,7 @@
           "name": "state",
           "type": "Boolean",
           "value": "true",
-          "metadata": [
+          "metadatas": [
             {
               "name": "timeInstant",
               "type": "timestamp",
