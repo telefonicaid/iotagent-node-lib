@@ -119,7 +119,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe.skip('Timestamp compression plugin', function() {
+describe('Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

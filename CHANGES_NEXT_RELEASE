@@ -1,0 +1,1 @@
+- Query middlewares won't work due to an extra parameter in callbacks (#220).
