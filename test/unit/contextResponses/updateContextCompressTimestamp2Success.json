@@ -7,7 +7,7 @@
             "name": "state",
             "type": "Boolean",
             "value": "",
-            "metadata": [
+            "metadatas": [
               {
                 "name": "timeInstant",
                 "type": "timestamp",
