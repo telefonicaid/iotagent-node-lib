@@ -400,6 +400,7 @@ listdevices
 	List all the devices that have been registered in this IoT Agent session
 ```
 ### Agent tester
+#### Command line testing
 The library also offers a Context Broker and IoT Agent client that can be used to:
 * Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy attributes and checking the appropriate values for active ones.
 * Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
@@ -412,7 +413,7 @@ From the command line, the `help` command can be used to show a description of t
 ```
 update <entity> <type> <attributes>  
 
-	Update the values of the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
 
 append <entity> <type> <attributes>  
 
@@ -451,6 +452,13 @@ provision <filename>
 	Provision a new device using the Device Provisioning API. The device configuration is 
 	read from the file specified in the "filename" parameter.
 
+provisionGroup <template> <data> <type>  
+
+	Provision a group of devices with the selected template, taking the information needed to
+	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
+	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
+	to the same IoT Agent, once the templates have been fulfilled.
+
 listProvisioned  
 
 	List all the provisioned devices in an IoT Agent.
@@ -471,8 +479,58 @@ listGroups
 removeGroup  
 
 	Remove the device group corresponding to the current configured subservice.
+
+authenticate <host> <port> <user> <password> <service>  
+
+	Authenticates to the given authentication server, and use the token in subsequent requests.
+
+exit  
+
+	Exit the process
 ```
+
 The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively. Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be deleted upon startup.
+
+#### Creating specialized testers
+The command line testing tools make use of the [command-node Node.js library](https://github.com/telefonicaid/command-shell-lib) for command line
+utils. In order to help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a array
+that can be directly imported into other Command Line tools, using the following steps:
+
+* Require the ´iotagent-node-lib´ command line module in your command line tool:
+```
+  var iotaCommands = require('iotagent-node-lib').commandLine;
+```
+* Initialize the command line utils (the initialization function takes two arguments, that will be explained in detail
+below:
+```
+iotaCommands.init(configCb, configIot);
+```
+* Add the IOTA Lib commands to your array of commands
+```
+commands = commands.concat(commands, iotaCommands.commands);
+```
+* Execute the command line interpreter as usual:
+```
+clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
+```
+
+The command line module makes use of two configuration objects. Both can be shown and edited in the command line using the
+provided commands, but a default value must be present. 
+
+The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be tested 
+is connected. It MUST contain the following attributes:
+* **host**: host where the Context Broker instance is located. 
+* **port**: port where the Context Broker instance is listening.
+* **service**: service that will be used in all the NGSI operations.
+* **subservice**: service that will be used in all the NGSI operations.
+
+The IoT Agent configuration object holds information about the IoT Agent that is being tested. It MUST contain the following
+attributes:
+* **host**: host where the IoT Agent instance is located. 
+* **port**: port where the IoT Agent instance is listening.
+* **service**: service that will be used to group devices and device information.
+* **subservice**: subservice that will be used to group devices and device information.
+
 
 ## <a name="configuration"/> Configuration
 The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent. The Agent Console reads the same configuration from the `config.js` file.
