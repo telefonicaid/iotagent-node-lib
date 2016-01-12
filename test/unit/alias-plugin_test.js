@@ -52,6 +52,11 @@ var iotAgentLib = require('../../'),
                         id: 'p',
                         name: 'pressure',
                         type: 'Hgmm'
+                    },
+                    {
+                        id: 'l',
+                        name: 'luminance',
+                        type: 'lumens'
                     }
                 ]
             }
@@ -81,7 +86,7 @@ describe('Attribute alias plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
+    describe('When an update comes for attributes with aliases', function() {
         var values = [
             {
                 name: 't',
@@ -107,7 +112,36 @@ describe('Attribute alias plugin', function() {
                     utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPluginSuccess.json'));
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
+        it('should rename the attributes as expected by the mappings', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When an update comes for attributes with aliases and a different type', function() {
+        var values = [
+            {
+                name: 'l',
+                type: 'lums',
+                value: '9'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContextAliasPlugin2.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPlugin2Success.json'));
+        });
+
+        it('should rename the attributes as expected by the mappings', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
