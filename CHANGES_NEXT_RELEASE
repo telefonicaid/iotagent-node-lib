@@ -1,3 +1,3 @@
 - FIX Alias plugin do not change attribute type.
 - ADD Extract the command line handlers to a single module (#178).
-
+- ADD global error handler (#231).

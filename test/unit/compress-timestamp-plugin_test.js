@@ -180,7 +180,7 @@ describe('Timestamp compression plugin', function() {
                 value: 'true',
                 metadatas: [
                     {
-                        name: 'timeInstant',
+                        name: 'TimeInstant',
                         type: 'timestamp',
                         value: '20071103T131805'
                     }
