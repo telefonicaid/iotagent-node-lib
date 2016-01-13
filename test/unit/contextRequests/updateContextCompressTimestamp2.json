@@ -11,7 +11,7 @@
           "value": "true",
           "metadatas": [
             {
-              "name": "timeInstant",
+              "name": "TimeInstant",
               "type": "timestamp",
               "value": "+002007-11-03T13:18:05"
             }
