@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -42,19 +44,19 @@ var iotAgentLib = require('../../'),
                 type: 'Light',
                 lazy: [
                     {
-                        id: 't',
+                        object_id: 't',
                         name: 'temperature',
                         type: 'centigrades'
                     }
                 ],
                 active: [
                     {
-                        id: 'p',
+                        object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm'
                     },
                     {
-                        id: 'l',
+                        object_id: 'l',
                         name: 'luminance',
                         type: 'lumens'
                     }
