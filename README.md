@@ -623,6 +623,7 @@ outgoing requests).
 | entity_name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
 | entity_type         | Type of the entity in the Context Broker | Lamplights |
 | timezone            | Time zone of the sensor if it has any | America/Santiago |
+| protocol            | Name of the device protocol, for its use with an IoT Manager. | America/Santiago |
 | attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
@@ -800,7 +801,9 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 #### PUT /iot/devices/:deviceId
-Changes the stored values for the device with the provided Device payload. 
+Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
+device can be changed using this method (as they are used to link the already created entities in the CB to the information
+in the device). Service and servicepath, being taken from the headers, can't be changed also.
 
 Returns: 
 * 200 OK if successful, with no payload.
@@ -810,9 +813,6 @@ Returns:
 Payload example:
 ```json
 { 
-    "device_id": "DevID1", 
-    "entity_name": "TheDevice1", 
-    "entity_type": "DeviceType", 
     "attributes": [ 
           { "id": "t", "name": "temperature", "type": "float" },
           { "id": "h", "name": "humidity", "type": "float" },
