@@ -2,3 +2,5 @@
 - ADD Extract the command line handlers to a single module (#178).
 - ADD global error handler (#231).
 - FIX Improve device provisioning documentation (#232).
+- FIX Crash with malformed PUT /devices/:id (#228).
+- ADD JSON Schema validation for the Device Provisioning API (#230).

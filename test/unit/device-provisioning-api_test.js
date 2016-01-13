@@ -334,8 +334,30 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
     });
-    describe('When a device provisioning request is missing the "name" attribute', function() {
+    describe('When a device provisioning request is missing the "entity_name" attribute', function() {
         it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes');
+    });
+    describe('When a device provisioning request is malformed', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDeviceMalformed1.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        it('should raise a WRONG_SYNTAX exception', function(done) {
+            request(options, function(error, response, body) {
+                request(options, function(error, response, body) {
+                    should.exist(body);
+                    response.statusCode.should.equal(400);
+                    body.name.should.equal('WRONG_SYNTAX');
+                    done();
+                });
+            });
+        });
     });
     describe('When an agent is activated with a different base root', function() {
         var options = {
