@@ -4,3 +4,4 @@
 - FIX Improve device provisioning documentation (#232).
 - FIX Crash with malformed PUT /devices/:id (#228).
 - ADD JSON Schema validation for the Device Provisioning API (#230).
+- FIX Attribute id in alias should be named 'object_id' (#233).

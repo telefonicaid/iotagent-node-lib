@@ -38,8 +38,9 @@
             "required": false,
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
-                "id": {
+                "object_id": {
                   "description": "ID of the attribute in the device",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
@@ -64,8 +65,9 @@
             "required": false,
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
-                "id": {
+                "object_id": {
                   "description": "ID of the attribute in the device",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
@@ -90,8 +92,9 @@
             "required": false,
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
-                "id": {
+                "object_id": {
                   "description": "ID of the attribute in the device",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
