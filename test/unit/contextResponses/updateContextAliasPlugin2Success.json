@@ -1,0 +1,27 @@
+{
+    "contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                    {
+                        "name": "temperature",
+                        "type": "centigrades",
+                        "value": ""
+                    },
+                    {
+                        "name": "dimming",
+                        "type": "Hgmm",
+                        "value": ""
+                    }
+                ],
+                "id": "light1",
+                "isPattern": "false",
+                "type": "Light"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        }
+    ]
+}

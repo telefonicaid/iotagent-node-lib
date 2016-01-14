@@ -211,4 +211,23 @@ describe('Device provisioning API: Update provisioned devices', function() {
             });
         });
     });
+    describe('When a request to update a provision device arrives with a wrong payload', function() {
+        var optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateProvisionDeviceWrong.json')
+        };
+
+        it('should raise a 400 error', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                done();
+            });
+        });
+    });
 });

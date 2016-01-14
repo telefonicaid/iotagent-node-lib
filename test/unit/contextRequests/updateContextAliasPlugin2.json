@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "light1",
+      "attributes": [
+        {
+          "name": "luminance",
+          "type": "lumens",
+          "value": "9"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}

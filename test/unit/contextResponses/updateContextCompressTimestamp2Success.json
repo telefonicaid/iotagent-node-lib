@@ -9,7 +9,7 @@
             "value": "",
             "metadatas": [
               {
-                "name": "timeInstant",
+                "name": "TimeInstant",
                 "type": "timestamp",
                 "value": ""
               }

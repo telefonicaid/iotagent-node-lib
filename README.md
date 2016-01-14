@@ -400,6 +400,7 @@ listdevices
 	List all the devices that have been registered in this IoT Agent session
 ```
 ### Agent tester
+#### Command line testing
 The library also offers a Context Broker and IoT Agent client that can be used to:
 * Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy attributes and checking the appropriate values for active ones.
 * Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
@@ -412,7 +413,7 @@ From the command line, the `help` command can be used to show a description of t
 ```
 update <entity> <type> <attributes>  
 
-	Update the values of the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
 
 append <entity> <type> <attributes>  
 
@@ -451,6 +452,13 @@ provision <filename>
 	Provision a new device using the Device Provisioning API. The device configuration is 
 	read from the file specified in the "filename" parameter.
 
+provisionGroup <template> <data> <type>  
+
+	Provision a group of devices with the selected template, taking the information needed to
+	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
+	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
+	to the same IoT Agent, once the templates have been fulfilled.
+
 listProvisioned  
 
 	List all the provisioned devices in an IoT Agent.
@@ -471,8 +479,58 @@ listGroups
 removeGroup  
 
 	Remove the device group corresponding to the current configured subservice.
+
+authenticate <host> <port> <user> <password> <service>  
+
+	Authenticates to the given authentication server, and use the token in subsequent requests.
+
+exit  
+
+	Exit the process
 ```
+
 The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively. Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be deleted upon startup.
+
+#### Creating specialized testers
+The command line testing tools make use of the [command-node Node.js library](https://github.com/telefonicaid/command-shell-lib) for command line
+utils. In order to help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a array
+that can be directly imported into other Command Line tools, using the following steps:
+
+* Require the ´iotagent-node-lib´ command line module in your command line tool:
+```
+  var iotaCommands = require('iotagent-node-lib').commandLine;
+```
+* Initialize the command line utils (the initialization function takes two arguments, that will be explained in detail
+below:
+```
+iotaCommands.init(configCb, configIot);
+```
+* Add the IOTA Lib commands to your array of commands
+```
+commands = commands.concat(commands, iotaCommands.commands);
+```
+* Execute the command line interpreter as usual:
+```
+clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
+```
+
+The command line module makes use of two configuration objects. Both can be shown and edited in the command line using the
+provided commands, but a default value must be present. 
+
+The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be tested 
+is connected. It MUST contain the following attributes:
+* **host**: host where the Context Broker instance is located. 
+* **port**: port where the Context Broker instance is listening.
+* **service**: service that will be used in all the NGSI operations.
+* **subservice**: service that will be used in all the NGSI operations.
+
+The IoT Agent configuration object holds information about the IoT Agent that is being tested. It MUST contain the following
+attributes:
+* **host**: host where the IoT Agent instance is located. 
+* **port**: port where the IoT Agent instance is listening.
+* **service**: service that will be used to group devices and device information.
+* **subservice**: subservice that will be used to group devices and device information.
+
 
 ## <a name="configuration"/> Configuration
 The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent. The Agent Console reads the same configuration from the `config.js` file.
@@ -526,6 +584,7 @@ These are the parameters that can be configured in the global section:
 * **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
 * **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
 have implications in the use of attributes with Context Providers, so this flag should be used with care.
+* **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
@@ -542,23 +601,41 @@ the `version` field will be read from the `iotaVersion` field of the config, if 
 
 ## <a name="provisioningapi"/> Device Provisioning API
 ### Overview
-The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and subservice mapping, security information and attribute configuration can be specified in a per device way instead of relaying on the type configuration. The following section specified the format of the device payload; this will be the payload accepted by all the write operations and that will be returned by all the read operations.
+The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and 
+subservice mapping, security information and attribute configuration can be specified in a per device way instead of 
+relaying on the type configuration. The following section specifies the format of the device payload; this will be the 
+payload accepted by all the write operations and that will be returned by all the read operations. Take care of the 
+exception of the POST operation: in this case, the device objects must be specified as an array, as multiple devices
+can be provided simultaneusly for the same service.
 
-Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and outgoing requests).
+Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to 
+fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the 
+Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the 
+same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
+outgoing requests).
 
 ### Device model
 | Attribute           | Definition                                     | Example of value                      |
 | ------------------- |:---------------------------------------------- |:------------------------------------- |
-| name       	      | Device ID that will be used to identify the device. | UO834IO   |
+| device_id    	      | Device ID that will be used to identify the device. | UO834IO   |
 | service             | Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
 | service_path        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
 | entity_name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
 | entity_type         | Type of the entity in the Context Broker | Lamplights |
 | timezone            | Time zone of the sensor if it has any | America/Santiago |
+| protocol            | Name of the device protocol, for its use with an IoT Manager. | America/Santiago |
 | attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| static_attributes   | List of active lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| commands            | List of active commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | internal_attributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
+| static_attributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.	| `[ { "name": "attr_name", "type": "string" } ]` |
+
+### Attribute lists
+In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them 
+have the same syntax, an object containing the following attributes:
+* **id** (optional): name of the attribute as coming from the device.
+* **name** (mandatory): id of the attribute in the target entity in the Context Broker.
+* **type** (mandatory): name of the type of the attribute in the target entity.
 
 ### API Actions
 #### POST /iot/devices
@@ -567,6 +644,32 @@ Provision a new device in the IoT Agent's device registry. Takes a Device in JSO
 Returns: 
 * 200 OK if successful.
 * 500 SERVER ERROR if there was any error not contemplated above.
+
+Payload example:
+```json
+{
+    "devices": [ 
+        { 
+            "device_id": "DevID1", 
+            "entity_name": "TheDevice1", 
+            "entity_type": "DeviceType", 
+            "attributes": [ 
+                  { "id": "t", "name": "temperature", "type": "float" },
+                  { "id": "h", "name": "humidity", "type": "float" }
+            ],
+            "lazy":[
+                  { "id": "l", "name": "luminosity", "type": "percentage" }
+            ],
+            "commands": [
+                  { "id": "t", "name": "turn", "type": "string" }
+            ],
+            "static_attributes": [
+                  { "name": "serialID", "type": "02598347" }
+            ]
+        }
+    ]
+}
+```
 
 #### GET /iot/devices
 Returns a list of all the devices in the device registry with all its data.
@@ -580,6 +683,70 @@ Returns:
 * 404 NOT FOUND if the device was not found in the database.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
+Example of return payload:
+```json
+{
+  "count": 2,
+  "devices": [
+    {
+      "device_id": "DevID0",
+      "service": "ServiceTest",
+      "service_path": "/testSubservice",
+      "entity_name": "TheDevice0",
+      "entity_type": "DeviceType",
+      "attributes": [
+        {
+          "id": "temperature",
+          "type": "float",
+          "name": "temperature",
+          "object_id": "t"
+        },
+        {
+          "id": "humidity",
+          "type": "float",
+          "name": "humidity",
+          "object_id": "h"
+        }
+      ],
+      "lazy": [],
+      "static_attributes": [],
+      "internal_attributes": []
+    },
+    {
+      "device_id": "DevID1",
+      "service": "ServiceTest",
+      "service_path": "/testSubservice",
+      "entity_name": "TheDevice1",
+      "entity_type": "DeviceType",
+      "attributes": [
+        {
+          "type": "float",
+          "name": "temperature",
+          "id": "t"
+        },
+        {
+          "type": "float",
+          "name": "humidity",
+          "id": "h"
+        }
+      ],
+      "lazy": [
+        {
+          "type": "percentage",
+          "name": "luminosity",
+          "id": "l"
+        }
+      ],
+      "static_attributes": [
+        {
+          "type": "02598347",
+          "name": "serialID"
+        }
+      ],
+      "internal_attributes": []
+    }
+```
+
 #### GET /iot/devices/:deviceId
 Returns all the information about a particular device.
 
@@ -588,8 +755,45 @@ Returns:
 * 404 NOT FOUND if the device was not found in the database.
 * 500 SERVER ERROR if there was any error not contemplated above.
 
+Example of return payload:
+```json
+{
+  "device_id": "DevID1",
+  "service": "ServiceTest",
+  "service_path": "/testSubservice",
+  "entity_name": "TheDevice1",
+  "entity_type": "DeviceType",
+  "attributes": [
+    {
+      "id": "t",
+      "name": "temperature",
+      "type": "float"
+    },
+    {
+      "id": "h",
+      "name": "humidity",
+      "type": "float"
+    }
+  ],
+  "lazy": [
+    {
+      "id": "l",
+      "name": "luminosity",
+      "type": "percentage"
+    }
+  ],
+  "static_attributes": [
+    {
+      "name": "serialID",
+      "type": "02598347"
+    }
+  ],
+  "internal_attributes": []
+}
+```
+
 #### DELETE /iot/devices/:deviceId
-Remove a device from the device registry.
+Remove a device from the device registry. No payload is required or received.
 
 Returns: 
 * 200 OK if successful, with no payload.
@@ -597,12 +801,34 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 #### PUT /iot/devices/:deviceId
-Changes the stored values for the device with the provided Device payload. 
+Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
+device can be changed using this method (as they are used to link the already created entities in the CB to the information
+in the device). Service and servicepath, being taken from the headers, can't be changed also.
 
 Returns: 
 * 200 OK if successful, with no payload.
 * 404 NOT FOUND if the device was not found in the database.
 * 500 SERVER ERROR if there was any error not contemplated above.
+
+Payload example:
+```json
+{ 
+    "attributes": [ 
+          { "id": "t", "name": "temperature", "type": "float" },
+          { "id": "h", "name": "humidity", "type": "float" },
+          { "id": "p", "name": "pressure", "type": "float" }
+    ],
+    "lazy":[
+          { "id": "l", "name": "luminosity", "type": "percentage" }
+    ],
+    "commands": [
+          { "id": "t", "name": "turn", "type": "string" }
+    ],
+    "static_attributes": [
+          { "name": "serialID", "type": "02598347" }
+    ]
+}
+```
 
 ## <a name="configurationapi"/> Configuration API
 For some services, there will be no need to provision individual devices, but it will make more sense to provision different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an assigned type, its configuration values can be extracted from those of the type.

@@ -1,0 +1,101 @@
+{
+  "title": "Device",
+  "description": "Payload to update a provisioned device",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "entity_name": {
+      "description": "Name of the target entity",
+      "type": "string"
+    },
+    "timezone": {
+      "description": "Time zone where the device is located",
+      "type": "string"
+    },
+    "protocol": {
+      "description": "Protocol the device is using to communicate with the platform",
+      "type": "string"
+    },
+    "lazy": {
+      "description": "list of lazy attributes of the devices",
+      "type": "array",
+      "id": "lazy",
+      "required": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "description": "ID of the attribute in the device",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "name": {
+            "description": "Name of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "type": {
+            "description": "Type of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          }
+        }
+      }
+    },
+    "attributes": {
+      "description": "list of active attributes of the devices",
+      "type": "array",
+      "id": "lazy",
+      "required": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "description": "ID of the attribute in the device",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "name": {
+            "description": "Name of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "type": {
+            "description": "Type of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          }
+        }
+      }
+    },
+    "commands": {
+      "description": "list of commands of the devices",
+      "type": "array",
+      "id": "lazy",
+      "required": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "description": "ID of the attribute in the device",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "name": {
+            "description": "Name of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "type": {
+            "description": "Type of the attribute in the target entity",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
+          }
+        }
+      }
+    }
+  }
+}
