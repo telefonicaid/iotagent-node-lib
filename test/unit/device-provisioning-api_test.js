@@ -269,6 +269,89 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
     });
+
+    describe('When there is a connection error with a String code connecting the CB', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .replyWithError({'message': 'Description of the error', 'code': 'STRING_CODE'});
+
+            done();
+        });
+
+        it('should return a valid return code', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(500);
+
+                done();
+            });
+        });
+    });
+
+    describe('When there is a connection error with a Number code connecting the CB', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .replyWithError({'message': 'Description of the error', 'code': 123456789});
+
+            done();
+        });
+
+        it('should return a valid return code (three character number)', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(500);
+
+                done();
+            });
+        });
+    });
+
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
