@@ -1,0 +1,1 @@
+- Getting the information of a provisioned device returns an spurious 'id' attribute in attribute descriptions (#245).
