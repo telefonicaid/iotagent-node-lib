@@ -184,6 +184,23 @@ describe('Device provisioning API: List provisioned devices', function() {
                 done();
             });
         });
+
+        it('should return the appropriate attribute fields', function(done) {
+            request(options, function(error, response, body) {
+                /* jshint camelcase:false */
+
+                var parsedBody;
+
+                should.not.exist(error);
+
+                parsedBody = JSON.parse(body);
+                should.exist(parsedBody.attributes[0].object_id);
+                parsedBody.attributes[0].object_id.should.equal('attr_name');
+                parsedBody.attributes[0].name.should.equal('attr_name');
+                parsedBody.attributes[0].type.should.equal('string');
+                done();
+            });
+        });
     });
     describe('When a request for an unexistent device arrives', function() {
         var options = {
