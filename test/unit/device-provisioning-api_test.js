@@ -179,12 +179,13 @@ describe('Device provisioning API: Provision devices', function() {
         });
 
         it('should store fill the device ID in case only the name is provided', function(done) {
+            /* jshint camelcase:false */
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
-                    results.devices[0].lazy[0].id.should.equal('luminance');
-                    results.devices[0].commands[0].id.should.equal('commandAttr');
-                    results.devices[0].active[0].id.should.equal('attr_name');
+                    results.devices[0].lazy[0].object_id.should.equal('luminance');
+                    results.devices[0].commands[0].object_id.should.equal('commandAttr');
+                    results.devices[0].active[0].object_id.should.equal('attr_name');
                     done();
                 });
             });
