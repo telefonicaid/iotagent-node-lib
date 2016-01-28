@@ -1,1 +1,2 @@
 - ADD Timeinstant value with local time (#251)
+- FIX Both object_id and id in attributes are stored, but only the id displayed (#250).
