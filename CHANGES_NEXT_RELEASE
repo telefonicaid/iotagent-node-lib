@@ -1,1 +1,1 @@
-- Getting the information of a provisioned device returns an spurious 'id' attribute in attribute descriptions (#245).
+- ADD Timeinstant value with local time (#251)
