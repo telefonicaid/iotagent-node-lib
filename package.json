@@ -69,6 +69,7 @@
     "grunt-mkdir": "~0.1.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-githooks": "~0.3.1",
-    "mongodb": "1.4.20"
+    "mongodb": "1.4.20",
+    "timekeeper": "0.0.5"
   }
 }

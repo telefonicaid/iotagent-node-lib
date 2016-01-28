@@ -24,6 +24,7 @@
 
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
+    timekeeper = require('timekeeper'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -188,6 +189,57 @@ describe('Active attributes test', function() {
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+            var time = new Date(1438760101468);
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: '87'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContextTimestamp.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
