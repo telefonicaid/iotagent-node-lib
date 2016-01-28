@@ -24,6 +24,7 @@
 
 var iotAgentLib = require('../../'),
     utils = require('../tools/utils'),
+    timekeeper = require('timekeeper'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -188,6 +189,108 @@ describe('Active attributes test', function() {
 
         it('should change the value of the corresponding attribute in the context broker', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+            var time = new Date(1438760101468);
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: '87'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContextTimestamp.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should add the timestamp to the entity and all the attributes', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+            var time = new Date(1438760101468);
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'timestamp',
+                    value: '2015-12-14T08:06:01.468Z'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/contextRequests/updateContextTimestampOverride.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should not override the received instant and should not add metadatas for this request', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
