@@ -159,7 +159,28 @@ describe('Subscription tests', function() {
         });
     });
     describe('When a client removes a device from the registry', function() {
-        it('should change the expiration dates of all its subscriptions to 0s');
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContextSubscription',
+                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionUpdate.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
+
+            done();
+        });
+
+        it('should change the expiration dates of all its subscriptions to 0s', function(done) {
+            iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+                    iotAgentLib.unregister(device.id, function(error) {
+                        contextBrokerMock.done();
+                        done();
+                    });
+                });
+            });
+        });
     });
     describe('When a new notification comes to the IoTAgent', function() {
         it('should invoke the user defined callback');
