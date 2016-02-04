@@ -1,0 +1,20 @@
+{
+  "entities": [
+    {
+      "type": "MicroLights",
+      "isPattern": "false",
+      "id": "MicroLight1"
+    }
+  ],
+  "reference": "http://smartGondor.com/notify",
+  "duration": "P1M",
+  "notifyConditions": [
+    {
+      "type": "ONCHANGE",
+      "condValues": [
+        "attr_name"
+      ]
+    }
+  ],
+  "throttling": "PT5S"
+}
