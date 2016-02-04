@@ -102,7 +102,21 @@ describe('Subscription tests', function() {
                 });
             });
         });
-        it('should store the subscription ID in the Device Registry');
+        it('should store the subscription ID in the Device Registry', function(done) {
+            iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+                    iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                        should.not.exist(error);
+                        should.exist(device);
+                        should.exist(device.subscriptions);
+                        device.subscriptions.length.should.equal(1);
+                        device.subscriptions[0].id.should.equal('51c0ac9ed714fb3b37d7d5a8');
+                        device.subscriptions[0].triggers[0].should.equal('attr_name');
+                        done();
+                    });
+                });
+            });
+        });
     });
     describe('When a client invokes the unsubscribe() function for an entity', function() {
         it('should change the expiration date of the subscription to 0s');
