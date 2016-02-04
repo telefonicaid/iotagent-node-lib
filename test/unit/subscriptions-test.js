@@ -119,7 +119,44 @@ describe('Subscription tests', function() {
         });
     });
     describe('When a client invokes the unsubscribe() function for an entity', function() {
-        it('should change the expiration date of the subscription to 0s');
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContextSubscription',
+                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionUpdate.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
+
+            done();
+        });
+        it('should change the expiration date of the subscription to 0s', function(done) {
+            iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
+                        iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                            contextBrokerMock.done();
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+        it('should remove the id from the subscriptions array', function(done) {
+            iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
+                        iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                            should.not.exist(error);
+                            should.exist(device);
+                            should.exist(device.subscriptions);
+                            device.subscriptions.length.should.equal(0);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
     });
     describe('When a client removes a device from the registry', function() {
         it('should change the expiration dates of all its subscriptions to 0s');
