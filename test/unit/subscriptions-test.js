@@ -86,8 +86,10 @@ describe('Subscription tests', function() {
 
     afterEach(function(done) {
         nock.cleanAll();
-        iotAgentLib.setProvisioningHandler();
-        iotAgentLib.deactivate(done);
+        iotAgentLib.setNotificationHandler();
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
     });
 
     describe('When a client invokes the subscribe() function for device', function() {
@@ -183,7 +185,44 @@ describe('Subscription tests', function() {
         });
     });
     describe('When a new notification comes to the IoTAgent', function() {
-        it('should invoke the user defined callback');
+        beforeEach(function(done) {
+            iotAgentLib.getDevice('MicroLight1', function(error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+                    done();
+                });
+            });
+        });
+
+        it('should invoke the user defined callback', function(done) {
+            var notificationOptions = {
+                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                    method: 'POST',
+                    json: utils.readExampleFile('./test/unit/subscriptionRequests/simpleNotification.json'),
+                    headers: {
+                        'fiware-service': 'smartGondor',
+                        'fiware-servicepath': '/gardens'
+                    }
+                },
+
+                executedHandler = false;
+
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(notificationOptions, function(error, response, body) {
+                should.not.exist(error);
+                executedHandler.should.equal(true);
+
+                done();
+            });
+        });
         it('should get the correspondent device information');
+    });
+    describe('When a new notification arrives to the IOTA with a non-200 code', function() {
+        it('should not call the handler');
     });
 });
