@@ -251,7 +251,34 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe('When a new notification arrives to the IOTA with a non-200 code', function() {
-        it('should not call the handler');
+    describe
+    ('When a new notification arrives to the IOTA with a non-200 code', function() {
+        it('should not call the handler', function(done) {
+            var notificationOptions = {
+                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                    method: 'POST',
+                    json: utils.readExampleFile('./test/unit/subscriptionRequests/errorNotification.json'),
+                    headers: {
+                        'fiware-service': 'smartGondor',
+                        'fiware-servicepath': '/gardens'
+                    }
+                },
+
+                executedHandler = false;
+
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(notificationOptions, function(error, response, body) {
+                should.not.exist(error);
+                executedHandler.should.equal(false);
+
+                done();
+            });
+        });
     });
 });
