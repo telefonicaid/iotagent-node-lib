@@ -220,7 +220,36 @@ describe('Subscription tests', function() {
                 done();
             });
         });
-        it('should get the correspondent device information');
+        it('should get the correspondent device information', function(done) {
+            var notificationOptions = {
+                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                    method: 'POST',
+                    json: utils.readExampleFile('./test/unit/subscriptionRequests/simpleNotification.json'),
+                    headers: {
+                        'fiware-service': 'smartGondor',
+                        'fiware-servicepath': '/gardens'
+                    }
+                },
+                rightFields = false;
+
+            function mockedHandler(device, data, callback) {
+                if (device && device.id === 'MicroLight1' && device.name === 'FirstMicroLight' &&
+                    data && data.length === 1 && data[0].name === 'attr_name') {
+                    rightFields = true;
+                }
+
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(notificationOptions, function(error, response, body) {
+                should.not.exist(error);
+                rightFields.should.equal(true);
+
+                done();
+            });
+        });
     });
     describe('When a new notification arrives to the IOTA with a non-200 code', function() {
         it('should not call the handler');
