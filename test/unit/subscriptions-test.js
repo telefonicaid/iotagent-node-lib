@@ -251,8 +251,7 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe
-    ('When a new notification arrives to the IOTA with a non-200 code', function() {
+    describe('When a new notification arrives to the IOTA with a non-200 code', function() {
         it('should not call the handler', function(done) {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
