@@ -125,8 +125,8 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContextSubscription',
-                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionUpdate.json'))
+                .post('/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionRemove.json'))
                 .reply(200,
                     utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
@@ -165,8 +165,8 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContextSubscription',
-                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionUpdate.json'))
+                .post('/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionRemove.json'))
                 .reply(200,
                     utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
