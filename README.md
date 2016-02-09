@@ -277,6 +277,29 @@ In the case of NGSI requests affecting multiple entities, this handler will be c
 ###### Params
  * newHandler: User handler for query requests.
 
+##### iotagentLib.setNotificationHandler()
+###### Signature
+```
+function setNotificationHandler(newHandler)
+```
+###### Description
+Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on the IOTA subscriptions created
+with the subscribe() function. 
+ 
+The handler must adhere to the following signature:
+```
+function mockedHandler(device, data, callback)
+```
+The `device` parameter contains the device object corresponding to the entity whose changes were notified
+with the incoming notification. Take into account that multiple entities may be modified with each single notification.
+The handler will be called once for each one of those entities.
+
+The `data` parameter is an array with all the attributes that were requested in the subscription and its respective
+values.
+
+The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IOTA).
+
+
 ##### iotagentLib.setConfigurationHandler()
 ###### Signature
 ```
@@ -361,6 +384,31 @@ Find a device group based on its service and subservice.
 ###### Params
 * service: name of the service of the configuration.
 * subservice: name of the subservice of the configuration.
+
+##### iotagentLib.subscribe()
+###### Signature
+```
+function subscribe(device, triggers, content, callback)
+```
+###### Description
+Creates a subscription for the IoTA to the entity representing the selected device. 
+
+###### Params
+* device:       Object containing all the information about a particular device.
+* triggers:     Array with the names of the attributes that would trigger the subscription
+* content:      Array with the names of the attributes to retrieve in the notification.
+
+##### iotagentLib.unsuscribe()
+###### Signature
+```
+function unsubscribe(device, id, callback)
+```
+###### Description
+Removes a single subscription from the selected device, identified by its id. 
+
+###### Params
+* device: Object containing all the information about a particular device.
+* id: ID of the subscription to remove.
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console

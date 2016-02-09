@@ -1,0 +1,75 @@
+{
+  "properties": {
+    "contextResponses": {
+      "description": "Content of the notification. List of entities with modified attributes.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "contextElement": {
+            "type": "object",
+            "required": true,
+            "properties": {
+              "attributes": {
+                "type": "array",
+                "required": true,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "required": true
+                    }
+                  }
+                }
+              },
+              "id": {
+                "type": "string",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "required": true
+              },
+              "isPattern": {
+                "type": "string",
+                "required": true
+              }
+            }
+          },
+          "statusCode": {
+            "type": "object",
+            "required": true,
+            "properties": {
+              "code": {
+                "type": "string",
+                "required": true
+              },
+              "reasonPhrase": {
+                "type": "string",
+                "required": true
+              }
+            }
+          }
+        }
+      },
+      "required": true
+    },
+    "subscriptionId": {
+      "type": "string",
+      "required": true
+    },
+    "originator": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "MicroLights",
+      "isPattern": "false",
+      "id": "FirstMicroLight",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
