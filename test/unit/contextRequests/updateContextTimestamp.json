@@ -12,7 +12,7 @@
           "metadatas": [
             {
               "name": "TimeInstant",
-              "type": "timestamp",
+              "type": "ISO8601",
               "value": "2015-08-05T07:35:01.468Z"
             }
           ]
@@ -24,14 +24,14 @@
           "metadatas": [
             {
               "name": "TimeInstant",
-              "type": "timestamp",
+              "type": "ISO8601",
               "value": "2015-08-05T07:35:01.468Z"
             }
           ]
         },
         {
           "name": "TimeInstant",
-          "type": "timestamp",
+          "type": "ISO8601",
           "value": "2015-08-05T07:35:01.468Z"
         }
       ]

@@ -1,2 +1,3 @@
 - Add a subscription mechanism in the NGSI service (#259).
 - Use a constants file to gather all the string constants in the system (#254).
+- Change timestamp type to 'ISO8601' (#265).
