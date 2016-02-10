@@ -277,6 +277,29 @@ In the case of NGSI requests affecting multiple entities, this handler will be c
 ###### Params
  * newHandler: User handler for query requests.
 
+##### iotagentLib.setNotificationHandler()
+###### Signature
+```
+function setNotificationHandler(newHandler)
+```
+###### Description
+Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on the IOTA subscriptions created
+with the subscribe() function. 
+ 
+The handler must adhere to the following signature:
+```
+function mockedHandler(device, data, callback)
+```
+The `device` parameter contains the device object corresponding to the entity whose changes were notified
+with the incoming notification. Take into account that multiple entities may be modified with each single notification.
+The handler will be called once for each one of those entities.
+
+The `data` parameter is an array with all the attributes that were requested in the subscription and its respective
+values.
+
+The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IOTA).
+
+
 ##### iotagentLib.setConfigurationHandler()
 ###### Signature
 ```
@@ -361,6 +384,31 @@ Find a device group based on its service and subservice.
 ###### Params
 * service: name of the service of the configuration.
 * subservice: name of the subservice of the configuration.
+
+##### iotagentLib.subscribe()
+###### Signature
+```
+function subscribe(device, triggers, content, callback)
+```
+###### Description
+Creates a subscription for the IoTA to the entity representing the selected device. 
+
+###### Params
+* device:       Object containing all the information about a particular device.
+* triggers:     Array with the names of the attributes that would trigger the subscription
+* content:      Array with the names of the attributes to retrieve in the notification.
+
+##### iotagentLib.unsuscribe()
+###### Signature
+```
+function unsubscribe(device, id, callback)
+```
+###### Description
+Removes a single subscription from the selected device, identified by its id. 
+
+###### Params
+* device: Object containing all the information about a particular device.
+* id: ID of the subscription to remove.
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console
@@ -585,6 +633,7 @@ These are the parameters that can be configured in the global section:
 * **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
 have implications in the use of attributes with Context Providers, so this flag should be used with care.
 * **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
+* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information. 
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
@@ -633,7 +682,7 @@ outgoing requests).
 ### Attribute lists
 In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them 
 have the same syntax, an object containing the following attributes:
-* **id** (optional): name of the attribute as coming from the device.
+* **object_id** (optional): name of the attribute as coming from the device.
 * **name** (mandatory): id of the attribute in the target entity in the Context Broker.
 * **type** (mandatory): name of the type of the attribute in the target entity.
 
@@ -654,14 +703,14 @@ Payload example:
             "entity_name": "TheDevice1", 
             "entity_type": "DeviceType", 
             "attributes": [ 
-                  { "id": "t", "name": "temperature", "type": "float" },
-                  { "id": "h", "name": "humidity", "type": "float" }
+                  { "object_id": "t", "name": "temperature", "type": "float" },
+                  { "object_id": "h", "name": "humidity", "type": "float" }
             ],
             "lazy":[
-                  { "id": "l", "name": "luminosity", "type": "percentage" }
+                  { "object_id": "l", "name": "luminosity", "type": "percentage" }
             ],
             "commands": [
-                  { "id": "t", "name": "turn", "type": "string" }
+                  { "object_id": "t", "name": "turn", "type": "string" }
             ],
             "static_attributes": [
                   { "name": "serialID", "type": "02598347" }
@@ -696,13 +745,11 @@ Example of return payload:
       "entity_type": "DeviceType",
       "attributes": [
         {
-          "id": "temperature",
           "type": "float",
           "name": "temperature",
           "object_id": "t"
         },
         {
-          "id": "humidity",
           "type": "float",
           "name": "humidity",
           "object_id": "h"
@@ -722,19 +769,19 @@ Example of return payload:
         {
           "type": "float",
           "name": "temperature",
-          "id": "t"
+          "object_id": "t"
         },
         {
           "type": "float",
           "name": "humidity",
-          "id": "h"
+          "object_id": "h"
         }
       ],
       "lazy": [
         {
           "type": "percentage",
           "name": "luminosity",
-          "id": "l"
+          "object_id": "l"
         }
       ],
       "static_attributes": [
@@ -765,19 +812,19 @@ Example of return payload:
   "entity_type": "DeviceType",
   "attributes": [
     {
-      "id": "t",
+      "object_id": "t",
       "name": "temperature",
       "type": "float"
     },
     {
-      "id": "h",
+      "object_id": "h",
       "name": "humidity",
       "type": "float"
     }
   ],
   "lazy": [
     {
-      "id": "l",
+      "object_id": "l",
       "name": "luminosity",
       "type": "percentage"
     }
@@ -814,15 +861,15 @@ Payload example:
 ```json
 { 
     "attributes": [ 
-          { "id": "t", "name": "temperature", "type": "float" },
-          { "id": "h", "name": "humidity", "type": "float" },
-          { "id": "p", "name": "pressure", "type": "float" }
+          { "object_id": "t", "name": "temperature", "type": "float" },
+          { "object_id": "h", "name": "humidity", "type": "float" },
+          { "object_id": "p", "name": "pressure", "type": "float" }
     ],
     "lazy":[
-          { "id": "l", "name": "luminosity", "type": "percentage" }
+          { "object_id": "l", "name": "luminosity", "type": "percentage" }
     ],
     "commands": [
-          { "id": "t", "name": "turn", "type": "string" }
+          { "object_id": "t", "name": "turn", "type": "string" }
     ],
     "static_attributes": [
           { "name": "serialID", "type": "02598347" }
@@ -870,29 +917,29 @@ Body params:
 E.g.:
 ```
 {
-	services: [
+	"services": [
 	{
-	    resource: '/deviceTest',
-	    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-	    type: 'Light',
-	    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-	    cbHost: 'http://unexistentHost:1026',
-	    commands: [
+	    "resource": "/deviceTest",
+	    "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+	    "type": "Light",
+	    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+	    "cbHost": "http://unexistentHost:1026",
+	    "commands": [
 	        {
-	            name: 'wheel1',
-	            type: 'Wheel'
+	            "name": "wheel1",
+	            "type": "Wheel"
 	        }
 	    ],
-	    lazy: [
+	    "lazy": [
 	        {
-	            name: 'luminescence',
-	            type: 'Lumens'
+	            "name": "luminescence",
+	            "type": "Lumens"
 	        }
 	    ],
-	    active: [
+	    "active": [
 	        {
-	            name: 'status',
-	            type: 'Boolean'
+	            "name": "status",
+	            "type": "Boolean"
 	        }
 	    ]
 	}
@@ -920,9 +967,9 @@ Modifies the information for a device group configuration, identified by the `re
 E.g.:
 ```
 {
-            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-            cbHost: 'http://anotherUnexistentHost:1026'
-        }
+    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+    "cbHost": "http://anotherUnexistentHost:1026"
+}
 ```
 
 Returns: 

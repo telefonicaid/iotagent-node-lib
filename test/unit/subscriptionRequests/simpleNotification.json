@@ -1,0 +1,24 @@
+{
+  "subscriptionId": "51c0ac9ed714fb3b37d7d5a8",
+  "originator": "localhost",
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "attr_name",
+            "type": "string",
+            "value": "The Attribute Value"
+          }
+        ],
+        "type": "MicroLights",
+        "isPattern": "false",
+        "id": "FirstMicroLight"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}

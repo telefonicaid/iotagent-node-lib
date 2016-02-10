@@ -374,7 +374,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: 19
+                            value: '19'
                         }
                     ]
                 }
@@ -447,7 +447,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'temperature',
                             type: 'centigrades',
-                            value: 19
+                            value: '19'
                         }
                     ]
                 }
@@ -521,7 +521,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'temperature',
                             type: 'centigrades',
-                            value: 19
+                            value: '19'
                         }
                     ]
                 }
@@ -665,7 +665,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: 19
+                            value: '19'
                         }
                     ]
                 }
@@ -724,7 +724,7 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: 19
+                            value: '19'
                         }
                     ]
                 }
