@@ -146,7 +146,7 @@ describe('Timestamp compression plugin', function() {
             },
             {
                 name: 'The Target Value',
-                type: 'timestamp',
+                type: 'ISO8601',
                 value: '20071103T131805'
             }
         ];
@@ -181,14 +181,14 @@ describe('Timestamp compression plugin', function() {
                 metadatas: [
                     {
                         name: 'TimeInstant',
-                        type: 'timestamp',
+                        type: 'ISO8601',
                         value: '20071103T131805'
                     }
                 ]
             },
             {
                 name: 'The Target Value',
-                type: 'timestamp',
+                type: 'ISO8601',
                 value: '20071103T131805'
             }
         ];

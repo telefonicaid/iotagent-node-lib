@@ -12,14 +12,14 @@
           "metadatas": [
             {
               "name": "TimeInstant",
-              "type": "timestamp",
+              "type": "ISO8601",
               "value": "+002007-11-03T13:18:05"
             }
           ]
         },
         {
           "name": "The Target Value",
-          "type": "timestamp",
+          "type": "ISO8601",
           "value": "+002007-11-03T13:18:05"
         }
       ]
