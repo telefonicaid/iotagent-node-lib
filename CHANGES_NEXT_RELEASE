@@ -2,3 +2,4 @@
 - Use a constants file to gather all the string constants in the system (#254).
 - Change timestamp type to 'ISO8601' (#265).
 - Fix documentation problems (#257) and (#262).
+- Update and fix dependencies with shrinkwrap.
