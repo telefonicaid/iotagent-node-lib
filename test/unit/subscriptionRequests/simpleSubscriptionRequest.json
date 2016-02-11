@@ -3,7 +3,7 @@
     {
       "type": "MicroLights",
       "isPattern": "false",
-      "id": "MicroLight1"
+      "id": "FirstMicroLight"
     }
   ],
   "reference": "http://smartGondor.com/notify",
