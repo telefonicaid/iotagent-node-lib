@@ -114,7 +114,7 @@
           },
           "internal_attributes": {
             "description": "Free form array of internal attributes for particular IOTAgents",
-            "type": "array"
+            "type": "any"
           },
           "static_attributes": {
             "description": "Free form array of data to be appended to the target entity",
