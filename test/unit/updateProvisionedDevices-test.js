@@ -243,14 +243,22 @@ describe('Device provisioning API: Update provisioned devices', function() {
 
     describe.only('When a device is provisioned without attributes and new ones are added through an update', function() {
         var optionsUpdate = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
-            method: 'PUT',
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+                method: 'PUT',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                },
+                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateMinimumDevice.json')
             },
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateMinimumDevice.json')
-        };
+            optionsGetDevice = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+                method: 'GET',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -275,7 +283,21 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 done();
             });
         });
-        it('should provision the attributes appropriately');
+        it('should provision the attributes appropriately', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                request(optionsGetDevice, function(error, response, body) {
+                    var parsedBody;
+                    should.not.exist(error);
+                    response.statusCode.should.equal(200);
+
+                    parsedBody = JSON.parse(body);
+
+                    parsedBody.attributes.length.should.equal(1);
+                    parsedBody.attributes[0].name.should.equal('newAttribute');
+                    done();
+                });
+            });
+        });
         it('should create the initial values for the attributes');
     });
 });
