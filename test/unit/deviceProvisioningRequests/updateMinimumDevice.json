@@ -1,0 +1,8 @@
+{
+  "attributes": [
+    {
+      "name": "newAttribute",
+      "type": "Integer"
+    }
+  ]
+}

@@ -65,9 +65,19 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
+        },
+        provisioning3Options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice2.json')
         };
 
     beforeEach(function(done) {
+        nock.cleanAll();
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -119,14 +129,14 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 iotAgentLib.clearAll,
                 async.apply(request, provisioning1Options),
                 async.apply(request, provisioning2Options)
-            ], function(error, results) {
-                done();
-            });
+            ], done);
         });
     });
 
     afterEach(function(done) {
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
     });
 
     describe('When a request to update a provision device arrives', function() {
@@ -229,5 +239,43 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 done();
             });
         });
+    });
+
+    describe.only('When a device is provisioned without attributes and new ones are added through an update', function() {
+        var optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateMinimumDevice.json')
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            async.series([
+                iotAgentLib.clearAll,
+                async.apply(request, provisioning3Options)
+            ], done);
+        });
+
+        it('should not raise any error', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should provision the attributes appropriately');
+        it('should create the initial values for the attributes');
     });
 });
