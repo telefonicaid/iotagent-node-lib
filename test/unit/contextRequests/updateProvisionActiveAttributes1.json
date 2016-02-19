@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "Light:light1",
+      "attributes": [
+        {
+          "name": "temperature",
+          "type": "centigrades",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}

@@ -150,6 +150,17 @@ describe('Device provisioning API: Update provisioned devices', function() {
             json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/updateProvisionDevice.json')
         };
 
+        beforeEach(function() {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/contextRequests/updateActiveAttributes.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextResponses/updateActiveAttributesSuccess.json'));
+        });
+
         it('should return a 200 OK and no errors', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 should.not.exist(error);
@@ -202,7 +213,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             });
         });
     });
-    describe('When a request to update a provision device arrives with a new Device ID', function() {
+    describe('When an update request arrives with a new Device ID', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -221,7 +232,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             });
         });
     });
-    describe('When a request to update a provision device arrives with a wrong payload', function() {
+    describe('When a wrong update request payload arrives', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -241,7 +252,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
         });
     });
 
-    describe.only('When a device is provisioned without attributes and new ones are added through an update', function() {
+    describe('When a device is provisioned without attributes and new ones are added through an update', function() {
         var optionsUpdate = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
                 method: 'PUT',
@@ -262,13 +273,22 @@ describe('Device provisioning API: Update provisioned devices', function() {
 
         beforeEach(function(done) {
             nock.cleanAll();
-            contextBrokerMock
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
                 .reply(200,
                     utils.readExampleFile(
                         './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/contextRequests/updateProvisionMinimumDevice.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextResponses/updateProvisionMinimumDeviceSuccess.json'));
 
             async.series([
                 iotAgentLib.clearAll,
@@ -298,6 +318,12 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 });
             });
         });
-        it('should create the initial values for the attributes');
+        it('should create the initial values for the attributes in the Context Broker', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 });

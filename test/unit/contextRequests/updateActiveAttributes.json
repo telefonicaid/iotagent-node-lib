@@ -1,0 +1,11 @@
+{
+  "contextElements": [
+    {
+      "type": "TheLightType",
+      "isPattern": "false",
+      "id": "TheFirstLight",
+      "attributes": []
+    }
+  ],
+  "updateAction": "APPEND"
+}

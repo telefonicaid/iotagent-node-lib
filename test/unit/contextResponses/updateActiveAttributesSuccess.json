@@ -1,0 +1,16 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [],
+        "id": "TheFirstLight",
+        "isPattern": "false",
+        "type": "TheLightType"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
