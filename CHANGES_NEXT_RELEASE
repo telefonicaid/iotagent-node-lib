@@ -1,2 +1,3 @@
 - Fix InternalAttributes type in create Device JSON Schema Template.
 - Updating device provisioning for new attributes was not working (#277)
+- Wrong references in logs, while creating new configurations (#279).
