@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "MicroLights",
+      "isPattern": "false",
+      "id": "SecondMicroLight",
+      "attributes": [
+        {
+          "name": "newAttribute",
+          "type": "Integer",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}

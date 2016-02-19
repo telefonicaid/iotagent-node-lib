@@ -1,0 +1,22 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "newAttribute",
+            "type": "Integer",
+            "value": ""
+          }
+        ],
+        "id": "SecondMicroLight",
+        "isPattern": "false",
+        "type": "MicroLights"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
