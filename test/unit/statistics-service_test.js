@@ -52,10 +52,8 @@ describe('Statistics service', function() {
         oldConfig = commonConfig.getConfig();
         commonConfig.setConfig(iotAgentConfig);
 
-        statsService.init(function() {
-            statsService.globalLoad({}, function() {
-                statsService.clearTimers(done);
-            });
+        statsService.globalLoad({}, function() {
+            statsService.clearTimers(done);
         });
     });
 
