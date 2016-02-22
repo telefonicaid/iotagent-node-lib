@@ -24,6 +24,7 @@
 
 var statsService = require('../../lib/services/stats/statsRegistry'),
     should = require('should'),
+    commonConfig = require('../../lib/commonConfig'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -43,18 +44,21 @@ var statsService = require('../../lib/services/stats/statsRegistry'),
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
-    };
+    },
+    oldConfig;
 
 describe('Statistics service', function() {
     beforeEach(function(done) {
-        statsService.init(iotAgentConfig, function() {
-            statsService.globalLoad({}, function() {
-                statsService.clearTimers(done);
-            });
+        oldConfig = commonConfig.getConfig();
+        commonConfig.setConfig(iotAgentConfig);
+
+        statsService.globalLoad({}, function() {
+            statsService.clearTimers(done);
         });
     });
 
     afterEach(function(done) {
+        commonConfig.setConfig(oldConfig);
         statsService.globalLoad({}, done);
     });
 

@@ -1,0 +1,5 @@
+- Fix InternalAttributes type in create Device JSON Schema Template.
+- Updating device provisioning for new attributes was not working (#277)
+- Wrong references in logs, while creating new configurations (#279).
+- Create a config service to avoid multiple initializations (#167).
+- Use a single database configuration for all persistence services (#173).

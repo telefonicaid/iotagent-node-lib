@@ -615,14 +615,19 @@ These are the parameters that can be configured in the global section:
         password: 'iotagent'
 	}
 ```
-* **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other (take into account that, in the case of the MongoDB registry, multiple fields has to be completed). E.g.:
+* **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other. Mongodb databases must be configured in the `mongob` section (as described bellow). E.g.:
 ```
-	{
-            type: 'mongodb',
-            host: 'localhost',
-            port: '27017',
-            db: 'iotagent'
-        }
+{
+  type: 'mongodb'
+}
+```
+* **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. E.g.:
+```
+{
+  host: 'localhost',
+  port: '27017',
+  db: 'iotagent'
+}
 ```
 * **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
