@@ -23,6 +23,7 @@
 'use strict';
 
 var statsService = require('../../lib/services/stats/statsRegistry'),
+    commonConfig = require('../../lib/commonConfig'),
     should = require('should'),
     mongo = require('mongodb').MongoClient,
     mongoUtils = require('./mongoDBUtils'),
@@ -52,11 +53,14 @@ var statsService = require('../../lib/services/stats/statsRegistry'),
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
     },
-    iotAgentDb;
+    iotAgentDb,
+    oldConfig;
 
 describe('Statistics persistence service', function() {
     beforeEach(function(done) {
-        statsService.init(iotAgentConfig, function() {
+        oldConfig = commonConfig.getConfig();
+        commonConfig.setConfig(iotAgentConfig);
+        statsService.init(function() {
             statsService.globalLoad({}, function() {
                 mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
                     iotAgentDb = db;
@@ -67,6 +71,7 @@ describe('Statistics persistence service', function() {
     });
 
     afterEach(function(done) {
+        commonConfig.setConfig(oldConfig);
         statsService.globalLoad({}, function() {
             iotAgentDb.close(function(error) {
                 mongoUtils.cleanDbs(done);
