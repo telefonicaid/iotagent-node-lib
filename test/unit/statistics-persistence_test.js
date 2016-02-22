@@ -60,12 +60,10 @@ describe('Statistics persistence service', function() {
     beforeEach(function(done) {
         oldConfig = commonConfig.getConfig();
         commonConfig.setConfig(iotAgentConfig);
-        statsService.init(function() {
-            statsService.globalLoad({}, function() {
-                mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
-                    iotAgentDb = db;
-                    done();
-                });
+        statsService.globalLoad({}, function() {
+            mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
+                iotAgentDb = db;
+                done();
             });
         });
     });

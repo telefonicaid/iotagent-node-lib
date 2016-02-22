@@ -86,7 +86,9 @@ var iotAgentLib = require('../../'),
             }
         },
         deviceRegistry: {
-            type: 'mongodb',
+            type: 'mongodb'
+        },
+        mongodb: {
             host: 'localhost',
             port: '27017',
             db: 'iotagent'
