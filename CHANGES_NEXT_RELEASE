@@ -1,1 +1,2 @@
 - Change log level using the administration API (#289)
+- Use headers to track global transaction ID (#288)

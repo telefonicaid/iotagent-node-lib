@@ -98,6 +98,26 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
+#### Transactions
+The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
+requests entering both from the Northbound and the Southbound.
+
+To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
+domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
+Southbound requests, the user is responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
+and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the formar to the
+invocation of the latter.
+
+The Transaction Correlator is used along all the IoT Platform to follow the trace of a transaction between multiple components.
+To do so, in all the HTTP requests sent to other components of the platform, a custom header named `` is sent with the
+correlator of the transaction that generated the request. If a component of the platform receives a request containing
+this header that start a transaction, the component will create the transaction with the received correlator, instead
+of creating a new one. If the header is not present or the transaction originates in the component, the transaction ID in
+this component will be used as the correlator.
+
+During the duration of a transaction, all the log entries created by the code will write the current Transaction ID and
+correlator for the operation being executed.
+
 #### General review
 In order to use the library, add the following dependency to your package.json file:
 ```
@@ -409,6 +429,31 @@ Removes a single subscription from the selected device, identified by its id.
 ###### Params
 * device: Object containing all the information about a particular device.
 * id: ID of the subscription to remove.
+
+
+##### iotagentLib.ensureSouthboundDomain()
+###### Signature
+```
+function ensureSouthboundTransaction(context, callback)
+```
+###### Description
+Ensures that the current operation is executed inside a transaction with all the information needed
+for the appropriate platform logging: start date, transaction ID and correlator in case one is needed.
+If the function is executed in the context of a previous transaction, just the context is changed
+(and the Transaction ID and start time are kept).
+
+###### Params
+* context: New context data for the transaction.
+
+
+##### iotagentLib.finishSouthBoundTransaction()
+```
+function finishSouthboundTransaction(callback)
+```
+###### Description
+Terminates the current transaction, if there is any, cleaning its context.
+
+
 
 ## <a name="librarytesting"/> IoT Library Testing
 ### Agent Console
