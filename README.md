@@ -109,9 +109,9 @@ and `finishSouthBoundTransaction`. In this case, the transaction will last from 
 invocation of the latter.
 
 The Transaction Correlator is used along all the IoT Platform to follow the trace of a transaction between multiple components.
-To do so, in all the HTTP requests sent to other components of the platform, a custom header named `` is sent with the
+To do so, in all the HTTP requests sent to other components of the platform, a custom header named `Fiware-Transaction` is sent with the
 correlator of the transaction that generated the request. If a component of the platform receives a request containing
-this header that start a transaction, the component will create the transaction with the received correlator, instead
+this header that starts a transaction, the component will create the transaction with the received correlator, instead
 of creating a new one. If the header is not present or the transaction originates in the component, the transaction ID in
 this component will be used as the correlator.
 
