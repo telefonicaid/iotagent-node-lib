@@ -722,6 +722,7 @@ outgoing requests).
 | entity_name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
 | entity_type         | Type of the entity in the Context Broker | Lamplights |
 | timezone            | Time zone of the sensor if it has any | America/Santiago |
+| endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
 | protocol            | Name of the device protocol, for its use with an IoT Manager. | America/Santiago |
 | attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
