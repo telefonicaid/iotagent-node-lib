@@ -1,7 +1,7 @@
 {
   "name": "iotagent-node-lib",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "0.10.0",
+  "version": "0.10.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
   "keywords": [
     "fiware",
@@ -35,9 +35,9 @@
   "dependencies": {
     "async": "^0.9.0",
     "body-parser": "^1.11.0",
-    "command-node": "^0.1.1",
+    "command-shell-lib": "1.0.0",
     "express": "^4.11.2",
-    "logops": "^0.5.0",
+    "logops": "1.0.0-alpha.7",
     "mongoose": "^4.1.5",
     "mu2": "^0.5.20",
     "mustache": "0.8.2",
