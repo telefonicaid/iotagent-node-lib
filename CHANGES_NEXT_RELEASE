@@ -4,3 +4,4 @@
 - Add endpoint attribute to the Device model
 - Update test shell to allow Stress test commands
 - Add support for MongoDB Replica Sets (#303)
+- Update commands to make them asynchronous under stress testing
