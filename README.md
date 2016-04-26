@@ -666,7 +666,8 @@ These are the parameters that can be configured in the global section:
   type: 'mongodb'
 }
 ```
-* **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. E.g.:
+* **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of comma-separated IPs, they will
+be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. E.g.:
 ```
 {
   host: 'localhost',
