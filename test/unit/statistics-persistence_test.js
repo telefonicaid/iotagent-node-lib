@@ -97,7 +97,7 @@ describe('Statistics persistence service', function() {
                             done();
                         });
                     });
-                }, 480);
+                }, 600);
             });
         });
     });
