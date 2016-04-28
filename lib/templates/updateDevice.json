@@ -101,6 +101,11 @@
             "description": "Type of the attribute in the target entity",
             "type": "string",
             "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "value": {
+            "description": "Value of the command (currently ignored)",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)+$"
           }
         }
       }
