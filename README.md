@@ -725,6 +725,7 @@ outgoing requests).
 | timezone            | Time zone of the sensor if it has any | America/Santiago |
 | endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
 | protocol            | Name of the device protocol, for its use with an IoT Manager. | America/Santiago |
+| transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
 | attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
