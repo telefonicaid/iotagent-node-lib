@@ -5,3 +5,5 @@
 - Update test shell to allow Stress test commands
 - Add support for MongoDB Replica Sets (#303)
 - Update commands to make them asynchronous under stress testing
+- Integrate with IoT Manager
+- Add new transport field (#309)

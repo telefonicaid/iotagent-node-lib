@@ -157,6 +157,8 @@ describe('Device provisioning API: Provision devices', function() {
                     results.devices[0].timezone.should.equal('America/Santiago');
                     should.exist(results.devices[0].endpoint);
                     results.devices[0].endpoint.should.equal('http://fakedEndpoint:1234');
+                    should.exist(results.devices[0].transport);
+                    results.devices[0].transport.should.equal('MQTT');
                     should.exist(results.devices[0].lazy);
                     results.devices[0].lazy.length.should.equal(1);
                     results.devices[0].lazy[0].name.should.equal('luminance');
