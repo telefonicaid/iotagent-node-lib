@@ -216,7 +216,7 @@ describe('Device Group Configuration API', function() {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
                     should.not.exist(error);
-                    response.statusCode.should.equal(400);
+                    response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
                 });
