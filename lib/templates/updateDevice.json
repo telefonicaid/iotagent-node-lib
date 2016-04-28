@@ -105,7 +105,7 @@
           "value": {
             "description": "Value of the command (currently ignored)",
             "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "pattern": "^([^<>();'=\"]+)*$"
           }
         }
       }
