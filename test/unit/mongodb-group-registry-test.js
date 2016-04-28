@@ -225,7 +225,7 @@ describe('MongoDB Group Registry test', function() {
         it('should return a DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
-                    response.statusCode.should.equal(400);
+                    response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
                 });

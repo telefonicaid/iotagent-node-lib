@@ -410,7 +410,7 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 request(options, function(error, response, body) {
                     should.exist(body);
-                    response.statusCode.should.equal(400);
+                    response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_DEVICE_ID');
                     done();
                 });
