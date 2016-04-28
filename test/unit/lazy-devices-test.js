@@ -104,6 +104,8 @@ describe('IoT Agent Lazy Devices', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         mongoUtils.cleanDbs(done);
+
+        iotAgentLib.setDataQueryHandler(null);
     });
 
     afterEach(function(done) {
@@ -419,6 +421,66 @@ describe('IoT Agent Lazy Devices', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a context query arrives to the IoT Agent and no handler is set', function() {
+        var options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
+                method: 'POST',
+                json: {
+                    entities: [
+                        {
+                            type: 'Light',
+                            isPattern: 'false',
+                            id: 'Light:light1'
+                        }
+                    ],
+                    attributes: [
+                        'dimming'
+                    ]
+                }
+            };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device1)
+            ], done);
+        });
+
+        it('should not give any error', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+
+        it('should return the empty value', function(done) {
+            request(options, function(error, response, body) {
+                body.contextResponses[0].contextElement.attributes[0].name.should.equal('dimming');
+                body.contextResponses[0].contextElement.attributes[0].value.should.equal('');
                 done();
             });
         });

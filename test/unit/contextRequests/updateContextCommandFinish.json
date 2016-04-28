@@ -7,12 +7,12 @@
       "attributes": [
         {
           "name": "position_status",
-          "type": "Status",
+          "type": "commandStatus",
           "value": "FINISHED"
         },
         {
           "name": "position_result",
-          "type": "Array",
+          "type": "commandResult",
           "value": "[72, 368, 1]"
         }
       ]

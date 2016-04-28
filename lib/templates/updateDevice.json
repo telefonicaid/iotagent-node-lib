@@ -4,8 +4,16 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
+    "device_id": {
+      "description": "Device ID of the physical device",
+      "type": "string"
+    },
     "entity_name": {
       "description": "Name of the target entity",
+      "type": "string"
+    },
+    "entity_type": {
+      "description": "Type of the target entity",
       "type": "string"
     },
     "timezone": {
@@ -93,9 +101,18 @@
             "description": "Type of the attribute in the target entity",
             "type": "string",
             "pattern": "^([^<>();'=\"]+)+$"
+          },
+          "value": {
+            "description": "Value of the command (currently ignored)",
+            "type": "string",
+            "pattern": "^([^<>();'=\"]+)*$"
           }
         }
       }
+    },
+    "static_attributes": {
+      "description": "Free form array of data to be appended to the target entity",
+      "type": "array"
     }
   }
 }
