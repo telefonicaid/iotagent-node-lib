@@ -8,6 +8,7 @@ Being an Open Source project, everyone can contribute, provided that you respect
 * For any new feature added, unit tests must be provided, following the example of the ones already created.
 
 In order to start contributing:
+
 1. Fork this repository clicking on the "Fork" button on the upper-right area of the page.
 
 2. Clone your just forked repository:
