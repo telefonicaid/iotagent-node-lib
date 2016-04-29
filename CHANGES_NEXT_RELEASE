@@ -7,3 +7,4 @@
 - Update commands to make them asynchronous under stress testing
 - Integrate with IoT Manager
 - Add new transport field (#309)
+- When a query comes to the IOTA the Static Attributes should not be returned #312
