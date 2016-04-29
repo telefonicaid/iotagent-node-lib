@@ -12,14 +12,14 @@ In order to start contributing:
 1. Fork this repository clicking on the "Fork" button on the upper-right area of the page.
 
 2. Clone your just forked repository:
-```
+<pre>
 git clone https://github.com/your-github-username/iotagent-node-lib.git
-```
+</pre>
 3. Add the main iotagent-node-lib repository as a remote to your forked repository (use any name for your remote
 repository, it does not have to be iotagent-node-lib, although we will use it in the next steps):
-```
+<pre>
 git remote add iotagent-node-lib https://github.com/telefonicaid/iotagent-node-lib.git
-```
+</pre>
 
 Before starting your contribution, remember to synchronize the `develop` branch in your forked repository with the `develop`
 branch in the main iotagent-node-lib repository, by following this steps
