@@ -7,3 +7,5 @@
 - Update commands to make them asynchronous under stress testing
 - Integrate with IoT Manager
 - Add new transport field (#309)
+- Add required files for integration with Sonar (#295)
+
