@@ -454,10 +454,10 @@ describe('Device Group Configuration API', function() {
             ], done);
         });
 
-        it('should return a 200 OK', function(done) {
+        it('should return a 204 OK', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(200);
+                response.statusCode.should.equal(204);
                 done();
             });
         });

@@ -126,6 +126,7 @@ var iotAgentLib = require('../../'),
         url: 'http://localhost:4041/iot/services',
         method: 'PUT',
         json: {
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
             trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
             cbHost: 'http://anotherUnexistentHost:1026',
             commands: [
