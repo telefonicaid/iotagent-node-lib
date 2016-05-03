@@ -10,7 +10,13 @@
       "entity_type": "SensorMachine",
       "resource": "/deviceTest",
       "service": "theService",
-      "service_path": "theSubService"
+      "service_path": "theSubService",
+      "attributes": [
+        {
+          "name": "status",
+          "type": "Boolean"
+        }
+      ]
     }
   ]
 }

@@ -66,7 +66,7 @@ var iotAgentLib = require('../../'),
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    type: 'Light',
+                    entity_type: 'Light',
                     trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                     cbHost: 'http://unexistentHost:1026',
                     commands: [
@@ -81,7 +81,7 @@ var iotAgentLib = require('../../'),
                             type: 'Lumens'
                         }
                     ],
-                    active: [
+                    attributes: [
                         {
                             name: 'status',
                             type: 'Boolean'
@@ -126,6 +126,7 @@ var iotAgentLib = require('../../'),
         url: 'http://localhost:4041/iot/services',
         method: 'PUT',
         json: {
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
             trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
             cbHost: 'http://anotherUnexistentHost:1026',
             commands: [
@@ -140,7 +141,7 @@ var iotAgentLib = require('../../'),
                     type: 'Lumens'
                 }
             ],
-            active: [
+            attributes: [
                 {
                     name: 'status',
                     type: 'Boolean'
@@ -198,11 +199,14 @@ describe('MongoDB Group Registry test', function() {
                     docs.length.should.equal(1);
                     should.exist(docs[0].type);
                     should.exist(docs[0].internalAttributes);
+                    should.exist(docs[0].attributes);
                     should.exist(docs[0].apikey);
                     docs[0].type.should.equal('Light');
                     docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     docs[0].internalAttributes.length.should.equal(1);
                     docs[0].internalAttributes[0].customField.should.equal('customValue');
+                    docs[0].attributes.length.should.equal(1);
+                    docs[0].attributes[0].name.should.equal('status');
                     done();
                 });
             });
