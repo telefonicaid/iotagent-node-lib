@@ -10,3 +10,4 @@
 - When a query comes to the IOTA the Static Attributes should not be returned (#312)
 - Add required files for integration with Sonar (#295)
 - Configuration API Should allow to modify API Key (#318)
+- Timestamp and level missing in logs (#320)
