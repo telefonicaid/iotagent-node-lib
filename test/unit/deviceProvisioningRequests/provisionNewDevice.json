@@ -8,6 +8,8 @@
       "entity_name": "TheFirstLight",
       "entity_type": "TheLightType",
       "timezone": "America/Santiago",
+      "endpoint": "http://fakedEndpoint:1234",
+      "transport": "MQTT",
       "attributes": [
         {
           "name": "attr_name",

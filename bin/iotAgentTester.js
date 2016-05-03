@@ -25,7 +25,7 @@
 'use strict';
 
 var commandLine = require('../lib/command/commandLine'),
-    clUtils = require('command-node'),
+    clUtils = require('command-shell-lib'),
     configCb = {
         host: 'localhost',
         port: 1026,

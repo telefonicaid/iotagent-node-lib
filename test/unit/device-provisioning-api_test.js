@@ -155,6 +155,10 @@ describe('Device provisioning API: Provision devices', function() {
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
                     should.exist(results.devices[0].timezone);
                     results.devices[0].timezone.should.equal('America/Santiago');
+                    should.exist(results.devices[0].endpoint);
+                    results.devices[0].endpoint.should.equal('http://fakedEndpoint:1234');
+                    should.exist(results.devices[0].transport);
+                    results.devices[0].transport.should.equal('MQTT');
                     should.exist(results.devices[0].lazy);
                     results.devices[0].lazy.length.should.equal(1);
                     results.devices[0].lazy[0].name.should.equal('luminance');
@@ -406,7 +410,7 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 request(options, function(error, response, body) {
                     should.exist(body);
-                    response.statusCode.should.equal(400);
+                    response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_DEVICE_ID');
                     done();
                 });

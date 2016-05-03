@@ -7,7 +7,7 @@
       "attributes": [
         {
           "name": "position_status",
-          "type": "Array",
+          "type": "commandStatus",
           "value": "PENDING"
         }
       ]

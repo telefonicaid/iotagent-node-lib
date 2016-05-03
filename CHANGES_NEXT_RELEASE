@@ -1,5 +1,13 @@
-- Fix InternalAttributes type in create Device JSON Schema Template.
-- Updating device provisioning for new attributes was not working (#277)
-- Wrong references in logs, while creating new configurations (#279).
-- Create a config service to avoid multiple initializations (#167).
-- Use a single database configuration for all persistence services (#173).
+- Change log level using the administration API (#289)
+- Use headers to track global transaction ID (#288)
+- Include service and subservice in log traces (#290)
+- Add endpoint attribute to the Device model
+- Update test shell to allow Stress test commands
+- Add support for MongoDB Replica Sets (#303)
+- Update commands to make them asynchronous under stress testing
+- Integrate with IoT Manager
+- Add new transport field (#309)
+- When a query comes to the IOTA the Static Attributes should not be returned (#312)
+- Add required files for integration with Sonar (#295)
+- Configuration API Should allow to modify API Key (#318)
+- Timestamp and level missing in logs (#320)

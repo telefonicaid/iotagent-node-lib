@@ -38,7 +38,7 @@ var statsService = require('../../lib/services/stats/statsRegistry'),
             baseRoot: '/'
         },
         stats: {
-            interval: 100,
+            interval: 50,
             persistence: true
         },
         mongodb: {
@@ -97,7 +97,7 @@ describe('Statistics persistence service', function() {
                             done();
                         });
                     });
-                }, 480);
+                }, 600);
             });
         });
     });

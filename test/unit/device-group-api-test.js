@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../'),
     _ = require('underscore'),
     async = require('async'),
@@ -56,7 +58,7 @@ var iotAgentLib = require('../../'),
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    type: 'SensorMachine',
+                    entity_type: 'SensorMachine',
                     trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                     cbHost: 'http://unexistentHost:1026',
                     commands: [
@@ -71,7 +73,7 @@ var iotAgentLib = require('../../'),
                             type: 'Lumens'
                         }
                     ],
-                    active: [
+                    attributes: [
                         {
                             name: 'status',
                             type: 'Boolean'
@@ -116,7 +118,7 @@ var iotAgentLib = require('../../'),
                     type: 'Lumens'
                 }
             ],
-            active: [
+            attributes: [
                 {
                     name: 'status',
                     type: 'Boolean'
@@ -216,7 +218,7 @@ describe('Device Group Configuration API', function() {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
                     should.not.exist(error);
-                    response.statusCode.should.equal(400);
+                    response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
                 });
@@ -454,10 +456,10 @@ describe('Device Group Configuration API', function() {
             ], done);
         });
 
-        it('should return a 200 OK', function(done) {
+        it('should return a 204 OK', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(200);
+                response.statusCode.should.equal(204);
                 done();
             });
         });
