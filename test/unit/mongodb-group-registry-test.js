@@ -81,7 +81,7 @@ var iotAgentLib = require('../../'),
                             type: 'Lumens'
                         }
                     ],
-                    active: [
+                    attributes: [
                         {
                             name: 'status',
                             type: 'Boolean'
@@ -141,7 +141,7 @@ var iotAgentLib = require('../../'),
                     type: 'Lumens'
                 }
             ],
-            active: [
+            attributes: [
                 {
                     name: 'status',
                     type: 'Boolean'
@@ -199,11 +199,14 @@ describe('MongoDB Group Registry test', function() {
                     docs.length.should.equal(1);
                     should.exist(docs[0].type);
                     should.exist(docs[0].internalAttributes);
+                    should.exist(docs[0].attributes);
                     should.exist(docs[0].apikey);
                     docs[0].type.should.equal('Light');
                     docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     docs[0].internalAttributes.length.should.equal(1);
                     docs[0].internalAttributes[0].customField.should.equal('customValue');
+                    docs[0].attributes.length.should.equal(1);
+                    docs[0].attributes[0].name.should.equal('status');
                     done();
                 });
             });

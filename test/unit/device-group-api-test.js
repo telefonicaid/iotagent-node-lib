@@ -71,7 +71,7 @@ var iotAgentLib = require('../../'),
                             type: 'Lumens'
                         }
                     ],
-                    active: [
+                    attributes: [
                         {
                             name: 'status',
                             type: 'Boolean'
@@ -116,7 +116,7 @@ var iotAgentLib = require('../../'),
                     type: 'Lumens'
                 }
             ],
-            active: [
+            attributes: [
                 {
                     name: 'status',
                     type: 'Boolean'

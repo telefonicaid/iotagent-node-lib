@@ -47,7 +47,7 @@ var iotAgentLib = require('../../'),
                         type: 'centigrades'
                     }
                 ],
-                active: [
+                attributes: [
                     {
                         name: 'pressure',
                         type: 'Hgmm'
@@ -87,7 +87,7 @@ var iotAgentLib = require('../../'),
                 type: 'Lumens'
             }
         ],
-        active: [
+        attributes: [
             {
                 name: 'status',
                 type: 'Boolean'
@@ -117,7 +117,7 @@ var iotAgentLib = require('../../'),
                             type: 'Lumens'
                         }
                     ],
-                    active: [
+                    attributes: [
                         {
                             name: 'status',
                             type: 'Boolean'

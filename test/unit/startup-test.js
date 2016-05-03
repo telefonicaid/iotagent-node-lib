@@ -43,7 +43,7 @@ var iotAgentLib = require('../../'),
                         type: 'centigrades'
                     }
                 ],
-                active: [
+                attributes: [
                     {
                         name: 'pressure',
                         type: 'Hgmm'
