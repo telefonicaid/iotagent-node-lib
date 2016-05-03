@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../'),
     request = require('request'),
     nock = require('nock'),
@@ -102,7 +104,7 @@ var iotAgentLib = require('../../'),
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    type: 'SensorMachine',
+                    entity_type: 'SensorMachine',
                     trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                     cbHost: 'http://unexistentHost:1026',
                     commands: [
