@@ -1,1 +1,2 @@
 - 'Mongodb' module not found when using the --production (#325)
+- Fix Domain objects not working properly (#331).
