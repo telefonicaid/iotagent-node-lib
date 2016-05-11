@@ -1,3 +1,4 @@
 - 'Mongodb' module not found when using the --production (#325)
 - Fix Domain objects not working properly (#331).
 - Enable IPv6 for HTTP protocol for the Northbound APIs (#333).
+- Fix Timestamp addition for static attributes generate multiple identical timestamp attributes (#335)
