@@ -24,6 +24,7 @@
 
 var statsService = require('../../../lib/services/stats/statsRegistry'),
     commonConfig = require('../../../lib/commonConfig'),
+    iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     mongo = require('mongodb').MongoClient,
     mongoUtils = require('../mongodb/mongoDBUtils'),
@@ -56,23 +57,27 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
     iotAgentDb,
     oldConfig;
 
-describe.skip('Statistics persistence service', function() {
+describe('Statistics persistence service', function() {
     beforeEach(function(done) {
         oldConfig = commonConfig.getConfig();
-        commonConfig.setConfig(iotAgentConfig);
-        statsService.globalLoad({}, function() {
-            mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
-                iotAgentDb = db;
-                done();
+
+        iotAgentLib.activate(iotAgentConfig, function(error) {
+            statsService.globalLoad({}, function() {
+                mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
+                    iotAgentDb = db;
+                    done();
+                });
             });
         });
     });
 
     afterEach(function(done) {
-        commonConfig.setConfig(oldConfig);
-        statsService.globalLoad({}, function() {
-            iotAgentDb.close(function(error) {
-                mongoUtils.cleanDbs(done);
+        iotAgentLib.deactivate(function(error) {
+            commonConfig.setConfig(oldConfig);
+            statsService.globalLoad({}, function() {
+                iotAgentDb.close(function(error) {
+                    mongoUtils.cleanDbs(done);
+                });
             });
         });
     });

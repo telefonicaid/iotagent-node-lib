@@ -4,3 +4,5 @@
 - Fix Timestamp addition for static attributes generate multiple identical timestamp attributes (#335)
 - Fixes Error deleting service (#328)
 - Command line client raises a 404 when listing groups (#338)
+- When persistence is defined for stats but not for the registries, the IOTA crashes (#340)
+- Refactor the tests in order to ease the creation of new ones (#341)
