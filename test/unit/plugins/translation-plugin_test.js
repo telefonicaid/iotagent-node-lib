@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -18,13 +18,12 @@
  * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::daniel.moranjimenez@telefonica.com
+ * please contact with::[contacto@tid.es]
  */
-
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -119,16 +118,12 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Timestamp compression plugin', function() {
+describe('Translation middleware tests', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.query);
-                done();
-            });
+            iotAgentLib.clearAll(done);
         });
     });
 
@@ -137,20 +132,8 @@ describe('Timestamp compression plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
-        var values = [
-            {
-                name: 'state',
-                type: 'Boolean',
-                value: 'true'
-            },
-            {
-                name: 'The Target Value',
-                type: 'ISO8601',
-                value: '20071103T131805'
-            }
-        ];
 
+    describe('When a new update translation middleware is added to the IoT Agent', function() {
         beforeEach(function() {
             nock.cleanAll();
 
@@ -158,12 +141,63 @@ describe('Timestamp compression plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextCompressTimestamp1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMiddleware1.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextCompressTimestamp1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
+        it('should execute the middlewares', function(done) {
+            var values = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: '87'
+                }
+            ];
+
+            var executed = false;
+
+            function testMiddleware(entity, typeInformation, callback) {
+                entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
+                executed = true;
+                callback(null, entity, typeInformation);
+            }
+
+            iotAgentLib.addUpdateMiddleware(testMiddleware);
+
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                executed.should.equal(true);
+                done();
+            });
+        });
+
+        it('should translate the appropriate attributes', function(done) {
+            var values = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'dimming',
+                    type: 'Percentage',
+                    value: '87'
+                }
+            ];
+
+            function testMiddleware(entity, typeInformation, callback) {
+                entity.contextElements[0].attributes[1].value = entity.contextElements[0].attributes[1].value + '%';
+                callback(null, entity, typeInformation);
+            }
+
+            iotAgentLib.addUpdateMiddleware(testMiddleware);
+
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -172,52 +206,11 @@ describe('Timestamp compression plugin', function() {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadatas', function() {
-        var values = [
-            {
-                name: 'state',
-                type: 'Boolean',
-                value: 'true',
-                metadatas: [
-                    {
-                        name: 'TimeInstant',
-                        type: 'ISO8601',
-                        value: '20071103T131805'
-                    }
-                ]
-            },
-            {
-                name: 'The Target Value',
-                type: 'ISO8601',
-                value: '20071103T131805'
-            }
-        ];
 
-        beforeEach(function() {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextCompressTimestamp2.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextCompressTimestamp2Success.json'));
-        });
-
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When a query comes for a timestamp through the plugin', function() {
-        var values = [
+    describe('When a new query translation middleware is added to the IoT Agent', function() {
+        var attributes = [
             'state',
-            'The Target Value'
+            'dimming'
         ];
 
         beforeEach(function() {
@@ -227,18 +220,45 @@ describe('Timestamp compression plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContextCompressTimestamp1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContextCompressTimestamp1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
-        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
-            iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
+        it('should call the middleware', function(done) {
+            var called = false;
+
+            function testMiddleware(entity, typeInformation, callback) {
+                entity.contextResponses[0].contextElement.attributes[1].value =
+                    entity.contextResponses[0].contextElement.attributes[1].value + '%';
+
+                called = true;
+
+                callback(null, entity, typeInformation);
+            }
+
+            iotAgentLib.addQueryMiddleware(testMiddleware);
+
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
                 should.not.exist(error);
-                should.exist(response);
-                should.exist(response.contextResponses);
-                response.contextResponses.length.should.equal(1);
-                response.contextResponses[0].contextElement.attributes[1].value.should.equal('20071103T131805');
+                called.should.equal(true);
+                done();
+            });
+        });
+        it('should call the middleware', function(done) {
+            function testMiddleware(entity, typeInformation,
+                                    callback) {
+                entity.contextResponses[0].contextElement.attributes[1].value =
+                    entity.contextResponses[0].contextElement.attributes[1].value + '%';
+
+                callback(null, entity, typeInformation);
+            }
+
+            iotAgentLib.addQueryMiddleware(testMiddleware);
+
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
+                should.not.exist(error);
+                result.contextResponses[0].contextElement.attributes[1].value.should.equal('23%');
                 done();
             });
         });

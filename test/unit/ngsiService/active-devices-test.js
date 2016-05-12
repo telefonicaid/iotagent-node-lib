@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     timekeeper = require('timekeeper'),
     should = require('should'),
     logger = require('logops'),
@@ -149,9 +149,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -173,9 +173,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextAppendMode.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextAppendMode.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentConfig.appendMode = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -223,9 +223,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextTimestamp.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextTimestamp.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -274,9 +274,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextTimestampOverride.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextTimestampOverride.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -323,9 +323,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Failed.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -351,9 +351,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext2Failed.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext2Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -376,9 +376,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(500,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext2Failed.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext2Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -404,9 +404,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext2.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext2.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -436,9 +436,9 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextStaticAttributes.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextStaticAttributes.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

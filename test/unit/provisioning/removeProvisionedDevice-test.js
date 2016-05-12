@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     nock = require('nock'),
     async = require('async'),
@@ -55,7 +55,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
         },
         provisioning2Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -64,7 +64,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
         };
 
     beforeEach(function(done) {
@@ -74,10 +74,10 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -85,17 +85,17 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .post('/v1/updateContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext',
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityRequests/registerProvisionedDevice2.json'))
+                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'))
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -103,7 +103,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .post('/v1/updateContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -111,7 +111,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/unregisterDevice1Success.json'));
+                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
 
             async.series([
                 iotAgentLib.clearAll,

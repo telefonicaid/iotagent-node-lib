@@ -24,7 +24,7 @@
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     logger = require('logops'),
     request = require('request'),

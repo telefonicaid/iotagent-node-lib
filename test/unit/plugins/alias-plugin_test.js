@@ -24,8 +24,8 @@
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -109,9 +109,9 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextAliasPlugin.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextAliasPlugin.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPluginSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextAliasPluginSuccess.json'));
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {
@@ -138,9 +138,9 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextAliasPlugin2.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextAliasPlugin2.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPlugin2Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextAliasPlugin2Success.json'));
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {

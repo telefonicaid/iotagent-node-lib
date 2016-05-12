@@ -22,12 +22,12 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
-    mongoUtils = require('./mongoDBUtils'),
+    mongoUtils = require('../mongodb/mongoDBUtils'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
@@ -72,9 +72,9 @@ describe('Update attribute functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgentAttributeUpdates.json'))
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgentAttributeUpdates.json'))
             .reply(200,
-                utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -82,7 +82,7 @@ describe('Update attribute functionalities', function() {
             .post('/v1/updateContext')
             .reply(200,
             utils.readExampleFile(
-                './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
         iotAgentLib.activate(iotAgentConfig, done);
     });

@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -143,9 +143,9 @@ describe('Query device information in the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
         it('should return the information about the desired attributes', function(done) {
@@ -165,9 +165,9 @@ describe('Query device information in the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext2Error.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
 
         });
 
@@ -188,9 +188,9 @@ describe('Query device information in the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext3Error.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
 
         });
 
@@ -211,9 +211,9 @@ describe('Query device information in the Context Broker', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext2UnknownError.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2UnknownError.json'));
 
         });
 
