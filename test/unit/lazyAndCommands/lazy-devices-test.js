@@ -147,8 +147,8 @@ describe('IoT Agent Lazy Devices', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/NGSI9/registerContext',
                     utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -201,10 +201,10 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -269,10 +269,10 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -388,17 +388,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
@@ -450,10 +449,10 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -521,17 +520,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
@@ -541,8 +539,8 @@ describe('IoT Agent Lazy Devices', function() {
         });
 
         it('should return the information of all the attributes', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
+            var expectedResponse = utils.readExampleFile(
+                    './test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
                 should.exist(attributes);
@@ -595,17 +593,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
@@ -615,8 +612,8 @@ describe('IoT Agent Lazy Devices', function() {
         });
 
         it('should return the information of all the attributes', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
+            var expectedResponse = utils.readExampleFile(
+                './test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
                 should.exist(attributes);
@@ -671,17 +668,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent2.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
@@ -691,8 +687,8 @@ describe('IoT Agent Lazy Devices', function() {
         });
 
         it('should return the information adding the static attributes', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/examples/contextProviderResponses/queryInformationStaticAttributesResponse.json');
+            var expectedResponse = utils.readExampleFile(
+                './test/unit/examples/contextProviderResponses/queryInformationStaticAttributesResponse.json');
 
             iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
                 id.should.equal('Motion:motion1');
@@ -739,17 +735,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -798,17 +793,16 @@ describe('IoT Agent Lazy Devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
+                .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);

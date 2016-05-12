@@ -108,10 +108,10 @@ describe('Attribute alias plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextAliasPlugin.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextAliasPluginSuccess.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextAliasPlugin.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextAliasPluginSuccess.json'));
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {
@@ -137,10 +137,10 @@ describe('Attribute alias plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextAliasPlugin2.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextAliasPlugin2Success.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextAliasPlugin2.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextAliasPlugin2Success.json'));
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {

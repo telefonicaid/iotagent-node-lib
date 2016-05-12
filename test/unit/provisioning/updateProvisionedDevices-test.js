@@ -221,7 +221,8 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithId.json')
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithId.json')
         };
 
         it('should raise a 400 error', function(done) {
@@ -240,7 +241,8 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWrong.json')
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWrong.json')
         };
 
         it('should raise a 400 error', function(done) {

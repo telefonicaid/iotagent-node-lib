@@ -157,10 +157,10 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp1.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextCompressTimestamp1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'));
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -199,10 +199,10 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp2.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextCompressTimestamp2.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'));
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -226,10 +226,10 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContextCompressTimestamp1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
+                .post('/v1/queryContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/queryContextCompressTimestamp1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
         });
 
         it('should return an entity with all its timestamps without separators (basic format)', function(done) {

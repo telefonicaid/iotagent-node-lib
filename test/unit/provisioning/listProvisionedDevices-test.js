@@ -371,7 +371,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                     'fiware-service': 'dumbMordor',
                     'fiware-servicepath': '/gardens'
                 },
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json')
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json')
             };
 
             contextBrokerMock
