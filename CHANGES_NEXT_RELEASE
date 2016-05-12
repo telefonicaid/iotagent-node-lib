@@ -2,3 +2,5 @@
 - Fix Domain objects not working properly (#331).
 - Enable IPv6 for HTTP protocol for the Northbound APIs (#333).
 - Fix Timestamp addition for static attributes generate multiple identical timestamp attributes (#335)
+- Fixes Error deleting service (#328)
+- Command line client raises a 404 when listing groups (#338)
