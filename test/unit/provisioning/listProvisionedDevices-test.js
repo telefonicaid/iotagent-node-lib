@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     nock = require('nock'),
     async = require('async'),
@@ -60,7 +60,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
         };
 
         provisioning2Options = {
@@ -70,7 +70,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
             },
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionAnotherDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
         };
 
         iotAgentLib.activate(iotAgentConfig, function() {
@@ -78,25 +78,25 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .post('/v1/updateContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .post('/v1/updateContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             async.series([
                 iotAgentLib.clearAll,
@@ -240,7 +240,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': '/gardens'
                 },
-                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
             };
 
             provisioningDeviceOptions.json.devices[0].device_id =
@@ -259,14 +259,14 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .times(10)
                 .reply(200,
                     utils.readExampleFile(
-                        './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .post('/v1/updateContext')
                 .times(10)
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             iotAgentLib.clearAll(function() {
                 async.times(10, createDeviceRequest, function(error, results) {
@@ -312,7 +312,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': '/gardens'
                 },
-                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionNewDevice.json')
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
             };
 
             provisioningDeviceOptions.json.name = provisioningDeviceOptions.json.name + '_' + i;
@@ -330,7 +330,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .times(10)
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             iotAgentLib.clearAll(function() {
                 async.timesSeries(10, createDeviceRequest, function(error, results) {
@@ -371,14 +371,15 @@ describe('Device provisioning API: List provisioned devices', function() {
                     'fiware-service': 'dumbMordor',
                     'fiware-servicepath': '/gardens'
                 },
-                json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionYetAnotherDevice.json')
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json')
             };
 
             contextBrokerMock
                 .post('/NGSI9/registerContext')
                 .reply(200,
                 utils.readExampleFile(
-                    './test/unit/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             request(provisioning3Options, function(error) {
                 done();

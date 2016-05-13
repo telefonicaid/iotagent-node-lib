@@ -22,9 +22,9 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     async = require('async'),
-    utils = require('../tools/utils'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -114,7 +114,7 @@ describe('Static attributes test', function() {
                 .post('/v1/updateContext')
                 .times(4)
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'))
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'))
                 .post('/v1/updateContext', function(body) {
                     var metadatas = 0;
 
@@ -126,7 +126,7 @@ describe('Static attributes test', function() {
                     return metadatas === body.contextElements[0].attributes.length - 1;
                 })
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

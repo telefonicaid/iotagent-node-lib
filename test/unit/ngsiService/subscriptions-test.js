@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     request = require('request'),
     nock = require('nock'),
@@ -50,7 +50,7 @@ describe('Subscription tests', function() {
         var optionsProvision = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -64,17 +64,17 @@ describe('Subscription tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/createMinimumProvisionedDevice.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/subscribeContext',
-                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionRequest.json'))
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
             iotAgentLib.clearAll(function() {
                 request(optionsProvision, function(error) {
@@ -126,9 +126,9 @@ describe('Subscription tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/unsubscribeContext',
-                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionRemove.json'))
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
             done();
         });
@@ -166,9 +166,9 @@ describe('Subscription tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/unsubscribeContext',
-                    utils.readExampleFile('./test/unit/subscriptionRequests/simpleSubscriptionRemove.json'))
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
             done();
         });
@@ -197,7 +197,7 @@ describe('Subscription tests', function() {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                     method: 'POST',
-                    json: utils.readExampleFile('./test/unit/subscriptionRequests/simpleNotification.json'),
+                    json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
                         'fiware-servicepath': '/gardens'
@@ -224,7 +224,7 @@ describe('Subscription tests', function() {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                     method: 'POST',
-                    json: utils.readExampleFile('./test/unit/subscriptionRequests/simpleNotification.json'),
+                    json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
                         'fiware-servicepath': '/gardens'
@@ -256,7 +256,7 @@ describe('Subscription tests', function() {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                     method: 'POST',
-                    json: utils.readExampleFile('./test/unit/subscriptionRequests/errorNotification.json'),
+                    json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/errorNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
                         'fiware-servicepath': '/gardens'

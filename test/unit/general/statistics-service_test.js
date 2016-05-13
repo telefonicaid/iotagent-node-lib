@@ -22,9 +22,9 @@
  */
 'use strict';
 
-var statsService = require('../../lib/services/stats/statsRegistry'),
+var statsService = require('../../../lib/services/stats/statsRegistry'),
     should = require('should'),
-    commonConfig = require('../../lib/commonConfig'),
+    commonConfig = require('../../../lib/commonConfig'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {

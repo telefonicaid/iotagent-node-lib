@@ -22,7 +22,7 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     _ = require('underscore'),
     iotAgentConfig = {

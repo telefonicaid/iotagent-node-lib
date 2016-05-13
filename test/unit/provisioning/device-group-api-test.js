@@ -24,12 +24,12 @@
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     _ = require('underscore'),
     async = require('async'),
     nock = require('nock'),
-    utils = require('../tools/utils'),
-    groupRegistryMemory = require('../../lib/services/groups/groupRegistryMemory'),
+    utils = require('../../tools/utils'),
+    groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
     request = require('request'),
     should = require('should'),
     iotAgentConfig = {
@@ -662,9 +662,9 @@ describe('Device Group Configuration API', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext3.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             async.series([
                 async.apply(request, optionsCreation)

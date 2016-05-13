@@ -22,12 +22,12 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
-    mongoUtils = require('./mongoDBUtils'),
+    mongoUtils = require('../mongodb/mongoDBUtils'),
     request = require('request'),
     contextBrokerMock,
     statusAttributeMock,
@@ -116,9 +116,9 @@ describe('Command functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext',
-            utils.readExampleFile('./test/unit/contextAvailabilityRequests/registerIoTAgentCommands.json'))
+            utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'))
             .reply(200,
-            utils.readExampleFile('./test/unit/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+            utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -126,7 +126,7 @@ describe('Command functionalities', function() {
             .post('/v1/updateContext')
             .reply(200,
             utils.readExampleFile(
-                './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -181,9 +181,9 @@ describe('Command functionalities', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextCommandStatus.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContextCommandStatusSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -255,9 +255,9 @@ describe('Command functionalities', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextCommandFinish.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandFinish.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContextCommandFinishSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCommandFinishSuccess.json'));
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -279,9 +279,9 @@ describe('Command functionalities', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextCommandError.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandError.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContextCommandStatusSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
 
             iotAgentLib.register(device3, function(error) {
                 done();

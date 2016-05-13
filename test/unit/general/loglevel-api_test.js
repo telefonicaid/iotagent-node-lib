@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -18,18 +18,16 @@
  * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::[contacto@tid.es]
+ * please contact with::[iot_support@tid.es]
  */
 'use strict';
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
+    request = require('request'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
@@ -70,7 +68,7 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Attribute alias plugin', function() {
+describe('Log level API', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -88,65 +86,82 @@ describe('Attribute alias plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes for attributes with aliases', function() {
-        var values = [
-            {
-                name: 't',
-                type: 'centigrades',
-                value: '52'
+
+    describe('When a new valid log level request comes to the API', function() {
+        var options = {
+            uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            {
-                name: 'p',
-                type: 'Hgmm',
-                value: '20071103T131805'
+            qs: {
+                level: 'ERROR'
             }
-        ];
+        };
 
-        beforeEach(function() {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextAliasPlugin.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPluginSuccess.json'));
-        });
-
-        it('should rename the attributes as expected by the mappings', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('the real log level should be changed', function(done) {
+            request(options, function(error, response, body) {
                 should.not.exist(error);
-                contextBrokerMock.done();
+                response.statusCode.should.equal(200);
+
                 done();
             });
         });
     });
-    describe('When an update comes for attributes with aliases and a different type', function() {
-        var values = [
-            {
-                name: 'l',
-                type: 'lums',
-                value: '9'
+
+    describe('When a new log level request comes to the API with an invalid level', function() {
+        var options = {
+            uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            qs: {
+                level: 'ALLRIGHT'
             }
-        ];
+        };
 
-        beforeEach(function() {
-            nock.cleanAll();
+        it('should return a 400 error indicating the log level is not valid', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody;
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContextAliasPlugin2.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContextAliasPlugin2Success.json'));
-        });
-
-        it('should rename the attributes as expected by the mappings', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
-                contextBrokerMock.done();
+                response.statusCode.should.equal(400);
+                should.exist(body);
+
+                parsedBody = JSON.parse(body);
+
+                parsedBody.error.should.equal('invalid log level');
+
+                done();
+            });
+        });
+    });
+
+    describe('When a new log level request comes to the API without a log level', function() {
+        var options = {
+            uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        it('should return a 400 error indicating the log level is missing', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody;
+
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                should.exist(body);
+
+                parsedBody = JSON.parse(body);
+
+                parsedBody.error.should.equal('log level missing');
+
                 done();
             });
         });

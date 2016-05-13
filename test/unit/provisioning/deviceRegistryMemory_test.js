@@ -22,11 +22,11 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     async = require('async'),
     should = require('should'),
     nock = require('nock'),
-    utils = require('../tools/utils'),
+    utils = require('../../tools/utils'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -68,7 +68,7 @@ describe('In memory device registry', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .reply(200,
                     utils.readExampleFile(
-                        './test/unit/contextResponses/createProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             var devices = [];
 

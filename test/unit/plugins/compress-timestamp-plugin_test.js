@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -18,12 +18,13 @@
  * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::[contacto@tid.es]
+ * please contact with::daniel.moranjimenez@telefonica.com
  */
+
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -118,38 +119,52 @@ var iotAgentLib = require('../../'),
         throttling: 'PT5S'
     };
 
-describe('Query device information in the Context Broker', function() {
-    var attributes = [
-        'state',
-        'dimming'
-    ];
-
+describe('Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
-
-        iotAgentLib.activate(iotAgentConfig, done);
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(function() {
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.query);
+                done();
+            });
+        });
     });
 
     afterEach(function(done) {
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
     });
+    describe('When an update comes with a timestamp through the plugin', function() {
+        var values = [
+            {
+                name: 'state',
+                type: 'Boolean',
+                value: 'true'
+            },
+            {
+                name: 'The Target Value',
+                type: 'ISO8601',
+                value: '20071103T131805'
+            }
+        ];
 
-    describe('When the user requests information about a registered device', function() {
         beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextCompressTimestamp1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'));
         });
 
-        it('should return the information about the desired attributes', function(done) {
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -157,78 +172,75 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe('When the user requests information about a device that it\'s not in the CB', function() {
+    describe('When an update comes with a timestamp through the plugin with metadatas', function() {
+        var values = [
+            {
+                name: 'state',
+                type: 'Boolean',
+                value: 'true',
+                metadatas: [
+                    {
+                        name: 'TimeInstant',
+                        type: 'ISO8601',
+                        value: '20071103T131805'
+                    }
+                ]
+            },
+            {
+                name: 'The Target Value',
+                type: 'ISO8601',
+                value: '20071103T131805'
+            }
+        ];
+
         beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext2Error.json'));
-
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextCompressTimestamp2.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'));
         });
 
-        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
-                should.exist(error);
-                error.name.should.equal('DEVICE_NOT_FOUND');
+        it('should return an entity with all its timestamps expanded to have separators', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
     });
 
-    describe('When the user requests information and there are multiple responses, one of them a failure', function() {
+    describe('When a query comes for a timestamp through the plugin', function() {
+        var values = [
+            'state',
+            'The Target Value'
+        ];
+
         beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext3Error.json'));
-
+                .post('/v1/queryContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/queryContextCompressTimestamp1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
         });
 
-        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
-                should.exist(error);
-                error.name.should.equal('DEVICE_NOT_FOUND');
+        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
+            iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
+                should.not.exist(error);
+                should.exist(response);
+                should.exist(response.contextResponses);
+                response.contextResponses.length.should.equal(1);
+                response.contextResponses[0].contextElement.attributes[1].value.should.equal('20071103T131805');
                 done();
             });
         });
     });
-
-    describe('When the user requests information and there is an unknown errorCode in the response', function() {
-        beforeEach(function() {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext2UnknownError.json'));
-
-        });
-
-        it('should return a ENTITY_GENERIC_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
-                should.exist(error);
-                should.exist(error.name);
-                should.exist(error.details.code);
-                should.exist(error.details.reasonPhrase);
-                error.name.should.equal('ENTITY_GENERIC_ERROR');
-                error.details.code.should.equal('516');
-                error.details.reasonPhrase.should.equal('A new and unknown error');
-                done();
-            });
-        });
-    });
-
 });

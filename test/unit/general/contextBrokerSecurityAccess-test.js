@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -113,10 +113,10 @@ describe('Secured access to the Context Broker', function() {
 
             keystoneMock = nock('http://128.16.109.11:5000')
                 .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
                 .reply(
                     201,
-                    utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                    utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
                     {
                         'X-Subject-Token': '12345679ABCDEF'
                     });
@@ -126,10 +126,10 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
                     200,
-                    utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -155,10 +155,10 @@ describe('Secured access to the Context Broker', function() {
 
             keystoneMock = nock('http://128.16.109.11:5000')
                 .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
                 .reply(
                 201,
-                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
                 {
                     'X-Subject-Token': '12345679ABCDEF'
                 });
@@ -168,10 +168,10 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
                 403,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -190,20 +190,20 @@ describe('Secured access to the Context Broker', function() {
 
             keystoneMock = nock('http://128.16.109.11:5000')
                 .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
                 .reply(
                 401,
-                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrustUnauthorized.json'));
+                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrustUnauthorized.json'));
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
                 200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -228,10 +228,10 @@ describe('Secured access to the Context Broker', function() {
 
             keystoneMock = nock('http://128.16.109.11:5000')
                 .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/keystoneRequests/getTokenFromTrust.json'))
+                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
                 .reply(
                 201,
-                utils.readExampleFile('./test/unit/keystoneResponses/tokenFromTrust.json'),
+                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
                 {
                     'X-Subject-Token': '12345679ABCDEF'
                 });
@@ -241,9 +241,9 @@ describe('Secured access to the Context Broker', function() {
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

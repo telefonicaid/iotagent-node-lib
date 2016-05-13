@@ -24,11 +24,11 @@
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     request = require('request'),
     nock = require('nock'),
-    utils = require('../tools/utils'),
-    groupRegistryMemory = require('../../lib/services/groups/groupRegistryMemory'),
+    utils = require('../../tools/utils'),
+    groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
     should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',
@@ -155,9 +155,9 @@ describe('IoT Manager autoregistration', function() {
 
             iotamMock = nock('http://mockediotam.com:9876')
                 .post('/protocols',
-                    utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                    utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
         afterEach(function(done) {
@@ -181,9 +181,9 @@ describe('IoT Manager autoregistration', function() {
 
             iotamMock = nock('http://mockediotam.com:9876')
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
         afterEach(function() {
@@ -205,9 +205,9 @@ describe('IoT Manager autoregistration', function() {
 
             iotamMock = nock('http://mockediotam.com:9876')
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             groupRegistryMemory.create(groupCreation, done);
         });
@@ -233,15 +233,15 @@ describe('IoT Manager autoregistration', function() {
 
             iotamMock = nock('http://mockediotam.com:9876')
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             iotamMock
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
@@ -269,15 +269,15 @@ describe('IoT Manager autoregistration', function() {
 
             iotamMock = nock('http://mockediotam.com:9876')
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationWithGroups.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             iotamMock
                 .post('/protocols',
-                utils.readExampleFile('./test/unit/iotamRequests/registrationEmpty.json'))
+                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/iotamResponses/registrationSuccess.json'));
+                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             groupRegistryMemory.create(groupCreation, function() {
                 iotAgentLib.activate(iotAgentConfig, done);

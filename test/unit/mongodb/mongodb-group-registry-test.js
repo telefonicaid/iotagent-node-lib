@@ -24,9 +24,9 @@
 
 /*jshint camelcase:false */
 
-var iotAgentLib = require('../../'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     _ = require('underscore'),
-    utils = require('../tools/utils'),
+    utils = require('../../tools/utils'),
     async = require('async'),
     request = require('request'),
     should = require('should'),
@@ -285,7 +285,7 @@ describe('MongoDB Group Registry test', function() {
 
         beforeEach(function(done) {
             optionsMultipleCreation.json = utils.readExampleFile(
-                './test/unit/groupProvisioningRequests/multipleGroupsCreation.json');
+                './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json');
 
             done();
         });

@@ -22,8 +22,8 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../'),
-    utils = require('../tools/utils'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -141,9 +141,9 @@ describe('Translation middleware tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/contextRequests/updateContextMiddleware1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMiddleware1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/updateContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
         });
 
         it('should execute the middlewares', function(done) {
@@ -220,9 +220,9 @@ describe('Translation middleware tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/contextRequests/queryContext1.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
                 .reply(200,
-                utils.readExampleFile('./test/unit/contextResponses/queryContext1Success.json'));
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
         it('should call the middleware', function(done) {
