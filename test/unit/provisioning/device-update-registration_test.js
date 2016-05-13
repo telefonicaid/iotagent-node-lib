@@ -98,6 +98,26 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             }
         ]
     },
+    deviceCommandUpdated = {
+        id: 'light1',
+        type: 'Light',
+        name: 'light1',
+        service: 'smartGondor',
+        subservice: 'gardens',
+        internalId: 'newInternalId',
+        commands: [
+            {
+                name: 'move',
+                type: 'command'
+            }
+        ],
+        active: [
+            {
+                name: 'temperature',
+                type: 'centigrades'
+            }
+        ]
+    },
     unknownDevice = {
         id: 'rotationSensor4',
         type: 'Rotation',
@@ -160,7 +180,6 @@ describe('IoT Agent Device Update Registration', function() {
                 .reply(200,
                     utils.readExampleFile(
                         './test/unit/examples/contextResponses/updateProvisionActiveAttributes1Success.json'));
-
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
@@ -183,6 +202,46 @@ describe('IoT Agent Device Update Registration', function() {
             });
         });
     });
+
+    describe('When a device is preregistered and it is updated with new commands', function() {
+        beforeEach(function() {
+            contextBrokerMock
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/updateCommands1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/updateCommands1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateProvisionCommands1.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateProvisionCommands1Success.json'));
+        });
+
+        it('should register as ContextProvider of its commands and create the additional attributes', function(done) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+        it('should store the new values in the registry', function(done) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, function(error, data) {
+                iotAgentLib.getDevice(deviceCommandUpdated.id, function(error, deviceResult) {
+                    should.not.exist(error);
+                    should.exist(deviceResult);
+                    deviceResult.internalId.should.equal(deviceUpdated.internalId);
+                    deviceResult.commands[0].name.should.equal('move');
+                    deviceResult.active[0].name.should.equal('temperature');
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a update action is executed in a non registered device', function() {
         beforeEach(function() {
             contextBrokerMock

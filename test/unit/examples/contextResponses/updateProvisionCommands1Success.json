@@ -1,0 +1,32 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "temperature",
+            "type": "centigrades",
+            "value": " "
+          },
+          {
+            "name": "move_status",
+            "type": "command_status",
+            "value": " "
+          },
+          {
+            "name": "move_info",
+            "type": "command_status",
+            "value": " "
+          }
+        ],
+        "id": "Light:light1",
+        "isPattern": "false",
+        "type": "Light"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}

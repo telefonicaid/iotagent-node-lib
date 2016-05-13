@@ -159,6 +159,12 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 .reply(200,
                     utils.readExampleFile(
                         './test/unit/examples/contextResponses/updateActiveAttributesSuccess.json'));
+
+            contextBrokerMock
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/updateIoTAgent3.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'));
         });
 
         it('should return a 200 OK and no errors', function(done) {
