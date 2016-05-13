@@ -8,3 +8,4 @@
 - Refactor the tests in order to ease the creation of new ones (#341)
 - Configurations should allow adding static attributes (#319)
 - Command updates not implemented (#308)
+- Add a new plugin for the creation of Event attributes (#297)
