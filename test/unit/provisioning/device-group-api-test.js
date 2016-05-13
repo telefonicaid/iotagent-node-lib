@@ -78,6 +78,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                             name: 'status',
                             type: 'Boolean'
                         }
+                    ],
+                    static_attributes: [
+                        {
+                            name: 'bootstrapServer',
+                            type: 'Address',
+                            value: '127.0.0.1'
+                        }
                     ]
                 }
             ]
@@ -181,6 +188,30 @@ describe('Device Group Configuration API', function() {
                 request(optionsList, function(error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    done();
+                });
+            });
+        });
+        it('should store attributes in the DB', function(done) {
+            request(optionsCreation, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(1);
+                    should.exist(body.services[0].attributes);
+                    body.services[0].attributes.length.should.equal(1);
+                    body.services[0].attributes[0].name.should.equal('status');
+
+                    should.exist(body.services[0].lazy);
+                    body.services[0].lazy.length.should.equal(1);
+                    body.services[0].lazy[0].name.should.equal('luminescence');
+
+                    should.exist(body.services[0].commands);
+                    body.services[0].commands.length.should.equal(1);
+                    body.services[0].commands[0].name.should.equal('wheel1');
+
+                    should.exist(body.services[0].static_attributes);
+                    body.services[0].static_attributes.length.should.equal(1);
+                    body.services[0].static_attributes[0].name.should.equal('bootstrapServer');
+
                     done();
                 });
             });
