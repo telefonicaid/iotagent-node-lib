@@ -7,3 +7,4 @@
 - When persistence is defined for stats but not for the registries, the IOTA crashes (#340)
 - Refactor the tests in order to ease the creation of new ones (#341)
 - Configurations should allow adding static attributes (#319)
+- Command updates not implemented (#308)
