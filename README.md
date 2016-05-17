@@ -676,6 +676,7 @@ be considered to be part of a Replica Set. In that case, the optional property `
 }
 ```
 * **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
+* **eventType**: Default type for the Events (useful only with the `addEvents` plugin).
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
 * **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
@@ -1147,6 +1148,12 @@ updates and return it in queries (and viceversa, receive the extended one in que
 In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as 
 the left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and
 name attributes are used in this way, this plugin makes the translation from one to the other automatically.
+
+#### Event plugin (addEvents)
+This plugin allows for the creation of Event attributes, i.e.: attributes whose value will be the timestamp of its
+inclusion in the system, regardless of the value they carried in the Southbound API. If this plugin is active, all
+the events in the IoT Agent with the configured type name will be marked as events. The event name can be configured
+in the `config.eventType` attribute.
 
 ## <a name="development"/> Development documentation
 ### Branches and release process
