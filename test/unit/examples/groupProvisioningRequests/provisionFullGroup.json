@@ -3,7 +3,7 @@
     {
       "resource": "/deviceTest",
       "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-      "entity_type": "Light",
+      "entity_type": "SensorMachine",
       "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
       "cbHost": "http://unexistentHost:1026",
       "commands": [
@@ -18,27 +18,19 @@
           "type": "Lumens"
         }
       ],
-      "active": [
+      "attributes": [
         {
           "name": "status",
           "type": "Boolean"
         }
-      ]
-    },
-    {
-      "resource": "/deviceTest",
-      "apikey": "23HJK3Y9090DSFL173209HV8801232",
-      "entity_type": "Termometer",
-      "trust": "BL9803H3QRW8342HBAMS8A8",
-      "cbHost": "http://unexistentHost:1026",
-      "commands": [
-        {
-          "name": "temperature",
-          "type": "degrees"
-        }
       ],
-      "lazy": [],
-      "active": []
+      "static_attributes": [
+        {
+          "name": "bootstrapServer",
+          "type": "Address",
+          "value": "127.0.0.1"
+        }
+      ]
     }
   ]
 }

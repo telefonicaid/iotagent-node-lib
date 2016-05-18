@@ -28,7 +28,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     nock = require('nock'),
     request = require('request'),
-    contextBrokerMock,
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -41,15 +40,61 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         },
         types: {},
         service: 'smartGondor',
+        singleConfigurationMode: true,
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
+    },
+    groupCreation = {
+        url: 'http://localhost:4041/iot/services',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
-describe('Device provisioning API: Single service mode', function() {
+describe('Provisioning API: Single service mode', function() {
+    beforeEach(function(done) {
+        nock.cleanAll();
+
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(done);
+        });
+    });
+
+    afterEach(function(done) {
+        nock.cleanAll();
+        iotAgentLib.setProvisioningHandler();
+        iotAgentLib.deactivate(done);
+    });
+
     describe('When a new configuration arrives to an already configured subservice', function() {
-        it('should raise a DUPLICATE_CONFIGURATION error');
+        var groupCreationDuplicated = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+
+        beforeEach(function(done) {
+            request(groupCreation, done);
+        });
+
+        it('should raise a DUPLICATE_GROUP error', function(done) {
+            request(groupCreationDuplicated, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(409);
+                should.exist(body.name);
+                body.name.should.equal('DUPLICATE_GROUP');
+                done();
+            });
+        });
     });
     describe('When a device is provisioned with an ID that already exists in the configuration', function() {
         it('should raise a DUPLICATE_DEVICE_ID error');
@@ -61,6 +106,6 @@ describe('Device provisioning API: Single service mode', function() {
         it('should be provisioned with the default type');
     });
     describe('When a device is provisioned for a configuration', function() {
-        it('should add the default attributes from the configuration to the device')
+        it('should add the default attributes from the configuration to the device');
     });
 });

@@ -1,0 +1,35 @@
+{
+  "services": [
+    {
+      "resource": "/deviceDuplicateGroup",
+      "apikey": "JK09H3L12K09H3L123HJK0732L123HJK38K09H3",
+      "entity_type": "CommandMachinery",
+      "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+      "commands": [
+        {
+          "name": "wheel1",
+          "type": "Wheel"
+        }
+      ],
+      "lazy": [
+        {
+          "name": "luminescence",
+          "type": "Lumens"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "status",
+          "type": "Boolean"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "bootstrapServer",
+          "type": "Address",
+          "value": "127.0.0.1"
+        }
+      ]
+    }
+  ]
+}
