@@ -77,11 +77,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light'
+        type: 'Light',
+        service: 'smartGondor',
+        subservice: 'gardens'
     },
     device2 = {
         id: 'term2',
-        type: 'Termometer'
+        type: 'Termometer',
+        service: 'smartGondor',
+        subservice: 'gardens'
     };
 
 describe('IoT Agent Device Registration', function() {
@@ -210,7 +214,7 @@ describe('IoT Agent Device Registration', function() {
 
         it('should return all the device\'s information', function(done) {
             iotAgentLib.register(device1, function(error) {
-                iotAgentLib.getDevice('light1', function(error, data) {
+                iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);
                     should.exist(data);
                     data.type.should.equal('Light');
@@ -240,7 +244,7 @@ describe('IoT Agent Device Registration', function() {
 
         it('should return a ENTITY_NOT_FOUND error', function(done) {
             iotAgentLib.register(device1, function(error) {
-                iotAgentLib.getDevice('lightUnexistent', function(error, data) {
+                iotAgentLib.getDevice('lightUnexistent', 'smartGondor', 'gardens', function(error, data) {
                     should.exist(error);
                     should.not.exist(data);
                     error.code.should.equal(404);
@@ -295,7 +299,7 @@ describe('IoT Agent Device Registration', function() {
         });
 
         it('should update the devices information in Context Broker', function(done) {
-            iotAgentLib.unregister(device1.id, function(error) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -347,7 +351,7 @@ describe('IoT Agent Device Registration', function() {
 
         it('should not remove the device from the internal registry');
         it('should return a UNREGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.unregister(device1.id, function(error) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('UNREGISTRATION_ERROR');

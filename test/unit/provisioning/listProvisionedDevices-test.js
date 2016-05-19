@@ -315,9 +315,11 @@ describe('Device provisioning API: List provisioned devices', function() {
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
             };
 
-            provisioningDeviceOptions.json.name = provisioningDeviceOptions.json.name + '_' + i;
+            provisioningDeviceOptions.json.devices[0].device_id = provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            request(provisioningDeviceOptions, callback);
+            request(provisioningDeviceOptions, function(error, response, body) {
+                callback();
+            });
         }
 
         beforeEach(function(done) {

@@ -120,6 +120,10 @@ describe('Update attribute functionalities', function() {
                     }
                 ],
                 updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
             }
         };
 

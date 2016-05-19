@@ -93,11 +93,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light'
+        type: 'Light',
+        service: 'smartGondor',
+        subservice: 'gardens'
     },
     device2 = {
         id: 'motion1',
-        type: 'Motion'
+        type: 'Motion',
+        service: 'smartGondor',
+        subservice: 'gardens'
     };
 
 describe('IoT Agent Lazy Devices', function() {
@@ -136,6 +140,10 @@ describe('IoT Agent Lazy Devices', function() {
                     }
                 ],
                 updateAction: 'APPEND'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
             }
         };
 
@@ -291,7 +299,7 @@ describe('IoT Agent Lazy Devices', function() {
         it('should call the device handler with the received data', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
@@ -319,7 +327,7 @@ describe('IoT Agent Lazy Devices', function() {
         it('should return the response in XML format', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataQueryHandler(function testQueryHandler(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function testQueryHandler(id, type, service, subservice, attributes, callback) {
                 handlerCalled = true;
                 callback(null, {
                     id: id,
@@ -365,6 +373,10 @@ describe('IoT Agent Lazy Devices', function() {
                     attributes: [
                         'dimming'
                     ]
+                },
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiare-servicepath': 'gardens'
                 }
             },
             sensorData = [
@@ -410,7 +422,7 @@ describe('IoT Agent Lazy Devices', function() {
             var expectedResponse = utils
                 .readExampleFile('./test/unit/examples/contextProviderResponses/queryInformationResponse.json');
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
@@ -440,6 +452,10 @@ describe('IoT Agent Lazy Devices', function() {
                     attributes: [
                         'dimming'
                     ]
+                },
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'gardens'
                 }
             };
 
@@ -465,7 +481,9 @@ describe('IoT Agent Lazy Devices', function() {
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
                 apply(iotAgentLib.register, device1)
-            ], done);
+            ], function(error) {
+                done();
+            });
         });
 
         it('should not give any error', function(done) {
@@ -497,6 +515,10 @@ describe('IoT Agent Lazy Devices', function() {
                             id: 'Light:light1'
                         }
                     ]
+                },
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'gardens'
                 }
             },
             sensorData = [
@@ -542,7 +564,7 @@ describe('IoT Agent Lazy Devices', function() {
             var expectedResponse = utils.readExampleFile(
                     './test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 should.exist(attributes);
                 attributes.length.should.equal(1);
                 attributes[0].should.equal('temperature');
@@ -570,6 +592,10 @@ describe('IoT Agent Lazy Devices', function() {
                         }
                     ],
                     attributes: []
+                },
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'gardens'
                 }
             },
             sensorData = [
@@ -615,7 +641,7 @@ describe('IoT Agent Lazy Devices', function() {
             var expectedResponse = utils.readExampleFile(
                 './test/unit/examples/contextProviderResponses/queryInformationResponseEmptyAttributes.json');
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 should.exist(attributes);
                 attributes.length.should.equal(1);
                 attributes[0].should.equal('temperature');
@@ -646,6 +672,10 @@ describe('IoT Agent Lazy Devices', function() {
                         'moving',
                         'location'
                     ]
+                },
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'gardens'
                 }
             },
             sensorData = [
@@ -690,7 +720,7 @@ describe('IoT Agent Lazy Devices', function() {
             var expectedResponse = utils.readExampleFile(
                 './test/unit/examples/contextProviderResponses/queryInformationStaticAttributesResponse.json');
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal('Motion:motion1');
                 type.should.equal('Motion');
                 attributes[0].should.equal('moving');
@@ -712,7 +742,9 @@ describe('IoT Agent Lazy Devices', function() {
                 method: 'POST',
                 body: 'This is a body in text format',
                 headers: {
-                    'Content-Type': 'text/plain'
+                    'Content-Type': 'text/plain',
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'gardens'
                 }
             },
             sensorData = [
@@ -753,7 +785,7 @@ describe('IoT Agent Lazy Devices', function() {
         it('should fail with a 400 error', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 handlerCalled = true;
                 callback(null, sensorData);
             });
@@ -811,7 +843,7 @@ describe('IoT Agent Lazy Devices', function() {
         it('should fail with a 400 error', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataQueryHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
                 handlerCalled = true;
                 callback(null, sensorData);
             });

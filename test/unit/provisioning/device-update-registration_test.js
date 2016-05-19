@@ -191,7 +191,7 @@ describe('IoT Agent Device Update Registration', function() {
         });
         it('should store the new values in the registry', function(done) {
             iotAgentLib.updateRegister(deviceUpdated, function(error, data) {
-                iotAgentLib.getDevice(deviceUpdated.id, function(error, deviceResult) {
+                iotAgentLib.getDevice(deviceUpdated.id, 'smartGondor', 'gardens', function(error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);
@@ -230,7 +230,7 @@ describe('IoT Agent Device Update Registration', function() {
         });
         it('should store the new values in the registry', function(done) {
             iotAgentLib.updateRegister(deviceCommandUpdated, function(error, data) {
-                iotAgentLib.getDevice(deviceCommandUpdated.id, function(error, deviceResult) {
+                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartGondor', 'gardens', function(error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);

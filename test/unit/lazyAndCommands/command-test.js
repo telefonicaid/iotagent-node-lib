@@ -173,6 +173,10 @@ describe('Command functionalities', function() {
                     }
                 ],
                 updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
             }
         };
 

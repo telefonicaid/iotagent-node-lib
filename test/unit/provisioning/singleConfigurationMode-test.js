@@ -27,6 +27,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
 
     should = require('should'),
     nock = require('nock'),
+    contextBrokerMock,
     request = require('request'),
     iotAgentConfig = {
         logLevel: 'FATAL',
@@ -54,9 +55,18 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
+    },
+    deviceCreation = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
-describe('Provisioning API: Single service mode', function() {
+describe.skip('Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 
@@ -97,7 +107,51 @@ describe('Provisioning API: Single service mode', function() {
         });
     });
     describe('When a device is provisioned with an ID that already exists in the configuration', function() {
-        it('should raise a DUPLICATE_DEVICE_ID error');
+        var deviceCreationDuplicated = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            request(groupCreation, function(error) {
+                request(deviceCreation, function(error) {
+                    done();
+                });
+            });
+        });
+
+        it('should raise a DUPLICATE_DEVICE_ID error', function(done) {
+            request(deviceCreationDuplicated, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(409);
+                should.exist(body.name);
+                body.name.should.equal('DUPLICATE_DEVICE_ID');
+                done();
+            });
+        });
     });
     describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
         it('should return a 200 OK');
