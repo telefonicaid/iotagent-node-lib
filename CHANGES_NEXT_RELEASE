@@ -9,3 +9,7 @@
 - Configurations should allow adding static attributes (#319)
 - Command updates not implemented (#308)
 - Add a new plugin for the creation of Event attributes (#297)
+- Change the way the Configurations work (#343)
+- Initial entity provisioning does not take configurations into account (#263)
+- Entity retrieval on incoming notifications or queries uses the entity name without the type (#260)
+- Change the Identification of the Devices. (#17)
