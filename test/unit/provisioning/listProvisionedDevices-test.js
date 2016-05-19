@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     utils = require('../../tools/utils'),
     should = require('should'),
@@ -233,6 +235,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         function createDeviceRequest(i, callback) {
             /* jshint camelcase: false */
+
             var provisioningDeviceOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -315,7 +318,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
             };
 
-            provisioningDeviceOptions.json.devices[0].device_id = provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
+            provisioningDeviceOptions.json.devices[0].device_id =
+                provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
             request(provisioningDeviceOptions, function(error, response, body) {
                 callback();

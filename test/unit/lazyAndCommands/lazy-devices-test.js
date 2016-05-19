@@ -327,20 +327,21 @@ describe('IoT Agent Lazy Devices', function() {
         it('should return the response in XML format', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataQueryHandler(function testQueryHandler(id, type, service, subservice, attributes, callback) {
-                handlerCalled = true;
-                callback(null, {
-                    id: id,
-                    type: type,
-                    attributes: [
-                            {
-                                name: 'dimming',
-                                type: 'string',
-                                value: '89'
-                            }
-                        ]
-                    });
-            });
+            iotAgentLib.setDataQueryHandler(
+                function testQueryHandler(id, type, service, subservice, attributes, callback) {
+                    handlerCalled = true;
+                    callback(null, {
+                        id: id,
+                        type: type,
+                        attributes: [
+                                {
+                                    name: 'dimming',
+                                    type: 'string',
+                                    value: '89'
+                                }
+                            ]
+                        });
+                });
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
