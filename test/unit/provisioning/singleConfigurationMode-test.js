@@ -66,7 +66,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         }
     };
 
-describe.skip('Provisioning API: Single service mode', function() {
+describe('Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 
@@ -121,23 +121,23 @@ describe.skip('Provisioning API: Single service mode', function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext', utils.readExampleFile(
                     './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext', utils.readExampleFile(
                     './test/unit/examples/contextRequests/createProvisionedDevice.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             request(groupCreation, function(error) {
-                request(deviceCreation, function(error) {
+                request(deviceCreation, function(error, response, body) {
                     done();
                 });
             });
