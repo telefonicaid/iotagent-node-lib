@@ -68,7 +68,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         }
     };
 
-describe.only('Provisioning API: Single service mode', function() {
+describe('Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 

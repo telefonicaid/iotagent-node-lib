@@ -76,7 +76,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     device1 = {
         id: 'light1',
-        type: 'Light'
+        type: 'Light',
+        service: 'smartGondor',
+        subservice: 'gardens',
     },
     deviceUpdated = {
         id: 'light1',
@@ -138,8 +140,7 @@ describe('IoT Agent Device Update Registration', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/NGSI9/registerContext', utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+            .post('/NGSI9/registerContext')
             .reply(200, utils.readExampleFile(
                 './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 

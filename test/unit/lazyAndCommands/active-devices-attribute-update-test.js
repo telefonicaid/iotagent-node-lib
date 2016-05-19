@@ -58,7 +58,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     device = {
         id: 'somelight',
-        type: 'Light'
+        type: 'Light',
+        service: 'smartGondor',
+        subservice: 'gardens'
     };
 
 describe('Update attribute functionalities', function() {
@@ -71,8 +73,7 @@ describe('Update attribute functionalities', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgentAttributeUpdates.json'))
+            .post('/NGSI9/registerContext')
             .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
@@ -80,8 +81,7 @@ describe('Update attribute functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
-            .reply(200,
-            utils.readExampleFile(
+            .reply(200, utils.readExampleFile(
                 './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
         iotAgentLib.activate(iotAgentConfig, done);

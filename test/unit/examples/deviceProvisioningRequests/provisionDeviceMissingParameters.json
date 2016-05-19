@@ -1,7 +1,6 @@
 {
   "devices": [
     {
-      "device_id": "Light1",
       "protocol": "GENERIC_PROTO",
       "service" : "smartGondor",
       "entity_name": "TheFirstLight",

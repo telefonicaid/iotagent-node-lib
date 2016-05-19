@@ -53,7 +53,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         type: 'centigrades'
                     }
                 ],
-                active: [
+                attributes: [
                     {
                         name: 'pressure',
                         type: 'Hgmm'
@@ -79,7 +79,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         type: 'kelvin'
                     }
                 ],
-                active: [
+                attributes: [
                 ],
                 service: 'smartGondor',
                 subservice: 'gardens'
@@ -314,6 +314,8 @@ describe('MongoDB Device Registry', function() {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
+                    service: 'smartGondor',
+                    subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
@@ -363,6 +365,8 @@ describe('MongoDB Device Registry', function() {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
+                    service: 'smartGondor',
+                    subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
