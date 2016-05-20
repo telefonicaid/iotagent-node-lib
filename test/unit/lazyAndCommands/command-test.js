@@ -199,7 +199,7 @@ describe('Command functionalities', function() {
         it('should call the client handler', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null, {
                     id: id,
                     type: type,
@@ -208,7 +208,7 @@ describe('Command functionalities', function() {
             });
 
 
-            iotAgentLib.setCommandHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
@@ -234,7 +234,7 @@ describe('Command functionalities', function() {
             });
         });
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null, {
                     id: id,
                     type: type,
@@ -251,6 +251,29 @@ describe('Command functionalities', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 statusAttributeMock.done();
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
+            var serviceAndSubservice = false;
+
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+                serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
+                callback(null, {
+                    id: id,
+                    type: type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function(error, response, body) {
+                serviceAndSubservice.should.equal(true);
                 done();
             });
         });

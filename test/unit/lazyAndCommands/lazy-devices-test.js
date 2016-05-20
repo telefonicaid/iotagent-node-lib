@@ -176,7 +176,7 @@ describe('IoT Agent Lazy Devices', function() {
             var expectedResponse = utils
                 .readExampleFile('./test/unit/examples/contextProviderResponses/updateInformationResponse.json');
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal('12');
@@ -231,7 +231,7 @@ describe('IoT Agent Lazy Devices', function() {
         it('should call the device handler with the received data', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal('12');
@@ -247,7 +247,7 @@ describe('IoT Agent Lazy Devices', function() {
         });
 
         it('should return the response in XML Format', function(done) {
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
