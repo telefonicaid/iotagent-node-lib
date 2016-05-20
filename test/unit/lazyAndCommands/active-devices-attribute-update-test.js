@@ -139,7 +139,7 @@ describe('Update attribute functionalities', function() {
         it('should call the client handler with correct values, even if commands are not defined', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal('Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);
