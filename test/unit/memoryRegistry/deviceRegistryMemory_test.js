@@ -77,6 +77,8 @@ describe('In memory device registry', function() {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
+                    service: 'smartGondor',
+                    subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
@@ -95,13 +97,14 @@ describe('In memory device registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function(done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', function(error, devices) {
-                should.not.exist(error);
-                should.exist(devices);
-                devices.length.should.equal(1);
-                devices[0].id.should.equal('id3');
-                done();
-            });
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens',
+                function(error, devices) {
+                    should.not.exist(error);
+                    should.exist(devices);
+                    devices.length.should.equal(1);
+                    devices[0].id.should.equal('id3');
+                    done();
+                });
         });
     });
 });

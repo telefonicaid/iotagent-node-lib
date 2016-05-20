@@ -103,7 +103,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     device3 = {
         id: 'r2d2',
-        type: 'Robot'
+        type: 'Robot',
+        service: 'smartGondor',
+        subservice: 'gardens'
     };
 
 describe('Command functionalities', function() {
@@ -173,6 +175,10 @@ describe('Command functionalities', function() {
                     }
                 ],
                 updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
             }
         };
 

@@ -53,7 +53,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         type: 'centigrades'
                     }
                 ],
-                active: [
+                attributes: [
                     {
                         name: 'pressure',
                         type: 'Hgmm'
@@ -79,7 +79,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         type: 'kelvin'
                     }
                 ],
-                active: [
+                attributes: [
                 ],
                 service: 'smartGondor',
                 subservice: 'gardens'
@@ -102,6 +102,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     device1 = {
         id: 'light1',
         type: 'Light',
+        service: 'smartGondor',
+        subservice: 'gardens',
         resource: '/test',
         apikey: '2345678ikjhgfr678i',
         protocol: 'GENERIC_PROTOCOL'
@@ -109,6 +111,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     device2 = {
         id: 'term2',
         type: 'Termometer',
+        service: 'smartGondor',
+        subservice: 'gardens',
         resource: '/',
         apikey: 'dsf8yy789iyushu786',
         protocol: 'GENERIC_PROTOCOL'
@@ -280,7 +284,7 @@ describe('MongoDB Device Registry', function() {
         });
 
         it('should be removed from MongoDB', function(done) {
-            iotAgentLib.unregister(device1.id, function(error) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
                 iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -310,6 +314,8 @@ describe('MongoDB Device Registry', function() {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
+                    service: 'smartGondor',
+                    subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
@@ -330,13 +336,14 @@ describe('MongoDB Device Registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function(done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', function(error, devices) {
-                should.not.exist(error);
-                should.exist(devices);
-                devices.length.should.equal(1);
-                devices[0].id.should.equal('id3');
-                done();
-            });
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens',
+                function(error, devices) {
+                    should.not.exist(error);
+                    should.exist(devices);
+                    devices.length.should.equal(1);
+                    devices[0].id.should.equal('id3');
+                    done();
+                });
         });
     });
 
@@ -358,6 +365,8 @@ describe('MongoDB Device Registry', function() {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
+                    service: 'smartGondor',
+                    subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
