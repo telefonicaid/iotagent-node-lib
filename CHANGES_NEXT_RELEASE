@@ -13,3 +13,4 @@
 - Initial entity provisioning does not take configurations into account (#263)
 - Entity retrieval on incoming notifications or queries uses the entity name without the type (#260)
 - Change the Identification of the Devices. (#17)
+- Allow the getDevicesByAttribute() function of the In-Memory repository to search through all the services (#353)

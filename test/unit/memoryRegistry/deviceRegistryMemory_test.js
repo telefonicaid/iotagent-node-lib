@@ -107,4 +107,96 @@ describe('In memory device registry', function() {
                 });
         });
     });
+
+    describe('When a the registry is queried for devices in multiple services', function() {
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v1/updateContext')
+                .times(10)
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            var devices = [];
+
+            for (var i = 0; i < 10; i++) {
+                devices.push({
+                    id: 'id' + i,
+                    type: 'Light' + i % 2,
+                    internalId: 'internal' + i,
+                    service: 'smartGondor' + i % 3,
+                    subservice: 'gardens',
+                    active: [
+                        {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }
+                    ]
+                });
+            }
+
+            async.map(devices, iotAgentLib.register, function(error, results) {
+                done();
+            });
+        });
+        afterEach(function(done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return all the matching devices', function(done) {
+            iotAgentLib.getDevicesByAttribute('type', 'Light0', undefined, 'gardens',
+                function(error, devices) {
+                    should.not.exist(error);
+                    should.exist(devices);
+                    devices.length.should.equal(5);
+                    done();
+                });
+        });
+    });
+
+    describe('When a the registry is queried for devices in a particular service', function() {
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v1/updateContext')
+                .times(10)
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            var devices = [];
+
+            for (var i = 0; i < 10; i++) {
+                devices.push({
+                    id: 'id' + i,
+                    type: 'Light',
+                    internalId: 'internal' + i,
+                    service: 'smartGondor' + i % 3,
+                    subservice: 'gardens',
+                    active: [
+                        {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }
+                    ]
+                });
+            }
+
+            async.map(devices, iotAgentLib.register, function(error, results) {
+                done();
+            });
+        });
+        afterEach(function(done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return all the matching devices in  that service', function(done) {
+            iotAgentLib.getDevicesByAttribute('type', 'Light', 'smartGondor0', 'gardens',
+                function(error, devices) {
+                    should.not.exist(error);
+                    should.exist(devices);
+                    devices.length.should.equal(4);
+                    done();
+                });
+        });
+    });
 });
