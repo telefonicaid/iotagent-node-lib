@@ -541,6 +541,19 @@ Find a device group based on its service and subservice.
 * service: name of the service of the configuration.
 * subservice: name of the subservice of the configuration.
 
+##### iotagentLib.getEffectiveApiKey()
+###### Signature
+```
+function getEffectiveApiKey(service, subservice, type, callback)
+```
+###### Description
+Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
+
+###### Params
+* service: Name of the service whose API Key we are retrieving.
+* subservice: Name of the subservice whose API Key we are retrieving.
+* type: Type of the device.
+
 ##### iotagentLib.subscribe()
 ###### Signature
 ```
@@ -824,7 +837,7 @@ have implications in the use of attributes with Context Providers, so this flag 
 * **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
 * **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information. 
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
-
+* **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request

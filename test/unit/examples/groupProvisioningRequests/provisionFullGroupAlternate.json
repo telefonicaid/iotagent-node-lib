@@ -1,0 +1,36 @@
+{
+  "services": [
+    {
+      "resource": "/deviceTest",
+      "apikey": "754KL23Y9090DSFL123HSFL12380KL23Y2",
+      "entity_type": "AnotherMachine",
+      "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+      "cbHost": "http://unexistentHost:1026",
+      "commands": [
+        {
+          "name": "wheel1",
+          "type": "Wheel"
+        }
+      ],
+      "lazy": [
+        {
+          "name": "luminescence",
+          "type": "Lumens"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "status",
+          "type": "Boolean"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "bootstrapServer",
+          "type": "Address",
+          "value": "127.0.0.1"
+        }
+      ]
+    }
+  ]
+}
