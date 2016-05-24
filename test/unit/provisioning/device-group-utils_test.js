@@ -89,7 +89,7 @@ describe('Device Group utils', function() {
         });
     });
 
-    describe('When an APIKey is requested for a device in a group without the SingleConfiguration mode', function() {
+    describe('When an API Key is requested for a device in a group without the SingleConfiguration mode', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(iotAgentLib.activate, iotAgentConfig),
@@ -97,7 +97,7 @@ describe('Device Group utils', function() {
                 async.apply(request, groupCreation)
             ], done);
         });
-        it('should return the APIKey of the group', function(done) {
+        it('should return the API Key of the group', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function(error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('754KL23Y9090DSFL123HSFL12380KL23Y2');
@@ -105,7 +105,7 @@ describe('Device Group utils', function() {
             });
         });
     });
-    describe('When an APIKey is requested for a device in a subservice with the SingleConfiguration mode', function() {
+    describe('When an API Key is requested for a device in a subservice with the SingleConfiguration mode', function() {
         beforeEach(function(done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function() {
@@ -117,7 +117,7 @@ describe('Device Group utils', function() {
         afterEach(function() {
             iotAgentConfig.singleConfigurationMode = false;
         });
-        it('should return the APIKey of the related subservice', function(done) {
+        it('should return the API Key of the related subservice', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', null, function(error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
@@ -125,12 +125,12 @@ describe('Device Group utils', function() {
             });
         });
     });
-    describe('When an APIKey is requested without a provisioned group but with a configured type', function() {
+    describe('When an API Key is requested without a provisioned group but with a configured type', function() {
         beforeEach(function(done) {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return the APIKey of the related type', function(done) {
+        it('should return the API Key of the related type', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'Termometer', function(error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('1234567890asdfghjkl');
@@ -138,12 +138,12 @@ describe('Device Group utils', function() {
             });
         });
     });
-    describe('When an APIKey is requested and there is no group or type configured', function() {
+    describe('When an API Key is requested and there is no group or type configured', function() {
         beforeEach(function(done) {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return the default APIKey', function(done) {
+        it('should return the default API Key', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'WeatherMachine', function(error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('default1234');
@@ -151,7 +151,7 @@ describe('Device Group utils', function() {
             });
         });
     });
-    describe('When an APIKey is requested and there is no group, type or default value', function() {
+    describe('When an API Key is requested and there is no group, type or default value', function() {
         beforeEach(function(done) {
             delete iotAgentConfig.defaultKey;
             iotAgentLib.activate(iotAgentConfig, done);
