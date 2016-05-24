@@ -541,6 +541,19 @@ Find a device group based on its service and subservice.
 * service: name of the service of the configuration.
 * subservice: name of the subservice of the configuration.
 
+##### iotagentLib.getEffectiveApiKey()
+###### Signature
+```
+function getEffectiveApiKey(service, subservice, type, callback)
+```
+###### Description
+Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
+
+###### Params
+* service: Name of the service whose API Key we are retrieving.
+* subservice: Name of the subservice whose API Key we are retrieving.
+* type: Type of the device.
+
 ##### iotagentLib.subscribe()
 ###### Signature
 ```
