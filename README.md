@@ -804,6 +804,8 @@ have implications in the use of attributes with Context Providers, so this flag 
 * **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 * **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
 * **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information. 
+* **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
+
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
