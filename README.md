@@ -298,34 +298,34 @@ If the device has been previously preprovisioned, the missing data will be compl
 ##### iotagentLib.unregister()
 ###### Signature
 ```
-function unregisterDevice(id, callback)
+function unregisterDevice(id, service, subservice, callback)
 ```
 ###### Description
 Unregister a device from the Context broker and the internal registry.
 ###### Params
  * id: Device ID of the device to register.
+ * service: Service of the device to unregister.
+ * subservice: Subservice inside the service for the unregisterd device.
  
 ##### iotagentLib.update()
 ###### Signature
 ```
-updateValue(deviceId, resource, apikey, attributes, deviceInformation, callback)
+update(entityName, attributes, typeInformation, token, callback)
 ```
 ###### Description
-Launches the updating process, getting the security token in case the authorization sequence is enabled. This method
-can be invoked with an externally added deviceInformation object to overwrite the information on the configuration
-(for preregistered devices).
+Makes an update in the Device's entity in the context broker, with the values given in the 'attributes' array. This
+array should comply to the NGSI's attribute format.
 
 ###### Params
- * deviceId: Device ID of the device to register.
- * resource: Resource name of the endpoint the device is calling.
- * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
+ * entityName: Name of the entity to register.
  * attributes: Attribute array containing the values to update.
- * deviceInformation: Device information object (containing security and service information).
+ * typeInformation: Configuration information for the device.
+ * token: User token to identify against the PEP Proxies (optional).
 
 ##### iotagentLib.setCommandResult()
 ###### Signature
 ```
-setCommandResult(deviceId, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
+setCommandResult(entityName, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
 ```
 ###### Description
 Update the result of a command in the Context Broker. The result of the command has two components: the result
@@ -333,7 +333,7 @@ of the command itself will be represented with the sufix '_result' in the entity
 attribute with the '_status' sufix.
 
 ###### Params
- * deviceId: Device ID of the device to register.
+ * entityName: Name of the entity holding the command.
  * resource: Resource name of the endpoint the device is calling.
  * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
  * commandName: Name of the command whose result is being updated.
@@ -364,7 +364,9 @@ three different ways:
 function setDataUpdateHandler(newHandler)
 ```
 ###### Description
-Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives with the following parameters: (id, type, attributes, callback). The handler is in charge of updating the corresponding values in the devices with the appropriate protocol. 
+Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
+with the following parameters: (id, type, service, subservice, attributes, callback). The handler is in charge of
+updating the corresponding values in the devices with the appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
 ```
@@ -382,7 +384,8 @@ Once all the updates have taken place, the callback must be invoked with the upd
     });
 ```
 
-In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
+entity, and all the results will be combined into a single response.
 ###### Params
  * newHandler: User handler for update requests
 
@@ -392,7 +395,9 @@ In the case of NGSI requests affecting multiple entities, this handler will be c
 function setDataQueryHandler(newHandler)
 ```
 ###### Description
-Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives, with the following parameters: (id, type, attributes, callback). The handler must retrieve all the corresponding information from the devices and return a NGSI entity with the requested values.
+Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives,
+with the following parameters: (id, type, service, subservice, attributes, callback). The handler must retrieve all the
+corresponding information from the devices and return a NGSI entity with the requested values.
 
 The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
 ```
@@ -410,7 +415,8 @@ The callback must be invoked with the updated Context Element, using the informa
     });
 ```
 
-In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each entity, and all the results will be combined into a single response.
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
+entity, and all the results will be combined into a single response.
 ###### Params
  * newHandler: User handler for query requests.
 
@@ -443,52 +449,63 @@ The handler is expected to call its callback once with no parameters (failing to
 function setConfigurationHandler(newHandler)
 ```
 ###### Description
-Sets the new user handler for the configuration updates. This handler will be called every time a new configuration is created or an old configuration is updated. 
+Sets the new user handler for the configuration updates. This handler will be called every time a new configuration is
+created or an old configuration is updated.
 
 The handler must adhere to the following signature:
 ```
 function(newConfiguration, callback)
 ```
-The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
+The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
 
-For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the handler will be called once for each of the configurations (both in the case of the creatinos and the updates).
+For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
+handler will be called once for each of the configurations (both in the case of the creatinos and the updates).
 
 ##### iotagentLib.listDevices()
 ###### Signature
 ```
 function listDevices(callback)
 function listDevices(limit, offset, callback)
+function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
 Return a list of all the devices registered in the system. If invoked with three parameters, it limits the number of devices to return and the first device to be returned.
 ###### Params
-* limit: maximum number of devices to return in the results.
-* offset: number of results to skip before returning the results.
+ * service: Service for which the devices are requested.
+ * subservice: Subservice inside the service for which the devices are requested.
+ * limit: maximum number of devices to return in the results.
+ * offset: number of results to skip before returning the results.
+
 ##### iotagentLib.getDevice()
 ###### Signature
 ```
-function getDevice(deviceId, callback)
+function getDevice(deviceId, service, subservice, callback)
 ```
 ###### Description
 Retrieve all the information about a device from the device registry.
 ###### Params
-* deviceId: ID of the device to be found.
+ * deviceId: ID of the device to be found.
+ * service: Service for which the requested device.
+ * subservice: Subservice inside the service for which the device is requested.
 
 ##### iotagentLib.getDeviceByName()
 ###### Signature
 ```
-function getDeviceByName(name, callback)
+function getDeviceByName(deviceName, service, subservice, callback)
 ```
 ###### Description
 Retrieve a device from the registry based on its entity name.
 
 ###### Params
 * deviceName: Name of the entity associated to a device.
+* service: Service the device belongs to.
+* subservice: Division inside the service.
 
 ##### iotagentLib.getDevicesByAttribute()
 ###### Signature
 ```
-function getDevicesByAttribute(name, value, callback)
+function getDevicesByAttribute(attributeName, attributeValue, service, subservice, callback)
 ```
 ###### Description
 Retrieve all the devices having an attribute named `name` with value `value`.
@@ -496,6 +513,8 @@ Retrieve all the devices having an attribute named `name` with value `value`.
 ###### Params
 * name: name of the attribute to match.
 * value: value to match in the attribute.
+* service: Service the device belongs to.
+* subservice: Division inside the service.
 
 ##### iotagentLib.getConfiguration()
 ###### Signature
