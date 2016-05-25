@@ -199,15 +199,6 @@ describe('Command functionalities', function() {
         it('should call the client handler', function(done) {
             var handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
-                callback(null, {
-                    id: id,
-                    type: type,
-                    attributes: []
-                });
-            });
-
-
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
@@ -234,7 +225,7 @@ describe('Command functionalities', function() {
             });
         });
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null, {
                     id: id,
                     type: type,
@@ -257,7 +248,7 @@ describe('Command functionalities', function() {
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
             var serviceAndSubservice = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
                 callback(null, {
                     id: id,
