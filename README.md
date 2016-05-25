@@ -775,7 +775,8 @@ attributes:
 
 
 ## <a name="configuration"/> Configuration
-The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent. The Agent Console reads the same configuration from the `config.js` file.
+The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent.
+The Agent Console reads the same configuration from the `config.js` file.
 
 ### Global Configuration
 These are the parameters that can be configured in the global section:
@@ -838,6 +839,31 @@ have implications in the use of attributes with Context Providers, so this flag 
 * **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information. 
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
 * **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
+
+### Configuration using environment variables
+Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
+container-based technologies, like Docker, Heroku, etc...
+
+The following table shows the accepted environment variables, as well as the configuration parameter the variable overrides.
+
+| Environment variable | Configuration attribute             |
+|:-------------------- |:----------------------------------- |
+| CB_HOST              | contextBroker.host                  |
+| CB_PORT              | contextBroker.port                  |
+| NORTH_HOST           | server.host                         |
+| NORTH_PORT           | server.port                         |
+| PROVIDER_URL         | providerUrl                         |
+| REGISTRY_TYPE        | deviceRegistry.type                 |
+| LOG_LEVEL            | logLevel                            |
+| TIMESTAMP            | timestamp                           |
+| IOTAM_HOST           | iotManager.host                     |
+| IOTAM_PORT           | iotManager.port                     |
+| IOTAM_PATH           | iotManager.path                     |
+| IOTAM_PROTOCOL       | iotManager.protocol                 |
+| IOTAM_DESCRIPTION    | iotManager.description              |
+| MONGO_HOST           | mongodb.host                        |
+| MONGO_PORT           | mongodb.port                        |
+| MONGO_DB             | mongodb.db                          |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request

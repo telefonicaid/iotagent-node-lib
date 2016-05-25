@@ -24,8 +24,12 @@
 
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should'),
+    nock = require('nock'),
+    utils = require('../../tools/utils'),
+    config = require('../../../lib/commonConfig'),
     _ = require('underscore'),
     iotAgentConfig = {
+        logLevel: 'ERROR',
         contextBroker: {
             host: '192.168.1.1',
             port: '1026'
@@ -56,7 +60,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         throttling: 'PT5S'
     },
     iotAgentConfigNoUrl = _.clone(iotAgentConfig),
-    iotAgentConfigNoTypes = _.clone(iotAgentConfig);
+    iotAgentConfigNoTypes = _.clone(iotAgentConfig),
+    iotamMock;
 
 describe('Startup tests', function() {
     describe('When the IoT Agent is started without a "providerUrl" config parameter', function() {
@@ -83,6 +88,77 @@ describe('Startup tests', function() {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('MISSING_CONFIG_PARAMS');
+                done();
+            });
+        });
+    });
+    describe('When the IoT Agent is started with environment variables', function() {
+        beforeEach(function() {
+            process.env.CB_HOST = 'cbhost';
+            process.env.CB_PORT = '1111';
+            process.env.NORTH_HOST = 'localhost';
+            process.env.NORTH_PORT = '2222';
+            process.env.PROVIDER_URL = 'prvider:3333';
+            process.env.REGISTRY_TYPE = 'mongo';
+            process.env.LOG_LEVEL = 'FATAL';
+            process.env.TIMESTAMP = true;
+            process.env.IOTAM_HOST = 'iotamhost';
+            process.env.IOTAM_PORT = '4444';
+            process.env.IOTAM_PATH = '/iotampath';
+            process.env.IOTAM_PROTOCOL = 'PDI_PROTOCOL';
+            process.env.IOTAM_DESCRIPTION = 'The IoTAM Protocol';
+            process.env.MONGO_HOST = 'mongohost';
+            process.env.MONGO_PORT = '5555';
+            process.env.MONGO_DB = 'themongodb';
+
+            nock.cleanAll();
+
+            iotamMock = nock('http://iotamhost:4444')
+                .post('/iotampath')
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+        });
+
+        afterEach(function() {
+            delete process.env.CB_HOST;
+            delete process.env.CB_PORT;
+            delete process.env.NORTH_HOST;
+            delete process.env.NORTH_PORT;
+            delete process.env.PROVIDER_URL;
+            delete process.env.REGISTRY_TYPE;
+            delete process.env.LOG_LEVEL;
+            delete process.env.TIMESTAMP;
+            delete process.env.IOTAM_HOST;
+            delete process.env.IOTAM_PORT;
+            delete process.env.IOTAM_PATH;
+            delete process.env.IOTAM_PROTOCOL;
+            delete process.env.IOTAM_DESCRIPTION;
+            delete process.env.MONGO_HOST;
+            delete process.env.MONGO_PORT;
+            delete process.env.MONGO_DB;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should not start and raise a MISSING_CONFIG_PARAMS error', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().contextBroker.host.should.equal('cbhost');
+                config.getConfig().contextBroker.port.should.equal('1111');
+                config.getConfig().server.host.should.equal('localhost');
+                config.getConfig().server.port.should.equal('2222');
+                config.getConfig().providerUrl.should.equal('prvider:3333');
+                config.getConfig().deviceRegistry.type.should.equal('mongo');
+                config.getConfig().logLevel.should.equal('FATAL');
+                config.getConfig().timestamp.should.equal(true);
+                config.getConfig().iotManager.host.should.equal('iotamhost');
+                config.getConfig().iotManager.port.should.equal('4444');
+                config.getConfig().iotManager.path.should.equal('/iotampath');
+                config.getConfig().iotManager.protocol.should.equal('PDI_PROTOCOL');
+                config.getConfig().iotManager.description.should.equal('The IoTAM Protocol');
+                config.getConfig().mongodb.host.should.equal('mongohost');
+                config.getConfig().mongodb.port.should.equal('5555');
+                config.getConfig().mongodb.db.should.equal('themongodb');
                 done();
             });
         });
