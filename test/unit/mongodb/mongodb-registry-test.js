@@ -104,6 +104,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         type: 'Light',
         service: 'smartGondor',
         subservice: 'gardens',
+        endpoint: 'http://testEndpoint.com',
         resource: '/test',
         apikey: '2345678ikjhgfr678i',
         protocol: 'GENERIC_PROTOCOL'
@@ -179,6 +180,7 @@ describe('MongoDB Device Registry', function() {
                     should.exist(docs[0].active);
                     should.exist(docs[0].commands);
                     should.exist(docs[0].resource);
+                    should.exist(docs[0].endpoint);
                     should.exist(docs[0].apikey);
                     should.exist(docs[0].protocol);
                     docs[0].active.length.should.equal(1);
@@ -188,6 +190,7 @@ describe('MongoDB Device Registry', function() {
                     docs[0].commands[0].name.should.equal('position');
                     docs[0].internalAttributes.customAttribute.should.equal('customValue');
                     docs[0].resource.should.equal('/test');
+                    docs[0].endpoint.should.equal('http://testEndpoint.com');
                     docs[0].protocol.should.equal('GENERIC_PROTOCOL');
                     docs[0].apikey.should.equal('2345678ikjhgfr678i');
                     done();
