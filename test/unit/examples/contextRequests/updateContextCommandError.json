@@ -11,7 +11,7 @@
           "value": "ERROR"
         },
         {
-          "name": "position_result",
+          "name": "position_info",
           "type": "commandResult",
           "value": "Stalled"
         }

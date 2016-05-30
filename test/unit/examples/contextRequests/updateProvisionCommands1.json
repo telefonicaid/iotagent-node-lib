@@ -16,7 +16,7 @@
           "value": "UNKNOWN"
         },
         {
-          "name": "move_result",
+          "name": "move_info",
           "type": "commandResult",
           "value": " "
         }

@@ -26,7 +26,7 @@
           "value": "UNKNOWN"
         },
         {
-          "name": "commandAttr_result",
+          "name": "commandAttr_info",
           "type": "commandResult",
           "value": " "
         },
@@ -36,7 +36,7 @@
           "value": "UNKNOWN"
         },
         {
-          "name": "wheel1_result",
+          "name": "wheel1_info",
           "type": "commandResult",
           "value": " "
         }

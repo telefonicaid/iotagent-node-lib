@@ -11,7 +11,7 @@
           "value": "FINISHED"
         },
         {
-          "name": "position_result",
+          "name": "position_info",
           "type": "commandResult",
           "value": "[72, 368, 1]"
         }
