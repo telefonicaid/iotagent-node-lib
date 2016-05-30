@@ -94,22 +94,22 @@ describe('Startup tests', function() {
     });
     describe('When the IoT Agent is started with environment variables', function() {
         beforeEach(function() {
-            process.env.CB_HOST = 'cbhost';
-            process.env.CB_PORT = '1111';
-            process.env.NORTH_HOST = 'localhost';
-            process.env.NORTH_PORT = '2222';
-            process.env.PROVIDER_URL = 'prvider:3333';
-            process.env.REGISTRY_TYPE = 'mongo';
-            process.env.LOG_LEVEL = 'FATAL';
-            process.env.TIMESTAMP = true;
-            process.env.IOTAM_HOST = 'iotamhost';
-            process.env.IOTAM_PORT = '4444';
-            process.env.IOTAM_PATH = '/iotampath';
-            process.env.IOTAM_PROTOCOL = 'PDI_PROTOCOL';
-            process.env.IOTAM_DESCRIPTION = 'The IoTAM Protocol';
-            process.env.MONGO_HOST = 'mongohost';
-            process.env.MONGO_PORT = '5555';
-            process.env.MONGO_DB = 'themongodb';
+            process.env.IOTA_CB_HOST = 'cbhost';
+            process.env.IOTA_CB_PORT = '1111';
+            process.env.IOTA_NORTH_HOST = 'localhost';
+            process.env.IOTA_NORTH_PORT = '2222';
+            process.env.IOTA_PROVIDER_URL = 'prvider:3333';
+            process.env.IOTA_REGISTRY_TYPE = 'mongo';
+            process.env.IOTA_LOG_LEVEL = 'FATAL';
+            process.env.IOTA_TIMESTAMP = true;
+            process.env.IOTA_IOTAM_HOST = 'iotamhost';
+            process.env.IOTA_IOTAM_PORT = '4444';
+            process.env.IOTA_IOTAM_PATH = '/iotampath';
+            process.env.IOTA_IOTAM_PROTOCOL = 'PDI_PROTOCOL';
+            process.env.IOTA_IOTAM_DESCRIPTION = 'The IoTAM Protocol';
+            process.env.IOTA_MONGO_HOST = 'mongohost';
+            process.env.IOTA_MONGO_PORT = '5555';
+            process.env.IOTA_MONGO_DB = 'themongodb';
 
             nock.cleanAll();
 
@@ -119,22 +119,22 @@ describe('Startup tests', function() {
         });
 
         afterEach(function() {
-            delete process.env.CB_HOST;
-            delete process.env.CB_PORT;
-            delete process.env.NORTH_HOST;
-            delete process.env.NORTH_PORT;
-            delete process.env.PROVIDER_URL;
-            delete process.env.REGISTRY_TYPE;
-            delete process.env.LOG_LEVEL;
-            delete process.env.TIMESTAMP;
-            delete process.env.IOTAM_HOST;
-            delete process.env.IOTAM_PORT;
-            delete process.env.IOTAM_PATH;
-            delete process.env.IOTAM_PROTOCOL;
-            delete process.env.IOTAM_DESCRIPTION;
-            delete process.env.MONGO_HOST;
-            delete process.env.MONGO_PORT;
-            delete process.env.MONGO_DB;
+            delete process.env.IOTA_CB_HOST;
+            delete process.env.IOTA_CB_PORT;
+            delete process.env.IOTA_NORTH_HOST;
+            delete process.env.IOTA_NORTH_PORT;
+            delete process.env.IOTA_PROVIDER_URL;
+            delete process.env.IOTA_REGISTRY_TYPE;
+            delete process.env.IOTA_LOG_LEVEL;
+            delete process.env.IOTA_TIMESTAMP;
+            delete process.env.IOTA_IOTAM_HOST;
+            delete process.env.IOTA_IOTAM_PORT;
+            delete process.env.IOTA_IOTAM_PATH;
+            delete process.env.IOTA_IOTAM_PROTOCOL;
+            delete process.env.IOTA_IOTAM_DESCRIPTION;
+            delete process.env.IOTA_MONGO_HOST;
+            delete process.env.IOTA_MONGO_PORT;
+            delete process.env.IOTA_MONGO_DB;
         });
 
         afterEach(function(done) {

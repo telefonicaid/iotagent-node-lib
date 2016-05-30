@@ -846,24 +846,24 @@ container-based technologies, like Docker, Heroku, etc...
 
 The following table shows the accepted environment variables, as well as the configuration parameter the variable overrides.
 
-| Environment variable | Configuration attribute             |
-|:-------------------- |:----------------------------------- |
-| CB_HOST              | contextBroker.host                  |
-| CB_PORT              | contextBroker.port                  |
-| NORTH_HOST           | server.host                         |
-| NORTH_PORT           | server.port                         |
-| PROVIDER_URL         | providerUrl                         |
-| REGISTRY_TYPE        | deviceRegistry.type                 |
-| LOG_LEVEL            | logLevel                            |
-| TIMESTAMP            | timestamp                           |
-| IOTAM_HOST           | iotManager.host                     |
-| IOTAM_PORT           | iotManager.port                     |
-| IOTAM_PATH           | iotManager.path                     |
-| IOTAM_PROTOCOL       | iotManager.protocol                 |
-| IOTAM_DESCRIPTION    | iotManager.description              |
-| MONGO_HOST           | mongodb.host                        |
-| MONGO_PORT           | mongodb.port                        |
-| MONGO_DB             | mongodb.db                          |
+| Environment variable      | Configuration attribute             |
+|:------------------------- |:----------------------------------- |
+| IOTA_CB_HOST              | contextBroker.host                  |
+| IOTA_CB_PORT              | contextBroker.port                  |
+| IOTA_NORTH_HOST           | server.host                         |
+| IOTA_NORTH_PORT           | server.port                         |
+| IOTA_PROVIDER_URL         | providerUrl                         |
+| IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
+| IOTA_LOG_LEVEL            | logLevel                            |
+| IOTA_TIMESTAMP            | timestamp                           |
+| IOTA_IOTAM_HOST           | iotManager.host                     |
+| IOTA_IOTAM_PORT           | iotManager.port                     |
+| IOTA_IOTAM_PATH           | iotManager.path                     |
+| IOTA_IOTAM_PROTOCOL       | iotManager.protocol                 |
+| IOTA_IOTAM_DESCRIPTION    | iotManager.description              |
+| IOTA_MONGO_HOST           | mongodb.host                        |
+| IOTA_MONGO_PORT           | mongodb.port                        |
+| IOTA_MONGO_DB             | mongodb.db                          |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request

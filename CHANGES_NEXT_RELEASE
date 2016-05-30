@@ -20,3 +20,4 @@
 - Fix Command handler doesn't work if no update handler is defined (#363)
 - Read configuration values from environment variables (#365)
 - Fix Endpoint attribute not stored in mongo (#369)
+- Fix Add a prefix for all the environment variables (#375)
