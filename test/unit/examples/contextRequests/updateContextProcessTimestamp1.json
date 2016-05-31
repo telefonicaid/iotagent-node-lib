@@ -1,0 +1,29 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "light1",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "Boolean",
+          "value": "true",
+          "metadatas": [
+            {
+              "name": "TimeInstant",
+              "type": "ISO8601",
+              "value": "2016-05-30T16:25:22.304Z"
+            }
+          ]
+        },
+        {
+          "name": "TimeInstant",
+          "type": "ISO8601",
+          "value": "2016-05-30T16:25:22.304Z"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}
