@@ -1333,6 +1333,10 @@ inclusion in the system, regardless of the value they carried in the Southbound 
 the events in the IoT Agent with the configured type name will be marked as events. The event name can be configured
 in the `config.eventType` attribute.
 
+#### Timestamp Processing Plugin (timestampProcess)
+This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
+TimeInstant attribute as metadata for every other attribute in the same request.
+
 ## <a name="development"/> Development documentation
 ### Contributions
 All contributions to this project are welcome. Developers planning to contribute should follow the [Contribution Guidelines](./docs/contribution.md)
