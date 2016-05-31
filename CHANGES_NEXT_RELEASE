@@ -22,3 +22,4 @@
 - Fix Endpoint attribute not stored in mongo (#369)
 - Fix Add a prefix for all the environment variables (#375)
 - Assess command_result field (#374)
+- Environment IOTA_MONGO_REPLICASET missing (#378)
