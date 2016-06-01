@@ -1,0 +1,43 @@
+{
+  "devices": [
+    {
+      "device_id": "Light1",
+      "protocol": "GENERIC_PROTO",
+      "entity_name": "TheFirstLight",
+      "entity_type": "TheLightType",
+      "timezone": "America/Santiago",
+      "endpoint": "http://fakedEndpoint:1234",
+      "transport": "MQTT",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string"
+        }
+      ],
+      "lazy": [
+        {
+          "name": "luminance",
+          "type": "lumens"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "hardcodedAttr",
+          "type": "hardcodedType",
+          "value": "hardcodedValue"
+        }
+      ],
+      "commands": [
+        {
+          "name": "commandAttr",
+          "type": "commandType"
+        }
+      ],
+      "internal_attributes": [
+        {
+          "customField": "customValue"
+        }
+      ]
+    }
+  ]
+}

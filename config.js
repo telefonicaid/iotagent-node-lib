@@ -28,7 +28,8 @@ var config = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: '0.0.0.0'
     },
     authentication: {
         host: 'localhost',

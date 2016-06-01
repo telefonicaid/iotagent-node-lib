@@ -1,0 +1,22 @@
+{
+  "contextElements": [
+    {
+      "type": "Robot",
+      "isPattern": "false",
+      "id": "r2d2",
+      "attributes": [
+        {
+          "name": "position_status",
+          "type": "commandStatus",
+          "value": "ERROR"
+        },
+        {
+          "name": "position_info",
+          "type": "commandResult",
+          "value": "Stalled"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}

@@ -1,0 +1,27 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "Light:light1",
+      "attributes": [
+        {
+          "name": "temperature",
+          "type": "centigrades",
+          "value": " "
+        },
+        {
+          "name": "move_status",
+          "type": "commandStatus",
+          "value": "UNKNOWN"
+        },
+        {
+          "name": "move_info",
+          "type": "commandResult",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
