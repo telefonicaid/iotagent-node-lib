@@ -37,7 +37,7 @@ var migration = require('../../../lib/command/migration'),
     originDb,
     targetDb;
 
-describe.only('MongoDB migration', function() {
+describe('MongoDB migration', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
