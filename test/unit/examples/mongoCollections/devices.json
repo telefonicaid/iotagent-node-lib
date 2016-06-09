@@ -2,7 +2,7 @@
   {
     "protocol" : "PDI-IoTA-UltraLight",
     "device_id" : "gk20",
-    "entity_name" : "",
+    "entity_name" : "The GK20 Entity",
     "entity_type" : "acme.lights.sensor",
     "timezone" : "",
     "attributes" : [

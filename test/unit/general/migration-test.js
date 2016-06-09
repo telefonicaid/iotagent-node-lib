@@ -87,7 +87,48 @@ describe.only('MongoDB migration', function() {
                 });
             });
         });
-        it('should migrate all the fields for each device');
-        it('should migrate all the fields for each service');
+        it('should migrate all the fields for each device', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+                targetDb.collection('groups').find({
+                    service: 'dumb_mordor'
+                }).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(1);
+                    should.exist(docs[0].apikey);
+                    should.exist(docs[0].cbHost);
+                    should.exist(docs[0].resource);
+                    should.exist(docs[0].service);
+                    should.exist(docs[0].subservice);
+                    should.exist(docs[0].type);
+                    should.exist(docs[0].staticAttributes);
+                    done();
+                });
+            });
+        });
+        it('should migrate all the fields for each service', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+                targetDb.collection('devices').find({
+                    id: 'gk20'
+                }).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(1);
+                    should.exist(docs[0].id);
+                    should.exist(docs[0].name);
+                    should.exist(docs[0].protocol);
+                    should.exist(docs[0].service);
+                    should.exist(docs[0].subservice);
+                    should.exist(docs[0].type);
+                    should.exist(docs[0].active);
+                    should.exist(docs[0].staticAttributes);
+                    docs[0].id = 'gk20';
+                    docs[0].name = "The GK20 Entity";
+                    docs[0].protocol = "PDI-IoTA-UltraLight";
+                    docs[0].service = "smart_gondor";
+                    docs[0].subservice = "/gardens";
+                    docs[0].type = "acme.lights.sensor";
+                    done();
+                });
+            });
+        });
     });
 });

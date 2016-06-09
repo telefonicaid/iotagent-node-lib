@@ -14,7 +14,14 @@
     "entity_type" : "device",
     "resource" : "/iot/d",
     "service" : "dumb_mordor",
-    "service_path" : "/waters"
+    "service_path" : "/waters",
+    "static_attributes" : [
+      {
+        "object_id" : "l",
+        "name" : "DeviceLabel",
+        "value" : "Light sensor GK20"
+      }
+    ]
   },
   {
     "apikey" : "hs4h2ke7oerfdvrexbyh54w2",
