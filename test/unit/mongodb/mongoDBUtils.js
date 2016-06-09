@@ -46,7 +46,7 @@ function cleanDbs(callback) {
 
 function populate(host, dbName, entityList, collectionName, callback) {
     var url = 'mongodb://' + host + ':27017/' + dbName;
-    
+
     MongoClient.connect(url, function(err, db) {
         if (db) {
             db.collection(collectionName).insertMany(entityList, function(err, r) {

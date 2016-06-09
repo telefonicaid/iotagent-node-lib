@@ -22,6 +22,8 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var migration = require('../../../lib/command/migration'),
     mongo = require('mongodb').MongoClient,
     mongoUtils = require('../mongodb/mongoDBUtils'),
@@ -41,7 +43,7 @@ describe.only('MongoDB migration', function() {
 
         mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, db) {
             originDb = db;
-            mongo.connect('mongodb://localhost:27017/iotTarget', function (err, db) {
+            mongo.connect('mongodb://localhost:27017/iotTarget', function(err, db) {
                 targetDb = db;
                 async.series([
                     apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),
@@ -121,11 +123,11 @@ describe.only('MongoDB migration', function() {
                     should.exist(docs[0].active);
                     should.exist(docs[0].staticAttributes);
                     docs[0].id = 'gk20';
-                    docs[0].name = "The GK20 Entity";
-                    docs[0].protocol = "PDI-IoTA-UltraLight";
-                    docs[0].service = "smart_gondor";
-                    docs[0].subservice = "/gardens";
-                    docs[0].type = "acme.lights.sensor";
+                    docs[0].name = 'The GK20 Entity';
+                    docs[0].protocol = 'PDI-IoTA-UltraLight';
+                    docs[0].service = 'smart_gondor';
+                    docs[0].subservice = '/gardens';
+                    docs[0].type = 'acme.lights.sensor';
                     done();
                 });
             });
