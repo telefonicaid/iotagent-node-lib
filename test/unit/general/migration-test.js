@@ -1,0 +1,93 @@
+/*
+ * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, seehttp://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ */
+'use strict';
+
+var migration = require('../../../lib/command/migration'),
+    mongo = require('mongodb').MongoClient,
+    mongoUtils = require('../mongodb/mongoDBUtils'),
+    utils = require('../../tools/utils'),
+    logger = require('logops'),
+    async = require('async'),
+    apply = async.apply,
+    should = require('should'),
+    deviceCollection = utils.readExampleFile('./test/unit/examples/mongoCollections/devices.json'),
+    configurationCollection = utils.readExampleFile('./test/unit/examples/mongoCollections/configurations.json'),
+    originDb,
+    targetDb;
+
+describe.only('MongoDB migration', function() {
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+
+        mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, db) {
+            originDb = db;
+            mongo.connect('mongodb://localhost:27017/iotTarget', function (err, db) {
+                targetDb = db;
+                async.series([
+                    apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),
+                    apply(mongoUtils.populate, 'localhost', 'iotOrigin', configurationCollection, 'SERVICE')
+                ], done);
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        mongoUtils.cleanDb('localhost', 'iotTarget', function(error) {
+            mongoUtils.cleanDb('localhost', 'iotOrigin', function(error) {
+                originDb.close(function(error) {
+                    targetDb.close(function(error) {
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
+    describe('When the migration command is executed for two databases', function() {
+        var config = {
+            host: 'localhost',
+            port: '27017'
+        };
+
+        it('should migrate all the services', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+                targetDb.collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(3);
+                    done();
+                });
+            });
+        });
+        it('should migrate all the devices', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(4);
+                    done();
+                });
+            });
+        });
+        it('should migrate all the fields for each device');
+        it('should migrate all the fields for each service');
+    });
+});

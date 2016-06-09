@@ -44,5 +44,21 @@ function cleanDbs(callback) {
     ], callback);
 }
 
+function populate(host, dbName, entityList, collectionName, callback) {
+    var url = 'mongodb://' + host + ':27017/' + dbName;
+    
+    MongoClient.connect(url, function(err, db) {
+        if (db) {
+            db.collection(collectionName).insertMany(entityList, function(err, r) {
+                db.close();
+                callback(err);
+            });
+        } else {
+            callback();
+        }
+    });
+}
+
 exports.cleanDb = cleanDb;
 exports.cleanDbs = cleanDbs;
+exports.populate = populate;
