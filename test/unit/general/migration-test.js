@@ -63,7 +63,7 @@ describe.only('MongoDB migration', function() {
         });
     });
 
-    describe('When the migration command is executed for two databases', function() {
+    describe('When the full migration command is executed for two databases', function() {
         var config = {
             host: 'localhost',
             port: '27017'
@@ -126,6 +126,49 @@ describe.only('MongoDB migration', function() {
                     docs[0].service = "smart_gondor";
                     docs[0].subservice = "/gardens";
                     docs[0].type = "acme.lights.sensor";
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a service migration command is executed', function() {
+        var config = {
+            host: 'localhost',
+            port: '27017'
+        };
+
+        it('should migrate just the service\'s  configurations', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
+                targetDb.collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(1);
+                    done();
+                });
+            });
+        });
+        it('should migrate just the service\'s devices', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
+                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(3);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a subservice migration command is executed', function() {
+        var config = {
+            host: 'localhost',
+            port: '27017'
+        };
+
+        it('should migrate just the subservice\'s devices', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
+                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(1);
                     done();
                 });
             });
