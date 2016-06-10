@@ -160,6 +160,24 @@ describe('MongoDB migration', function() {
         });
     });
 
+    describe('When a device has an empty string in its name', function() {
+        var config = {
+            host: 'localhost',
+            port: '27017'
+        };
+
+        it('should set the name as undefined', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'dumb_mordor', null, function() {
+                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                    docs.length.should.equal(1);
+                    should.exist(docs[0].name);
+                    docs[0].name.should.equal(docs[0].type + ':' + docs[0].id);
+                    done();
+                });
+            });
+        });
+    });
+
     describe('When a subservice migration command is executed', function() {
         var config = {
             host: 'localhost',
