@@ -753,11 +753,18 @@ showConfigMigration
 
 	Shows the current migration configuration.
 
+addProtocols <protocols>
+
+	Add a protocol translation table, in the following format:
+		protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
+
+
 migrate <targetDb> <service> <subservice>
 
 	Migrate all the devices and services for the selected service and subservice into the
 	specified Mongo database. To perform the migration for all the services or all the
 	subservices, use the "*" value.
+
 ```
 
 The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively. Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be deleted upon startup.
