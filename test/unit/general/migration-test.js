@@ -194,4 +194,25 @@ describe('MongoDB migration', function() {
             });
         });
     });
+
+    describe('When a subservice migration configuration has a protocol translation table', function() {
+        var config = {
+            host: 'localhost',
+            port: '27017',
+            protocols: {
+                'PDI-IoTA-UltraLight': 'NODE-Ultralight'
+            }
+        };
+
+        it('should change the protocol to the translated one', function(done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
+                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    docs.length.should.equal(1);
+                    docs[0].protocol.should.equal('NODE-Ultralight');
+                    done();
+                });
+            });
+        });
+    });
 });
