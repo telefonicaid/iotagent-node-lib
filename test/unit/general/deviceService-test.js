@@ -22,8 +22,11 @@
  */
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     utils = require('../../tools/utils'),
+    should = require('should'),
     nock = require('nock'),
     request = require('request'),
     logger = require('logops'),
@@ -170,11 +173,10 @@ describe('Device Service: utils', function() {
         async.series([
             iotAgentLib.clearAll,
             iotAgentLib.deactivate
-        ], done)
+        ], done);
     });
-    
-    describe.only('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
-        
+
+    describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
         beforeEach(function(done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
@@ -197,12 +199,12 @@ describe('Device Service: utils', function() {
                 done();
             });
         });
-        
+
         it('should return the existing device', function(done) {
             iotAgentLib.retrieveDevice('Light1', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function(error, device) {
                 should.not.exist(error);
                 should.exist(device);
-                
+
                 device.id.should.equal('Light1');
                 done();
             });
@@ -245,6 +247,14 @@ describe('Device Service: utils', function() {
     });
 
     describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
-        it('should raise an error');
-    })
+        it('should raise an error', function(done) {
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092',
+                function(error, device) {
+                    should.exist(error);
+                    error.name.should.equal('DEVICE_GROUP_NOT_FOUND');
+                    should.not.exist(device);
+                    done();
+                });
+        });
+    });
 });
