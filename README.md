@@ -517,6 +517,20 @@ Retrieve all the devices having an attribute named `name` with value `value`.
 * service: Service the device belongs to.
 * subservice: Division inside the service.
 
+
+##### iotagentLib.retrieveDevice()
+###### Signature
+```
+function retrieveDevice(deviceId, apiKey, callback)
+```
+###### Description
+Retrieve a device from the device repository based on the given APIKey and DeviceID, creating one if none is found
+for the given data.
+
+###### Params
+* deviceId: Device ID of the device that wants to be retrieved or created.
+* apiKey: APIKey of the Device Group (or default APIKey).
+
 ##### iotagentLib.getConfiguration()
 ###### Signature
 ```
