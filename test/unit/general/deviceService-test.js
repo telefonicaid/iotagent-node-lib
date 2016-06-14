@@ -210,7 +210,38 @@ describe('Device Service: utils', function() {
     });
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
-        it('should register the device and return it');
+        beforeEach(function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            async.series([
+                request.bind(request, groupCreation)
+            ], function(error, results) {
+                done();
+            });
+        });
+
+        it('should register the device and return it', function(done) {
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                function(error, device) {
+                    should.not.exist(error);
+                    should.exist(device);
+
+                    device.id.should.equal('UNEXISTENT_DEV');
+                    done();
+                });
+        });
     });
 
     describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
