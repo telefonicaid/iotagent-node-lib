@@ -531,6 +531,21 @@ for the given data.
 * deviceId: Device ID of the device that wants to be retrieved or created.
 * apiKey: APIKey of the Device Group (or default APIKey).
 
+##### iotagentLib.mergeDeviceWithConfiguration()
+###### Signature
+```
+function mergeDeviceWithConfiguration(fields, defaults, deviceData, configuration, callback)
+```
+###### Description
+Complete the information of the device with the information in the configuration group (with precedence of the
+device). The first argument indicates what fields would be merged.
+
+###### Params
+* fields: Fields that will be merged.
+* defaults: Default values fot each of the fields.
+* deviceData: Device data.
+* configuration: Configuration data.
+
 ##### iotagentLib.getConfiguration()
 ###### Signature
 ```
