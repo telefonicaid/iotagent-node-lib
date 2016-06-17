@@ -114,6 +114,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 ]
             }
         },
+        iotManager: {
+            host: 'localhost',
+            port: 8082,
+            path: '/protocols',
+            protocol: 'MQTT_UL',
+            description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)'
+        },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
@@ -157,7 +164,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    contextBrokerMock;
+    contextBrokerMock,
+    iotamMock;
 
 
 /* jshint camelcase: false */
@@ -165,6 +173,10 @@ describe('Device Service: utils', function() {
     beforeEach(function(done) {
         nock.cleanAll();
         logger.setLevel('FATAL');
+        iotamMock = nock('http://localhost:8082')
+            .post('/protocols')
+            .reply(200, {});
+
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
@@ -241,6 +253,8 @@ describe('Device Service: utils', function() {
                     should.exist(device);
 
                     device.id.should.equal('UNEXISTENT_DEV');
+                    should.exist(device.protocol);
+                    device.protocol.should.equal('MQTT_UL');
                     done();
                 });
         });
