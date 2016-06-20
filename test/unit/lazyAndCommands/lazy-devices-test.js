@@ -169,7 +169,9 @@ describe('IoT Agent Lazy Devices', function() {
             async.series([
                 apply(iotAgentLib.activate, iotAgentConfig),
                 apply(iotAgentLib.register, device1)
-            ], done);
+            ], function(error) {
+                done(error);
+            });
         });
 
         it('should call the device handler with the received data', function(done) {
