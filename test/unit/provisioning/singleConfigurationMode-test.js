@@ -273,15 +273,6 @@ describe('Provisioning API: Single service mode', function() {
         });
     });
     describe('When a device is provisioned for a configuration', function() {
-        var getDevice = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
-            method: 'GET',
-            headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
-            }
-        };
-
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -319,20 +310,5 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
 
-        it('should add the default attributes from the configuration to the device', function(done) {
-            request(deviceCreation, function(error, response, body) {
-                request(getDevice, function(error, response, body) {
-                    var parsedBody;
-
-                    parsedBody = JSON.parse(body);
-
-                    parsedBody.attributes.length.should.equal(2);
-                    parsedBody.commands.length.should.equal(2);
-                    parsedBody.lazy.length.should.equal(2);
-
-                    done();
-                });
-            });
-        });
     });
 });
