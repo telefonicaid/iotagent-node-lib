@@ -1,0 +1,92 @@
+[
+  {
+    "protocol" : "PDI-IoTA-UltraLight",
+    "device_id" : "gk20",
+    "entity_name" : "The GK20 Entity",
+    "entity_type" : "acme.lights.sensor",
+    "timezone" : "",
+    "attributes" : [
+      {
+        "object_id" : "t",
+        "name" : "Temperature",
+        "type" : "Quantity"
+      },
+      {
+        "object_id" : "h",
+        "name" : "Humidity",
+        "type" : "Quantity"
+      }
+    ],
+    "static_attributes" : [
+      {
+        "object_id" : "l",
+        "name" : "DeviceLabel",
+        "value" : "Light sensor GK20"
+      }
+    ],
+    "commands" : [ ],
+    "service" : "smart_gondor",
+    "service_path" : "/gardens"
+  },
+  {
+    "protocol" : "PDI-IoTA-UltraLight",
+    "device_id" : "fp29",
+    "entity_name" : "",
+    "entity_type" : "acme.environment.sensor",
+    "timezone" : "",
+    "attributes" : [
+      {
+        "object_id" : "p",
+        "name" : "PH",
+        "type" : "Quantity"
+      }
+    ],
+    "static_attributes" : [ ],
+    "commands" : [ ],
+    "service" : "smart_gondor",
+    "service_path" : "/waters"
+  },
+  {
+    "protocol" : "PDI-IoTA-UltraLight",
+    "device_id" : "asdh20",
+    "entity_name" : "",
+    "entity_type" : "shield.environment.sensor",
+    "timezone" : "",
+    "attributes" : [
+      {
+        "object_id" : "p",
+        "name" : "PH",
+        "type" : "Quantity"
+      }
+    ],
+    "static_attributes" : [ ],
+    "commands" : [ ],
+    "service" : "dumb_mordor",
+    "service_path" : "/waters"
+  },
+  {
+    "protocol" : "PDI-IoTA-UltraLight",
+    "device_id" : "fp29",
+    "entity_name" : "",
+    "entity_type" : "acme.environment.sensor",
+    "timezone" : "",
+    "attributes" : [
+      {
+        "object_id" : "p",
+        "name" : "PH",
+        "type" : "Quantity"
+      }
+    ],
+    "static_attributes" : [],
+    "commands" : [
+      {
+        "object_id" : "a",
+        "name" : "AddSoap",
+        "type" : "Quantity",
+        "value" : "Initial value"
+      }
+    ],
+    "service" : "smart_gondor",
+    "service_path" : "/waters"
+  }
+]

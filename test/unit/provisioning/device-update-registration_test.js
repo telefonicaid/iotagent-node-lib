@@ -127,6 +127,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         service: 'dumbMordor',
         subservice: 'gardens',
         internalId: 'unknownInternalId',
+
         lazy: [],
         active: []
     };
@@ -207,12 +208,6 @@ describe('IoT Agent Device Update Registration', function() {
     describe('When a device is preregistered and it is updated with new commands', function() {
         beforeEach(function() {
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateCommands1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateCommands1Success.json'));
-
-            contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext', utils.readExampleFile(
@@ -220,6 +215,12 @@ describe('IoT Agent Device Update Registration', function() {
                 .reply(200,
                     utils.readExampleFile(
                         './test/unit/examples/contextResponses/updateProvisionCommands1Success.json'));
+
+            contextBrokerMock
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/updateCommands1.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/updateCommands1Success.json'));
         });
 
         it('should register as ContextProvider of its commands and create the additional attributes', function(done) {

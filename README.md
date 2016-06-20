@@ -10,6 +10,7 @@
 * [Configuration API](#configurationapi)
 * [Secured access to the Context Broker](#securedaccess)
 * [Data mapping plugins](#datamapping)
+* [Old IoTAgent data migration](#datamigration)
 * [Development Documentation](#development)
 
 ## <a name="overview"/> Overview
@@ -516,6 +517,35 @@ Retrieve all the devices having an attribute named `name` with value `value`.
 * service: Service the device belongs to.
 * subservice: Division inside the service.
 
+
+##### iotagentLib.retrieveDevice()
+###### Signature
+```
+function retrieveDevice(deviceId, apiKey, callback)
+```
+###### Description
+Retrieve a device from the device repository based on the given APIKey and DeviceID, creating one if none is found
+for the given data.
+
+###### Params
+* deviceId: Device ID of the device that wants to be retrieved or created.
+* apiKey: APIKey of the Device Group (or default APIKey).
+
+##### iotagentLib.mergeDeviceWithConfiguration()
+###### Signature
+```
+function mergeDeviceWithConfiguration(fields, defaults, deviceData, configuration, callback)
+```
+###### Description
+Complete the information of the device with the information in the configuration group (with precedence of the
+device). The first argument indicates what fields would be merged.
+
+###### Params
+* fields: Fields that will be merged.
+* defaults: Default values fot each of the fields.
+* deviceData: Device data.
+* configuration: Configuration data.
+
 ##### iotagentLib.getConfiguration()
 ###### Signature
 ```
@@ -653,82 +683,117 @@ bin/iotAgentTester.js
 ```
 From the command line, the `help` command can be used to show a description of the currently supported features. These are the following:
 ```
-update <entity> <type> <attributes>  
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command line.
+
+update <entity> <type> <attributes>
 
 	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
 
-append <entity> <type> <attributes>  
+append <entity> <type> <attributes>
 
 	Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
 
-query <entity> <type>  
+query <entity> <type>
 
 	Get all the information on the selected object.
 
-queryAttr <entity> <type> <attributes>  
+queryAttr <entity> <type> <attributes>
 
 	Get information on the selected object for the selected attributes.
 
-discover <entity> <type>  
+discover <entity> <type>
 
 	Get all the context providers for a entity and type.
 
-configCb <host> <port> <service> <subservice>  
+configCb <host> <port> <service> <subservice>
 
 	Config a new host and port for the remote Context Broker.
 
-showConfigCb  
+showConfigCb
 
 	Show the current configuration of the client for the Context Broker.
 
-configIot <host> <port> <service> <subservice>  
+configIot <host> <port> <service> <subservice>
 
 	Config a new host and port for the remote IoT Agent.
 
-showConfigIot  
+showConfigIot
 
 	Show the current configuration of the client for the IoT Agent.
 
-provision <filename>  
+provision <filename>
 
-	Provision a new device using the Device Provisioning API. The device configuration is 
+	Provision a new device using the Device Provisioning API. The device configuration is
 	read from the file specified in the "filename" parameter.
 
-provisionGroup <template> <data> <type>  
+provisionGroup <template> <data> <type>
 
 	Provision a group of devices with the selected template, taking the information needed to
 	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
 	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
 	to the same IoT Agent, once the templates have been fulfilled.
 
-listProvisioned  
+listProvisioned
 
 	List all the provisioned devices in an IoT Agent.
 
-removeProvisioned <deviceId>  
+removeProvisioned <deviceId>
 
 	Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
 
-addGroup <filename>  
+addGroup <filename>
 
-	Add a new device group to the specified IoT Agent through the Configuration API. The 
+	Add a new device group to the specified IoT Agent through the Configuration API. The
 	body is taken from the file specified in the "filename" parameter.
 
-listGroups  
+listGroups
 
 	List all the device groups created in the selected IoT Agent for the configured service
 
-removeGroup  
+removeGroup <apiKey> <resource>
 
 	Remove the device group corresponding to the current configured subservice.
 
-authenticate <host> <port> <user> <password> <service>  
+authenticate <host> <port> <user> <password> <service>
 
 	Authenticates to the given authentication server, and use the token in subsequent requests.
 
-exit  
+setProtocol <protocol>
 
-	Exit the process
+	Sets the protocol to use in the requests (http or https). Defaults to http.
+
+configMigration <host> <port> <originDb>
+
+	Sets the configuration for a migration between a C++ IoTA and a Node.js one.
+
+showConfigMigration
+
+	Shows the current migration configuration.
+
+addProtocols <protocols>
+
+	Add a protocol translation table, in the following format:
+		protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
+
+
+migrate <targetDb> <service> <subservice>
+
+	Migrate all the devices and services for the selected service and subservice into the
+	specified Mongo database. To perform the migration for all the services or all the
+	subservices, use the "*" value.
+
 ```
 
 The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively. Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be deleted upon startup.
@@ -1336,6 +1401,33 @@ in the `config.eventType` attribute.
 #### Timestamp Processing Plugin (timestampProcess)
 This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
 TimeInstant attribute as metadata for every other attribute in the same request.
+
+## <a name="datamigration"/> Old IoTAgent data migration
+In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
+implementations, a data migration tool has been developed. This data migration tool has been integrated as a command
+in the IoTAgent command line tester.
+
+In order to perform a full migration, follow this steps:
+* From the project root, start the command line tester:
+<pre>
+bin/iotAgentTester.js
+</pre>
+
+* Configure the MongoDB host and port, and the origin Database (that holds the data to be migrated):
+<pre>
+configMigration localhost 27017 originDB
+</pre>
+
+* Launch the migration, using the special value "*" as service and subservice
+<pre>
+migrate targetDB * *
+</pre>
+
+Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
+They show the values existing in the original DB that had no translation for the target DB.
+
+If you want to restrict the migration for certain services and subservices, just substitute the '*' value for the particular
+service and subservice you want to use.
 
 ## <a name="development"/> Development documentation
 ### Contributions

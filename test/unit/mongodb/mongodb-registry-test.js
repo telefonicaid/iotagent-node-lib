@@ -108,7 +108,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         transport: 'HTTP',
         resource: '/test',
         apikey: '2345678ikjhgfr678i',
-        protocol: 'GENERIC_PROTOCOL'
+        protocol: 'GENERIC_PROTOCOL',
+        commands: [
+            {
+                name: 'position',
+                type: 'Array'
+            }
+        ],
+        lazy: [
+            {
+                name: 'temperature',
+                type: 'centigrades'
+            }
+        ],
+        active: [
+            {
+                name: 'pressure',
+                type: 'Hgmm'
+            }
+        ],
+        staticAttributes: [
+            {
+                name: 'location',
+                type: 'Vector'
+            }
+        ],
+        internalAttributes: {
+            customAttribute: 'customValue'
+        }
     },
     device2 = {
         id: 'term2',
