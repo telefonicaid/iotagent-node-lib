@@ -1,5 +1,0 @@
-- ADD migration tool to migrate data from C++ IoTAgents to Node.js based ones (#388)
-- FIX changing the log level with environment variables did not work
-- Add functions to allow the IoTAs to check or create devices (#392)
-- ADD version retrieval path (#395)
-- Use the attributes defined in the Configuration as default alias values (#397)
