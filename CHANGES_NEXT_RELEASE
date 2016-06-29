@@ -1,3 +1,4 @@
 - Fix precedence in merging device and configuration attributes.
 - Merge configuration information in the retrieveDevice() function (#405)
 - Expose the singleConfigurationMode attribute using environment variables (#404)
+- Devices provisioned with no configuration are not found in HTTP measure reporting (#124)
