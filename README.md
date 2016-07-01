@@ -930,6 +930,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_MONGO_PORT           | mongodb.port                        |
 | IOTA_MONGO_DB             | mongodb.db                          |
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
+| IOTA_APPEND_MODE          | appendMode                          |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
