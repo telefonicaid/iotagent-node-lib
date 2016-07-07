@@ -1,0 +1,12 @@
+topic read $SYS/#
+
+topic write /+/+/attributes
+topic write /+/+/attributes/#
+topic write /+/+/configuration/commands
+topic read /+/+/configuration/values
+
+user iota
+topic /#
+
+pattern write $SYS/broker/connection/%c/state
+
