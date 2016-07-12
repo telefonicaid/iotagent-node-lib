@@ -3,3 +3,4 @@
 - Expose the singleConfigurationMode attribute using environment variables (#404)
 - Devices provisioned with no configuration are not found in HTTP measure reporting (#124)
 - In MongoDB32 no group is found if undefined resource is passed (#410)
+- Extract common middleware to a new module (#415)

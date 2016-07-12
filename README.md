@@ -174,9 +174,12 @@ preprovision should enable the user to customize the device`s entity name and ty
 mandatory. The IoT Agent should provide a mechanism to provide default values to the device attributes based on its
 type.
 
-Almost all of these features are common for every agent, so they can be abstracted into a library or external module. The objective of this project is to provide that abstraction. As all this common tasks are abstracted, the main task of the concrete IoT Agent implementations will be to map between the native device protocol and the library API.
+Almost all of these features are common for every agent, so they can be abstracted into a library or external module.
+The objective of this project is to provide that abstraction. As all this common tasks are abstracted, the main task of
+the concrete IoT Agent implementations will be to map between the native device protocol and the library API.
 
-The following figure offers a graphical example of how a COAP IoT Agent work, ordered from the registration of the device to a command update to the device.
+The following figure offers a graphical example of how a COAP IoT Agent work, ordered from the registration of the device
+to a command update to the device.
 
 ![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
 
@@ -632,6 +635,79 @@ function finishSouthboundTransaction(callback)
 ###### Description
 Terminates the current transaction, if there is any, cleaning its context.
 
+#### Generic middlewares
+This collection of utility middlewares is aimed to be used in the northbound of the IoTAgent Library, as well as in other
+HTTP-based APIs of the IoTAs. All the middlewares follow the Express convention of (req, res, next) objects, so this
+information will not be repeated in the descriptions for the middleware functions. All the middlewares can be added
+to the servers using the standard Express mechanisms.
+
+##### iotagentLib.middlewares.handleError()
+###### Signature
+```
+function handleError(error, req, res, next)
+```
+###### Description
+Express middleware for handling errors in the IoTAs. It extracts the code information to return from the error itself
+returning 500 when no error code has been found.
+
+
+##### iotagentLib.middlewares.traceRequest()
+###### Signature
+```
+function traceRequest(req, res, next)
+```
+###### Description
+Express middleware for tracing the complete request arriving to the IoTA in debug mode.
+
+
+##### iotagentLib.middlewares.changeLogLevel()
+###### Signature
+```
+function changeLogLevel(req, res, next)
+```
+###### Description
+Changes the log level to the one specified in the request.
+
+##### iotagentLib.middlewares.ensureType()
+###### Signature
+```
+function ensureType(req, res, next)
+```
+###### Description
+Ensures the request type is one of the supported ones.
+
+##### iotagentLib.middlewares.validateJson()
+###### Signature
+```
+function validateJson(template)
+```
+###### Description
+Generates a Middleware that validates incoming requests based on the JSON Schema template passed as a parameter.
+
+Returns an Express middleware used in request validation with the given template.
+
+###### Params
+* *template*: JSON Schema template to validate the request.
+
+##### iotagentLib.middlewares.retrieveVersion()
+###### Signature
+```
+function retrieveVersion(req, res, next)
+```
+###### Description
+Middleware that returns all the IoTA information stored in the module.
+
+
+##### iotagentLib.middlewares.setIotaInformation()
+###### Signature
+```
+function setIotaInformation(newIoTAInfo)
+```
+###### Description
+Stores the information about the IoTAgent for further use in the `retrieveVersion()` middleware.
+
+###### Params
+* *newIoTAInfo*: Object containing all the IoTA Information.
 
 
 ## <a name="librarytesting"/> IoT Library Testing
