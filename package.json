@@ -37,7 +37,7 @@
     "body-parser": "^1.11.0",
     "command-shell-lib": "1.0.0",
     "express": "^4.11.2",
-    "logops": "1.0.0-alpha.7",
+    "logops": "1.0.0",
     "mongoose": "^4.1.5",
     "mu2": "^0.5.20",
     "mustache": "0.8.2",
