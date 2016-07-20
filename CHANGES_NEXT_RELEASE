@@ -5,3 +5,4 @@
 - In MongoDB32 no group is found if undefined resource is passed (#410)
 - Extract common middleware to a new module (#415)
 - Add an administrative operation to get the log level (#417)
+- Add the 'comp' field to the IoTA's log (#419)
