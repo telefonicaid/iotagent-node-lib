@@ -1048,6 +1048,9 @@ Context Broker. This parameters should not be passed along with the rest of the 
 same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
 outgoing requests).
 
+Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, 
+e.g. `service_path` vs. `servicePath`).
+
 ### Device model
 | Attribute
  | Definition                                     | Example of value                      |
