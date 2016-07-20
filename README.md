@@ -1193,6 +1193,9 @@ The following sections show the available operations for the Configuration API. 
 
 For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
 
+Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
+naming; e.g.: subservice -> service_path).
+
 #### Device Group Model
 Device groups contain the following attributes:
 * **service**: service of the devices of this type.
