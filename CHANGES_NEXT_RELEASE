@@ -6,3 +6,4 @@
 - Extract common middleware to a new module (#415)
 - Add an administrative operation to get the log level (#417)
 - Add the 'comp' field to the IoTA's log (#419)
+- Static attributes not shown in device group updates (#423)

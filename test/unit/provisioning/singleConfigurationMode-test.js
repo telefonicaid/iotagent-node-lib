@@ -288,7 +288,7 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDeviceWithGroup.json'))
+                    './test/unit/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 

@@ -1,0 +1,52 @@
+{
+  "contextElements": [
+    {
+      "type": "TheLightType",
+      "isPattern": "false",
+      "id": "TheFirstLight",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string",
+          "value": " "
+        },
+        {
+          "name": "status",
+          "type": "Boolean",
+          "value": " "
+        },
+        {
+          "name": "hardcodedAttr",
+          "type": "hardcodedType",
+          "value": "hardcodedValue"
+        },
+        {
+          "name": "bootstrapServer",
+          "type": "Address",
+          "value": "127.0.0.1"
+        },
+        {
+          "name": "commandAttr_status",
+          "type": "commandStatus",
+          "value": "UNKNOWN"
+        },
+        {
+          "name": "commandAttr_info",
+          "type": "commandResult",
+          "value": " "
+        },
+        {
+          "name": "wheel1_status",
+          "type": "commandStatus",
+          "value": "UNKNOWN"
+        },
+        {
+          "name": "wheel1_info",
+          "type": "commandResult",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
