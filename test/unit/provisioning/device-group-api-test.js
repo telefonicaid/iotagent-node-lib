@@ -693,7 +693,7 @@ describe('Device Group Configuration API', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 

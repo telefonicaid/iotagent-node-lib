@@ -2,3 +2,4 @@
 - Expose the singleConfigurationMode attribute using environment variables (#404)
 - FIX IOTAM Registrations won't send static attributes in group information #430
 - FIX Update device operation ignores static attributes (#137)
+- Static attributes not shown in device group updates (#423)

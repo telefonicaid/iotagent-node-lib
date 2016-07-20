@@ -146,6 +146,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     name: 'status',
                     type: 'Boolean'
                 }
+            ],
+            static_attributes: [
+                {
+                    name: 'bootstrapServer',
+                    type: 'Address',
+                    value: '127.0.0.1'
+                }
             ]
         },
         headers: {
@@ -274,6 +281,8 @@ describe('MongoDB Group Registry test', function() {
                     should.exist(docs);
                     should.exist(docs[0].cbHost);
                     docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    should.exist(docs[0].staticAttributes);
+                    docs[0].staticAttributes.length.should.equal(1);
                     done();
                 });
             });
@@ -333,7 +342,7 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device group listing request arrives with limit', function() {
+    describe('When a device group listing arrives with a limit', function() {
         var optionsConstrained = {
             url: 'http://localhost:4041/iot/services',
             method: 'GET',
