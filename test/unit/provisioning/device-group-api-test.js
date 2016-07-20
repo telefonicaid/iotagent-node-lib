@@ -130,6 +130,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     name: 'status',
                     type: 'Boolean'
                 }
+            ],
+            static_attributes: [
+                {
+                    name: 'identifier',
+                    type: 'UUID',
+                    value: 'WERTYUIOP234567890'
+                }
             ]
         },
         headers: {
@@ -505,6 +512,7 @@ describe('Device Group Configuration API', function() {
                         if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
                             body.services[i].resource === '/deviceTest') {
                             body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                            body.services[i].static_attributes.length.should.equal(1);
                             found = true;
                         }
                     }
