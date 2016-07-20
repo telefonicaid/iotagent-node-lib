@@ -958,6 +958,9 @@ Context Broker. This parameters should not be passed along with the rest of the 
 same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
 outgoing requests).
 
+Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, 
+e.g. `service_path` vs. `servicePath`).
+
 ### Device model
 | Attribute           | Definition                                     | Example of value                      |
 | ------------------- |:---------------------------------------------- |:------------------------------------- |
@@ -1189,6 +1192,9 @@ Both approaches are better described in the sections bellow.
 The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
 For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
+
+Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
+naming; e.g.: subservice -> service_path).
 
 #### Device Group Model
 Device groups contain the following attributes:
