@@ -798,6 +798,25 @@ describe('IoT Agent Lazy Devices', function() {
                 done();
             });
         });
+
+        it('should return an NGSI compliant payload', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                should.exist(parsedBody.errorCode);
+                parsedBody.errorCode.code.should.equal(400);
+                parsedBody.errorCode.details.should.equal('Unsuported content type in the context request: text/plain');
+                parsedBody.errorCode.reasonPhrase.should.equal('UNSUPPORTED_CONTENT_TYPE');
+
+                done();
+            });
+        });
     });
 
     describe('When a context query arrives to the IoT Agent with an invalid body', function() {
