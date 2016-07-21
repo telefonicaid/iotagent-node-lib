@@ -1276,7 +1276,7 @@ assigned type, its configuration values can be extracted from those of the type.
 
 The IoT Agents provide two means to define those device groups:
 * Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
-* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
+* Dynamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
 that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of
 the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
