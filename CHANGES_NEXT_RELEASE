@@ -8,3 +8,5 @@
 - Add the 'comp' field to the IoTA's log (#419)
 - Fix Static attributes not shown in device group updates (#423)
 - Fix IoTAgent returns non-NGSI error as a response to an error in the Context Providers (#422)
+- Fix Documentation typos and aspects to fix (#426)
+- Add the names of the DB fields to the documentation (#427)
