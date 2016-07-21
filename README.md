@@ -1048,27 +1048,27 @@ Context Broker. This parameters should not be passed along with the rest of the 
 same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
 outgoing requests).
 
-Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, 
-e.g. `service_path` vs. `servicePath`).
-
 ### Device model
-| Attribute
- | Definition                                     | Example of value                      |
-| ------------------- |:---------------------------------------------- |:------------------------------------- |
-| device_id    	      | Device ID that will be used to identify the device. | UO834IO   |
-| service             | Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
-| service_path        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
-| entity_name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
-| entity_type         | Type of the entity in the Context Broker | Lamplights |
-| timezone            | Time zone of the sensor if it has any | America/Santiago |
-| endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
-| protocol            | Name of the device protocol, for its use with an IoT Manager. | IoTA-UL |
-| transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
-| attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| internal_attributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
-| static_attributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.	| `[ { "name": "attr_name", "type": "string" } ]` |
+
+The next table shows the information held in the Device resource. The table also contains the correspondence between
+the API resource fields and the same fields in the database model.
+
+| Attribute | DB Field | Definition                                     | Example of value                      |
+| ------------------- | ------------------- |:---------------------------------------------- |:------------------------------------- |
+| device_id    	      | id    	      | Device ID that will be used to identify the device. | UO834IO   |
+| service             | service            |  Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
+| service_path        | subservice        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
+| entity_name         | name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
+| entity_type         | type         | Type of the entity in the Context Broker | Lamplights |
+| timezone            | timezone            | Time zone of the sensor if it has any | America/Santiago |
+| endpoint            | endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
+| protocol            | protocol            | Name of the device protocol, for its use with an IoT Manager. | IoTA-UL |
+| transport           | transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
+| attributes          | active          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| lazy                | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| commands            | commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| internal_attributes | internalAttributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
+| static_attributes   | staticAttributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.	| `[ { "name": "attr_name", "type": "string" } ]` |
 
 ### Attribute lists
 In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them 
@@ -1295,18 +1295,34 @@ naming; e.g.: subservice -> service_path).
 
 #### Device Group Model
 Device groups contain the following attributes:
-* **service**: service of the devices of this type.
-* **subservice**: subservice of the devices of this type.
-* **resource**: string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).
-* **apikey**: API Key string.
-* **type**: name of the type to assign to the group.
-* **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
-* **cbHost**: Context Broker connection information. This options can be used to override the global ones for specific types of devices.
-* **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **staticAttributes**: this attributes will be added to all the entities of this group 'as is'.
-* **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* **service**: .
+* **subservice**:
+* **resource**:
+* **apikey**:
+* **type**:
+* **trust**:
+* **cbHost**:
+* **lazy**:
+* **commands**:
+* **active**:
+* **staticAttributes**:
+* **internalAttributes**:
+
+| Attribute | DB Field | Definition                                     |
+| ------------------- | ------------------- |:---------------------------------------------- |
+| service    	        | service    	        | Service of the devices of this type |
+| subservice    	    | subservice    	    | Subservice of the devices of this type. |
+| resource    	      | resource    	      | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port). |
+| apikey    	        | apikey    	        | API Key string. |
+| entity_type    	    | entity_type    	    | name of the type to assign to the group. |
+| trust    	          | trust    	          | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios). |
+| cbHost    	        | cbHost    	        | Context Broker connection information. This options can be used to override the global ones for specific types of devices. |
+| lazy    	          | lazy    	          | list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| commands    	      | commands    	      | list of commands attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| active    	        | attributes    	    | list of active attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| static_attributes   | staticAttributes    | this attributes will be added to all the entities of this group 'as is'. |
+| internal_attributes | internalAttributes  | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry. |
+
 
 #### POST /iot/services
 Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
