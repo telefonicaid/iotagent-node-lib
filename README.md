@@ -226,7 +226,7 @@ requests entering both from the Northbound and the Southbound.
 To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
 domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
 Southbound requests, the user is responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
-and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the formar to the
+and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the former to the
 invocation of the latter.
 
 The Transaction Correlator is used along all the IoT Platform to follow the trace of a transaction between multiple components.
@@ -348,6 +348,8 @@ attribute with the '_info' sufix.
 ##### iotagentLib.listDevices()
 ###### Signature
 ```
+function listDevices(callback)
+function listDevices(limit, offset, callback)
 function listDevices(service, subservice, limit, offset, callback)
 ```
 ###### Description
@@ -464,22 +466,8 @@ The `newConfiguration` parameter will contain the newly created configuration. T
 callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
 
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
-handler will be called once for each of the configurations (both in the case of the creatinos and the updates).
+handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
-##### iotagentLib.listDevices()
-###### Signature
-```
-function listDevices(callback)
-function listDevices(limit, offset, callback)
-function listDevices(service, subservice, limit, offset, callback)
-```
-###### Description
-Return a list of all the devices registered in the system. If invoked with three parameters, it limits the number of devices to return and the first device to be returned.
-###### Params
- * service: Service for which the devices are requested.
- * subservice: Subservice inside the service for which the devices are requested.
- * limit: maximum number of devices to return in the results.
- * offset: number of results to skip before returning the results.
 
 ##### iotagentLib.getDevice()
 ###### Signature
@@ -600,7 +588,7 @@ Creates a subscription for the IoTA to the entity representing the selected devi
 * triggers:     Array with the names of the attributes that would trigger the subscription
 * content:      Array with the names of the attributes to retrieve in the notification.
 
-##### iotagentLib.unsuscribe()
+##### iotagentLib.unsubscribe()
 ###### Signature
 ```
 function unsubscribe(device, id, callback)
@@ -721,31 +709,54 @@ The client offers an API similar to the one offered by the library: it can start
 The command line client creates a console that offers the following options:
 
 ```
-start  
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command line.
+
+start
 
 	Start the IoT Agent
 
-stop  
+stop
 
 	Stop the IoT Agent
 
-register <id> <type>  
+register <id> <type>
 
-	Register a new device in the IoT Agent. The attributes to register will be extracted from then
- 	type configuration
+	Register a new device in the IoT Agent. The attributes to register will be extracted from the
+	type configuration
 
-unregister <id> <type>  
+unregister <id> <type>
 
 	Unregister the selected device
 
-updatevalue <deviceId> <deviceType> <attributes>  
+showConfig
+
+	Show the current configuration file
+
+config <newConfig>
+
+	Change the configuration file to a new one
+
+updatevalue <deviceId> <deviceType> <attributes>
 
 	Update a device value in the Context Broker. The attributes should be triads with the following
 	format: "name/type/value" sepparated by commas.
 
-listdevices  
+listdevices
 
 	List all the devices that have been registered in this IoT Agent session
+
 ```
 ### Agent tester
 #### Command line testing
@@ -1038,7 +1049,8 @@ same headers, as received by the Device Provisioning API (this two headers are, 
 outgoing requests).
 
 ### Device model
-| Attribute           | Definition                                     | Example of value                      |
+| Attribute
+ | Definition                                     | Example of value                      |
 | ------------------- |:---------------------------------------------- |:------------------------------------- |
 | device_id    	      | Device ID that will be used to identify the device. | UO834IO   |
 | service             | Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
@@ -1047,7 +1059,7 @@ outgoing requests).
 | entity_type         | Type of the entity in the Context Broker | Lamplights |
 | timezone            | Time zone of the sensor if it has any | America/Santiago |
 | endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
-| protocol            | Name of the device protocol, for its use with an IoT Manager. | America/Santiago |
+| protocol            | Name of the device protocol, for its use with an IoT Manager. | IoTA-UL |
 | transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
 | attributes          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
 | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
@@ -1254,13 +1266,19 @@ Payload example:
 ```
 
 ## <a name="configurationapi"/> Configuration API
-For some services, there will be no need to provision individual devices, but it will make more sense to provision different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an assigned type, its configuration values can be extracted from those of the type.
+For some services, there will be no need to provision individual devices, but it will make more sense to provision
+different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity
+is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an
+assigned type, its configuration values can be extracted from those of the type.
 
 The IoT Agents provide two means to define those device groups:
 * Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
-* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
+* Dinamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
+that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of
+the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
-Both approaches provide the same configuration information for the types (and they, in fact, end up in the same configuration collection), but, for the moment, the file and API nomenclatures differ (to be fixed soon, issue #33). 
+Both approaches provide the same configuration information for the types (and they, in fact, end up in the same
+configuration collection).
 
 Both approaches are better described in the sections bellow. 
 
@@ -1411,7 +1429,7 @@ Apart from the generation of the trust, the use of secured Context Brokers shoul
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
 incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
 i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but taking care of
-returning a valid entity, that can be used as the input for other middlewares; this way, allo those pieces of 
+returning a valid entity, that can be used as the input for other middlewares; this way, all those pieces of
 code can be chained together in order to make all the needed transformations in the target entity.
 
 There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext middlewares
