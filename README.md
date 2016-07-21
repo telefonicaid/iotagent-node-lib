@@ -1053,7 +1053,7 @@ outgoing requests).
 The next table shows the information held in the Device resource. The table also contains the correspondence between
 the API resource fields and the same fields in the database model.
 
-| Attribute | DB Field | Definition                                     | Example of value                      |
+| Payload Field | DB Field | Definition                                     | Example of value                      |
 | ------------------- | ------------------- |:---------------------------------------------- |:------------------------------------- |
 | device_id    	      | id    	      | Device ID that will be used to identify the device. | UO834IO   |
 | service             | service            |  Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
@@ -1290,25 +1290,11 @@ The following sections show the available operations for the Configuration API. 
 
 For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
 
-Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
-naming; e.g.: subservice -> service_path).
-
 #### Device Group Model
-Device groups contain the following attributes:
-* **service**: .
-* **subservice**:
-* **resource**:
-* **apikey**:
-* **type**:
-* **trust**:
-* **cbHost**:
-* **lazy**:
-* **commands**:
-* **active**:
-* **staticAttributes**:
-* **internalAttributes**:
+The next table shows the information held in the Device Group resource. The table also contains the correspondence between
+the API resource fields and the same fields in the database model.
 
-| Attribute | DB Field | Definition                                     |
+| Payload Field | DB Field | Definition                                     |
 | ------------------- | ------------------- |:---------------------------------------------- |
 | service    	        | service    	        | Service of the devices of this type |
 | subservice    	    | subservice    	    | Subservice of the devices of this type. |
