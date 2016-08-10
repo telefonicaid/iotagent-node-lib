@@ -23,6 +23,12 @@
           "type": "location",
           "values": "123,12"
         }
+      ],
+      "commands": [
+        {
+          "name": "wheel1",
+          "type": "Wheel"
+        }
       ]
     }
   ]
