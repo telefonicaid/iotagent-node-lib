@@ -65,7 +65,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             port: 9876,
             path: '/protocols',
             protocol: 'GENERIC_PROTOCOL',
-            description: 'A generic protocol'
+            description: 'A generic protocol',
+            agentPath: '/iot'
         },
         defaultResource: '/iot/d'
     },

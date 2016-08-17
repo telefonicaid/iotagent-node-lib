@@ -977,6 +977,20 @@ be considered to be part of a Replica Set. In that case, the optional property `
   db: 'iotagent'
 }
 ```
+* **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section is
+ present, the IoTA will try to register to a IoTAM in the `host`, `port` and `path` indicated, with the information
+ configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described below) with the
+ added `agentPath`:
+```
+{
+    host: 'mockediotam.com',
+    port: 9876,
+    path: '/protocols',
+    protocol: 'GENERIC_PROTOCOL',
+    description: 'A generic protocol',
+    agentPath: '/iot'
+}
+```
 * **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
 * **eventType**: Default type for the Events (useful only with the `addEvents` plugin).
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
@@ -1012,6 +1026,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_IOTAM_HOST           | iotManager.host                     |
 | IOTA_IOTAM_PORT           | iotManager.port                     |
 | IOTA_IOTAM_PATH           | iotManager.path                     |
+| IOTA_IOTAM_AGENTPATH      | iotManager.agentPath                |
 | IOTA_IOTAM_PROTOCOL       | iotManager.protocol                 |
 | IOTA_IOTAM_DESCRIPTION    | iotManager.description              |
 | IOTA_MONGO_HOST           | mongodb.host                        |
