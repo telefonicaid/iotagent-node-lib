@@ -183,21 +183,22 @@ to a command update to the device.
 
 ![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
 
-### The TimeInstant attribute
+### The ´TimeInstant´ element
 
-The IoT Agent manages the existence of a special timestamp attribute in the device to entity mapping: **TimeInstant**. This
-attribute appears in two different parts of the entity:
+The IoT Agent manages a special timestamp element as part of the device to entity mapping process: **TimeInstant**. This
+attribute appears as two different elements of an entity:
 
-* As a metadata of an attribute **TimeInstant** indicates the real timestamp where the value for that measure was registered.
+* As a metadata of an attribute **TimeInstant** indicates the real timestamp where the value for that measurement was registered.
 This timestamp will be provided to the IoTAgent in a protocol-specific way (check your particular IoTAgent for the details).
 
-* As an attribute of the entity, **TimeInstant** indicates the timestamp of the last measure received from the device.
+* As an attribute of the entity, **TimeInstant** indicates the timestamp of the last measure received from the main
+device associated to an entity.
 
 If no information about the measure timestamp is received by the IoTAgent, it will use the arrival time of the measure to
 generate a `TimeInstant` for both the entity and the attribute's metadata.
 
 Take into account that:
-* the timestamp of different attributes of the same measure may not be equal.
+* the timestamp of different attributes belonging to the same measurement record may not be equal.
 * the arrival time and the measure timestamp will not be the same in the general case.
 
 E.g.: in the case of a device that can take measures every hour of both temperature and humidity and sends the data
