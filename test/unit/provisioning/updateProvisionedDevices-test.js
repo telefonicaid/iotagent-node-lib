@@ -334,4 +334,67 @@ describe('Device provisioning API: Update provisioned devices', function() {
             });
         });
     });
+
+    describe('When a device is updated to add static attributes', function() {
+        /* jshint camelcase: false */
+
+        var optionsUpdate = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+                method: 'PUT',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                },
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateDeviceStatic.json')
+            },
+            optionsGetDevice = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+                method: 'GET',
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateProvisionDeviceStatic.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateProvisionMinimumDeviceSuccess.json'));
+
+            async.series([
+                iotAgentLib.clearAll,
+                async.apply(request, provisioning3Options)
+            ], done);
+        });
+
+        it('should provision the attributes appropriately', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                request(optionsGetDevice, function(error, response, body) {
+                    var parsedBody;
+                    should.not.exist(error);
+                    response.statusCode.should.equal(200);
+
+                    parsedBody = JSON.parse(body);
+
+                    parsedBody.static_attributes.length.should.equal(2);
+                    parsedBody.static_attributes[0].name.should.equal('cellID');
+                    done();
+                });
+            });
+        });
+    });
 });
