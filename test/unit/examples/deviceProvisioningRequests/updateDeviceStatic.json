@@ -1,0 +1,20 @@
+{
+  "attributes": [
+    {
+      "name": "newAttribute",
+      "type": "Integer"
+    }
+  ],
+  "static_attributes": [
+    {
+      "name": "cellID",
+      "type": "Integer",
+      "value": "435"
+    },
+    {
+      "name": "serverURL",
+      "type": "URL",
+      "value": "http://fakeserver.com"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "contextElements": [
+    {
+      "type": "MicroLights",
+      "isPattern": "false",
+      "id": "SecondMicroLight",
+      "attributes": [
+        {
+          "name": "newAttribute",
+          "type": "Integer",
+          "value": " "
+        },
+        {
+          "name": "cellID",
+          "type": "Integer",
+          "value": "435"
+        },
+        {
+          "name": "serverURL",
+          "type": "URL",
+          "value": "http://fakeserver.com"
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
