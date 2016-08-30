@@ -185,14 +185,14 @@ to a command update to the device.
 
 ### The ´TimeInstant´ element
 
-The IoT Agent manages a special timestamp element as part of the device to entity mapping process: **TimeInstant**. This
-attribute appears as two different elements of an entity:
+As part of the device to entity mapping process the IoT creates and updates automatically a special timestamp.
+This timestamp is represented as two different properties of the mapped entity::
 
-* As a metadata of an attribute **TimeInstant** indicates the real timestamp where the value for that measurement was registered.
-This timestamp will be provided to the IoTAgent in a protocol-specific way (check your particular IoTAgent for the details).
+* An attribute metadata named `TimeInstant` per dynamic attribute mapped, which captures as an ISO8601 timestamp when
+the associated measurement (represented as attribute value) was observed.
 
-* As an attribute of the entity, **TimeInstant** indicates the timestamp of the last measure received from the main
-device associated to an entity.
+* An entity attribute named `TimeInstant` which captures as an ISO8601 timestamp when the last measurement received
+from the device was observed.
 
 If no information about the measure timestamp is received by the IoTAgent, it will use the arrival time of the measure to
 generate a `TimeInstant` for both the entity and the attribute's metadata.
