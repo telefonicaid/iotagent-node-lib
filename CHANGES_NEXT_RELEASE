@@ -12,4 +12,5 @@
 - Add the names of the DB fields to the documentation (#427)
 - FIX IOTAM Registrations won't send static attributes in group information #430
 - Make the IoTA path in the IoTAM registration request configurable
+- Document TimeInstant entity attribute and metadata (#435)
 - FIX Update device operation ignores static attributes (#438)
