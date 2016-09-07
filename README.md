@@ -219,6 +219,25 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
+#### Logs
+The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library
+is required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across
+the diferent modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
+particular IoTAgent), the `logger` object is exported in the `logModule` property of the library. The agents should
+use this module for logging.
+
+The IoT Agent Library also provides a configuration API that lets the administrator change and manage the log level
+in realtime. This API has the following two actions:
+
+##### Set new log level (PUT /admin/log)
+This operation gets the new log level using the query parameter `level`. If the new level is a valid level for Logops
+(i.e.: one of the items in the array ['INFO', 'ERROR', 'FATAL', 'DEBUG', 'WARNING']), it will be automatically changed
+for future logs.
+
+##### Get log level (GET /admin/log)
+Returns the current log level, in a json payload with a single attribute `level`.
+
+
 #### Transactions
 The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
 requests entering both from the Northbound and the Southbound.
