@@ -185,7 +185,7 @@ to a command update to the device.
 
 ### The ´TimeInstant´ element
 
-As part of the device to entity mapping process the IoT creates and updates automatically a special timestamp.
+As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
 
 * An attribute metadata named `TimeInstant` per dynamic attribute mapped, which captures as an ISO8601 timestamp when
@@ -194,17 +194,17 @@ the associated measurement (represented as attribute value) was observed.
 * An entity attribute named `TimeInstant` which captures as an ISO8601 timestamp when the last measurement received
 from the device was observed.
 
-If no information about the measure timestamp is received by the IoTAgent, it will use the arrival time of the measure to
-generate a `TimeInstant` for both the entity and the attribute's metadata.
+If no information about the measurement timestamp is received by the IoTAgent, the arrival time of the measurement will
+be used to generate a `TimeInstant` for both the entity and the attribute's metadata.
 
 Take into account that:
 * the timestamp of different attributes belonging to the same measurement record may not be equal.
-* the arrival time and the measure timestamp will not be the same in the general case.
+* the arrival time and the measurement timestamp will not be the same in the general case.
 
-E.g.: in the case of a device that can take measures every hour of both temperature and humidity and sends the data
-once every day, at midnight, the `TimeInstant` reported for each measure will be the hour when that measure took place
-(e.g. 4:00 PM), while all the measures will have an arrival time around midnight. If no timestamps were reported with
-the measures, the `TimeInstant` attribute would take those values around midnight.
+E.g.: in the case of a device that can take measurements every hour of both temperature and humidity and sends the data
+once every day, at midnight, the `TimeInstant` reported for each measurement will be the hour when that measurement was observed
+(e.g. 4:00 PM), while all the measurements will have an arrival time around midnight. If no timestamps were reported with
+such measurements, the `TimeInstant` attribute would take those values around midnight.
 
 This functionality can be turned on and off through the use of the `timestamp` configuration flag (described in the
 configuration).
