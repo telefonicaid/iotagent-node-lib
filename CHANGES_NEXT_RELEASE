@@ -14,3 +14,4 @@
 - Make the IoTA path in the IoTAM registration request configurable
 - Document TimeInstant entity attribute and metadata (#435)
 - FIX Update device operation ignores static attributes (#438)
+- FIX Logger modules not being singleton cause logging inconsistencies (#442)
