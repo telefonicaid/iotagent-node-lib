@@ -15,3 +15,4 @@
 - Document TimeInstant entity attribute and metadata (#435)
 - FIX Update device operation ignores static attributes (#438)
 - FIX Logger modules not being singleton cause logging inconsistencies (#442)
+- Remove Device ID Index (#445)
