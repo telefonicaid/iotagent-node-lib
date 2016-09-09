@@ -130,6 +130,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     name: 'status',
                     type: 'Boolean'
                 }
+            ],
+            static_attributes: [
+                {
+                    name: 'identifier',
+                    type: 'UUID',
+                    value: 'WERTYUIOP234567890'
+                }
             ]
         },
         headers: {
@@ -505,6 +512,7 @@ describe('Device Group Configuration API', function() {
                         if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
                             body.services[i].resource === '/deviceTest') {
                             body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                            body.services[i].static_attributes.length.should.equal(1);
                             found = true;
                         }
                     }
@@ -693,7 +701,7 @@ describe('Device Group Configuration API', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3.json'))
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
                 .reply(200,
                 utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 

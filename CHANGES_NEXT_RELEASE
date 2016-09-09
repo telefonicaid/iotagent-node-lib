@@ -1,5 +1,18 @@
-- ADD migration tool to migrate data from C++ IoTAgents to Node.js based ones (#388)
-- FIX changing the log level with environment variables did not work
-- Add functions to allow the IoTAs to check or create devices (#392)
-- ADD version retrieval path (#395)
-- Use the attributes defined in the Configuration as default alias values (#397)
+- Fix precedence in merging device and configuration attributes.
+- Merge configuration information in the retrieveDevice() function (#405)
+- Expose the singleConfigurationMode attribute using environment variables (#404)
+- Devices provisioned with no configuration are not found in HTTP measure reporting (#124)
+- In MongoDB32 no group is found if undefined resource is passed (#410)
+- Extract common middleware to a new module (#415)
+- Add an administrative operation to get the log level (#417)
+- Add the 'comp' field to the IoTA's log (#419)
+- Fix Static attributes not shown in device group updates (#423)
+- Fix IoTAgent returns non-NGSI error as a response to an error in the Context Providers (#422)
+- Fix Documentation typos and aspects to fix (#426)
+- Add the names of the DB fields to the documentation (#427)
+- FIX IOTAM Registrations won't send static attributes in group information #430
+- Make the IoTA path in the IoTAM registration request configurable
+- Document TimeInstant entity attribute and metadata (#435)
+- FIX Update device operation ignores static attributes (#438)
+- FIX Logger modules not being singleton cause logging inconsistencies (#442)
+- Remove Device ID Index (#445)

@@ -73,11 +73,6 @@ var commands = {
         parameters: [],
         description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices
-    },
-    'exit': {
-        parameters: [],
-        description: '\tExit the process\n',
-        handler: exitAgent
     }
 };
 

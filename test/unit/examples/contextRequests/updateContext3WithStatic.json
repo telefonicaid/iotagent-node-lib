@@ -1,0 +1,22 @@
+{
+    "contextElements": [
+        {
+            "type": "SensorMachine",
+            "isPattern": "false",
+            "id": "machine1",
+            "attributes": [
+              {
+                "name": "status",
+                "type": "String",
+                "value": "STARTING"
+              },
+              {
+                "name": "bootstrapServer",
+                "type": "Address",
+                "value": "127.0.0.1"
+              }
+            ]
+        }
+    ],
+    "updateAction": "UPDATE"
+}

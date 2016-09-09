@@ -65,7 +65,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             port: 9876,
             path: '/protocols',
             protocol: 'GENERIC_PROTOCOL',
-            description: 'A generic protocol'
+            description: 'A generic protocol',
+            agentPath: '/iot'
         },
         defaultResource: '/iot/d'
     },
@@ -117,6 +118,44 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         {
                             name: 'luminescence',
                             type: 'Lumens'
+                        }
+                    ],
+                    attributes: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        }
+    },
+    optionsCreationStatic = {
+        url: 'http://localhost:4041/iot/services',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    entity_type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    static_attributes: [
+                        {
+                            name: 'position',
+                            type: 'location',
+                            values: '123,12'
                         }
                     ],
                     attributes: [
@@ -292,6 +331,42 @@ describe('IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDelete, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a new service with static attributes is created in the IoT Agent', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post('/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithStaticGroups.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        afterEach(function(done) {
+            groupRegistryMemory.clear(function() {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreationStatic, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
