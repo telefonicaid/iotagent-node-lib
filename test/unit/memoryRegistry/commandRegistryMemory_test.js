@@ -68,21 +68,15 @@ describe.only('In memory command registry', function() {
     });
 
     describe('When a new command is created in the command registry', function() {
-        var command = {
-            name: 'commandName',
-            type: 'commandType',
-            value: 'commandValue'
-        };
-
         it('should not cause any error', function(done) {
-            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', command, function(error) {
+            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', commandTemplate, function(error) {
                 should.not.exist(error);
                 done();
             });
         });
 
         it('should appear in the listings', function(done) {
-            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', command, function(error) {
+            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', commandTemplate, function(error) {
                 iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId', function(error, commandList) {
                     commandList.count.should.equal(1);
                     commandList.commands[0].name.should.equal('commandName');
@@ -95,7 +89,32 @@ describe.only('In memory command registry', function() {
     });
 
     describe('When an already existing command arrives to the registry', function() {
-        it('should override the old value, and change the expiration time');
+        var updatedCommand = {
+            name: 'commandName',
+            type: 'commandType',
+            value: 'newValueForTheCommand'
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', commandTemplate, done);
+        });
+
+        it('should not give any error', function(done) {
+            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', updatedCommand, function(error) {
+                should.not.exist(error);
+                done();
+            });
+        });
+
+        it('should override the old value, and change the expiration time', function(done) {
+            iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', updatedCommand, function(error) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId', function(error, list) {
+                    list.count.should.equal(1);
+                    list.commands[0].value.should.equal('newValueForTheCommand');
+                    done();
+                });
+            });
+        });
     });
 
     describe('When a command listing is requested for a device', function() {
@@ -158,7 +177,7 @@ describe.only('In memory command registry', function() {
         });
     });
 
-    describe.only('When a command is removed from the queue', function() {
+    describe('When a command is removed from the queue', function() {
         beforeEach(function(done) {
             var commands = [];
 
@@ -202,9 +221,5 @@ describe.only('In memory command registry', function() {
 
     describe('When a command has expired', function() {
         it('should not appear in the listings');
-    });
-
-    describe('When a command is updated', function() {
-        it('should appear updated in the command list');
     });
 });
