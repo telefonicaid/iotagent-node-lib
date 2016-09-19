@@ -50,7 +50,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     contextBrokerMock;
 
-describe('In memory command registry', function() {
+describe.only('In memory command registry', function() {
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -61,7 +61,7 @@ describe('In memory command registry', function() {
         });
     });
 
-    describe.only('When a new command is created in the command registry', function() {
+    describe('When a new command is created in the command registry', function() {
         var command = {
             name: 'commandName',
             type: 'commandType',
@@ -93,8 +93,69 @@ describe('In memory command registry', function() {
     });
 
     describe('When a command listing is requested for a device', function() {
-        it('should return all the commands for that device');
-        it('should return all the fields for each command');
+        var commandTemplate = {
+            name: 'commandName',
+            type: 'commandType',
+            value: 'commandValue'
+        };
+
+        beforeEach(function(done) {
+            var commands = [];
+
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 5; j++) {
+                    var newCommand = {
+                        name: commandTemplate.name + j,
+                        type: commandTemplate.type + j,
+                        value: commandTemplate.value + j
+                    };
+
+                    commands.push(
+                        async.apply(
+                            iotAgentLib.addCommand,
+                            'smartGondor',
+                            'gardens',
+                            'devId' + i,
+                            newCommand
+                        )
+                    );
+                }
+            }
+
+            async.series(commands, function (error) {
+                done();
+            });
+        });
+
+        it('should not return any command for other devices', function(done) {
+            iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId1', function(error, commandList) {
+                commandList.count.should.equal(5);
+
+                for (var i = 0; i < 5; i++) {
+                    commandList.commands[i].deviceId.should.equal('devId1');
+                }
+
+                done();
+            });
+        });
+
+        it('should return all the fields for each command', function(done) {
+            iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId1', function(error, commandList) {
+                commandList.count.should.equal(5);
+
+                for (var i = 0; i < 5; i++) {
+                    commandList.commands[i].name.should.equal('commandName' + i);
+                    commandList.commands[i].type.should.equal('commandType' + i);
+                    commandList.commands[i].value.should.equal('commandValue' + i);
+                    commandList.commands[i].service.should.equal('smartGondor');
+                    commandList.commands[i].subservice.should.equal('gardens');
+
+                    should.exist(commandList.commands[i].creationDate);
+                }
+
+                done();
+            });
+        });
     });
 
     describe('When a command is removed from the queue', function() {
