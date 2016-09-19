@@ -25,8 +25,6 @@
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     async = require('async'),
     should = require('should'),
-    nock = require('nock'),
-    utils = require('../../tools/utils'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -52,11 +50,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
-    },
-    contextBrokerMock;
+    };
 
 function testRegistry(registryType) {
-    describe.only('Command registries test [' + registryType + ']', function() {
+    describe('Command registries test [' + registryType + ']', function() {
         var commandTemplate = {
             name: 'commandName',
             type: 'commandType',
@@ -148,7 +145,7 @@ function testRegistry(registryType) {
                     }
                 }
 
-                async.series(commands, function (error) {
+                async.series(commands, function(error) {
                     done();
                 });
             });
@@ -206,7 +203,7 @@ function testRegistry(registryType) {
                     );
                 }
 
-                async.series(commands, function (error) {
+                async.series(commands, function(error) {
                     done();
                 });
             });

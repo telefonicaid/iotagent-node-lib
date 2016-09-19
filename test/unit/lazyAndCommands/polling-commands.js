@@ -109,7 +109,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         polling: true
     };
 
-describe('', function() {
+describe.skip('Polling commands', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -119,9 +119,11 @@ describe('', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'))
+                utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'))
             .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -147,8 +149,7 @@ describe('', function() {
         });
     });
 
-
-    describe.only('When a command update arrives to the IoT Agent for a device with polling', function() {
+    describe('When a command update arrives to the IoT Agent for a device with polling', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
@@ -182,7 +183,8 @@ describe('', function() {
                 .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
                 .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -230,7 +232,7 @@ describe('', function() {
             });
 
             request(options, function(error, response, body) {
-                iotAgentConfig.commandQueue('Robot:r2d2', 'smartGondor', 'gardens', function (error, listCommands) {
+                iotAgentConfig.commandQueue('Robot:r2d2', 'smartGondor', 'gardens', function(error, listCommands) {
                     should.not.exit(error);
                     listCommands.length.should.equal(1);
                     listCommands[0].name.should.equal('position');
