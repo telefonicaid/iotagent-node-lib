@@ -109,7 +109,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         polling: true
     };
 
-describe.skip('Polling commands', function() {
+describe('Polling commands', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -232,12 +232,12 @@ describe.skip('Polling commands', function() {
             });
 
             request(options, function(error, response, body) {
-                iotAgentConfig.commandQueue('Robot:r2d2', 'smartGondor', 'gardens', function(error, listCommands) {
-                    should.not.exit(error);
-                    listCommands.length.should.equal(1);
-                    listCommands[0].name.should.equal('position');
-                    listCommands[0].value.should.equal('Array');
-                    listCommands[0].type.should.equal('[28, -104, 23]');
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'Robot:r2d2', function(error, listCommands) {
+                    should.not.exist(error);
+                    listCommands.count.should.equal(1);
+                    listCommands.commands[0].name.should.equal('position');
+                    listCommands.commands[0].type.should.equal('Array');
+                    listCommands.commands[0].value.should.equal('[28, -104, 23]');
                     done();
                 });
             });
