@@ -51,6 +51,12 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     contextBrokerMock;
 
 describe.only('In memory command registry', function() {
+    var commandTemplate = {
+        name: 'commandName',
+        type: 'commandType',
+        value: 'commandValue'
+    };
+
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -93,12 +99,6 @@ describe.only('In memory command registry', function() {
     });
 
     describe('When a command listing is requested for a device', function() {
-        var commandTemplate = {
-            name: 'commandName',
-            type: 'commandType',
-            value: 'commandValue'
-        };
-
         beforeEach(function(done) {
             var commands = [];
 
@@ -158,8 +158,46 @@ describe.only('In memory command registry', function() {
         });
     });
 
-    describe('When a command is removed from the queue', function() {
-        it('should not appear in the listings');
+    describe.only('When a command is removed from the queue', function() {
+        beforeEach(function(done) {
+            var commands = [];
+
+            for (var j = 0; j < 5; j++) {
+                var newCommand = {
+                    name: commandTemplate.name + j,
+                    type: commandTemplate.type + j,
+                    value: commandTemplate.value + j
+                };
+
+                commands.push(
+                    async.apply(
+                        iotAgentLib.addCommand,
+                        'smartGondor',
+                        'gardens',
+                        'devId',
+                        newCommand
+                    )
+                );
+            }
+
+            async.series(commands, function (error) {
+                done();
+            });
+        });
+
+        it('should not appear in the listings', function(done) {
+            iotAgentLib.removeCommand('smartGondor', 'gardens', 'devId', 'commandName2', function(error) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId', function(error, commandList) {
+                    commandList.commands.length.should.equal(4);
+
+                    for (var i = 0; i < commandList.commands.length; i++) {
+                        commandList.commands[i].name.should.not.equal('commandName2');
+                    }
+
+                    done();
+                });
+            });
+        });
     });
 
     describe('When a command has expired', function() {
