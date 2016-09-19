@@ -183,7 +183,7 @@ to a command update to the device.
 
 ![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
 
-### The ´TimeInstant´ element
+### <a name="TimeInstant"/>The ´TimeInstant´ element
 
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
