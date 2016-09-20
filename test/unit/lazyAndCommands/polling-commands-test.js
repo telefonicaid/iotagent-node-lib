@@ -232,7 +232,7 @@ describe('Polling commands', function() {
             });
 
             request(options, function(error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'Robot:r2d2', function(error, listCommands) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
