@@ -142,6 +142,25 @@ mapped to the command's utility attributes `_info` and `_result` leaving alone t
 values for this attributes are stored locally in the Context Broker (instead of being redirected with the Context
 Provider operations).
 
+There are two types of commands:
+* **Push commands**: when a command of this type arrives to the IoTAgent, the IoTAgent will immediately forward the command
+request to the device, translating the request to the proper protocol (that will depend on the type of IoTAgent). The
+library implement this kind of commands by offering a set functions that can be used to set an IoTAgent-specific handler
+for incoming commands. In order for this type of commands to work properly, the devices must be preprovisioned with an
+endpoint of the proper protocol, where it can be accessed by the IoTAgent who pushes de commits.
+
+* **Poll commands**: polling commands are meant to be used on those cases where the device can't be online the whole time
+waiting for commands. In this case, the IoTAgents must store the received commands, offering a way for the device to
+retrieve the pending commands upon connection. To enable this feature, the Library offers a set of functions to manage
+command storage, and a mechanism to automatically store incoming commands for those devices marked as 'polling devices'.
+
+The distinction between push and poll commands will be made based on the presence of a `polling` flag in the device
+provisioning data. The default option (with the flag with value `false` or not present) is to use push commands (as they
+were the only ones available until the latest versions).
+
+The library does not deal with protocol transformation or South Bound communications for neither of the command types
+(that's the task for those specific IoTAgents using the library).
+
 #### Active attributes
 Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI
 format, and send it to the Context Broker as an `updateContext` request.
