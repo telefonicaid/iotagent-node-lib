@@ -1104,6 +1104,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_MONGO_HOST           | mongodb.host                        |
 | IOTA_MONGO_PORT           | mongodb.port                        |
 | IOTA_MONGO_DB             | mongodb.db                          |
+| IOTA_MONGO_REPLICASET     | mongodb.replicaSet                  |
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
 | IOTA_APPEND_MODE          | appendMode                          |
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
