@@ -158,6 +158,10 @@ The distinction between push and poll commands will be made based on the presenc
 provisioning data. The default option (with the flag with value `false` or not present) is to use push commands (as they
 were the only ones available until the latest versions).
 
+Polling commands could be subjected to expiration: two configuration properties pollingExpiration` and `pollingDaemonFrequency`
+can be set to start a daemon that will remove expired commands from the DB if the device is taking too much to pick them
+up. See the configuration section for details.
+
 The library does not deal with protocol transformation or South Bound communications for neither of the command types
 (that's the task for those specific IoTAgents using the library).
 
@@ -1070,6 +1074,10 @@ have implications in the use of attributes with Context Providers, so this flag 
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
 * **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
 * **componentName**: default string identifying the component name for this IoT Agent in the logs.
+* **pollingExpiration**: expiration time for commands waiting in the polling queue in miliseconds. If a command has been in the queue for this amount of time without
+being collected by the device, the expiration daemon will reclaim it. This attribute is optional (if it doesn't exist, commands won't expire).
+* **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
+(if this parameter doesn't exist the polling daemon won't be started).
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
@@ -1096,8 +1104,11 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_MONGO_HOST           | mongodb.host                        |
 | IOTA_MONGO_PORT           | mongodb.port                        |
 | IOTA_MONGO_DB             | mongodb.db                          |
+| IOTA_MONGO_REPLICASET     | mongodb.replicaSet                  |
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
 | IOTA_APPEND_MODE          | appendMode                          |
+| IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
+| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request

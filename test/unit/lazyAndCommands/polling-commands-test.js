@@ -99,7 +99,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
+        pollingExpiration: 200,
+        pollingDaemonFrequency: 20
     },
     device3 = {
         id: 'r2d2',
@@ -132,6 +134,7 @@ describe('Polling commands', function() {
             .reply(200,
                 utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -242,6 +245,64 @@ describe('Polling commands', function() {
                 });
             });
         });
+    });
 
+    describe('When a polling command expires', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Robot',
+                        isPattern: 'false',
+                        id: 'Robot:r2d2',
+                        attributes: [
+                            {
+                                name: 'position',
+                                type: 'Array',
+                                value: '[28, -104, 23]'
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should remove it from the queue', function(done) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                setTimeout(function() {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+                        should.not.exist(error);
+                        listCommands.count.should.equal(0);
+                        done();
+                    });
+                }, 300);
+            });
+        });
     });
 });

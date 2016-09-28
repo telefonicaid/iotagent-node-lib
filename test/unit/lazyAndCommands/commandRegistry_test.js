@@ -49,7 +49,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
+        pollingExpiration: 800,
+        pollingDaemonFrequency: 20
     };
 
 function testRegistry(registryType) {
@@ -88,6 +90,19 @@ function testRegistry(registryType) {
                         commandList.commands[0].value.should.equal('commandValue');
                         done();
                     });
+                });
+            });
+        });
+
+        describe('When a new command has expired from the registry', function() {
+            it('should not appear in the listings', function(done) {
+                iotAgentLib.addCommand('smartGondor', 'gardens', 'devId', commandTemplate, function(error) {
+                    setTimeout(function() {
+                        iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId', function(error, commandList) {
+                            commandList.count.should.equal(0);
+                            done();
+                        });
+                    }, 850);
                 });
             });
         });
@@ -225,5 +240,5 @@ function testRegistry(registryType) {
     });
 }
 
-//testRegistry('memory');
+testRegistry('memory');
 testRegistry('mongodb');
