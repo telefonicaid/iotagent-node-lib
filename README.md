@@ -1107,9 +1107,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
 | IOTA_APPEND_MODE          | appendMode                          |
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
-| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency
-
-|
+| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
