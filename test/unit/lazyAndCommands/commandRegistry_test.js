@@ -225,5 +225,5 @@ function testRegistry(registryType) {
     });
 }
 
-//testRegistry('memory');
+testRegistry('memory');
 testRegistry('mongodb');
