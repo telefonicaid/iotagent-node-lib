@@ -266,6 +266,75 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
+    describe('When two devices with the same ID but different services arrive to the agent', function() {
+        var options1 = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            options2 = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                headers: {
+                    'fiware-service': 'smartMordor',
+                    'fiware-servicepath': '/electricity'
+                }
+            };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+
+            contextBrokerMock
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should accept both creations', function(done) {
+            request(options1, function(error, response, body) {
+                response.statusCode.should.equal(201);
+
+                request(options2, function(error, response, body) {
+                    response.statusCode.should.equal(201);
+                    done();
+                });
+            });
+        });
+
+        it('should show the new device in each list', function(done) {
+            request(options1, function(error, response, body) {
+                request(options2, function(error, response, body) {
+                    iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                        results.devices.length.should.equal(1);
+                        results.devices[0].id.should.equal('MicroLight1');
+
+                        iotAgentLib.listDevices('smartMordor', '/electricity', function(error, results) {
+                            results.devices.length.should.equal(1);
+                            results.devices[0].id.should.equal('MicroLight1');
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     describe('When there is a connection error with a String code connecting the CB', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',

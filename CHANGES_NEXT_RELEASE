@@ -1,3 +1,5 @@
 - Add polling command support for the Library #455
 - FIX Entity name used instead of id in command identification
 - Add expiration time for Polling commands (#460)
+- It is not possible to create two devices with the same ID (#462)
+
