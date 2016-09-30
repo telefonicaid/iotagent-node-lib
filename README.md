@@ -1037,12 +1037,17 @@ These are the parameters that can be configured in the global section:
 }
 ```
 * **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of comma-separated IPs, they will
-be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. E.g.:
+be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. The MongoBD driver will
+retry the connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
+are 5 and 5 respectively). E.g.:
 ```
 {
   host: 'localhost',
   port: '27017',
-  db: 'iotagent'
+  db: 'iotagent',
+  retries: 5,
+  retryTime: 5
+
 }
 ```
 * **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section is
@@ -1105,6 +1110,8 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_MONGO_PORT           | mongodb.port                        |
 | IOTA_MONGO_DB             | mongodb.db                          |
 | IOTA_MONGO_REPLICASET     | mongodb.replicaSet                  |
+| IOTA_MONGO_RETRIES        | mongodb.retries                     |
+| IOTA_MONGO_RETRY_TIME     | mongodb.retryTime                   |
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
 | IOTA_APPEND_MODE          | appendMode                          |
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
