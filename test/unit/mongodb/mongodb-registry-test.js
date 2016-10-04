@@ -146,6 +146,44 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         apikey: 'dsf8yy789iyushu786',
         protocol: 'GENERIC_PROTOCOL'
     },
+    device3 = {
+        id: 'light1',
+        type: 'Light',
+        service: 'smartMordor',
+        subservice: 'electricity',
+        endpoint: 'http://testEndpoint.com',
+        transport: 'HTTP',
+        resource: '/test',
+        apikey: '2345678ikjhgfr678i',
+        protocol: 'GENERIC_PROTOCOL',
+        commands: [
+            {
+                name: 'position',
+                type: 'Array'
+            }
+        ],
+        lazy: [
+            {
+                name: 'temperature',
+                type: 'centigrades'
+            }
+        ],
+        active: [
+            {
+                name: 'pressure',
+                type: 'Hgmm'
+            }
+        ],
+        staticAttributes: [
+            {
+                name: 'location',
+                type: 'Vector'
+            }
+        ],
+        internalAttributes: {
+            customAttribute: 'customValue'
+        }
+    },
     iotAgentDb;
 
 describe('MongoDB Device Registry', function() {
@@ -264,11 +302,52 @@ describe('MongoDB Device Registry', function() {
             });
         });
 
-        it('should be registered in mongodb with all its attributes', function(done) {
+        it('should be rejected with a DUPLICATE_DEVICE_ID', function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.register(device1, function(error) {
                     should.exist(error);
                     error.name.should.equal('DUPLICATE_DEVICE_ID');
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device with the same Device ID but different service tries to be registered', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                done();
+            });
+        });
+
+        it('should accept both devices', function(done) {
+            iotAgentLib.register(device1, function(error) {
+                iotAgentLib.register(device3, function(error) {
+                    should.not.exist(error);
                     done();
                 });
             });

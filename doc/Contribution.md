@@ -21,12 +21,12 @@ repository, it does not have to be iotagent-node-lib, although we will use it in
 git remote add iotagent-node-lib https://github.com/telefonicaid/iotagent-node-lib.git
 </pre>
 
-Before starting your contribution, remember to synchronize the `develop` branch in your forked repository with the `develop`
+Before starting your contribution, remember to synchronize the `master` branch in your forked repository with the `master`
 branch in the main iotagent-node-lib repository, by following this steps
 
-1. Change to your local `develop` branch (in case you are not in it already):
+1. Change to your local `master` branch (in case you are not in it already):
 <pre>
-  git checkout develop
+  git checkout master
 </pre>
 2. Fetch the remote changes:
 <pre>
@@ -34,19 +34,16 @@ branch in the main iotagent-node-lib repository, by following this steps
 </pre>
 3. Merge them:
 <pre>
-  git rebase iotagent-node-lib/develop
+  git rebase iotagent-node-lib/master
 </pre>
 
-Contributions following these guidelines will be added to the `develop` branch, and released in the next version. The
+Contributions following these guidelines will be added to the `master` branch, and released in the next version. The
 release process is explaind in the *Releasing* section below.
 
 ## Branching model
-There are two special branches in the repository:
+There are one special branch in the repository:
 
-* `master`: holds the code for the last stable version of the project. It is only updated when a new version is released,
-and its always updated with the current state of `develop`.
-
-* `develop`: contains the last stable development code. New features and bug fixes are always merged to `develop`.
+* `master`: contains the last stable development code. New features and bug fixes are always merged to `master`.
 
 In order to start developing a new feature or refactoring, a new branch should be created with one of the following names:
 
@@ -56,14 +53,14 @@ In order to start developing a new feature or refactoring, a new branch should b
 
 depending on the kind of work.
 
-This branch must be created from the current version of the `develop` branch. Once the new functionality has been
-completed, a Pull Request will be created from the feature branch to `develop`. Remember to check both the linters
+This branch must be created from the current version of the `master` branch. Once the new functionality has been
+completed, a Pull Request will be created from the feature branch to `master`. Remember to check both the linters
 and the tests before creating the Pull Request.
 
 Bug fixes work the same way as other tasks, with the exception of the branch name, that should be called `bug/<bugName>`.
 
 In order to contribute to the repository, these same scheme should be replicated in the forked repositories, so the
-new features or fixes should all come from the current version of `develop` and end up in `develop` again.
+new features or fixes should all come from the current version of `master` and end up in `master` again.
 
 All the `task/*` and `bug/*` branches are temporary, and should be removed once they have been merged.
 
@@ -72,7 +69,7 @@ point to each of the released versions of the project, they are permanent and th
 
 ## Changelog
 The project contains a version changelog, called CHANGES_NEXT_RELEASE, that can be found in the root of the project.
-Whenever a new feature or bug fix is going to be merged with `develop`, a new entry should be added to this changelog.
+Whenever a new feature or bug fix is going to be merged with `master`, a new entry should be added to this changelog.
 The new entry should contain the reference number of the issue it is solving (if any).
 
 When a new version is released, the changelog is frozen, and CHANGES_NEXT_RELEASE remains fixed in the last commit of
@@ -83,12 +80,11 @@ copied to the %changelog section in the .spec file for the component.
 ## Releasing
 The process of making a release consists of the following steps:
 1. Create a new task branch changing the development version number in the package.json (with a sufix `-next`), to the
-new target version (without any sufix), and PR into `develop`. Also, in this task, the contents of the Changelog are
+new target version (without any sufix), and PR into `master`. Also, in this task, the contents of the Changelog are
 copied to the RPM spec.
-2. Create a tag from the last version of `develop` named with the version number and push it to the repository.
+2. Create a tag from the last version of `master` named with the version number and push it to the repository.
 3. Create the release in Github, from the created tag. In the description, add the contents of the Changelog.
-4. Create a release branch from the last version of `develop` named with the version number.
-5. Merge `develop` into `master`.
+4. Create a release branch from the last version of `master` named with the version number.
 6. Create a new task for preparing the next release, adding the sufix `-next` to the current version number (to signal
 this as the development version), and flush the contents of the CHANGES_NEXT_RELEASE file.
 
@@ -102,17 +98,17 @@ very important changes in the feature set of the component. If X changes, Y is s
 have been released, but the component is just an improved version of the current major release.
 * *Z* will be reserved for bugfixes inside the releases.
 
-Between releases, the version number in the develop branch will be `X.Y.Z-next` (where `X.Y.Z` is the last stable
+Between releases, the version number in the master branch will be `X.Y.Z-next` (where `X.Y.Z` is the last stable
 release), indicating that its a development version.
 
 Concerning the branching model:
-* The develop branch will always have a development version, that will change in every release.
+* The master branch will always have a development version, that will change in every release.
 * The release *tag* will always have the X.Y.0 version number corresponding to the release.
 * The release *branch* will contain the X.Y.Z version number correspoding to the last bugfix in this release.
 
 ## Bugfixing in releases
 When a bug is found affecting a release, a branch will be created *from that release* to create the patch. As a part
 of the patch, the release version must be increased in its last number (Z). The patch then will be merged (via PR)
-to the release branch. If the same bug may affect the main develop branch, the bugfixing branch should also be merged
-to develop (or a new branch should be created from develop with the cherry-picked commits).
+to the release branch. If the same bug may affect the main master branch, the bugfixing branch should also be merged
+to master (or a new branch should be created from master with the cherry-picked commits).
 

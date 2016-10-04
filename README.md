@@ -142,6 +142,29 @@ mapped to the command's utility attributes `_info` and `_result` leaving alone t
 values for this attributes are stored locally in the Context Broker (instead of being redirected with the Context
 Provider operations).
 
+There are two types of commands:
+* **Push commands**: when a command of this type arrives to the IoTAgent, the IoTAgent will immediately forward the command
+request to the device, translating the request to the proper protocol (that will depend on the type of IoTAgent). The
+library implement this kind of commands by offering a set functions that can be used to set an IoTAgent-specific handler
+for incoming commands. In order for this type of commands to work properly, the devices must be preprovisioned with an
+endpoint of the proper protocol, where it can be accessed by the IoTAgent who pushes de commits.
+
+* **Poll commands**: polling commands are meant to be used on those cases where the device can't be online the whole time
+waiting for commands. In this case, the IoTAgents must store the received commands, offering a way for the device to
+retrieve the pending commands upon connection. To enable this feature, the Library offers a set of functions to manage
+command storage, and a mechanism to automatically store incoming commands for those devices marked as 'polling devices'.
+
+The distinction between push and poll commands will be made based on the presence of a `polling` flag in the device
+provisioning data. The default option (with the flag with value `false` or not present) is to use push commands (as they
+were the only ones available until the latest versions).
+
+Polling commands could be subjected to expiration: two configuration properties pollingExpiration` and `pollingDaemonFrequency`
+can be set to start a daemon that will remove expired commands from the DB if the device is taking too much to pick them
+up. See the configuration section for details.
+
+The library does not deal with protocol transformation or South Bound communications for neither of the command types
+(that's the task for those specific IoTAgents using the library).
+
 #### Active attributes
 Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI
 format, and send it to the Context Broker as an `updateContext` request.
@@ -183,7 +206,7 @@ to a command update to the device.
 
 ![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
 
-### The ´TimeInstant´ element
+### <a name="TimeInstant"/>The ´TimeInstant´ element
 
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
@@ -1014,12 +1037,17 @@ These are the parameters that can be configured in the global section:
 }
 ```
 * **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of comma-separated IPs, they will
-be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. E.g.:
+be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. The MongoBD driver will
+retry the connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
+are 5 and 5 respectively). E.g.:
 ```
 {
   host: 'localhost',
   port: '27017',
-  db: 'iotagent'
+  db: 'iotagent',
+  retries: 5,
+  retryTime: 5
+
 }
 ```
 * **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section is
@@ -1051,6 +1079,10 @@ have implications in the use of attributes with Context Providers, so this flag 
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
 * **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
 * **componentName**: default string identifying the component name for this IoT Agent in the logs.
+* **pollingExpiration**: expiration time for commands waiting in the polling queue in miliseconds. If a command has been in the queue for this amount of time without
+being collected by the device, the expiration daemon will reclaim it. This attribute is optional (if it doesn't exist, commands won't expire).
+* **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
+(if this parameter doesn't exist the polling daemon won't be started).
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
@@ -1077,8 +1109,13 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_MONGO_HOST           | mongodb.host                        |
 | IOTA_MONGO_PORT           | mongodb.port                        |
 | IOTA_MONGO_DB             | mongodb.db                          |
+| IOTA_MONGO_REPLICASET     | mongodb.replicaSet                  |
+| IOTA_MONGO_RETRIES        | mongodb.retries                     |
+| IOTA_MONGO_RETRY_TIME     | mongodb.retryTime                   |
 | IOTA_SINGLE_MODE          | singleConfigurationMode             |
 | IOTA_APPEND_MODE          | appendMode                          |
+| IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
+| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
 
 ## <a name="aboutapi"/> About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
