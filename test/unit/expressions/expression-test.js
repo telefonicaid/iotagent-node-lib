@@ -25,7 +25,7 @@
 var should = require('should'),
     expressionParser = require('../../../lib/plugins/expressionParser');
 
-describe('Expression interpreter', function() {
+describe.only('Expression interpreter', function() {
     var arithmetic,
         scope = {
             value: 6,
@@ -99,14 +99,22 @@ describe('Expression interpreter', function() {
     });
 
     describe('When an expression with a wrong type is parsed', function() {
-        it('should raise a WRONG_EXPRESSION_TYPE error');
+        it('should raise a WRONG_EXPRESSION_TYPE error', function(done) {
+            expressionParser.parse('"number " + 5', scope, 'Device', function(error, result) {
+                should.exist(error);
+                error.name.should.equal('WRONG_EXPRESSION_TYPE');
+                done();
+            });
+        });
     });
 
     describe('When an expression with a parse error is parsed', function() {
-        it('should raise an INVALID_EXPRESSION error');
-    });
-
-    describe('When an expression return type can\'t be parsed to the expected type', function() {
-        it('should raise a INVALID_RETURN_TYPE error');
+        it('should raise an INVALID_EXPRESSION error', function(done) {
+            expressionParser.parse('"numb+sd ññ ((', scope, 'Number', function(error, result) {
+                should.exist(error);
+                error.name.should.equal('INVALID_EXPRESSION');
+                done();
+            });
+        });
     });
 });
