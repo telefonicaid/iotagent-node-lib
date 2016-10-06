@@ -68,6 +68,14 @@ describe.only('Expression interpreter', function() {
         arithmeticUseCase(arithmetic[i]);
     }
 
+    describe('When an expression with two strings is concatenated', function() {
+        it('should return the concatenation of both strings');
+    });
+
+    describe('When a string is concatenated with a number', function() {
+        it('should result in a string concatenation');
+    });
+
     describe('When an expression with a wrong type is parsed', function() {
         it('should raise a WRONG_EXPRESSION_TYPE error');
     });
