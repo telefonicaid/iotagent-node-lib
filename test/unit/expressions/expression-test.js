@@ -25,7 +25,7 @@
 var should = require('should'),
     expressionParser = require('../../../lib/plugins/expressionParser');
 
-describe.only('Expression interpreter', function() {
+describe('Expression interpreter', function() {
     var arithmetic,
         scope = {
             value: 6,
@@ -64,7 +64,7 @@ describe.only('Expression interpreter', function() {
         });
     }
 
-    for(var i=0; i < arithmetic.length; i++) {
+    for (var i = 0; i < arithmetic.length; i++) {
         arithmeticUseCase(arithmetic[i]);
     }
 
