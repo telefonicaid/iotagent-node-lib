@@ -69,11 +69,33 @@ describe.only('Expression interpreter', function() {
     }
 
     describe('When an expression with two strings is concatenated', function() {
-        it('should return the concatenation of both strings');
+        it('should return the concatenation of both strings', function(done) {
+            expressionParser.parse('"Pruebas" + "DeStrings"', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('PruebasDeStrings');
+                done();
+            });
+        });
+    });
+
+    describe('When an expression with strings containing spaces is concatenated', function() {
+        it('should honour the whitespaces', function(done) {
+            expressionParser.parse('"Pruebas " + "De Strings"', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('Pruebas De Strings');
+                done();
+            });
+        });
     });
 
     describe('When a string is concatenated with a number', function() {
-        it('should result in a string concatenation');
+        it('should result in a string concatenation', function(done) {
+            expressionParser.parse('"number " + 5', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('number 5');
+                done();
+            });
+        });
     });
 
     describe('When an expression with a wrong type is parsed', function() {
@@ -82,5 +104,9 @@ describe.only('Expression interpreter', function() {
 
     describe('When an expression with a parse error is parsed', function() {
         it('should raise an INVALID_EXPRESSION error');
+    });
+
+    describe('When an expression return type can\'t be parsed to the expected type', function() {
+        it('should raise a INVALID_RETURN_TYPE error');
     });
 });
