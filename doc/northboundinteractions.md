@@ -98,11 +98,11 @@ but this section shows some examples of each one of them.
 
 There are six different payloads that may appear in this interactions:
 
-P1 - UpdateContext (request) - The payload of a request to POST /v1/updateContext
-R1 - UpdateContext (response) - Always the answer to a successful POST /v1/updateContext
-P2 - QueryContext (request) - he payload of a request to POST /v1/queryContext
-R2 - QueryContext (response) - Always the answer to a successful POST /v1/queryContext
-E1 - Error - Always the response to a request (both queryContext or updateContext)
+* P1 - UpdateContext (request) - The payload of a request to POST /v1/updateContext
+* R1 - UpdateContext (response) - Always the answer to a successful POST /v1/updateContext
+* P2 - QueryContext (request) - he payload of a request to POST /v1/queryContext
+* R2 - QueryContext (response) - Always the answer to a successful POST /v1/queryContext
+* E1 - Error - Always the response to a request (both queryContext or updateContext)
 
 No other type of payload can be issued in any interaction between this two components.
 
