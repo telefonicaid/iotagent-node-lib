@@ -342,7 +342,7 @@ completely separate from the updating process, and can occur at any time (they a
 The three different scenarios can be used in different situations:
 
 * **Scenario 1**: this scenario is aimed to interactions actively started by the Device.
-* **Scenario 2*+: designed for interactions started by the User that are fast enough to be performed synchronously (within the time of an HTTP timeout).
+* **Scenario 2**: designed for interactions started by the User that are fast enough to be performed synchronously (within the time of an HTTP timeout).
 * **Scenario 3**: designed for interactions started by the User that are too slow to be performed synchrounously.
 
 ## <a name="practice"/> Practice
