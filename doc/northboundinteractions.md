@@ -83,9 +83,9 @@ This interactions can be mapped to three different scenarios (that will be detai
 Along this document, the term "asynchronous interaction" will be widely used, so we will define its specific meaning here.
 Inside the scope of the IoTAgents documentation, an "asynchronous scenario" will have the following definition:
 
-Asynchronous scenario
-
-: The one in which the actor that initiates the communication leaves its HTTP socket open waiting for the response until all the interaction scenario ends, receiving the results through the same socket that initiated the request
+```
+Asynchronous scenario is the one in which the actor that initiates the communication leaves its HTTP socket open waiting for the response until all the interaction scenario ends, receiving the results through the same socket that initiated the request
+```
 
 ### <a name="payloads"/> Data interaction payloads (NGSIv10)
 
