@@ -78,13 +78,13 @@ The general purpose of the interactions between both components is:
 
 This interactions can be mapped to three different scenarios (that will be detailed in further sections).
 
-#### Asynchronous interactions
+#### Synchronous interactions
 
-Along this document, the term "asynchronous interaction" will be widely used, so we will define its specific meaning here.
-Inside the scope of the IoTAgents documentation, an "asynchronous scenario" will have the following definition:
+Along this document, the term "synchronous interaction" will be widely used, so we will define its specific meaning here.
+Inside the scope of the IoTAgents documentation, a "synchronous scenario" will have the following definition:
 
 ```
-Asynchronous scenario is the one in which the actor that initiates the communication leaves its HTTP
+Synchronous scenario is the one in which the actor that initiates the communication leaves its HTTP
 socket open waiting for the response until all the interaction scenario ends, receiving the results
 through the same socket that initiated the request
 ```
@@ -103,6 +103,8 @@ There are six different payloads that may appear in this interactions:
 * P2 - QueryContext (request) - he payload of a request to POST /v1/queryContext
 * R2 - QueryContext (response) - Always the answer to a successful POST /v1/queryContext
 * E1 - Error - Always the response to a request (both queryContext or updateContext)
+
+All the interactions have been labeled with a two letter acronym for its use in the subsequent explanations.
 
 No other type of payload can be issued in any interaction between this two components.
 
@@ -257,61 +259,91 @@ Context Element, but with the request as a whole.
 
 ![General ](../img/scenario1.png "Scenario 1: active attributes")
 
-Escenario 1º Atributos activos (Diagrama 1): creo que es lo que vosotros llamáis volcado. En este escenario,  el único
-flujo de datos es de Hydra a Context Broker. Hydra envía un P1 y recibe un R1. Esta interacción es 100% síncrona. Eso
-quiere decir que hay una única conexión HTTP desde Hydra al CB, en cuya request se envía P1 y en cuya response se
-recibe R1 (todo en la misma conexión). Este flujo deja los datos en el Context Broker, de forma que, si un Usuario
-desea consultarlos, puede hacerlo por medio de cualquier operación de la API NGSI del CB. Esta consulta de datos está
-completamente desacoplada de la actualización (son dos operaciones distintas y no tienen por que venir seguidas en el
-tiempo).
+In this scenario, the interaction is started by the device, that is going to actively send a piece of data to the
+platform. When the IoTAgent receives the data, it sends it to the Context Broker through a P1 request. The Context Broker
+then stores that information locally and returns a R1 indicating the request has succeeded. This interaction is 100%
+synchronous from the perspective of the device (all the interaction happens through a single HTTP request and response
+in the same socket).
+
+This scenario leaves all the data locally stored in the Context Broker, so the user can query them using the standard
+NGSI APIs offered by the Context Broker (including subscriptions). This data queries are completely separate from the
+updating process, and can occur at any time (they are to completely different process).
 
 ### <a name="scn2lazy"/> Scenario 2: lazy attributes
 
 ![General ](../img/scenario2.png "Scenario 2: lazy attributes")
 
-Escenario 2º Atributos pasivos (Diagrama 2): correspondería a lo que en vuestro anterior correo llamaríais 1.2. En este
-caso, se supone que Hydra está registrada como Context Provider del atributo en cuestión. Esta interacción la empieza
-el Usuario, haciendo una petición tipo P2 al Context Broker (1). Éste, al ver que hay un Context Provider registrado
-para el atributo, reenvía la misma trama P2 exacta a Hydra (2). Hydra responde dentro de la misma conexión HTTP al
-Context Broker, con un R2 (3). Este R2 es el que contiene toda la información solicitada por el usuario. El Context
-Broker, a su vez, responde con el mismo R2 recibido, al Usuario, dentro de la misma conexión HTTP creada por el usuario
-(4). Este escenario también es, por tanto, 100% síncrono (desde el punto de vista del que inicia la conexión que es el
-usuario).
+This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent, through
+a registration process (NGSIv9). Examples of this registration process will be provided in the practical section of this
+document. It's worth mentioning that Orion Context Broker **will not** store locally any data about attributes registered
+as provided by a Context Provider; all the queries and updates to registered attributes will be redirected to their
+Context Providers.
+
+This interaction scenario is started by the User, that makes a query request, P2, to the Context Broker (1). The later,
+detecting a Context Provider for the attribute, will forward the exact same query, P2,  to the IoTAgent (2). The IoTA
+will then ask the devices for the required information (or it will retrieve it from its own database in case it stores a copy
+of the data). With that information, it will answer with a R2 response payload to the Context Broker, as the HTTP answer
+for the original Context Broker request (3). This R2 response payload is the one containing all the information requested by
+the User in the original request. Once it has all the information, the Context Broker will return the same R2 request to
+the User, as the response to the original HTTP request (and thus, in the same HTTP socket that initiated the request) (4).
+
+This scenario is 100% synchronous from the perspective of the User (and also 100% synchronous from the perspective of
+the Context Broker).
+
+This scenario can be used for both updates and queries. The only difference between both uses would be the set of actions
+to use: updateContext actions for the update (and thus, P1 and R1 payloads); and queryContext actions for the queries
+(and thus P2 and R2 payloads).
 
 ### <a name="scn3command"/> Scenario 3: commands
 
 ![General ](../img/scenario3.png "Scenario 3: commands")
 
-Escenario 3º Comandos (Diagrama 3): correspondería a lo que en vuestro correo anterior llamaríais 1.1. Aunque los
-llamemos comandos, no dejan de ser un tipo de interacción más, con el que se puede solicitar información. También en
-este caso, se supone que Hydra está registrada como Context Provider del atributo en cuestión. Al igual que en el caso
-de los atributos pasivos, la interacción la inicia el Usuario de la plataforma, llamando al Context Broker con un
-payload tipo P1 (1). El Context broker redirige este mismo payload al Context Provider del atributo (Hydra) (2) y éste
-debe responder  dentro de la misma conexión HTTP al Context Broker, con un R1 (3). Esta respuesta no es la respuesta
-definitiva a la consulta, y no contiene ninguna información útil aparte del código de respuesta. Contestar un código
-200 OK en esta interacción HTTP implica que Hydra ha aceptado el comando, sabe que debe obtener esa información y
-devolverla en algún momento del futuro. El Context Broker entonces redirige la misma respuesta R1 recibida de Hydra
-al Usuario que inició la petición, y todas las conexiones HTTP se cierran (4). Transcurrido un tiempo arbitrario,
-Hydra, de alguna forma, habrá obtenido los datos que se habían solicitado desde el Usuario. En ese momento, Hydra
-inicia una nueva petición HTTP, enviando P1 al Context Broker (5). Este P1 es el que contiene la información
-solicitada, y toda la metainformación asociada. El Context Broker devuelve R1 a esta petición, terminando así con la
-interacción HTTP (6). El usuario puede entonces acceder a esa información por los mismos mecanismos estándar que podría
-haber usado en el escenario 1 (7). En ese sentido, el Escenario 3º es en cierto modo una variante del Escenario 1º, en
-el que el volcado no se inicia por causa del dispositivo, sino por solicitud del Usuario. Es importante señalar que
-las tres partes de este escenario están completamente desacopladas.
+This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent, through
+a registration process (NGSIv9). Examples of this registration process will be provided in the practical section of this
+document. It's worth mentioning that Orion Context Broker **will not** store locally any data about attributes registered
+as provided by a Context Provider; all the queries and updates to registered attributes will be redirected to their
+Context Providers.
+
+This scenario is slighty different than the others in its use of the set of attributes of the entity. This scenario will
+use three kinds of attributes:
+
+* An attribute will be used as the *input attribute* (the attribute registered in the Context Provider). This input
+attribute can be thought of as a command issued to the IoTAgent (from here the name of the scenario) whose value is the
+set of arguments of the command. Only updateContext operations will be used to interact with this attributes.
+
+* Another attribute will be used as the *result attribute*. This attribute will be updated from the IoTAgent, and its
+value stored in the Context Broker. This attribute will contain the result of the command (this result can be information
+in case the command was a "information retrieval" command or the result of an action if it was an "actuator command").
+Typically, the name of this attribute will be the same of the input attribute, with an additional sufix ("_info").
+
+* Another attribute with the same characteristics as the later will be used to indicate whether the command has ended
+successfully or whether an error has been reported.
+
+In this scenario, the interaction is also initiated by the User. The user starts the scenario by sending an update request P1
+to the Context Broker, to the input attribute (1). The Context Broker redirects this same payload to the Context Provider
+of the attribute (the IoTAgent) (2). The IoTA immediately answers the request by issuing an R1 (3). This response is not
+the final answer to the query, and does not contain any usefull data apart from the status Code. Answering with a 200 code
+to this request implies that the IoTAgent has accepted the command, but is yet to process it; once the IoTA has processed
+the command, it will update the information. The Context Broker then forwards this same response to teh User who started
+the interactions and all HTTP connections are closed (4). This part of the scenario is 100% synchronous for the User, but
+does not provide him with the data he queried; it just initiates the asynchronous background process.
+
+At some point in the future, the IoTAgent gets the data it needs to process the command. Then, it starts a new interaction
+with the Context Broker, by sending a P1 update request to the Context Broker (5). This P1 payload is the one containing
+all the information requested by the user. That information will be updated in the result attribute and no reference to
+the input attribute is made in this request. The Context Broker returns a R1 answer to the IoTA, ending the HTTP interaction (6).
+
+This scenario leaves all the data locally stored in the Context Broker, so the user can query them using the standard
+NGSI APIs offered by the Context Broker (as shown in the (7) and (8) requests in the diagram). This data queries are
+completely separate from the updating process, and can occur at any time (they are to completely different process).
 
 ### <a name="scenario selection"/> How to select an scenario
 
-Escenario 1 - Todas las interacciones que empiecen en un dispositivo o en Hydra.
-Escenario 2 - Interacciones iniciadas por el usuario que lleven poco tiempo (donde poco está en el orden de los segundos).
-Escenario 3 - Interacciones iniciadas por el usuario que, potencialmente, puedan requerir de mucho tiempo para la respuesta.
+The three different scenarios can be used in different situations:
 
-Por último, hay que hacer el importante matiz de que un atributo para el cual Hydra se ha registrado como Context Provider, jamás debería ser actualizado con un APPEND desde ningún actor y jamás debería ser actualizado desde Hydra, en general (ya que se supone que es un atributo de entrada a hydra, no de salida). Por eso, en el caso del Escenario 3, la solicitud de actualización se debe hacer a un attributo que se llame distinto al atributo en el que Hydra contestará (en su momento ya dijimos que lo habitual es que uno se llame "atributo" y el otro "atributo_<sufijo>").
-
-He omitido los payloads a propósito en este mail, porque me importa mucho más que entendamos todos cómo funciona cada flujo, y por las peticiones que llegan a soporte y lo que llega a los correos, me da la sensación de que no está claro. Como decía al principio, tipos de payloads hay 4, y las respuestas son prácticamente iguales que las peticiones, así que esto debería ser más claro, una vez entendido bien cómo funciona todo a alto nivel.
-
-Una vez explicado todo esto, ¿queda alguna duda sobre el funcionamiento de la API que debería usar Hydra? ¿podéis exponerlas a la vista de lo que hemos comentado aquí?
-
+* **Scenario 1**: this scenario is aimed to interactions actively started by the Device.
+* **Scenario 2*+: designed for interactions started by the User that are fast enough to be performed synchronously (within the time of an HTTP timeout).
+* **Scenario 3**: designed for interactions started by the User that are too slow to be performed synchrounously.
 
 ## <a name="practice"/> Practice
 
