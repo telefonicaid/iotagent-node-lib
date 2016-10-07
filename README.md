@@ -57,7 +57,7 @@ in the entity as soon as it has any information of the command progress.
 The following sequence diagram shows the different NGSI interactions an IoT Agent makes with the Context Broker,
 explained in the following subsections (using the example of a OMA Lightweight M2M device).
 
-![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/ngsiInteractions.png "NGSI Interactions")
+![General ](https://raw.githubusercontent.com/telefonicaid/iotagent-node-lib/master/img/ngsiInteractions.png "NGSI Interactions")
 
 Be aware that the IoT Agents are only required to support NGSI10 operations `updateContext` and `queryContext` in their
 standard formats (currently in JSON format; XML deprecated) but will not answer to NGSI9 operations
@@ -211,7 +211,7 @@ the concrete IoT Agent implementations will be to map between the native device 
 The following figure offers a graphical example of how a COAP IoT Agent work, ordered from the registration of the device
 to a command update to the device.
 
-![General ](https://raw.github.com/dmoranj/iotagent-node-lib/develop/img/iotAgentLib.png "Architecture Overview")
+![General ](https://raw.githubusercontent.com/telefonicaid/iotagent-node-lib/master/img/iotAgentLib.png "Architecture Overview")
 
 ### <a name="TimeInstant"/>The ´TimeInstant´ element
 
