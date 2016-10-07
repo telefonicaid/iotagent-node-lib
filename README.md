@@ -1,16 +1,21 @@
 # FIWARE IoT Agent Framework
 
+[![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Support badge]( https://img.shields.io/badge/support-sof-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/fiware)
+
 ## Index
 
 * [Overview](#overview)
-* [Usage](#usage)
-* [IoT Library testing](#librarytesting)
-* [Configuration](#configuration)
-* [Device Provisioning API](#provisioningapi)
-* [Configuration API](#configurationapi)
-* [Secured access to the Context Broker](#securedaccess)
-* [Data mapping plugins](#datamapping)
-* [Old IoTAgent data migration](#datamigration)
+* [Build & Install](#buildinstall)
+* [API Overview](#apioverview)
+  * [About API](#aboutapi)
+  * [Device Provisioning API](#provisioningapi)
+  * [Configuration API](#configurationapi)
+* [Advanced Topics](#advancedtopics)
+  * [Secured access to the Context Broker](#securedaccess)
+  * [Data mapping plugins](#datamapping)
+  * [Old IoTAgent data migration](#datamigration)
+* [Testing](#librarytesting)
 * [Development Documentation](#development)
 
 ## <a name="overview"/> Overview
@@ -21,6 +26,8 @@ easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telef
 An IoT Agent is a component that lets groups of devices send their data to and be managed from a FIWARE NGSI Context
 Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the Fiware
 platform (authentication and authorization of the channel) and provide other common services to the device programmer.
+
+This project is part of [FIWARE](https://www.fiware.org/). Check also the [FIWARE Catalogue entry for the IoTAgents](http://catalogue.fiware.org/enablers/backend-device-management-idas)
 
 ### Device to NGSI Mapping
 Each Device will be mapped as an Entity associated to a Context Provider: the Device Id will be mapped by default to
@@ -245,528 +252,536 @@ one (In-memory Registry) and a persistent one (based in MongoDB).
 entity model, if there is any, is a responsability of the particular IoT Agent implementation, or of another third
 party library.
 
-## <a name="usage"/> Usage
-### Library usage
-#### Stats Registry
-The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
-the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration) 
-section.
-
-The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
-historical global value and the other one stores the value since the last value reporting (or current value).
-
-The stats library currently stores only the following values:
-* **deviceCreationRequests**: number of Device Creation Requests that arrived to the API (no matter the result).
-* **deviceRemovalRequests**: number of Removal Device Requests that arrived to the API (no matter the result). 
-* **measureRequests**: number of times the ngsiService.update() function has been invoked (no matter the result).
-
-More values will be added in the future to the library. The applications using the library can add values to the Stats Registry
-just by using the following function:
-```
-iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
-```
-The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
-to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
-
-#### Logs
-The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library
-is required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across
-the diferent modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
-particular IoTAgent), the `logger` object is exported in the `logModule` property of the library. The agents should
-use this module for logging.
-
-The IoT Agent Library also provides a configuration API that lets the administrator change and manage the log level
-in realtime. This API has the following two actions:
-
-##### Set new log level (PUT /admin/log)
-This operation gets the new log level using the query parameter `level`. If the new level is a valid level for Logops
-(i.e.: one of the items in the array ['INFO', 'ERROR', 'FATAL', 'DEBUG', 'WARNING']), it will be automatically changed
-for future logs.
-
-##### Get log level (GET /admin/log)
-Returns the current log level, in a json payload with a single attribute `level`.
-
-
-#### Transactions
-The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
-requests entering both from the Northbound and the Southbound.
-
-To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
-domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
-Southbound requests, the user is responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
-and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the former to the
-invocation of the latter.
-
-The Transaction Correlator is used along all the IoT Platform to follow the trace of a transaction between multiple components.
-To do so, in all the HTTP requests sent to other components of the platform, a custom header named `Fiware-Correlator` is sent with the
-correlator of the transaction that generated the request. If a component of the platform receives a request containing
-this header that starts a transaction, the component will create the transaction with the received correlator, instead
-of creating a new one. If the header is not present or the transaction originates in the component, the transaction ID in
-this component will be used as the correlator.
-
-During the duration of a transaction, all the log entries created by the code will write the current Transaction ID and
-correlator for the operation being executed.
-
-#### General review
-In order to use the library, add the following dependency to your package.json file:
-```
-"iotagent-node-lib": "*"
-```
-In order to use this library, first you must require it:
-```
-var iotagentLib = require('iotagent-node-lib');
-```
-The library supports four groups of features, one for each direction of the communication: 
-client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined 
-in the following sections.
-
-#### Operations
-##### iotagentLib.activate()
-###### Signature
-```
-function activate(newConfig, callback)
-```
-###### Description
-Activates the IoT Agent to start listening for NGSI Calls (acting as a Context Provider). It also creates the device registry for the IoT Agent (based on the deviceRegistry.type configuration option).
-###### Params
-* newConfig: Configuration of the Context Server (described in the [Configuration](#configuration) section).
-
-##### iotagentLib.deactivate()
-###### Signature
-```
-function deactivate(callback)
-```
-###### Description
-Stops the HTTP server.
-###### Params
-
-##### iotagentLib.register()
-###### Signature
-```
-registerDevice(deviceObj, callback)
-```
-###### Description
-Register a new device in the IoT Agent. This registration will also trigger a Context Provider registration in the Context Broker for all its lazy attributes.
-
-The device Object can have the following attributes:
-* id: Device ID of the device.
-* type: type to be assigned to the device.
-* name: name that will be used for the Entity representing the device in the Context Broker.
-* service: name of the service associated with the device.
-* subservice: name of the subservice associated with th device.
-* lazy:	list of lazy attributes with their types.
-* active: list of active attributes with their types.
-* staticAttributes: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
-* internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
-
-
-The device id and type are required fields for any registration. The rest of the attributes are optional, but, if they are not present in the function call arguments, the type must be registered in the configuration, so the service can infer their default values from the configured type. If an optional attribute is not given in the parameter list and there isn't a default configuration for the given type, a TypeNotFound error is raised.
-
-If the device has been previously preprovisioned, the missing data will be completed with the values from the registered device.
-
-###### Params
- * deviceObj: object containing all the information about the device to be registered (mandatory).
-
-##### iotagentLib.unregister()
-###### Signature
-```
-function unregisterDevice(id, service, subservice, callback)
-```
-###### Description
-Unregister a device from the Context broker and the internal registry.
-###### Params
- * id: Device ID of the device to register.
- * service: Service of the device to unregister.
- * subservice: Subservice inside the service for the unregisterd device.
- 
-##### iotagentLib.update()
-###### Signature
-```
-update(entityName, attributes, typeInformation, token, callback)
-```
-###### Description
-Makes an update in the Device's entity in the context broker, with the values given in the 'attributes' array. This
-array should comply to the NGSI's attribute format.
-
-###### Params
- * entityName: Name of the entity to register.
- * attributes: Attribute array containing the values to update.
- * typeInformation: Configuration information for the device.
- * token: User token to identify against the PEP Proxies (optional).
-
-##### iotagentLib.setCommandResult()
-###### Signature
-```
-setCommandResult(entityName, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
-```
-###### Description
-Update the result of a command in the Context Broker. The result of the command has two components: the result
-of the command itself will be represented with the sufix '_result' in the entity while the status is updated in the
-attribute with the '_info' sufix.
-
-###### Params
- * entityName: Name of the entity holding the command.
- * resource: Resource name of the endpoint the device is calling.
- * apikey: Apikey the device is using to send the values (can be the empty string if none is needed).
- * commandName: Name of the command whose result is being updated.
- * commandResult: Result of the command in string format.
- * deviceInformation: Device information, including security and service information. (optional).
-
-
-##### iotagentLib.listDevices()
-###### Signature
-```
-function listDevices(callback)
-function listDevices(limit, offset, callback)
-function listDevices(service, subservice, limit, offset, callback)
-```
-###### Description
-Return a list of all the devices registered in the specified service and subservice. This function can be invoked in 
-three different ways:
-* with just one parameter (the callback)
-* with three parameters (service, subservice and callback) 
-* or with five parameters (including limit and offset).
-###### Params
-* service: service from where the devices will be retrieved.
-* subservice: subservice from where the devices will be retrieved.
-* limit: maximum number of results to retrieve (optional).
-* offset: number of results to skip from the listing (optional).
-
-##### iotagentLib.setDataUpdateHandler()
-###### Signature
-```
-function setDataUpdateHandler(newHandler)
-```
-###### Description
-Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
-with the following parameters: (id, type, service, subservice, attributes, callback). The handler is in charge of
-updating the corresponding values in the devices with the appropriate protocol.
-
-Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
-```
-    callback(null, {
-        type: 'TheType',
-        isPattern: false,
-        id: 'EntityID',
-        attributes: [
-        	{
-        		name: 'lumniscence',
-        		type: 'Lumens',
-        		value: '432'
-        	}
-        ]
-    });
-```
-
-In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
-entity, and all the results will be combined into a single response.
-###### Params
- * newHandler: User handler for update requests
-
-##### iotagentLib.setDataQueryHandler()
-###### Signature
-```
-function setDataQueryHandler(newHandler)
-```
-###### Description
-Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives,
-with the following parameters: (id, type, service, subservice, attributes, callback). The handler must retrieve all the
-corresponding information from the devices and return a NGSI entity with the requested values.
-
-The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
-```
-    callback(null, {
-        type: 'TheType',
-        isPattern: false,
-        id: 'EntityID',
-        attributes: [
-        	{
-        		name: 'lumniscence',
-        		type: 'Lumens',
-        		value: '432'
-        	}
-        ]
-    });
-```
-
-In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
-entity, and all the results will be combined into a single response.
-###### Params
- * newHandler: User handler for query requests.
-
-##### iotagentLib.setNotificationHandler()
-###### Signature
-```
-function setNotificationHandler(newHandler)
-```
-###### Description
-Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on the IOTA subscriptions created
-with the subscribe() function. 
- 
-The handler must adhere to the following signature:
-```
-function mockedHandler(device, data, callback)
-```
-The `device` parameter contains the device object corresponding to the entity whose changes were notified
-with the incoming notification. Take into account that multiple entities may be modified with each single notification.
-The handler will be called once for each one of those entities.
-
-The `data` parameter is an array with all the attributes that were requested in the subscription and its respective
-values.
-
-The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IOTA).
-
-
-##### iotagentLib.setConfigurationHandler()
-###### Signature
-```
-function setConfigurationHandler(newHandler)
-```
-###### Description
-Sets the new user handler for the configuration updates. This handler will be called every time a new configuration is
-created or an old configuration is updated.
-
-The handler must adhere to the following signature:
-```
-function(newConfiguration, callback)
-```
-The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its
-callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
-
-For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
-handler will be called once for each of the configurations (both in the case of the creations and the updates).
-
-
-##### iotagentLib.getDevice()
-###### Signature
-```
-function getDevice(deviceId, service, subservice, callback)
-```
-###### Description
-Retrieve all the information about a device from the device registry.
-###### Params
- * deviceId: ID of the device to be found.
- * service: Service for which the requested device.
- * subservice: Subservice inside the service for which the device is requested.
-
-##### iotagentLib.getDeviceByName()
-###### Signature
-```
-function getDeviceByName(deviceName, service, subservice, callback)
-```
-###### Description
-Retrieve a device from the registry based on its entity name.
-
-###### Params
-* deviceName: Name of the entity associated to a device.
-* service: Service the device belongs to.
-* subservice: Division inside the service.
-
-##### iotagentLib.getDevicesByAttribute()
-###### Signature
-```
-function getDevicesByAttribute(attributeName, attributeValue, service, subservice, callback)
-```
-###### Description
-Retrieve all the devices having an attribute named `name` with value `value`.
-
-###### Params
-* name: name of the attribute to match.
-* value: value to match in the attribute.
-* service: Service the device belongs to.
-* subservice: Division inside the service.
-
-
-##### iotagentLib.retrieveDevice()
-###### Signature
-```
-function retrieveDevice(deviceId, apiKey, callback)
-```
-###### Description
-Retrieve a device from the device repository based on the given APIKey and DeviceID, creating one if none is found
-for the given data.
-
-###### Params
-* deviceId: Device ID of the device that wants to be retrieved or created.
-* apiKey: APIKey of the Device Group (or default APIKey).
-
-##### iotagentLib.mergeDeviceWithConfiguration()
-###### Signature
-```
-function mergeDeviceWithConfiguration(fields, defaults, deviceData, configuration, callback)
-```
-###### Description
-Complete the information of the device with the information in the configuration group (with precedence of the
-device). The first argument indicates what fields would be merged.
-
-###### Params
-* fields: Fields that will be merged.
-* defaults: Default values fot each of the fields.
-* deviceData: Device data.
-* configuration: Configuration data.
-
-##### iotagentLib.getConfiguration()
-###### Signature
-```
-function getConfiguration(resource, apikey, callback)
-```
-###### Description
-Gets the device group identified by the given (`resource`, `apikey`) pair.
-
-###### Params
-* resource: representation of the configuration in the IoT Agent (dependent on the protocol) .
-* apikey: special key the devices will present to prove they belong to a particular configuration.
-
-
-##### iotagentLib.findConfiguration()
-###### Signature
-```
-function findConfiguration(service, subservice, callback)
-```
-###### Description
-Find a device group based on its service and subservice.
-
-###### Params
-* service: name of the service of the configuration.
-* subservice: name of the subservice of the configuration.
-
-##### iotagentLib.getEffectiveApiKey()
-###### Signature
-```
-function getEffectiveApiKey(service, subservice, type, callback)
-```
-###### Description
-Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
-
-###### Params
-* service: Name of the service whose API Key we are retrieving.
-* subservice: Name of the subservice whose API Key we are retrieving.
-* type: Type of the device.
-
-##### iotagentLib.subscribe()
-###### Signature
-```
-function subscribe(device, triggers, content, callback)
-```
-###### Description
-Creates a subscription for the IoTA to the entity representing the selected device. 
-
-###### Params
-* device:       Object containing all the information about a particular device.
-* triggers:     Array with the names of the attributes that would trigger the subscription
-* content:      Array with the names of the attributes to retrieve in the notification.
-
-##### iotagentLib.unsubscribe()
-###### Signature
-```
-function unsubscribe(device, id, callback)
-```
-###### Description
-Removes a single subscription from the selected device, identified by its id. 
-
-###### Params
-* device: Object containing all the information about a particular device.
-* id: ID of the subscription to remove.
-
-
-##### iotagentLib.ensureSouthboundDomain()
-###### Signature
-```
-function ensureSouthboundTransaction(context, callback)
-```
-###### Description
-Ensures that the current operation is executed inside a transaction with all the information needed
-for the appropriate platform logging: start date, transaction ID and correlator in case one is needed.
-If the function is executed in the context of a previous transaction, just the context is changed
-(and the Transaction ID and start time are kept).
-
-###### Params
-* context: New context data for the transaction.
-
-
-##### iotagentLib.finishSouthBoundTransaction()
-```
-function finishSouthboundTransaction(callback)
-```
-###### Description
-Terminates the current transaction, if there is any, cleaning its context.
-
-#### Generic middlewares
-This collection of utility middlewares is aimed to be used in the northbound of the IoTAgent Library, as well as in other
-HTTP-based APIs of the IoTAs. All the middlewares follow the Express convention of (req, res, next) objects, so this
-information will not be repeated in the descriptions for the middleware functions. All the middlewares can be added
-to the servers using the standard Express mechanisms.
-
-##### iotagentLib.middlewares.handleError()
-###### Signature
-```
-function handleError(error, req, res, next)
-```
-###### Description
-Express middleware for handling errors in the IoTAs. It extracts the code information to return from the error itself
-returning 500 when no error code has been found.
-
-
-##### iotagentLib.middlewares.traceRequest()
-###### Signature
-```
-function traceRequest(req, res, next)
-```
-###### Description
-Express middleware for tracing the complete request arriving to the IoTA in debug mode.
-
-
-##### iotagentLib.middlewares.changeLogLevel()
-###### Signature
-```
-function changeLogLevel(req, res, next)
-```
-###### Description
-Changes the log level to the one specified in the request.
-
-##### iotagentLib.middlewares.ensureType()
-###### Signature
-```
-function ensureType(req, res, next)
-```
-###### Description
-Ensures the request type is one of the supported ones.
-
-##### iotagentLib.middlewares.validateJson()
-###### Signature
-```
-function validateJson(template)
-```
-###### Description
-Generates a Middleware that validates incoming requests based on the JSON Schema template passed as a parameter.
-
-Returns an Express middleware used in request validation with the given template.
-
-###### Params
-* *template*: JSON Schema template to validate the request.
-
-##### iotagentLib.middlewares.retrieveVersion()
-###### Signature
-```
-function retrieveVersion(req, res, next)
-```
-###### Description
-Middleware that returns all the IoTA information stored in the module.
-
-
-##### iotagentLib.middlewares.setIotaInformation()
-###### Signature
-```
-function setIotaInformation(newIoTAInfo)
-```
-###### Description
-Stores the information about the IoTAgent for further use in the `retrieveVersion()` middleware.
-
-###### Params
-* *newIoTAInfo*: Object containing all the IoTA Information.
-
+## <a name="buildinstall"/> Build & Install
+
+Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](docs/installationguide.md).
+
+This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](docs/usermanual.md).
+
+## <a name="apioverview"/> API Overview
+
+### <a name="aboutapi"/> About API
+The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
+to the `/iot/about` path, will show a payload like the following:
+```
+{
+“version”:”0.5.2”,
+“libVersion”:”0.8.4”,
+"port":4041,
+"baseRoot":"/"
+}
+```
+the `version` field will be read from the `iotaVersion` field of the config, if it exists.
+
+### <a name="provisioningapi"/> Device Provisioning API
+#### Overview
+The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and 
+subservice mapping, security information and attribute configuration can be specified in a per device way instead of 
+relaying on the type configuration. The following section specifies the format of the device payload; this will be the 
+payload accepted by all the write operations and that will be returned by all the read operations. Take care of the 
+exception of the POST operation: in this case, the device objects must be specified as an array, as multiple devices
+can be provided simultaneusly for the same service.
+
+Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to 
+fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the 
+Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the 
+same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
+outgoing requests).
+
+Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, 
+e.g. `service_path` vs. `servicePath`).
+
+#### Device model
+
+The next table shows the information held in the Device resource. The table also contains the correspondence between
+the API resource fields and the same fields in the database model.
+
+| Payload Field | DB Field | Definition                                     | Example of value                      |
+| ------------------- | ------------------- |:---------------------------------------------- |:------------------------------------- |
+| device_id    	      | id    	      | Device ID that will be used to identify the device. | UO834IO   |
+| service             | service            |  Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
+| service_path        | subservice        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
+| entity_name         | name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
+| entity_type         | type         | Type of the entity in the Context Broker | Lamplights |
+| timezone            | timezone            | Time zone of the sensor if it has any | America/Santiago |
+| endpoint            | endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
+| protocol            | protocol            | Name of the device protocol, for its use with an IoT Manager. | IoTA-UL |
+| transport           | transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
+| attributes          | active          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| lazy                | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| commands            | commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
+| internal_attributes | internalAttributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
+| static_attributes   | staticAttributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.	| `[ { "name": "attr_name", "type": "string" } ]` |
+
+#### Attribute lists
+In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them 
+have the same syntax, an object containing the following attributes:
+* **object_id** (optional): name of the attribute as coming from the device.
+* **name** (mandatory): id of the attribute in the target entity in the Context Broker.
+* **type** (mandatory): name of the type of the attribute in the target entity.
+
+#### API Actions
+##### POST /iot/devices
+Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload. 
+
+Returns: 
+* 200 OK if successful.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+Payload example:
+```json
+{
+    "devices": [ 
+        { 
+            "device_id": "DevID1", 
+            "entity_name": "TheDevice1", 
+            "entity_type": "DeviceType", 
+            "attributes": [ 
+                  { "object_id": "t", "name": "temperature", "type": "float" },
+                  { "object_id": "h", "name": "humidity", "type": "float" }
+            ],
+            "lazy":[
+                  { "object_id": "l", "name": "luminosity", "type": "percentage" }
+            ],
+            "commands": [
+                  { "object_id": "t", "name": "turn", "type": "string" }
+            ],
+            "static_attributes": [
+                  { "name": "serialID", "type": "02598347" }
+            ]
+        }
+    ]
+}
+```
 
-## <a name="librarytesting"/> IoT Library Testing
+##### GET /iot/devices
+Returns a list of all the devices in the device registry with all its data.
+
+Query parameters:
+* limit: if present, limits the number of devices returned in the list.
+* offset: if present, skip that number of devices from the original query.
+
+Returns: 
+* 200 OK if successful, and the selected Device payload in JSON format.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+Example of return payload:
+```json
+{
+  "count": 2,
+  "devices": [
+    {
+      "device_id": "DevID0",
+      "service": "ServiceTest",
+      "service_path": "/testSubservice",
+      "entity_name": "TheDevice0",
+      "entity_type": "DeviceType",
+      "attributes": [
+        {
+          "type": "float",
+          "name": "temperature",
+          "object_id": "t"
+        },
+        {
+          "type": "float",
+          "name": "humidity",
+          "object_id": "h"
+        }
+      ],
+      "lazy": [],
+      "static_attributes": [],
+      "internal_attributes": []
+    },
+    {
+      "device_id": "DevID1",
+      "service": "ServiceTest",
+      "service_path": "/testSubservice",
+      "entity_name": "TheDevice1",
+      "entity_type": "DeviceType",
+      "attributes": [
+        {
+          "type": "float",
+          "name": "temperature",
+          "object_id": "t"
+        },
+        {
+          "type": "float",
+          "name": "humidity",
+          "object_id": "h"
+        }
+      ],
+      "lazy": [
+        {
+          "type": "percentage",
+          "name": "luminosity",
+          "object_id": "l"
+        }
+      ],
+      "static_attributes": [
+        {
+          "type": "02598347",
+          "name": "serialID"
+        }
+      ],
+      "internal_attributes": []
+    }
+```
+
+##### GET /iot/devices/:deviceId
+Returns all the information about a particular device.
+
+Returns: 
+* 200 OK if successful, and the selected Device payload in JSON format.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+Example of return payload:
+```json
+{
+  "device_id": "DevID1",
+  "service": "ServiceTest",
+  "service_path": "/testSubservice",
+  "entity_name": "TheDevice1",
+  "entity_type": "DeviceType",
+  "attributes": [
+    {
+      "object_id": "t",
+      "name": "temperature",
+      "type": "float"
+    },
+    {
+      "object_id": "h",
+      "name": "humidity",
+      "type": "float"
+    }
+  ],
+  "lazy": [
+    {
+      "object_id": "l",
+      "name": "luminosity",
+      "type": "percentage"
+    }
+  ],
+  "static_attributes": [
+    {
+      "name": "serialID",
+      "type": "02598347"
+    }
+  ],
+  "internal_attributes": []
+}
+```
+
+##### DELETE /iot/devices/:deviceId
+Remove a device from the device registry. No payload is required or received.
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+##### PUT /iot/devices/:deviceId
+Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
+device can be changed using this method (as they are used to link the already created entities in the CB to the information
+in the device). Service and servicepath, being taken from the headers, can't be changed also.
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 404 NOT FOUND if the device was not found in the database.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+Payload example:
+```json
+{ 
+    "attributes": [ 
+          { "object_id": "t", "name": "temperature", "type": "float" },
+          { "object_id": "h", "name": "humidity", "type": "float" },
+          { "object_id": "p", "name": "pressure", "type": "float" }
+    ],
+    "lazy":[
+          { "object_id": "l", "name": "luminosity", "type": "percentage" }
+    ],
+    "commands": [
+          { "object_id": "t", "name": "turn", "type": "string" }
+    ],
+    "static_attributes": [
+          { "name": "serialID", "type": "02598347" }
+    ]
+}
+```
+
+### <a name="configurationapi"/> Configuration API
+For some services, there will be no need to provision individual devices, but it will make more sense to provision
+different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity
+is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an
+assigned type, its configuration values can be extracted from those of the type.
+
+The IoT Agents provide two means to define those device groups:
+* Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
+* Dynamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
+that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of
+the IoT Agent we are using). If no name is configured `default` is taken as the default one.
+
+Both approaches provide the same configuration information for the types (and they, in fact, end up in the same
+configuration collection).
+
+Both approaches are better described in the sections bellow. 
+
+#### Configuration API
+The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+
+For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
+
+Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
+naming; e.g.: subservice -> service_path).
+
+##### Device Group Model
+The next table shows the information held in the Device Group resource. The table also contains the correspondence between
+the API resource fields and the same fields in the database model.
+
+| Payload Field | DB Field | Definition                                     |
+| ------------------- | ------------------- |:---------------------------------------------- |
+| service    	        | service    	        | Service of the devices of this type |
+| subservice    	    | subservice    	    | Subservice of the devices of this type. |
+| resource    	      | resource    	      | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port). |
+| apikey    	        | apikey    	        | API Key string. |
+| entity_type    	    | entity_type    	    | name of the type to assign to the group. |
+| trust    	          | trust    	          | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios). |
+| cbHost    	        | cbHost    	        | Context Broker connection information. This options can be used to override the global ones for specific types of devices. |
+| lazy    	          | lazy    	          | list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| commands    	      | commands    	      | list of commands attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| active    	        | attributes    	    | list of active attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| static_attributes   | staticAttributes    | this attributes will be added to all the entities of this group 'as is'. |
+| internal_attributes | internalAttributes  | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry. |
+
+
+##### POST /iot/services
+Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
+
+Body params:
+* services: list of device groups to create. Each one adheres to the Device Group Model.
+
+E.g.:
+```
+{
+	"services": [
+	{
+	    "resource": "/deviceTest",
+	    "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+	    "type": "Light",
+	    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+	    "cbHost": "http://unexistentHost:1026",
+	    "commands": [
+	        {
+	            "name": "wheel1",
+	            "type": "Wheel"
+	        }
+	    ],
+	    "lazy": [
+	        {
+	            "name": "luminescence",
+	            "type": "Lumens"
+	        }
+	    ],
+	    "active": [
+	        {
+	            "name": "status",
+	            "type": "Boolean"
+	        }
+	    ]
+	}
+	]
+}
+```
+
+Returns: 
+* 200 OK if successful, with no payload.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 400 WRONG_SYNTAX if the body doesn't comply with the schema.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+##### GET /iot/services
+Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
+
+Returns: 
+* 200 OK if successful, returning a device group body.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+##### PUT /iot/services
+Modifies the information for a device group configuration, identified by the `resource` and `apikey` query parameters. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
+
+E.g.:
+```
+{
+    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+    "cbHost": "http://anotherUnexistentHost:1026"
+}
+```
+
+Returns: 
+* 200 OK if successful, returning the updated body.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+##### DELETE /iot/services
+Removes a device group configuration from the DB, specified by the `resource` and `apikey` query parameters. 
+
+Returns: 
+* 200 OK if successful.
+* 400 MISSING_HEADERS if any of the mandatory headers is not present.
+* 500 SERVER ERROR if there was any error not contemplated above.
+
+#### Type Configuration
+The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
+
+* **service**: service of the devices of this type.
+* **subservice**: subservice of the devices of this type.
+* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
+* **staticAttributes**: this array of attributes will be added to every entity of this type 'as is'.
+* **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
+* **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific types of devices.
+
+## <a name="advancedtopics"/> Advanced Topics
+### <a name="securedaccess"/> Secured access to the Context Broker
+For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
+
+For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully configured, and the `authentication.enabled` subattribute should have the value `true`.
+
+When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured Context Broker, he should follow this steps:
+* First, a Trust token should be requested to Keystone, using the service administrator credentials, the role ID and the IOT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
+```
+curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
+    -s \
+    -H "X-Auth-Token: $ADMIN_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '
+{
+    "trust": {
+        "impersonation": false,
+        "project_id": "'$SUBSERVICE_ID'",
+        "roles": [
+            {
+                "id": "'$ID_ROLE'"
+            }
+        ],
+        "trustee_user_id": "'$ID_IOTAGENT_USER'",
+        "trustor_user_id": "'$ID_ADM1'"
+    }
+}'
+```
+* Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token in its configuration.
+* Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust token to generate a temporary access token, that is attached to the request (in the `X-Auth-token` header).
+
+Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
+
+### <a name="datamapping"/> Data mapping plugins
+#### Overview
+The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
+incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
+i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but taking care of
+returning a valid entity, that can be used as the input for other middlewares; this way, all those pieces of
+code can be chained together in order to make all the needed transformations in the target entity.
+
+There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext middlewares
+are applied before the information is sent to the Context Broker, modifiying the entity before it is sent to Orion. The 
+queryContext middlewares are applied on the received data, whenever the IoT Agent queries the Context Broker for information.
+I.e.: both middlewares will be automatically applied whenever the `update()` or `query()` functions are called in the 
+library.
+
+All the middlewares have the opportunity to break the chain of middleware applications by calling the `callback()` with
+an error object (the usual convention). If any of the updateContext middlewares raise an error, no request will be sent
+to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()` 
+function will end up in an error if any of the queryContext middlewares report an error.
+
+#### Development
+All the middlewares have the same signature:
+```
+function middlewareName(entity, typeInformation, callback) {}
+```
+The arguments for any middleware are the NGSI data over which it can operate:
+- An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise; 
+- a typeInformation object containing all the information about the device stored during registration.
+- and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call 
+this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an optional 
+error in the first argument and the same arguments recieved (potentially modified) as the following.
+
+In order to manage the middlewares to the system, the following functions can be used:
+- `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be 
+applied to every call to the `update()` function. The final payload of the updateContext request will be the result
+of applying all this middlewares in the order they have been defined.
+
+- `addQueryMiddleware`: adds a queryContext middleware to the stack of middlewares. All the middlewares will be applied 
+to every call to the `query()` function.
+
+- `resetMiddlewares`: remove all the middlewares from the system.
+
+Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they 
+should not change a lot during the IoT lifetime.
+
+#### Provided plugins
+The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
+use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
+```
+var iotaLib = require('iotagent-node-lib');
+
+iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
+iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
+```
+
+##### Timestamp Compression plugin (compressTimestamp)
+This plugins change all the timestamp attributes found in the entity, and all the timestamp metadata found in any 
+attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended
+complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
+updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
+
+##### Attribute Alias plugin (attributeAlias)
+In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as 
+the left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and
+name attributes are used in this way, this plugin makes the translation from one to the other automatically.
+
+##### Event plugin (addEvents)
+This plugin allows for the creation of Event attributes, i.e.: attributes whose value will be the timestamp of its
+inclusion in the system, regardless of the value they carried in the Southbound API. If this plugin is active, all
+the events in the IoT Agent with the configured type name will be marked as events. The event name can be configured
+in the `config.eventType` attribute.
+
+##### Timestamp Processing Plugin (timestampProcess)
+This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
+TimeInstant attribute as metadata for every other attribute in the same request.
+
+### <a name="datamigration"/> Old IoTAgent data migration
+In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
+implementations, a data migration tool has been developed. This data migration tool has been integrated as a command
+in the IoTAgent command line tester.
+
+In order to perform a full migration, follow this steps:
+* From the project root, start the command line tester:
+<pre>
+bin/iotAgentTester.js
+</pre>
+
+* Configure the MongoDB host and port, and the origin Database (that holds the data to be migrated):
+<pre>
+configMigration localhost 27017 originDB
+</pre>
+
+* Launch the migration, using the special value "*" as service and subservice
+<pre>
+migrate targetDB * *
+</pre>
+
+Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
+They show the values existing in the original DB that had no translation for the target DB.
+
+If you want to restrict the migration for certain services and subservices, just substitute the '*' value for the particular
+service and subservice you want to use.
+
+## <a name="librarytesting"/> Testing
 ### Agent Console
 A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
 ```
@@ -977,809 +992,23 @@ clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
 ```
 
 The command line module makes use of two configuration objects. Both can be shown and edited in the command line using the
-provided commands, but a default value must be present. 
+provided commands, but a default value must be present.
 
-The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be tested 
+The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be tested
 is connected. It MUST contain the following attributes:
-* **host**: host where the Context Broker instance is located. 
+* **host**: host where the Context Broker instance is located.
 * **port**: port where the Context Broker instance is listening.
 * **service**: service that will be used in all the NGSI operations.
 * **subservice**: service that will be used in all the NGSI operations.
 
 The IoT Agent configuration object holds information about the IoT Agent that is being tested. It MUST contain the following
 attributes:
-* **host**: host where the IoT Agent instance is located. 
+* **host**: host where the IoT Agent instance is located.
 * **port**: port where the IoT Agent instance is listening.
 * **service**: service that will be used to group devices and device information.
 * **subservice**: subservice that will be used to group devices and device information.
 
+##  <a name="development"/> Development documentation
 
-## <a name="configuration"/> Configuration
-The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent.
-The Agent Console reads the same configuration from the `config.js` file.
-
-### Global Configuration
-These are the parameters that can be configured in the global section:
-* **logLevel**: minimum log level to log. May take one of the following values: DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
-* **contextBroker**: connection data to the Context Broker (host and port). E.g.: 
-```
-	{
-	host: '192.168.56.101',
-	port: '1026'
-    	}
-```
-* **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.: 
-```
-	{
-	baseRoot: '/',
-        port: 4041
-    	}
-```    	 
-* **stats**: configure the periodic collection of statistics. Use `interval` in miliseconds to set the time between stats writings.
-```
-    stats: {
-        interval: 100
-    }
-```
-* **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (just needed in scenarios with security enabled in the Context Broker side). E.g.:
-```	
-	{
-        host: 'localhost',
-        port: '5000',
-        user: 'iotagent',
-        password: 'iotagent'
-	}
-```
-* **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other. Mongodb databases must be configured in the `mongob` section (as described bellow). E.g.:
-```
-{
-  type: 'mongodb'
-}
-```
-* **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of comma-separated IPs, they will
-be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. The MongoBD driver will
-retry the connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
-are 5 and 5 respectively). E.g.:
-```
-{
-  host: 'localhost',
-  port: '27017',
-  db: 'iotagent',
-  retries: 5,
-  retryTime: 5
-
-}
-```
-* **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section is
- present, the IoTA will try to register to a IoTAM in the `host`, `port` and `path` indicated, with the information
- configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described below) with the
- added `agentPath`:
-```
-{
-    host: 'mockediotam.com',
-    port: 9876,
-    path: '/protocols',
-    protocol: 'GENERIC_PROTOCOL',
-    description: 'A generic protocol',
-    agentPath: '/iot'
-}
-```
-* **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
-* **eventType**: Default type for the Events (useful only with the `addEvents` plugin).
-* **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
-* **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
-* **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
-* **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
-* **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
-* **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
-have implications in the use of attributes with Context Providers, so this flag should be used with care.
-* **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
-* **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
-* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information. 
-* **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
-* **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
-* **componentName**: default string identifying the component name for this IoT Agent in the logs.
-* **pollingExpiration**: expiration time for commands waiting in the polling queue in miliseconds. If a command has been in the queue for this amount of time without
-being collected by the device, the expiration daemon will reclaim it. This attribute is optional (if it doesn't exist, commands won't expire).
-* **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
-(if this parameter doesn't exist the polling daemon won't be started).
-
-### Configuration using environment variables
-Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
-container-based technologies, like Docker, Heroku, etc...
-
-The following table shows the accepted environment variables, as well as the configuration parameter the variable overrides.
-
-| Environment variable      | Configuration attribute             |
-|:------------------------- |:----------------------------------- |
-| IOTA_CB_HOST              | contextBroker.host                  |
-| IOTA_CB_PORT              | contextBroker.port                  |
-| IOTA_NORTH_HOST           | server.host                         |
-| IOTA_NORTH_PORT           | server.port                         |
-| IOTA_PROVIDER_URL         | providerUrl                         |
-| IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
-| IOTA_LOG_LEVEL            | logLevel                            |
-| IOTA_TIMESTAMP            | timestamp                           |
-| IOTA_IOTAM_HOST           | iotManager.host                     |
-| IOTA_IOTAM_PORT           | iotManager.port                     |
-| IOTA_IOTAM_PATH           | iotManager.path                     |
-| IOTA_IOTAM_AGENTPATH      | iotManager.agentPath                |
-| IOTA_IOTAM_PROTOCOL       | iotManager.protocol                 |
-| IOTA_IOTAM_DESCRIPTION    | iotManager.description              |
-| IOTA_MONGO_HOST           | mongodb.host                        |
-| IOTA_MONGO_PORT           | mongodb.port                        |
-| IOTA_MONGO_DB             | mongodb.db                          |
-| IOTA_MONGO_REPLICASET     | mongodb.replicaSet                  |
-| IOTA_MONGO_RETRIES        | mongodb.retries                     |
-| IOTA_MONGO_RETRY_TIME     | mongodb.retryTime                   |
-| IOTA_SINGLE_MODE          | singleConfigurationMode             |
-| IOTA_APPEND_MODE          | appendMode                          |
-| IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
-| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
-
-## <a name="aboutapi"/> About API
-The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
-to the `/iot/about` path, will show a payload like the following:
-```
-{
-“version”:”0.5.2”,
-“libVersion”:”0.8.4”,
-"port":4041,
-"baseRoot":"/"
-}
-```
-the `version` field will be read from the `iotaVersion` field of the config, if it exists.
-
-## <a name="provisioningapi"/> Device Provisioning API
-### Overview
-The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and 
-subservice mapping, security information and attribute configuration can be specified in a per device way instead of 
-relaying on the type configuration. The following section specifies the format of the device payload; this will be the 
-payload accepted by all the write operations and that will be returned by all the read operations. Take care of the 
-exception of the POST operation: in this case, the device objects must be specified as an array, as multiple devices
-can be provided simultaneusly for the same service.
-
-Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to 
-fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the 
-Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the 
-same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and 
-outgoing requests).
-
-Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, 
-e.g. `service_path` vs. `servicePath`).
-
-### Device model
-
-The next table shows the information held in the Device resource. The table also contains the correspondence between
-the API resource fields and the same fields in the database model.
-
-| Payload Field | DB Field | Definition                                     | Example of value                      |
-| ------------------- | ------------------- |:---------------------------------------------- |:------------------------------------- |
-| device_id    	      | id    	      | Device ID that will be used to identify the device. | UO834IO   |
-| service             | service            |  Name of the service the device belongs to (will be used in the fiware-service header).  | smartGondor |
-| service_path        | subservice        | Name of the subservice the device belongs to (used in the fiware-servicepath header). | /gardens |
-| entity_name         | name         | Name of the entity representing the device in the Context Broker	| ParkLamplight12 |
-| entity_type         | type         | Type of the entity in the Context Broker | Lamplights |
-| timezone            | timezone            | Time zone of the sensor if it has any | America/Santiago |
-| endpoint            | endpoint            | Endpoint where the device is going to receive commands, if any. | http://theDeviceUrl:1234/commands  |
-| protocol            | protocol            | Name of the device protocol, for its use with an IoT Manager. | IoTA-UL |
-| transport           | transport           | Name of the device transport protocol, for the IoT Agents with multiple transport protocols. | MQTT |
-| attributes          | active          | List of active attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| lazy                | lazy                | List of lazy attributes of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| commands            | commands            | List of commands of the device	| `[ { "name": "attr_name", "type": "string" } ]` |
-| internal_attributes | internalAttributes | List of internal attributes with free format for specific IoT Agent configuration | LWM2M mappings from object URIs to attributes |
-| static_attributes   | staticAttributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.	| `[ { "name": "attr_name", "type": "string" } ]` |
-
-### Attribute lists
-In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them 
-have the same syntax, an object containing the following attributes:
-* **object_id** (optional): name of the attribute as coming from the device.
-* **name** (mandatory): id of the attribute in the target entity in the Context Broker.
-* **type** (mandatory): name of the type of the attribute in the target entity.
-
-### API Actions
-#### POST /iot/devices
-Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload. 
-
-Returns: 
-* 200 OK if successful.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-Payload example:
-```json
-{
-    "devices": [ 
-        { 
-            "device_id": "DevID1", 
-            "entity_name": "TheDevice1", 
-            "entity_type": "DeviceType", 
-            "attributes": [ 
-                  { "object_id": "t", "name": "temperature", "type": "float" },
-                  { "object_id": "h", "name": "humidity", "type": "float" }
-            ],
-            "lazy":[
-                  { "object_id": "l", "name": "luminosity", "type": "percentage" }
-            ],
-            "commands": [
-                  { "object_id": "t", "name": "turn", "type": "string" }
-            ],
-            "static_attributes": [
-                  { "name": "serialID", "type": "02598347" }
-            ]
-        }
-    ]
-}
-```
-
-#### GET /iot/devices
-Returns a list of all the devices in the device registry with all its data.
-
-Query parameters:
-* limit: if present, limits the number of devices returned in the list.
-* offset: if present, skip that number of devices from the original query.
-
-Returns: 
-* 200 OK if successful, and the selected Device payload in JSON format.
-* 404 NOT FOUND if the device was not found in the database.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-Example of return payload:
-```json
-{
-  "count": 2,
-  "devices": [
-    {
-      "device_id": "DevID0",
-      "service": "ServiceTest",
-      "service_path": "/testSubservice",
-      "entity_name": "TheDevice0",
-      "entity_type": "DeviceType",
-      "attributes": [
-        {
-          "type": "float",
-          "name": "temperature",
-          "object_id": "t"
-        },
-        {
-          "type": "float",
-          "name": "humidity",
-          "object_id": "h"
-        }
-      ],
-      "lazy": [],
-      "static_attributes": [],
-      "internal_attributes": []
-    },
-    {
-      "device_id": "DevID1",
-      "service": "ServiceTest",
-      "service_path": "/testSubservice",
-      "entity_name": "TheDevice1",
-      "entity_type": "DeviceType",
-      "attributes": [
-        {
-          "type": "float",
-          "name": "temperature",
-          "object_id": "t"
-        },
-        {
-          "type": "float",
-          "name": "humidity",
-          "object_id": "h"
-        }
-      ],
-      "lazy": [
-        {
-          "type": "percentage",
-          "name": "luminosity",
-          "object_id": "l"
-        }
-      ],
-      "static_attributes": [
-        {
-          "type": "02598347",
-          "name": "serialID"
-        }
-      ],
-      "internal_attributes": []
-    }
-```
-
-#### GET /iot/devices/:deviceId
-Returns all the information about a particular device.
-
-Returns: 
-* 200 OK if successful, and the selected Device payload in JSON format.
-* 404 NOT FOUND if the device was not found in the database.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-Example of return payload:
-```json
-{
-  "device_id": "DevID1",
-  "service": "ServiceTest",
-  "service_path": "/testSubservice",
-  "entity_name": "TheDevice1",
-  "entity_type": "DeviceType",
-  "attributes": [
-    {
-      "object_id": "t",
-      "name": "temperature",
-      "type": "float"
-    },
-    {
-      "object_id": "h",
-      "name": "humidity",
-      "type": "float"
-    }
-  ],
-  "lazy": [
-    {
-      "object_id": "l",
-      "name": "luminosity",
-      "type": "percentage"
-    }
-  ],
-  "static_attributes": [
-    {
-      "name": "serialID",
-      "type": "02598347"
-    }
-  ],
-  "internal_attributes": []
-}
-```
-
-#### DELETE /iot/devices/:deviceId
-Remove a device from the device registry. No payload is required or received.
-
-Returns: 
-* 200 OK if successful, with no payload.
-* 404 NOT FOUND if the device was not found in the database.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-#### PUT /iot/devices/:deviceId
-Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
-device can be changed using this method (as they are used to link the already created entities in the CB to the information
-in the device). Service and servicepath, being taken from the headers, can't be changed also.
-
-Returns: 
-* 200 OK if successful, with no payload.
-* 404 NOT FOUND if the device was not found in the database.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-Payload example:
-```json
-{ 
-    "attributes": [ 
-          { "object_id": "t", "name": "temperature", "type": "float" },
-          { "object_id": "h", "name": "humidity", "type": "float" },
-          { "object_id": "p", "name": "pressure", "type": "float" }
-    ],
-    "lazy":[
-          { "object_id": "l", "name": "luminosity", "type": "percentage" }
-    ],
-    "commands": [
-          { "object_id": "t", "name": "turn", "type": "string" }
-    ],
-    "static_attributes": [
-          { "name": "serialID", "type": "02598347" }
-    ]
-}
-```
-
-## <a name="configurationapi"/> Configuration API
-For some services, there will be no need to provision individual devices, but it will make more sense to provision
-different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity
-is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an
-assigned type, its configuration values can be extracted from those of the type.
-
-The IoT Agents provide two means to define those device groups:
-* Static **Type Configuration**: configuring the `ngsi.types` property in the `config.js` file.
-* Dynamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
-that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name of
-the IoT Agent we are using). If no name is configured `default` is taken as the default one.
-
-Both approaches provide the same configuration information for the types (and they, in fact, end up in the same
-configuration collection).
-
-Both approaches are better described in the sections bellow. 
-
-### Configuration API
-The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
-
-For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
-
-Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
-naming; e.g.: subservice -> service_path).
-
-#### Device Group Model
-The next table shows the information held in the Device Group resource. The table also contains the correspondence between
-the API resource fields and the same fields in the database model.
-
-| Payload Field | DB Field | Definition                                     |
-| ------------------- | ------------------- |:---------------------------------------------- |
-| service    	        | service    	        | Service of the devices of this type |
-| subservice    	    | subservice    	    | Subservice of the devices of this type. |
-| resource    	      | resource    	      | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port). |
-| apikey    	        | apikey    	        | API Key string. |
-| entity_type    	    | entity_type    	    | name of the type to assign to the group. |
-| trust    	          | trust    	          | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios). |
-| cbHost    	        | cbHost    	        | Context Broker connection information. This options can be used to override the global ones for specific types of devices. |
-| lazy    	          | lazy    	          | list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided. |
-| commands    	      | commands    	      | list of commands attributes of the device. For each attribute, its `name` and `type` must be provided. |
-| active    	        | attributes    	    | list of active attributes of the device. For each attribute, its `name` and `type` must be provided. |
-| static_attributes   | staticAttributes    | this attributes will be added to all the entities of this group 'as is'. |
-| internal_attributes | internalAttributes  | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry. |
-
-
-#### POST /iot/services
-Creates a set of device groups for the given service and service path. The service and subservice information will taken from the headers, overwritting any preexisting values.
-
-Body params:
-* services: list of device groups to create. Each one adheres to the Device Group Model.
-
-E.g.:
-```
-{
-	"services": [
-	{
-	    "resource": "/deviceTest",
-	    "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-	    "type": "Light",
-	    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-	    "cbHost": "http://unexistentHost:1026",
-	    "commands": [
-	        {
-	            "name": "wheel1",
-	            "type": "Wheel"
-	        }
-	    ],
-	    "lazy": [
-	        {
-	            "name": "luminescence",
-	            "type": "Lumens"
-	        }
-	    ],
-	    "active": [
-	        {
-	            "name": "status",
-	            "type": "Boolean"
-	        }
-	    ]
-	}
-	]
-}
-```
-
-Returns: 
-* 200 OK if successful, with no payload.
-* 400 MISSING_HEADERS if any of the mandatory headers is not present.
-* 400 WRONG_SYNTAX if the body doesn't comply with the schema.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-#### GET /iot/services
-Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
-
-Returns: 
-* 200 OK if successful, returning a device group body.
-* 400 MISSING_HEADERS if any of the mandatory headers is not present.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-#### PUT /iot/services
-Modifies the information for a device group configuration, identified by the `resource` and `apikey` query parameters. Takes a device group body as the payload. The body does not have to be complete: for incomplete bodies, just the existing attributes will be updated
-
-E.g.:
-```
-{
-    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-    "cbHost": "http://anotherUnexistentHost:1026"
-}
-```
-
-Returns: 
-* 200 OK if successful, returning the updated body.
-* 400 MISSING_HEADERS if any of the mandatory headers is not present.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-#### DELETE /iot/services
-Removes a device group configuration from the DB, specified by the `resource` and `apikey` query parameters. 
-
-Returns: 
-* 200 OK if successful.
-* 400 MISSING_HEADERS if any of the mandatory headers is not present.
-* 500 SERVER ERROR if there was any error not contemplated above.
-
-### Type Configuration
-The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service information, security information and other attributes. The `types` attribute of the configuration is a map, where the key is the type name and the value is an object containing all the type information. Each type can has the following information configured:
-
-* **service**: service of the devices of this type.
-* **subservice**: subservice of the devices of this type.
-* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
-* **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.
-* **staticAttributes**: this array of attributes will be added to every entity of this type 'as is'.
-* **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
-* **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific types of devices.
-
-## <a name="securedaccess"/> Secured access to the Context Broker
-For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
-
-For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully configured, and the `authentication.enabled` subattribute should have the value `true`.
-
-When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured Context Broker, he should follow this steps:
-* First, a Trust token should be requested to Keystone, using the service administrator credentials, the role ID and the IOT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
-```
-curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
-    -s \
-    -H "X-Auth-Token: $ADMIN_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '
-{
-    "trust": {
-        "impersonation": false,
-        "project_id": "'$SUBSERVICE_ID'",
-        "roles": [
-            {
-                "id": "'$ID_ROLE'"
-            }
-        ],
-        "trustee_user_id": "'$ID_IOTAGENT_USER'",
-        "trustor_user_id": "'$ID_ADM1'"
-    }
-}'
-```
-* Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token in its configuration.
-* Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust token to generate a temporary access token, that is attached to the request (in the `X-Auth-token` header).
-
-Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
-
-## <a name="datamapping"/> Data mapping plugins
-### Overview
-The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
-incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
-i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but taking care of
-returning a valid entity, that can be used as the input for other middlewares; this way, all those pieces of
-code can be chained together in order to make all the needed transformations in the target entity.
-
-There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext middlewares
-are applied before the information is sent to the Context Broker, modifiying the entity before it is sent to Orion. The 
-queryContext middlewares are applied on the received data, whenever the IoT Agent queries the Context Broker for information.
-I.e.: both middlewares will be automatically applied whenever the `update()` or `query()` functions are called in the 
-library.
-
-All the middlewares have the opportunity to break the chain of middleware applications by calling the `callback()` with
-an error object (the usual convention). If any of the updateContext middlewares raise an error, no request will be sent
-to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()` 
-function will end up in an error if any of the queryContext middlewares report an error.
-
-### Development
-All the middlewares have the same signature:
-```
-function middlewareName(entity, typeInformation, callback) {}
-```
-The arguments for any middleware are the NGSI data over which it can operate:
-- An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise; 
-- a typeInformation object containing all the information about the device stored during registration.
-- and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call 
-this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an optional 
-error in the first argument and the same arguments recieved (potentially modified) as the following.
-
-In order to manage the middlewares to the system, the following functions can be used:
-- `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be 
-applied to every call to the `update()` function. The final payload of the updateContext request will be the result
-of applying all this middlewares in the order they have been defined.
-
-- `addQueryMiddleware`: adds a queryContext middleware to the stack of middlewares. All the middlewares will be applied 
-to every call to the `query()` function.
-
-- `resetMiddlewares`: remove all the middlewares from the system.
-
-Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they 
-should not change a lot during the IoT lifetime.
-
-### Provided plugins
-The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
-use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
-```
-var iotaLib = require('iotagent-node-lib');
-
-iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
-iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
-```
-
-#### Timestamp Compression plugin (compressTimestamp)
-This plugins change all the timestamp attributes found in the entity, and all the timestamp metadata found in any 
-attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended
-complete calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in 
-updates and return it in queries (and viceversa, receive the extended one in queries and return it in updates).  
-
-#### Attribute Alias plugin (attributeAlias)
-In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as 
-the left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and
-name attributes are used in this way, this plugin makes the translation from one to the other automatically.
-
-#### Event plugin (addEvents)
-This plugin allows for the creation of Event attributes, i.e.: attributes whose value will be the timestamp of its
-inclusion in the system, regardless of the value they carried in the Southbound API. If this plugin is active, all
-the events in the IoT Agent with the configured type name will be marked as events. The event name can be configured
-in the `config.eventType` attribute.
-
-#### Timestamp Processing Plugin (timestampProcess)
-This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
-TimeInstant attribute as metadata for every other attribute in the same request.
-
-## <a name="datamigration"/> Old IoTAgent data migration
-In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
-implementations, a data migration tool has been developed. This data migration tool has been integrated as a command
-in the IoTAgent command line tester.
-
-In order to perform a full migration, follow this steps:
-* From the project root, start the command line tester:
-<pre>
-bin/iotAgentTester.js
-</pre>
-
-* Configure the MongoDB host and port, and the origin Database (that holds the data to be migrated):
-<pre>
-configMigration localhost 27017 originDB
-</pre>
-
-* Launch the migration, using the special value "*" as service and subservice
-<pre>
-migrate targetDB * *
-</pre>
-
-Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
-They show the values existing in the original DB that had no translation for the target DB.
-
-If you want to restrict the migration for certain services and subservices, just substitute the '*' value for the particular
-service and subservice you want to use.
-
-## <a name="development"/> Development documentation
-### Contributions
-All contributions to this project are welcome. Developers planning to contribute should follow the [Contribution Guidelines](./docs/contribution.md)
-
-### Project build
-The project is managed using Grunt Task Runner.
-
-For a list of available task, type
-```bash
-grunt --help
-```
-
-The following sections show the available options in detail.
-
-### Testing
-[Mocha](http://visionmedia.github.io/mocha/) Test Runner + [Chai](http://chaijs.com/) Assertion Library + [Sinon](http://sinonjs.org/) Spies, stubs.
-
-The test environment is preconfigured to run [BDD](http://chaijs.com/api/bdd/) testing style with
-`chai.expect` and `chai.should()` available globally while executing tests, as well as the [Sinon-Chai](http://chaijs.com/plugins/sinon-chai) plugin.
-
-Module mocking during testing can be done with [proxyquire](https://github.com/thlorenz/proxyquire)
-
-To run tests, type
-```bash
-grunt test
-```
-
-Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
-To generate TAP report in `report/test/unit_tests.tap`, type
-```bash
-grunt test-report
-```
-
-### Coding guidelines
-jshint, gjslint
-
-Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python and its use can be disabled
-while creating the project skeleton with grunt-init.
-To check source code style, type
-```bash
-grunt lint
-```
-
-Checkstyle reports can be used together with Jenkins to monitor project quality metrics by means of Checkstyle
-and Violations plugins.
-To generate Checkstyle and JSLint reports under `report/lint/`, type
-```bash
-grunt lint-report
-```
-
-
-### Continuous testing
-
-Support for continuous testing by modifying a src file or a test.
-For continuous testing, type
-```bash
-grunt watch
-```
-
-
-### Source Code documentation
-dox-foundation
-
-Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
-For compiling source code documentation, type
-```bash
-grunt doc
-```
-
-
-### Code Coverage
-Istanbul
-
-Analizes the code coverage of your tests.
-
-To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
-```bash
-# Use git-bash on Windows
-grunt coverage
-```
-
-To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
-monitor project quality metrics by means of Cobertura plugin, type
-```bash
-# Use git-bash on Windows
-grunt coverage-report
-```
-
-
-### Code complexity
-Plato
-
-Analizes code complexity using Plato and stores the report under `site/report/`. It can be used together with jenkins
-by means of DocLinks plugin.
-For complexity report, type
-```bash
-grunt complexity
-```
-
-### PLC
-
-Update the contributors for the project
-```bash
-grunt contributors
-```
-
-
-### Development environment
-
-Initialize your environment with git hooks.
-```bash
-grunt init-dev-env 
-```
-
-We strongly suggest you to make an automatic execution of this task for every developer simply by adding the following
-lines to your `package.json`
-```
-{
-  "scripts": {
-     "postinstall": "grunt init-dev-env"
-  }
-}
-``` 
-
-
-### Site generation
-
-There is a grunt task to generate the GitHub pages of the project, publishing also coverage, complexity and JSDocs pages.
-In order to initialize the GitHub pages, use:
-
-```bash
-grunt init-pages
-```
-
-This will also create a site folder under the root of your repository. This site folder is detached from your repository's
-history, and associated to the gh-pages branch, created for publishing. This initialization action should be done only
-once in the project history. Once the site has been initialized, publish with the following command:
-
-```bash
-grunt site
-```
-
-This command will only work after the developer has executed init-dev-env (that's the goal that will create the detached site).
-
-This command will also launch the coverage, doc and complexity task (see in the above sections).
+Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](docs/usermanual.md).
 
