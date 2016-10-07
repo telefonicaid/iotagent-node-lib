@@ -3,8 +3,10 @@
 ## Index
 
 * [Overview](#overview)
-# [Requirements](#requirements)
+* [Requirements](#requirements)
 * [Theory](#theory)
+  * [Overview](#theoryoverview)
+  * [Data interaction payloads (NGSIv10)](#payloads)
   * [Scenario 1: active attributes](#scn1active)
   * [Scenario 2: lazy attributes](#scn2lazy)
   * [Scenario 3: command attributes](#scn3command)
