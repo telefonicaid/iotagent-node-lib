@@ -167,4 +167,34 @@ describe('Expression-based transformations plugin', function() {
             });
         });
     });
+
+    describe('When a measure arrives and there is not enought information to calculate an expression', function() {
+        var values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextExpressionPlugin3.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextExpressionPlugin3Success.json'));
+        });
+
+        it('should not calculate the expression', function(done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });
