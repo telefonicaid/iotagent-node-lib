@@ -11,7 +11,7 @@
 * [Examples of expressions](#examples)
 
 ## <a name="overview"/> Overview
-The IoTAgent Library provides an expression language for measurment transformation, that can be used to adapt the
+The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
 information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
 language can be configured for provisioned attributes as explained in the Device Provisioning API section in the
 main README.md.
@@ -34,7 +34,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 {
    "name":"fillingLevel",
    "type":"Number",
-   "expression": "@{$level / 100}",
+   "expression": "${@level / 100}",
    "cast": "Number"
 },
 ```
