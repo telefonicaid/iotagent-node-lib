@@ -1,0 +1,22 @@
+{
+    "contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                    {
+                        "name": "pressure",
+                        "type": "Hgmm",
+                        "value": ""
+                    }
+                ],
+                "id": "light1",
+                "isPattern": "false",
+                "type": "Light"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        }
+    ]
+}

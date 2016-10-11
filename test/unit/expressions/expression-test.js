@@ -25,7 +25,7 @@
 var should = require('should'),
     expressionParser = require('../../../lib/plugins/expressionParser');
 
-describe.only('Expression interpreter', function() {
+describe('Expression interpreter', function() {
     var arithmetic,
         scope = {
             value: 6,

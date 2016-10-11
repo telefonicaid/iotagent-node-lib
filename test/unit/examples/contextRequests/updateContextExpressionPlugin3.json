@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "ws1",
+      "attributes": [
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": "1040"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}

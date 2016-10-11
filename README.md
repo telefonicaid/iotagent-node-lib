@@ -754,6 +754,12 @@ in the `config.eventType` attribute.
 This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
 TimeInstant attribute as metadata for every other attribute in the same request.
 
+##### Expression Translation plugin (expressionTransformation)
+This plugin allows the devices and configurations that have defined expressions to generate their values from those
+expressions and the reported measure information.
+
+For further information on how the expressions work, refer to the [Expression Language Reference](.doc/expressionLanguage).
+
 ### <a name="datamigration"/> Old IoTAgent data migration
 In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
 implementations, a data migration tool has been developed. This data migration tool has been integrated as a command
