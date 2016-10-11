@@ -3,8 +3,10 @@
 ## Index
 
 * [Overview](#overview)
-* [Expression execution](#execution)
-* [Description](#description)
+* [Measurement transformation](#transformation)
+  * [Expression definition](#definition)
+  * [Expression execution](#execution)
+* [Language description](#description)
   * [Types](#types)
   * [Values](#values)
   * [Allowed operations](#operations)
@@ -16,7 +18,61 @@ information coming from the South Bound APIs to the information reported to the 
 language can be configured for provisioned attributes as explained in the Device Provisioning API section in the
 main README.md.
 
-## <a name="execution"/> Expression execution
+## <a name="transformation"/> Measurement transformation
+
+### <a name="definition"/> Expression definition
+
+Expressions can be defined for Active attributes, either in the Device provisioning or in the Configuration provisioning.
+The following example shows a device provisioning payload with defined expressions:
+```
+{
+   "devices":[
+      {
+         "device_id":"45",
+         "protocol":"GENERIC_PROTO",
+         "entity_name":"WasteContainer:WC45",
+         "entity_type":"WasteContainer",
+         "attributes":[
+            {
+               "name":"location",
+               "type":"geo:point",
+               "expression": "${latitude}, ${longitude}"
+            },
+            {
+               "name":"fillingLevel",
+               "type":"Number",
+               "expression": "@{$level / 100}",
+               "cast": "Number"
+            },
+            {
+               "object_id":"tt",
+               "name":"temperature",
+               "type":"Number"
+            },
+            {
+               "object_id":"latitude",
+               "remove": true
+            },
+            {
+               "object_id":"longitude",
+               "remove": true
+            }
+         ]
+      }
+   ]
+}
+
+```
+
+The value of the `expression` attribute is a string that can contain any number of expression patterns. Each expression
+pattern is marked with the following secuence: `${<expression>}` where `<expression>` is a valid construction of the
+Expression Language (see definition [below](#description)). In order for the complete expression to be evaluated, all the
+expression patterns must be evaluatable (there must be a value in the measurement for all the variables of all the
+expression patterns).
+
+The exact same syntax works for Configuration and Device provisioning.
+
+### <a name="execution"/> Expression execution
 
 Whenever a new measurement arrives to the IoTAgent for a device with declared expressions, all of the expressions for
 the device will be checked for execution: for all the defined active attributes containing expressions, the IoTAgent
@@ -34,7 +90,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 {
    "name":"fillingLevel",
    "type":"Number",
-   "expression": "${@level / 100}",
+   "expression": "${@fillingLevel / 100}",
    "cast": "Number"
 },
 ```
@@ -46,7 +102,7 @@ level: 85.3
 The only expression rule that will be executed will be that of the 'fillingLevel' attribute. It will produce the value
 '0.853' that will be sent to the Context Broker.
 
-## <a name="description"/>Description
+## <a name="description"/> Language description
 
 ### <a name="types"/> Types
 
