@@ -51,6 +51,29 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         expression: '${@pressure * 20}'
                     }
                 ]
+            },
+            'WeatherStation': {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        expression: '${@pressure * 20}'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'humidity',
+                        type: 'Percentage'
+                    },
+                    {
+                        name: 'weather',
+                        type: 'Summary',
+                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}'
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -79,6 +102,7 @@ describe('Expression-based transformations plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
+
     describe('When an update comes for attributes with expressions', function() {
         var values = [
             {
@@ -102,6 +126,41 @@ describe('Expression-based transformations plugin', function() {
 
         it('should apply the expression before sending the values', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there are expression attributes that are just calculated (not sent by the device)', function() {
+        var values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'percentage',
+                value: '12'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextExpressionPlugin2.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextExpressionPlugin2Success.json'));
+        });
+
+        it('should calculate them and add them to the payload', function(done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
