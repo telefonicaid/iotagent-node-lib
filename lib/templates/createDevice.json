@@ -86,6 +86,11 @@
                   "description": "Type of the attribute in the target entity",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
+                },
+                "expression": {
+                  "description": "Optional expression for measurement transformation",
+                  "type": "string",
+                  "pattern": "^([^<>;'=\"]+)+$"
                 }
               }
             }
