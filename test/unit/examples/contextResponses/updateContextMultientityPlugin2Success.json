@@ -1,0 +1,40 @@
+{
+    "contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                    {
+                        "name": "pressure",
+                        "type": "Hgmm",
+                        "value": ""
+                    }
+                ],
+                "id": "ws4",
+                "isPattern": "false",
+                "type": "WeatherStation"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        },
+        {
+          "contextElement": {
+            "attributes": [
+              {
+                "name": "humidity",
+                "type": "Percentage",
+                "value": ""
+              }
+            ],
+            "id": "Higro2000",
+            "isPattern": "false",
+            "type": "WeatherStation"
+          },
+          "statusCode": {
+            "code": "200",
+            "reasonPhrase": "OK"
+          }
+        }
+    ]
+}
