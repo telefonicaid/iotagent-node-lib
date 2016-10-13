@@ -1,0 +1,30 @@
+{
+  "contextElements": [
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "ws4",
+      "attributes": [
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": "52"
+        }
+      ]
+    },
+    {
+      "type": "Higrometer",
+      "isPattern": "false",
+      "id": "Higro2000",
+      "attributes": [
+        {
+          "name": "humidity",
+          "type": "Percentage",
+          "value": "12"
+        }
+      ]
+    }
+
+  ],
+  "updateAction": "UPDATE"
+}
