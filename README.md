@@ -320,6 +320,16 @@ have the same syntax, an object containing the following attributes:
 * **name** (mandatory): id of the attribute in the target entity in the Context Broker.
 * **type** (mandatory): name of the type of the attribute in the target entity.
 
+Some transformation plugins also allow the use of the following optional attributes:
+* **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
+an expression based on a combination of the reported values. See the [Expression Language definition](doc/expressionLanguage.md) for details
+* **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device entity
+but in a new entity with an ID given by this attribute. The type of this additional entity can be configured with the
+`entity_type` attribute. If no type is configured, the device entity type is used instead.
+* **entity_type**: configures the type of an alternative entity.
+
+See the transformation plugins Section for more details.
+
 #### API Actions
 ##### POST /iot/devices
 Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload. 
@@ -759,6 +769,10 @@ This plugin allows the devices and configurations that have defined expressions 
 expressions and the reported measure information.
 
 For further information on how the expressions work, refer to the [Expression Language Reference](.doc/expressionLanguage).
+
+##### Multientity plugin (multiEntity)
+Allows the devices provisioned in the IoTAgent to map their attributes to more than one entity, declaring the target
+entity through the Configuration or Device provisioning APIs.
 
 ### <a name="datamigration"/> Old IoTAgent data migration
 In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
