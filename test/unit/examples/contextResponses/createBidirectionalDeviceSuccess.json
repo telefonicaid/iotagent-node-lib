@@ -1,0 +1,22 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "location",
+            "type": "geo:point",
+            "value": " "
+          }
+        ],
+        "id": "TheFirstLight",
+        "isPattern": "false",
+        "type": "TheLightType"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}

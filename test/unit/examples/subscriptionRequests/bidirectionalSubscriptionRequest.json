@@ -1,0 +1,23 @@
+{
+  "entities": [
+    {
+      "type": "TheLightType",
+      "isPattern": "false",
+      "id": "TheFirstLight"
+    }
+  ],
+  "reference": "http://smartGondor.com/notify",
+  "duration": "P1M",
+  "notifyConditions": [
+    {
+      "type": "ONCHANGE",
+      "condValues": [
+        "location"
+      ]
+    }
+  ],
+  "attributes": [
+    "location"
+  ],
+  "throttling": "PT5S"
+}
