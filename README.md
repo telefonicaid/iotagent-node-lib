@@ -327,6 +327,8 @@ an expression based on a combination of the reported values. See the [Expression
 but in a new entity with an ID given by this attribute. The type of this additional entity can be configured with the
 `entity_type` attribute. If no type is configured, the device entity type is used instead.
 * **entity_type**: configures the type of an alternative entity.
+* **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
+in the [Data Mapping Plugins section](#datamapping) for details.
 
 See the transformation plugins Section for more details.
 
@@ -773,6 +775,47 @@ For further information on how the expressions work, refer to the [Expression La
 ##### Multientity plugin (multiEntity)
 Allows the devices provisioned in the IoTAgent to map their attributes to more than one entity, declaring the target
 entity through the Configuration or Device provisioning APIs.
+
+##### Bidirectionality plugin (bidirectional)
+This plugin allows the devices with composite values an expression to update the original values in the devices when
+the composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
+
+IoTAs using this plugins should also define a notification handler to handle incoming values. This handler will be
+intercepted by the plugin, so the mapped values are included in the updated notification.
+
+When a device is provisioned with bidirectional attributes, the IoTAgent subscribes to changes in that attribute. When a
+change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device provisioning
+payload to the notification, and calls the underlying notification handler with the transformed entity.
+
+The following `attributes` section shows an example of the plugin configuration:
+```
+"attributes":[
+            {
+               "name":"location",
+               "type":"geo:point",
+               "expression": "${latitude}, ${longitude}",
+               "reverse": [
+                 {
+                 "object_id":"latitude",
+                 "type": "string",
+                 "expression": "${@location.substr($value.indexOf(',') + 1)}"
+                 },
+                 {
+                 "object_id":"longitude",
+                 "type": "string",
+                 "expression": "${@location.substr(0, $value.indexOf(','))}"
+                 }
+               ]
+            },
+```
+For each attribute that would have bidirectionality, a new field `reverse` must be configured. This field will contain
+an array of fields that will be created based on the notifications content. The expression notification can contain
+any attribute of the same entity as the bidirectional attribute; declaring them in the expressions will add them to
+the subscription payload.
+
+For each attribute in the `reverse` array, an expression must be defined to calculate its value based on the notification
+attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about how the value
+is then progressed to the device are protocol-specific.
 
 ### <a name="datamigration"/> Old IoTAgent data migration
 In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based

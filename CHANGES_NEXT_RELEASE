@@ -1,2 +1,3 @@
 - Add an Attribute Expression Plugin (#440)
 - Add Multientity plugin (#468)
+- Add bidirectionality mechanisms for composed attributes (#474)

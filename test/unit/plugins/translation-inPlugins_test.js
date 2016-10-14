@@ -118,7 +118,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         throttling: 'PT5S'
     };
 
-describe('Translation middleware tests', function() {
+describe('Data Mapping Plugins: translation', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -146,7 +146,7 @@ describe('Translation middleware tests', function() {
                 utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
         });
 
-        it('should execute the middlewares', function(done) {
+        it('should execute the translation middlewares', function(done) {
             var values = [
                 {
                     name: 'state',
