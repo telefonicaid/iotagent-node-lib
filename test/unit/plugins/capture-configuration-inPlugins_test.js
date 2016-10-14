@@ -23,13 +23,12 @@
 
 'use strict';
 
+/* jshint camelcase: false */
+
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
-    nock = require('nock'),
     request = require('request'),
-    contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
@@ -107,21 +106,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         }
     };
 
-describe.only('Data Mapping Plugins: configuration provision', function() {
-    var options = {
-        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
-        headers: {
-            'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens'
-        }
-    };
-
+describe('Data Mapping Plugins: configuration provision', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-
-        nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.clearAll(done);
@@ -145,6 +132,7 @@ describe.only('Data Mapping Plugins: configuration provision', function() {
             });
 
             request(optionsCreation, function(error, response, body) {
+                should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
             });
