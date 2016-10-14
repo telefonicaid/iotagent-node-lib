@@ -61,15 +61,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
-    },
-    device1 = {
-        id: 'light1',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens'
     };
 
-describe.only('Data Mapping Plugins: provision', function() {
+describe('Data Mapping Plugins: device provision', function() {
     var options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
