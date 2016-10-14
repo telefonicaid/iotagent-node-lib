@@ -120,7 +120,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
 
-        xit('should call the device provisioning handler if present', function(done) {
+        it('should call the device provisioning handler if present', function(done) {
             var handlerCalled = false;
 
             iotAgentLib.setProvisioningHandler(function(device, callback) {
@@ -134,7 +134,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
 
-        xit('should store the device with the provided entity id, name and type', function(done) {
+        it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
@@ -145,7 +145,7 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
-        xit('should store the device with the per device information', function(done) {
+        it('should store the device with the per device information', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
@@ -175,7 +175,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
 
-        xit('should store fill the device ID in case only the name is provided', function(done) {
+        it('should store fill the device ID in case only the name is provided', function(done) {
             /* jshint camelcase:false */
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
@@ -188,7 +188,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
 
-        xit('should store service and subservice info from the headers along with the device data', function(done) {
+        it('should store service and subservice info from the headers along with the device data', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
@@ -201,7 +201,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
 
-        xit('should create the initial entity in the Context Broker', function(done) {
+        it('should create the initial entity in the Context Broker', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {

@@ -67,8 +67,7 @@ describe('Bidirectional data plugin', function() {
     var options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
-        json: 
-
+        json:
             utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
         headers: {
             'fiware-service': 'smartGondor',
@@ -82,8 +81,10 @@ describe('Bidirectional data plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
-                iotAgentLib.addConfigurationProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
+                iotAgentLib.addDeviceProvisionMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addConfigurationProvisionMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
                 done();
             });
         });
