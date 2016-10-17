@@ -174,6 +174,61 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a notification arrives for a bidirectional attribute', function() {
-        it('should transform the values before invoking the notification handler');
+        var notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            executedHandler = false;
+
+        beforeEach(function() {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/subscribeContext', utils.readExampleFile(
+                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/unsubscribeContext', utils.readExampleFile(
+                    './test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+        });
+
+        afterEach(function() {
+            iotAgentLib.setNotificationHandler();
+        });
+
+        function mockedHandler(device, notification, callback) {
+            executedHandler = true;
+            callback();
+        }
+
+        it('should execute the original handler', function(done) {
+            request(options, function(error, response, body) {
+                request(notificationOptions, function(error, response, body) {
+                    executedHandler.should.equal(true);
+                    done();
+                });
+            });
+        });
     });
 });
