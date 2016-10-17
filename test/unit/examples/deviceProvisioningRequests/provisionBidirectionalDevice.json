@@ -17,12 +17,12 @@
             {
               "object_id":"latitude",
               "type": "string",
-              "expression": "${@location.substr(@location.indexOf(',') + 1)}"
+              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
             },
             {
               "object_id":"longitude",
               "type": "string",
-              "expression": "${@location.substr(0, @location.indexOf(','))}"
+              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
             }
           ]
         }

@@ -85,6 +85,8 @@ describe('Bidirectional data plugin', function() {
                     iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
                     iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
+                iotAgentLib.addNotificationMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.notification);
                 done();
             });
         });
@@ -172,7 +174,7 @@ describe('Bidirectional data plugin', function() {
         });
     });
 
-    describe.skip('When a notification arrives for a bidirectional attribute', function() {
+    describe('When a notification arrives for a bidirectional attribute', function() {
         var notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                 method: 'POST',
@@ -238,11 +240,11 @@ describe('Bidirectional data plugin', function() {
                     longitudeFound = false;
 
                 for (var i = 0; i < values.length; i++) {
-                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
                         latitudeFound = true;
                     }
 
-                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
                         longitudeFound = true;
                     }
                 }
