@@ -220,6 +220,48 @@ describe('Subscription tests', function() {
                 done();
             });
         });
+        it('should invoke all the notification middlewares before the user defined callback', function(done) {
+            var notificationOptions = {
+                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                    method: 'POST',
+                    json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
+                    headers: {
+                        'fiware-service': 'smartGondor',
+                        'fiware-servicepath': '/gardens'
+                    }
+                },
+                executedMiddlewares = false,
+                executedHandler = false,
+                modifiedData = false;
+
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                modifiedData = notification.length === 2;
+                callback();
+            }
+
+            function mockedMiddleware(device, notification, callback) {
+                executedMiddlewares = true;
+                notification.push({
+                    name: 'middlewareAttribute',
+                    type: 'middlewareType',
+                    value: 'middlewareValue'
+                });
+
+                callback(null, device, notification);
+            }
+
+            iotAgentLib.addNotificationMiddleware(mockedMiddleware);
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(notificationOptions, function(error, response, body) {
+                should.not.exist(error);
+                executedHandler.should.equal(true);
+                executedMiddlewares.should.equal(true);
+                modifiedData.should.equal(true);
+                done();
+            });
+        });
         it('should get the correspondent device information', function(done) {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
