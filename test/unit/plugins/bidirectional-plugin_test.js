@@ -185,6 +185,11 @@ describe('Bidirectional data plugin', function() {
             },
             executedHandler = false;
 
+        function mockedHandler(device, notification, callback) {
+            executedHandler = true;
+            callback();
+        }
+
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -216,11 +221,6 @@ describe('Bidirectional data plugin', function() {
         afterEach(function() {
             iotAgentLib.setNotificationHandler();
         });
-
-        function mockedHandler(device, notification, callback) {
-            executedHandler = true;
-            callback();
-        }
 
         it('should execute the original handler', function(done) {
             request(options, function(error, response, body) {
