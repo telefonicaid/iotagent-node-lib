@@ -81,11 +81,15 @@ describe('Expression interpreter', function() {
 
     describe('When string transformation functions are executed', function() {
         it('should return the appropriate piece of the string', function(done) {
-            expressionParser.parse('trim(substr(@theString, indexOf(@theString, \",\") + 1, length(@theString)))', scope, 'String', function(error, result) {
-                should.not.exist(error);
-                result.should.equal('-19.4');
-                done();
-            });
+            expressionParser.parse(
+                'trim(substr(@theString, indexOf(@theString, \",\") + 1, length(@theString)))',
+                scope,
+                'String',
+                function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal('-19.4');
+                    done();
+                });
         });
     });
 
