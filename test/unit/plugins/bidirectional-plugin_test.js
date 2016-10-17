@@ -96,7 +96,6 @@ describe('Bidirectional data plugin', function() {
         });
     });
 
-
     describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -173,7 +172,7 @@ describe('Bidirectional data plugin', function() {
         });
     });
 
-    describe('When a notification arrives for a bidirectional attribute', function() {
+    describe.skip('When a notification arrives for a bidirectional attribute', function() {
         var notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                 method: 'POST',
@@ -184,11 +183,6 @@ describe('Bidirectional data plugin', function() {
                 }
             },
             executedHandler = false;
-
-        function mockedHandler(device, notification, callback) {
-            executedHandler = true;
-            callback();
-        }
 
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -214,8 +208,6 @@ describe('Bidirectional data plugin', function() {
                     './test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
-
-            iotAgentLib.setNotificationHandler(mockedHandler);
         });
 
         afterEach(function() {
@@ -223,9 +215,47 @@ describe('Bidirectional data plugin', function() {
         });
 
         it('should execute the original handler', function(done) {
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
             request(options, function(error, response, body) {
                 request(notificationOptions, function(error, response, body) {
                     executedHandler.should.equal(true);
+                    done();
+                });
+            });
+        });
+
+        it('should return the transformed values', function(done) {
+            var transformedHandler = false;
+
+            function mockedHandler(device, values, callback) {
+                var latitudeFound = false,
+                    longitudeFound = false;
+
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                        latitudeFound = true;
+                    }
+
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                        longitudeFound = true;
+                    }
+                }
+
+                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function(error, response, body) {
+                request(notificationOptions, function(error, response, body) {
+                    transformedHandler.should.equal(true);
                     done();
                 });
             });
