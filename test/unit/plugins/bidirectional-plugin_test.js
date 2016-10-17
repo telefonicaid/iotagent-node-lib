@@ -125,4 +125,55 @@ describe('Bidirectional data plugin', function() {
             });
         });
     });
+
+    describe('When a device with bidirectionality subscriptions is removed', function() {
+        var deleteRequest = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'DELETE',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function() {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/subscribeContext', utils.readExampleFile(
+                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/unsubscribeContext', utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
+                .reply(200, utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+        });
+
+        it('should remove its subscriptions from the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                request(deleteRequest, function(error, response, body) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a notification arrives for a bidirectional attribute', function() {
+        it('should transform the values before invoking the notification handler');
+    });
 });
