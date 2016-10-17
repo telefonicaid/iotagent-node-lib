@@ -789,24 +789,25 @@ payload to the notification, and calls the underlying notification handler with 
 
 The following `attributes` section shows an example of the plugin configuration:
 ```
-"attributes":[
+      "attributes": [
+        {
+          "name":"location",
+          "type":"geo:point",
+          "expression": "${latitude}, ${longitude}",
+          "reverse": [
             {
-               "name":"location",
-               "type":"geo:point",
-               "expression": "${latitude}, ${longitude}",
-               "reverse": [
-                 {
-                 "object_id":"latitude",
-                 "type": "string",
-                 "expression": "${@location.substr($value.indexOf(',') + 1)}"
-                 },
-                 {
-                 "object_id":"longitude",
-                 "type": "string",
-                 "expression": "${@location.substr(0, $value.indexOf(','))}"
-                 }
-               ]
+              "object_id":"latitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
             },
+            {
+              "object_id":"longitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+            }
+          ]
+        }
+      ],
 ```
 For each attribute that would have bidirectionality, a new field `reverse` must be configured. This field will contain
 an array of fields that will be created based on the notifications content. The expression notification can contain
