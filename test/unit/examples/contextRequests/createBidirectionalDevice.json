@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "TheLightType",
+      "isPattern": "false",
+      "id": "TheFirstLight",
+      "attributes": [
+        {
+          "name": "location",
+          "type": "geo:point",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}

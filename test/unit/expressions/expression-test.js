@@ -29,7 +29,8 @@ describe('Expression interpreter', function() {
     var arithmetic,
         scope = {
             value: 6,
-            other: 3
+            other: 3,
+            theString: '12.6,   -19.4'
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -75,6 +76,20 @@ describe('Expression interpreter', function() {
                 result.should.equal('PruebasDeStrings');
                 done();
             });
+        });
+    });
+
+    describe('When string transformation functions are executed', function() {
+        it('should return the appropriate piece of the string', function(done) {
+            expressionParser.parse(
+                'trim(substr(@theString, indexOf(@theString, \",\") + 1, length(@theString)))',
+                scope,
+                'String',
+                function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal('-19.4');
+                    done();
+                });
         });
     });
 
