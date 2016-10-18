@@ -95,6 +95,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 active: []
             }
         },
+        deviceRegistry: {
+            type: 'mongodb'
+        },
+
+        mongodb: {
+            host: 'localhost',
+            port: '27017',
+            db: 'iotagent'
+        },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
@@ -243,6 +252,66 @@ describe('Polling commands', function() {
                     listCommands.commands[0].value.should.equal('[28, -104, 23]');
                     done();
                 });
+            });
+        });
+    });
+
+    describe('When a command arrives with multiple values in the value field', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Robot',
+                        isPattern: 'false',
+                        id: 'Robot:r2d2',
+                        attributes: [
+                            {
+                                name: 'position',
+                                type: 'Array',
+                                value: {
+                                    attr1: 12,
+                                    attr2: 24
+                                }
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should return a 200 OK both in HTTP and in the status code', function(done) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+
+                response.statusCode.should.equal(200);
+
+                done();
             });
         });
     });
