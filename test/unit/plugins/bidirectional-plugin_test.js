@@ -75,7 +75,6 @@ describe('Bidirectional data plugin', function() {
         }
     };
 
-
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -262,5 +261,60 @@ describe('Bidirectional data plugin', function() {
                 });
             });
         });
+    });
+
+    describe('When a new Group provisioning request arrives with bidirectional attributes', function() {
+        var provisionGroup = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
+                method: 'POST',
+                json:
+                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            provisionDevice = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+
+        beforeEach(function() {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/subscribeContext', utils.readExampleFile(
+                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+
+        });
+        it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
+            request(provisionGroup, function(error, response, body) {
+                request(provisionDevice, function(error, response, body) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
+        it('should return the transformed values');
     });
 });

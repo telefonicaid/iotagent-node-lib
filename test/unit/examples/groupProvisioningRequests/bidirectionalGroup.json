@@ -1,0 +1,31 @@
+{
+  "services": [
+    {
+      "resource": "/deviceTest",
+      "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+      "entity_type": "TheLightType",
+      "commands": [],
+      "lazy": [],
+      "attributes": [
+        {
+          "name":"location",
+          "type":"geo:point",
+          "expression": "${latitude}, ${longitude}",
+          "reverse": [
+            {
+              "object_id":"latitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+            },
+            {
+              "object_id":"longitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+            }
+          ]
+        }
+      ],
+      "static_attributes": []
+    }
+  ]
+}
