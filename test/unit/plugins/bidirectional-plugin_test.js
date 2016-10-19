@@ -315,6 +315,90 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
-        it('should return the transformed values');
+        var provisionGroup = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
+                method: 'POST',
+                json:
+                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            provisionDevice = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+
+        beforeEach(function() {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/subscribeContext', utils.readExampleFile(
+                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+
+        });
+
+        afterEach(function() {
+            iotAgentLib.setNotificationHandler();
+        });
+
+        it('should return the transformed values', function(done) {
+            var transformedHandler = false;
+
+            function mockedHandler(device, values, callback) {
+                var latitudeFound = false,
+                    longitudeFound = false;
+
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                        latitudeFound = true;
+                    }
+
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                        longitudeFound = true;
+                    }
+                }
+
+                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(provisionGroup, function(error, response, body) {
+                request(provisionDevice, function(error, response, body) {
+                    request(notificationOptions, function(error, response, body) {
+                        transformedHandler.should.equal(true);
+                        done();
+                    });
+                });
+            });
+        });
     });
 });
