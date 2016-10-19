@@ -3,3 +3,4 @@
 - Add bidirectionality mechanisms for composed attributes (#474)
 - Add String composition functions for expressions
 - Bidirectional plugin doesn't apply to active attributes defined in a Configuration Group (#479)
+- FIX Multiple values not allowed in polling commands
