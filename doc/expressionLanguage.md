@@ -36,26 +36,18 @@ The following example shows a device provisioning payload with defined expressio
             {
                "name":"location",
                "type":"geo:point",
-               "expression": "${latitude}, ${longitude}"
+               "expression": "${@latitude}, ${@longitude}"
             },
             {
                "name":"fillingLevel",
                "type":"Number",
-               "expression": "@{$level / 100}",
+               "expression": "${@level / 100}",
                "cast": "Number"
             },
             {
                "object_id":"tt",
                "name":"temperature",
                "type":"Number"
-            },
-            {
-               "object_id":"latitude",
-               "remove": true
-            },
-            {
-               "object_id":"longitude",
-               "remove": true
             }
          ]
       }
@@ -147,11 +139,11 @@ The following operations are currently available, divided by attribute type
 #### String operations
 
 - concatenation ('+'): returns the concatenation of the two values separated by `+`.
-- substring location ('indexOf(<variable>, <substring>)'): returns the index where the first occurrence of the substring
+- substring location (`indexOf(<variable>, <substring>)`): returns the index where the first occurrence of the substring
 `<substring>` can be found in the string value of `<variable>`.
-- substring ('substr(<variable>, <start> <end>)'): returns a substring of the string variable passed as a parameter,
+- substring (`substr(<variable>, <start> <end>)`): returns a substring of the string variable passed as a parameter,
 starting at posisiton `start` and ending at position `<end>`.
-- whitespace removal ('trim(<string>)'): removes all the spaces surrounding the string passed as a parameter.
+- whitespace removal (`trim(<string>)`): removes all the spaces surrounding the string passed as a parameter.
 
 #### Other available operators
 

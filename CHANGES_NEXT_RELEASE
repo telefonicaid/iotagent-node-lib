@@ -3,3 +3,4 @@
 - Add bidirectionality mechanisms for composed attributes (#474)
 - Add String composition functions for expressions
 - FIX Multiple values not allowed in polling commands
+- FIX [Docu] Remove "Remove tag" from examples (#481)
