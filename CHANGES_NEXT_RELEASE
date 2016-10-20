@@ -5,3 +5,4 @@
 - Bidirectional plugin doesn't apply to active attributes defined in a Configuration Group (#479)
 - FIX Multiple values not allowed in polling commands
 - FIX [Docu] Remove "Remove tag" from examples (#481)
+- FIX Notifications return 404 instead of a 200 OK (#484)

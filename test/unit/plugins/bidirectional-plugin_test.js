@@ -231,6 +231,22 @@ describe('Bidirectional data plugin', function() {
             });
         });
 
+        it('should return a 200 OK', function(done) {
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function(error, response, body) {
+                request(notificationOptions, function(error, response, body) {
+                    response.statusCode.should.equal(200);
+                    done();
+                });
+            });
+        });
+
         it('should return the transformed values', function(done) {
             var transformedHandler = false;
 
