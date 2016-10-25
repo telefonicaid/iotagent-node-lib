@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "sensor",
+      "isPattern": "false",
+      "id": "eii01201ttt",
+      "attributes": [
+        {
+          "name": "TimeInstant",
+          "type": "ISO8601",
+          "value": " "
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
