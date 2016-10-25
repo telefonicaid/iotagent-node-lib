@@ -1,0 +1,22 @@
+{
+    "contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                  {
+                    "name": "TimeInstant",
+                    "type": "ISO8601",
+                    "value": " "
+                  }
+                ],
+                "id": "eii01201ttt",
+                "isPattern": "false",
+                "type": "sensor"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        }
+    ]
+}

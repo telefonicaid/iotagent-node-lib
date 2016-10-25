@@ -211,6 +211,49 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
     });
+    describe('When a device provisioning request with a TimeInstanta attribute arrives to the IoTA', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionTimeInstant.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.deactivate(function() {
+                iotAgentConfig.timestamp = true;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function() {
+            iotAgentConfig.timestamp = false;
+        });
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createTimeinstantDevice.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createTimeinstantSuccess.json'));
+
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
