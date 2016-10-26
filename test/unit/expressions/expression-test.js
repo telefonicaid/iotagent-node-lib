@@ -30,7 +30,8 @@ describe('Expression interpreter', function() {
         scope = {
             value: 6,
             other: 3,
-            theString: '12.6,   -19.4'
+            theString: '12.6,   -19.4',
+            spaces: '5 a b c d 5'
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -88,6 +89,20 @@ describe('Expression interpreter', function() {
                 function(error, result) {
                     should.not.exist(error);
                     result.should.equal('-19.4');
+                    done();
+                });
+        });
+    });
+
+    describe('When trim() function is executed', function() {
+        it('should return the appropriate piece of the string', function(done) {
+            expressionParser.parse(
+                'trim(@spaces)',
+                scope,
+                'String',
+                function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal('5 a b c d 5');
                     done();
                 });
         });

@@ -9,3 +9,4 @@
 - FIX Device creation with attribute named "TimeInstant" is not allowed (#486)
 - FIX Iota transformation plugins regex validation error (#489)
 - ADD Add single quotes as valid string marks
+- FIX Get device info does not include the plugins fields (#492)

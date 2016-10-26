@@ -211,7 +211,7 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
     });
-    describe('When a device provisioning request with a TimeInstanta attribute arrives to the IoTA', function() {
+    describe('When a device provisioning request with a TimeInstant attribute arrives to the IoTA', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -296,6 +296,7 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
+
         it('should store the device with the provided entity id, name and type', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
