@@ -78,7 +78,7 @@
           "expression": {
             "description": "Optional expression for measurement transformation",
             "type": "string",
-            "pattern": "^([^<>;'=\"]+)+$"
+            "pattern": "^([^<>;'=]+)+$"
           },
           "entity_name": {
             "description": "Optional entity name for multientity updates",

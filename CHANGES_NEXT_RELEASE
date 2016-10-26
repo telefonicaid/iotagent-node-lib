@@ -7,3 +7,4 @@
 - FIX [Docu] Remove "Remove tag" from examples (#481)
 - FIX Notifications return 404 instead of a 200 OK (#484)
 - FIX Device creation with attribute named "TimeInstant" is not allowed (#486)
+- FIX Iota transformation plugins regex validation error (#489)
