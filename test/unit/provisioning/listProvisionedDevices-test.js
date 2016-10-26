@@ -52,7 +52,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
 describe('Device provisioning API: List provisioned devices', function() {
     var provisioning1Options,
         provisioning2Options,
-        provisioning3Options;
+        provisioning3Options,
+        provisioning4Options;
 
     beforeEach(function(done) {
         provisioning1Options = {
@@ -73,6 +74,16 @@ describe('Device provisioning API: List provisioned devices', function() {
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
+        };
+
+        provisioning4Options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionFullDevice.json')
         };
 
         iotAgentLib.activate(iotAgentConfig, function() {
@@ -100,10 +111,23 @@ describe('Device provisioning API: List provisioned devices', function() {
                 utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
+            contextBrokerMock
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .post('/v1/updateContext')
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
             async.series([
                 iotAgentLib.clearAll,
                 async.apply(request, provisioning1Options),
-                async.apply(request, provisioning2Options)
+                async.apply(request, provisioning2Options),
+                async.apply(request, provisioning4Options)
             ], function(error, results) {
                 done();
             });
@@ -130,8 +154,8 @@ describe('Device provisioning API: List provisioned devices', function() {
                 should.not.exist(error);
                 should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
-                parsedBody.devices.length.should.equal(2);
-                parsedBody.count.should.equal(2);
+                parsedBody.devices.length.should.equal(3);
+                parsedBody.count.should.equal(3);
                 done();
             });
         });
@@ -200,6 +224,37 @@ describe('Device provisioning API: List provisioned devices', function() {
                 parsedBody.attributes[0].object_id.should.equal('attr_name');
                 parsedBody.attributes[0].name.should.equal('attr_name');
                 parsedBody.attributes[0].type.should.equal('string');
+                done();
+            });
+        });
+    });
+    describe('When a request for a device with plugin attributes arrives', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'GET'
+        };
+
+        it('should return the appropriate attribute fields', function(done) {
+            request(options, function(error, response, body) {
+                /* jshint camelcase:false */
+
+                var parsedBody;
+
+                should.not.exist(error);
+
+                parsedBody = JSON.parse(body);
+                should.exist(parsedBody.attributes[0].entity_name);
+                should.exist(parsedBody.attributes[0].entity_type);
+                should.exist(parsedBody.attributes[1].expression);
+                should.exist(parsedBody.attributes[2].reverse);
+                parsedBody.attributes[0].entity_name.should.equal('Higro2000');
+                parsedBody.attributes[0].entity_type.should.equal('Higrometer');
+                parsedBody.attributes[1].expression.should.equal('${@humidity * 20}');
+                parsedBody.attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
@@ -397,7 +452,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 var parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-                parsedBody.devices.length.should.equal(2);
+                parsedBody.devices.length.should.equal(3);
                 done();
             });
         });
