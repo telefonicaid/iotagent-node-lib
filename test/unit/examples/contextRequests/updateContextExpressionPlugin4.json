@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "LightError",
+      "isPattern": "false",
+      "id": "light1",
+      "attributes": [
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": "1040"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}
