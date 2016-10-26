@@ -184,6 +184,23 @@ describe('Device provisioning API: List provisioned devices', function() {
                 done();
             });
         });
+
+        it('should return all the plugin attributes', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+
+
+                should.exist(parsedBody.devices[2].attributes[0].entity_name);
+                should.exist(parsedBody.devices[2].attributes[0].entity_type);
+                should.exist(parsedBody.devices[2].attributes[1].expression);
+                should.exist(parsedBody.devices[2].attributes[2].reverse);
+                parsedBody.devices[2].attributes[0].entity_name.should.equal('Higro2000');
+                parsedBody.devices[2].attributes[0].entity_type.should.equal('Higrometer');
+                parsedBody.devices[2].attributes[1].expression.should.equal('${@humidity * 20}');
+                parsedBody.devices[2].attributes[2].reverse.length.should.equal(2);
+                done();
+            });
+        });
     });
     describe('When a request for the information about a specific device arrives', function() {
         var options = {
