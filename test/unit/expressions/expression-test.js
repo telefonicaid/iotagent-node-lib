@@ -103,6 +103,17 @@ describe('Expression interpreter', function() {
         });
     });
 
+    describe('When an expression with strings with single quotation marks is parsed', function() {
+        it('should accept the strings', function(done) {
+            expressionParser.parse('\'Pruebas \' + \'De Strings\'', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('Pruebas De Strings');
+                done();
+            });
+        });
+    });
+
+
     describe('When a string is concatenated with a number', function() {
         it('should result in a string concatenation', function(done) {
             expressionParser.parse('"number " + 5', scope, 'String', function(error, result) {
