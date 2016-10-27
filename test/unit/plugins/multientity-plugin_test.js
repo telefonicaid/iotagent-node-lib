@@ -75,6 +75,24 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         entity_name: 'Higro2000',
                     }
                 ]
+            },
+            'WeatherStation3': {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'humidity',
+                        type: 'Percentage',
+                        entity_name: 'Station Number ${@sn * 10}',
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -138,6 +156,47 @@ describe('Multi-entity plugin', function() {
             });
         });
     });
+
+    describe('When an update comes for a multientity defined with an expression', function() {
+        var values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            },
+            {
+                name: 'sn',
+                type: 'Number',
+                value: '5'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextMultientityPlugin3.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'));
+        });
+
+        it('should send the update value to the resulting value of the expression', function(done) {
+            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
 
     describe('When an update comes for a multientity measurement without type for one entity', function() {
         var values = [

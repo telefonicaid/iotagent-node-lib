@@ -11,3 +11,4 @@
 - ADD Add single quotes as valid string marks
 - FIX Get device info does not include the plugins fields (#492)
 - FIX Transformation plugin for indexof (#493)
+- FIX Entities in multientity scenarios cannot be defined as expressions (#488)

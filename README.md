@@ -325,7 +325,8 @@ Some transformation plugins also allow the use of the following optional attribu
 an expression based on a combination of the reported values. See the [Expression Language definition](doc/expressionLanguage.md) for details
 * **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device entity
 but in a new entity with an ID given by this attribute. The type of this additional entity can be configured with the
-`entity_type` attribute. If no type is configured, the device entity type is used instead.
+`entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can be defined
+as expressions, using the [Expression Language definition](doc/expressionLanguage.md).
 * **entity_type**: configures the type of an alternative entity.
 * **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
 in the [Data Mapping Plugins section](#datamapping) for details.
