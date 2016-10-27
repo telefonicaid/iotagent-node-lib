@@ -31,7 +31,8 @@ describe('Expression interpreter', function() {
             value: 6,
             other: 3,
             theString: '12.6,   -19.4',
-            spaces: '5 a b c d 5'
+            spaces: '5 a b c d 5',
+            big: 2000
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -128,7 +129,6 @@ describe('Expression interpreter', function() {
         });
     });
 
-
     describe('When a string is concatenated with a number', function() {
         it('should result in a string concatenation', function(done) {
             expressionParser.parse('"number " + 5', scope, 'String', function(error, result) {
@@ -158,4 +158,15 @@ describe('Expression interpreter', function() {
             });
         });
     });
+
+    describe('When an string function is used with an expression', function() {
+        it('should work on the expression value', function(done) {
+            expressionParser.parse('indexOf(24 * @big, "80")', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal(1);
+                done();
+            });
+        });
+    });
+
 });
