@@ -1,0 +1,35 @@
+{
+  "contextElements": [
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "ws4",
+      "attributes": [
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": "52"
+        },
+        {
+          "name": "sn",
+          "type": "Number",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "Station Number 50",
+      "attributes": [
+        {
+          "name": "humidity",
+          "type": "Percentage",
+          "value": "12"
+        }
+      ]
+    }
+
+  ],
+  "updateAction": "UPDATE"
+}
