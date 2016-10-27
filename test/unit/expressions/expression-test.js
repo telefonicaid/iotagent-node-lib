@@ -73,7 +73,7 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with two strings is concatenated', function() {
         it('should return the concatenation of both strings', function(done) {
-            expressionParser.parse('"Pruebas" + "DeStrings"', scope, 'String', function(error, result) {
+            expressionParser.parse('"Pruebas" # "DeStrings"', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal('PruebasDeStrings');
                 done();
@@ -111,7 +111,7 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with strings containing spaces is concatenated', function() {
         it('should honour the whitespaces', function(done) {
-            expressionParser.parse('"Pruebas " + "De Strings"', scope, 'String', function(error, result) {
+            expressionParser.parse('"Pruebas " # "De Strings"', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal('Pruebas De Strings');
                 done();
@@ -121,7 +121,7 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with strings with single quotation marks is parsed', function() {
         it('should accept the strings', function(done) {
-            expressionParser.parse('\'Pruebas \' + \'De Strings\'', scope, 'String', function(error, result) {
+            expressionParser.parse('\'Pruebas \' # \'De Strings\'', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal('Pruebas De Strings');
                 done();
@@ -131,7 +131,7 @@ describe('Expression interpreter', function() {
 
     describe('When a string is concatenated with a number', function() {
         it('should result in a string concatenation', function(done) {
-            expressionParser.parse('"number " + 5', scope, 'String', function(error, result) {
+            expressionParser.parse('"number " # 5', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal('number 5');
                 done();
@@ -141,7 +141,7 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with a wrong type is parsed', function() {
         it('should raise a WRONG_EXPRESSION_TYPE error', function(done) {
-            expressionParser.parse('"number " + 5', scope, 'Device', function(error, result) {
+            expressionParser.parse('"number " # 5', scope, 'Device', function(error, result) {
                 should.exist(error);
                 error.name.should.equal('WRONG_EXPRESSION_TYPE');
                 done();

@@ -5,6 +5,7 @@
 * [Overview](#overview)
 * [Measurement transformation](#transformation)
   * [Expression definition](#definition)
+  * [Variable values](#values)
   * [Expression execution](#execution)
 * [Language description](#description)
   * [Types](#types)
@@ -41,8 +42,7 @@ The following example shows a device provisioning payload with defined expressio
             {
                "name":"fillingLevel",
                "type":"Number",
-               "expression": "${@level / 100}",
-               "cast": "Number"
+               "expression": "${@level / 100}"
             },
             {
                "object_id":"tt",
@@ -63,6 +63,18 @@ expression patterns must be evaluatable (there must be a value in the measuremen
 expression patterns).
 
 The exact same syntax works for Configuration and Device provisioning.
+
+### <a name="values"/> Variable values
+
+Attribute expressions can contain values taken from the value of other attributes. Those values have, by default, the
+String type. For most arithmetic operations ('*', '/', etc...) if a variable is involved, its value will be cast to
+Number, regardless of the original type. For, example, if a variable @humidity has the value `'50'` (a String value),
+the following expression:
+```
+${@humidity * 10}
+```
+will give `500` as the result (i.e.: the value `'50'` is cast to number, to get `50`, that is then multiplied by 10). If
+this cast fails (because the value of the variable is not a number, e.g.: `'Fifty'`), the overall result will be `NaN`.
 
 ### <a name="execution"/> Expression execution
 
@@ -138,7 +150,7 @@ The following operations are currently available, divided by attribute type
 
 #### String operations
 
-- concatenation ('+'): returns the concatenation of the two values separated by `+`.
+- concatenation ('#'): returns the concatenation of the two values separated by `#`.
 - substring location (`indexOf(<variable>, <substring>)`): returns the index where the first occurrence of the substring
 `<substring>` can be found in the string value of `<variable>`.
 - substring (`substr(<variable>, <start> <end>)`): returns a substring of the string variable passed as a parameter,
