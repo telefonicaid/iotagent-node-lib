@@ -109,6 +109,17 @@ describe('Expression interpreter', function() {
         });
     });
 
+    describe('When an expression contains multiple parenthesis', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('((@number) * (@number2))',
+                scope, 'String', function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal(22475);
+                    done();
+                });
+        });
+    });
+    
     describe('When trim() function is executed', function() {
         it('should return the appropriate piece of the string', function(done) {
             expressionParser.parse(
