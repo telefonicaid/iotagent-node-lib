@@ -14,3 +14,4 @@
 - FIX Entities in multientity scenarios cannot be defined as expressions (#488)
 - FIX Cast needed for transformation plugin (#497)
 - FIX Delete service should return 204 instead 200 (#174)
+- FIX Bidirectional plugin provision fails (#503)

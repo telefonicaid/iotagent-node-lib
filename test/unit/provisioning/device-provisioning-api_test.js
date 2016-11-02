@@ -310,6 +310,75 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
+    describe('When a device provisioning request with geo:point attributes arrives', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionGeopointDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextRequests/createGeopointProvisionedDevice.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createGeopointProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should send the appropriate initial values to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a device provisioning request with DateTime attributes arrives', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDatetimeDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextRequests/createDatetimeProvisionedDevice.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/createDatetimeProvisionedDeviceSuccess.json'));
+
+            done();
+        });
+
+        it('should send the appropriate initial values to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+
     describe('When two devices with the same ID but different services arrive to the agent', function() {
         var options1 = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',

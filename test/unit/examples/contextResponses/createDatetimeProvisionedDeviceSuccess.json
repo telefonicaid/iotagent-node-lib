@@ -1,0 +1,22 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "timestamp",
+            "type": "DateTime",
+            "value": ""
+          }
+        ],
+        "id": "MicroLights",
+        "isPattern": "false",
+        "type": "FirstMicroLight"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
