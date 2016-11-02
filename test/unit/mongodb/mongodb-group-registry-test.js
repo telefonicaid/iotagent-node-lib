@@ -261,9 +261,9 @@ describe('MongoDB Group Registry test', function() {
             });
         });
 
-        it('should return a 200 OK statusCode', function(done) {
+        it('should return a 204 OK statusCode', function(done) {
             request(optionsDelete, function(error, response, body) {
-                response.statusCode.should.equal(200);
+                response.statusCode.should.equal(204);
                 done();
             });
         });
