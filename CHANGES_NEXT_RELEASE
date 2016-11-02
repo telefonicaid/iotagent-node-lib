@@ -15,3 +15,4 @@
 - FIX Cast needed for transformation plugin (#497)
 - FIX Delete service should return 204 instead 200 (#174)
 - FIX Bidirectional plugin provision fails (#503)
+- FIX Missing context in logger entries (#454)
