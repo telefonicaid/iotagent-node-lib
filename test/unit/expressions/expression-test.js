@@ -32,7 +32,10 @@ describe('Expression interpreter', function() {
             other: 3,
             theString: '12.6,   -19.4',
             spaces: '5 a b c d 5',
-            big: 2000
+            big: 2000,
+            number: 145,
+            number2: 155,
+            number3inside: 200
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -92,6 +95,17 @@ describe('Expression interpreter', function() {
                     result.should.equal('-19.4');
                     done();
                 });
+        });
+    });
+
+    describe('When an expression contains variables with numbers', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('@number + @number2 + @number3inside',
+                scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal(500);
+                done();
+            });
         });
     });
 
