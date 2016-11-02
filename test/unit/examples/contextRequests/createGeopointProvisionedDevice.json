@@ -1,9 +1,9 @@
 {
   "contextElements": [
     {
-      "type": "TheLightType",
+      "type": "MicroLights",
       "isPattern": "false",
-      "id": "TheFirstLight",
+      "id": "FirstMicroLight",
       "attributes": [
         {
           "name": "location",

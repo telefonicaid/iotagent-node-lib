@@ -77,7 +77,7 @@ describe('Subscription tests', function() {
                     utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
             iotAgentLib.clearAll(function() {
-                request(optionsProvision, function(error) {
+                request(optionsProvision, function(error, result, body) {
                     done();
                 });
             });

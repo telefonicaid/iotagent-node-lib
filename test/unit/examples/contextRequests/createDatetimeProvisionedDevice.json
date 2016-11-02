@@ -1,0 +1,17 @@
+{
+  "contextElements": [
+    {
+      "type": "MicroLights",
+      "isPattern": "false",
+      "id": "FirstMicroLight",
+      "attributes": [
+        {
+          "name": "timestamp",
+          "type": "DateTime",
+          "value": "1970-01-01T00:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "updateAction": "APPEND"
+}
