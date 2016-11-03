@@ -17,3 +17,4 @@
 - FIX Bidirectional plugin provision fails (#503)
 - FIX Missing context in logger entries (#454)
 - FIX Transformation plugin variable names set (#506)
+- FIX Pool command expired but CB not updated (#199)
