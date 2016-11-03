@@ -119,7 +119,7 @@ describe('Expression interpreter', function() {
                 });
         });
     });
-    
+
     describe('When trim() function is executed', function() {
         it('should return the appropriate piece of the string', function(done) {
             expressionParser.parse(
