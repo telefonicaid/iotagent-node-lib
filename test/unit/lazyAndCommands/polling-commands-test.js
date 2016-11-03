@@ -353,6 +353,15 @@ describe('Polling commands', function() {
                     utils.readExampleFile(
                         './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
 
+            statusAttributeMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandExpired.json'))
+                .reply(200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+
             iotAgentLib.register(device3, function(error) {
                 done();
             });
@@ -368,6 +377,21 @@ describe('Polling commands', function() {
                     iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
+                        done();
+                    });
+                }, 300);
+            });
+        });
+
+        it('should mark it as ERROR in the Context Broker', function(done) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                setTimeout(function() {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+                        statusAttributeMock.done();
                         done();
                     });
                 }, 300);
