@@ -1,0 +1,32 @@
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "attributes": [
+          {
+            "name": "pressure25",
+            "type": "Hgmm",
+            "value": ""
+          },
+          {
+            "name": "humidity12",
+            "type": "Percentage",
+            "value": ""
+          },
+          {
+            "name": "weather",
+            "type": "Summary",
+            "value": ""
+          }
+        ],
+        "id": "ws1",
+        "isPattern": "false",
+        "type": "WeatherStation"
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
