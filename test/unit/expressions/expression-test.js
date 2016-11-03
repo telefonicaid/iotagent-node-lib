@@ -32,7 +32,10 @@ describe('Expression interpreter', function() {
             other: 3,
             theString: '12.6,   -19.4',
             spaces: '5 a b c d 5',
-            big: 2000
+            big: 2000,
+            number: 145,
+            number2: 155,
+            number3inside: 200
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -95,6 +98,28 @@ describe('Expression interpreter', function() {
         });
     });
 
+    describe('When an expression contains variables with numbers', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('@number + @number2 + @number3inside',
+                scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal(500);
+                done();
+            });
+        });
+    });
+
+    describe('When an expression contains multiple parenthesis', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('((@number) * (@number2))',
+                scope, 'String', function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal(22475);
+                    done();
+                });
+        });
+    });
+    
     describe('When trim() function is executed', function() {
         it('should return the appropriate piece of the string', function(done) {
             expressionParser.parse(
