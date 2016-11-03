@@ -87,6 +87,29 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}'
                     }
                 ]
+            },
+            'WeatherStationMultiple': {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure25',
+                        type: 'Hgmm',
+                        expression: '${@pressure * 20}'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'humidity12',
+                        type: 'Percentage'
+                    },
+                    {
+                        name: 'weather',
+                        type: 'Summary',
+                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}'
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -212,7 +235,42 @@ describe('Expression-based transformations plugin', function() {
         });
     });
 
-    describe('When a measure arrives and there is not enought information to calculate an expression', function() {
+    describe('When an expression with multiple variables with numbers arrive', function() {
+        var values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'percentage',
+                value: '12'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/updateContextExpressionPlugin5.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/updateContextExpressionPlugin5Success.json'));
+        });
+
+        it('should calculate it and add it to the payload', function(done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a measure arrives and there is not enough information to calculate an expression', function() {
         var values = [
             {
                 name: 'p',
