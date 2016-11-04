@@ -27,7 +27,7 @@ var iotagentLib = require('../../../lib/fiware-iotagent-lib'),
     logger = require('logops'),
     should = require('should');
 
-describe.only('Alarm management system', function() {
+describe('Alarm management system', function() {
 
     beforeEach(function() {
         logger.setLevel('FATAL');
@@ -93,7 +93,39 @@ describe.only('Alarm management system', function() {
     });
 
     describe('When the alarm instrumentation function is used on a function', function() {
-        it('should release the alarm if the function returns a non-error result');
-        it('should raise the alarm if the funciton returns an error result');
+        var interceptedFn;
+
+        function mockFunction(raiseError, callback) {
+            if (raiseError) {
+                callback('Error raised in the function');
+            } else {
+                callback();
+            }
+        }
+
+        beforeEach(function() {
+            interceptedFn = alarmManagement.intercept('TEST_INTERCEPT', mockFunction);
+        });
+
+        it('should release the alarm if the function returns a non-error result', function(done) {
+            alarmManagement.raise('TEST_INTERCEPT', 'Test description');
+
+            interceptedFn(false, function() {
+                var alarmList = alarmManagement.list();
+
+                should.not.exist(alarmList['TEST_INTERCEPT']);
+
+                done();
+            });
+        });
+        it('should raise the alarm if the funciton returns an error result', function(done) {
+            interceptedFn(true, function() {
+                var alarmList = alarmManagement.list();
+
+                should.exist(alarmList['TEST_INTERCEPT']);
+
+                done();
+            });
+        });
     });
 });
