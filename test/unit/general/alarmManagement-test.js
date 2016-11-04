@@ -28,6 +28,7 @@ var iotagentLib = require('../../../lib/fiware-iotagent-lib'),
     should = require('should');
 
 describe('Alarm management system', function() {
+    /* jshint sub:true */
 
     beforeEach(function() {
         logger.setLevel('FATAL');
