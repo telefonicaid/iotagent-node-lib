@@ -19,3 +19,4 @@
 - FIX Transformation plugin variable names set (#506)
 - FIX Transformation plugin - More than one variable name with numbers (#508)
 - FIX Pool command expired but CB not updated (#509)
+- ADD an alarm management module (#512)

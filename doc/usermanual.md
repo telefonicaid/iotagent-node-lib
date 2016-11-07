@@ -3,13 +3,16 @@
 ## Index
 
 * [Usage](#usage)
-  * [Library overview](#libraryoverview)
+  * [Stats Registry](#statsregistry)
+  * [Alarm Module](#alarms)
+  * [Logs](#logs)
+  * [Transactions](#transactions)
+  * [Library Overview](#overview)
   * [Function reference](#reference)
 * [Development Documentation](#development)
 
 ## <a name="usage"/> Usage
-### <a name="libraryusage"/> Library overview
-#### Stats Registry
+### <a name="statsregistry"/> Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
 the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration)
 section.
@@ -30,7 +33,24 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
-#### Logs
+### <a name="alarms"/> Alarm module
+
+The library provide an alarm module that can be used to track through the logs alarms raised in the IoTAgent. This module
+provides:
+
+* Two functions to raise and release and alarm (`raise()` and `release()`): every alarm is identified by a name and a
+description. When the alarm is raised, an error with the text `Raising [%s]` is logged. When the alarm is released, the
+corresponding text, `Releasing [%s]` is logged. If an alarm is raised multiple times, it is only logged once. If its
+released multiple times it is only released once. Releasing a non-existing alarm has no effect.
+
+* Functions to list all the raised alarms and clean all the alarms (`list()` and `clean()`).
+
+* A function to instrument other functions, so when one of that functions return an error, an alarm is raised, and
+when it returns a success an alarm is ceased (`intercept()`).
+
+All this functions can be accessed through the `.alarms` attribute of the library.
+
+### <a name="logs"/> Logs
 The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library
 is required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across
 the diferent modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
@@ -40,16 +60,16 @@ use this module for logging.
 The IoT Agent Library also provides a configuration API that lets the administrator change and manage the log level
 in realtime. This API has the following two actions:
 
-##### Set new log level (PUT /admin/log)
+#### Set new log level (PUT /admin/log)
 This operation gets the new log level using the query parameter `level`. If the new level is a valid level for Logops
 (i.e.: one of the items in the array ['INFO', 'ERROR', 'FATAL', 'DEBUG', 'WARNING']), it will be automatically changed
 for future logs.
 
-##### Get log level (GET /admin/log)
+#### Get log level (GET /admin/log)
 Returns the current log level, in a json payload with a single attribute `level`.
 
 
-#### Transactions
+### <a name="transactions"/> Transactions
 The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
 requests entering both from the Northbound and the Southbound.
 
@@ -69,7 +89,7 @@ this component will be used as the correlator.
 During the duration of a transaction, all the log entries created by the code will write the current Transaction ID and
 correlator for the operation being executed.
 
-#### General review
+### <a name="overview"/> Library overview
 In order to use the library, add the following dependency to your package.json file:
 ```
 "iotagent-node-lib": "*"
