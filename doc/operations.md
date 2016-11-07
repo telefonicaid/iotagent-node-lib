@@ -64,6 +64,19 @@ Check connectivity between the machines, the status of the remote Context Broker
 Validation templates were not found. Check all the validation templates are properly located in the IoTAgent Library
 folder and that the file permissions are correct.
 
+## <a name="alarms"/> Alarms
+
+The following table shows the alarms that can be raised in the IoTAgent library. All the alarms are signaled by a
+error log starting with the prefix "Raising [%s]:" (where %s is the alarm name). All the alarms are released by an info
+log with the prefix "Releasing [%s]".
+
+| Alarm name            | Description            |
+|:--------------------- |:---------------------- |
+| MONGO-ALARM           | Indicates an error in the MongoDB connectivity |
+| ORION-ALARM           | Indicates a persistent error accesing the Context Broker |
+| IOTAM-ALARM           | Indicates a persistent error accessing the IoTAM |
+
+
 ## <a name="errorcode"/> Error naming code
 Every error has a code composed of a prefix and an ID, codified with the following table:
 
