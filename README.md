@@ -27,6 +27,14 @@ An IoT Agent is a component that lets groups of devices send their data to and b
 Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the Fiware
 platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
+There is more information about specific topics in the following documents:
+
+* [User manual](docs/usermanual.md): library reference for IoTA implementation. Contains the complete list of library
+functions and implementation topics.
+* [Installation and configuration guide](docs/installationguide.md): information for the configuration of the library.
+* [Operations manual](docs/operations.md): guide of logs and alarms raised by the library.
+* [IoTA Design HowTo](docs/howto.md): step-by-step howto about how to implement an IoT Agent.
+
 This project is part of [FIWARE](https://www.fiware.org/). Check also the [FIWARE Catalogue entry for the IoTAgents](http://catalogue.fiware.org/enablers/backend-device-management-idas)
 
 ### Device to NGSI Mapping
