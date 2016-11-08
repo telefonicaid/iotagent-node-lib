@@ -805,12 +805,12 @@ The following `attributes` section shows an example of the plugin configuration:
           "expression": "${latitude}, ${longitude}",
           "reverse": [
             {
-              "object_id":"latitude",
+              "object_id":"longitude",
               "type": "string",
               "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
             },
             {
-              "object_id":"longitude",
+              "object_id":"latitude",
               "type": "string",
               "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
             }
