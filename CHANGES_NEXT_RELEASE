@@ -21,3 +21,4 @@
 - FIX Pool command expired but CB not updated (#509)
 - ADD an alarm management module (#512)
 - FIX Missing operations manual (#485)
+- ADD a mechanism to share constants and error definitions between IoTAs (#386)
