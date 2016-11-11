@@ -68,13 +68,19 @@ folder and that the file permissions are correct.
 
 The following table shows the alarms that can be raised in the IoTAgent library. All the alarms are signaled by a
 error log starting with the prefix "Raising [%s]:" (where %s is the alarm name). All the alarms are released by an info
-log with the prefix "Releasing [%s]".
+log with the prefix "Releasing [%s]". These texts appear in the `msg=` field of the generic log record format.
 
-| Alarm name            | Description            |
-|:--------------------- |:---------------------- |
-| MONGO-ALARM           | Indicates an error in the MongoDB connectivity |
-| ORION-ALARM           | Indicates a persistent error accesing the Context Broker |
-| IOTAM-ALARM           | Indicates a persistent error accessing the IoTAM |
+| Alarm name            | Severity     | Description            |
+|:--------------------- |:-------------|:---------------------- |
+| MONGO-ALARM           | **Critical** | Indicates an error in the MongoDB connectivity |
+| ORION-ALARM           | **Critical** | Indicates a persistent error accesing the Context Broker |
+| IOTAM-ALARM           | **Critical** | Indicates a persistent error accessing the IoTAM |
+
+while the 'Severity' criterium is as follows:
+
+* **Critical** - The system is not working
+* **Major** - The system has a problem that degrades the service and must be addressed
+* **Warning** - It is happening something that must be notified
 
 
 ## <a name="errorcode"/> Error naming code
