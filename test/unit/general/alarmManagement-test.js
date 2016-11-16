@@ -129,4 +129,30 @@ describe('Alarm management system', function() {
             });
         });
     });
+
+    describe('When an instrumented function calls the callback with a null value', function() {
+        var interceptedFn;
+
+        function mockFunction(raiseError, callback) {
+            if (raiseError) {
+                callback('Error raised in the function');
+            } else {
+                callback(null);
+            }
+        }
+
+        beforeEach(function() {
+            interceptedFn = alarmManagement.intercept('TEST_INTERCEPT', mockFunction);
+        });
+
+        it('should not raise the alarm', function(done) {
+            interceptedFn(false, function() {
+                var alarmList = alarmManagement.list();
+
+                should.not.exist(alarmList['TEST_INTERCEPT']);
+
+                done();
+            });
+        });
+    });
 });
