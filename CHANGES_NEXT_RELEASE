@@ -22,3 +22,4 @@
 - ADD an alarm management module (#512)
 - FIX Missing operations manual (#485)
 - ADD a mechanism to share constants and error definitions between IoTAs (#386)
+- Alarm raises with null error (#521)
