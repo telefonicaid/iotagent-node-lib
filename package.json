@@ -7,8 +7,7 @@
     "fiware",
     "iotagent",
     "ngsi",
-    "context broker",
-    "browser"
+    "context broker"
   ],
   "author": {
     "name": "Daniel Moran",
@@ -39,7 +38,7 @@
     "jison": "0.4.17",
     "express": "^4.11.2",
     "logops": "1.0.0",
-    "mongoose": "^4.1.5",
+    "mongoose": "4.6.8",
     "mu2": "^0.5.20",
     "mustache": "0.8.2",
     "node-uuid": "^1.4.1",
