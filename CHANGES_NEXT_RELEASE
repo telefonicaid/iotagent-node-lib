@@ -1,2 +1,2 @@
 - Alarm raises with null error (#521)
-- Capture
+- Capture Mongo DB connection errors
