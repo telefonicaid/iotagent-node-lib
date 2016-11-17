@@ -7,8 +7,7 @@
     "fiware",
     "iotagent",
     "ngsi",
-    "context broker",
-    "browser"
+    "context broker"
   ],
   "author": {
     "name": "Daniel Moran",
