@@ -29,11 +29,11 @@ platform (authentication and authorization of the channel) and provide other com
 
 There is more information about specific topics in the following documents:
 
-* [User manual](docs/usermanual.md): library reference for IoTA implementation. Contains the complete list of library
+* [User manual](doc/usermanual.md): library reference for IoTA implementation. Contains the complete list of library
 functions and implementation topics.
-* [Installation and configuration guide](docs/installationguide.md): information for the configuration of the library.
-* [Operations manual](docs/operations.md): guide of logs and alarms raised by the library.
-* [IoTA Design HowTo](docs/howto.md): step-by-step howto about how to implement an IoT Agent.
+* [Installation and configuration guide](doc/installationguide.md): information for the configuration of the library.
+* [Operations manual](doc/operations.md): guide of logs and alarms raised by the library.
+* [IoTA Design HowTo](doc/howto.md): step-by-step howto about how to implement an IoT Agent.
 
 This project is part of [FIWARE](https://www.fiware.org/). Check also the [FIWARE Catalogue entry for the IoTAgents](http://catalogue.fiware.org/enablers/backend-device-management-idas)
 
