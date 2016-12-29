@@ -128,7 +128,7 @@ would be as follows:
 function manageULRequest(req, res, next) {
     var values;
 
-    iotAgentLib.getDevice(req.query.i, function(error, device) {
+    iotAgentLib.getDevice(req.query.i, null, null, function(error, device) {
         if (error) {
             res.status(404).send({
                 message: 'Couldn\'t find the device: ' + JSON.stringify(error)
