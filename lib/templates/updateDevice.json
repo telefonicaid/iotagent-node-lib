@@ -24,6 +24,10 @@
       "description": "Protocol the device is using to communicate with the platform",
       "type": "string"
     },
+    "endpoint": {
+      "description": "Endpoint for the commands targeting this device",
+      "type": "string"
+    },
     "lazy": {
       "description": "list of lazy attributes of the devices",
       "type": "array",

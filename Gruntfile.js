@@ -118,7 +118,8 @@ module.exports = function(grunt) {
             unit: {
                 options: {
                     ui: 'bdd',
-                    reporter: 'spec'
+                    reporter: 'spec',
+                    timeout: 3000
                 },
                 src: [
                     'tools/mocha-globals.js',
@@ -130,6 +131,7 @@ module.exports = function(grunt) {
                     ui: 'bdd',
                     reporter: 'tap',
                     quiet: true,
+                    timeout: 3000,
                     captureFile: '<%= clean.reportTest[0] %>/unit_tests.tap'
                 },
                 src: [
