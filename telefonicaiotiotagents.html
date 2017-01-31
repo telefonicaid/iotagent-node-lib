@@ -1,0 +1,2972 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/monokai.css">
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/toc-resize.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/api-specification.css">
+    
+</head>
+<body id="respecDocument" class="h-entry">
+<div class="container">
+
+
+  <div id="TOC-container">
+    
+<div id="fiware-logo-container">
+    <div id="fiware-logo"></div>
+</div>
+<nav id="toc">
+
+        
+    <ul class="toc">
+
+        
+	        
+        
+	        
+        
+	        
+		        <li><a href="#API-content">FIWARE IoT Agents API</a></li>
+	        
+        
+	        
+        
+	        
+        
+	        
+        
+	        
+        
+	        
+        
+
+
+<li><a href="#api-summary">API Summary</a></li>
+
+
+    
+    
+
+    
+    
+
+
+
+
+
+
+
+<li><a href="#API_specification">API Specification</a>
+    <ul class="toc">
+    
+
+                        <li>
+                            
+                                <a href="#resource_group_configuration-api" title = "Group Configuration API">Group Configuration API</a>
+                            
+                            <ul class="toc">
+                              
+                                
+                                    <li>
+                                        <a href="#resource_services" title = "Resource Services">Resource Services</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_retrieve-a-service" title ="GET - Retrieve a service">GET - Retrieve a service</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_create-a-service" title ="POST - Create a service">POST - Create a service</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_update-a-servicesubservice" title ="PUT - Update a service/subservice">PUT - Update a service/subservice</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_remove-a-subserviceservice" title ="DELETE - Remove a subservice/service">DELETE - Remove a subservice/service</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_devices" title = "Resource Devices">Resource Devices</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_retrieve-all-devices" title ="GET - Retrieve all devices">GET - Retrieve all devices</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_create-a-device" title ="POST - Create a device">POST - Create a device</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_device" title = "Resource Device">Resource Device</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_retrieve-a-device" title ="GET - Retrieve a device">GET - Retrieve a device</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_update-a-device" title ="PUT - Update a device">PUT - Update a device</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_remove-a-device" title ="DELETE - Remove a device">DELETE - Remove a device</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                            </ul>
+                        </li>
+                      <li><a href="#examples">Examples</a></li></ul>
+</li>
+    
+    
+    
+    
+    
+    
+    
+        <li><a href="#references">References</a></li>
+    
+   </ul>
+</nav>
+
+  </div>
+  
+
+
+  <div id="API-content">
+  
+    
+
+	
+
+	
+
+	
+		
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	<h1>FIWARE IoT Agents API </h1>
+
+
+
+	
+
+	
+
+	
+
+	
+		<span class="dateLabel">DATE:</span> <span class="dateValue"> December 2016 </span>
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+
+
+	
+	
+	
+
+	
+	
+	
+
+	
+	
+	
+
+	
+	
+	
+
+	
+	
+		
+	
+	
+
+	
+	
+	
+
+	
+		
+	
+	
+	
+
+	
+	
+	
+
+
+
+	<dl>
+	
+		<dt class="versionLabel">This version:</dt> 
+		<dd class="versionValue"> <a href="https://telefonicaid.github.io/iotagent-node-lib/api/stable">
+			https://telefonicaid.github.io/iotagent-node-lib/api/stable
+		</a> </dd>
+	
+
+	
+
+	<dt class="versionLabel">Latest version:</dt> 
+	<dd class="versionValue"> <a href="https://telefonicaid.github.io/iotagent-node-lib/api/latest">https://telefonicaid.github.io/iotagent-node-lib/api/latest</a> </dd>
+
+	</dl>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+    
+  
+  
+
+  
+  
+
+  
+  
+    
+  
+
+
+
+  <div id="top-source-buttons">
+  	
+    	<a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference">View in Apiary</a>
+    
+    
+    	<a target="_blank" href="https://github.com/telefonicaid/iotagent-node-lib">View in Github</a>
+    
+  </div>
+
+
+
+	
+
+	
+
+
+
+    
+        <h2 id="copyright">Copyright</h2>
+        <p>Copyright (c) 2014-2016 Telefonica Investigacion y Desarrollo</p>
+    
+
+    
+
+
+
+	
+
+	
+		<h2 id="license">License</h2>
+		<p>This specification is licensed under the
+<a href="https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Implicit_Patents_License">FIWARE Open Specification License (implicit patent license)</a>.</p>
+	
+
+
+<hr>
+
+
+	
+
+
+
+
+	
+
+	
+
+<hr>
+  
+
+
+    
+    
+<nav class="api-summary">
+<h1 id="api-summary"> API Summary </h1>
+    <ul>
+
+
+    
+
+        <li>
+            
+                <a href="#resource_group_configuration-api" title = "Configuration API">Configuration API</a>
+            
+            <ul>
+              
+                
+                    <li>
+                        <a href="#resource_services" title = "Resource Services">
+                        
+                            Services
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_retrieve-a-service" title ="GET - Retrieve a service"><span class="actionMethod">GET</span> - Retrieve a service
+                                    
+                                        
+                                            [/services{?apikey,device,limit,offset,resource}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_create-a-service" title ="POST - Create a service"><span class="actionMethod">POST</span> - Create a service
+                                    
+                                        
+                                            [/services{?apikey,device,limit,offset,resource}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_update-a-servicesubservice" title ="PUT - Update a service/subservice"><span class="actionMethod">PUT</span> - Update a service/subservice
+                                    
+                                        
+                                            [/services{?apikey,device,limit,offset,resource}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_remove-a-subserviceservice" title ="DELETE - Remove a subservice/service"><span class="actionMethod">DELETE</span> - Remove a subservice/service
+                                    
+                                        
+                                            [/services{?apikey,device,limit,offset,resource}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_devices" title = "Resource Devices">
+                        
+                            Devices
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_retrieve-all-devices" title ="GET - Retrieve all devices"><span class="actionMethod">GET</span> - Retrieve all devices
+                                    
+                                        
+                                            [/devices{?detailed,entity,limit,offset,protocol}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_create-a-device" title ="POST - Create a device"><span class="actionMethod">POST</span> - Create a device
+                                    
+                                        
+                                            [/devices{?detailed,entity,limit,offset,protocol}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_device" title = "Resource Device">
+                        
+                            Device
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_retrieve-a-device" title ="GET - Retrieve a device"><span class="actionMethod">GET</span> - Retrieve a device
+                                    
+                                        
+                                            [/devices/{device_id}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_update-a-device" title ="PUT - Update a device"><span class="actionMethod">PUT</span> - Update a device
+                                    
+                                        
+                                            [/devices/{device_id}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_remove-a-device" title ="DELETE - Remove a device"><span class="actionMethod">DELETE</span> - Remove a device
+                                    
+                                        
+                                            [/devices/{device_id}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+            </ul>
+        </li>
+      
+
+    </ul>
+</nav>
+
+    
+    
+
+
+
+
+		
+	
+	
+		
+	
+		
+	
+
+
+
+
+
+	
+		
+	
+		
+	
+
+
+		
+	
+	
+		
+	
+		
+	
+		
+	
+
+
+
+
+
+	
+		
+			<section>
+				<h2 id="authentication_and_authorization"> Authentication and Authorization</h2>
+<p>If the IoT Agent is in authenticated environment, this API requires a token, which you obtain from authentication system. This system and its API is out of scope of present documentation. In this environment, a mandatory header is needed: <code>X-Auth-Token</code>.</p>
+
+
+			</section>
+		
+	
+		
+			<section>
+				<h2 id="mandatory_http_headers"> Mandatory HTTP Headers</h2>
+<p>The API needs two headers in order to manage requests:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Http Header</th>
+<th align="left">Level</th>
+<th align="left">If not present</th>
+<th align="left">Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><b>Fiware-Service</b></td>
+<td align="left">Represents a tenant. Higher level in resources hierachy in IoT Platform</td>
+<td align="left">An error is returned</td>
+<td align="left">Must only contain less than 50 Underscores and Alphanumeric lowercase characters</td>
+</tr>
+<tr>
+<td align="left"><b>Fiware-ServicePath</b></td>
+<td align="left">Represents the second level</td>
+<td align="left">We assume '/'. Allowed operation '/*'</td>
+<td align="left">Must only contain less than 50 Underscores and Alphanumeric characters. Must start with character '/'. Max. length is 51 characters (with /)</td>
+</tr>
+</tbody>
+</table>
+
+
+			</section>
+		
+	
+		
+			<section>
+				<h2 id="api_access"> API Access</h2>
+<p>All API base URLs are relative and depend on where the IoT Agent is listening (depends on each service).
+For example, <code>http://127.0.0.1:8080/iot/</code>.</p>
+
+
+			</section>
+		
+	
+
+
+
+    
+
+  
+  <section id="API_specification">
+      <h1>API Specification</h1>
+      
+
+
+
+
+        
+            <section id="resource_group_configuration-api" class="resourceGroup">
+            <h2 id="h-resource_group_configuration-api">Configuration API</h2>
+        
+	
+        
+            <section id="resource_services" class="resource">
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_services">Services</h3>
+                    <span class="extra-header">[/services{?apikey,device,limit,offset,resource}]</span>
+                 
+                 </div>
+                <p>Services are the higher level in IoT Platform. When you manipulate a service, you use a Fiware-Service header with its name. Parameters apply to different operations.</p>
+<p>Fields in JSON object representing a service are:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Fields in JSON Object</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>apikey</code></td>
+<td align="left">It is a key used for devices belonging to this service. If "", service does not use apikey, but it must be specified.</td>
+</tr>
+<tr>
+<td align="left"><code>token</code></td>
+<td align="left">If authentication/authorization system is configured, IoT Agent works as user when it publishes information. That token allows that other components to verify the identity of IoT Agent. Depends on authentication and authorization system.</td>
+</tr>
+<tr>
+<td align="left"><code>cbroker</code></td>
+<td align="left">Context Broker endpoint assigned to this service, it must be a real uri.</td>
+</tr>
+<tr>
+<td align="left"><code>outgoing_route</code></td>
+<td align="left">It is an identifier for VPN/GRE tunnel. It is used when device is into a VPN and a command is sent.</td>
+</tr>
+<tr>
+<td align="left"><code>resource</code></td>
+<td align="left">Path in IoTAgent. When protocol is HTTP a device could send information to this uri. In general, it is a uri in a HTTP server needed to load and execute a module.</td>
+</tr>
+<tr>
+<td align="left"><code>entity_type</code></td>
+<td align="left">Entity type used in entity publication (overload default).</td>
+</tr>
+<tr>
+<td align="left"><code>attributes</code></td>
+<td align="left">Mapping for protocol parameters to entity attributes.<br> <code>object_id</code> (string, mandatory): protocol parameter to be mapped.<br> <code>name</code> (string, mandatory): attribute name to publish.<br> <code>type</code>: (string, mandatory): attribute type to publish.</td>
+</tr>
+<tr>
+<td align="left"><code>static_attributes</code></td>
+<td align="left">Attributes published as defined.<br> <code>name</code> (string, mandatory): attribute name to publish.<br> <code>type</code> (string, mandatory): attribute type to publish.<br> <code>value</code> (string, mandatory): attribute value to publish.</td>
+</tr>
+</tbody>
+</table>
+<p>Mandatory fields are identified in every operation.</p>
+<p><code>static_attributes</code> and <code>attributes</code> are used if device has not this information.</p>
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        <div id="action_retrieve-a-service" class="action GET">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_retrieve-a-service">Retrieve a service </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="retrieve-a-service_body" class="">
+                                <p>With Fiware-ServicePath you can retrieve a subservice or all subservices.</p>
+<ul>
+<li>
+<p>Parameters [limit, offset, resource]</p>
+<ul>
+<li>
+<p><code>limit</code> (optional, number). In order to specify the maximum number of services (default is 20, maximun allowed is 1000).</p>
+</li>
+<li>
+<p><code>offset</code> (optional, number). In order to skip a given number of elements at the beginning (default is 0) .</p>
+</li>
+<li>
+<p><code>resource</code> (optional, string). URI for the iotagent, return only services for this iotagent.</p>
+</li>
+</ul>
+</li>
+</ul>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_retrieve-a-service_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/services/retrieve-a-service">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_create-a-service" class="action POST">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_create-a-service">Create a service </h4>
+            <span class="extra-header">
+		POST 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="create-a-service_body" class="">
+                                <p>With one subservice defined in Fiware-ServicePath header. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).</p>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_create-a-service_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/services/create-a-service">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_update-a-servicesubservice" class="action PUT">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_update-a-service/subservice">Update a service/subservice </h4>
+            <span class="extra-header">
+		PUT 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="update-a-service/subservice_body" class="">
+                                <p>If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. ("/*" is not allowed).</p>
+<ul>
+<li>
+<p>Parameters [apikey, resource]</p>
+<ul>
+<li>
+<p><code>apikey</code> (optional, string). If you don't specify, apikey=" " is applied.</p>
+</li>
+<li>
+<p><code>resource</code> (mandatory, string). URI for service into iotagent.</p>
+</li>
+</ul>
+</li>
+</ul>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_update-a-servicesubservice_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/services/update-a-service/subservice">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_remove-a-subserviceservice" class="action DELETE">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_remove-a-subservice/service">Remove a subservice/service </h4>
+            <span class="extra-header">
+		DELETE 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="remove-a-subservice/service_body" class="">
+                                <p>You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' remove service and all subservices.</p>
+<ul>
+<li>
+<p>Parameters [apikey, resource, device]</p>
+<ul>
+<li>
+<p><code>apikey</code> (optional, string). If you don't specify, apikey="" is applied.</p>
+</li>
+<li>
+<p><code>resource</code> (mandatory, string). URI for service into iotagent.</p>
+</li>
+<li>
+<p><code>device</code> (optional, boolean). Default value is false. Remove devices in service/subservice. This parameter is not valid when Fiware-ServicePath is '/*' or '/#'.</p>
+</li>
+</ul>
+</li>
+</ul>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_remove-a-subserviceservice_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/services/remove-a-subservice/service">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_devices" class="resource">
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_devices">Devices</h3>
+                    <span class="extra-header">[/devices{?detailed,entity,limit,offset,protocol}]</span>
+                 
+                 </div>
+                <p>A device is a resource that publish information to IoT Platform and it uses the IoT Agent.</p>
+<h3>Device Model</h3>
+<ul>
+<li>
+<p><code>device_id</code>. Unique identifier into a service.</p>
+</li>
+<li>
+<p><code>protocol</code>. Protocol assigned to device. This field is easily provided by IoTA Manager if it is used. Every module implmenting a protocol has an identifier.</p>
+</li>
+<li>
+<p><code>entity_name</code>. Entity name used for entity publication (overload default)</p>
+</li>
+<li>
+<p><code>entity_type</code>. Entity type used for entity publication (overload entity_type defined in service).</p>
+</li>
+<li>
+<p><code>timezone</code>. Not used in this version.</p>
+</li>
+<li>
+<p><code>attributes</code>. Mapping for protocol parameters to entity attributes.
+<code>object_id</code> (string, mandatory): protocol parameter to be mapped.
+<code>name</code> (string, mandatory): attribute name to publish.
+<code>type</code>: (string, mandatory): attribute type to publish.</p>
+</li>
+<li>
+<p><code>static_attributes</code> (optional, array). Attributes published as defined.
+<code>name</code> (string, mandatory): attribute name to publish.
+<code>type</code> (string, mandatory): attribute type to publish.
+<code>value</code> (string, mandatory): attribute value to publish.</p>
+</li>
+<li>
+<p><code>endpoint</code> (optional, string): when a device uses push commands.</p>
+</li>
+<li>
+<p><code>commands</code> (optional, array). Attributes working as commands.
+<code>name</code> (string, mandatory): command identifier.
+<code>type</code> (string, mandatory). It must be 'command'.
+<code>value</code> (string, mandatory): command representation depends on protocol.</p>
+</li>
+</ul>
+<p>Mandatory fields are identified in every operation.</p>
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        <div id="action_retrieve-all-devices" class="action GET">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_retrieve-all-devices">Retrieve all devices </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /devices{?detailed,entity,limit,offset,protocol}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="retrieve-all-devices_body" class="">
+                                <ul>
+<li>
+<p>Parameters [limit, offset, detailed, entity, protocol]</p>
+<ul>
+<li>
+<p><code>limit</code> (optional, number). In order to specify the maximum number of devices (default is 20, maximun allowed is 1000).</p>
+</li>
+<li>
+<p><code>offset</code> (optional, number). In order to skip a given number of elements at the beginning (default is 0) .</p>
+</li>
+<li>
+<p><code>detailed</code> (optional, string). <code>on</code> return all device information, <code>off</code> (default) return only name.</p>
+</li>
+<li>
+<p><code>entity</code> (optional, string). It allows get a device from entity name.</p>
+</li>
+<li>
+<p><code>protocol</code> (optional, string). It allows get devices with this protocol.</p>
+</li>
+</ul>
+</li>
+</ul>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_retrieve-all-devices_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/devices/retrieve-all-devices">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_create-a-device" class="action POST">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_create-a-device">Create a device </h4>
+            <span class="extra-header">
+		POST 
+                
+                    /devices{?detailed,entity,limit,offset,protocol}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="create-a-device_body" class="">
+                                <p>From device model, mandatory fields are: device_id and protocol.</p>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_create-a-device_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/devices/create-a-device">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_device" class="resource">
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_device">Device</h3>
+                    <span class="extra-header">[/devices/{device_id}]</span>
+                 
+                 </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        <div id="action_retrieve-a-device" class="action GET">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_retrieve-a-device">Retrieve a device </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="retrieve-a-device_body" class="">
+                                
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_retrieve-a-device_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/device/retrieve-a-device">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_update-a-device" class="action PUT">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_update-a-device">Update a device </h4>
+            <span class="extra-header">
+		PUT 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="update-a-device_body" class="">
+                                <p>If you want modify only a field, you can do it, except field <code>protocol</code> (this field, if provided it is removed from request).</p>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_update-a-device_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/device/update-a-device">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                        <div id="action_remove-a-device" class="action DELETE">
+
+                        
+    <div class="header">
+        
+            <h4 id="h-action_remove-a-device">Remove a device </h4>
+            <span class="extra-header">
+		DELETE 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+        
+                            <div id="remove-a-device_body" class="">
+                                <p>If specific device is not found, we work as deleted.</p>
+                                
+                                
+                                
+			
+                                
+                                
+
+
+
+      
+
+                                
+
+                                    
+                                        
+                                        
+                                        
+                                
+                                <div><div class="goExample">
+                                        <a href="#action_remove-a-device_examples">Go to example</a>
+                                    </div>
+                                    
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                
+            
+            
+
+            
+                
+            
+            
+                <a target="_blank" href="http://docs.telefonicaiotiotagents.apiary.io/#reference/configuration-api/device/remove-a-device">View in Apiary</a>
+            
+        
+    
+        
+    
+        
+    
+    </div>
+
+                                
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+    </section>
+
+
+<section id="examples">
+    <div class= "header" ><h2>Examples</h2> </div>
+    
+
+        
+                
+            
+
+            <section id="resource_group_configuration-api_example" class="resourceGroupExample">
+                <div class= "header" ><h3 id="h-resource_group_configuration-api_example">Configuration API</h3> </div>
+                
+                
+                    <section id="resource_services_example" class="resourceExample">
+                            <div class= "header" >
+                            
+                                <h4 id="h-resource_services_example">Services</h4>
+                                <span class="extra-header">[/services{?apikey,device,limit,offset,resource}]</span>
+                            
+                            </div>
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                                <div id="action_retrieve-a-service_examples" class="actionExample GET">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_retrieve-a-service_examples">Retrieve a service </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_retrieve-a-service_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /services</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-service_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /*</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 200</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-service_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+  "count": 1,
+  "services": [
+    {
+        "apikey": "apikey3",
+        "service": "service2",
+        "service_path": "/srvpath2",
+        "token": "token2",
+        "cbroker": "http://127.0.0.1:1026",
+        "entity_type": "thing",
+        "resource": "/iot/d"
+    }
+  ]
+}
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /services</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-service_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 200</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-service_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+  "count": 1,
+  "services": [
+    {
+        "apikey": "apikey3",
+        "service": "service2",
+        "service_path": "/srvpath2",
+        "token": "token2",
+        "cbroker": "http://127.0.0.1:1026",
+        "entity_type": "thing",
+        "resource": "/iot/d"
+    }
+  ]
+}
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_retrieve-a-service">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_create-a-service_examples" class="actionExample POST">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_create-a-service_examples">Create a service </h5>
+            <span class="extra-header">
+		POST 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_create-a-service_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /services</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_create-a-service_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+  "services": [
+    {
+      "apikey": "apikey3",
+      "token": "token2",
+      "cbroker": "http://127.0.0.1:1026",
+      "entity_type": "thing",
+      "resource": "/iot/d"
+    }
+   ]
+ }
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 201</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_create-a-service_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_create-a-service">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_update-a-servicesubservice_examples" class="actionExample PUT">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_update-a-service/subservice_examples">Update a service/subservice </h5>
+            <span class="extra-header">
+		PUT 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_update-a-service/subservice_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /services</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_update-a-service/subservice_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+   "entity_type": "entity_type"
+}
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 204</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_update-a-service/subservice_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_update-a-servicesubservice">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_remove-a-subserviceservice_examples" class="actionExample DELETE">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_remove-a-subservice/service_examples">Remove a subservice/service </h5>
+            <span class="extra-header">
+		DELETE 
+                
+                    /services{?apikey,device,limit,offset,resource}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_remove-a-subservice/service_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /services</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_remove-a-subservice/service_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 204</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_remove-a-subservice/service_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_remove-a-subserviceservice">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </section>
+                    
+                
+                    <section id="resource_devices_example" class="resourceExample">
+                            <div class= "header" >
+                            
+                                <h4 id="h-resource_devices_example">Devices</h4>
+                                <span class="extra-header">[/devices{?detailed,entity,limit,offset,protocol}]</span>
+                            
+                            </div>
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                                <div id="action_retrieve-all-devices_examples" class="actionExample GET">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_retrieve-all-devices_examples">Retrieve all devices </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /devices{?detailed,entity,limit,offset,protocol}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_retrieve-all-devices_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /devices</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-all-devices_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testService
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 200</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-all-devices_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>   {
+      "count": 1,
+      "devices": [
+        {
+          "device_id": "device_id",
+          "protocol": "12345",
+          "entity_name": "entity_name",
+          "entity_type": "entity_type",
+          "timezone": "America/Santiago",
+          "attributes": [
+            {
+              "object_id": "source_data",
+              "name": "attr_name",
+              "type": "int"
+            }
+          ],
+          "static_attributes": [
+            {
+              "name": "att_name",
+              "type": "string",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    }
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_retrieve-all-devices">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_create-a-device_examples" class="actionExample POST">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_create-a-device_examples">Create a device </h5>
+            <span class="extra-header">
+		POST 
+                
+                    /devices{?detailed,entity,limit,offset,protocol}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_create-a-device_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /devices</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_create-a-device_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>   {
+        "devices": [
+        {
+          "device_id": "device_id",
+          "protocol": "12345",
+          "entity_name": "entity_name",
+          "entity_type": "entity_type",
+          "timezone": "America/Santiago",
+          "attributes": [
+            {
+              "object_id": "source_data",
+              "name": "attr_name",
+              "type": "int"
+            }
+          ],
+          "static_attributes": [
+            {
+              "name": "att_name",
+              "type": "string",
+              "value": "value"
+            }
+          ]
+        }
+        ]
+    }
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 201</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_create-a-device_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>+ Headers (only if ONE device is in request)
+
+        Location: /iot/devices/device_id
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_create-a-device">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </section>
+                    
+                
+                    <section id="resource_device_example" class="resourceExample">
+                            <div class= "header" >
+                            
+                                <h4 id="h-resource_device_example">Device</h4>
+                                <span class="extra-header">[/devices/{device_id}]</span>
+                            
+                            </div>
+
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+                            
+                                <div id="action_retrieve-a-device_examples" class="actionExample GET">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_retrieve-a-device_examples">Retrieve a device </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_retrieve-a-device_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /devices/{device_id}</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-device_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 200</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_retrieve-a-device_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+  "device_id": "device_id",
+  "protocol": "121345",
+  "entity_name": "entity_name",
+  "entity_type": "entity_type",
+  "timezone": "America/Santiago",
+  "attributes": [
+    {
+      "object_id": "source_data",
+      "name": "attr_name",
+      "type": "int"
+    }
+  ],
+  "static_attributes": [
+    {
+      "name": "att_name",
+      "type": "string",
+      "value": "value"
+    }
+  ]
+}
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_retrieve-a-device">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_update-a-device_examples" class="actionExample PUT">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_update-a-device_examples">Update a device </h5>
+            <span class="extra-header">
+		PUT 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_update-a-device_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /devices/{device_id}</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_update-a-device_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+            <div class= "header"><p>Body</p></div>
+            <pre><code>{
+   "entity_name": "entity_name"
+}
+</code></pre>
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 204</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_update-a-device_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_update-a-device">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="action_remove-a-device_examples" class="actionExample DELETE">
+
+                                    
+    <div class="header">
+        
+            <h5 id="h-action_remove-a-device_examples">Remove a device </h5>
+            <span class="extra-header">
+		DELETE 
+                
+                    /devices/{device_id}
+                
+            </span>
+        
+
+    </div>
+
+                                
+                                        <div id="action_remove-a-device_body" class=""> 
+                                            
+                                            
+                                            
+                                                     
+                                            
+                                                
+                                            
+
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    
+                                                        
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Request  /devices/{device_id}</span> 
+        
+            (application/json)
+        
+    
+        
+    
+        
+    
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_remove-a-device_Request_1_body" class=" action-div-body">
+        <p></p>
+
+        
+	         <div class= "header"><p>Headers</p></div>
+            
+            
+                
+            
+                
+            
+                
+            
+
+	        <pre><code>Content-Type: application/json
+Fiware-Service: testservice
+Fiware-ServicePath: /TestSubservice</code></pre>
+        
+
+        
+
+        
+    </div>   
+</div>
+
+                                                        
+                                                            
+                                                            
+                                                            
+
+
+<div class="rest-packet-div">
+    
+    <span class="packetType">Response 204</span> 
+    
+    
+    
+    
+   
+
+
+
+    <div id="action_remove-a-device_Response_1_body" class=" action-div-body">
+        <p></p>
+
+        
+
+        
+
+        
+    </div>   
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_remove-a-device">Go to specification</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </section>
+                    
+                
+            </section>
+        
+    
+</section>
+
+  </section>
+  
+   
+
+
+
+	
+
+	
+
+    
+    
+    
+      <section id="references">
+      <h1>References</h1>
+          <ul>
+              
+                  <li><a href="http://docs.telefonicaiotiotagents.apiary.io/#reference">Apiary project</a></li>
+              
+                  <li><a href="https://github.com/telefonicaid/iotagent-node-lib">Github source</a></li>
+              
+                  <li><a href="https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Implicit_Patents_License">FIWARE Open Specification License (implicit patent license)</a></li>
+              
+                  <li><a href="https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus">IoT Agent</a></li>
+              
+          </ul>
+      </section>
+    
+  </div>
+</div>
+</body>
+
+</html>
