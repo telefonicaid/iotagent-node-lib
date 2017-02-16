@@ -128,7 +128,7 @@ would be as follows:
 function manageULRequest(req, res, next) {
     var values;
 
-    iotAgentLib.getDevice(req.query.i, null, null, function(error, device) {
+    iotAgentLib.retrieveDevice(req.query.i, req.query.k, function(error, device) {
         if (error) {
             res.status(404).send({
                 message: 'Couldn\'t find the device: ' + JSON.stringify(error)
@@ -474,7 +474,7 @@ Content-Length: 3
 
 5,6
 ```
-This same response can be used both for updates and queries for testing purposes (even though in the former the body won't 
+This same response can be used both for updates and queries for testing purposes (even though in the former the body won't
 be read).
 
 ## <a name="configuration"/> Configuration management
