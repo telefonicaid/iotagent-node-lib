@@ -279,7 +279,7 @@ The main step to complete in order to implement the Lazy attributes mechanism in
 provisioning requests. At this point, we should provide two handlers: the updateContext and the queryContext handlers.
 To do so, we must first define the handlers themselves:
 ``` javascript
-function queryContextHandler(id, type, attributes, callback) {
+function queryContextHandler(id, type, service, subservice, attributes, callback) {
     var options = {
         url: 'http://127.0.0.1:9999/iot/d',
         method: 'GET',
@@ -329,7 +329,7 @@ function createResponse(id, type, attributes, body) {
 
 #### UpdateContext implementation
 ``` javascript
-function updateContextHandler(id, type, attributes, callback) {
+function updateContextHandler(id, type, service, subservice, attributes, callback) {
     var options = {
         url: 'http://127.0.0.1:9999/iot/d',
         method: 'GET',
@@ -391,16 +391,82 @@ nc -l 9999
 ```
 This will open a simple TCP server listening on port 9999, where the requests from the IOTA will be printed. In order for
 the complete workflow to work (and to receive the response in the application side), the HTTP response has to be written
-in the `nc` console (although for testing purposes this is not needed).  
+in the `nc` console (although for testing purposes this is not needed).
 
-Once the mock server has been started, proceed with the following steps to test your implementation:
-1. Provision a device with two lazy attributes. You can see an example of this in the `examples/howtoProvisioning2.json` file.
+While netcat is great to test simple connectivity, you will need something just a bit more complex to get the complete
+scenario working (at least without the need to be incredibly fast sending your response). In order to do so, a simple
+echo server was created, that ansers 42 to any query to its `/iot/d` path. You can use it to test your attributes one by
+one (or you can modify it to accept more requests and give more complex responses). Copy the [Echo Server script](echo.js)
+to the same folder of your IoTAgent (as it uses the same dependencies). In order to run the echo server, just
+execute the following command:
+
+```
+node echo.js
+```
+
+Once the mock server has been started (either nc or the echo server), proceed with the following steps to test your implementation:
+
+1. Provision a device with two lazy attributes. The following request can be used as an example:
+```
+POST /iot/devices HTTP/1.1
+Host: localhost:4041
+Content-Type: application/json
+fiware-service: howtoserv
+fiware-servicepath: /test
+Cache-Control: no-cache
+Postman-Token: 993ac66b-72da-9e96-ab46-779677a5896a
+
+{
+    "devices": [
+      {
+        "device_id": "ULSensor",
+        "entity_name": "Sensor01",
+        "entity_type": "BasicULSensor",
+        "lazy": [
+            {
+                "name": "t",
+                "type": "celsius"
+            },
+            {
+                "name": "l",
+                "type": "meters"
+            }
+        ],
+        "attributes": [
+        ]
+      }
+    ]
+}
+```
+
 2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
-3. Check the received request in the nc console is the expected one.
-4. Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
-is the expected one.
+```
+POST /v1/queryContext HTTP/1.1
+Host: localhost:1026
+Content-Type: application/json
+Accept: application/json
+Fiware-Service: howtoserv
+Fiware-ServicePath: /test
+Cache-Control: no-cache
+Postman-Token: 1dc568a1-5588-059c-fa9b-ff217a7d7aa2
 
-An example of HTTP response, for a query to the t and l attributes would be:
+{
+    "entities": [
+        {
+            "isPattern": "true",
+            "id": ".*",
+            "type": "BasicULSensor"
+        }
+    ],
+    "attributes" : [
+    	"l"]
+}
+```
+
+3. Check the received request in the nc console is the expected one.
+
+4. (In case you use netcat). Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
+is the expected one. An example of HTTP response, for a query to the t and l attributes would be:
 ```
 HTTP/1.0 200 OK
 Content-Type: text/plain
