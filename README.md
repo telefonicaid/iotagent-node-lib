@@ -262,9 +262,9 @@ party library.
 
 ## <a name="buildinstall"/> Build & Install
 
-Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](docs/installationguide.md).
+Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/installationguide.md).
 
-This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](docs/usermanual.md).
+This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
 ## <a name="apioverview"/> API Overview
 
@@ -1083,5 +1083,5 @@ attributes:
 
 ##  <a name="development"/> Development documentation
 
-Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](docs/usermanual.md).
+Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](doc/usermanual.md).
 
