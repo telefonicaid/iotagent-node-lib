@@ -262,7 +262,7 @@ party library.
 
 ## <a name="buildinstall"/> Build & Install
 
-Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/usermanual.md).
+Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/installationguide.md).
 
 This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
