@@ -47,7 +47,7 @@
     "sax": "^0.6.0",
     "underscore": "^1.7.0",
     "xmldom": "0.1.19",
-    "mongodb": "2.1.18"
+    "mongodb": "2.2.10"
   },
   "devDependencies": {
     "grunt": "0.4.5",
