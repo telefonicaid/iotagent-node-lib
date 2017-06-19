@@ -1,2 +1,3 @@
 - Alarm raises with null error (#521)
 - Capture Mongo DB connection errors
+- Update MongoDB driver in order to fix NODE-818 error (#210)
