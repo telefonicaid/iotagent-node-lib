@@ -779,7 +779,7 @@ TimeInstant attribute as metadata for every other attribute in the same request.
 This plugin allows the devices and configurations that have defined expressions to generate their values from those
 expressions and the reported measure information.
 
-For further information on how the expressions work, refer to the [Expression Language Reference](.doc/expressionLanguage).
+For further information on how the expressions work, refer to the [Expression Language Reference](doc/expressionLanguage.md).
 
 ##### Multientity plugin (multiEntity)
 Allows the devices provisioned in the IoTAgent to map their attributes to more than one entity, declaring the target
