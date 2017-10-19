@@ -1,0 +1,10 @@
+{
+  "state": {
+    "type": "Boolean",
+    "value": "true"
+  },
+  "The Target Value": {
+    "type": "DateTime",
+    "value": "+002007-11-03T13:18:05"
+  }
+}

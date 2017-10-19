@@ -1,0 +1,8 @@
+{
+  "id": "light1",
+  "type": "LightError",
+  "pressure":{
+    "type": "Hgmm",
+    "value": "1040"   
+  }
+}

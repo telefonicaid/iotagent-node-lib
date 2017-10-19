@@ -1,0 +1,20 @@
+{
+    "entities": [
+        {
+            "type": "Termometer",
+            "isPattern": "false",
+            "id": "term2"
+        }
+    ],
+    "reference": "http://smartGondor.com/notification",
+    "duration": "P1M",
+    "notifyConditions": [
+        {
+            "type": "ONCHANGE",
+            "condValues": [
+                "actions"
+            ]
+        }
+    ],
+    "throttling": "PT5S"
+}

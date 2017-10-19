@@ -1,0 +1,10 @@
+{
+  "devices": [
+    {
+      "device_id": "MicroLight2",
+      "protocol": "GENERIC_PROTO",
+      "entity_name": "SecondMicroLight",
+      "entity_type": "MicroLights"
+    }
+  ]
+}

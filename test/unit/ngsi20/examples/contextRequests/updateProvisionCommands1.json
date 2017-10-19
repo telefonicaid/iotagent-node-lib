@@ -1,0 +1,18 @@
+{
+  "id": "Light:light1",
+  "type": "Light",
+  "temperature": {
+    "value": " ",
+    "type": "centigrades"
+  },
+  "move_status":
+  {
+    "type": "commandStatus",
+    "value": "UNKNOWN"
+  },
+  "move_info":
+  {
+    "type": "commandResult",
+    "value": " "
+  }
+}

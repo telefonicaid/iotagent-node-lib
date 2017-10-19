@@ -1,0 +1,49 @@
+{
+  "devices": [
+    {
+      "device_id": "LightFull",
+      "protocol": "GENERIC_PROTO",
+      "service" : "smartGondor",
+      "service_path": "gardens",
+      "entity_name": "TheFullLight",
+      "entity_type": "TheLightType",
+      "timezone": "America/Santiago",
+      "attributes": [
+        {
+          "object_id": "h",
+          "name": "humidity",
+          "type": "Percentage",
+          "entity_name": "Higro2000",
+          "entity_type": "Higrometer"
+        },
+        {
+          "object_id": "p",
+          "name": "pressure",
+          "type": "Hgmm",
+          "expression": "${@humidity * 20}"
+        },
+        {
+          "name":"location",
+          "type":"geo:point",
+          "expression": "${latitude}, ${longitude}",
+          "reverse": [
+            {
+              "object_id":"latitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+            },
+            {
+              "object_id":"longitude",
+              "type": "string",
+              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+            }
+          ]
+        }
+      ],
+      "static_attributes": [],
+      "lazy": [],
+      "commands": [],
+      "internal_attributes": []
+    }
+  ]
+}

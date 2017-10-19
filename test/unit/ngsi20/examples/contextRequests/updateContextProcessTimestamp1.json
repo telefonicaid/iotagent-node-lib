@@ -1,0 +1,17 @@
+{
+  "state":{
+    "type": "Boolean",
+    "value": true,
+    "metadata": {
+      "TimeInstant":{
+        "type": "DateTime",
+        "value": "2016-05-30T16:25:22.304Z"
+      }
+    }
+  },
+  "TimeInstant":
+  {
+    "type": "DateTime",
+    "value": "2016-05-30T16:25:22.304Z"
+  }
+}

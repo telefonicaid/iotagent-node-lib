@@ -1,0 +1,4 @@
+{
+    "description":"action: APPEND - entity: [ITgAY:ThinkingThing, ThinkingThing, false] - offending attribute: attr0 - empty attribute not allowed in APPEND or UPDATE",
+    "error": "request parameter is invalid/not allowed"
+}

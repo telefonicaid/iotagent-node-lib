@@ -1,0 +1,37 @@
+{
+  "devices": [
+    {
+      "device_id": "Light2",
+      "protocol": "GENERIC_PROTO",
+      "service" : "smartGondor",
+      "service_path": "gardens",
+      "entity_name": "TheSecondLight",
+      "entity_type": "TheLightType",
+      "timezone": "America/Santiago",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "attr_name",
+          "type": "string"
+        }
+      ],
+      "lazy": [
+        {
+          "name": "luminance",
+          "type": "lumens"
+        }
+      ],
+      "commands": [],
+      "internal_attributes": [
+        {
+          "customField": "customValue"
+        }
+      ]
+    }
+  ]
+}

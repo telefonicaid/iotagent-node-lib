@@ -1,0 +1,22 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "Motion",
+                    "isPattern": "false",
+                    "id": "Motion:motion1"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "moving",
+                    "type": "Boolean",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com"
+        }
+    ],
+    "duration": "P1M"
+}

@@ -1,0 +1,22 @@
+{
+  "contextRegistrations": [
+    {
+      "entities": [
+        {
+          "type": "Robot",
+          "isPattern": "false",
+          "id": "Robot:r2d2"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "position",
+          "type": "Array",
+          "isDomain": "false"
+        }
+      ],
+      "providingApplication": "http://smartGondor.com"
+    }
+  ],
+  "duration": "P1M"
+}

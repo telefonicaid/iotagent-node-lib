@@ -1,0 +1,12 @@
+{
+  "devices": [
+    {
+      "device_id": "Light1",
+      "protocol": "GENERIC_PROTO",
+      "service" : "smartGondor",
+      "service_path": "gardens",
+      "entity_name": "TheFirstLight",
+      "entity_type": "TheLightType"
+    }
+  ]
+}
