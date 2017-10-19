@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 'use strict';
 
@@ -34,7 +36,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -126,9 +129,11 @@ describe('Expression-based transformations plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.expressionTransformation.update);
+                                                    console.log('aaaaaded');
+
                 done();
             });
         });
