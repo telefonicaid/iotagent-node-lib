@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 'use strict';
 
@@ -29,7 +31,8 @@ var statsService = require('../../../../lib/services/stats/statsRegistry'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041,

@@ -132,8 +132,6 @@ describe('Expression-based transformations plugin', function() {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.expressionTransformation.update);
-                                                    console.log('aaaaaded');
-
                 done();
             });
         });
