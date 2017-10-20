@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 'use strict';
 
@@ -32,7 +34,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -332,7 +335,7 @@ describe('Active attributes test', function() {
                 should.exist(error.name);
                 error.code.should.equal(413);
                 error.details.description.should.equal('payload size: 1500000, max size supported: 1048576');
-                error.details.error.should.equal('Request Entity Too Large');
+                error.details.error.should.equal('RequestEntityTooLarge');
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
                 done();
             });
@@ -348,7 +351,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                 utils.readExampleFile('./test/unit/ngsi20/examples/contextRequests/updateContext1.json'))
-                .reply(472,
+                .reply(400,
                 utils.readExampleFile('./test/unit/ngsi20/examples/contextResponses/updateContext2Failed.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);

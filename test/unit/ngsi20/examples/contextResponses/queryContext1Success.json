@@ -8,5 +8,8 @@
   "dimming":{
     "type": "Percentage",
     "value": "23"
+  },
+  "metadata":{
+    
   }
 }
