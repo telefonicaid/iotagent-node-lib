@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 
 'use strict';
@@ -32,7 +34,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -68,8 +71,8 @@ describe('Event plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.addEvents.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.addEvents.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPluginsNgsi2.addEvents.query);
                 done();
             });
         });

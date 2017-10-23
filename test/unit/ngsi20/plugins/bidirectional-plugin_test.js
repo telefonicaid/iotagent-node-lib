@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 
 'use strict';
@@ -33,7 +35,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -81,11 +84,11 @@ describe('Bidirectional data plugin', function() {
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
                 iotAgentLib.addDeviceProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                    iotAgentLib.dataPluginsNgsi2.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
+                    iotAgentLib.dataPluginsNgsi2.bidirectionalData.groupProvision);
                 iotAgentLib.addNotificationMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                    iotAgentLib.dataPluginsNgsi2.bidirectionalData.notification);
                 done();
             });
         });

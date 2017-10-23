@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ * 
+ * Modified work Copyright 2017 Atos Spain S.A
  */
 'use strict';
 
@@ -33,7 +35,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -76,8 +79,8 @@ describe('Attribute alias plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPluginsNgsi2.attributeAlias.query);
                 done();
             });
         });
