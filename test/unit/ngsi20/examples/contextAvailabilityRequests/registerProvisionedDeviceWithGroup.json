@@ -1,0 +1,37 @@
+{
+  "contextRegistrations": [
+    {
+      "entities": [
+        {
+          "type": "TheLightType",
+          "isPattern": "false",
+          "id": "TheFirstLight"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "luminance",
+          "type": "lumens",
+          "isDomain": "false"
+        },
+        {
+          "name": "luminescence",
+          "type": "Lumens",
+          "isDomain": "false"
+        },
+        {
+          "name": "commandAttr",
+          "type": "commandType",
+          "isDomain": "false"
+        },
+        {
+          "name": "wheel1",
+          "type": "Wheel",
+          "isDomain": "false"
+        }
+      ],
+      "providingApplication": "http://smartGondor.com"
+    }
+  ],
+  "duration": "P1M"
+}

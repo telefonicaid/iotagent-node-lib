@@ -1,0 +1,7 @@
+{
+  "protocol": "GENERIC_PROTOCOL",
+  "description": "A generic protocol",
+  "iotagent": "http://smartGondor.com/iot",
+  "resource": "/iot/d",
+  "services": []
+}

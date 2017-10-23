@@ -1,0 +1,28 @@
+{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "Light",
+                    "isPattern": "false",
+                    "id": "Light:light1"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "temperature",
+                    "type": "centigrades",
+                    "isDomain": "false"
+                },
+                {
+                    "name": "position",
+                    "type": "Array",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://smartGondor.com"
+        }
+    ],
+    "registrationId": "6319a7f5254b05844116584d",
+    "duration": "PT1S"
+}

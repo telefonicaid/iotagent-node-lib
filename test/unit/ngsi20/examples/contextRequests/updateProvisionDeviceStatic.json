@@ -1,0 +1,16 @@
+{
+  "id": "SecondMicroLight",
+  "type": "MicroLights",
+  "newAttribute": {
+    "type": "Integer",
+    "value": " "
+  },
+  "cellID": {
+    "type": "Integer",
+    "value": 435
+  },
+  "serverURL":{
+    "type": "URL",
+    "value": "http://fakeserver.com"    
+  }
+}

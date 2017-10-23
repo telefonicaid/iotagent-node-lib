@@ -1,0 +1,25 @@
+{
+  "subject":{
+    "entities": [
+      {
+        "id": "TheFirstLight",
+        "type": "TheLightType"
+      }
+    ],
+    "condition":{
+      "attrs":[
+        "location"
+      ]
+    }
+  },
+  "notification":{
+    "http":{
+      "url":"http://smartGondor.com/notify"
+    },
+    "attrs":[
+      "location"
+    ]
+  },
+  "expires": "P1M",
+  "throttling": 5
+}

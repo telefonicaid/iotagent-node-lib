@@ -1,0 +1,29 @@
+{
+  "protocol": "GENERIC_PROTOCOL",
+  "description": "A generic protocol",
+  "iotagent": "http://smartGondor.com/iot",
+  "resource": "/iot/d",
+  "services": [
+    {
+      "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+      "token": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+      "entity_type": "SensorMachine",
+      "resource": "/deviceTest",
+      "service": "theService",
+      "service_path": "theSubService",
+      "attributes": [
+        {
+          "name": "status",
+          "type": "Boolean"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "position",
+          "type": "location",
+          "values": "123,12"
+        }
+      ]
+    }
+  ]
+}

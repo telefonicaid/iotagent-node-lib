@@ -1,0 +1,8 @@
+{
+  "id": "SecondMicroLight",
+  "type": "MicroLights",
+  "newAttribute": {
+    "type": "Integer",
+    "value": " "
+  }
+}

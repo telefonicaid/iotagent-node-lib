@@ -1,0 +1,14 @@
+{
+  "pressure25":{
+    "type": "Integer",
+    "value": 52 
+  },
+  "humidity12":{
+    "type": "Percentage",
+    "value": "12"  
+  },
+  "weather":{
+    "type": "Summary",
+    "value": "Humidity 6 and pressure 1040"    
+  }
+}

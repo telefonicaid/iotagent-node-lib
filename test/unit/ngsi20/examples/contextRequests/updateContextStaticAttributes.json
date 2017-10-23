@@ -1,0 +1,10 @@
+{
+    "moving":{
+        "value":true,
+        "type": "boolean"
+    },
+    "location":{
+        "value": "153,523",
+        "type": "geo:point"
+    }
+}

@@ -14,6 +14,14 @@ These are the parameters that can be configured in the global section:
 	port: '1026'
     	}
 ```
+ * If you want to use NGSIv2:
+```
+  {
+  host: '192.168.56.101',
+  port: '1026',
+  ngsiVersion: 'v2'
+      }
+``` 
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
 ```
 	{
