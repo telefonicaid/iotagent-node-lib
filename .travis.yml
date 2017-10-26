@@ -6,7 +6,6 @@ node_js:
 
 branches:
   only:
-    - develop
     - master
 
 services:
@@ -17,3 +16,5 @@ install:
 
 before_install:
  - npm install -g grunt-cli
+
+dist: precise
