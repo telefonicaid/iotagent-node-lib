@@ -1,6 +1,6 @@
 {
     "moving":{
-        "value":true,
+        "value": true,
         "type": "boolean"
     },
     "location":{

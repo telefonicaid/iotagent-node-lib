@@ -70,7 +70,7 @@ describe('Startup tests', function() {
             process.env.IOTA_CB_NGSI_VERSION = 'v2';
             process.env.IOTA_NORTH_HOST = 'localhost';
             process.env.IOTA_NORTH_PORT = '2222';
-            process.env.IOTA_PROVIDER_URL = 'prvider:3333';
+            process.env.IOTA_PROVIDER_URL = 'provider:3333';
             process.env.IOTA_REGISTRY_TYPE = 'mongo';
             process.env.IOTA_LOG_LEVEL = 'FATAL';
             process.env.IOTA_TIMESTAMP = true;
@@ -90,7 +90,7 @@ describe('Startup tests', function() {
             iotamMock = nock('http://iotamhost:4444')
                 .post('/iotampath')
                 .reply(200,
-                    utils.readExampleFile('./test/unit/ngsi20/examples/iotamResponses/registrationSuccess.json'));
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json'));
         });
 
         afterEach(function() {
@@ -126,7 +126,7 @@ describe('Startup tests', function() {
                 config.getConfig().contextBroker.ngsiVersion.should.equal('v2');
                 config.getConfig().server.host.should.equal('localhost');
                 config.getConfig().server.port.should.equal('2222');
-                config.getConfig().providerUrl.should.equal('prvider:3333');
+                config.getConfig().providerUrl.should.equal('provider:3333');
                 config.getConfig().deviceRegistry.type.should.equal('mongo');
                 config.getConfig().logLevel.should.equal('FATAL');
                 config.getConfig().timestamp.should.equal(true);
