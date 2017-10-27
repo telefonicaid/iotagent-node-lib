@@ -113,7 +113,6 @@ describe('IoT Agent Lazy Devices', function() {
     });
 
     afterEach(function(done) {
-        nock.cleanAll();
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {
                 mongoUtils.cleanDbs(done);
@@ -149,6 +148,7 @@ describe('IoT Agent Lazy Devices', function() {
         };
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -204,6 +204,7 @@ describe('IoT Agent Lazy Devices', function() {
         };
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -271,6 +272,7 @@ describe('IoT Agent Lazy Devices', function() {
         };
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -394,6 +396,7 @@ describe('IoT Agent Lazy Devices', function() {
             ];
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -458,6 +461,7 @@ describe('IoT Agent Lazy Devices', function() {
             };
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -610,6 +614,7 @@ describe('IoT Agent Lazy Devices', function() {
             ];
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -688,6 +693,7 @@ describe('IoT Agent Lazy Devices', function() {
             ];
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -756,6 +762,7 @@ describe('IoT Agent Lazy Devices', function() {
             ];
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -832,6 +839,7 @@ describe('IoT Agent Lazy Devices', function() {
             ];
 
         beforeEach(function(done) {
+            nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
