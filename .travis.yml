@@ -1,12 +1,11 @@
 language: node_js
 
 node_js:
- - "0.10"
  - "4"
+ - "6"
 
 branches:
   only:
-    - develop
     - master
 
 services:
@@ -16,4 +15,6 @@ install:
  - npm install
 
 before_install:
+ - npm update -q  
  - npm install -g grunt-cli
+
