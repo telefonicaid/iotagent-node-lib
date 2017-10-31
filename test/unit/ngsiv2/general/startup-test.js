@@ -119,7 +119,7 @@ describe('Startup tests', function() {
             iotAgentLib.deactivate(done);
         });
 
-        it('should not start and raise a MISSING_CONFIG_PARAMS error', function(done) {
+        it('should load the correct configuration parameters', function(done) {
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 config.getConfig().contextBroker.host.should.equal('cbhost');
                 config.getConfig().contextBroker.port.should.equal('1111');
