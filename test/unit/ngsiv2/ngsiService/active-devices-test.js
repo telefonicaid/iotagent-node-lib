@@ -152,7 +152,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -292,7 +292,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
                 .reply(413,
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext1Failed.json'));
 
@@ -320,7 +320,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
-                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
                 .reply(400,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -345,7 +345,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
-                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
                 .reply(500,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -373,7 +373,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/humSensor/attrs',
-                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
