@@ -38,7 +38,7 @@
     "jison": "0.4.17",
     "express": "^4.11.2",
     "logops": "1.0.0",
-    "mongoose": "4.6.8",
+    "mongoose": "4.13.3",
     "mu2": "^0.5.20",
     "mustache": "2.2.1",
     "node-uuid": "^1.4.1",
