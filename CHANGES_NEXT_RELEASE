@@ -1,3 +1,4 @@
+- Upgrade mongoose to 4.13.3
 - Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
 - Alarm raises with null error (#521)
 - Capture Mongo DB connection errors
