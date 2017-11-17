@@ -41,7 +41,7 @@
     "logops": "1.0.0",
     "mongoose": "4.6.8",
     "mu2": "^0.5.20",
-    "mustache": "0.8.2",
+    "mustache": "2.2.1",
     "node-uuid": "^1.4.1",
     "request": "^2.39.0",
     "revalidator": "^0.3.1",
