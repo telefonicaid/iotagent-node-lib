@@ -1,3 +1,4 @@
+- Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
 - Alarm raises with null error (#521)
 - Capture Mongo DB connection errors
 - Update MongoDB driver in order to fix NODE-818 error (#545)
