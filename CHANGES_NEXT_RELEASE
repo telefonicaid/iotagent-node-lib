@@ -1,6 +1,3 @@
-- Alarm raises with null error (#521)
-- Capture Mongo DB connection errors
-- Update MongoDB driver in order to fix NODE-818 error (#545)
+- Upgrade mongoose dependence version to 4.13.3
 - Add: allow NGSIv2 for updating active attributes at CB, through configuration (#527)
 - Add: NGSIv2 support for Timestamp Compression plugin, through configuration (#527)
-
