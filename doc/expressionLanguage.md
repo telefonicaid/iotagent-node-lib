@@ -106,41 +106,6 @@ level: 85.3
 The only expression rule that will be executed will be that of the 'fillingLevel' attribute. It will produce the value
 '0.853' that will be sent to the Context Broker.
 
-Note that expressions are only applied if the attribute name (as received by the IOT Agent in the southbound interface) matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following example:
-```
-  "consumption": {
-   "type": "String",
-   "value": "${trim(@spaces)}"
- }
-```
-
-- Case 1: the following measure is received at the southbound interface:
-```
-consumption: "0.44"
-```
-As `spaces` attribute is not included, then the expression is not applied and the `consumption` measure value is directly used, so the following is sent to CB:
-
-```
-"consumption": {
- "type": "String",
- "value": "0.44"
-}
-```
-
-- Case 2: the following measure is received at the southbound interface:
-```
-consumption: 0.44
-spaces: "  foobar  "
-```
-
-As `spaces` attribute is included, then the expression is evaluated, so overriding the 0.44 value and sending the following to CB:
-```
-"consumption": {
- "type": "String",
- "value": "foobar"
-}
-```
-
 ## <a name="description"/> Language description
 
 ### <a name="types"/> Types
