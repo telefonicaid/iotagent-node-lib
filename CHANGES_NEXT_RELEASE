@@ -2,4 +2,5 @@
 - Add: allow NGSIv2 for updating active attributes at CB, through configuration (#527)
 - Add: NGSIv2 support for Timestamp Compression plugin, through configuration (#527)
 - Add: NGSIv2 support for Timestamp Processing plugin, through configuration (#527)
+- Add: NGSIv2 support for Expression Translation, Attribute Alias and Event plugins, through configuration (#527)
 

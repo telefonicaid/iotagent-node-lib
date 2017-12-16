@@ -1,0 +1,10 @@
+{
+  "temperature": {
+    "type": "centigrades",
+    "value": "52"
+  },
+  "pressure": {
+    "type": "Hgmm",
+    "value": "20071103T131805"
+  }
+}
