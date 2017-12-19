@@ -1,1 +1,2 @@
 - Upgrade mongoose dependence version to 4.13.3
+- Fix bug in mergeArrays function of deviceService (#571)
