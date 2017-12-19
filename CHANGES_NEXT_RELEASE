@@ -1,1 +1,2 @@
+- Fix command name in some commands logs
 - Upgrade mongoose dependence version to 4.13.3
