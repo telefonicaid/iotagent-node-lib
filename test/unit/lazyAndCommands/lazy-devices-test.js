@@ -137,7 +137,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 }
             }
         }
-    }
+    };
 
 describe('IoT Agent Lazy Devices', function() {
     beforeEach(function(done) {
@@ -912,7 +912,8 @@ describe('IoT Agent Lazy Devices', function() {
         });
     });
 
-    describe('When the IoT Agent receives an update on the device data in JSON format for a type with internalAttributes', function() {
+    describe('When the IoT Agent receives an update on the device data in JSON format for a type with' +
+        'internalAttributes', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
