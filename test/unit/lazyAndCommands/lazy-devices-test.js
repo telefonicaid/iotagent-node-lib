@@ -141,7 +141,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
 
 describe('IoT Agent Lazy Devices', function() {
     beforeEach(function(done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
         mongoUtils.cleanDbs(done);
 
         iotAgentLib.setDataQueryHandler(null);
