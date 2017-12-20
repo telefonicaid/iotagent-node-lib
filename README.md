@@ -141,7 +141,7 @@ to the caller, transparently.
 
 #### Commands
 
-**IMPORTANT NOTE:** at the present moment, commands (both push and pull) are supported only in the case of explictely
+**IMPORTANT NOTE:** at the present moment, commands (both push and poll) are supported only in the case of explictely
 provisioned agents. For autoprovisioned agents commands are not currently supported, although
 [an issue](https://github.com/telefonicaid/iotagent-node-lib/issues/572) has been created about this functionality.
 
