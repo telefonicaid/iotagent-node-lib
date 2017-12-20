@@ -1,2 +1,2 @@
 - Upgrade mongoose dependence version to 4.13.3
-- Fix bug in mergeArrays function of deviceService (#571)
+- Fix bug in mergeArrays function of deviceService, precluding updates to work when internalAttributes of type Array were used (#571)
