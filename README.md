@@ -140,6 +140,11 @@ transform that information to a NSGI format and return it to the Context Broker.
 to the caller, transparently.
 
 #### Commands
+
+**IMPORTANT NOTE:** at the present moment, commands (both push and pull) are supported only in the case of explictely
+provisioned agents. For autoprovisioned agents commands are not currently supported, although
+[an issue](https://github.com/telefonicaid/iotagent-node-lib/issues/572) has been created about this functionality.
+
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command
 will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the
 requested action. Parameters for the command will be passed inside the command value.
