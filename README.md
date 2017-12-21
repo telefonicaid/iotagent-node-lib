@@ -175,8 +175,9 @@ retrieve the pending commands upon connection. To enable this feature, the Libra
 command storage, and a mechanism to automatically store incoming commands for those devices marked as 'polling devices'.
 
 The distinction between push and poll commands will be made based on the presence of a `polling` flag in the device
-provisioning data. The default option (with the flag with value `false` or not present) is to use push commands (as they
-were the only ones available until the latest versions).
+provisioning data. The details on how this flag is derived for provisioning data would depend on the particular IOT Agent
+implementation using this libray (in other words, there isn't any standard way of doing so). The default option (with the flag
+with value `false` or not present) is to use push commands (as they were the only ones available until the latest versions).
 
 Polling commands could be subjected to expiration: two configuration properties pollingExpiration` and `pollingDaemonFrequency`
 can be set to start a daemon that will remove expired commands from the DB if the device is taking too much to pick them
