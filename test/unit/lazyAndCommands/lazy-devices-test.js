@@ -83,6 +83,26 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     }
                 ],
                 active: []
+            },
+            'RobotPre': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'moving',
+                        type: 'Boolean'
+                    }
+                ],
+                staticAttributes: [],
+                attributes: [],
+                internalAttributes: {
+                    lwm2mResourceMapping: {
+                        position: {
+                            objectType: 9090,
+                            objectInstance: 0,
+                            objectResource: 0
+                        }
+                    }
+                }
             }
         },
         service: 'smartGondor',
@@ -102,6 +122,21 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         type: 'Motion',
         service: 'smartGondor',
         subservice: 'gardens'
+    },
+    device3 = {
+        id: 'TestRobotPre',
+        type: 'RobotPre',
+        service: 'smartGondor',
+        subservice: 'gardens',
+        internalAttributes: {
+            lwm2mResourceMapping: {
+                position: {
+                    objectType: 6789,
+                    objectInstance: 0,
+                    objectResource: 17
+                }
+            }
+        }
     };
 
 describe('IoT Agent Lazy Devices', function() {
@@ -876,4 +911,77 @@ describe('IoT Agent Lazy Devices', function() {
             });
         });
     });
+
+    describe('When the IoT Agent receives an update on the device data in JSON format for a type with' +
+        'internalAttributes', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: 'RobotPre',
+                        isPattern: 'false',
+                        id: 'RobotPre:TestRobotPre',
+                        attributes: [
+                            {
+                                name: 'moving',
+                                type: 'Boolean',
+                                value: 'True'
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'APPEND'
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent4.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            async.series([
+                apply(iotAgentLib.activate, iotAgentConfig),
+                apply(iotAgentLib.register, device3)
+            ], done);
+        });
+
+        it('should call the device handler with the received data', function(done) {
+            var expectedResponse = utils
+                .readExampleFile('./test/unit/examples/contextProviderResponses/updateInformationResponse2.json');
+
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+                id.should.equal(device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].value.should.equal('True');
+                callback(null);
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
 });
