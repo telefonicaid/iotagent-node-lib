@@ -83,7 +83,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         name: 'consumption_x',
                         type: 'Float',
                         expression: '${@pressure * 20}'
-                    }            
+                    }
                 ]
             },
             'LightError': {
@@ -795,7 +795,8 @@ describe('Expression-based transformations plugin', function() {
         });
     });
 
-    describe('When there are expressions including other attributes and they are updated (overriding situation)', function() {
+    describe('When there are expressions including other attributes and they are updated' +
+        '(overriding situation)', function() {
 
         var values = [
             {
