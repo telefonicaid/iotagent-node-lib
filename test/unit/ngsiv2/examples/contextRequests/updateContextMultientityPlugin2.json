@@ -1,0 +1,22 @@
+{
+  "actionType": "UPDATE",
+  "entities": [
+    {
+      "id": "ws4",
+      "type": "WeatherStation",
+      "pressure": {
+        "type": "Hgmm",
+        "value": "52"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Percentage",
+        "value": "12"
+      },
+      "type": "WeatherStation",
+      "id": "Higro2000"
+    }
+  ]
+}
+
