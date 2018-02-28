@@ -1,0 +1,2 @@
+- FIX Automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544).
+- FIX Static attributes seem not supported in Configuration Group provisioning (#550).
