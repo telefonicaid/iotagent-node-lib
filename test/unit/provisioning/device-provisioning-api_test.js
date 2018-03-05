@@ -669,4 +669,22 @@ describe('Device provisioning API: Provision devices', function() {
             });
         });
     });
+    describe('When a device delete request arrives to the Agent for a not existing device', function() {
+      var options = {
+          url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
+          headers: {
+              'fiware-service': 'smartGondor',
+              'fiware-servicepath': '/gardens'
+          },
+          method: 'DELETE'
+      };
+
+      it('should return a 404 error', function(done) {
+          request(options, function(error, response, body) {
+              should.not.exist(error);
+              response.statusCode.should.equal(404);
+              done();
+          });
+      });
+    });
 });
