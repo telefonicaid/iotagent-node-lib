@@ -121,8 +121,7 @@ describe('Startup tests', function() {
 
         it('should load the correct configuration parameters', function(done) {
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().contextBroker.host.should.equal('cbhost');
-                config.getConfig().contextBroker.port.should.equal('1111');
+                config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().contextBroker.ngsiVersion.should.equal('v2');
                 config.getConfig().server.host.should.equal('localhost');
                 config.getConfig().server.port.should.equal('2222');
@@ -130,8 +129,7 @@ describe('Startup tests', function() {
                 config.getConfig().deviceRegistry.type.should.equal('mongo');
                 config.getConfig().logLevel.should.equal('FATAL');
                 config.getConfig().timestamp.should.equal(true);
-                config.getConfig().iotManager.host.should.equal('iotamhost');
-                config.getConfig().iotManager.port.should.equal('4444');
+                config.getConfig().iotManager.url.should.equal('http://iotamhost:4444');
                 config.getConfig().iotManager.path.should.equal('/iotampath');
                 config.getConfig().iotManager.protocol.should.equal('PDI_PROTOCOL');
                 config.getConfig().iotManager.description.should.equal('The IoTAM Protocol');
