@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - Fix command name in some commands logs at debug log level
 - Upgrade mongoose dependence version to 4.13.3
 - Fix bug in mergeArrays function of deviceService, precluding updates to work when internalAttributes of type Array were used (#571)
@@ -7,3 +8,9 @@
 - Add: NGSIv2 support for Expression Translation, Attribute Alias and Event plugins, through configuration (#527)
 - Add: NGSIv2 support for Bidirectionality plugin (#527)
 - Add: NGSIv2 support for Multientity plugin (#527)
+=======
+- FIX Automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544).
+- FIX Static attributes seem not supported in Configuration Group provisioning (#550).
+- Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
+- Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
+>>>>>>> b249f88db2e35e99292cefdd871036aa18ea1293
