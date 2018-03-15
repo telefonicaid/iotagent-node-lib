@@ -6,7 +6,7 @@
        "type": "HidroponicPot",
        "commands": [ ],
        "lazy": [ ],
-       "active": [
+       "attributes": [
            {
                "name": "Temperature Sensor",
                "type": "float"

@@ -5,7 +5,7 @@
        "apikey": "",
        "type": "HidroponicPot",
        "commands": [ ],
-       "active": [ ],
+       "attributes": [ ],
        "lazy": [
            {
                "name": "Temperature Sensor",
