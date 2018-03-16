@@ -2,4 +2,4 @@
 - FIX Static attributes seem not supported in Configuration Group provisioning (#550).
 - Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
 - Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
-- FIX: Configuration API uses attributes as payload field for active attributes (#588)
+-  Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
