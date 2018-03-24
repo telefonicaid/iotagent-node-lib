@@ -25,7 +25,8 @@ var config = {
     logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.56.101',
-        port: '1026'
+        port: '1026',
+        protocol: 'http'
     },
     server: {
         port: 4041
