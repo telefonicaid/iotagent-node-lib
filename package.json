@@ -35,9 +35,12 @@
     "async": "1.5.2",
     "body-parser": "^1.11.0",
     "command-shell-lib": "1.0.0",
-    "jison": "0.4.17",
     "express": "^4.11.2",
+    "fs": "0.0.2",
+    "https": "^1.0.0",
+    "jison": "0.4.17",
     "logops": "1.0.0",
+    "mongodb": "2.2.10",
     "mongoose": "4.13.3",
     "mu2": "^0.5.20",
     "mustache": "2.2.1",
@@ -46,8 +49,7 @@
     "revalidator": "^0.3.1",
     "sax": "^0.6.0",
     "underscore": "^1.7.0",
-    "xmldom": "0.1.19",
-    "mongodb": "2.2.10"
+    "xmldom": "0.1.19"
   },
   "devDependencies": {
     "grunt": "0.4.5",
