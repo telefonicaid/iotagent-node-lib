@@ -38,7 +38,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             port: 4041
         },
         authentication: {
-            type: 'keystone',
+            // Next line is syntactically correct from a configuration point of view, but we comment it in order to ensure backward compability
+            // type: keystone,
             host: '128.16.109.11',
             port: '5000',
             user: 'iotagent',
