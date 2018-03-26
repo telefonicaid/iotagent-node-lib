@@ -94,6 +94,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
+    optionsDeviceCreation = {
+        url: 'http://localhost:4041/iot/devices',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
@@ -105,6 +114,20 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         qs: {
             resource: '/deviceTest',
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
+    },
+    optionsDeleteDevice = {
+        url: 'http://localhost:4041/iot/services',
+        method: 'DELETE',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+            device: 'true'
         }
     },
     optionsUpdate = {
@@ -346,7 +369,71 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
+    describe('When a device group removal request arrives with device=true option', function() {
+        var contextBrokerMock;
 
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            async.series([
+                iotAgentLib.clearAll,
+                async.apply(request, optionsCreation),
+                async.apply(request, optionsDeviceCreation)
+            ], done);
+        });
+
+        it('should remove complete without error', function(done) {
+            request(optionsDeleteDevice, function(error, response, body) {
+              should.not.exist(error);
+              response.statusCode.should.equal(204);
+              done();
+            });
+        });
+
+        it('should remove all associated devices', function(done) {
+              var options = {
+                  url: 'http://localhost:4041/iot/devices/Light1',
+                  headers: {
+                      'fiware-service': 'TestService',
+                      'fiware-servicepath': '/testingPath'
+                  },
+                  method: 'GET'
+              };
+              request(options, function(error, response, body) {
+                  should.not.exist(error);
+                  done();
+              });
+        });
+
+        afterEach(function(done) {
+            nock.cleanAll();
+            done();
+        });
+    });
     describe('When a device group removal arrives declaring a different service', function() {
         var optionsDeleteDifferentService = _.clone(optionsDelete);
 
@@ -392,7 +479,7 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-
+    
     describe('When a device group removal arrives to a DB with three groups', function() {
         beforeEach(function(done) {
             var optionsCreation1 = _.clone(optionsCreation),
