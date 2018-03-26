@@ -425,6 +425,7 @@ describe('Device Group Configuration API', function() {
               };
               request(options, function(error, response, body) {
                   should.not.exist(error);
+                  response.statusCode.should.equal(404);
                   done();
               });
         });
