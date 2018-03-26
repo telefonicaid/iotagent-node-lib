@@ -32,6 +32,9 @@ var config = {
         host: '0.0.0.0'
     },
     authentication: {
+        enabled: true,
+        type: 'keystone',
+        header: 'X-Auth-Token',
         host: 'localhost',
         port: '5000',
         user: 'iotagent',

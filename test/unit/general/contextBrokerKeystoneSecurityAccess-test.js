@@ -38,6 +38,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             port: 4041
         },
         authentication: {
+            type: 'keystone',
             host: '128.16.109.11',
             port: '5000',
             user: 'iotagent',
@@ -84,7 +85,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         throttling: 'PT5S'
     };
 
-describe('Secured access to the Context Broker', function() {
+describe('Secured access to the Context Broker with Keystone', function() {
     var values = [
         {
             name: 'state',
