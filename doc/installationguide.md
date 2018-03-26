@@ -28,10 +28,10 @@ These are the parameters that can be configured in the global section:
     }
 ```
 * **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (required in scenarios with security enabled in the Context Broker side). 
-  Currently, two authentication provider are supported: `keystone` and `oauth2`. 
+  Currently, two authentication provider are supported: `keystone` and `oauth2`. Authentication need to be enabled by setting the field `enabled` to `true`. 
   In `keystone` based authentication, the `trust` associated to the `device` or `deviceGroup` is a token representing a specific user and his rights on a given domain (i.e.
-  combination of `fiware-service` and `service-path`). The authentication process use the trust delegation workflow to check if the trust provided is valid, in which
-  case return a `x-subject-token` that can be used to authenticate the request to the context broker. Required parameters are: the `url` of the keystone to be used
+  combination of `fiware-service` and `fiware-servicepath`). The authentication process use the trust delegation workflow to check if the trust provided is valid, in which
+  case return a `x-subject-token` that can be used to authenticate the request to the Context Broker. Required parameters are: the `url` of the keystone to be used
   (alternatively `host` and `port` but if you use this combination, the IoT Agent will assume that the protocol is HTTP), the `user` and `password` to which it is delegated
   the `trust` verification.
   E.g.:
@@ -44,15 +44,15 @@ These are the parameters that can be configured in the global section:
           password: 'iotagent'
     }
     ```
-  In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the context broker client. 
+  In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
   The authentication process use the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
-  that can be used to authenticate the request to the context broker.
+  that can be used to authenticate the request to the Context Broker.
   At the time being the assumption is that the `refresh_token` is a not expiring `offline_token` (we believe this is the best solution in the case of IoT Devices,
   since injecting a refresh token look may slow down communication. Still the developer would be able to invalidate the refresh token on the provider side in
-  case of security issues connected to a token). The code was tested using Keycloak and Auth0 (it may require customisation
+  case of security issues connected to a token). The code was tested using [Keycloak](http://www.keycloak.org) and [Auth0](https://auth0.com) (it may require customisation
   for other providers - while OAuth2 is a standard, not all implementations behave in the same way, especially as regards status codes and error messages).
   Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively `host` and `port` but if you use this combination, the IoT Agent will assume
-  that the protocol is HTTP), the `tokenPath` to which the validation request should be sent, the `clientId` and `clientSecret` that identify the context broker,
+  that the protocol is HTTP), the `tokenPath` to which the validation request should be sent, the `clientId` and `clientSecret` that identify the Context Broker,
   and the `header` field that should be used to send the authentication request (that will be send in the form `Authorization: Bearer <access_token>`).
   E.g.:
     ```
