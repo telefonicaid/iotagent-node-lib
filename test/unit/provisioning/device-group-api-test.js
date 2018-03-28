@@ -378,10 +378,10 @@ describe('Device Group Configuration API', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
@@ -390,6 +390,15 @@ describe('Device Group Configuration API', function() {
                     './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/unregisterProvisionedDevice.json'))
+                .reply(200,
+                utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
@@ -406,14 +415,6 @@ describe('Device Group Configuration API', function() {
             ], done);
         });
 
-        it('should remove complete without error', function(done) {
-            request(optionsDeleteDevice, function(error, response, body) {
-              should.not.exist(error);
-              response.statusCode.should.equal(204);
-              done();
-            });
-        });
-
         it('should remove all associated devices', function(done) {
               var options = {
                   url: 'http://localhost:4041/iot/devices/Light1',
@@ -423,11 +424,17 @@ describe('Device Group Configuration API', function() {
                   },
                   method: 'GET'
               };
-              request(options, function(error, response, body) {
-                  should.not.exist(error);
+
+              function test (error, response, body) {
                   response.statusCode.should.equal(404);
                   done();
-              });
+              };
+
+              async.series([
+                  async.apply(request, optionsDeleteDevice),
+                  async.apply(request, options),
+                  async.apply(request, options, test),
+              ], done);
         });
 
         afterEach(function(done) {
