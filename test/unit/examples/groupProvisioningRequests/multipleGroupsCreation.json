@@ -18,7 +18,7 @@
           "type": "Lumens"
         }
       ],
-      "active": [
+      "attributes": [
         {
           "name": "status",
           "type": "Boolean"
@@ -38,7 +38,7 @@
         }
       ],
       "lazy": [],
-      "active": []
+      "attributes": []
     }
   ]
 }

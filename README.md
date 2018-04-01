@@ -578,7 +578,7 @@ the API resource fields and the same fields in the database model.
 | cbHost    	        | cbHost    	        | Context Broker connection information. This options can be used to override the global ones for specific types of devices. |
 | lazy    	          | lazy    	          | list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided. |
 | commands    	      | commands    	      | list of commands attributes of the device. For each attribute, its `name` and `type` must be provided. |
-| active    	        | attributes    	    | list of active attributes of the device. For each attribute, its `name` and `type` must be provided. |
+| attributes    	    | attributes    	    | list of active attributes of the device. For each attribute, its `name` and `type` must be provided. |
 | static_attributes   | staticAttributes    | this attributes will be added to all the entities of this group 'as is'. |
 | internal_attributes | internalAttributes  | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry. |
 
@@ -611,7 +611,7 @@ E.g.:
 	            "type": "Lumens"
 	        }
 	    ],
-	    "active": [
+	    "attributes": [
 	        {
 	            "name": "status",
 	            "type": "Boolean"
@@ -665,7 +665,7 @@ The IoT Agent can be configured to expect certain kinds of devices, with preconf
 
 * **service**: service of the devices of this type.
 * **subservice**: subservice of the devices of this type.
-* **active**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
+* **attributes**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
 * **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.

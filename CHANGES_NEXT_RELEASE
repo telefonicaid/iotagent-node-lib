@@ -2,6 +2,7 @@
 - FIX Static attributes seem not supported in Configuration Group provisioning (#550).
 - Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
 - Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
+-  Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
 - Add: allow NGSIv2 for updating active attributes at CB, through configuration (#527)
 - Add: NGSIv2 support for Timestamp Compression plugin, through configuration (#527)
 - Add: NGSIv2 support for Timestamp Processing plugin, through configuration (#527)
