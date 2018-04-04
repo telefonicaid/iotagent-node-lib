@@ -136,6 +136,7 @@ describe('HTTPS support tests', function() {
         });
 
         afterEach(function(done) {
+            nock.cleanAll();
             groupRegistryMemory.clear(function() {
                 iotAgentLib.deactivate(done);
             });
@@ -245,6 +246,13 @@ describe('HTTPS support tests', function() {
                     done();
             });
         });
-    });
 
+        afterEach(function(done) {
+          nock.cleanAll();
+          iotAgentLib.clearAll(function() {
+              iotAgentLib.deactivate(done);
+          });
+        });
+
+    });
 });
