@@ -156,7 +156,8 @@ describe('HTTPS support tests', function() {
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': '/gardens'
@@ -172,17 +173,21 @@ describe('HTTPS support tests', function() {
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post('/v1/updateContext',
-                        utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
+                        utils.readExampleFile(
+                            './test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
                     .reply(200,
-                        utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                        utils.readExampleFile(
+                            './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post('/v1/subscribeContext',
-                        utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'))
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'))
                     .reply(200,
-                        utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
 
                 iotAgentLib.clearAll(function() {
                     request(optionsProvision, function(error, result, body) {
