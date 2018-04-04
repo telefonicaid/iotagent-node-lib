@@ -91,7 +91,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
         type: 'SensorMachine',
         trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-        cbHost: 'https://192.168.1.1:1026',
         commands: [
             {
                 name: 'wheel1',
