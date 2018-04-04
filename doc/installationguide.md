@@ -98,6 +98,7 @@ The following table shows the accepted environment variables, as well as the con
 
 | Environment variable      | Configuration attribute             |
 |:------------------------- |:----------------------------------- |
+| IOTA_CB_URL               | contextBroker.url                   |
 | IOTA_CB_HOST              | contextBroker.host                  |
 | IOTA_CB_PORT              | contextBroker.port                  |
 | IOTA_NORTH_HOST           | server.host                         |
@@ -106,6 +107,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
 | IOTA_LOG_LEVEL            | logLevel                            |
 | IOTA_TIMESTAMP            | timestamp                           |
+| IOTA_IOTAM_URL            | iotManager.url                      |
 | IOTA_IOTAM_HOST           | iotManager.host                     |
 | IOTA_IOTAM_PORT           | iotManager.port                     |
 | IOTA_IOTAM_PATH           | iotManager.path                     |

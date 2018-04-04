@@ -1,3 +1,6 @@
 - FIX Automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544).
 - FIX Static attributes seem not supported in Configuration Group provisioning (#550).
+- Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
+- Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
+- Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
 - FIX Correctly return 404 when asking to remove a not existing device (#585)
