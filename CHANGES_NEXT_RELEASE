@@ -4,3 +4,5 @@
 - Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
 - Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
 - FIX Correctly return 404 when asking to remove a not existing device (#585)
+- Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
+- Add: support OAuth2 provider as authentication backend (#591)

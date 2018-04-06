@@ -28,7 +28,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     logger = require('logops'),
     nock = require('nock'),
     contextBrokerMock,
-    keystoneMock,
+    oauth2Mock,
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
@@ -38,17 +38,19 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             port: 4041
         },
         authentication: {
-            host: '128.16.109.11',
-            port: '5000',
-            user: 'iotagent',
-            password: 'iotagent',
+            type: 'oauth2',
+            url: 'http://192.168.1.1:3000',
+            header: 'Authorization',
+            clientId: 'context-broker',
+            clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
+            tokenPath: '/auth/realms/default/protocol/openid-connect/token',
             enabled: true
         },
         types: {
             'Light': {
                 service: 'smartGondor',
                 subservice: 'electricity',
-                trust: 'BBBB987654321',
+                trust: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3',
                 type: 'Light',
                 commands: [],
                 lazy: [
@@ -84,7 +86,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         throttling: 'PT5S'
     };
 
-describe('Secured access to the Context Broker', function() {
+describe('Secured access to the Context Broker with OAuth2 provider', function() {
     var values = [
         {
             name: 'state',
@@ -111,20 +113,18 @@ describe('Secured access to the Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            keystoneMock = nock('http://128.16.109.11:5000')
-                .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/auth/realms/default/protocol/openid-connect/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
                 .reply(
                     201,
-                    utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
-                    {
-                        'X-Subject-Token': '12345679ABCDEF'
-                    });
+                    utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                    {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
-                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
@@ -134,14 +134,14 @@ describe('Secured access to the Context Broker', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should ask Keystone for a token based on the trust token', function(done) {
+        it('should ask OAuth2 provider for a token based on the trust token', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
-                keystoneMock.done();
+                oauth2Mock.done();
                 done();
             });
         });
-        it('should send the generated token in the x-auth header', function(done) {
+        it('should send the generated token in the auth header', function(done) {
             iotAgentLib.update('light1', 'Light', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -153,20 +153,18 @@ describe('Secured access to the Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            keystoneMock = nock('http://128.16.109.11:5000')
-                .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/auth/realms/default/protocol/openid-connect/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
                 .reply(
                 201,
-                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
-                {
-                    'X-Subject-Token': '12345679ABCDEF'
-                });
+                utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
-                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post('/v1/updateContext',
                 utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
@@ -188,17 +186,17 @@ describe('Secured access to the Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            keystoneMock = nock('http://128.16.109.11:5000')
-                .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+              oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/auth/realms/default/protocol/openid-connect/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
                 .reply(
-                401,
-                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrustUnauthorized.json'));
+                400,
+                utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustUnauthorized.json'));
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
-                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post('/v1/updateContext',
                 utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
                 .reply(
@@ -226,20 +224,18 @@ describe('Secured access to the Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            keystoneMock = nock('http://128.16.109.11:5000')
-                .post('/v3/auth/tokens',
-                utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/auth/realms/default/protocol/openid-connect/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
                 .reply(
                 201,
-                utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
-                {
-                    'X-Subject-Token': '12345679ABCDEF'
-                });
+                utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
-                .matchHeader('X-Auth-Token', '12345679ABCDEF')
+                .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post('/v1/queryContext',
                 utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
                 .reply(200,
