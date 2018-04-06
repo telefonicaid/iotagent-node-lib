@@ -287,6 +287,25 @@ describe('Secured access to the Context Broker with Keystone', function() {
                         'X-Subject-Token': '12345679ABCDEF'
                     });
 
+                keystoneMock
+                    .post('/v3/auth/tokens',
+                    utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+                    .reply(
+                    201,
+                    utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
+                    {
+                        'X-Subject-Token': '12345679ABCDEF'
+                    });
+
+                keystoneMock
+                    .post('/v3/auth/tokens',
+                    utils.readExampleFile('./test/unit/examples/keystoneRequests/getTokenFromTrust.json'))
+                    .reply(
+                    201,
+                    utils.readExampleFile('./test/unit/examples/keystoneResponses/tokenFromTrust.json'),
+                    {
+                        'X-Subject-Token': '12345679ABCDEF'
+                    });
 
                 contextBrokerMock = nock('http://192.168.1.1:1026');
 
@@ -295,6 +314,7 @@ describe('Secured access to the Context Broker with Keystone', function() {
                     .matchHeader('fiware-servicepath', 'electricity')
                     .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/examples/contextRequests/updateContext4.json'))
+                    .matchHeader('X-Auth-Token', '12345679ABCDEF')
                     .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
@@ -302,6 +322,7 @@ describe('Secured access to the Context Broker with Keystone', function() {
                 contextBrokerMock
                     .post('/NGSI9/registerContext',
                     utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerNewDevice1.json'))
+                    .matchHeader('X-Auth-Token', '12345679ABCDEF')
                     .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));

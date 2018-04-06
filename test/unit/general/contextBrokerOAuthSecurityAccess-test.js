@@ -277,6 +277,20 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                         201,
                         utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
                         {});
+                oauth2Mock
+                    .post('/auth/realms/default/protocol/openid-connect/token',
+                        utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                    .reply(
+                        201,
+                        utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                        {});
+                oauth2Mock
+                    .post('/auth/realms/default/protocol/openid-connect/token',
+                        utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                    .reply(
+                        201,
+                        utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                        {});
 
 
                 contextBrokerMock = nock('http://192.168.1.1:1026');
@@ -286,6 +300,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                     .matchHeader('fiware-servicepath', 'electricity')
                     .post('/v1/updateContext',
                     utils.readExampleFile('./test/unit/examples/contextRequests/updateContext4.json'))
+                    .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
@@ -293,6 +308,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 contextBrokerMock
                     .post('/NGSI9/registerContext',
                     utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerNewDevice1.json'))
+                    .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
