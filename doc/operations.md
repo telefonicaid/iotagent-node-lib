@@ -49,6 +49,27 @@ There was a problem retrieving a token from keystone that was not caused by conn
 log for errors and the security configuration in the IoTAgent. This may also be caused by a wrong trust token used
 by the user.
 
+### KEYSTONE-003: Token missing in the response headers.
+
+Authentication flow worked correctly, but the response headers did not include the expected header `x-subject-token`.
+Check the Keystone logs and configuration.
+
+### OAUTH2-001: Error retrieving token from OAuth2 provider: %s
+
+There was connection error connecting with OAuth2 provider to retrieve a token. This condition may indicate a lack of connectivity
+between both machines or a problem with OAuth2 provider.
+
+### OAUTH2-002: Unexpected status code: %d
+
+There was a problem retrieving a token from OAuth2 provider that was not caused by connectivity errors.
+Check the OAuth2 provider log for errors and the security configuration in the IoTAgent.
+This may also be caused by an invalid `refresh_token` used by the user.
+
+### OAUTH2-003: Token missing in the response body
+
+The JSON response body returned by the OAuth2 provider does not include a field `access_token`.
+Check the OAuth2 logs and configuration. 
+
 ### ORION-001: Connection error creating inital entity in the Context Broker: %s
 
 There was a connectivity error accessing Context Broker to create an initial entity (or the Context Broker was down).

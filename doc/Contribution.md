@@ -87,6 +87,7 @@ copied to the RPM spec.
 4. Create a release branch from the last version of `master` named with the version number.
 6. Create a new task for preparing the next release, adding the sufix `-next` to the current version number (to signal
 this as the development version), and flush the contents of the CHANGES_NEXT_RELEASE file.
+7. Upload the new library version to the NPM repository using `npm publish` command from the release branch.
 
 ## Version numbers
 The version number will change for each release, according to the following rules:

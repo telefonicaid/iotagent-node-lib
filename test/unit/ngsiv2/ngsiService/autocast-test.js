@@ -26,7 +26,6 @@
 
 var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     utils = require('../../../tools/utils'),
-    timekeeper = require('timekeeper'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
@@ -93,7 +92,8 @@ describe('JSON native types autocast test', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Number type and Integer value', function() {
+    describe('When the IoT Agent receives new information from a device.' +
+        'Observation with Number type and Integer value', function() {
 
         var values = [
             {
@@ -125,7 +125,8 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Number type and Float value', function() {
+    describe('When the IoT Agent receives new information from a device.' +
+        'Observation with Number type and Float value', function() {
 
         var values = [
             {
@@ -157,7 +158,8 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and True value', function() {
+    describe('When the IoT Agent receives new information from a device.' +
+        'Observation with Boolean type and True value', function() {
 
         var values = [
             {
@@ -189,7 +191,8 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and False value', function() {
+    describe('When the IoT Agent receives new information from a device.' +
+        'Observation with Boolean type and False value', function() {
 
         var values = [
             {
