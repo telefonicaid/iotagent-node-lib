@@ -97,6 +97,7 @@ have implications in the use of attributes with Context Providers, so this flag 
 being collected by the device, the expiration daemon will reclaim it. This attribute is optional (if it doesn't exist, commands won't expire).
 * **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
 (if this parameter doesn't exist the polling daemon won't be started).
+ * **autocast**: When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type (only for NGSIv2).
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
@@ -133,3 +134,4 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_APPEND_MODE          | appendMode                          |
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
 | IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
+| IOTA_AUTOCAST             | autocast                            |
