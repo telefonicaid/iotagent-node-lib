@@ -478,6 +478,7 @@ describe('Active attributes test', function() {
 
         afterEach(function(done) {
             process.env.IOTA_CB_HOST = '';
+            done();
         });
     });
 });
