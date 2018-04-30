@@ -8,4 +8,5 @@
 - Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
 - Add: support OAuth2 provider as authentication backend (#591)
 - Upgrade mongodb dependency version to 2.2.20
+- Upgrade mongoose dependency version to 4.13.11
 - FIX Context broker environment variables are correctly loaded
