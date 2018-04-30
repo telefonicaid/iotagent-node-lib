@@ -450,4 +450,35 @@ describe('Active attributes test', function() {
             });
         });
     });
+
+    describe('When the IoT Agent receives new information from a device and CB is defined using environment variables', function() {
+        beforeEach(function(done) {
+            process.env.IOTA_CB_HOST = 'cbhost';
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://cbhost:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+        afterEach(function(done) {
+            process.env.IOTA_CB_HOST = '';
+            done();
+        });
+    });
 });
