@@ -568,6 +568,7 @@ describe('Bidirectional data plugin and CB is defined using environment variable
     });
 
     afterEach(function(done) {
+        process.env.IOTA_CB_HOST = '';
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(done);
         });
