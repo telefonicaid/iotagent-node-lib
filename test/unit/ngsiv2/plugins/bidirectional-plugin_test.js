@@ -538,3 +538,94 @@ describe('Bidirectional data plugin', function() {
         });
     });
 });
+
+describe('Bidirectional data plugin and CB is defined using environment variables', function() {
+    var options = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        json:
+            utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
+        headers: {
+            'fiware-service': 'smartGondor',
+            'fiware-servicepath': '/gardens'
+        }
+    };
+
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+        process.env.IOTA_CB_HOST = 'cbhost';
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(function() {
+                iotAgentLib.addDeviceProvisionMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addConfigurationProvisionMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
+                iotAgentLib.addNotificationMiddleware(
+                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                done();
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
+        beforeEach(function() {
+            contextBrokerMock = nock('http://cbhost:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/subscriptions', function(body) {
+
+                    var expectedBody = utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                    // Note that expired field is not included in the json used by this mock as it is a dynamic
+                    // field. The following code performs such calculation and adds the field to the subscription
+                    // payload of the mock.
+                    if (!body.expires)
+                    {
+                        return false;
+                    }
+                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
+                    {
+                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
+                        if (expiresDiff < 500) {
+                            delete expectedBody.expires;
+                            delete body.expires;
+
+                            return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        }
+
+                        return false;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+
+            // FIXME: change once NGISv2 device provisioning is implemented
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+
+        });
+
+        it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+});
