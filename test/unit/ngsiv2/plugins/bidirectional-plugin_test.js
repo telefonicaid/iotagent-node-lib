@@ -114,7 +114,7 @@ describe('Bidirectional data plugin', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
@@ -177,7 +177,7 @@ describe('Bidirectional data plugin', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
@@ -250,7 +250,7 @@ describe('Bidirectional data plugin', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
@@ -386,7 +386,7 @@ describe('Bidirectional data plugin', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
@@ -472,7 +472,7 @@ describe('Bidirectional data plugin', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
@@ -592,7 +592,7 @@ describe('Bidirectional data plugin and CB is defined using environment variable
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;

@@ -99,7 +99,7 @@ describe('Subscription tests', function() {
                     }
                     else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        expectedBody.expires = moment().add(iotAgentConfig.deviceRegistrationDuration);
+                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
                             delete expectedBody.expires;
