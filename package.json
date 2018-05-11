@@ -39,7 +39,7 @@
     "jison": "0.4.17",
     "logops": "1.0.0",
     "moment": "^2.19.4",
-    "mongoose": "4.13.11",
+    "mongoose": "4.13.12",
     "mu2": "^0.5.20",
     "mustache": "2.2.1",
     "node-uuid": "^1.4.1",
@@ -48,7 +48,7 @@
     "sax": "^0.6.0",
     "underscore": "^1.7.0",
     "xmldom": "0.1.19",
-    "mongodb": "2.2.20",
+    "mongodb": "2.2.35",
     "query-string": "4.3.4"
   },
   "devDependencies": {
