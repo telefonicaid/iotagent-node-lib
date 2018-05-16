@@ -6,4 +6,4 @@
 - FIX Correctly return 404 when asking to remove a not existing device (#585)
 - Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
 - Add: support OAuth2 provider as authentication backend (#591)
-- Add: support for authentication to subscription requests (#600) 
+- Add: support for authentication to subscription requests (#592) 
