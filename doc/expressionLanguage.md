@@ -12,6 +12,7 @@
   * [Values](#values)
   * [Allowed operations](#operations)
 * [Examples of expressions](#examples)
+* [NGSIv2 support](#ngsiv2)
 
 ## <a name="overview"/> Overview
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
@@ -106,16 +107,51 @@ level: 85.3
 The only expression rule that will be executed will be that of the 'fillingLevel' attribute. It will produce the value
 '0.853' that will be sent to the Context Broker.
 
+Note that expressions are only applied if the attribute name (as received by the IOT Agent in the southbound interface) matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following example:
+```
+  "consumption": {
+   "type": "String",
+   "value": "${trim(@spaces)}"
+ }
+```
+
+- Case 1: the following measure is received at the southbound interface:
+```
+consumption: "0.44"
+```
+As `spaces` attribute is not included, then the expression is not applied and the `consumption` measure value is directly used, so the following is sent to CB:
+
+```
+"consumption": {
+ "type": "String",
+ "value": "0.44"
+}
+```
+
+- Case 2: the following measure is received at the southbound interface:
+```
+consumption: "0.44"
+spaces: "  foobar  "
+```
+
+As `spaces` attribute is included, then the expression is evaluated, so overriding the 0.44 value and sending the following to CB:
+```
+"consumption": {
+ "type": "String",
+ "value": "foobar"
+}
+```
+
 ## <a name="description"/> Language description
 
 ### <a name="types"/> Types
 
-Expressions can have two return types: String or Number. This return type must be configured for each attribute that
-is going to be converted. Default value type is String.
+The way the parse() function works (at expressionParser.js) is as follows:
 
-Whenever a expression is executed without error, its result will be cast to the configured type. If the conversion fails
-(e.g.: if the expression is null or a String and is casted to Number), the measurement update will fail, and an error
-will be reported to the device.
+- Expressions can have two return types: String or Number. This return type must be configured for each attribute that is going to be converted. Default value type is String.
+- Whenever an expression is executed without error, its result will be cast to the configured type. If the conversion fails (e.g.: if the expression is null or a String and is cast to Number), the measurement update will fail, and an error will be reported to the device.
+
+However, the usage that the Expression Translation plugin does of that function is using always String type. That means that at the end, the result of the expression will be always cast to String. However, in NGSIv2 that String result could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at the [NGSIv2 support](#ngsiv2) for more information on this.
 
 ### <a name="values"/> Values
 
@@ -175,3 +211,52 @@ The following table shows expressions and their expected outcomes for a measure 
 | '@value * 5.2'              | 31.2                  |
 | '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
 | '@name value is @value'     | 'DevId629 value is 6' |
+
+## <a name="ngsiv2"/> NGSIv2 support
+
+As it is explained in previous sections, expressions can have two return types: String or Number, being the former one the default. Whenever an expression is executed without error, its result will be cast to the configured type. 
+
+On one hand, in NGSIv1 since all attributes' values are of type String, in the expression parser the expression type is set always to String and the transformation of the information coming from the SouthBound is done using replace instruction. Therefore, values sent to the CB will always be Strings. This can be seen in previous examples.
+
+On the other hand, NGSIv2 fully supports all the types described in the JSON
+specification (string, number, boolean, object, array and null). Therefore, the result of an expression must be cast to the appropriate type (the type used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of the value that is being sent.
+
+Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the following:
+
+1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
+2. The expression will be applied
+3. The output type will be cast again to the original attribute type.
+  * If attribute type is "Integer" then the value is casted to integer (JSON number)
+  * If attribute type is "Float" then the value is casted to float (JSON number)
+  * If attribute type is "Boolean" then the value is cast to boolean (JSON boolean). In order to do this conversion, only `true` or `1` are cast to true.
+  * If attribute type is "None" then the value is cast to null (JSON null)
+
+E.g.: if a device with the following provisioning information is provisioned in the IoTAgent:
+```
+{
+   "name":"status",
+   "type":"Boolean",
+   "expression": '${@status *  20}'
+}
+```
+and a measurement with the following values arrive to the IoTAgent:
+```
+status: true
+```
+
+1. The expression `*` is a multiplication, so the expression type makes `status` to be casted to Number. The cast of `true` to number is 1.
+2. Expression is evaluated, resulting in 20
+3. 20 is cast to `20` since Expression Plugin always use String as Expression type.
+4. The attribute type is `Boolean` so the result is casted to Boolean before sending it to CB. The cast of `20` to boolean is false (only `true` or `1` are cast to true).
+
+More examples of this workflow are presented below for the different types of attributes supported in NGSIv2 and the two possible types of expressions: Integer (arithmetic operations) or Strings.
+
+* pressure (of type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 * 20 } -> $ { 1040 } -> $ { "1040"} -> 1040
+* pressure (of type "Integer"): 52 -> ${trim(@pressure)} -> ${trim("52")} -> $ { "52" } -> $ { "52"} -> 52
+* consumption (of type "Float"): 0.44 -> ${@consumption * 20} -> ${ 0.44 * 20 } -> $ { 8.8 } -> $ { "8.8"} -> 8.8
+* consumption (of type "Float"): 0.44 -> ${trim(@consumption)} -> ${trim("0.44")} -> $ { "0.44" } -> $ { "0.44"} -> 0.44
+* active (of type "None"): null -> ${@active * 20} -> ${ 0 * 20 } -> $ { 0 } -> $ { "0"} -> null
+* active (of type "None"): null -> ${trim(@active)} -> ${trim("null")} -> $ { "null" } -> $ { "null"} -> null
+* update (of type "Boolean"): true -> ${@update * 20} -> ${ 1 * 20 } -> $ { 20 } -> $ { "20"} -> False
+* update (of type "Boolean"): false -> ${@update * 20} -> ${ 0 * 20 } -> $ { 0 } -> $ { "0"} -> False
+* update (of type "Boolean"): true -> ${trim(@updated)} -> ${trim("true")} -> $ { "true" } -> $ { "true"} -> True

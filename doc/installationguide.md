@@ -14,6 +14,14 @@ These are the parameters that can be configured in the global section:
 	port: '1026'
     	}
 ```
+ * If you want to use NGSIv2 (only sending updates for active attributes):
+```
+  {
+    host: '192.168.56.101',
+    port: '1026',
+    ngsiVersion: 'v2'
+  }
+``` 
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
 ```
 	{
@@ -119,6 +127,7 @@ have implications in the use of attributes with Context Providers, so this flag 
 being collected by the device, the expiration daemon will reclaim it. This attribute is optional (if it doesn't exist, commands won't expire).
 * **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
 (if this parameter doesn't exist the polling daemon won't be started).
+ * **autocast**: When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type (only for NGSIv2).
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
@@ -131,6 +140,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_CB_URL               | contextBroker.url                   |
 | IOTA_CB_HOST              | contextBroker.host                  |
 | IOTA_CB_PORT              | contextBroker.port                  |
+| IOTA_CB_NGSI_VERSION      | contextBroker.ngsiVersion           |
 | IOTA_NORTH_HOST           | server.host                         |
 | IOTA_NORTH_PORT           | server.port                         |
 | IOTA_PROVIDER_URL         | providerUrl                         |
@@ -154,3 +164,4 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_APPEND_MODE          | appendMode                          |
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
 | IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
+| IOTA_AUTOCAST             | autocast                            |

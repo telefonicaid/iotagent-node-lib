@@ -451,7 +451,8 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and CB is defined using environment variables', function() {
+    describe('When the IoT Agent receives new information from a device and CB' +
+        'is defined using environment variables', function() {
         beforeEach(function(done) {
             process.env.IOTA_CB_HOST = 'cbhost';
 

@@ -1,0 +1,10 @@
+{
+  "state": {
+    "value": true,
+    "type": "boolean"
+  },
+  "TimeInstant":{
+    "type": "DateTime",
+    "value": "2015-12-14T08:06:01.468Z"
+  }
+}
