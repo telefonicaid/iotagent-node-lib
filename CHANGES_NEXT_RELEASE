@@ -1,22 +1,16 @@
 - Fix: IOTA_MONGO_RETRIES and IOTA_MONGO_RETRY_TIME env vars are now taken into account (previously there were ignored)
-- ADD: log mongo error before raise alarm [#577]
-- FIX Automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544).
-- FIX Static attributes seem not supported in Configuration Group provisioning (#550).
+- Add: log mongo error before raise alarm (#577)
+- Fix: automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544)
+- Fix: static attributes seem not supported in Configuration Group provisioning (#550)
 - Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
 - Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
--  Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
 - Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
-- FIX Correctly return 404 when asking to remove a not existing device (#585)
+- Fix: correctly return 404 when asking to remove a not existing device (#585)
 - Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
 - Add: support OAuth2 provider as authentication backend (#591)
 - Upgrade mongodb dependency version to 2.2.35
 - Upgrade mongoose dependency version to 4.13.12
-- FIX Context broker environment variables are correctly loaded
-- Add: allow NGSIv2 for updating active attributes at CB, through configuration (#527)
-- Add: NGSIv2 support for Timestamp Compression plugin, through configuration (#527)
-- Add: NGSIv2 support for Timestamp Processing plugin, through configuration (#527)
-- Add: NGSIv2 support for Expression Translation, Attribute Alias and Event plugins, through configuration (#527)
-- Add: NGSIv2 support for Bidirectionality plugin (#527)
-- Add: NGSIv2 support for Multientity plugin (#527)
-- Add: Configuration service is exposed as part of the module.
+- Fix: Context broker environment variables are correctly loaded
+- Add: allow NGSIv2 for updating active attributes at CB, through configuration, supporting all plugins (Timestamp Compression, Timestamp Processing, Expression Translation, Attribute Alias, Event, Bidirectionality and Multientity) (#527)
+- Add: configuration service is exposed as part of the module
 - Add: casting attribute's values to JSON native types (activable by config.autocast)
