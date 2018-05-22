@@ -31,7 +31,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     request = require('request'),
     should = require('should'),
     iotAgentConfig = {
-        logLevel: 'DEBUG',
+        logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
             port: '1026'
@@ -389,7 +389,42 @@ describe('MongoDB Group Registry test', function() {
 
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
-                body.service.should.equal('TestService');
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(1);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(1);
+                body.services[0].service.should.equal('TestService');
+                done();
+            });
+        });
+    });
+
+    describe('When a device info request arrives and multiple groups have been created', function() {
+        beforeEach(function(done) {
+            var optionsCreationList = [],
+                creationFns = [];
+
+            for (var i = 0; i < 10; i++) {
+                optionsCreationList[i] = _.clone(optionsCreation);
+                optionsCreationList[i].json = { services: [] };
+                optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
+                optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
+                creationFns.push(async.apply(request, optionsCreationList[i]));
+            }
+
+            async.series(creationFns, done);
+        });
+
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGet, function(error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(10);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(10);
                 done();
             });
         });

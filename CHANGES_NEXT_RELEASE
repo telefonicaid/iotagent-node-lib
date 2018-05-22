@@ -20,3 +20,4 @@
 - Add: NGSIv2 support for Multientity plugin (#527)
 - Add: Configuration service is exposed as part of the module.
 - Add: casting attribute's values to JSON native types (activable by config.autocast)
+- Fix: GET call to northbound group endpoint returns multiple services (#604)
