@@ -14,3 +14,4 @@
 - Add: allow NGSIv2 for updating active attributes at CB, through configuration, supporting all plugins (Timestamp Compression, Timestamp Processing, Expression Translation, Attribute Alias, Event, Bidirectionality and Multientity) (#527)
 - Add: configuration service is exposed as part of the module
 - Add: casting attribute's values to JSON native types (activable by config.autocast)
+- Fix: GET call to northbound group endpoint returns multiple services (#604)
