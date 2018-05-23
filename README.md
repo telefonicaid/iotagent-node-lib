@@ -1,6 +1,7 @@
 # FIWARE IoT Agent Framework
 
 [![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Documentation badge](https://readthedocs.org/projects/fiware-iotagent-node-lib/badge/?version=latest)](http://fiware-iotagent-ul.readthedocs.org/en/latest/?badge=latest)
 [![Support badge]( https://img.shields.io/badge/support-sof-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/fiware)
 
 ## Index
@@ -29,11 +30,11 @@ platform (authentication and authorization of the channel) and provide other com
 
 There is more information about specific topics in the following documents:
 
-* [User manual](doc/usermanual.md): library reference for IoTA implementation. Contains the complete list of library
+* [User manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual): library reference for IoTA implementation. Contains the complete list of library
 functions and implementation topics.
-* [Installation and configuration guide](doc/installationguide.md): information for the configuration of the library.
-* [Operations manual](doc/operations.md): guide of logs and alarms raised by the library.
-* [IoTA Design HowTo](doc/howto.md): step-by-step howto about how to implement an IoT Agent.
+* [Installation and configuration guide](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/installationguide): information for the configuration of the library.
+* [Operations manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/operations): guide of logs and alarms raised by the library.
+* [IoTA Design HowTo](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/howto): step-by-step howto about how to implement an IoT Agent.
 
 This project is part of [FIWARE](https://www.fiware.org/). Check also the [FIWARE Catalogue entry for the IoTAgents](http://catalogue.fiware.org/enablers/backend-device-management-idas)
 
@@ -152,10 +153,10 @@ requested action. Parameters for the command will be passed inside the command v
 There are two differences with the lazy attributes:
 * First of all, for every command defined in a device, two new attributes are created in the entity with the same name
 as the command but with a prefix:
-	* '_info': this attribute reflect the current execution status of the command. When a command request is issued by
+	* `_info`: this attribute reflect the current execution status of the command. When a command request is issued by
 	the Context Broker, the IoT Agent library generates this attribute with 'PENDING' value. The value of this attribute
 	will be changed each time a command error or result is issued to the IoT Agent.
-	* '_result': this attribute reflect the result of the execution of the defined command.
+	* `_result`: this attribute reflect the result of the execution of the defined command.
 
 * Commands can also be updated when new information about its execution arrives to the agent. This information will be
 mapped to the command's utility attributes `_info` and `_result` leaving alone the command attribute itself. The
@@ -179,7 +180,7 @@ provisioning data. The details on how this flag is derived for provisioning data
 implementation using this libray (in other words, there isn't any standard way of doing so). The default option (with the flag
 with value `false` or not present) is to use push commands (as they were the only ones available until the latest versions).
 
-Polling commands could be subjected to expiration: two configuration properties pollingExpiration` and `pollingDaemonFrequency`
+Polling commands could be subjected to expiration: two configuration properties `pollingExpiration` and `pollingDaemonFrequency`
 can be set to start a daemon that will remove expired commands from the DB if the device is taking too much to pick them
 up. See the configuration section for details.
 
@@ -212,7 +213,7 @@ to the IoT Agent (Command execution PENDING; value updates available).
  to connect to the Context Broker.
 
 * **Device provisioning**: the IoT Agent should offer an external API to make a preprovision of any devices. This
-preprovision should enable the user to customize the device`s entity name and type as well as their service information.
+preprovision should enable the user to customize the device's entity name and type as well as their service information.
 
 * **Type configuration**: if a device is registered without a preregistration, only its `id` and `type` attributes are
 mandatory. The IoT Agent should provide a mechanism to provide default values to the device attributes based on its
@@ -268,9 +269,9 @@ party library.
 
 ## <a name="buildinstall"/> Build & Install
 
-Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/installationguide.md).
+Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/installationguide).
 
-This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
+This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual).
 
 ## <a name="apioverview"/> API Overview
 
@@ -336,11 +337,11 @@ have the same syntax, an object containing the following attributes:
 
 Some transformation plugins also allow the use of the following optional attributes:
 * **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
-an expression based on a combination of the reported values. See the [Expression Language definition](doc/expressionLanguage.md) for details
+an expression based on a combination of the reported values. See the [Expression Language definition](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage) for details
 * **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device entity
 but in a new entity with an ID given by this attribute. The type of this additional entity can be configured with the
 `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can be defined
-as expressions, using the [Expression Language definition](doc/expressionLanguage.md).
+as expressions, using the [Expression Language definition](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage.md).
 * **entity_type**: configures the type of an alternative entity.
 * **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
 in the [Data Mapping Plugins section](#datamapping) for details.
@@ -556,7 +557,7 @@ configuration collection).
 Both approaches are better described in the sections bellow. 
 
 #### Configuration API
-The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
 For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
 
@@ -629,7 +630,7 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 ##### GET /iot/services
-Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
+Retrieves device groups from the database. If the servicepath header has the wildcard expression, `/*`, all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns: 
 * 200 OK if successful, returning a device group body.
@@ -785,7 +786,7 @@ TimeInstant attribute as metadata for every other attribute in the same request.
 This plugin allows the devices and configurations that have defined expressions to generate their values from those
 expressions and the reported measure information.
 
-For further information on how the expressions work, refer to the [Expression Language Reference](doc/expressionLanguage.md).
+For further information on how the expressions work, refer to the [Expression Language Reference](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage).
 
 ##### Multientity plugin (multiEntity)
 Allows the devices provisioned in the IoTAgent to map their attributes to more than one entity, declaring the target
@@ -857,7 +858,7 @@ migrate targetDB * *
 Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
 They show the values existing in the original DB that had no translation for the target DB.
 
-If you want to restrict the migration for certain services and subservices, just substitute the '*' value for the particular
+If you want to restrict the migration for certain services and subservices, just substitute the `*` value for the particular
 service and subservice you want to use.
 
 ## <a name="librarytesting"/> Testing
@@ -1089,5 +1090,5 @@ attributes:
 
 ##  <a name="development"/> Development documentation
 
-Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](doc/usermanual.md).
+Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual).
 
