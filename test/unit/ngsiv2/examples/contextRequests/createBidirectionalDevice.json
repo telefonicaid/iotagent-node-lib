@@ -1,0 +1,8 @@
+{
+  "id": "TheFirstLight",
+  "type": "TheLightType",
+  "location": {
+    "type": "geo:point",
+    "value": "0, 0"    
+  }
+}

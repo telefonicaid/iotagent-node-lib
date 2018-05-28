@@ -131,14 +131,12 @@ describe('Bidirectional data plugin', function() {
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
 
         });
 
@@ -194,14 +192,12 @@ describe('Bidirectional data plugin', function() {
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -267,14 +263,12 @@ describe('Bidirectional data plugin', function() {
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
         });
 
         afterEach(function() {
@@ -403,14 +397,12 @@ describe('Bidirectional data plugin', function() {
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
 
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -489,15 +481,12 @@ describe('Bidirectional data plugin', function() {
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
-
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
         });
 
         afterEach(function() {
@@ -609,14 +598,12 @@ describe('Bidirectional data plugin and CB is defined using environment variable
                 })
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
-            // FIXME: change once NGISv2 device provisioning is implemented
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post('/v2/entities', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .reply(201);
 
         });
 

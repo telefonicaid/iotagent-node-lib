@@ -1,0 +1,8 @@
+{
+  "id": "FirstMicroLight",
+  "type": "MicroLights",
+  "attr_name": {
+    "type": "string",
+    "value": " "    
+  }
+}
