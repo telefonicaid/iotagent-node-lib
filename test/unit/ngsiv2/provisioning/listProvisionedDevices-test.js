@@ -22,6 +22,9 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
+
+ /* jshint camelcase: false */
+
 'use strict';
 
 var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
