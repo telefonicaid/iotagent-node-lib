@@ -15,3 +15,4 @@
 - Add: configuration service is exposed as part of the module
 - Add: casting attribute's values to JSON native types (activable by config.autocast)
 - Fix: GET call to northbound group endpoint returns multiple services (#604)
+- Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)
