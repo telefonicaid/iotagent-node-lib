@@ -30,11 +30,11 @@ platform (authentication and authorization of the channel) and provide other com
 
 There is more information about specific topics in the following documents:
 
-* [User manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual): library reference for IoTA implementation. Contains the complete list of library
+* [User manual](doc/usermanual.md): library reference for IoTA implementation. Contains the complete list of library
 functions and implementation topics.
-* [Installation and configuration guide](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/installationguide): information for the configuration of the library.
-* [Operations manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/operations): guide of logs and alarms raised by the library.
-* [IoTA Design HowTo](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/howto): step-by-step howto about how to implement an IoT Agent.
+* [Installation and configuration guide](doc/installationguide.md): information for the configuration of the library.
+* [Operations manual](doc/operations.md): guide of logs and alarms raised by the library.
+* [IoTA Design HowTo](doc/howto.md): step-by-step howto about how to implement an IoT Agent.
 
 This project is part of [FIWARE](https://www.fiware.org/). Check also the [FIWARE Catalogue entry for the IoTAgents](http://catalogue.fiware.org/enablers/backend-device-management-idas)
 
@@ -269,9 +269,9 @@ party library.
 
 ## <a name="buildinstall"/> Build & Install
 
-Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/installationguide).
+Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/installationguide.md).
 
-This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual).
+This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
 ## <a name="apioverview"/> API Overview
 
@@ -337,11 +337,11 @@ have the same syntax, an object containing the following attributes:
 
 Some transformation plugins also allow the use of the following optional attributes:
 * **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
-an expression based on a combination of the reported values. See the [Expression Language definition](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage) for details
+an expression based on a combination of the reported values. See the [Expression Language definition](doc/expressionLanguage.md) for details
 * **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device entity
 but in a new entity with an ID given by this attribute. The type of this additional entity can be configured with the
 `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can be defined
-as expressions, using the [Expression Language definition](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage.md).
+as expressions, using the [Expression Language definition](doc/expressionLanguage.md).
 * **entity_type**: configures the type of an alternative entity.
 * **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
 in the [Data Mapping Plugins section](#datamapping) for details.
@@ -786,7 +786,7 @@ TimeInstant attribute as metadata for every other attribute in the same request.
 This plugin allows the devices and configurations that have defined expressions to generate their values from those
 expressions and the reported measure information.
 
-For further information on how the expressions work, refer to the [Expression Language Reference](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/expressionLanguage).
+For further information on how the expressions work, refer to the [Expression Language Reference](doc/expressionLanguage.md).
 
 ##### Multientity plugin (multiEntity)
 Allows the devices provisioned in the IoTAgent to map their attributes to more than one entity, declaring the target
@@ -1090,5 +1090,5 @@ attributes:
 
 ##  <a name="development"/> Development documentation
 
-Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](https://fiware-iotagent-node-lib.readthedocs.io/en/latest/usermanual).
+Information about developing for the IoTAgent Library can be found at the corresponding section of the [User & Programmers Manual](doc/usermanual.md).
 
