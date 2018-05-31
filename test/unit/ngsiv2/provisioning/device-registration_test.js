@@ -98,6 +98,9 @@ describe('IoT Agent Device Registration', function() {
 
     afterEach(function(done) {
         iotAgentLib.clearAll(function() {
+            // We need to remove the registrationId so that the library does not consider next operatios as updates.
+            delete device1.registrationId;
+            delete device2.registrationId;
             iotAgentLib.deactivate(done);
         });
     });
@@ -109,15 +112,16 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post('/v2/entities')
+                .reply(201);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/registrations', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -296,8 +300,6 @@ describe('IoT Agent Device Registration', function() {
 
     describe('When the Context Broker returns an error while unregistering a device', function() {
         beforeEach(function(done) {
-
-
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
