@@ -153,7 +153,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .put('/v2/entities/TheFirstLight/attrs', {})
+                .post('/v2/entities/TheFirstLight/attrs', {})
                 .reply(204);
 
             contextBrokerMock
@@ -302,7 +302,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .put('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionMinimumDevice.json'))
                 .reply(204);
 
@@ -375,7 +375,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .put('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionDeviceStatic.json'))
                 .reply(204);
 

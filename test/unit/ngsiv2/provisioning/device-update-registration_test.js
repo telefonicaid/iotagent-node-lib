@@ -174,7 +174,7 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .put('/v2/entities/Light:light1/attrs', utils.readExampleFile(
+                .post('/v2/entities/Light:light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionActiveAttributes1.json'))
                 .reply(204);
 
@@ -247,7 +247,7 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .put('/v2/entities/Light:light1/attrs', utils.readExampleFile(
+                .post('/v2/entities/Light:light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionCommands1.json'))
                 .reply(204);
 
@@ -331,7 +331,7 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .put('/v2/entities/Light:light1/attrs')
+                .post('/v2/entities/Light:light1/attrs')
                 .reply(204);
         });
 
