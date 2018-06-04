@@ -178,6 +178,9 @@ describe('IoT Agent Device Update Registration', function() {
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionActiveAttributes1.json'))
                 .reply(204);
 
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -250,6 +253,10 @@ describe('IoT Agent Device Update Registration', function() {
                 .post('/v2/entities/Light:light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionCommands1.json'))
                 .reply(204);
+
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -324,6 +331,10 @@ describe('IoT Agent Device Update Registration', function() {
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         beforeEach(function() {
+
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
             contextBrokerMock
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(500, {});

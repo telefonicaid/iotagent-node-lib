@@ -110,6 +110,9 @@ describe('Device provisioning API: Update provisioned devices', function() {
                  .post('/v2/entities')
                 .reply(201);
 
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -155,6 +158,10 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities/TheFirstLight/attrs', {})
                 .reply(204);
+
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
