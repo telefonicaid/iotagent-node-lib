@@ -4,7 +4,7 @@
 * [Overview](#overview)
 * [Logs](#logs)
 * [Alarms](#alarms)
-* [Error naming code](#errorcode)
+* [Error naming code](#error-naming-code)
 
 ## Overview
 The following document shows all the errors that can appear in an IoT Agent using this library, and gives a brief

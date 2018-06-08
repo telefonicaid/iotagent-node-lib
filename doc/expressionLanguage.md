@@ -3,15 +3,16 @@
 ## Index
 
 * [Overview](#overview)
-  + [Protocol](#protocol)
-  + [Requirements](#requirements)
-* [Basic IOTA](#basic-iota)
-* [IOTA With Active attributes](#iota-with-active-attributes)
-* [IOTA With Lazy attributes](#iota-with-lazy-attributes)
-  + [Previous considerations](#previous-considerations)
-  + [Implementation](#implementation)
-* [Configuration management](#configuration-management)
-  + [Provisioning handlers](#provisioning-handlers)
+* [Measurement transformation](#measurement-transformation)
+  + [Expression definition](#expression-definition)
+  + [Variable values](#variable-values)
+  + [Expression execution](#expression-execution)
+* [Language description](#language-description)
+  + [Types](#types)
+  + [Values](#values)
+  + [Allowed operations](#allowed-operations)
+* [Examples of expressions](#examples-of-expressions)
+* [NGSIv2 support](#ngsiv2-support)
 
 ## Overview
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
