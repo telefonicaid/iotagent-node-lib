@@ -3,13 +3,17 @@
 ## Index
 
 * [Overview](#overview)
-* [Basic IOTA](#basic)
-* [IOTA With active attributes](#active)
-* [IOTA With lazy attributes](#lazy)
-* [IOTA With commands](#commands)
-* [Configuration control](#configuration)
+  + [Protocol](#protocol)
+  + [Requirements](#requirements)
+* [Basic IOTA](#basic-iota)
+* [IOTA With Active attributes](#iota-with-active-attributes)
+* [IOTA With Lazy attributes](#iota-with-lazy-attributes)
+  + [Previous considerations](#previous-considerations)
+  + [Implementation](#implementation)
+* [Configuration management](#configuration-management)
+  + [Provisioning handlers](#provisioning-handlers)
 
-## <a name="overview"/> Overview
+## Overview
 This document's goal is to show how to develop a new IOT Agent step by step. To do so, a simple invented HTTP protocol
 will be used, so it can be tested with simple command line instructions as `curl` and `nc`. 
 
@@ -29,7 +33,7 @@ Where:
 This tutorial expects a Node.js v0.10 (at least) installed and working on your machine. It also expects you to have
 access to a Context Broker (without any security proxies).
 
-## <a name="basic"/> Basic IOTA
+##  Basic IOTA
 In this first chapter, we will develop an IOT Agent with a fully working northbound API and no southbound
 API. This may seem useless (and indeed it is) but will serve us well on showing the basic steps in the creation
 of an IOTA.
@@ -76,7 +80,7 @@ node index.js
 
 The northbound interface should now be fully functional, i.e.: management of device registrations and configurations.
 
-## <a name="active"/> IOTA With Active attributes
+## IOTA With Active attributes
 
 In the previous section we created an IOTA that exposed just the Northbound interface, but that was pretty useless
 (aside from its didactic use). In this section we are going to create a simple Southbound interface. It's important
@@ -225,7 +229,7 @@ curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 ```
 Now you should be able to see the measures in the Context Broker entity of the device.
 
-## <a name="lazy"/> IOTA With Lazy attributes
+## IOTA With Lazy attributes
 
 ### Previous considerations
 The IoT Agents also give the possibility for the device to be asked about the value of one of its measures, instead of 
@@ -477,7 +481,7 @@ Content-Length: 3
 This same response can be used both for updates and queries for testing purposes (even though in the former the body won't
 be read).
 
-## <a name="configuration"/> Configuration management
+## Configuration management
 
 For some IoT Agents, it will be useful to know what devices or configurations were registered in the Agent, or to do some
 actions whenever a new device is registered. All this configuration and provisioning actions can be performed using two

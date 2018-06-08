@@ -5,23 +5,23 @@
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Theory](#theory)
-  * [Overview](#theoryoverview)
-  * [Data interaction payloads (NGSIv10)](#payloads)
-  * [Scenario 1: active attributes](#scn1active)
-  * [Scenario 2: lazy attributes](#scn2lazy)
-  * [Scenario 3: command attributes](#scn3command)
-  * [How to select an scenario](#scenarioselection)
+  + [Overview](#overview-1)
+  + [Data interaction payloads (NGSIv10)](#data-interaction-payloads-ngsiv10)
+  + [Scenario 1: active attributes](#scenario-1-active-attributes)
+  + [Scenario 2: lazy attributes](#scenario-2-lazy-attributes)
+  + [Scenario 3: commands](#scenario-3-commands)
+  + [How to select an scenario](#how-to-select-an-scenario)
 * [Practice](#practice)
-  * [Overview](#practiceoverview)
-  * [Retrieving a token](#token)
-  * [Scenario 1: active attributes (happy path)](#activehp)
-  * [Scenario 1: active attributes (error)](#activeerror)
-  * [Scenario 2: lazy attributes (happy path)](#lazyhp)
-  * [Scenario 2: lazy attributes (error)](#lazyerror)
-  * [Scenario 3: commands (happy path)](#commandshp)
-  * [Scenario 3: commands (error)](#commandserror)
+  + [Overview](#overview-2)
+  + [Retrieving a token](#retrieving-a-token)
+  + [Scenario 1: active attributes (happy path)](#scenario-1-active-attributes-happy-path)
+  + [Scenario 1: active attributes (error)](#scenario-1-active-attributes-error)
+  + [Scenario 2: lazy attributes (happy path)](#scenario-2-lazy-attributes-happy-path)
+  + [Scenario 2: lazy attributes (error)](#scenario-2-lazy-attributes-error)
+  + [Scenario 3: commands (happy path)](#scenario-3-commands-happy-path)
+  + [Scenario 3: commands (error)](#scenario-3-commands-error)
 
-## <a name="overview"/> Overview
+## Overview
 This document's target is to explain in detail how the IoTAgent interacts with the Context Broker in all the possible
 IoT Scenarios that are supported by this library.
 
@@ -37,7 +37,7 @@ information should always be sent:
 * X-Auth-Token header with a valid unexpired token for a user that has admin permissions in the subservice. In this case
 the user "adminiota2ngsi" will be used for all interactions
 
-## <a name="requirements"/> Requirements
+## Requirements
 The practical part of this document has the following requirements:
 
 * A Unix-line command line interpreter. All the workshop will take place in the command line, making use of different
@@ -51,9 +51,9 @@ command-line tools to simulate the different interactions.
 
 * Basic knowledge of the NGSI model and HTTP interfaces.
 
-## <a name="theory"/> Theory
+## Theory
 
-### <a name="theoryoverview"/> Overview
+### Overview
 
 #### General purpose of the IoT Agents
 Inside the FIWARE Architecture, the IoT Agents work as protocol translation gateways, used to fill the gap between
@@ -90,7 +90,7 @@ socket open waiting for the response until all the interaction scenario ends, re
 through the same socket that initiated the request
 ```
 
-### <a name="payloads"/> Data interaction payloads (NGSIv10)
+### Data interaction payloads (NGSIv10)
 
 There are only two kinds of possible data interactions between the IoTAgents and the Context Broker: the queryContext and
 updateContext interactions described in NGSIv10. Lots of examples can be found in the
@@ -256,7 +256,7 @@ Application level errors can be specified for each entity in this payload.
 This special payload can be used to specify general errors with the request, that are not associated to any particular
 Context Element, but with the request as a whole.
 
-### <a name="scn1active"/> Scenario 1: active attributes
+### Scenario 1: active attributes
 
 ![General ](../img/scenario1.png "Scenario 1: active attributes")
 
@@ -270,7 +270,7 @@ This scenario leaves all the data locally stored in the Context Broker, so the u
 NGSI APIs offered by the Context Broker (including subscriptions). This data queries are completely separate from the
 updating process, and can occur at any time (they are to completely different process).
 
-### <a name="scn2lazy"/> Scenario 2: lazy attributes
+### Scenario 2: lazy attributes
 
 ![General ](../img/scenario2.png "Scenario 2: lazy attributes")
 
@@ -295,7 +295,7 @@ This scenario can be used for both updates and queries. The only difference betw
 to use: updateContext actions for the update (and thus, P1 and R1 payloads); and queryContext actions for the queries
 (and thus P2 and R2 payloads).
 
-### <a name="scn3command"/> Scenario 3: commands
+### Scenario 3: commands
 
 ![General ](../img/scenario3.png "Scenario 3: commands")
 
@@ -315,7 +315,7 @@ set of arguments of the command. Only updateContext operations will be used to i
 * Another attribute will be used as the *result attribute*. This attribute will be updated from the IoTAgent, and its
 value stored in the Context Broker. This attribute will contain the result of the command (this result can be information
 in case the command was a "information retrieval" command or the result of an action if it was an "actuator command").
-Typically, the name of this attribute will be the same of the input attribute, with an additional sufix ("_info").
+Typically, the name of this attribute will be the same of the input attribute, with an additional sufix (`_info`).
 
 * Another attribute with the same characteristics as the later will be used to indicate whether the command has ended
 successfully or whether an error has been reported.
@@ -338,7 +338,7 @@ This scenario leaves all the data locally stored in the Context Broker, so the u
 NGSI APIs offered by the Context Broker (as shown in the (7) and (8) requests in the diagram). This data queries are
 completely separate from the updating process, and can occur at any time (they are to completely different process).
 
-### <a name="scenario selection"/> How to select an scenario
+### How to select an scenario
 
 The three different scenarios can be used in different situations:
 
@@ -346,9 +346,9 @@ The three different scenarios can be used in different situations:
 * **Scenario 2**: designed for interactions started by the User that are fast enough to be performed synchronously (within the time of an HTTP timeout).
 * **Scenario 3**: designed for interactions started by the User that are too slow to be performed synchrounously.
 
-## <a name="practice"/> Practice
+## Practice
 
-### <a name="practiceoverview"> Overview
+### Overview
 The following sections will show a series of examples of all the interactions that can be found in each scenario.
 
 Initial requests are shown as full Curl commands (that can be used to reproduce the example).
@@ -365,7 +365,7 @@ Along this document, IP addresses and passwords will be concealed. Substitute th
 A postman collection is available alongside this document to help in reproducing this examples. It can be found
 [here](./doc/NorthboundInteractions.postman_collection).
 
-### <a name="token"/> Retrieving a token
+### Retrieving a token
 
 This scenario assumes that the IoTAgent is connected to an Orion Context Broker secured by a Steelskin PEP, so every
 request to the Context Broker should be authenticated.
@@ -422,7 +422,7 @@ The User token that needs to be used in the authorization header will be returne
 `X-Subject-Token`. This value should be appended in the `X-Auth-Token` header for all the requests made to the
 Context Broker (as it will be seen in the examples).
 
-### <a name="activehp"/> Scenario 1: active attributes (happy path)
+### Scenario 1: active attributes (happy path)
 
 In this scenario, a device actively sends data to the IoT Agent, that transforms that data into a NGSI request
 that is sent to the Context Broker. This request has the following format (P1):
@@ -520,7 +520,7 @@ The Context Broker will reply with the updated data values in R2 format (200 OK)
 }
 ```
 
-### <a name="activeerror"/> Scenario 1: active attributes (error)
+### Scenario 1: active attributes (error)
 
 Two kind of errors can appear in this scenario. If there is an error updating the information, the Context Broker will
 replay with a payload like the following:
@@ -568,7 +568,7 @@ The following error payload is also valid in standard NGSI:
 Different kinds of errors can return their information in different formats, so NGSI implementations should check for
 the existence of both.
 
-### <a name="lazyhp"/> Scenario 2: lazy attributes (happy path)
+### Scenario 2: lazy attributes (happy path)
 
 Scenario 2 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent
 must register its lazy attributes for each device, with a request like the following:
@@ -708,12 +708,12 @@ its original request (200 OK):
 }
 ```
 
-### <a name="lazyerror"/> Scenario 2: lazy attributes (error)
+### Scenario 2: lazy attributes (error)
 
 Being fully synchronous, errors for scenario 2 follow the same patterns as for scenario 1. If the IoTAgent returns an
 error, that error must follow the NGSI payloads described in the Scenario 1 error defined above.
 
-### <a name="commandshp"/> Scenario 3: commands (happy path)
+### Scenario 3: commands (happy path)
 
 #### Context Provider Registration
 Scenario 3 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent
@@ -987,7 +987,7 @@ The Context Broker replies with all the desired data, in R2 format (200 OK):
 }
 ```
 
-### <a name="commandserror"/> Scenario 3: commands (error)
+### Scenario 3: commands (error)
 
 In Scenario 3, errors can happen asynchronously, out of the main interactions. When the IoTAgent detects an error
 executing the underlying command (i.e.: an error connecting with the device, or an error in the device itself),

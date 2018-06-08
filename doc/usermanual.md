@@ -2,17 +2,29 @@
 
 ## Index
 
-* [Usage](#usage)
-  * [Stats Registry](#statsregistry)
-  * [Alarm Module](#alarms)
-  * [Logs](#logs)
-  * [Transactions](#transactions)
-  * [Library Overview](#overview)
-  * [Function reference](#reference)
-* [Development Documentation](#development)
 
-## <a name="usage"/> Usage
-### <a name="statsregistry"/> Stats Registry
+* [Usage](#usage)
+  + [Stats Registry](#stats-registry)
+  + [Alarm module](#alarm-module)
+  + [Logs](#logs)
+  + [Transactions](#transactions)
+  + [Library overview](#library-overview)
+  + [Function reference](#function-reference)
+* [Development documentation](#development-documentation)
+  + [Contributions](#contributions)
+  + [Project build](#project-build)
+  + [Testing](#testing)
+  + [Coding guidelines](#coding-guidelines)
+  + [Continuous testing](#continuous-testing)
+  + [Source Code documentation](#source-code-documentation)
+  + [Code Coverage](#code-coverage)
+  + [Code complexity](#code-complexity)
+  + [PLC](#plc)
+  + [Development environment](#development-environment)
+  + [Site generation](#site-generation)
+
+## Usage
+### Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
 the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration)
 section.
@@ -33,7 +45,7 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
-### <a name="alarms"/> Alarm module
+### Alarm module
 
 The library provide an alarm module that can be used to track through the logs alarms raised in the IoTAgent. This module
 provides:
@@ -50,7 +62,7 @@ when it returns a success an alarm is ceased (`intercept()`).
 
 All this functions can be accessed through the `.alarms` attribute of the library.
 
-### <a name="logs"/> Logs
+### Logs
 The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library
 is required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across
 the diferent modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
@@ -69,7 +81,7 @@ for future logs.
 Returns the current log level, in a json payload with a single attribute `level`.
 
 
-### <a name="transactions"/> Transactions
+### Transactions
 The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
 requests entering both from the Northbound and the Southbound.
 
@@ -89,20 +101,22 @@ this component will be used as the correlator.
 During the duration of a transaction, all the log entries created by the code will write the current Transaction ID and
 correlator for the operation being executed.
 
-### <a name="overview"/> Library overview
+### Library overview
 In order to use the library, add the following dependency to your package.json file:
-```
+
+```json
 "iotagent-node-lib": "*"
 ```
 In order to use this library, first you must require it:
-```
+
+```javascript
 var iotagentLib = require('iotagent-node-lib');
 ```
 The library supports four groups of features, one for each direction of the communication:
 client-to-server and server-to-client (and each flow both for the client and the server). Each feature set is defined
 in the following sections.
 
-### <a name="reference"/> Function reference
+### Function reference
 ##### iotagentLib.activate()
 ###### Signature
 ```
@@ -183,8 +197,8 @@ setCommandResult(entityName, resource, apikey, commandName, commandResult, statu
 ```
 ###### Description
 Update the result of a command in the Context Broker. The result of the command has two components: the result
-of the command itself will be represented with the sufix '_result' in the entity while the status is updated in the
-attribute with the '_info' sufix.
+of the command itself will be represented with the sufix `_result` in the entity while the status is updated in the
+attribute with the `_info` sufix.
 
 ###### Params
  * entityName: Name of the entity holding the command.
@@ -549,7 +563,7 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 
 
 
-## <a name="development"/> Development documentation
+## Development documentation
 ### Contributions
 All contributions to this project are welcome. Developers planning to contribute should follow the [Contribution Guidelines](./docs/contribution.md)
 
@@ -557,7 +571,7 @@ All contributions to this project are welcome. Developers planning to contribute
 The project is managed using Grunt Task Runner.
 
 For a list of available task, type
-```bash
+```console
 grunt --help
 ```
 
@@ -572,13 +586,13 @@ The test environment is preconfigured to run [BDD](http://chaijs.com/api/bdd/) t
 Module mocking during testing can be done with [proxyquire](https://github.com/thlorenz/proxyquire)
 
 To run tests, type
-```bash
+```console
 grunt test
 ```
 
 Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
 To generate TAP report in `report/test/unit_tests.tap`, type
-```bash
+```console
 grunt test-report
 ```
 
@@ -588,14 +602,14 @@ jshint, gjslint
 Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python and its use can be disabled
 while creating the project skeleton with grunt-init.
 To check source code style, type
-```bash
+```console
 grunt lint
 ```
 
 Checkstyle reports can be used together with Jenkins to monitor project quality metrics by means of Checkstyle
 and Violations plugins.
 To generate Checkstyle and JSLint reports under `report/lint/`, type
-```bash
+```console
 grunt lint-report
 ```
 
@@ -604,7 +618,7 @@ grunt lint-report
 
 Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
-```bash
+```console
 grunt watch
 ```
 
@@ -614,7 +628,7 @@ dox-foundation
 
 Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
 For compiling source code documentation, type
-```bash
+```console
 grunt doc
 ```
 
@@ -625,14 +639,14 @@ Istanbul
 Analizes the code coverage of your tests.
 
 To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
-```bash
+```console
 # Use git-bash on Windows
 grunt coverage
 ```
 
 To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
 monitor project quality metrics by means of Cobertura plugin, type
-```bash
+```console
 # Use git-bash on Windows
 grunt coverage-report
 ```
@@ -644,14 +658,14 @@ Plato
 Analizes code complexity using Plato and stores the report under `site/report/`. It can be used together with jenkins
 by means of DocLinks plugin.
 For complexity report, type
-```bash
+```console
 grunt complexity
 ```
 
 ### PLC
 
 Update the contributors for the project
-```bash
+```console
 grunt contributors
 ```
 
@@ -659,13 +673,14 @@ grunt contributors
 ### Development environment
 
 Initialize your environment with git hooks.
-```bash
+```console
 grunt init-dev-env
 ```
 
 We strongly suggest you to make an automatic execution of this task for every developer simply by adding the following
 lines to your `package.json`
-```
+
+```json
 {
   "scripts": {
      "postinstall": "grunt init-dev-env"
@@ -679,7 +694,7 @@ lines to your `package.json`
 There is a grunt task to generate the GitHub pages of the project, publishing also coverage, complexity and JSDocs pages.
 In order to initialize the GitHub pages, use:
 
-```bash
+```console
 grunt init-pages
 ```
 
@@ -687,7 +702,7 @@ This will also create a site folder under the root of your repository. This site
 history, and associated to the gh-pages branch, created for publishing. This initialization action should be done only
 once in the project history. Once the site has been initialized, publish with the following command:
 
-```bash
+```console
 grunt site
 ```
 

@@ -3,26 +3,25 @@
 ## Index
 
 * [Overview](#overview)
-* [Measurement transformation](#transformation)
-  * [Expression definition](#definition)
-  * [Variable values](#values)
-  * [Expression execution](#execution)
-* [Language description](#description)
-  * [Types](#types)
-  * [Values](#values)
-  * [Allowed operations](#operations)
-* [Examples of expressions](#examples)
-* [NGSIv2 support](#ngsiv2)
+  + [Protocol](#protocol)
+  + [Requirements](#requirements)
+* [Basic IOTA](#basic-iota)
+* [IOTA With Active attributes](#iota-with-active-attributes)
+* [IOTA With Lazy attributes](#iota-with-lazy-attributes)
+  + [Previous considerations](#previous-considerations)
+  + [Implementation](#implementation)
+* [Configuration management](#configuration-management)
+  + [Provisioning handlers](#provisioning-handlers)
 
-## <a name="overview"/> Overview
+## Overview
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
 information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
 language can be configured for provisioned attributes as explained in the Device Provisioning API section in the
 main README.md.
 
-## <a name="transformation"/> Measurement transformation
+##  Measurement transformation
 
-### <a name="definition"/> Expression definition
+### Expression definition
 
 Expressions can be defined for Active attributes, either in the Device provisioning or in the Configuration provisioning.
 The following example shows a device provisioning payload with defined expressions:
@@ -65,19 +64,20 @@ expression patterns).
 
 The exact same syntax works for Configuration and Device provisioning.
 
-### <a name="values"/> Variable values
+### Variable values
 
 Attribute expressions can contain values taken from the value of other attributes. Those values have, by default, the
-String type. For most arithmetic operations ('*', '/', etc...) if a variable is involved, its value will be cast to
+String type. For most arithmetic operations (`*`, `/`, etc...) if a variable is involved, its value will be cast to
 Number, regardless of the original type. For, example, if a variable @humidity has the value `'50'` (a String value),
 the following expression:
+
 ```
 ${@humidity * 10}
 ```
 will give `500` as the result (i.e.: the value `'50'` is cast to number, to get `50`, that is then multiplied by 10). If
 this cast fails (because the value of the variable is not a number, e.g.: `'Fifty'`), the overall result will be `NaN`.
 
-### <a name="execution"/> Expression execution
+### Expression execution
 
 Whenever a new measurement arrives to the IoTAgent for a device with declared expressions, all of the expressions for
 the device will be checked for execution: for all the defined active attributes containing expressions, the IoTAgent
@@ -142,9 +142,9 @@ As `spaces` attribute is included, then the expression is evaluated, so overridi
 }
 ```
 
-## <a name="description"/> Language description
+## Language description
 
-### <a name="types"/> Types
+### Types
 
 The way the parse() function works (at expressionParser.js) is as follows:
 
@@ -153,12 +153,12 @@ The way the parse() function works (at expressionParser.js) is as follows:
 
 However, the usage that the Expression Translation plugin does of that function is using always String type. That means that at the end, the result of the expression will be always cast to String. However, in NGSIv2 that String result could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at the [NGSIv2 support](#ngsiv2) for more information on this.
 
-### <a name="values"/> Values
+### Values
 
 #### Variables
 
 All the information reported in the measurement received by the IoT Agent is available for the expression to use. For
-every attribute coming from the South Bound, a variable with the syntax '@<object_id>' will be created for its use in
+every attribute coming from the South Bound, a variable with the syntax `@<object_id>` will be created for its use in
 the expression language.
 
 #### Constants
@@ -171,7 +171,7 @@ Current allowed characters are:
 - All the alphanumerical characters
 - Whitespaces
 
-### <a name="operations"/> Allowed operations
+### Allowed operations
 
 The following operations are currently available, divided by attribute type
 
@@ -197,7 +197,7 @@ starting at posisiton `start` and ending at position `<end>`.
 
 Parenthesis can be used to define precedence in the operations. Whitespaces between tokens are generally ignored.
 
-## <a name="examples"/> Examples of expressions
+## Examples of expressions
 
 The following table shows expressions and their expected outcomes for a measure with two attributes: "@value" with value
 6 and "@name" with value "DevId629".
@@ -212,7 +212,7 @@ The following table shows expressions and their expected outcomes for a measure 
 | '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
 | '@name value is @value'     | 'DevId629 value is 6' |
 
-## <a name="ngsiv2"/> NGSIv2 support
+## NGSIv2 support
 
 As it is explained in previous sections, expressions can have two return types: String or Number, being the former one the default. Whenever an expression is executed without error, its result will be cast to the configured type. 
 

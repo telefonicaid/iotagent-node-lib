@@ -6,11 +6,11 @@
 * [Alarms](#alarms)
 * [Error naming code](#errorcode)
 
-## <a name="overview"/>  Overview
+## Overview
 The following document shows all the errors that can appear in an IoT Agent using this library, and gives a brief
 idea of the severity and how to react to those errors.
 
-## <a name="logs"/>  Logs
+## Logs
 The following section contains the error log entries that can appear in the IoT Agents logs, grouped by category.
 
 ### GENERAL-001 Couldn\'t find callback in listDevices() call.
@@ -85,7 +85,7 @@ Check connectivity between the machines, the status of the remote Context Broker
 Validation templates were not found. Check all the validation templates are properly located in the IoTAgent Library
 folder and that the file permissions are correct.
 
-## <a name="alarms"/> Alarms
+## Alarms
 
 The following table shows the alarms that can be raised in the IoTAgent library. All the alarms are signaled by a
 error log starting with the prefix "Raising [%s]:" (where %s is the alarm name). All the alarms are released by an info
@@ -104,7 +104,7 @@ while the 'Severity' criterium is as follows:
 * **Warning** - It is happening something that must be notified
 
 
-## <a name="errorcode"/> Error naming code
+## Error naming code
 Every error has a code composed of a prefix and an ID, codified with the following table:
 
 | Prefix           | Type of operation      |
