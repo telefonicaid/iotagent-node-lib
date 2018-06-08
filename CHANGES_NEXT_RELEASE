@@ -1,4 +1,5 @@
- -Fix: IOTA_SIGLE_MODE, IOTA_APPEND_MODE, IOTA_POLLING_EXPIRATION, IOTA_POLLING_DAEMON_FREQ env vars are now taken into account (previously there were ignored)
+- Fix: Check boolean config fields against right boolean value
+- Fix: IOTA_SIGLE_MODE, IOTA_APPEND_MODE, IOTA_POLLING_EXPIRATION, IOTA_POLLING_DAEMON_FREQ env vars are now taken into account (previously there were ignored)
 - Fix: IOTA_MONGO_RETRIES and IOTA_MONGO_RETRY_TIME env vars are now taken into account (previously there were ignored)
 - Add: log mongo error before raise alarm (#577)
 - Fix: automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544)
