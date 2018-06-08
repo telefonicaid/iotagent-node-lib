@@ -119,7 +119,8 @@ in the following sections.
 ### Function reference
 ##### iotagentLib.activate()
 ###### Signature
-```
+
+```javascript
 function activate(newConfig, callback)
 ```
 ###### Description
@@ -129,7 +130,8 @@ Activates the IoT Agent to start listening for NGSI Calls (acting as a Context P
 
 ##### iotagentLib.deactivate()
 ###### Signature
-```
+
+```javascript
 function deactivate(callback)
 ```
 ###### Description
@@ -138,8 +140,9 @@ Stops the HTTP server.
 
 ##### iotagentLib.register()
 ###### Signature
-```
-registerDevice(deviceObj, callback)
+
+```javascript
+function registerDevice(deviceObj, callback)
 ```
 ###### Description
 Register a new device in the IoT Agent. This registration will also trigger a Context Provider registration in the Context Broker for all its lazy attributes.
@@ -165,7 +168,8 @@ If the device has been previously preprovisioned, the missing data will be compl
 
 ##### iotagentLib.unregister()
 ###### Signature
-```
+
+```javascript
 function unregisterDevice(id, service, subservice, callback)
 ```
 ###### Description
@@ -177,8 +181,9 @@ Unregister a device from the Context broker and the internal registry.
 
 ##### iotagentLib.update()
 ###### Signature
-```
-update(entityName, attributes, typeInformation, token, callback)
+
+```javascript
+function update(entityName, attributes, typeInformation, token, callback)
 ```
 ###### Description
 Makes an update in the Device's entity in the context broker, with the values given in the 'attributes' array. This
@@ -192,8 +197,9 @@ array should comply to the NGSI's attribute format.
 
 ##### iotagentLib.setCommandResult()
 ###### Signature
-```
-setCommandResult(entityName, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
+
+```javascript
+function setCommandResult(entityName, resource, apikey, commandName, commandResult, status, deviceInformation, callback)
 ```
 ###### Description
 Update the result of a command in the Context Broker. The result of the command has two components: the result
@@ -211,17 +217,20 @@ attribute with the `_info` sufix.
 
 ##### iotagentLib.listDevices()
 ###### Signature
-```
+
+```javascript
 function listDevices(callback)
 function listDevices(limit, offset, callback)
 function listDevices(service, subservice, limit, offset, callback)
 ```
+
 ###### Description
 Return a list of all the devices registered in the specified service and subservice. This function can be invoked in
 three different ways:
 * with just one parameter (the callback)
 * with three parameters (service, subservice and callback)
 * or with five parameters (including limit and offset).
+
 ###### Params
 * service: service from where the devices will be retrieved.
 * subservice: subservice from where the devices will be retrieved.
@@ -230,7 +239,8 @@ three different ways:
 
 ##### iotagentLib.setDataUpdateHandler()
 ###### Signature
-```
+
+```javascript
 function setDataUpdateHandler(newHandler)
 ```
 ###### Description
@@ -239,7 +249,8 @@ with the following parameters: (id, type, service, subservice, attributes, callb
 updating the corresponding values in the devices with the appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
-```
+
+```javascript
     callback(null, {
         type: 'TheType',
         isPattern: false,
@@ -261,7 +272,8 @@ entity, and all the results will be combined into a single response.
 
 ##### iotagentLib.setDataQueryHandler()
 ###### Signature
-```
+
+```javascript
 function setDataQueryHandler(newHandler)
 ```
 ###### Description
@@ -270,7 +282,8 @@ with the following parameters: (id, type, service, subservice, attributes, callb
 corresponding information from the devices and return a NGSI entity with the requested values.
 
 The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
-```
+
+```javascript
     callback(null, {
         type: 'TheType',
         isPattern: false,
@@ -287,12 +300,14 @@ The callback must be invoked with the updated Context Element, using the informa
 
 In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
 entity, and all the results will be combined into a single response.
+
 ###### Params
  * newHandler: User handler for query requests.
 
 ##### iotagentLib.setNotificationHandler()
 ###### Signature
-```
+
+```javascript
 function setNotificationHandler(newHandler)
 ```
 ###### Description
@@ -300,7 +315,8 @@ Sets the new handler for incoming notifications. The notifications are sent by t
 with the subscribe() function.
 
 The handler must adhere to the following signature:
-```
+
+```javascript
 function mockedHandler(device, data, callback)
 ```
 The `device` parameter contains the device object corresponding to the entity whose changes were notified
@@ -315,7 +331,8 @@ The handler is expected to call its callback once with no parameters (failing to
 
 ##### iotagentLib.setConfigurationHandler()
 ###### Signature
-```
+
+```javascript
 function setConfigurationHandler(newHandler)
 ```
 ###### Description
@@ -323,7 +340,8 @@ Sets the new user handler for the configuration updates. This handler will be ca
 created or an old configuration is updated.
 
 The handler must adhere to the following signature:
-```
+
+```javascript
 function(newConfiguration, callback)
 ```
 The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its
@@ -335,7 +353,8 @@ handler will be called once for each of the configurations (both in the case of 
 
 ##### iotagentLib.getDevice()
 ###### Signature
-```
+
+```javascript
 function getDevice(deviceId, service, subservice, callback)
 ```
 ###### Description
@@ -347,7 +366,8 @@ Retrieve all the information about a device from the device registry.
 
 ##### iotagentLib.getDeviceByName()
 ###### Signature
-```
+
+```javascript
 function getDeviceByName(deviceName, service, subservice, callback)
 ```
 ###### Description
@@ -360,7 +380,8 @@ Retrieve a device from the registry based on its entity name.
 
 ##### iotagentLib.getDevicesByAttribute()
 ###### Signature
-```
+
+```javascript
 function getDevicesByAttribute(attributeName, attributeValue, service, subservice, callback)
 ```
 ###### Description
@@ -375,7 +396,8 @@ Retrieve all the devices having an attribute named `name` with value `value`.
 
 ##### iotagentLib.retrieveDevice()
 ###### Signature
-```
+
+```javascript
 function retrieveDevice(deviceId, apiKey, callback)
 ```
 ###### Description
@@ -388,7 +410,8 @@ for the given data.
 
 ##### iotagentLib.mergeDeviceWithConfiguration()
 ###### Signature
-```
+
+```javascript
 function mergeDeviceWithConfiguration(fields, defaults, deviceData, configuration, callback)
 ```
 ###### Description
@@ -403,7 +426,8 @@ device). The first argument indicates what fields would be merged.
 
 ##### iotagentLib.getConfiguration()
 ###### Signature
-```
+
+```javascript
 function getConfiguration(resource, apikey, callback)
 ```
 ###### Description
@@ -416,7 +440,8 @@ Gets the device group identified by the given (`resource`, `apikey`) pair.
 
 ##### iotagentLib.findConfiguration()
 ###### Signature
-```
+
+```javascript
 function findConfiguration(service, subservice, callback)
 ```
 ###### Description
@@ -428,7 +453,8 @@ Find a device group based on its service and subservice.
 
 ##### iotagentLib.getEffectiveApiKey()
 ###### Signature
-```
+
+```javascript
 function getEffectiveApiKey(service, subservice, type, callback)
 ```
 ###### Description
@@ -441,7 +467,8 @@ Get the API Key for the selected service if there is any, or the default API Key
 
 ##### iotagentLib.subscribe()
 ###### Signature
-```
+
+```javascript
 function subscribe(device, triggers, content, callback)
 ```
 ###### Description
@@ -454,7 +481,8 @@ Creates a subscription for the IoTA to the entity representing the selected devi
 
 ##### iotagentLib.unsubscribe()
 ###### Signature
-```
+
+```javascript
 function unsubscribe(device, id, callback)
 ```
 ###### Description
@@ -467,7 +495,8 @@ Removes a single subscription from the selected device, identified by its id.
 
 ##### iotagentLib.ensureSouthboundDomain()
 ###### Signature
-```
+
+```javascript
 function ensureSouthboundTransaction(context, callback)
 ```
 ###### Description
@@ -481,7 +510,8 @@ If the function is executed in the context of a previous transaction, just the c
 
 
 ##### iotagentLib.finishSouthBoundTransaction()
-```
+
+```javascript
 function finishSouthboundTransaction(callback)
 ```
 ###### Description
@@ -495,7 +525,8 @@ to the servers using the standard Express mechanisms.
 
 ##### iotagentLib.middlewares.handleError()
 ###### Signature
-```
+
+```javascript
 function handleError(error, req, res, next)
 ```
 ###### Description
@@ -505,7 +536,8 @@ returning 500 when no error code has been found.
 
 ##### iotagentLib.middlewares.traceRequest()
 ###### Signature
-```
+
+```javascript
 function traceRequest(req, res, next)
 ```
 ###### Description
@@ -514,7 +546,8 @@ Express middleware for tracing the complete request arriving to the IoTA in debu
 
 ##### iotagentLib.middlewares.changeLogLevel()
 ###### Signature
-```
+
+```javascript
 function changeLogLevel(req, res, next)
 ```
 ###### Description
@@ -522,7 +555,8 @@ Changes the log level to the one specified in the request.
 
 ##### iotagentLib.middlewares.ensureType()
 ###### Signature
-```
+
+```javascript
 function ensureType(req, res, next)
 ```
 ###### Description
@@ -530,7 +564,8 @@ Ensures the request type is one of the supported ones.
 
 ##### iotagentLib.middlewares.validateJson()
 ###### Signature
-```
+
+```javascript
 function validateJson(template)
 ```
 ###### Description
@@ -543,7 +578,8 @@ Returns an Express middleware used in request validation with the given template
 
 ##### iotagentLib.middlewares.retrieveVersion()
 ###### Signature
-```
+
+```javascript
 function retrieveVersion(req, res, next)
 ```
 ###### Description
@@ -552,7 +588,8 @@ Middleware that returns all the IoTA information stored in the module.
 
 ##### iotagentLib.middlewares.setIotaInformation()
 ###### Signature
-```
+
+```javascript
 function setIotaInformation(newIoTAInfo)
 ```
 ###### Description
@@ -571,6 +608,7 @@ All contributions to this project are welcome. Developers planning to contribute
 The project is managed using Grunt Task Runner.
 
 For a list of available task, type
+
 ```console
 grunt --help
 ```
@@ -586,12 +624,14 @@ The test environment is preconfigured to run [BDD](http://chaijs.com/api/bdd/) t
 Module mocking during testing can be done with [proxyquire](https://github.com/thlorenz/proxyquire)
 
 To run tests, type
+
 ```console
 grunt test
 ```
 
 Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
 To generate TAP report in `report/test/unit_tests.tap`, type
+
 ```console
 grunt test-report
 ```
@@ -602,6 +642,7 @@ jshint, gjslint
 Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python and its use can be disabled
 while creating the project skeleton with grunt-init.
 To check source code style, type
+
 ```console
 grunt lint
 ```
@@ -609,6 +650,7 @@ grunt lint
 Checkstyle reports can be used together with Jenkins to monitor project quality metrics by means of Checkstyle
 and Violations plugins.
 To generate Checkstyle and JSLint reports under `report/lint/`, type
+
 ```console
 grunt lint-report
 ```
@@ -618,6 +660,7 @@ grunt lint-report
 
 Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
+
 ```console
 grunt watch
 ```
@@ -628,6 +671,7 @@ dox-foundation
 
 Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
 For compiling source code documentation, type
+
 ```console
 grunt doc
 ```
@@ -639,6 +683,7 @@ Istanbul
 Analizes the code coverage of your tests.
 
 To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
+
 ```console
 # Use git-bash on Windows
 grunt coverage
@@ -646,6 +691,7 @@ grunt coverage
 
 To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
 monitor project quality metrics by means of Cobertura plugin, type
+
 ```console
 # Use git-bash on Windows
 grunt coverage-report
@@ -658,6 +704,7 @@ Plato
 Analizes code complexity using Plato and stores the report under `site/report/`. It can be used together with jenkins
 by means of DocLinks plugin.
 For complexity report, type
+
 ```console
 grunt complexity
 ```
@@ -665,6 +712,7 @@ grunt complexity
 ### PLC
 
 Update the contributors for the project
+
 ```console
 grunt contributors
 ```
@@ -673,6 +721,7 @@ grunt contributors
 ### Development environment
 
 Initialize your environment with git hooks.
+
 ```console
 grunt init-dev-env
 ```
@@ -694,6 +743,7 @@ lines to your `package.json`
 There is a grunt task to generate the GitHub pages of the project, publishing also coverage, complexity and JSDocs pages.
 In order to initialize the GitHub pages, use:
 
+
 ```console
 grunt init-pages
 ```
@@ -701,6 +751,7 @@ grunt init-pages
 This will also create a site folder under the root of your repository. This site folder is detached from your repository's
 history, and associated to the gh-pages branch, created for publishing. This initialization action should be done only
 once in the project history. Once the site has been initialized, publish with the following command:
+
 
 ```console
 grunt site
