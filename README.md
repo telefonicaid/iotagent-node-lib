@@ -7,10 +7,16 @@
 ## Index
 
 * [Overview](#overview)
+  + [Description](#description)
+  + [Device to NGSI Mapping](#device-to-ngsi-mapping)
+  + [Features](#features)
+  + [The ´TimeInstant´ element](#the-%C2%B4timeinstant%C2%B4-element)
+  + [Implementation decisions](#implementation-decisions)
 * [Build and Install](#build-and-install)
 * [API Overview](#api-overview)
   + [About API](#about-api)
   + [Device Provisioning API](#device-provisioning-api)
+  + [Configuration API](#configuration-api)
 * [Advanced Topics](#advanced-topics)
   + [Secured access to the Context Broker](#secured-access-to-the-context-broker)
   + [Data mapping plugins](#data-mapping-plugins)
@@ -18,6 +24,7 @@
 * [Testing](#testing)
   + [Agent Console](#agent-console)
   + [Agent tester](#agent-tester)
+* [Development documentation](#-development-documentation)
 
 ## Overview
 ### Description
