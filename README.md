@@ -7,7 +7,7 @@
 ## Index
 
 * [Overview](#overview)
-* [Build & Install](#build--install)
+* [Build and Install](#build-and-install)
 * [API Overview](#api-overview)
   + [About API](#about-api)
   + [Device Provisioning API](#device-provisioning-api)
