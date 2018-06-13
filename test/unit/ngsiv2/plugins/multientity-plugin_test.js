@@ -31,6 +31,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
+    moment = require('moment'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -237,6 +238,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
+        iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
@@ -254,7 +256,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
         });
     });
 
-    describe('When an update comes for a multientity measurement', function() {
+    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function() {
         var values = [
             {
                 name: 'p',
@@ -273,19 +275,98 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
             }
         ];
 
+        var singleValue = [
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            }
+        ];
+
         beforeEach(function() {
             nock.cleanAll();
+        });
+
+        it('should send two context elements, one for each entity', function(done) {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/op/update', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin1.json'))
+                .post('/v2/op/update', function(body) {
+                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextRequests/updateContextMultientityTimestampPlugin1.json');
+                    // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
+                    // fields. The following code just checks that TimeInstant fields are present.
+                    if (!body.entities[1].TimeInstant || !body.entities[1].humidity.metadata.TimeInstant)
+                    {
+                        return false;
+                    }
+                    else {
+                        var timeInstantEntity = body.entities[1].TimeInstant;
+                        var timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
+                        if (moment(timeInstantEntity, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
+                            moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+
+                            delete body.entities[1].TimeInstant;
+                            delete body.entities[1].humidity.metadata.TimeInstant;
+
+                            delete expectedBody.entities[1].TimeInstant;
+                            delete expectedBody.entities[1].humidity.metadata.TimeInstant;
+                            return JSON.stringify(body) === JSON.stringify(expectedBody);
+
+                        } else {
+                            return false;
+                        }
+                    }
+                })
                 .reply(204);
+
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
         });
 
         it('should send two context elements, one for each entity', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', function(body) {
+                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextRequests/updateContextMultientityTimestampPlugin2.json');
+                    // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
+                    // fields. The following code just checks that TimeInstant fields are present.
+                    if (!body.entities[0].TimeInstant || !body.entities[1].TimeInstant ||
+                        !body.entities[1].humidity.metadata.TimeInstant)
+                    {
+                        return false;
+                    }
+                    else {
+                        var timeInstantEntity = body.entities[0].TimeInstant;
+                        var timeInstantEntity2 = body.entities[1].TimeInstant;
+                        var timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
+                        if (moment(timeInstantEntity, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
+                            moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
+                            moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+
+                            delete body.entities[0].TimeInstant;
+                            delete body.entities[1].TimeInstant;
+                            delete body.entities[1].humidity.metadata.TimeInstant;
+
+                            delete expectedBody.entities[0].TimeInstant;
+                            delete expectedBody.entities[1].TimeInstant;
+                            delete expectedBody.entities[1].humidity.metadata.TimeInstant;
+                            return JSON.stringify(body) === JSON.stringify(expectedBody);
+
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
