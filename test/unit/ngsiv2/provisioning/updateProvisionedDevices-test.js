@@ -401,7 +401,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
 
                     parsedBody = JSON.parse(body);
 
-                    parsedBody.static_attributes.length.should.equal(2);
+                    parsedBody.static_attributes.length.should.equal(3);
                     parsedBody.static_attributes[0].name.should.equal('cellID');
                     done();
                 });
