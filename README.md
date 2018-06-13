@@ -1,6 +1,7 @@
 # FIWARE IoT Agent Framework
 
 [![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Documentation badge](https://readthedocs.org/projects/fiware-iotagent-node-lib/badge/?version=latest)](http://fiware-iotagent-ul.readthedocs.org/en/latest/?badge=latest)
 [![Support badge]( https://img.shields.io/badge/support-sof-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/fiware)
 
 ## Index
@@ -24,7 +25,7 @@ This project aims to provide a Node.js module to enable IoT Agent developers to 
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). 
 
 An IoT Agent is a component that lets groups of devices send their data to and be managed from a FIWARE NGSI Context
-Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the Fiware
+Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the FIWARE
 platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
 There is more information about specific topics in the following documents:
@@ -152,10 +153,10 @@ requested action. Parameters for the command will be passed inside the command v
 There are two differences with the lazy attributes:
 * First of all, for every command defined in a device, two new attributes are created in the entity with the same name
 as the command but with a prefix:
-	* '_info': this attribute reflect the current execution status of the command. When a command request is issued by
+	* `_info`: this attribute reflect the current execution status of the command. When a command request is issued by
 	the Context Broker, the IoT Agent library generates this attribute with 'PENDING' value. The value of this attribute
 	will be changed each time a command error or result is issued to the IoT Agent.
-	* '_result': this attribute reflect the result of the execution of the defined command.
+	* `_result`: this attribute reflect the result of the execution of the defined command.
 
 * Commands can also be updated when new information about its execution arrives to the agent. This information will be
 mapped to the command's utility attributes `_info` and `_result` leaving alone the command attribute itself. The
@@ -179,7 +180,7 @@ provisioning data. The details on how this flag is derived for provisioning data
 implementation using this libray (in other words, there isn't any standard way of doing so). The default option (with the flag
 with value `false` or not present) is to use push commands (as they were the only ones available until the latest versions).
 
-Polling commands could be subjected to expiration: two configuration properties pollingExpiration` and `pollingDaemonFrequency`
+Polling commands could be subjected to expiration: two configuration properties `pollingExpiration` and `pollingDaemonFrequency`
 can be set to start a daemon that will remove expired commands from the DB if the device is taking too much to pick them
 up. See the configuration section for details.
 
@@ -212,7 +213,7 @@ to the IoT Agent (Command execution PENDING; value updates available).
  to connect to the Context Broker.
 
 * **Device provisioning**: the IoT Agent should offer an external API to make a preprovision of any devices. This
-preprovision should enable the user to customize the device`s entity name and type as well as their service information.
+preprovision should enable the user to customize the device's entity name and type as well as their service information.
 
 * **Type configuration**: if a device is registered without a preregistration, only its `id` and `type` attributes are
 mandatory. The IoT Agent should provide a mechanism to provide default values to the device attributes based on its
@@ -556,7 +557,7 @@ configuration collection).
 Both approaches are better described in the sections bellow. 
 
 #### Configuration API
-The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, '/*'. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+The following sections show the available operations for the Configuration API. Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
 For every Device Group, the pair (resource, apikey) *must* be unique (as it is used to identify which group to assign to which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey` parameters to select the apropriate instance.
 
@@ -629,7 +630,7 @@ Returns:
 * 500 SERVER ERROR if there was any error not contemplated above.
 
 ##### GET /iot/services
-Retrieves device groups from the database. If the servicepath header has de wildcard expression, '/*', all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
+Retrieves device groups from the database. If the servicepath header has the wildcard expression, `/*`, all the subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns: 
 * 200 OK if successful, returning a device group body.
@@ -857,7 +858,7 @@ migrate targetDB * *
 Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
 They show the values existing in the original DB that had no translation for the target DB.
 
-If you want to restrict the migration for certain services and subservices, just substitute the '*' value for the particular
+If you want to restrict the migration for certain services and subservices, just substitute the `*` value for the particular
 service and subservice you want to use.
 
 ## <a name="librarytesting"/> Testing

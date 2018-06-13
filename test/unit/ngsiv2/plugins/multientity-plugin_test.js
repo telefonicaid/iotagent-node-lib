@@ -232,3 +232,65 @@ describe('Multi-entity plugin', function() {
         });
     });
 });
+
+describe('Multi-entity plugin is executed before timestamp process plugin', function() {
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(function() {
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
+                done();
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When an update comes for a multientity measurement', function() {
+        var values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2016-05-30T16:25:22.304Z'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin1.json'))
+                .reply(204);
+        });
+
+        it('should send two context elements, one for each entity', function(done) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+});
+
