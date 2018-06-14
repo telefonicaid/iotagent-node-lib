@@ -10,7 +10,7 @@
   + [Description](#description)
   + [Device to NGSI Mapping](#device-to-ngsi-mapping)
   + [Features](#features)
-  + [The ´TimeInstant´ element](#the-%C2%B4timeinstant%C2%B4-element)
+  + [The `TimeInstant` element](#the-timeinstant-element)
   + [Implementation decisions](#implementation-decisions)
 * [Build and Install](#build-and-install)
 * [API Overview](#api-overview)
@@ -235,7 +235,7 @@ to a command update to the device.
 
 ![General ](https://raw.githubusercontent.com/telefonicaid/iotagent-node-lib/master/img/iotAgentLib.png "Architecture Overview")
 
-### The ´TimeInstant´ element
+### The `TimeInstant` element
 
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
@@ -1060,7 +1060,7 @@ The command line testing tools make use of the [command-node Node.js library](ht
 utils. In order to help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a array
 that can be directly imported into other Command Line tools, using the following steps:
 
-* Require the ´iotagent-node-lib´ command line module in your command line tool:
+* Require the `iotagent-node-lib` command line module in your command line tool:
 ```
   var iotaCommands = require('iotagent-node-lib').commandLine;
 ```
