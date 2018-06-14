@@ -1,25 +1,32 @@
 # FIWARE IoT Agent Framework
 
 [![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Documentation badge](https://readthedocs.org/projects/fiware-iotagent-node-lib/badge/?version=latest)](http://fiware-iotagent-ul.readthedocs.org/en/latest/?badge=latest)
+[![Documentation badge](https://readthedocs.org/projects/iotagent-node-lib/badge/?version=latest)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
 [![Support badge]( https://img.shields.io/badge/support-sof-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/fiware)
 
 ## Index
 
 * [Overview](#overview)
-* [Build & Install](#buildinstall)
-* [API Overview](#apioverview)
-  * [About API](#aboutapi)
-  * [Device Provisioning API](#provisioningapi)
-  * [Configuration API](#configurationapi)
-* [Advanced Topics](#advancedtopics)
-  * [Secured access to the Context Broker](#securedaccess)
-  * [Data mapping plugins](#datamapping)
-  * [Old IoTAgent data migration](#datamigration)
-* [Testing](#librarytesting)
-* [Development Documentation](#development)
+  + [Description](#description)
+  + [Device to NGSI Mapping](#device-to-ngsi-mapping)
+  + [Features](#features)
+  + [The `TimeInstant` element](#the-timeinstant-element)
+  + [Implementation decisions](#implementation-decisions)
+* [Build and Install](#build-and-install)
+* [API Overview](#api-overview)
+  + [About API](#about-api)
+  + [Device Provisioning API](#device-provisioning-api)
+  + [Configuration API](#configuration-api)
+* [Advanced Topics](#advanced-topics)
+  + [Secured access to the Context Broker](#secured-access-to-the-context-broker)
+  + [Data mapping plugins](#data-mapping-plugins)
+  + [Old IoTAgent data migration](#old-iotagent-data-migration)
+* [Testing](#testing)
+  + [Agent Console](#agent-console)
+  + [Agent tester](#agent-tester)
+* [Development documentation](#-development-documentation)
 
-## <a name="overview"/> Overview
+## Overview
 ### Description
 This project aims to provide a Node.js module to enable IoT Agent developers to build custom agents for their devices that can
 easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ). 
@@ -228,7 +235,7 @@ to a command update to the device.
 
 ![General ](https://raw.githubusercontent.com/telefonicaid/iotagent-node-lib/master/img/iotAgentLib.png "Architecture Overview")
 
-### <a name="TimeInstant"/>The ´TimeInstant´ element
+### The `TimeInstant` element
 
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
@@ -267,15 +274,15 @@ one (In-memory Registry) and a persistent one (based in MongoDB).
 entity model, if there is any, is a responsability of the particular IoT Agent implementation, or of another third
 party library.
 
-## <a name="buildinstall"/> Build & Install
+##  Build and Install
 
 Information about how to configure the Library can be found at the corresponding section of the [Installation & Administration Guide](doc/installationguide.md).
 
 This library has no packaging or build processes. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
-## <a name="apioverview"/> API Overview
+##  API Overview
 
-### <a name="aboutapi"/> About API
+### About API
 The library provides a simple operation to retrieve information about the library and the IoTA using it. A GET request
 to the `/iot/about` path, will show a payload like the following:
 ```
@@ -288,7 +295,7 @@ to the `/iot/about` path, will show a payload like the following:
 ```
 the `version` field will be read from the `iotaVersion` field of the config, if it exists.
 
-### <a name="provisioningapi"/> Device Provisioning API
+### Device Provisioning API
 #### Overview
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and 
 subservice mapping, security information and attribute configuration can be specified in a per device way instead of 
@@ -539,7 +546,7 @@ Payload example:
 }
 ```
 
-### <a name="configurationapi"/> Configuration API
+### Configuration API
 For some services, there will be no need to provision individual devices, but it will make more sense to provision
 different device groups, each of one mapped to a different type of entity in the context broker. How the type of entity
 is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an
@@ -674,8 +681,8 @@ The IoT Agent can be configured to expect certain kinds of devices, with preconf
 * **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).
 * **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific types of devices.
 
-## <a name="advancedtopics"/> Advanced Topics
-### <a name="securedaccess"/> Secured access to the Context Broker
+## Advanced Topics
+### Secured access to the Context Broker
 For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
 
 For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully configured, and the `authentication.enabled` subattribute should have the value `true`.
@@ -707,7 +714,7 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT Agent.
 
-### <a name="datamapping"/> Data mapping plugins
+### Data mapping plugins
 #### Overview
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations on 
 incoming data (both from the device and from the context consumers). This mechanism is based in the use of middlewares,
@@ -834,7 +841,7 @@ For each attribute in the `reverse` array, an expression must be defined to calc
 attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about how the value
 is then progressed to the device are protocol-specific.
 
-### <a name="datamigration"/> Old IoTAgent data migration
+### Old IoTAgent data migration
 In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
 implementations, a data migration tool has been developed. This data migration tool has been integrated as a command
 in the IoTAgent command line tester.
@@ -861,7 +868,7 @@ They show the values existing in the original DB that had no translation for the
 If you want to restrict the migration for certain services and subservices, just substitute the `*` value for the particular
 service and subservice you want to use.
 
-## <a name="librarytesting"/> Testing
+## Testing
 ### Agent Console
 A command line client to experiment with the library is packed with it. The command line client can be started using the following command:
 ```
@@ -1053,7 +1060,7 @@ The command line testing tools make use of the [command-node Node.js library](ht
 utils. In order to help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a array
 that can be directly imported into other Command Line tools, using the following steps:
 
-* Require the ´iotagent-node-lib´ command line module in your command line tool:
+* Require the `iotagent-node-lib` command line module in your command line tool:
 ```
   var iotaCommands = require('iotagent-node-lib').commandLine;
 ```
