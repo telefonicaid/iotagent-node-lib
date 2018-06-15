@@ -1,6 +1,6 @@
 # Installation & Administration Guide
 
-## <a name="configuration"/> Configuration
+## Configuration
 The `activate()` function that starts the IoT Agent receives as single parameter with the configuration for the IoT Agent.
 The Agent Console reads the same configuration from the `config.js` file.
 
@@ -8,13 +8,16 @@ The Agent Console reads the same configuration from the `config.js` file.
 These are the parameters that can be configured in the global section:
 * **logLevel**: minimum log level to log. May take one of the following values: DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
 * **contextBroker**: connection data to the Context Broker (host and port). E.g.:
+
 ```
 	{
 	host: '192.168.56.101',
 	port: '1026'
     	}
 ```
+
  * If you want to use NGSIv2 (only sending updates for active attributes):
+
 ```
   {
     host: '192.168.56.101',
@@ -22,14 +25,18 @@ These are the parameters that can be configured in the global section:
     ngsiVersion: 'v2'
   }
 ``` 
+
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
+
 ```
 	{
 	baseRoot: '/',
         port: 4041
     	}
+
 ```
 * **stats**: configure the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats writings.
+
 ```
     stats: {
         interval: 100
@@ -43,7 +50,8 @@ These are the parameters that can be configured in the global section:
   (alternatively `host` and `port` but if you use this combination, the IoT Agent will assume that the protocol is HTTP), the `user` and `password` to which it is delegated
   the `trust` verification.
   E.g.:
-    ```
+
+```
     {
           enabled: true,
           url: 'https://localhost:5000',
@@ -51,7 +59,8 @@ These are the parameters that can be configured in the global section:
           user: 'iotagent',
           password: 'iotagent'
     }
-    ```
+```
+
   In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
   The authentication process use the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
   that can be used to authenticate the request to the Context Broker.
@@ -63,7 +72,8 @@ These are the parameters that can be configured in the global section:
   that the protocol is HTTP), the `tokenPath` to which the validation request should be sent, the `clientId` and `clientSecret` that identify the Context Broker,
   and the `header` field that should be used to send the authentication request (that will be send in the form `Authorization: Bearer <access_token>`).
   E.g.:
-    ```
+
+```
     {
         enabled: true,
         type: 'oauth2',
@@ -73,17 +83,21 @@ These are the parameters that can be configured in the global section:
         clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
         tokenPath: '/auth/realms/default/protocol/openid-connect/token'
     }
-    ```
+```
+
 * **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other. Mongodb databases must be configured in the `mongob` section (as described bellow). E.g.:
+
 ```
 {
   type: 'mongodb'
 }
 ```
+
 * **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of comma-separated IPs, they will
 be considered to be part of a Replica Set. In that case, the optional property `replicaSet` should contain the Replica Set name. The MongoBD driver will
 retry the connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
 are 5 and 5 respectively). E.g.:
+
 ```
 {
   host: 'localhost',
@@ -94,10 +108,12 @@ are 5 and 5 respectively). E.g.:
 
 }
 ```
+
 * **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section is
  present, the IoTA will try to register to a IoTAM in the `host`, `port` and `path` indicated, with the information
  configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described below) with the
  added `agentPath`:
+
 ```
 {
     host: 'mockediotam.com',
@@ -108,6 +124,7 @@ are 5 and 5 respectively). E.g.:
     agentPath: '/iot'
 }
 ```
+
 * **types**: See **Type Configuration** in the [Configuration API](#configurationapi) section below.
 * **eventType**: Default type for the Events (useful only with the `addEvents` plugin).
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
