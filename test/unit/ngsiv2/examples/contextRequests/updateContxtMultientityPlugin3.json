@@ -1,0 +1,18 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+    {
+      "id": "ws5",
+      "type": "Hgmm"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Hgmm",
+        "value": "16"
+      },
+      "type": "Higrometer",
+      "id": "Higro2001"
+    }
+  ]
+}
