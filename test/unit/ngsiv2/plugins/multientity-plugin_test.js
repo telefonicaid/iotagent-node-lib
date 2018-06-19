@@ -200,7 +200,7 @@ describe('Multi-entity plugin', function() {
         });
 
         it('should send context elements', function(done) {
-            iotAgentLib.update('ws5', 'WeatherStation', '', values, function(error) {
+            iotAgentLib.update('ws5', 'WeatherStation5', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
