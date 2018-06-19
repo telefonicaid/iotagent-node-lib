@@ -196,8 +196,8 @@ describe('Device Service: utils', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([
                 request.bind(request, groupCreation),
@@ -223,8 +223,8 @@ describe('Device Service: utils', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([
                 request.bind(request, groupCreation)

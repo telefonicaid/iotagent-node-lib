@@ -134,9 +134,9 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
 
         });
 
@@ -195,9 +195,9 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -266,9 +266,9 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
         });
 
         afterEach(function() {
@@ -400,9 +400,9 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
 
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -484,9 +484,9 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
         });
 
         afterEach(function() {
@@ -601,9 +601,9 @@ describe('Bidirectional data plugin and CB is defined using environment variable
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(201);
+                .reply(204);
 
         });
 

@@ -112,8 +112,8 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -205,8 +205,8 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -264,16 +264,16 @@ describe('IoT Agent Device Registration', function() {
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
@@ -306,16 +306,16 @@ describe('IoT Agent Device Registration', function() {
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/8254b65a7d11650f45844319'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .delete('/v2/registrations/6319a7f5254b05844116584d')

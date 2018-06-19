@@ -96,24 +96,24 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([
                 iotAgentLib.clearAll,
@@ -327,9 +327,9 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
-                .post('/v2/entities')
+                .post('/v2/entities?options=upsert')
                 .times(10)
-                .reply(201);
+                .reply(204);
 
             iotAgentLib.clearAll(function() {
                 async.times(10, createDeviceRequest, function(error, results) {

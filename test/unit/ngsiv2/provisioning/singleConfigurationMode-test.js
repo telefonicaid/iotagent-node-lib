@@ -135,8 +135,8 @@ describe('Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             request(groupCreation, function(error) {
                 request(deviceCreation, function(error, response, body) {
@@ -187,8 +187,8 @@ describe('Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'AlternateService')
@@ -199,8 +199,8 @@ describe('Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'AlternateService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             request(groupCreation, function(error) {
                 request(deviceCreation, function(error, response, body) {
@@ -242,8 +242,8 @@ describe('Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             oldType = deviceCreation.json.devices[0].entity_type;
             delete deviceCreation.json.devices[0].entity_type;
@@ -307,9 +307,9 @@ describe('Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
-                .reply(201);
+                .reply(204);
 
             request(groupCreation, done);
         });

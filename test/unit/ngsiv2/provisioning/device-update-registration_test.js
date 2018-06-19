@@ -152,8 +152,8 @@ describe('IoT Agent Device Update Registration', function() {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/v2/entities')
-            .reply(201);
+            .post('/v2/entities?options=upsert')
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.register(device1, function(error) {

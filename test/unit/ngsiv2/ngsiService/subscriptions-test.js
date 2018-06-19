@@ -78,10 +78,10 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/' +
                         'contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

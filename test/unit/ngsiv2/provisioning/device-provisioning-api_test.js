@@ -91,8 +91,8 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             iotAgentLib.clearAll(done);
         });
@@ -144,9 +144,9 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', utils.readExampleFile(
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/createProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
         });
 
         var options = {
@@ -289,9 +289,9 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json'))
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -332,7 +332,7 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities', function(body) {
+                .post('/v2/entities?options=upsert', function(body) {
                     var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples/' +
                         'contextRequests/createTimeInstantMinimumDevice.json');
                     if (!body.TimeInstant.value)
@@ -354,7 +354,7 @@ describe('Device provisioning API: Provision devices', function() {
                         return false;
                     }
                 })
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -383,10 +383,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/' +
                         'contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -439,10 +439,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createGeopointProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -471,10 +471,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createDatetimeProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -513,17 +513,17 @@ describe('Device provisioning API: Provision devices', function() {
         beforeEach(function(done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/' +
                         'contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
 
             contextBrokerMock
-                .post('/v2/entities',
+                .post('/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/' +
                         'contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(201);
+                .reply(204);
 
             done();
         });
@@ -580,7 +580,7 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities')
+                .post('/v2/entities?options=upsert')
                 .replyWithError({'message': 'Description of the error', 'code': 'STRING_CODE'});
 
             done();
@@ -619,7 +619,7 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities')
+                .post('/v2/entities?options=upsert')
                 .replyWithError({'message': 'Description of the error', 'code': 123456789});
 
             done();
@@ -678,8 +678,8 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities')
-                .reply(201);
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             done();
         });
