@@ -97,6 +97,25 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         entity_name: 'Station Number ${@sn * 10}',
                     }
                 ]
+            },
+            'WeatherStation5': {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        entity_name: 'Higro2000',
+                        entity_type: 'Higrometer'
+                    }
+                ]
             }
         },
         service: 'smartGondor',
@@ -159,6 +178,36 @@ describe('Multi-entity plugin', function() {
             });
         });
     });
+
+    describe('When an update comes for a multientity measurement with same attribute name', function() {
+        var values = [
+            {
+                name: 'h',
+                type: 'Hgmm',
+                value: '16'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin4.json'))
+                .reply(204);
+        });
+
+        it('should send context elements', function(done) {
+            iotAgentLib.update('ws5', 'WeatherStation5', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
 
     describe('When an update comes for a multientity defined with an expression', function() {
         var values = [
