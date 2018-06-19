@@ -1,25 +1,20 @@
 {
   "actionType": "APPEND",
   "entities": [
-    {
-      "id": "ws4",
-      "type": "WeatherStation",
-      "pressure": {
-        "type": "Hgmm",
-        "value": "52"
-      },
-      "sn":{
-        "type": "Number",
-        "value": "5"
-      }
+    { "id": "ws5",
+      "type": "WeatherStation"
     },
     {
-      "humidity": {
-        "type": "Percentage",
-        "value": "12"
+      "id": "Higro2001",
+      "type": "Higrometer",
+      "pressure": {
+        "type": "Hgmm",
+        "value": "16"
       },
-      "type": "WeatherStation",
-      "id": "Station Number 50"
     }
   ]
 }
+
+
+
+{\\"actionType\\":\\"APPEND\\",\\"entities\\":[{\\"id\\":\\"ws5\\",\\"type\\":\\"WeatherStation\\"},{\\"presure\\":{\\"type\\":\\"Hgmm\\",\\"value\\":\\"16\\"},\\"type\\":\\"Higrometer\\",\\"id\\":\\"Higro2001\\"}]}"\n}
