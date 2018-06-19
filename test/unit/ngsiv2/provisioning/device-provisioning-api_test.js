@@ -304,6 +304,69 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
+    describe('When a device provisioning request arrives to the IoTA' +
+        'and timestamp is enabled in configuration', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.deactivate(function() {
+                iotAgentConfig.timestamp = true;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function() {
+            iotAgentConfig.timestamp = false;
+        });
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities', function(body) {
+                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples/' +
+                        'contextRequests/createTimeInstantMinimumDevice.json');
+                    if (!body.TimeInstant.value)
+                    {
+                        return false;
+                    }
+                    else if (moment(body.TimeInstant.value, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
+                    {
+                        var timeInstantDiff = moment().diff(body.TimeInstant.value, 'milliseconds');
+                        if (timeInstantDiff < 500) {
+                            delete body.TimeInstant;
+
+                            return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        }
+
+                        return false;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                .reply(201);
+
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
