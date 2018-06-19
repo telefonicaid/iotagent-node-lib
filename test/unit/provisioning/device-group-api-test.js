@@ -716,7 +716,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should use the configured data', function(done) {
-            iotAgentLib.update('machine1', '/deviceTest', '801230BJKL23Y9090DSFL123HJK09H324HV8732', values,
+            iotAgentLib.update('machine1', 'SensorMachine', '801230BJKL23Y9090DSFL123HJK09H324HV8732', values,
                 function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();

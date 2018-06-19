@@ -18,4 +18,6 @@
 - Add: casting attribute's values to JSON native types (activable by config.autocast)
 - Fix: GET call to northbound group endpoint returns multiple services (#604)
 - Fix: timestampProcessPlugin supports processing an array of NGSI entities in NGSIv2 (#621)
+- Fix: undefined MONGO-ALARMS in logs due to a bad mongo query. (#630, #577)
+- Fix: multientity ngsiv1 duplicated attributes in entity (#627)
 - Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)
