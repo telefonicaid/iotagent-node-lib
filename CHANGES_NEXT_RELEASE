@@ -21,4 +21,4 @@
 - Fix: undefined MONGO-ALARMS in logs due to a bad mongo query. (#630, #577)
 - Fix: multientity ngsiv1 duplicated attributes in entity (#627)
 - Fix: match attributes by object_id using multientity plugin and alias (#629)
-- FIX: check foundGroup count in generateDuplicateHandle (#644)
+- FIX: check foundGroup count in generateDuplicateHandle (#633)
