@@ -5,7 +5,7 @@
       "type": "WeatherStation"
     },
     {
-      "id": "Higro2001",
+      "id": "Higro2000",
       "type": "Higrometer",
       "pressure": {
         "type": "Hgmm",
