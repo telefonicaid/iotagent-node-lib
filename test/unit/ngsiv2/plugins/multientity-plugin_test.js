@@ -110,7 +110,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     },
                     {
                         object_id: 'h',
-                        name: 'presure',
+                        name: 'pressure',
                         type: 'Hgmm',
                         entity_name: 'Higro2000',
                         entity_type: 'Higrometer'
