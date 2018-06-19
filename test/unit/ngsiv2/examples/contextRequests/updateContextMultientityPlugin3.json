@@ -1,16 +1,25 @@
 {
   "actionType": "APPEND",
   "entities": [
-    { "id": "ws5",
-      "type": "WeatherStation"
-    },
     {
-      "id": "Higro2001",
-      "type": "Higrometer",
+      "id": "ws4",
+      "type": "WeatherStation",
       "pressure": {
         "type": "Hgmm",
-        "value": "16"
+        "value": "52"
       },
+      "sn":{
+        "type": "Number",
+        "value": "5"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Percentage",
+        "value": "12"
+      },
+      "type": "WeatherStation",
+      "id": "Station Number 50"
     }
   ]
 }

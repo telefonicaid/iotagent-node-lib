@@ -195,7 +195,7 @@ describe('Multi-entity plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/op/update', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin3.json'))
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin4.json'))
                 .reply(204);
         });
 
