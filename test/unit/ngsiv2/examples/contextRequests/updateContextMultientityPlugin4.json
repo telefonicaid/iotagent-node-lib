@@ -10,7 +10,7 @@
       "pressure": {
         "type": "Hgmm",
         "value": "16"
-      },
+      }
     }
   ]
 }
