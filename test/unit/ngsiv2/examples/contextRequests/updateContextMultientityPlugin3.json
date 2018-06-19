@@ -14,7 +14,3 @@
     }
   ]
 }
-
-
-
-{\\"actionType\\":\\"APPEND\\",\\"entities\\":[{\\"id\\":\\"ws5\\",\\"type\\":\\"WeatherStation\\"},{\\"presure\\":{\\"type\\":\\"Hgmm\\",\\"value\\":\\"16\\"},\\"type\\":\\"Higrometer\\",\\"id\\":\\"Higro2001\\"}]}"\n}
