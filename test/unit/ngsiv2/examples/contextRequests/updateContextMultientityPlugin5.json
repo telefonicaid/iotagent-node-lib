@@ -1,7 +1,7 @@
 {
   "actionType": "APPEND",
   "entities": [
-    { "id": "ws5",
+    { "id": "ws6",
       "type": "WeatherStation"
     },
     {
