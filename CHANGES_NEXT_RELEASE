@@ -22,4 +22,5 @@
 - Fix: multientity ngsiv1 duplicated attributes in entity (#627)
 - Fix: match attributes by object_id using multientity plugin and alias in ngsiv2 (#629)
 - FIX: check foundGroup count in generateDuplicateHandle (#633)
+- Fix: allow provision device entity with multientity attributes (#628)
 - Fix: multientity with multiple measures in ngsiv2 (#635)
