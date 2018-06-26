@@ -20,4 +20,7 @@
 - Fix: timestampProcessPlugin supports processing an array of NGSI entities in NGSIv2 (#621)
 - Fix: undefined MONGO-ALARMS in logs due to a bad mongo query. (#630, #577)
 - Fix: multientity ngsiv1 duplicated attributes in entity (#627)
+- Fix: match attributes by object_id using multientity plugin and alias in ngsiv2 (#629)
+- FIX: check foundGroup count in generateDuplicateHandle (#633)
+- Fix: multientity with multiple measures in ngsiv2 (#635)
 - Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)
