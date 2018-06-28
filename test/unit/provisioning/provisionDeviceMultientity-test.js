@@ -108,6 +108,17 @@ describe('Device provisioning API: Provision devices', function() {
             }
         };
 
+        it('should add the device to the devices list', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results.devices.length.should.equal(1);
+                    done();
+                });
+            });
+        });
     });
 });
 
