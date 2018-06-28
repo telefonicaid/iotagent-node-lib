@@ -33,7 +33,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
-        logLevel: 'DEBUG',
+        logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',

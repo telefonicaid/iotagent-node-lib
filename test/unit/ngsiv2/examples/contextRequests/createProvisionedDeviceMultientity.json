@@ -5,10 +5,6 @@
     "type": "string",
     "value": " "
   },
-  "attr_name_multi": {
-    "type": "string",
-    "value": " "
-  },
   "hardcodedAttr": {
     "type": "hardcodedType",
     "value": "hardcodedValue"
