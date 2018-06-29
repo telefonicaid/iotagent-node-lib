@@ -88,6 +88,9 @@ describe('Device provisioning API: Provision devices', function() {
                 })
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -577,6 +580,9 @@ describe('Device provisioning API: Provision devices', function() {
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -616,6 +622,9 @@ describe('Device provisioning API: Provision devices', function() {
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -675,6 +684,9 @@ describe('Device provisioning API: Provision devices', function() {
                 .post('/v2/registrations')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
