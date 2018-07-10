@@ -1,6 +1,6 @@
 {
   "pressure":{
-    "type": "Integer",
+    "type": "Number",
     "value": 1040 
   },
   "humidity":{

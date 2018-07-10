@@ -1,10 +1,10 @@
 {
   "pressure": {
-    "type": "Integer",
+    "type": "Number",
     "value": 10
   },
   "consumption_x": {
-    "type": "Float",
+    "type": "Number",
     "value": 200
   }
 }
