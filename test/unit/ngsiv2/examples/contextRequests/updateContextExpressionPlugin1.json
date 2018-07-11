@@ -1,6 +1,6 @@
 {
   "pressure": {
     "value": 1040,
-    "type": "Integer"
+    "type": "Number"
   }
 }

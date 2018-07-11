@@ -52,21 +52,6 @@ describe('Device provisioning API: Provision devices', function() {
         nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig, function() {
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
             iotAgentLib.clearAll(done);
         });
     });
@@ -108,6 +93,17 @@ describe('Device provisioning API: Provision devices', function() {
             }
         };
 
+        it('should add the device to the devices list', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+
+                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                    results.devices.length.should.equal(1);
+                    done();
+                });
+            });
+        });
     });
 });
 

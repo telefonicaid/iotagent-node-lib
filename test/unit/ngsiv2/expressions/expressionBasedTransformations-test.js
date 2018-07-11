@@ -51,12 +51,12 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Integer'
+                        type: 'Number'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
-                        type: 'Float'
+                        type: 'Number'
                     },
                     {
                         object_id: 'a',
@@ -81,7 +81,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'x',
                         name: 'consumption_x',
-                        type: 'Float',
+                        type: 'Number',
                         expression: '${@pressure * 20}'
                     }
                 ]
@@ -94,7 +94,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Integer',
+                        type: 'Number',
                         expression: '${@pressure * / 20}'
                     }
                 ]
@@ -107,13 +107,13 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Integer',
+                        type: 'Number',
                         expression: '${@pressure * 20}'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
-                        type: 'Float',
+                        type: 'Number',
                         expression: '${@consumption * 20}'
                     },
                     {
@@ -149,18 +149,18 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Integer',
+                        type: 'Number',
                         expression: '${trim(@pressure)}'
                     },
                     {
                         object_id: 'p25',
                         name: 'pressure25',
-                        type: 'Integer'
+                        type: 'Number'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
-                        type: 'Float',
+                        type: 'Number',
                         expression: '${trim(@consumption)}'
                     },
                     {
@@ -240,7 +240,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 52
             },
             {
@@ -276,7 +276,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p25',
-                type: 'Integer',
+                type: 'Number',
                 value: 52
             },
             {
@@ -311,7 +311,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 52
             }
         ];
@@ -341,7 +341,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 52
             }
         ];
@@ -371,7 +371,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 52
             }
         ];
@@ -402,7 +402,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'e',
-                type: 'Float',
+                type: 'Number',
                 value: 0.44
             }
         ];
@@ -433,7 +433,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'e',
-                type: 'Float',
+                type: 'Number',
                 value: 0.44
             }
         ];
@@ -464,7 +464,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'e',
-                type: 'Float',
+                type: 'Number',
                 value: 0.44
             }
         ];
@@ -740,7 +740,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'x',
-                type: 'Float',
+                type: 'Number',
                 value: 0.44
             }
         ];
@@ -770,7 +770,7 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 10
             }
         ];
@@ -801,12 +801,12 @@ describe('Expression-based transformations plugin', function() {
         var values = [
             {
                 name: 'x',
-                type: 'Float',
+                type: 'Number',
                 value: 0.44
             },
             {
                 name: 'p',
-                type: 'Integer',
+                type: 'Number',
                 value: 10
             }
         ];

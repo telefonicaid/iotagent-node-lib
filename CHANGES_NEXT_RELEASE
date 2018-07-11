@@ -24,4 +24,5 @@
 - FIX: check foundGroup count in generateDuplicateHandle (#633)
 - Fix: allow provision device entity with multientity attributes (#628)
 - Fix: multientity with multiple measures in ngsiv2 (#635)
+- Fix: aligns expression plugin and config.autocast casting (#643)
 - Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)

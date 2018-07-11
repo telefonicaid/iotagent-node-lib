@@ -227,8 +227,8 @@ Currently, the expression parser does not support JSON Arrays and JSON document.
 1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
 2. The expression will be applied
 3. The output type will be cast again to the original attribute type.
-  * If attribute type is "Integer" then the value is casted to integer (JSON number)
-  * If attribute type is "Float" then the value is casted to float (JSON number)
+  * If attribute type is "Number" and the value is an `Integer`, then the value is casted to integer (JSON number)
+  * If attribute type is "Number" and the value is a `Float`, then the value is casted to float (JSON number)
   * If attribute type is "Boolean" then the value is cast to boolean (JSON boolean). In order to do this conversion, only `true` or `1` are cast to true.
   * If attribute type is "None" then the value is cast to null (JSON null)
 
@@ -252,10 +252,10 @@ status: true
 
 More examples of this workflow are presented below for the different types of attributes supported in NGSIv2 and the two possible types of expressions: Integer (arithmetic operations) or Strings.
 
-* pressure (of type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 * 20 } -> $ { 1040 } -> $ { "1040"} -> 1040
-* pressure (of type "Integer"): 52 -> ${trim(@pressure)} -> ${trim("52")} -> $ { "52" } -> $ { "52"} -> 52
-* consumption (of type "Float"): 0.44 -> ${@consumption * 20} -> ${ 0.44 * 20 } -> $ { 8.8 } -> $ { "8.8"} -> 8.8
-* consumption (of type "Float"): 0.44 -> ${trim(@consumption)} -> ${trim("0.44")} -> $ { "0.44" } -> $ { "0.44"} -> 0.44
+* pressure (of type "Number" and value's type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 * 20 } -> $ { 1040 } -> $ { "1040"} -> 1040
+* pressure (of type "Number"  and value's type "Integer"): 52 -> ${trim(@pressure)} -> ${trim("52")} -> $ { "52" } -> $ { "52"} -> 52
+* consumption (of type "Number"  and value's type "Float"): 0.44 -> ${@consumption * 20} -> ${ 0.44 * 20 } -> $ { 8.8 } -> $ { "8.8"} -> 8.8
+* consumption (of type "Number"  and value's type "Float"): 0.44 -> ${trim(@consumption)} -> ${trim("0.44")} -> $ { "0.44" } -> $ { "0.44"} -> 0.44
 * active (of type "None"): null -> ${@active * 20} -> ${ 0 * 20 } -> $ { 0 } -> $ { "0"} -> null
 * active (of type "None"): null -> ${trim(@active)} -> ${trim("null")} -> $ { "null" } -> $ { "null"} -> null
 * update (of type "Boolean"): true -> ${@update * 20} -> ${ 1 * 20 } -> $ { 20 } -> $ { "20"} -> False

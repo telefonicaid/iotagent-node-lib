@@ -1,6 +1,6 @@
 {
   "consumption_x": {
-    "type": "Float",
+    "type": "Number",
     "value": 0.44
   }
 }
