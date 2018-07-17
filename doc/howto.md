@@ -282,7 +282,7 @@ In order to do so, add the following require statement to the initialiation code
 
 and add the `request` dependency to the `package.json` file:
 
-```json
+```
   "dependencies": [
   [...]
 
