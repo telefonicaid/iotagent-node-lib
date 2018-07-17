@@ -83,7 +83,7 @@ Returns the current log level, in a json payload with a single attribute `level`
 
 ### Transactions
 The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
-requests entering both from the Northbound and the Southbound.
+requests entering both from the North and the South ports of the IoT Agent.
 
 To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
 domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
@@ -609,7 +609,7 @@ The project is managed using Grunt Task Runner.
 
 For a list of available task, type
 
-```console
+```bash
 grunt --help
 ```
 
@@ -625,14 +625,14 @@ Module mocking during testing can be done with [proxyquire](https://github.com/t
 
 To run tests, type
 
-```console
+```bash
 grunt test
 ```
 
 Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
 To generate TAP report in `report/test/unit_tests.tap`, type
 
-```console
+```bash
 grunt test-report
 ```
 
@@ -643,7 +643,7 @@ Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python an
 while creating the project skeleton with grunt-init.
 To check source code style, type
 
-```console
+```bash
 grunt lint
 ```
 
@@ -651,7 +651,7 @@ Checkstyle reports can be used together with Jenkins to monitor project quality 
 and Violations plugins.
 To generate Checkstyle and JSLint reports under `report/lint/`, type
 
-```console
+```bash
 grunt lint-report
 ```
 
@@ -661,7 +661,7 @@ grunt lint-report
 Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
 
-```console
+```bash
 grunt watch
 ```
 
@@ -672,7 +672,7 @@ dox-foundation
 Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
 For compiling source code documentation, type
 
-```console
+```bash
 grunt doc
 ```
 
@@ -684,7 +684,7 @@ Analizes the code coverage of your tests.
 
 To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
 
-```console
+```bash
 # Use git-bash on Windows
 grunt coverage
 ```
@@ -692,7 +692,7 @@ grunt coverage
 To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
 monitor project quality metrics by means of Cobertura plugin, type
 
-```console
+```bash
 # Use git-bash on Windows
 grunt coverage-report
 ```
@@ -705,7 +705,7 @@ Analizes code complexity using Plato and stores the report under `site/report/`.
 by means of DocLinks plugin.
 For complexity report, type
 
-```console
+```bash
 grunt complexity
 ```
 
@@ -713,7 +713,7 @@ grunt complexity
 
 Update the contributors for the project
 
-```console
+```bash
 grunt contributors
 ```
 
@@ -722,7 +722,7 @@ grunt contributors
 
 Initialize your environment with git hooks.
 
-```console
+```bash
 grunt init-dev-env
 ```
 
@@ -744,7 +744,7 @@ There is a grunt task to generate the GitHub pages of the project, publishing al
 In order to initialize the GitHub pages, use:
 
 
-```console
+```bash
 grunt init-pages
 ```
 
@@ -753,7 +753,7 @@ history, and associated to the gh-pages branch, created for publishing. This ini
 once in the project history. Once the site has been initialized, publish with the following command:
 
 
-```console
+```bash
 grunt site
 ```
 

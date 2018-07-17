@@ -13,14 +13,14 @@ In order to start contributing:
 
 2. Clone your just forked repository:
 
-```console
+```bash
 git clone https://github.com/your-github-username/iotagent-node-lib.git
 ```
 
 3. Add the main iotagent-node-lib repository as a remote to your forked repository (use any name for your remote
 repository, it does not have to be iotagent-node-lib, although we will use it in the next steps):
 
-```console
+```bash
 git remote add iotagent-node-lib https://github.com/telefonicaid/iotagent-node-lib.git
 ```
 
@@ -29,18 +29,18 @@ branch in the main iotagent-node-lib repository, by following this steps
 
 1. Change to your local `master` branch (in case you are not in it already):
 
-```console
+```bash
 git checkout master
 ```
 2. Fetch the remote changes:
 
-```console
+```bash
 git fetch iotagent-node-lib
 ```
 
 3. Merge them:
 
-```console
+```bash
 git rebase iotagent-node-lib/master
 ```
 

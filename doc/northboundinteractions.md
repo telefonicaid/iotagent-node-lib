@@ -1,4 +1,4 @@
-# Northbound NGSI Interactions
+# Traffic North of the IoT Agent -  NGSI Interactions
 
 ## Index
 
@@ -372,7 +372,7 @@ request to the Context Broker should be authenticated.
 
 In order to retrieve a token from the Keystone Identity Manager, the following request can be used:
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{
 	"auth": {
 		"identity": {
@@ -429,7 +429,7 @@ Context Broker (as it will be seen in the examples).
 In this scenario, a device actively sends data to the IoT Agent, that transforms that data into a NGSI request
 that is sent to the Context Broker. This request has the following format (P1):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
     -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <Token>" -d '{
     "contextElements": [
@@ -483,7 +483,7 @@ can be queried.
 Whenever the User wants to query this value, he can use any of the NGSI mechanisms for retrieving data. E.g. he can
 use a standard queryContext request, as the following one (P2):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "entities": [
@@ -531,7 +531,7 @@ The Context Broker will reply with the updated data values in R2 format (200 OK)
 Two kind of errors can appear in this scenario. If there is an error updating the information, the Context Broker will
 replay with a payload like the following:
 
-```console
+```bash
 {
   "contextResponses": [
     {
@@ -582,7 +582,7 @@ the existence of both.
 Scenario 2 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent
 must register its lazy attributes for each device, with a request like the following:
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
   -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
     "contextRegistrations": [
@@ -624,7 +624,7 @@ The registration of the attributes is performed once in the lifetime of the Devi
 In this scenario, a User actively asks for a particular piece of data from a device. The scenario starts with the
 request from the User to the Context Broker (P2):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "entities": [
@@ -644,7 +644,7 @@ The Context Broker receives this request and detects that it can be served by a 
 it redirects the exact same request to the IoT Agent. The following excerpt shows the full HTTP frame containing
 the redirection data:
 
-```console
+```bash
 POST /v1/queryContext HTTP/1.1
 Host: <target-host>:1026
 fiware-service: workshop
@@ -735,7 +735,7 @@ error, that error must follow the NGSI payloads described in the Scenario 1 erro
 Scenario 3 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent
 must register its commands for each device, with a request like the following:
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
   -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
     "contextRegistrations": [
@@ -779,7 +779,7 @@ The registration of the commands is performed once in the lifetime of the Device
 
 Scenario 3 begins with the request for a command from the User to the Context Broker (P1):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "contextElements": [
@@ -804,7 +804,7 @@ The Context Broker receives this command and detects that it can be served by a 
 it redirects the exact same request to the IoT Agent. The following excerpt shows the full HTTP frame containing
 the redirection data:
 
-```console
+```bash
 POST /v1/updateContext HTTP/1.1
 Host: <target-host>:1026
 fiware-service: workshop
@@ -900,7 +900,7 @@ request will be.
 Once the IoT Agent has executed the command or retrieved the information from the device, it reports the results
 to the Context Broker, with an updateContext (P1):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "contextElements": [
@@ -969,7 +969,7 @@ mechanisms.
 Whenever the User wants to know the status and result of the command, he can query the information in the Context
 Broker, using, for example, a standard queryContext request (P2):
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "entities": [
@@ -1024,7 +1024,7 @@ In Scenario 3, errors can happen asynchronously, out of the main interactions. W
 executing the underlying command (i.e.: an error connecting with the device, or an error in the device itself),
 the error information can be updated with the same mechanism used for result reporting. E.g.:
 
-```console
+```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "contextElements": [
