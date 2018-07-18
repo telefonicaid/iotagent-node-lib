@@ -521,10 +521,11 @@ function finishSouthboundTransaction(callback)
 Terminates the current transaction, if there is any, cleaning its context.
 
 #### Generic middlewares
-This collection of utility middlewares is aimed to be used in the northbound of the IoTAgent Library, as well as in other
-HTTP-based APIs of the IoTAs. All the middlewares follow the Express convention of (req, res, next) objects, so this
-information will not be repeated in the descriptions for the middleware functions. All the middlewares can be added
-to the servers using the standard Express mechanisms.
+
+This collection of utility middlewares is aimed to be used to north of the IoT Agent Library, as well as in other
+HTTP-based APIs of the IoT Agents. All the middlewares follow the Express convention of `(req, res, next)` objects,
+so this information will not be repeated in the descriptions for the middleware functions. All the middlewares
+can be added to the servers using the standard Express mechanisms.
 
 ##### iotagentLib.middlewares.handleError()
 ###### Signature
