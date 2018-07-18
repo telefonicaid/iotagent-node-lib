@@ -14,7 +14,7 @@
   + [Provisioning handlers](#provisioning-handlers)
 
 ## Overview
-This document's goal is to show how to develop a new IOT Agent step by step. To do so, a simple invented HTTP protocol
+This document's goal is to show how to develop a new IoT Agent step by step. To do so, a simple invented HTTP protocol
 will be used, so it can be tested with simple command line instructions as `curl` and `nc`.
 
 ### Protocol
@@ -33,10 +33,13 @@ Where:
 This tutorial expects a Node.js v0.10 (at least) installed and working on your machine. It also expects you to have
 access to a Context Broker (without any security proxies).
 
-##  Basic IOTA
-In this first chapter, we will develop an IOT Agent with a fully working NGSI traffic on the North port and no native
-traffic south of the IoT Agent. This may seem useless (and indeed it is) but will serve us well on showing the basic
-steps in the creation of an IoT Agent.
+##  Basic IoT Agent
+
+In this first chapter, we will just develop an IoT Agent with a fully connected North Port. This will
+send and receive NSGI traffic and can be administered using the IoT Agent's Device Provisioning
+API. The South Port will remain unconnected and no native protocol traffic will be sent to the devices.
+This may seem useless (and indeed it is) but it will serve us well on showing the basic steps in the creation
+of an IoT Agent.
 
 First of all, we have to create the Node project. Create a folder to hold your project and type the following
 instruction:
@@ -64,7 +67,7 @@ The first step is to write a configuration file, that will be used to tune the b
 can be copied from the `config-basic-example.js` file, in this same folder. Create a `config.js` file with it
 in the root folder of your project. Remember to change the Context Broker IP to your local Context Broker.
 
-Now we can begin with the code of our IOTA. The very minimum code we need to start an IOTA is the following:
+Now we can begin with the code of our IoT Agent. The very minimum code we need to start an IoT Agent is the following:
 
 ```javascript
 var iotAgentLib = require('iotagent-node-lib'),
@@ -78,7 +81,7 @@ iotAgentLib.activate(config, function(error) {
 });
 ```
 
-The IOTA is now ready to be used. Execute it with the following command:
+The IoT Agent is now ready to be used. Execute it with the following command:
 
 ```bash
 node index.js
@@ -86,13 +89,13 @@ node index.js
 
 The North Port interface should now be fully functional, i.e.: management of device registrations and configurations.
 
-## IOTA With Active attributes
+## IoT Agent With Active attributes
 
-In the previous section we created an IOTA that exposed just the North Port interface, but that was pretty useless
+In the previous section we created an IoT Agent that exposed just the North Port interface, but that was pretty useless
 (aside from its didactic use). In this section we are going to create a simple South Port interface. It's important
-to remark that the nature of the traffic South of the IoT Agent itself has nothing to do with the creation process of an IoT Agent.
-Each device protocol will use its own mechanisms and it is up to the IoTA developer to find any libraries that would
-help him in its development. In this example, we will use Express as such library.
+to remark that the nature of the traffic South of the IoT Agent itself has nothing to do with the creation process
+of an IoT Agent. Each device protocol will use its own mechanisms and it is up to the IoT Agent developer to find
+any libraries that would help him in its development. In this example, we will use Express as such library.
 
 In order to add the Express dependency to your project, add the following line to the `dependencies` section of the
 `package.json`:
@@ -114,7 +117,7 @@ And install the dependencies as usual with `npm install`. You will have to requi
 your code as well.
 
 Now, in order to accept connections in our code, we have to start express first. With this purpose in mind, we will
-create a new function `initSouthbound()`, that will be called from the initialization code of our IOTA:
+create a new function `initSouthbound()`, that will be called from the initialization code of our IoT Agent:
 
 ```javascript
 function initSouthbound(callback) {
@@ -135,9 +138,9 @@ function initSouthbound(callback) {
 ```
 
 This Express code sets up a HTTP server, listening in the 8080 port, that will handle incoming requests targeting
-path `/iot/d` using the middleware `manageULRequest()`. This middleware will contain all the Southbound logic, and
-the library methods we need in order to progress the information to the Context Broker. The code of this middleware
-would be as follows:
+path `/iot/d` using the middleware `manageULRequest()`. This middleware will contain all the logic south of the
+IoT Agent, and the library methods we need in order to progress the information to the Context Broker. The code
+of this middleware would be as follows:
 
 
 ```javascript
@@ -214,7 +217,7 @@ Here as an example of the output of the function return for the UL payload `t|15
 ]
 ```
 
-The last thing to do is to invoke the initialization function inside the IOTA startup function. The next excerpt
+The last thing to do is to invoke the initialization function inside the IoT Agent startup function. The next excerpt
 show the modifications in the `activate()` function:
 
 
@@ -237,7 +240,7 @@ iotAgentLib.activate(config, function(error) {
 
 Some logs were added in this piece of code to help debugging.
 
-Once the IOTA is finished the last thing to do is to test it. To do so, launch the IOTA and provision a new device
+Once the IOTA is finished the last thing to do is to test it. To do so, launch the IoT Agent and provision a new device
 (an example for provisioning can be found in the `examples/howtoProvisioning1.json` file). Once the device is
 provisioned, send a new measure by using the example command:
 
@@ -262,8 +265,8 @@ curl -X GET 'http://127.0.0.1:9999/iot/d?i=ULSensor&k=abc&q=t,l' -i
 
 In a real implementation, the server will need to know the URL and port where the devices are listening, in order to
 send the request to the appropriate device. For this example, we will assume that the device is listening in port 9999
-in localhost. For more complex cases, the mechanism to bind devices to addresses would be IOTA-specific (e.g.: the
-OMA Lightweight M2M IOTA captures the address of the device in the device registration, and stores the device-specific
+in localhost. For more complex cases, the mechanism to bind devices to addresses would be IoT-Agent-specific (e.g.: the
+OMA Lightweight M2M IoT Agent captures the address of the device in the device registration, and stores the device-specific
 information in a MongoDB document).
 
 Being lazy attributes of a read/write nature, another syntax has to be declared for updating. This syntax will mimic
@@ -303,8 +306,8 @@ var iotAgentLib = require('iotagent-node-lib'),
 ### Implementation
 
 #### QueryContext implementation
-The main step to complete in order to implement the Lazy attributes mechanism in the IOTA is to provide handlers for the context
-provisioning requests. At this point, we should provide two handlers: the updateContext and the queryContext handlers.
+The main step to complete in order to implement the Lazy attributes mechanism in the IoT Agent is to provide handlers for the context
+provisioning requests. At this point, we should provide two handlers: the `updateContext` and the `queryContext` handlers.
 To do so, we must first define the handlers themselves:
 
 ```javascript
@@ -333,7 +336,7 @@ are returned, the values are returned to the caller, in the NGSI attribute forma
 
 In order to format the response from the device in a readable way, we created a `createResponse()` function that maps
 the values to its correspondent attributes. This function assumes the type of all the attributes is "string" (this will
-not be the case in a real scenario, where the IOTA should retrieve the associated device to guess the type of its
+not be the case in a real scenario, where the IoT Agent should retrieve the associated device to guess the type of its
 attributes). Here is the code for the `createResponse()` function:
 
 ```javascript
@@ -408,7 +411,7 @@ function createQueryFromAttributes(attributes) {
 ```
 
 #### Handler registration
-Once both handlers have been defined, they have to be registered in the IOTA, adding the following code to the setup
+Once both handlers have been defined, they have to be registered in the IoT Agent, adding the following code to the setup
 function:
 
 ```javascript
@@ -423,7 +426,7 @@ netcat. In order to start it just run the following command from the command lin
 ```bash
 nc -l 9999
 ```
-This will open a simple TCP server listening on port 9999, where the requests from the IOTA will be printed. In order for
+This will open a simple TCP server listening on port `9999`, where the requests from the IoT Agent will be printed. In order for
 the complete workflow to work (and to receive the response in the application side), the HTTP response has to be written
 in the `nc` console (although for testing purposes this is not needed).
 
@@ -438,7 +441,7 @@ execute the following command:
 node echo.js
 ```
 
-Once the mock server has been started (either nc or the echo server), proceed with the following steps to test your implementation:
+Once the mock server has been started (either `nc` or the `echo` server), proceed with the following steps to test your implementation:
 
 1. Provision a device with two lazy attributes. The following request can be used as an example:
 
@@ -501,8 +504,10 @@ Postman-Token: 1dc568a1-5588-059c-fa9b-ff217a7d7aa2
 
 3. Check the received request in the nc console is the expected one.
 
-4. (In case you use netcat). Answer the request with an appropriate HTTP response and check the result of the queryContext or updateContext request
-is the expected one. An example of HTTP response, for a query to the t and l attributes would be:
+4. (In case you use netcat). Answer the request with an appropriate HTTP response and check the
+  result of the `queryContext` or `updateContext` request is the expected one. An example of HTTP response,
+  for a query to the `t` and `l` attributes would be:
+
 ```
 HTTP/1.0 200 OK
 Content-Type: text/plain
@@ -510,6 +515,7 @@ Content-Length: 3
 
 5,6
 ```
+
 This same response can be used both for updates and queries for testing purposes (even though in the former the body won't
 be read).
 
@@ -521,7 +527,7 @@ mechanisms: the provisioning handlers and the provisioning API.
 
 ### Provisioning handlers
 
-The handlers provide a way for the IOTA to act whenever a new device, or configuration is provisioned. This can be used
+The handlers provide a way for the IoT Agent to act whenever a new device, or configuration is provisioned. This can be used
 for registering the device in external services, for storing important information about the device, or to listen in new
 ports in the case of new configuration. For the simple example we are developing, we will just print the information we
 are receiving whenever a new device or configuration is provisioned.
@@ -538,11 +544,11 @@ function configurationHandler(configuration, callback) {
 As we can see, the handlers receive the device or configuration that is being provisioned, as well as a callback. The
 handler MUST call the callback once in order for the IOTA to work properly. If an error is passed as a parameter to the
 callback, the provisioning will be aborted. If no error is passed, the provisioning process will continue. This mechanism
-can be used to implement security mechanisms or to filter the provisioning of devices to the IOTA.
+can be used to implement security mechanisms or to filter the provisioning of devices to the IoT Agent.
 
-Note also that the same `device` or `configuration` object is passed along to the callback. This lets the IOTA change some
+Note also that the same `device` or `configuration` object is passed along to the callback. This lets the IoT Agent change some
 of the values provisioned by the user, to add or restrict information in the provisioning. To test this feature, let's
-use the provisioning handler to change the value of the type of the provisioning device to 'CertifiedType' (reflecting
+use the provisioning handler to change the value of the type of the provisioning device to `CertifiedType` (reflecting
 some validation process performed on the provisioning):
 
 ```javascript
@@ -553,7 +559,7 @@ function provisioningHandler(device, callback) {
 }
 ```
 
-Once the handlers are defined, the new set of handlers has to be registered into the IOTAgent:
+Once the handlers are defined, the new set of handlers has to be registered into the IoT Agent:
 
 ```javascript
     iotAgentLib.setConfigurationHandler(configurationHandler);
@@ -562,4 +568,4 @@ Once the handlers are defined, the new set of handlers has to be registered into
 
 Now we can test our implementation by sending provisioning requests to the North Port of the IoT Agent. If we provision a new device
 into the platform, and then we ask for the list of provisioned devices, we shall see the type of the provisioned device
-has changed to 'CertifiedType'.
+has changed to `CertifiedType`.

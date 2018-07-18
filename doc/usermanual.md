@@ -39,9 +39,11 @@ The stats library currently stores only the following values:
 
 More values will be added in the future to the library. The applications using the library can add values to the Stats Registry
 just by using the following function:
+
 ```
 iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 ```
+
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
@@ -82,12 +84,13 @@ Returns the current log level, in a json payload with a single attribute `level`
 
 
 ### Transactions
-The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
-requests entering both from the North and the South ports of the IoT Agent.
+The library implements a concept of transactions, in order to follow the execution flow the library follows when
+treating requests entering both from the North and the South ports of the IoT Agent.
 
-To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
-domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
-Southbound requests, the user is responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
+To follow the transactions, a new Domain is created for each incoming request; in the case of requests received
+on the North Port of the IoT Agent, this domain is automatically created by a Express middleware, and no further
+action is needed from the user. For the case of requests received on the South Port of the IoT Agent, the user is
+responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
 and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the former to the
 invocation of the latter.
 
@@ -311,8 +314,8 @@ entity, and all the results will be combined into a single response.
 function setNotificationHandler(newHandler)
 ```
 ###### Description
-Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on the IOTA subscriptions created
-with the subscribe() function.
+Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on
+the IoT Agent subscriptions created with the `subscribe()` function.
 
 The handler must adhere to the following signature:
 
@@ -326,7 +329,7 @@ The handler will be called once for each one of those entities.
 The `data` parameter is an array with all the attributes that were requested in the subscription and its respective
 values.
 
-The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IOTA).
+The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IoT Agent).
 
 
 ##### iotagentLib.setConfigurationHandler()
@@ -345,7 +348,7 @@ The handler must adhere to the following signature:
 function(newConfiguration, callback)
 ```
 The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its
-callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).

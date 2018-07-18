@@ -56,10 +56,12 @@ command-line tools to simulate the different interactions.
 ### Overview
 
 #### General purpose of the IoT Agents
+
 Inside the FIWARE Architecture, the IoT Agents work as protocol translation gateways, used to fill the gap between
-South Bound protocols (typically lightweight protocols aimed to constrained devices) and the NGSI protocol used to
-communicate FIWARE components. This translation process can be customized by the user with provisioning instructions,
-using the Device Provisioning APIs.
+traffic sent and received on the South Port (typically lightweight protocols aimed to constrained devices) and
+traffic sent and received on the North Port which uses the standard NGSI protocol to communicate FIWARE components.
+This translation process can be customized by the user with provisioning instructions, using the Device Provisioning
+APIs.
 
 So, all IoT Agents interacts with three different actors:
 * **Devices**, in the South Bound
