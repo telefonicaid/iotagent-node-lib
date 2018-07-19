@@ -39,9 +39,11 @@ The stats library currently stores only the following values:
 
 More values will be added in the future to the library. The applications using the library can add values to the Stats Registry
 just by using the following function:
+
 ```
 iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback)
 ```
+
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
 to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
 
@@ -82,12 +84,13 @@ Returns the current log level, in a json payload with a single attribute `level`
 
 
 ### Transactions
-The library implements a concept of transactions, in order to follow the execution flow the library follows when treating
-requests entering both from the Northbound and the Southbound.
+The library implements a concept of transactions, in order to follow the execution flow the library follows when
+treating requests entering both from the North and the South ports of the IoT Agent.
 
-To follow the transactions, a new Domain is created for each incoming request; in the case of Northbound requests, this
-domain is automatically created by a Express middleware, and no further action is needed from the user. For the case of
-Southbound requests, the user is responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
+To follow the transactions, a new Domain is created for each incoming request; in the case of requests received
+on the North Port of the IoT Agent, this domain is automatically created by a Express middleware, and no further
+action is needed from the user. For the case of requests received on the South Port of the IoT Agent, the user is
+responsible of creating an stopping the transaction, using the `ensureSouthboundDomain`
 and `finishSouthBoundTransaction`. In this case, the transaction will last from the invocation to the former to the
 invocation of the latter.
 
@@ -311,8 +314,8 @@ entity, and all the results will be combined into a single response.
 function setNotificationHandler(newHandler)
 ```
 ###### Description
-Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on the IOTA subscriptions created
-with the subscribe() function.
+Sets the new handler for incoming notifications. The notifications are sent by the Context Broker based on
+the IoT Agent subscriptions created with the `subscribe()` function.
 
 The handler must adhere to the following signature:
 
@@ -326,7 +329,7 @@ The handler will be called once for each one of those entities.
 The `data` parameter is an array with all the attributes that were requested in the subscription and its respective
 values.
 
-The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IOTA).
+The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IoT Agent).
 
 
 ##### iotagentLib.setConfigurationHandler()
@@ -345,7 +348,7 @@ The handler must adhere to the following signature:
 function(newConfiguration, callback)
 ```
 The `newConfiguration` parameter will contain the newly created configuration. The handler is expected to call its
-callback with no parameters (this handler should only be used for reconfiguration purposes of the IOT Agent).
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
@@ -518,10 +521,11 @@ function finishSouthboundTransaction(callback)
 Terminates the current transaction, if there is any, cleaning its context.
 
 #### Generic middlewares
-This collection of utility middlewares is aimed to be used in the northbound of the IoTAgent Library, as well as in other
-HTTP-based APIs of the IoTAs. All the middlewares follow the Express convention of (req, res, next) objects, so this
-information will not be repeated in the descriptions for the middleware functions. All the middlewares can be added
-to the servers using the standard Express mechanisms.
+
+This collection of utility middlewares is aimed to be used to north of the IoT Agent Library, as well as in other
+HTTP-based APIs of the IoT Agents. All the middlewares follow the Express convention of `(req, res, next)` objects,
+so this information will not be repeated in the descriptions for the middleware functions. All the middlewares
+can be added to the servers using the standard Express mechanisms.
 
 ##### iotagentLib.middlewares.handleError()
 ###### Signature
@@ -609,7 +613,7 @@ The project is managed using Grunt Task Runner.
 
 For a list of available task, type
 
-```console
+```bash
 grunt --help
 ```
 
@@ -625,14 +629,14 @@ Module mocking during testing can be done with [proxyquire](https://github.com/t
 
 To run tests, type
 
-```console
+```bash
 grunt test
 ```
 
 Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
 To generate TAP report in `report/test/unit_tests.tap`, type
 
-```console
+```bash
 grunt test-report
 ```
 
@@ -643,7 +647,7 @@ Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python an
 while creating the project skeleton with grunt-init.
 To check source code style, type
 
-```console
+```bash
 grunt lint
 ```
 
@@ -651,7 +655,7 @@ Checkstyle reports can be used together with Jenkins to monitor project quality 
 and Violations plugins.
 To generate Checkstyle and JSLint reports under `report/lint/`, type
 
-```console
+```bash
 grunt lint-report
 ```
 
@@ -661,7 +665,7 @@ grunt lint-report
 Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
 
-```console
+```bash
 grunt watch
 ```
 
@@ -672,7 +676,7 @@ dox-foundation
 Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
 For compiling source code documentation, type
 
-```console
+```bash
 grunt doc
 ```
 
@@ -684,7 +688,7 @@ Analizes the code coverage of your tests.
 
 To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
 
-```console
+```bash
 # Use git-bash on Windows
 grunt coverage
 ```
@@ -692,7 +696,7 @@ grunt coverage
 To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
 monitor project quality metrics by means of Cobertura plugin, type
 
-```console
+```bash
 # Use git-bash on Windows
 grunt coverage-report
 ```
@@ -705,7 +709,7 @@ Analizes code complexity using Plato and stores the report under `site/report/`.
 by means of DocLinks plugin.
 For complexity report, type
 
-```console
+```bash
 grunt complexity
 ```
 
@@ -713,7 +717,7 @@ grunt complexity
 
 Update the contributors for the project
 
-```console
+```bash
 grunt contributors
 ```
 
@@ -722,7 +726,7 @@ grunt contributors
 
 Initialize your environment with git hooks.
 
-```console
+```bash
 grunt init-dev-env
 ```
 
@@ -744,7 +748,7 @@ There is a grunt task to generate the GitHub pages of the project, publishing al
 In order to initialize the GitHub pages, use:
 
 
-```console
+```bash
 grunt init-pages
 ```
 
@@ -753,7 +757,7 @@ history, and associated to the gh-pages branch, created for publishing. This ini
 once in the project history. Once the site has been initialized, publish with the following command:
 
 
-```console
+```bash
 grunt site
 ```
 
