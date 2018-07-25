@@ -14,7 +14,7 @@ pages:
     - 'API Walkthrough & Development intro': 'usermanual.md'
     - 'Measurement Transformation Expression Language': 'expressionLanguage.md'
     - 'How to develop a new IOTAgent': 'howto.md'
-    - 'Northbound NGSI Interactions': 'northboundinteractions.md'
+    - 'North Port - NGSI Interactions': 'northboundinteractions.md'
   - 'Installation & Administration Manual': 
     - 'Installation Guide': 'installationguide.md'
     - 'Operations (logs & alarms)': 'operations.md'
