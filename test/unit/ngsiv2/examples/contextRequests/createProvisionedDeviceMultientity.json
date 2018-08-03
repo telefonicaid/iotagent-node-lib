@@ -1,0 +1,20 @@
+{
+  "id":"TheFirstLight",
+  "type":"TheLightType",
+  "attr_name":{
+    "type": "string",
+    "value": " "
+  },
+  "hardcodedAttr": {
+    "type": "hardcodedType",
+    "value": "hardcodedValue"
+  },
+  "commandAttr_status":{
+    "type": "commandStatus",
+    "value": "UNKNOWN"
+  },
+  "commandAttr_info": {
+    "type": "commandResult",
+    "value": " "    
+  }
+}

@@ -19,11 +19,13 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
+var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
+    utils = require('../../../tools/utils'),
     should = require('should'),
     nock = require('nock'),
     async = require('async'),
@@ -33,7 +35,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041,
@@ -82,48 +85,53 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext',
+                .post('/v2/registrations',
                 utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext')
-                .reply(200,
+                .post('/v2/registrations',
                 utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'))
+                .reply(201, null, {'Location': '/v2/registrations/6719a7f5254b058441165849'});
+
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                 .post('/v2/entities?options=upsert')
+                .reply(204);
+
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .delete('/v2/registrations/6719a7f5254b058441165849')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext',
+                .post('/v2/registrations',
                 utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'))
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateIoTAgent2.json'))
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/updateIoTAgent2.json'))
+                .reply(201, null, {'Location': '/v2/registrations/4419a7f5254b058441165849'});
 
             async.series([
                 iotAgentLib.clearAll,
@@ -154,17 +162,34 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateActiveAttributes.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateActiveAttributesSuccess.json'));
+                .post('/v2/entities/TheFirstLight/attrs', {})
+                .reply(204);
+
+            // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
+            // this function should use the new API. This is just a temporary solution which implies deleting the
+            // registration and creating a new one.
 
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .reply(204);
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/registrations',
+                utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/updateIoTAgent2.json'))
+                .reply(201, null, {'Location': '/v2/registrations/4419a7f5254b058441165849'});
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/registrations',
+                utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/updateIoTAgent3.json'))
+                .reply(201, null, {'Location': '/v2/registrations/4419a7f52546658441165849'});
         });
 
         it('should return a 200 OK and no errors', function(done) {
@@ -281,22 +306,22 @@ describe('Device provisioning API: Update provisioned devices', function() {
 
         beforeEach(function(done) {
             nock.cleanAll();
+
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext')
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateProvisionMinimumDevice.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateProvisionMinimumDeviceSuccess.json'));
+                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateProvisionMinimumDevice.json'))
+                .reply(204);
 
             async.series([
                 iotAgentLib.clearAll,
@@ -358,22 +383,22 @@ describe('Device provisioning API: Update provisioned devices', function() {
 
         beforeEach(function(done) {
             nock.cleanAll();
+
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext')
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateProvisionDeviceStatic.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateProvisionMinimumDeviceSuccess.json'));
+                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateProvisionDeviceStatic.json'))
+                .reply(204);
 
             async.series([
                 iotAgentLib.clearAll,

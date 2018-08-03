@@ -26,3 +26,4 @@
 - Fix: multientity with multiple measures in ngsiv2 (#635)
 - Fix: aligns expression plugin and config.autocast casting (#643)
 - Fix: replace context by ctx name var to avoid weird collisions
+- Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)

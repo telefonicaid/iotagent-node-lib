@@ -1,0 +1,20 @@
+{
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "TheLightType",
+                "id": "TheFirstLight"
+            }
+        ],
+        "attrs": [
+            "luminance",
+            "commandAttr"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        },
+        "legacyForwarding": true
+    }
+}
