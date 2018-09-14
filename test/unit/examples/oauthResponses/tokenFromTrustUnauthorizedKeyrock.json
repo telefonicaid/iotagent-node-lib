@@ -1,0 +1,7 @@
+{
+    "statusCode": 400,
+    "status": 400,
+    "code": 400,
+    "message": "Invalid grant: refresh token is invalid",
+    "name": "invalid_grant"
+}

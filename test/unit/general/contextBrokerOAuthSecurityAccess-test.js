@@ -254,3 +254,189 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
     });
 
 });
+
+describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
+
+    var values = [
+        {
+            name: 'state',
+            type: 'Boolean',
+            value: 'true'
+        },
+        {
+            name: 'dimming',
+            type: 'Percentage',
+            value: '87'
+        }
+    ];
+
+    beforeEach(function() {
+        logger.setLevel('FATAL');
+    });
+
+    afterEach(function(done) {
+        iotAgentLib.deactivate(done);
+        nock.cleanAll();
+    });
+
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustKeyrock.json'),
+                    {});
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+
+            iotAgentConfig.authentication.tokenPath = '/oauth2/token';
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should ask OAuth2 provider for a token based on the trust token', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                oauth2Mock.done();
+                done();
+            });
+        });
+        it('should send the generated token in the auth header', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the user requests information about a device in a protected CB', function() {
+        var attributes = [
+            'state',
+            'dimming'
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustKeyrock.json'),
+                    {});
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
+                .post('/v1/queryContext',
+                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
+                .reply(200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should send the Auth Token along with the information query', function(done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a measure is sent and the refresh token is not valid', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                .reply(
+                500,
+                utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustUnauthorizedKeyrock.json'));
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.exist(error);
+                error.name.should.equal('AUTHENTICATION_ERROR');
+                done();
+            });
+        });
+    });
+
+    describe('When a measure is sent to the Context Broker and the client credentials are invalid', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                .reply(
+                500,
+                utils.readExampleFile('./test/unit/examples/oauthResponses/' +
+                    'tokenFromTrustInvalidCredentialsKeyrock.json'), {});
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.exist(error);
+                error.name.should.equal('AUTHENTICATION_ERROR');
+                done();
+            });
+        });
+    });
+
+    describe('When a measure is sent to the Context Broker and the access is unauthorized', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            oauth2Mock = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustKeyrock.json'),
+                    {});
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'electricity')
+                .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
+                .post('/v1/updateContext',
+                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
+                .reply(
+                401,
+                'Auth-token not found in request header');
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.exist(error);
+                error.name.should.equal('ACCESS_FORBIDDEN');
+                done();
+            });
+        });
+    });
+});
