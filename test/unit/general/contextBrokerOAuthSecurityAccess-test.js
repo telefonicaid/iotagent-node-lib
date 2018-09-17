@@ -474,6 +474,8 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
     });
 
     describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+        var oauth2Mock2;
+        var contextBrokerMock2;
         beforeEach(function(done) {
             nock.cleanAll();
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -482,6 +484,14 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustKeyrock.json'),
+                    {});
+
+            oauth2Mock2 = nock('http://192.168.1.1:3000')
+                .post('/oauth2/token',
+                utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrustKeyrockGroup2.json', true))
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrustKeyrock2.json'),
                     {});
 
             contextBrokerMock = nock('http://unexistentHost:1026')
@@ -493,6 +503,14 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .reply(200,
                     utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
+            contextBrokerMock2 = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, function() {
                 request(groupCreation, function(error, response, body) {
@@ -500,17 +518,21 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 });
             });
         });
-        it('should ask OAuth2 provider for a token based on the trust token', function(done) {
+        it('should ask OAuth2 provider for a token based on the' +
+            'trust token and send the generated token in the auth header', function(done) {
             iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
                 should.not.exist(error);
                 oauth2Mock.done();
+                contextBrokerMock.done();
                 done();
             });
         });
-        it('should send the generated token in the auth header', function(done) {
+
+        it('should use the updated trust token in the following requests', function(done) {
             iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
                 should.not.exist(error);
-                contextBrokerMock.done();
+                oauth2Mock2.done();
+                contextBrokerMock2.done();
                 done();
             });
         });
