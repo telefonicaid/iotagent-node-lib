@@ -454,11 +454,9 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                             moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
                             moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
 
-                            delete body.entities[0].TimeInstant;
                             delete body.entities[1].TimeInstant;
                             delete body.entities[1].humidity.metadata.TimeInstant;
 
-                            delete expectedBody.entities[0].TimeInstant;
                             delete expectedBody.entities[1].TimeInstant;
                             delete expectedBody.entities[1].humidity.metadata.TimeInstant;
                             return JSON.stringify(body) === JSON.stringify(expectedBody);
