@@ -1,1 +1,1 @@
-Fix timestamp jsut in non empty (more than id and type) multienty entitites
+Fix: timestamp is now included just in non empty (more than id and type) multienty entitites
