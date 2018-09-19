@@ -441,7 +441,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                         '/contextRequests/updateContextMultientityTimestampPlugin2.json');
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
                     // fields. The following code just checks that TimeInstant fields are present.
-                    if (!body.entities[0].TimeInstant || !body.entities[1].TimeInstant ||
+                    if (!body.entities[1].TimeInstant ||
                         !body.entities[1].humidity.metadata.TimeInstant)
                     {
                         return false;
