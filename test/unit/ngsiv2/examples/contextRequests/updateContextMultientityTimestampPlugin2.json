@@ -3,11 +3,7 @@
   "entities": [
     {
       "id": "ws4",
-      "type": "WeatherStation",
-      "TimeInstant": {
-          "type": "DateTime",
-          "value": "2018-06-13T13:28:34.611Z"
-      }
+      "type": "WeatherStation"
     },
     {
       "id": "Higro2000",
