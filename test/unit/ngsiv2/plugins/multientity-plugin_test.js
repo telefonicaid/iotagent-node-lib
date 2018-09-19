@@ -447,11 +447,9 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                         return false;
                     }
                     else {
-                        var timeInstantEntity = body.entities[0].TimeInstant;
                         var timeInstantEntity2 = body.entities[1].TimeInstant;
                         var timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
-                        if (moment(timeInstantEntity, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
-                            moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
+                        if (moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
                             moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
 
                             delete body.entities[1].TimeInstant;
