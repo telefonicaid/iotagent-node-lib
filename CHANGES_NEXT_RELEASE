@@ -1,2 +1,3 @@
-- Add: extends OAuth2 authentication to support integration with FIWARE Keyrock IDM (#663)
-- Add: implements OAuth2 authentication as part of device provisioning requests (#663)
+Fix: timestamp is now included just in non empty (more than id and type) multienty entitites
+Add: extends OAuth2 authentication to support integration with FIWARE Keyrock IDM (#663)
+Add: implements OAuth2 authentication as part of device provisioning requests (#663)
