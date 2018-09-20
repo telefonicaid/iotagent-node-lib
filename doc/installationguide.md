@@ -44,12 +44,13 @@ These are the parameters that can be configured in the global section:
 ```
 * **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (required in scenarios with security enabled in the Context Broker side). 
   Currently, two authentication provider are supported: `keystone` and `oauth2`. Authentication need to be enabled by setting the field `enabled` to `true`. 
-  * In `keystone` based authentication, the `trust` associated to the `device` or `deviceGroup` is a token representing a specific user and his rights on a given domain (i.e.
+  In `keystone` based authentication, the `trust` associated to the `device` or `deviceGroup` is a token representing a specific user and his rights on a given domain (i.e.
   combination of `fiware-service` and `fiware-servicepath`). The authentication process use the trust delegation workflow to check if the trust provided is valid, in which
   case return a `x-subject-token` that can be used to authenticate the request to the Context Broker. Required parameters are: the `url` of the keystone to be used
   (alternatively `host` and `port` but if you use this combination, the IoT Agent will assume that the protocol is HTTP), the `user` and `password` to which it is delegated
   the `trust` verification.
   E.g.:
+
 ```
     {
           enabled: true,
@@ -59,7 +60,8 @@ These are the parameters that can be configured in the global section:
           password: 'iotagent'
     }
 ```
-  * In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
+
+  In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
   The authentication process use the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
   that can be used to authenticate the request to the Context Broker.
   At the time being the assumption is that the `refresh_token` is a not expiring `offline_token` (we believe this is the best solution in the case of IoT Devices,
@@ -70,6 +72,7 @@ These are the parameters that can be configured in the global section:
   that the protocol is HTTP), the `tokenPath` to which the validation request should be sent (`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, `/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the Context Broker,
   and the `header` field that should be used to send the authentication request (that will be send in the form `Authorization: Bearer <access_token>`).
   E.g.:
+
 ```
     {
         enabled: true,
