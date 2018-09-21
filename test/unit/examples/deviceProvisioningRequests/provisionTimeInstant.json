@@ -4,6 +4,7 @@
     "protocol": "IoTA-UL",
     "entity_name": "eii01201ttt",
     "entity_type": "sensor",
+    "timestamp": true,
     "attributes": [
       {
         "object_id": "tt",
