@@ -32,7 +32,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     moment = require('moment'),
     contextBrokerMock,
     iotAgentConfig = {
-        logLevel: 'DEBUG',
+        logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
@@ -312,7 +312,7 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
