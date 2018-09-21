@@ -5,7 +5,6 @@
       "protocol": "GENERIC_PROTO",
       "entity_name": "FirstMicroLight",
       "entity_type": "MicroLights",
-      "timestamp": true,
       "attributes": [
         {
           "name": "attr_name",
