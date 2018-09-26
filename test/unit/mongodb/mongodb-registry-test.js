@@ -199,6 +199,7 @@ describe('MongoDB Device Registry', function() {
     });
 
     afterEach(function(done) {
+        delete(device1.registrationId);
         iotAgentLib.deactivate(function(error) {
             iotAgentDb.collection('devices').remove(function(error) {
                 iotAgentDb.close(function(error) {
