@@ -171,7 +171,7 @@ describe('Active attributes test', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468);
+            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
@@ -222,7 +222,7 @@ describe('Active attributes test', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468);
+            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
@@ -275,7 +275,7 @@ describe('Active attributes test', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468);
+            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
@@ -326,7 +326,7 @@ describe('Active attributes test', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468);
+            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
