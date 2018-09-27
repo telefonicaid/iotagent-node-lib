@@ -1,0 +1,41 @@
+{
+  "contextElements": [
+    {
+      "type": "Light",
+      "isPattern": "false",
+      "id": "light1",
+      "attributes": [
+        {
+          "name": "state",
+          "type": "Boolean",
+          "value": "true",
+          "metadatas": [
+            {
+              "name": "TimeInstant",
+              "type": "ISO8601",
+              "value": "2015-08-05T00:35:01.468Z"
+            }
+          ]
+        },
+        {
+          "name": "dimming",
+          "type": "Percentage",
+          "value": "87",
+          "metadatas": [
+            {
+              "name": "TimeInstant",
+              "type": "ISO8601",
+              "value": "2015-08-05T00:35:01.468Z"
+            }
+          ]
+        },
+        {
+          "name": "TimeInstant",
+          "type": "ISO8601",
+          "value": "2015-08-05T00:35:01.468Z"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}
