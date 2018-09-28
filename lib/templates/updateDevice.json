@@ -39,8 +39,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
@@ -66,8 +65,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
@@ -103,8 +101,7 @@
               "properties": {
                 "object_id": {
                   "description": "ID of the attribute in the device",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
+                  "type": "string"
                 },
                 "type": {
                   "description": "Type of the attribute in the target entity",
@@ -132,8 +129,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
