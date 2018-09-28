@@ -134,6 +134,7 @@ describe('Command functionalities', function() {
     });
 
     afterEach(function(done) {
+        delete(device3.registrationId);
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {
                 mongoUtils.cleanDbs(function() {
