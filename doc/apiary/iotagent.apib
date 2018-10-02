@@ -237,7 +237,7 @@ A device is a resource that publish information to IoT Platform and it uses the 
 - `protocol`. Protocol assigned to device. This field is easily provided by IoTA Manager if it is used. Every module implmenting a protocol has an identifier.
 - `entity_name`. Entity name used for entity publication (overload default)
 - `entity_type`. Entity type used for entity publication (overload entity_type defined in service).
-- `timezone`. Not used in this version.
+- `timezone`. Used to automatically generate timestamps attributes for the entity publication.
 - `attributes`. Mapping for protocol parameters to entity attributes.
 `object_id` (string, mandatory): protocol parameter to be mapped.
 `name` (string, mandatory): attribute name to publish.
