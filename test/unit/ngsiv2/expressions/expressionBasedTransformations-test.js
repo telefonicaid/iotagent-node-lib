@@ -310,7 +310,7 @@ describe('Expression-based transformations plugin', function() {
         // Case: Update for an integer attribute without expression
         var values = [
             {
-                name: 'p',
+                name: 'e',
                 type: 'Number',
                 value: 52
             }
@@ -370,7 +370,7 @@ describe('Expression-based transformations plugin', function() {
         // Case: Update for an integer attribute with string expression
         var values = [
             {
-                name: 'p',
+                name: 'e',
                 type: 'Number',
                 value: 52
             }
