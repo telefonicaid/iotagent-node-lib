@@ -39,17 +39,18 @@
     "jison": "0.4.17",
     "logops": "1.0.0",
     "moment": "~2.19.4",
+    "moment-timezone": "~0.5.21",
+    "mongodb": "2.2.35",
     "mongoose": "4.13.12",
     "mu2": "~0.5.20",
     "mustache": "2.2.1",
     "node-uuid": "~1.4.1",
+    "query-string": "4.3.4",
     "request": "2.39.0 - 2.81.0",
     "revalidator": "~0.3.1",
     "sax": "~0.6.0",
     "underscore": "~1.7.0",
-    "xmldom": "0.1.19",
-    "mongodb": "2.2.35",
-    "query-string": "4.3.4"
+    "xmldom": "0.1.19"
   },
   "devDependencies": {
     "chai": "3.5.0",

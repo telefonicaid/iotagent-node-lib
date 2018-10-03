@@ -252,6 +252,7 @@ be used to generate a `TimeInstant` for both the entity and the attribute's meta
 Take into account that:
 * the timestamp of different attributes belonging to the same measurement record may not be equal.
 * the arrival time and the measurement timestamp will not be the same in the general case.
+* if `timezone` field is defined as part of the provisioning of the device or group, timestamp fields will be generated using it. For instance, if `timezone` is set to `America/Los_Angeles`, a possible timestamp could be `2025-08-05T00:35:01.468-07:00`. If `timezone` field is not defined, by default Zulu Time Zone (UTC +0) will be used. Following the previous example, timestamp could be `2015-08-05T07:35:01.468Z`.
 
 E.g.: in the case of a device that can take measurements every hour of both temperature and humidity and sends the data
 once every day, at midnight, the `TimeInstant` reported for each measurement will be the hour when that measurement was observed
