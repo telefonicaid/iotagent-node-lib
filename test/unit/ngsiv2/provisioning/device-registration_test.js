@@ -118,11 +118,13 @@ describe('IoT Agent Device Registration', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
 
@@ -144,11 +146,13 @@ describe('IoT Agent Device Registration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(404);
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
@@ -169,12 +173,13 @@ describe('IoT Agent Device Registration', function() {
     describe('When the Context Broker returns an HTTP transport error while registering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
-
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(500);
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
@@ -198,11 +203,13 @@ describe('IoT Agent Device Registration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -236,11 +243,13 @@ describe('IoT Agent Device Registration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
