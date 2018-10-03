@@ -1,0 +1,29 @@
+{
+  "state": {
+    "value": true,
+    "type": "boolean",
+    "metadata": 
+    {
+        "TimeInstant":
+        {
+          "type": "DateTime",
+          "value": "2015-08-05T00:35:01.468-07:00"
+        }
+    }
+  },
+  "dimming": {
+    "value": 87,
+    "type": "number",
+    "metadata": 
+    {
+      "TimeInstant":{
+        "type": "DateTime",
+        "value": "2015-08-05T00:35:01.468-07:00"
+      }
+    }
+  },
+  "TimeInstant":{
+    "type": "DateTime",
+    "value": "2015-08-05T00:35:01.468-07:00"
+  }
+}
