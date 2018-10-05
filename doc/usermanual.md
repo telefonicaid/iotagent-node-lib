@@ -611,7 +611,7 @@ All contributions to this project are welcome. Developers planning to contribute
 ### Project build
 The project is managed using Grunt Task Runner.
 
-For a list of available task, type
+For a list of available task, type:
 
 ```bash
 grunt --help
