@@ -1,3 +1,4 @@
+Fix: incomplete HTTPS support for NGSIv1 subscriptions (#593)
 Add protocol in device provision if not provided (#652)
 Fix: timestamp is now included just in non empty (more than id and type) multienty entitites
 Fix: object_id fields are not introduced in CB requests by alias plugin (#660)
