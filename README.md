@@ -1,8 +1,11 @@
 # FIWARE IoT Agent Framework
 
-[![License badge](https://img.shields.io/badge/license-AGPL-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Documentation badge](https://readthedocs.org/projects/iotagent-node-lib/badge/?version=latest)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
-[![Support badge]( https://img.shields.io/badge/support-sof-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/fiware)
+[![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
+[![License: APGL](https://img.shields.io/github/license/telefonicaid/iotagent-node-lib.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
+<br/>
+[![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
+![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
 ## Index
 
