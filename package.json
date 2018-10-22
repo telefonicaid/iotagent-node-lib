@@ -46,7 +46,7 @@
     "mustache": "3.0.0",
     "node-uuid": "~1.4.1",
     "query-string": "6.2.0",
-    "request": "2.39.0 - 2.81.0",
+    "request": "2.88.0",
     "revalidator": "~0.3.1",
     "sax": "~1.2.4",
     "underscore": "~1.7.0",
