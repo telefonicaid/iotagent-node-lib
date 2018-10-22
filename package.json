@@ -38,7 +38,7 @@
     "express": "~4.16.4",
     "jison": "0.4.18",
     "logops": "2.1.0",
-    "moment": "~2.19.4",
+    "moment": "~2.22.2",
     "moment-timezone": "~0.5.21",
     "mongodb": "2.2.35",
     "mongoose": "4.13.12",
