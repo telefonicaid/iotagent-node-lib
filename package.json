@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "async": "2.6.1",
-    "body-parser": "~1.11.0",
+    "body-parser": "~1.18.3",
     "command-shell-lib": "1.0.0",
     "express": "~4.11.2",
     "jison": "0.4.17",
