@@ -35,7 +35,7 @@
     "async": "2.6.1",
     "body-parser": "~1.18.3",
     "command-shell-lib": "1.0.0",
-    "express": "~3.21.2",
+    "express": "3.21.2",
     "jison": "0.4.18",
     "logops": "2.1.0",
     "moment": "~2.22.2",
