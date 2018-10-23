@@ -73,6 +73,6 @@
     "should": "8.4.0",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
-    "timekeeper": "2.1.2"
+    "timekeeper": "0.0.5"
   }
 }
