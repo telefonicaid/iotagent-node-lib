@@ -29,7 +29,10 @@
     "node": ">=4.8.4"
   },
   "scripts": {
-    "test": "grunt test"
+    "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
+    "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
+    "lint": "jshint lib/**/*.js test/**/*.js --config .jshintrc",
+    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit"
   },
   "dependencies": {
     "async": "2.6.1",
@@ -68,6 +71,7 @@
     "grunt-mocha-test": "0.13.3",
     "grunt-plato": "~1.4.0",
     "istanbul": "~0.4.5",
+    "jshint": "^2.9.6",
     "mocha": "5.2.0",
     "nock": "10.0.0",
     "should": "13.2.3",
