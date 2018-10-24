@@ -54,12 +54,10 @@
     "query-string": "6.2.0",
     "request": "2.88.0",
     "revalidator": "~0.3.1",
-    "sax": "~1.2.4",
     "underscore": "~1.9.1",
     "xmldom": "0.1.27"
   },
   "devDependencies": {
-    "closure-linter-wrapper": "1.1.0",
     "istanbul": "~0.4.5",
     "mocha": "5.2.0",
     "nock": "10.0.1",
