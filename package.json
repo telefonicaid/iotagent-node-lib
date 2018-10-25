@@ -51,7 +51,6 @@
     "query-string": "4.3.4",
     "request": "2.88.0",
     "revalidator": "~0.3.1",
-    "sax": "~1.2.4",
     "underscore": "~1.9.1",
     "xmldom": "0.1.27"
   },
