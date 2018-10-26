@@ -160,10 +160,10 @@ requested action. Parameters for the command will be passed inside the command v
 There are two differences with the lazy attributes:
 * First of all, for every command defined in a device, two new attributes are created in the entity with the same name
 as the command but with a prefix:
-        - `_info`: this attribute reflect the current execution status of the command. When a command request is issued by
+        * `_info`: this attribute reflect the current execution status of the command. When a command request is issued by
         the Context Broker, the IoT Agent library generates this attribute with 'PENDING' value. The value of this attribute
         will be changed each time a command error or result is issued to the IoT Agent.
-        - `_result`: this attribute reflect the result of the execution of the defined command.
+        * `_result`: this attribute reflect the result of the execution of the defined command.
 
 * Commands can also be updated when new information about its execution arrives to the agent. This information will be
 mapped to the command's utility attributes `_info` and `_result` leaving alone the command attribute itself. The
