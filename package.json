@@ -42,7 +42,6 @@
     "command-shell-lib": "1.0.0",
     "express": "~4.16.4",
     "jison": "0.4.18",
-    "jshint": "^2.9.6",
     "logops": "2.1.0",
     "moment": "~2.22.2",
     "moment-timezone": "~0.5.21",
@@ -62,6 +61,7 @@
     "mocha": "5.2.0",
     "nock": "10.0.1",
     "should": "13.2.3",
-    "timekeeper": "2.1.2"
+    "timekeeper": "2.1.2",
+    "jshint": "^2.9.6"
   }
 }
