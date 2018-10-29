@@ -263,7 +263,7 @@ once every day, at midnight, the `TimeInstant` reported for each measurement wil
 such measurements, the `TimeInstant` attribute would take those values around midnight.
 
 This functionality can be turned on and off through the use of the `timestamp` configuration flag (described in the
-configuration).
+configuration), as well as 'timestamp' flag in device or group provision.
 
 ### Implementation decisions
 Given the aforementioned requirements, there are some aspects of the implementation that were chosen, and are
