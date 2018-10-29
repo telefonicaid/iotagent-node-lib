@@ -17,7 +17,7 @@
   + [Coding guidelines](#coding-guidelines)
   + [Continuous testing](#continuous-testing)
   + [Code Coverage](#code-coverage)
-  + [Code Coverage](#clean)
+  + [Clean](#clean)
 
 
 ## Usage
@@ -643,6 +643,12 @@ npm run lint
 
 Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
+
+```bash
+npm run test:watch
+```
+
+If you want to continuously check also source code style, use instead:
 
 ```bash
 npm run watch:lib
