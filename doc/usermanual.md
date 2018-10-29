@@ -16,12 +16,9 @@
   + [Testing](#testing)
   + [Coding guidelines](#coding-guidelines)
   + [Continuous testing](#continuous-testing)
-  + [Source Code documentation](#source-code-documentation)
   + [Code Coverage](#code-coverage)
-  + [Code complexity](#code-complexity)
-  + [PLC](#plc)
-  + [Development environment](#development-environment)
-  + [Site generation](#site-generation)
+  + [Code Coverage](#clean)
+
 
 ## Usage
 ### Stats Registry
