@@ -662,3 +662,12 @@ To generate an HTML coverage report under `site/coverage/` and to print out a su
 # Use git-bash on Windows
 npm run test:coverage
 ```
+
+### Clean
+
+Removes `node_modules` and `coverage` folders, and  `package-lock-json` file so that a fresh copy of the project is restored. 
+
+```bash
+# Use git-bash on Windows
+npm run clean
+```
