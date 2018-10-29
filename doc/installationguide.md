@@ -136,7 +136,7 @@ are 5 and 5 respectively). E.g.:
 have implications in the use of attributes with Context Providers, so this flag should be used with care.
 * **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 * **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
-* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updated from device information. This flag is overwrited `timestamp` flag in group or device provision.
+* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device provision.
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
 * **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
 * **componentName**: default string identifying the component name for this IoT Agent in the logs.
