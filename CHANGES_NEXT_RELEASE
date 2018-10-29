@@ -1,3 +1,4 @@
+Fix: missing support for device=true in the delete service endpoint (see #596)
 Add protocol in device provision if not provided (#652)
 Fix: timestamp is now included just in non empty (more than id and type) multienty entitites
 Fix: object_id fields are not introduced in CB requests by alias plugin (#660)
