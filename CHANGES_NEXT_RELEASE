@@ -16,3 +16,4 @@ Fix: updating dependencies due to known vulnerabilities in the previous ones
     request: 2.39.0 - 2.81.0 -> 2.88.0
     underscore: ~1.7.0 -> ~1.9.1
     xmldom: 0.1.19 -> 0.1.27
+Remove: old unused dependencies (sax, grunt)
