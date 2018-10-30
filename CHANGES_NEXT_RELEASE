@@ -5,3 +5,17 @@ Fix: timestamp is now included just in non empty (more than id and type) multien
 Fix: object_id fields are not introduced in CB requests by alias plugin (#660)
 Add: uses provisioned timezone to generate TimeInstant values (#672)
 Using precise dependencies (~=) in packages.json
+Fix: updating dependencies due to known vulnerabilities in the previous ones
+	async: 1.5.2 -> 2.6.1
+	body-parser: ~1.11.0 -> ~1.18.3
+    express: ~4.11.2 -> ~4.16.4
+    jison: 0.4.17 -> 0.4.18
+    moment: ~2.19.4 -> ~2.22.2
+    mongodb: 2.2.35 -> 3.1.8
+    mongoose: 4.13.12 -> 5.3.6
+    mustache: 2.2.1 -> 3.0.0
+    query-string: 4.3.4 -> 6.2.0
+    request: 2.39.0 - 2.81.0 -> 2.88.0
+    underscore: ~1.7.0 -> ~1.9.1
+    xmldom: 0.1.19 -> 0.1.27
+Remove: old unused dependencies (sax, grunt)

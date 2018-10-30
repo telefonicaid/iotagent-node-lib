@@ -201,7 +201,7 @@ describe('MongoDB Group Registry test', function() {
     describe('When a new device group creation request arrives', function() {
         it('should store it in the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
@@ -222,7 +222,7 @@ describe('MongoDB Group Registry test', function() {
         });
         it('should store the service information from the headers into the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs[0].service);
                     should.exist(docs[0].subservice);
@@ -253,7 +253,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
@@ -278,7 +278,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs[0].cbHost);
@@ -303,7 +303,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should create the values in the database', function(done) {
             request(optionsMultipleCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     docs.length.should.equal(2);
