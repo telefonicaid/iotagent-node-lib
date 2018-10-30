@@ -651,7 +651,7 @@ npm run test:watch
 If you want to continuously check also source code style, use instead:
 
 ```bash
-npm run watch:lib
+npm run watch
 ```
 
 ### Code Coverage
