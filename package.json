@@ -34,7 +34,7 @@
     "test:watch": "npm run test -- -w ./lib",
     "lint": "jshint lib/**/*.js test/**/*.js --config .jshintrc",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
-    "watch:lib": "watch 'npm run lint && npm test' ./lib"
+    "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
   "dependencies": {
     "async": "2.6.1",
@@ -58,10 +58,11 @@
   },
   "devDependencies": {
     "istanbul": "~0.4.5",
+    "jshint": "~2.9.6",
     "mocha": "5.2.0",
     "nock": "10.0.1",
     "should": "13.2.3",
     "timekeeper": "2.1.2",
-    "jshint": "~2.9.6"
+    "watch": "~1.0.2"
   }
 }
