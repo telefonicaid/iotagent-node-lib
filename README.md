@@ -401,10 +401,10 @@ a payload like the following:
 
 ```json
 {
-“version”:”0.5.2”,
-“libVersion”:”0.8.4”,
-"port":4041,
-"baseRoot":"/"
+    "libVersion": "2.7.0",
+    "port": "4041",
+    "baseRoot": "/",
+    "version": "1.7.0"
 }
 ```
 
