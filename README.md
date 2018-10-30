@@ -1134,7 +1134,7 @@ In order to perform a full migration, follow this steps:
 
 -   Launch the migration, using the special value "\*" as service and subservice
 
-```bash
+```console
     migrate targetDB * *
 ```
 
@@ -1153,7 +1153,7 @@ use.
 A command line client to experiment with the library is packed with it. The
 command line client can be started using the following command:
 
-```
+```console
 bin/agentConsole.js
 ```
 
@@ -1230,7 +1230,7 @@ to:
 The tester can be started with the following command, from the root folder of
 the project:
 
-```
+```console
 bin/iotAgentTester.js
 ```
 
@@ -1368,26 +1368,26 @@ following steps:
 -   Require the `iotagent-node-lib` command line module in your command line
     tool:
 
-```
+```javascript
   var iotaCommands = require('iotagent-node-lib').commandLine;
 ```
 
 -   Initialize the command line utils (the initialization function takes two
     arguments, that will be explained in detail below:
 
-```
+```javascript
 iotaCommands.init(configCb, configIot);
 ```
 
 -   Add the IOTA Lib commands to your array of commands
 
-```
+```javascript
 commands = commands.concat(commands, iotaCommands.commands);
 ```
 
 -   Execute the command line interpreter as usual:
 
-```bash
+```javascript
 clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
 ```
 
