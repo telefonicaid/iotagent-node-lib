@@ -10,10 +10,10 @@ These are the parameters that can be configured in the global section:
 * **contextBroker**: connection data to the Context Broker (host and port). E.g.:
 
 ```
-	{
-	host: '192.168.56.101',
-	port: '1026'
-    	}
+        {
+        host: '192.168.56.101',
+        port: '1026'
+        }
 ```
 
  * If you want to use NGSIv2 (only sending updates for active attributes):
@@ -29,10 +29,10 @@ These are the parameters that can be configured in the global section:
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
 
 ```
-	{
-	baseRoot: '/',
+        {
+        baseRoot: '/',
         port: 4041
-    	}
+        }
 
 ```
 * **stats**: configure the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats writings.
@@ -136,7 +136,7 @@ are 5 and 5 respectively). E.g.:
 have implications in the use of attributes with Context Providers, so this flag should be used with care.
 * **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 * **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
-* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updateded from device information.
+* **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device provision.
 * **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is provided).
 * **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
 * **componentName**: default string identifying the component name for this IoT Agent in the logs.

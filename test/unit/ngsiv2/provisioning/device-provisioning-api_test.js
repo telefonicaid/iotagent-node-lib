@@ -307,6 +307,49 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
+
+    describe('When a device provisioning request with a timestamp provision attribute arrives to the IoTA', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionTimeInstant2.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.deactivate(function() {
+                iotAgentConfig.timestamp = false;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function() {
+            iotAgentConfig.timestamp = false;
+        });
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json'))
+                .reply(204);
+
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a device provisioning request arrives to the IoTA' +
         'and timestamp is enabled in configuration', function() {
         var options = {
