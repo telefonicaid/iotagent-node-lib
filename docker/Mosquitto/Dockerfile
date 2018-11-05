@@ -11,7 +11,6 @@ RUN yum update -y && yum install -y wget \
   && mkdir /var/log/mosquitto \
   && chown mosquitto:mosquitto /var/log/mosquitto \
   && touch /etc/mosquitto/pwfile \
-  && mv /etc/mosquitto/mosquitto.conf.example /etc/mosquitto/mosquitto.conf \
   && sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf \
   && mv /root/aclfile /etc/mosquitto/aclfile \
   && yum clean all
