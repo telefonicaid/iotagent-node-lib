@@ -687,7 +687,7 @@ The IoT Agent can be configured to expect certain kinds of devices, with preconf
 
 ## Advanced Topics
 ### Secured access to the Context Broker
-For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
+For access to instances of the Context Broker secured with a [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust tokens is provided. A Trust Token is a long-term Id used to get a short-term Token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project.
 
 For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully configured, and the `authentication.enabled` subattribute should have the value `true`.
 
