@@ -46,7 +46,7 @@
     "moment": "~2.22.2",
     "moment-timezone": "~0.5.21",
     "mongodb": "2.2.36",
-    "mongoose": "4.3.17",
+    "mongoose": "4.13.17",
     "mu2": "~0.5.20",
     "mustache": "3.0.0",
     "node-uuid": "~1.4.1",
