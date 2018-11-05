@@ -19,3 +19,4 @@ Fix: updating dependencies due to known vulnerabilities in the previous ones
     underscore: ~1.7.0 -> ~1.9.1
     xmldom: 0.1.19 -> 0.1.27
 Remove: old unused dependencies (sax, grunt)
+Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
