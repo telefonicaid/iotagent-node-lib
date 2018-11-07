@@ -1,8 +1,5 @@
 # User & Programmers Manual
 
-## Index
-
-
 * [Usage](#usage)
   + [Stats Registry](#stats-registry)
   + [Alarm module](#alarm-module)
