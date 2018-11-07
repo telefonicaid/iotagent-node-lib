@@ -11,8 +11,7 @@
       "attributes": [
         {
           "name": "position",
-          "type": "Array",
-          "isDomain": "false"
+          "type": "Array"
         }
       ],
       "providingApplication": "http://smartGondor.com"
