@@ -11,8 +11,7 @@
             "attributes": [
                 {
                     "name": "temp",
-                    "type": "kelvin",
-                    "isDomain": "false"
+                    "type": "kelvin"
                 }
             ],
             "providingApplication": "http://smartGondor.com"

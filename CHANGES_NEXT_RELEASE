@@ -20,3 +20,4 @@ Fix: updating dependencies due to known vulnerabilities in the previous ones
     xmldom: 0.1.19 -> 0.1.27
 Remove: old unused dependencies (sax, grunt)
 Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
+Fix: isDomain is not used anymore for context availability registration (#701)
