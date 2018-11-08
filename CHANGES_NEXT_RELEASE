@@ -1,3 +1,4 @@
+Add missed conf env vars about authentication (#704)
 Add timestamp in device and group provision (#655)
 Fix: missing support for device=true in the delete service endpoint (see #596)
 Add protocol in device provision if not provided (#652)
@@ -6,8 +7,8 @@ Fix: object_id fields are not introduced in CB requests by alias plugin (#660)
 Add: uses provisioned timezone to generate TimeInstant values (#672)
 Using precise dependencies (~=) in packages.json
 Fix: updating dependencies due to known vulnerabilities in the previous ones
-	async: 1.5.2 -> 2.6.1
-	body-parser: ~1.11.0 -> ~1.18.3
+        async: 1.5.2 -> 2.6.1
+        body-parser: ~1.11.0 -> ~1.18.3
     express: ~4.11.2 -> ~4.16.4
     jison: 0.4.17 -> 0.4.18
     moment: ~2.19.4 -> ~2.22.2
