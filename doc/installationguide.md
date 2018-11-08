@@ -161,6 +161,13 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_NORTH_HOST           | server.host                         |
 | IOTA_NORTH_PORT           | server.port                         |
 | IOTA_PROVIDER_URL         | providerUrl                         |
+| IOTA_AUTH_ENABLED         | authentication.enabled              |
+| IOTA_AUTH_TYPE            | authentication.type                 |
+| IOTA_AUTH_HEADER          | authentication.header               |
+| IOTA_AUTH_HOST            | authentication.host                 |
+| IOTA_AUTH_PORT            | authentication.port                 |
+| IOTA_AUTH_USER            | authentication.user                 |
+| IOTA_AUTH_PASSWORD        | authentication.password             |
 | IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
 | IOTA_LOG_LEVEL            | logLevel                            |
 | IOTA_TIMESTAMP            | timestamp                           |

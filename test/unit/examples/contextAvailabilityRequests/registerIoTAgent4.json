@@ -11,8 +11,7 @@
             "attributes": [
                 {
                     "name": "moving",
-                    "type": "Boolean",
-                    "isDomain": "false"
+                    "type": "Boolean"
                 }
             ],
             "providingApplication": "http://smartGondor.com"

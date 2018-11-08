@@ -11,13 +11,11 @@
             "attributes": [
                 {
                     "name": "temperature",
-                    "type": "centigrades",
-                    "isDomain": "false"
+                    "type": "centigrades"
                 },
                 {
                     "name": "position",
-                    "type": "Array",
-                    "isDomain": "false"
+                    "type": "Array"
                 }
             ],
             "providingApplication": "http://smartGondor.com"

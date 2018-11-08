@@ -11,8 +11,7 @@
       "attributes": [
         {
           "name": "move",
-          "type": "command",
-          "isDomain": "false"
+          "type": "command"
         }
       ],
       "providingApplication": "http://smartGondor.com"

@@ -1,4 +1,5 @@
 Fix: use trust and cbHost from deviceGroup (#685)
+Add missed conf env vars about authentication (#704)
 Add timestamp in device and group provision (#655)
 Fix: missing support for device=true in the delete service endpoint (see #596)
 Add protocol in device provision if not provided (#652)
@@ -19,5 +20,6 @@ Fix: updating dependencies due to known vulnerabilities in the previous ones
     request: 2.39.0 - 2.81.0 -> 2.88.0
     underscore: ~1.7.0 -> ~1.9.1
     xmldom: 0.1.19 -> 0.1.27
-Remove: old unused dependencies (sax, grunt)
+Remove: old unused dependencies (sax, grunt, closure-linter-wrapper)
 Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
+Fix: isDomain is not used anymore for context availability registration (#701)

@@ -1,5 +1,4 @@
 # Operations Manual: logs and alarms
-## Index
 
 * [Overview](#overview)
 * [Logs](#logs)
