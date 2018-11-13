@@ -231,7 +231,7 @@ describe('Active attributes test', function() {
                 {
                     name: 'TimeInstant',
                     type: 'ISO8601',
-                    value: '2015-12-14T08:06:01 00.46Z'
+                    value: '2018-10-05T11:03:56 00:00Z'
                 }
             ];
 
