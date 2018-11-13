@@ -22,4 +22,4 @@ Fix: updating dependencies due to known vulnerabilities in the previous ones
 Remove: old unused dependencies (sax, grunt, closure-linter-wrapper)
 Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
 Fix: isDomain is not used anymore for context availability registration (#701)
-Add: checks ISO8601 timeinstants provided by devices (#679)
+Fix: checks ISO8601 timeinstants provided by devices (#679)
