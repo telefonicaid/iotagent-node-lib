@@ -1,0 +1,23 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+    {
+      "id": "Sensor001",
+      "type": "Sensor",
+      "vol": {
+          "type": "number",
+          "value": "38",
+          "metadata": {
+              "TimeInstant": {
+                  "type": "DateTime",
+                  "value": "2018-06-13T13:28:34.611Z"
+              }
+          }
+      },
+      "TimeInstant": {
+          "type": "DateTime",
+          "value": "2018-06-13T13:28:34.611Z"
+      }
+    }
+  ]
+}

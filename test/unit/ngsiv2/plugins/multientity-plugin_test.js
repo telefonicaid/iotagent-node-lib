@@ -137,7 +137,51 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         entity_type: 'Higrometer'
                     }
                 ]
-            }
+            },
+            'Sensor001': {
+                commands: [],
+                type: 'Sensor',
+                lazy: [],
+                active: [
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont1',
+                        entity_name : 'SO1',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont2',
+                        entity_name : 'SO2',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont3',
+                        entity_name : 'SO3',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont4',
+                        entity_name : 'SO4',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont5',
+                        entity_name : 'SO5',
+                        entity_type : 'WM'
+                    }
+                ]
+
+            },
+
         },
         service: 'smartGondor',
         subservice: 'gardens',
@@ -330,6 +374,36 @@ describe('Multi-entity plugin', function() {
 
         it('should use the device type as a default value', function(done) {
             iotAgentLib.update('ws4', 'WeatherStation2', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement and there are attributes with' +
+        ' the same name but different alias and mapped to different CB entities', function() {
+        var values = [
+            {
+                name: 'cont1',
+                type: 'number',
+                value: '38'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin4.json'))
+                .reply(204);
+        });
+
+        it('should update only the appropriate CB entity', function(done) {
+            iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
