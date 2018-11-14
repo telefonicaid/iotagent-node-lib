@@ -29,8 +29,8 @@ function cleanDb(host, name, callback) {
     var url = 'mongodb://' + host + ':27017/' + name;
 
     MongoClient.connect(url, function(err, db) {
-        if (db) {
-            db.dropDatabase();
+        if (db && db.db()) {
+            db.db().dropDatabase();
             db.close();
         }
 
@@ -49,7 +49,7 @@ function populate(host, dbName, entityList, collectionName, callback) {
 
     MongoClient.connect(url, function(err, db) {
         if (db) {
-            db.collection(collectionName).insertMany(entityList, function(err, r) {
+            db.db().collection(collectionName).insertMany(entityList, function(err, r) {
                 db.close();
                 callback(err);
             });

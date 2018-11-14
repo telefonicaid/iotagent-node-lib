@@ -357,8 +357,9 @@ arrival time around midnight. If no timestamps were reported with such
 measurements, the `TimeInstant` attribute would take those values around
 midnight.
 
-This functionality can be turned on and off through the use of the `timestamp`
-configuration flag (described in the configuration).
+This functionality can be turned on and off through the use of the `timestamp` configuration flag (described in the
+configuration), as well as 'timestamp' flag in device or group provision.
+
 
 ### Implementation decisions
 

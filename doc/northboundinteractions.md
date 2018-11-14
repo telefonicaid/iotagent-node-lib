@@ -1,7 +1,5 @@
 # Traffic North of the IoT Agent -  NGSI Interactions
 
-## Index
-
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Theory](#theory)

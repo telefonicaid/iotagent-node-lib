@@ -201,7 +201,7 @@ describe('MongoDB Device Registry', function() {
     afterEach(function(done) {
         delete(device1.registrationId);
         iotAgentLib.deactivate(function(error) {
-            iotAgentDb.collection('devices').remove(function(error) {
+            iotAgentDb.db().collection('devices').remove(function(error) {
                 iotAgentDb.close(function(error) {
                     mongoUtils.cleanDbs(done);
                 });
@@ -236,7 +236,7 @@ describe('MongoDB Device Registry', function() {
             iotAgentLib.register(device1, function(error) {
                 should.not.exist(error);
 
-                iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
@@ -398,7 +398,7 @@ describe('MongoDB Device Registry', function() {
 
         it('should be removed from MongoDB', function(done) {
             iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
-                iotAgentDb.collection('devices').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
