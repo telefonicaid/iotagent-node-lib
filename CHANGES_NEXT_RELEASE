@@ -1,4 +1,3 @@
-Fix: revert usage of restore filter by attribute object ids
 Add missed conf env vars about authentication (#704)
 Add timestamp in device and group provision (#655)
 Fix: missing support for device=true in the delete service endpoint (see #596)
