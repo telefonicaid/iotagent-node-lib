@@ -1,0 +1,33 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+            {
+                "id": "Sensor",
+                "type": "Sensor"
+            },
+            {
+                "vol": {
+                    "type": "number",
+                    "value": "38"
+                },
+                "type": "WM",
+                "id": "SO1"
+            },
+            {
+                "type": "WM",
+                "id": "SO2"
+            },
+            {
+                "type": "WM",
+                "id": "SO3"
+            },
+            {
+                "type": "WM",
+                "id": "SO4"
+            },
+            {
+                "type": "WM",
+                "id": "SO5"
+            }
+        ]
+}
