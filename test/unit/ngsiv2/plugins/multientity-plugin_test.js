@@ -192,7 +192,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
 
 describe('Multi-entity plugin', function() {
     beforeEach(function(done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
@@ -410,6 +410,52 @@ describe('Multi-entity plugin', function() {
             });
         });
     });
+    
+    describe('When an update comes for a multientity multi measurement and there are attributes with' +
+        ' the same name but different alias and mapped to different CB entities', function() {
+        var values = [
+            {
+                name: 'cont1',
+                type: 'number',
+                value: '38'
+            },
+            {
+                name: 'cont2',
+                type: 'number',
+                value: '39'
+            },
+            {
+                name: 'cont3',
+                type: 'number',
+                value: '40'
+            },
+            {
+                name: 'cont5',
+                type: 'number',
+                value: '42'
+            }                        
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin7.json'))
+                .reply(204);
+        });
+
+        it('should update only the appropriate CB entity', function(done) {
+            iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+   });
+    
 });
 
 describe('Multi-entity plugin is executed before timestamp process plugin', function() {
