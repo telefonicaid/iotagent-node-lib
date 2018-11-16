@@ -1,0 +1,45 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+            {
+                "id": "Sensor",
+                "type": "Sensor"
+            },
+            {
+                "vol": {
+                    "type": "number",
+                    "value": "38"
+                },
+                "type": "WM",
+                "id": "SO1"
+            },
+            {
+                "vol": {
+                    "type": "number",
+                    "value": "39"
+                },          
+                "type": "WM",
+                "id": "SO2"
+            },
+            {
+                "vol": {
+                    "type": "number",
+                    "value": "40"
+                },
+                "type": "WM",
+                "id": "SO3"
+            },
+            {
+                "type": "WM",
+                "id": "SO4"
+            },
+            {
+                "vol": {
+                    "type": "number",
+                    "value": "42"
+                },
+                "type": "WM",
+                "id": "SO5"
+            }
+        ]
+}
