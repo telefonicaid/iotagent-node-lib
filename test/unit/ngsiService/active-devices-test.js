@@ -352,6 +352,45 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'ISO8601',
+                    value: '2018-10-05T11:03:56 00:00Z'
+                }
+            ];
+
+            nock.cleanAll();
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            done();
+        });
+
+        it('should fail with a 400 BAD_TIMESTAMP error', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.exist(error);
+                error.code.should.equal(400);
+                error.name.should.equal('BAD_TIMESTAMP');
+                done();
+            });
+        });
+    });
+
     describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' +
     'and timezone is defined', function() {
         var modifiedValues;
