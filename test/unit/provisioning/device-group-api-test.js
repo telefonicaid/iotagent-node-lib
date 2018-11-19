@@ -428,7 +428,7 @@ describe('Device Group Configuration API', function() {
               function test (error, response, body) {
                   response.statusCode.should.equal(404);
                   done();
-              };
+              }
 
               async.series([
                   async.apply(request, optionsDeleteDevice),

@@ -17,6 +17,7 @@
   "node": true,
   "expr": true,
   "unused": "vars",
+  "esversion": 6,
   "globals": {
     "describe":true,
     "it": true,

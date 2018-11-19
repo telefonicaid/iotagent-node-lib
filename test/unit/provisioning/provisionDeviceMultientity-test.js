@@ -86,7 +86,8 @@ describe('Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMultientity.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/' +
+                'provisionNewDeviceMultientity.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
