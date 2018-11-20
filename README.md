@@ -9,7 +9,7 @@
 
 This project aims to provide a Node.js module to enable IoT Agent developers to
 build custom agents for their devices that can easily connect to NGSI Context
-Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ).
+Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion)).
 
 An IoT Agent is a component that lets groups of devices send their data to and
 be managed from a FIWARE NGSI Context Broker using their own native protocols.
@@ -212,13 +212,14 @@ value.
 There are two differences with the lazy attributes:
 
 -   First of all, for every command defined in a device, two new attributes are
-    created in the entity with the same name as the command but with a prefix: _
-    `_info`: this attribute reflect the current execution status of the command.
+    created in the entity with the same name as the command but with a prefix:
+
+    - `_info`: this attribute reflect the current execution status of the command.
     When a command request is issued by the Context Broker, the IoT Agent
     library generates this attribute with 'PENDING' value. The value of this
     attribute will be changed each time a command error or result is issued to
-    the IoT Agent. _ `_result`: this attribute reflect the result of the
-    execution of the defined command.
+    the IoT Agent.
+    - `_result`: this attribute reflect the result of the execution of the defined command.
 
 -   Commands can also be updated when new information about its execution
     arrives to the agent. This information will be mapped to the command's
@@ -384,13 +385,13 @@ implementation that were chosen, and are particularly under consideration:
 
 Information about how to configure the Library can be found at the corresponding
 section of the
-[Installation & Administration Guide](https://iotagent-node-lib.readthedocs.io/en/latest/installationguide).
+[Installation & Administration Guide](doc/installationguide.md).
 
 ## Usage
 
 This library has no packaging or build processes. Usage of the library is
 explained in the
-[User & Programmers Manual](https://iotagent-node-lib.readthedocs.io/en/latest/usermanual).
+[User & Programmers Manual](doc/usermanual.md).
 
 ## API
 
@@ -887,9 +888,7 @@ information. Each type can has the following information configured:
 
 For access to instances of the Context Broker secured with a
 [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication
-mechanism based in Keystone Trust tokens is provided. A Trust token is a
-long-term token that can be issued by any user to give another user permissions
-to impersonate him with a given role in a given project.
+mechanism based in Keystone Trust tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions to impersonate him with a given role in a given project. Such impersonation itself is in turn based on a short-term access token.
 
 For the authentication mechanisms to work, the `authentication` attribute in the
 configuration has to be fully configured, and the `authentication.enabled`
