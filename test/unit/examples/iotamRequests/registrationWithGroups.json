@@ -7,6 +7,7 @@
     {
       "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
       "token": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+      "cbHost":"http://unexistentHost:1026",
       "entity_type": "SensorMachine",
       "resource": "/deviceTest",
       "service": "theService",
