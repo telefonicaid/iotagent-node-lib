@@ -423,6 +423,7 @@ describe('Active attributes test', function() {
         it('should not fail', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
@@ -460,6 +461,7 @@ describe('Active attributes test', function() {
         it('should not fail', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
