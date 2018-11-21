@@ -270,7 +270,7 @@ describe('Active attributes test', function() {
                 {
                     name: 'TimeInstant',
                     type: 'ISO8601',
-                    value: '2022-22-22T22:22:22Z'
+                    value: '2022-10-22T22:22:22Z'
                 }
             ];
 
@@ -307,7 +307,7 @@ describe('Active attributes test', function() {
                 {
                     name: 'TimeInstant',
                     type: 'ISO8601',
-                    value: '2022-22-22T22:22:22.222Z'
+                    value: '2022-10-22T22:22:22.222Z'
                 }
             ];
 
