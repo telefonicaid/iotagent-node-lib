@@ -391,6 +391,80 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'ISO8601',
+                    value: '2022-22-22T22:22:22Z'
+                }
+            ];
+
+            nock.cleanAll();
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            done();
+        });
+
+        it('should not fail', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.not.exist(error);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format with ms', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'ISO8601',
+                    value: '2022-22-22T22:22:22.222Z'
+                }
+            ];
+
+            nock.cleanAll();
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            done();
+        });
+
+        it('should not fail', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.not.exist(error);
+                done();
+            });
+        });
+    });
+
     describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' +
     'and timezone is defined', function() {
         var modifiedValues;
