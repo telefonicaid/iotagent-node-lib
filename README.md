@@ -42,7 +42,7 @@ check the FIWARE Catalogue entry for the
 -   [Testing](#testing)
     -   [Agent Console](#agent-console)
     -   [Agent tester](#agent-tester)
--   [License](#license)
+-   [Licence](#licence)
 
 ## Background
 
@@ -898,7 +898,7 @@ When the administrator of a service is configuring a set of devices or device
 types in the IoT Agent to use a secured Context Broker, he should follow this
 steps:
 
--   First, a Trust token should be requested to Keystone, using the service
+-   First, a Trust Token Id should be requested to Keystone, using the service
     administrator credentials, the role ID and the IOT Agent User ID. The Trust
     token can be retrieved using the following request (shown as a curl
     command):
@@ -925,10 +925,11 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 ```
 
 -   Every device or type of devices configured to use a secured Context Broker
-    must be provided with a Trust Token in its configuration.
+    must be provided with a Trust Token Id in its configuration.
 -   Before any request is sent to a secured Context Broker, the IoT Agent uses
-    the Trust token to generate a temporary access token, that is attached to
-    the request (in the `X-Auth-token` header).
+    the Trust Token Id to generate a temporary access token, that is attached to
+    the request (in the `X-Auth-token` header) (using Keystone 
+    API https://developer.openstack.org/api-ref/identity/v3-ext/#consuming-a-trust).
 
 Apart from the generation of the trust, the use of secured Context Brokers
 should be transparent to the user of the IoT Agent.
