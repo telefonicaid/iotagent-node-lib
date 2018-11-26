@@ -42,7 +42,7 @@ check the FIWARE Catalogue entry for the
 -   [Testing](#testing)
     -   [Agent Console](#agent-console)
     -   [Agent tester](#agent-tester)
--   [License](#license)
+-   [Licence](#licence)
 
 ## Background
 
