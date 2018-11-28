@@ -308,7 +308,8 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe.skip('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format with ms', function() {
+    describe.skip('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
+        'with ms', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
