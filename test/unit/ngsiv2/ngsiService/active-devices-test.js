@@ -256,6 +256,58 @@ describe('Active attributes test', function() {
         });
     });
 
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
+        'without milis', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+            var time = new Date(1666477342000); // 2022-10-22T22:22:22Z
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'boolean',
+                    value: true
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    value: '2022-10-22T22:22:22Z'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/light1/attrs', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'))
+                .reply(204);
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should not fail', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent receives new information, the timestamp flag is on' +
     'and timezone is defined', function() {
         var modifiedValues;
