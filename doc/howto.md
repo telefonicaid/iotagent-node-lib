@@ -1,7 +1,5 @@
 # How to develop a new IOTAgent
 
-## Index
-
 * [Overview](#overview)
   + [Protocol](#protocol)
   + [Requirements](#requirements)

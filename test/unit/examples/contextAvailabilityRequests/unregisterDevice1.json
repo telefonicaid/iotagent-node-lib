@@ -11,8 +11,7 @@
             "attributes": [
                 {
                     "name": "temperature",
-                    "type": "centigrades",
-                    "isDomain": "false"
+                    "type": "centigrades"
                 }
             ],
             "providingApplication": "http://smartGondor.com"
