@@ -192,7 +192,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
 
 describe('Multi-entity plugin', function() {
     beforeEach(function(done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
