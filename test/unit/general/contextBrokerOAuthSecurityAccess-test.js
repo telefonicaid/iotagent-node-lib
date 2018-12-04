@@ -601,7 +601,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             contextBrokerMock3 = nock('http://unexistentHost:1026')
-                .log(console.log)
+
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
@@ -635,6 +635,75 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             });
         });
 
+    });
+});
+
+describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
+    'configured through group provisioning. Permanent token', function() {
+    var groupCreation = {
+        url: 'http://localhost:4041/iot/services',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    };
+
+    var values = [
+        {
+            name: 'status',
+            type: 'String',
+            value: 'STARTING'
+        }
+    ];
+
+    beforeEach(function() {
+        logger.setLevel('FATAL');
+        iotAgentConfig.authentication.permanentToken = true;
+    });
+
+    afterEach(function(done) {
+        iotAgentLib.deactivate(done);
+        nock.cleanAll();
+    });
+
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
+                .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
+                .reply(200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+
+
+            iotAgentConfig.authentication.tokenPath = '/oauth2/token';
+            iotAgentLib.activate(iotAgentConfig, function() {
+                request(groupCreation, function(error, response, body) {
+                    done();
+                });
+            });
+        });
+        it('should send the permanent token in the auth header', function(done) {
+            iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+        it('should use the permanent trust token in the following requests', function(done) {
+            iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 });
 
