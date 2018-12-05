@@ -26,7 +26,7 @@
   },
   "main": "lib/fiware-iotagent-lib",
   "engines": {
-    "node": ">=4.8.4"
+    "node": ">=6"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
@@ -42,7 +42,7 @@
     "command-shell-lib": "1.0.0",
     "express": "~4.16.4",
     "jison": "0.4.18",
-    "logops": "1.0.8",
+    "logops": "2.1.0",
     "moment": "~2.22.2",
     "moment-timezone": "~0.5.21",
     "mongodb": "3.1.8",
