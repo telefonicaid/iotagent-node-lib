@@ -28,3 +28,4 @@ Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
 Fix: isDomain is not used anymore for context availability registration (#701)
 Fix: checks ISO8601 timeinstants provided by devices (#679)
 Fix: corrects linting and includes npm run lint in travis
+Remove: xml related code and file (#691)
