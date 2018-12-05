@@ -180,6 +180,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_AUTH_PORT            | authentication.port                 |
 | IOTA_AUTH_USER            | authentication.user                 |
 | IOTA_AUTH_PASSWORD        | authentication.password             |
+| IOTA_AUTH_PERMANENT_TOKEN | authentication.permanentToken       |
 | IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
 | IOTA_LOG_LEVEL            | logLevel                            |
 | IOTA_TIMESTAMP            | timestamp                           |
