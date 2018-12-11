@@ -28,5 +28,6 @@ Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
 Fix: isDomain is not used anymore for context availability registration (#701)
 Fix: checks ISO8601 timeinstants provided by devices (#679)
 Fix: corrects linting and includes npm run lint in travis
+Remove: XML related code, dependencies and files (#691) 
 Add: extends OAuth2 authentication to support integration with FIWARE Keyrock IDM (#663)
 Add: implements OAuth2 authentication as part of device provisioning requests (#663)
