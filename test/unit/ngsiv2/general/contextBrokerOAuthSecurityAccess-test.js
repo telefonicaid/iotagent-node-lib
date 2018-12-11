@@ -8,7 +8,7 @@
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
- * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * fiware-iotagent-lib is dvistributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
@@ -24,18 +24,20 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
+var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
+    utils = require('../../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
     request = require('request'),
+    timekeeper = require('timekeeper'),
     contextBrokerMock,
     oauth2Mock,
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041
@@ -128,11 +130,9 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .reply(204, {});
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -168,11 +168,10 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
+                .post('/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
                 .reply(
-                403,
-                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                403, {});
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -200,11 +199,9 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
-                .reply(
-                200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .reply(204, {});
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -239,10 +236,9 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
+                .get('/v2/entities/light1/attrs?attrs=state,dimming')
                 .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/queryContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -298,11 +294,9 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .reply(204, {});
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, done);
@@ -345,10 +339,9 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
+                .get('/v2/entities/light1/attrs?attrs=state,dimming')
                 .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/queryContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -425,11 +418,9 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext1.json'))
-                .reply(
-                401,
-                'Auth-token not found in request header');
+                .post('/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .reply(401, 'Auth-token not found in request header');
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -498,19 +489,18 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/machine1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))
+                .reply(204, {});
 
             contextBrokerMock2 = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/machine1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))
+                .reply(204, {});
+
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, function() {
                 request(groupCreation, function(error, response, body) {
@@ -559,6 +549,8 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
         var contextBrokerMock2;
         var contextBrokerMock3;
         beforeEach(function(done) {
+            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+            timekeeper.freeze(time);
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -586,35 +578,37 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('Authorization', 'Bearer asd752e377680acd1349a3ed59db855a1db07ere')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDeviceWithGroup2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .post('/v2/registrations', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDeviceWithGroup2.json'))
+                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock2 = nock('http://unexistenthost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post('/v2/entities?options=upsert', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'))
+                .reply(204, {});
 
             contextBrokerMock3 = nock('http://unexistentHost:1026')
-
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext4.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/Light1/attrs', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContext4.json'))
+                .reply(204, {});
 
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, function() {
                 done();
             });
+        });
+
+        afterEach(function(done) {
+            timekeeper.reset();
+
+            done();
         });
 
         it('should not raise any error', function(done) {
@@ -676,10 +670,9 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post('/v2/entities/machine1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))
+                .reply(204, {});
 
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';

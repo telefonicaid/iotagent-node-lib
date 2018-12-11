@@ -60,17 +60,14 @@ These are the parameters that can be configured in the global section:
           password: 'iotagent'
     }
 ```
-
-  In `oauth2` based authentication, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
-  The authentication process use the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
+  In `oauth2` based authentication, two types of tokens can be used depending on the availability in the IDM to be used. On one hand, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
+  The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
   that can be used to authenticate the request to the Context Broker.
   At the time being the assumption is that the `refresh_token` is a not expiring `offline_token` (we believe this is the best solution in the case of IoT Devices,
-  since injecting a refresh token look may slow down communication. Still the developer would be able to invalidate the refresh token on the provider side in
-  case of security issues connected to a token). The code was tested using [Keycloak](http://www.keycloak.org) and [Auth0](https://auth0.com) (it may require customisation
-  for other providers - while OAuth2 is a standard, not all implementations behave in the same way, especially as regards status codes and error messages).
+  since injecting a refresh token look may slow down communication. Still, the developer would be able to invalidate the refresh token on the provider side in case of security issues connected to a token). The code was tested using [Keycloak](http://www.keycloak.org), [Auth0](https://auth0.com) and [FIWARE Keyrock](https://github.com/ging/fiware-idm) (it may require customisation for other providers - while OAuth2 is a standard, not all implementations behave in the same way, especially as regards status codes and error messages).
   Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively `host` and `port` but if you use this combination, the IoT Agent will assume
-  that the protocol is HTTP), the `tokenPath` to which the validation request should be sent, the `clientId` and `clientSecret` that identify the Context Broker,
-  and the `header` field that should be used to send the authentication request (that will be send in the form `Authorization: Bearer <access_token>`).
+  that the protocol is HTTP), the `tokenPath` to which the validation request should be sent (`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, `/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the Context Broker,
+  and the `header` field that should be used to send the authentication request (that will be sent in the form `Authorization: Bearer <access_token>`).
   E.g.:
 
 ```
@@ -82,6 +79,21 @@ These are the parameters that can be configured in the global section:
         clientId: 'context-broker',
         clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
         tokenPath: '/auth/realms/default/protocol/openid-connect/token'
+    }
+```
+
+  Nevertheless, this kind of authentication relying on `refresh_token` grant type implies that when the acces_token expires, it is needed to request a new one from the IDM, causing some overhead in the communication with the Context Broker. To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that can be retrieved using `scope=permanent`. With this approach, the IOTA does not need to interact with the IDM and directly include the `permanent token` in the header. In order to use this type of token, an additional parameter         `permanentToken` must be set to `true` in the `authentication` configuration. An environment variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. For instance:
+
+```
+    {
+        type: 'oauth2',
+        url: 'http://localhost:3000',
+        header: 'Authorization',
+        clientId: 'context-broker',
+        clientSecret: '0c2492e1-3ce3-4cca-9723-e6075b89c244',
+        tokenPath: '/oauth2/token',
+        enabled: true,
+        permanentToken: true
     }
 ```
 
@@ -168,6 +180,7 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_AUTH_PORT            | authentication.port                 |
 | IOTA_AUTH_USER            | authentication.user                 |
 | IOTA_AUTH_PASSWORD        | authentication.password             |
+| IOTA_AUTH_PERMANENT_TOKEN | authentication.permanentToken       |
 | IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
 | IOTA_LOG_LEVEL            | logLevel                            |
 | IOTA_TIMESTAMP            | timestamp                           |
