@@ -9,7 +9,7 @@ These are the parameters that can be configured in the global section:
 * **logLevel**: minimum log level to log. May take one of the following values: DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
 * **contextBroker**: connection data to the Context Broker (host and port). E.g.:
 
-```
+```json
         {
         host: '192.168.56.101',
         port: '1026'
@@ -18,7 +18,7 @@ These are the parameters that can be configured in the global section:
 
  * If you want to use NGSIv2 (only sending updates for active attributes):
 
-```
+```json
   {
     host: '192.168.56.101',
     port: '1026',
@@ -28,7 +28,7 @@ These are the parameters that can be configured in the global section:
 
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
 
-```
+```json
         {
         baseRoot: '/',
         port: 4041
@@ -37,7 +37,7 @@ These are the parameters that can be configured in the global section:
 ```
 * **stats**: configure the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats writings.
 
-```
+```json
     stats: {
         interval: 100
     }
@@ -51,7 +51,7 @@ These are the parameters that can be configured in the global section:
   the `trust` verification.
   E.g.:
 
-```
+```json
     {
           enabled: true,
           url: 'https://localhost:5000',
@@ -70,7 +70,7 @@ These are the parameters that can be configured in the global section:
   and the `header` field that should be used to send the authentication request (that will be sent in the form `Authorization: Bearer <access_token>`).
   E.g.:
 
-```
+```json
     {
         enabled: true,
         type: 'oauth2',
@@ -84,7 +84,7 @@ These are the parameters that can be configured in the global section:
 
   Nevertheless, this kind of authentication relying on `refresh_token` grant type implies that when the acces_token expires, it is needed to request a new one from the IDM, causing some overhead in the communication with the Context Broker. To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that can be retrieved using `scope=permanent`. With this approach, the IOTA does not need to interact with the IDM and directly include the `permanent token` in the header. In order to use this type of token, an additional parameter         `permanentToken` must be set to `true` in the `authentication` configuration. An environment variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. For instance:
 
-```
+```json
     {
         type: 'oauth2',
         url: 'http://localhost:3000',
@@ -99,7 +99,7 @@ These are the parameters that can be configured in the global section:
 
 * **deviceRegistry**: type of Device Registry to create. Currently, two values are supported: `memory` and `mongodb`. If the former is configured, a transient memory-based device registry will be used to register all the devices. This registry will be emptied whenever the process is restarted. If the latter is selected, a MongoDB database will be used to store all the device information, so it will be persistent from one execution to the other. Mongodb databases must be configured in the `mongob` section (as described bellow). E.g.:
 
-```
+```json
 {
   type: 'mongodb'
 }
@@ -110,7 +110,7 @@ be considered to be part of a Replica Set. In that case, the optional property `
 retry the connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
 are 5 and 5 respectively). E.g.:
 
-```
+```json
 {
   host: 'localhost',
   port: '27017',
@@ -126,7 +126,7 @@ are 5 and 5 respectively). E.g.:
  configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described below) with the
  added `agentPath`:
 
-```
+```json
 {
     host: 'mockediotam.com',
     port: 9876,
