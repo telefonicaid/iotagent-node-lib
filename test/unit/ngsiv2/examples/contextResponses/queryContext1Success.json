@@ -1,0 +1,10 @@
+{
+  "state": {
+    "type": "Boolean",
+    "value": "False"
+  },
+  "dimming": {
+    "type": "Percentage",
+    "value": "23"
+  }
+}

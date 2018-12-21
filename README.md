@@ -21,6 +21,9 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information
 check the FIWARE Catalogue entry for the
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
+| :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | 
+|---|---|
+
 ## Index
 
 -   [Background](#background)
