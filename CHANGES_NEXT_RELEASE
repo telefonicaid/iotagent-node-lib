@@ -1,0 +1,2 @@
+Fix: modified engine version >=6 in packages.json
+Fix: update logops dependency from 1.0.8 to 2.1.0
