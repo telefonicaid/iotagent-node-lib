@@ -1,0 +1,2 @@
+Fix: update node version > 6 in package.json
+Fix: update logops dependence from 1.0.8 to 2.1.0
