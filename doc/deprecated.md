@@ -19,7 +19,7 @@ A list of deprecated features and the version in which they were deprecated foll
 
 ## Using old iotagent-node-lib versions
 
-Although you are encouraged to use always the newest iotagent-json version, take into account the following
+Although you are encouraged to use always the newest iotagent-node-lib version, take into account the following
 information in the case you want to use old versions:
 
 * Code corresponding to old releases is available at the [iotagent-node-lib github repository](https://github.com/telefonicaid/iotagent-node-lib). Each release number
