@@ -203,6 +203,20 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 });
             });
         });
+
+        it('should call the device remove handler if present', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setRemoveDeviceHandler(function(device, callback) {
+                handlerCalled = true;
+                callback(null, device);
+            });
+
+            request(options, function(error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
     });
 
     describe('When a request to remove a provision device arrives. Device without lazy atts or commands', function() {

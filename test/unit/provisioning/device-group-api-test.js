@@ -437,6 +437,22 @@ describe('Device Group Configuration API', function() {
               ], done);
         });
 
+        it('should call the remove configuration handler', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setRemoveConfigurationHandler(function(newConfiguration, callback) {
+                should.exist(newConfiguration);
+                should.exist(callback);
+                handlerCalled = true;
+                callback();
+            });
+
+            request(optionsDeleteDevice, function(error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+
         afterEach(function(done) {
             nock.cleanAll();
             done();

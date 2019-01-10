@@ -325,6 +325,41 @@ values.
 
 The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IoT Agent).
 
+##### iotagentLib.setProvisioningHandler()
+###### Signature
+
+```javascript
+function setProvisioningHandler (newHandler)
+```
+###### Description
+Sets the new user handler for the provisioning of devices. This handler will be called every time a new device is
+created.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(newDevice, callback)
+```
+The `newDevice` parameter will contain the newly created device. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
+
+##### iotagentLib.setRemoveDeviceHandler()
+###### Signature
+
+```javascript
+function setRemoveDeviceHandler(newHandler)
+```
+###### Description
+Sets the new user handler for the removal of a device. This handler will be called every time a device is
+removed.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(deviceToDelete, callback)
+```
+The `deviceToDelete` parameter will contain the device to be deleted. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 ##### iotagentLib.setConfigurationHandler()
 ###### Signature
@@ -347,6 +382,23 @@ callback with no parameters (this handler should only be used for reconfiguratio
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
+##### iotagentLib.setRemoveConfigurationHandler()
+###### Signature
+
+```javascript
+function setRemoveConfigurationHandler(newHandler)
+```
+###### Description
+Sets the new user handler for the removal of configuratios. This handler will be called every time a configuration is
+removed.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(configurationToDelete, callback)
+```
+The `configurationToDelete` parameter will contain the configuration to be deleted. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 ##### iotagentLib.getDevice()
 ###### Signature

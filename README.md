@@ -1426,4 +1426,4 @@ being tested. It MUST contain the following attributes:
 The IoT Agent Node Library is licensed under Affero General Public License (GPL)
 version 3.
 
-© 2018 Telefonica Investigación y Desarrollo, S.A.U
+© 2019 Telefonica Investigación y Desarrollo, S.A.U
