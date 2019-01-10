@@ -1,1 +1,3 @@
+Fix: modified engine version >=6 in packages.json
+Fix: update logops dependency from 1.0.8 to 2.1.0
 Add: new functions to set callbacks for removal of devices and groups (#735)

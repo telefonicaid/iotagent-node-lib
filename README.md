@@ -396,6 +396,8 @@ This library has no packaging or build processes. Usage of the library is
 explained in the
 [User & Programmers Manual](doc/usermanual.md).
 
+The following features are listed as [deprecated](doc/deprecated.md).
+
 ## API
 
 ### About API
