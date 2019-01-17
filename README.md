@@ -88,7 +88,7 @@ behaviors:
     the value of that sensor, its request will be redirected to the IoT Agent
     (that behaves as a NGSI10 Context Provider). This operation will be
     synchronous from the customer perspective: the Context Broker won't return a
-    response until de device has returned its response to the IoT Agent.
+    response until the device has returned its response to the IoT Agent.
 
 -   **Commands**: in this case, the interaction will begin by setting an
     attribute in the device's entity, for which the IoT Agent will be regitered
