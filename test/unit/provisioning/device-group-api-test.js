@@ -94,6 +94,50 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
+    optionsCreation = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    entity_type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    lazy: [
+                        {
+                            name: 'luminescence',
+                            type: 'Lumens'
+                        }
+                    ],
+                    attributes: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ],
+                    static_attributes: [
+                        {
+                            name: 'bootstrapServer',
+                            type: 'Address',
+                            value: '127.0.0.1'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
     optionsDeviceCreation = {
         url: 'http://localhost:4041/iot/devices',
         method: 'POST',
@@ -116,8 +160,35 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
+    optionsDelete = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'DELETE',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
+    },
     optionsDeleteDevice = {
         url: 'http://localhost:4041/iot/services',
+        method: 'DELETE',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+            device: 'true'
+        }
+    },
+    optionsDeleteDevice = {
+        url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
         headers: {
@@ -171,6 +242,47 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
+    optionsUpdate = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'PUT',
+        json: {
+            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+            cbHost: 'http://anotherUnexistentHost:1026',
+            commands: [
+                {
+                    name: 'wheel1',
+                    type: 'Wheel'
+                }
+            ],
+            lazy: [
+                {
+                    name: 'luminescence',
+                    type: 'Lumens'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'status',
+                    type: 'Boolean'
+                }
+            ],
+            static_attributes: [
+                {
+                    name: 'identifier',
+                    type: 'UUID',
+                    value: 'WERTYUIOP234567890'
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
+    },
     optionsList = {
         url: 'http://localhost:4041/iot/services',
         method: 'GET',
@@ -180,8 +292,26 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
+    optionsList = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'GET',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/*'
+        }
+    },
     optionsGet = {
         url: 'http://localhost:4041/iot/services',
+        method: 'GET',
+        json: {},
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
+    optionsGet = {
+        url: 'http://localhost:4041/iot/cgroups',
         method: 'GET',
         json: {},
         headers: {
@@ -854,6 +984,7 @@ describe('Device Group Configuration API', function() {
                     'fiware-servicepath': '/*'
                 }
             };
+
 
         beforeEach(function(done) {
             var optionsCreationList = [],
