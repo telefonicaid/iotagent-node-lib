@@ -34,7 +34,7 @@
     "test:watch": "npm run test -- -w ./lib",
     "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
-    "test:coveralls": "npm run test:coverage && && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
   "dependencies": {
@@ -56,6 +56,7 @@
     "underscore": "~1.9.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "istanbul": "~0.4.5",
     "jshint": "~2.9.6",
     "mocha": "5.2.0",
