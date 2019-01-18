@@ -6,6 +6,7 @@
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
 [![Build badge](https://img.shields.io/travis/telefonicaid/iotagent-node-lib.svg)](https://travis-ci.org/telefonicaid/iotagent-node-lib/)
+[![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
 This project aims to provide a Node.js module to enable IoT Agent developers to
@@ -22,7 +23,7 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information
 check the FIWARE Catalogue entry for the
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | 
+| :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) |
 |---|---|
 
 ## Index
@@ -934,7 +935,7 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
     must be provided with a Trust Token Id in its configuration.
 -   Before any request is sent to a secured Context Broker, the IoT Agent uses
     the Trust Token Id to generate a temporary access token, that is attached to
-    the request (in the `X-Auth-token` header) (using Keystone 
+    the request (in the `X-Auth-token` header) (using Keystone
     API https://developer.openstack.org/api-ref/identity/v3-ext/#consuming-a-trust).
 
 Apart from the generation of the trust, the use of secured Context Brokers
