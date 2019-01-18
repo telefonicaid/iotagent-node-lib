@@ -5,6 +5,7 @@
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
+[![Build badge](https://img.shields.io/travis/telefonicaid/iotagent-node-lib.svg)](https://travis-ci.org/telefonicaid/iotagent-node-lib/)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
 This project aims to provide a Node.js module to enable IoT Agent developers to
