@@ -501,7 +501,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
                 .post('/v2/entities/machine1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))                
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))
                 .reply(204, {});
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
