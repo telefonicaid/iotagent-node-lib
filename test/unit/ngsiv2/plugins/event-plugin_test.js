@@ -107,6 +107,7 @@ describe('Event plugin', function() {
 
                     return body.activation.value.match(dateRegex);
                 })
+                .query({type: 'Light'})
                 .reply(204);
         });
 
