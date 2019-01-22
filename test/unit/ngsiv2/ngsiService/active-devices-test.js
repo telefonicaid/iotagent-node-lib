@@ -195,6 +195,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -338,6 +339,7 @@ describe('Active attributes test', function() {
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/' +
                     'updateContextTimestampTimezone.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -441,6 +443,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -572,6 +575,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/humSensor/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Humidity'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
