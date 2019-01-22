@@ -592,6 +592,35 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                 done();
             });
         });
+
+        it('should propagate user provider timestamp to mapped entities', function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextRequests/updateContextMultientityTimestampPlugin3.json'))
+                .reply(204);
+
+            var tsValue = [
+                {
+                    name: 'h',
+                    type: 'Percentage',
+                    value: '16'
+                },
+                {
+                    // Note this timestamp is the one used at updateContextMultientityTimestampPlugin3.json
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    value: '2018-06-13T13:28:34.611Z'
+                }
+            ];
+
+            iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 });
 
