@@ -325,6 +325,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -386,6 +387,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/ws1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'))
+                .query({type: 'WeatherStation'})
                 .reply(204);
         });
 
@@ -449,6 +451,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/ws1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'))
+                .query({type: 'WeatherStation'})
                 .reply(204);
         });
 
@@ -512,6 +515,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -575,6 +579,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/ws1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'))
+                .query({type: 'WeatherStation'})
                 .reply(204);
         });
 
@@ -638,6 +643,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/ws1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin10.json'))
+                .query({type: 'WeatherStation'})
                 .reply(204);
         });
 
@@ -699,6 +705,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -761,6 +768,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -791,6 +799,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'))
+                .query({type, 'Light'})
                 .reply(204);
         });
 
@@ -827,6 +836,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 

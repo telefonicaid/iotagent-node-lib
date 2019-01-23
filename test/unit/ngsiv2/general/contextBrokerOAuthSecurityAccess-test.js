@@ -171,6 +171,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .query({type: 'Light'})
                 .reply(
                 403, {});
 
@@ -422,6 +423,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json'))
+                .query({type: 'Light'})
                 .reply(401, 'Auth-token not found in request header');
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -502,6 +504,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
                 .post('/v2/entities/machine1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'))
+                .query({type: 'SensorMachine'})
                 .reply(204, {});
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
@@ -704,4 +707,3 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
         });
     });
 });
-

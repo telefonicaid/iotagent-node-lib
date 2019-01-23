@@ -153,6 +153,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -286,6 +287,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -392,6 +394,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -494,6 +497,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(413,
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext1Failed.json'));
 
@@ -522,6 +526,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(400,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -547,6 +552,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(500,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -607,6 +613,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/motion1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'))
+                .query({type: 'Motion'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

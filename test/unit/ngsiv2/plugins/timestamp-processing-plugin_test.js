@@ -104,6 +104,7 @@ describe('Timestamp processing plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
