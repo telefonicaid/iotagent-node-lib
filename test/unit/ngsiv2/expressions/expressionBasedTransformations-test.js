@@ -799,7 +799,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'))
-                .query({type, 'Light'})
+                .query({type: 'Light'})
                 .reply(204);
         });
 
