@@ -71,7 +71,7 @@ For example, `http://127.0.0.1:8080/iot/`.
 # Group Configuration API
 
 ## Services [/services{?limit,offset,resource,apikey,device}]
-Services are the higher level in IoT Platform. When you manipulate a service, you use a Fiware-Service header with its name. Parameters apply to different operations.
+Group configuration for iotagents.
 
 
 Fields in JSON object representing a service are:
@@ -93,9 +93,9 @@ Mandatory fields are identified in every operation.
 
 
 
-### Retrieve a service group [GET]
+### Retrieve a configuration group [GET]
 
-With Fiware-ServicePath you can retrieve a service group.
+Retrieve a group configuration.
 
 + Parameters [limit, offset, resource]
 
@@ -158,9 +158,9 @@ With Fiware-ServicePath you can retrieve a service group.
             }
 
 
-### Create a service group [POST]
+### Create a configuration group [POST]
 
-With one subservice defined in Fiware-ServicePath header. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).
+Create a new configuration group. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).
 
 + Request (application/json)
 
@@ -186,7 +186,7 @@ With one subservice defined in Fiware-ServicePath header. From service model, ma
 + Response 201
 
 
-### Update a service group [PUT]
+### Update a configuration group [PUT]
 
 If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. ("/*" is not allowed).
 
@@ -211,9 +211,9 @@ If you want modify only a field, you can do it. You cannot modify an element int
 
 + Response 204
 
-### Remove a service group [DELETE]
+### Remove a configuration group [DELETE]
 
-You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' remove a service group.
+Remove a configuration group. 
 
 + Parameters [apikey, resource, device]
 
