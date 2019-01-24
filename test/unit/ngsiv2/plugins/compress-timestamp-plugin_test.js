@@ -161,6 +161,7 @@ describe('Timestamp compression plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp1.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -202,6 +203,7 @@ describe('Timestamp compression plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp2.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 

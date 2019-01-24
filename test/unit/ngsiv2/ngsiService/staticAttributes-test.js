@@ -114,6 +114,7 @@ describe('Static attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs')
+                .query({type: 'Light'})
                 .times(4)
                 .reply(204)
                 .post('/v2/entities/light1/attrs', function(body) {
@@ -125,6 +126,7 @@ describe('Static attributes test', function() {
                     }
                     return metadatas === Object.keys(body).length - 1;
                 })
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
