@@ -258,6 +258,7 @@ describe('Expression-based transformations plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/ws1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'))
+                .query({type: 'WeatherStation'})
                 .reply(204);
         });
 
