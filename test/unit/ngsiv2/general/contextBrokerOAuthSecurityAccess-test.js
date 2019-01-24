@@ -238,7 +238,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .get('/v2/entities/light1/attrs?attrs=state,dimming')
+                .get('/v2/entities/light1/attrs?attrs=state,dimming&type=Light')
                 .reply(200,
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/queryContext1Success.json'));
 
@@ -342,7 +342,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .get('/v2/entities/light1/attrs?attrs=state,dimming')
+                .get('/v2/entities/light1/attrs?attrs=state,dimming&type=Light')
                 .reply(200,
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/queryContext1Success.json'));
 
