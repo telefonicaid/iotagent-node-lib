@@ -68,13 +68,13 @@ The API needs two headers in order to manage requests:
 All API base URLs are relative and depend on where the IoT Agent is listening (depends on each service).
 For example, `http://127.0.0.1:8080/iot/`.
 
-# Group Configuration API
+# Configuration Group API
 
 ## Services [/services{?limit,offset,resource,apikey,device}]
-Group configuration for iotagents.
+Configuration group for iotagents.
 
 
-Fields in JSON object representing a service are:
+Fields in JSON object representing a configuration group are:
 
 |Fields in JSON Object   |                                                             |
 |:-----------------------|:------------------------------------------------------------|
@@ -95,7 +95,7 @@ Mandatory fields are identified in every operation.
 
 ### Retrieve a configuration group [GET]
 
-Retrieve a group configuration.
+Retrieve a configuration group.
 
 + Parameters [limit, offset, resource]
 
