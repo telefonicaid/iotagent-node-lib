@@ -228,7 +228,7 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .get('/v2/entities/light1/attrs?attrs=state,TheTargetValue')
+                .get('/v2/entities/light1/attrs?attrs=state,TheTargetValue&type=Light')
                 .reply(200, utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
         });
