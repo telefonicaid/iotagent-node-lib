@@ -25,20 +25,20 @@
 'use strict';
 
 var commandLine = require('../lib/command/commandLine'),
-    clUtils = require('command-shell-lib'),
-    configCb = {
-        host: 'localhost',
-        port: 1026,
-        service: 'tester',
-        subservice: '/test'
-    },
-    configIot = {
-        host: 'localhost',
-        port: 4041,
-        name: 'default',
-        service: 'tester',
-        subservice: '/test'
-    };
+  clUtils = require('command-shell-lib'),
+  configCb = {
+    host: 'localhost',
+    port: 1026,
+    service: 'tester',
+    subservice: '/test',
+  },
+  configIot = {
+    host: 'localhost',
+    port: 4041,
+    name: 'default',
+    service: 'tester',
+    subservice: '/test',
+  };
 
 commandLine.init(configCb, configIot);
 
