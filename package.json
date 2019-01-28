@@ -1,5 +1,6 @@
 {
   "name": "iotagent-node-lib",
+  "license": "AGPL-3.0-only",
   "description": "IoT Agent library to interface with NGSI Context Broker",
   "version": "2.8.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
@@ -33,6 +34,7 @@
     "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write **/*.js *.js",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -57,12 +59,26 @@
   },
   "devDependencies": {
     "coveralls": "~3.0.2",
+    "husky": "^1.1.0",
     "istanbul": "~0.4.5",
     "jshint": "~2.9.6",
+    "lint-staged": "^7.3.0",
     "mocha": "5.2.0",
     "nock": "10.0.1",
+    "prettier": "^1.14.2",
     "should": "13.2.3",
     "timekeeper": "2.1.2",
     "watch": "~1.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --parser flow --single-quote --trailing-comma es5 --write",
+      "git add"
+    ]
   }
 }
