@@ -22,56 +22,56 @@
  */
 
 var config = {
-  logLevel: 'DEBUG',
-  contextBroker: {
-    host: '192.168.56.101',
-    port: '1026',
-  },
-  server: {
-    port: 4041,
-    host: '0.0.0.0',
-  },
-  authentication: {
-    enabled: true,
-    type: 'keystone',
-    header: 'X-Auth-Token',
-    host: 'localhost',
-    port: '5000',
-    user: 'iotagent',
-    password: 'iotagent',
-  },
-  deviceRegistry: {
-    type: 'memory',
-  },
-  types: {
-    Light: {
-      url: '/',
-      apikey: '',
-      type: 'Light',
-      // service: '',
-      // subservice: '',
-      // trust: ''
-      // cbHost: '',
-      commands: [],
-      lazy: [
-        {
-          name: 'luminescence',
-          type: 'Lumens',
-        },
-      ],
-      active: [
-        {
-          name: 'status',
-          type: 'Boolean',
-        },
-      ],
+    logLevel: 'DEBUG',
+    contextBroker: {
+        host: '192.168.56.101',
+        port: '1026',
     },
-  },
-  service: 'smartGondor',
-  subservice: '/gardens',
-  providerUrl: 'http://192.168.56.1:4041',
-  deviceRegistrationDuration: 'P1M',
-  defaultType: 'Thing',
+    server: {
+        port: 4041,
+        host: '0.0.0.0',
+    },
+    authentication: {
+        enabled: true,
+        type: 'keystone',
+        header: 'X-Auth-Token',
+        host: 'localhost',
+        port: '5000',
+        user: 'iotagent',
+        password: 'iotagent',
+    },
+    deviceRegistry: {
+        type: 'memory',
+    },
+    types: {
+        Light: {
+            url: '/',
+            apikey: '',
+            type: 'Light',
+            // service: '',
+            // subservice: '',
+            // trust: ''
+            // cbHost: '',
+            commands: [],
+            lazy: [
+                {
+                    name: 'luminescence',
+                    type: 'Lumens',
+                },
+            ],
+            active: [
+                {
+                    name: 'status',
+                    type: 'Boolean',
+                },
+            ],
+        },
+    },
+    service: 'smartGondor',
+    subservice: '/gardens',
+    providerUrl: 'http://192.168.56.1:4041',
+    deviceRegistrationDuration: 'P1M',
+    defaultType: 'Thing',
 };
 
 module.exports = config;
