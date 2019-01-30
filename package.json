@@ -34,7 +34,7 @@
     "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
-    "prettier": "prettier --single-quote --trailing-comma es5 --write **/*.js *.js",
+    "prettier": "prettier --tab-width 4 --single-quote --trailing-comma es5 --write **/*.js *.js",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -77,7 +77,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --parser flow --single-quote --trailing-comma es5 --write",
+      "prettier --tab-width 4 --parser flow --single-quote --trailing-comma es5 --write",
       "git add"
     ]
   }
