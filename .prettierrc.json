@@ -1,0 +1,9 @@
+{
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "singleQuote": true,
+  "parser": "flow",
+  "printWidth": 120,
+  "trailingComma": "es5",
+  "tabWidth": 4
+}
