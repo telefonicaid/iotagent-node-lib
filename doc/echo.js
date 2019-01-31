@@ -2,12 +2,7 @@ var http = require('http'),
     express = require('express');
 
 function dummyResponse(req, res) {
-    console.log(
-        'Processing response to [%s] [%s] [%j]',
-        req.method,
-        req.path,
-        req.query
-    );
+    console.log('Processing response to [%s] [%s] [%j]', req.method, req.path, req.query);
     res.status(200).send('89');
 }
 
@@ -24,11 +19,7 @@ function initEcho(callback) {
     echoServer.router.get('/iot/d', dummyResponse);
     echoServer.server = http.createServer(echoServer.app);
     echoServer.app.use('/', echoServer.router);
-    echoServer.server.listen(
-        echoServer.app.get('port'),
-        echoServer.app.get('host'),
-        callback
-    );
+    echoServer.server.listen(echoServer.app.get('port'), echoServer.app.get('host'), callback);
 }
 
 initEcho(function(error) {

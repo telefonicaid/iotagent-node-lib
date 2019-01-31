@@ -34,70 +34,69 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [
                     {
                         name: 'position',
-                        type: 'Array'
-                    }
+                        type: 'Array',
+                    },
                 ],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 attributes: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
+                        type: 'Hgmm',
+                    },
                 ],
                 staticAttributes: [
                     {
                         name: 'location',
-                        type: 'Vector'
-                    }
+                        type: 'Vector',
+                    },
                 ],
                 service: 'smartGondor',
                 subservice: 'gardens',
                 internalAttributes: {
-                    customAttribute: 'customValue'
-                }
+                    customAttribute: 'customValue',
+                },
             },
-            'Termometer': {
+            Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                attributes: [
-                ],
+                attributes: [],
                 service: 'smartGondor',
-                subservice: 'gardens'
-            }
+                subservice: 'gardens',
+            },
         },
         deviceRegistry: {
-            type: 'mongodb'
+            type: 'mongodb',
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent'
+            db: 'iotagent',
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     device1 = {
         id: 'light1',
@@ -112,30 +111,30 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'position',
-                type: 'Array'
-            }
+                type: 'Array',
+            },
         ],
         lazy: [
             {
                 name: 'temperature',
-                type: 'centigrades'
-            }
+                type: 'centigrades',
+            },
         ],
         active: [
             {
                 name: 'pressure',
-                type: 'Hgmm'
-            }
+                type: 'Hgmm',
+            },
         ],
         staticAttributes: [
             {
                 name: 'location',
-                type: 'Vector'
-            }
+                type: 'Vector',
+            },
         ],
         internalAttributes: {
-            customAttribute: 'customValue'
-        }
+            customAttribute: 'customValue',
+        },
     },
     device2 = {
         id: 'term2',
@@ -144,7 +143,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         resource: '/',
         apikey: 'dsf8yy789iyushu786',
-        protocol: 'GENERIC_PROTOCOL'
+        protocol: 'GENERIC_PROTOCOL',
     },
     device3 = {
         id: 'light1',
@@ -159,30 +158,30 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'position',
-                type: 'Array'
-            }
+                type: 'Array',
+            },
         ],
         lazy: [
             {
                 name: 'temperature',
-                type: 'centigrades'
-            }
+                type: 'centigrades',
+            },
         ],
         active: [
             {
                 name: 'pressure',
-                type: 'Hgmm'
-            }
+                type: 'Hgmm',
+            },
         ],
         staticAttributes: [
             {
                 name: 'location',
-                type: 'Vector'
-            }
+                type: 'Vector',
+            },
         ],
         internalAttributes: {
-            customAttribute: 'customValue'
-        }
+            customAttribute: 'customValue',
+        },
     },
     iotAgentDb;
 
@@ -191,21 +190,27 @@ describe('MongoDB Device Registry', function() {
         logger.setLevel('FATAL');
 
         mongoUtils.cleanDbs(function() {
-            mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
-                iotAgentDb = db;
-                done();
-            });
+            mongo.connect(
+                'mongodb://localhost:27017/iotagent',
+                function(err, db) {
+                    iotAgentDb = db;
+                    done();
+                }
+            );
         });
     });
 
     afterEach(function(done) {
-        delete(device1.registrationId);
+        delete device1.registrationId;
         iotAgentLib.deactivate(function(error) {
-            iotAgentDb.db().collection('devices').remove(function(error) {
-                iotAgentDb.close(function(error) {
-                    mongoUtils.cleanDbs(done);
+            iotAgentDb
+                .db()
+                .collection('devices')
+                .remove(function(error) {
+                    iotAgentDb.close(function(error) {
+                        mongoUtils.cleanDbs(done);
+                    });
                 });
-            });
         });
     });
 
@@ -216,16 +221,23 @@ describe('MongoDB Device Registry', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
@@ -236,34 +248,38 @@ describe('MongoDB Device Registry', function() {
             iotAgentLib.register(device1, function(error) {
                 should.not.exist(error);
 
-                iotAgentDb.db().collection('devices').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(1);
-                    should.exist(docs[0].internalAttributes);
-                    should.exist(docs[0].staticAttributes);
-                    should.exist(docs[0].internalAttributes.customAttribute);
-                    should.exist(docs[0].active);
-                    should.exist(docs[0].commands);
-                    should.exist(docs[0].resource);
-                    should.exist(docs[0].endpoint);
-                    should.exist(docs[0].transport);
-                    should.exist(docs[0].apikey);
-                    should.exist(docs[0].protocol);
-                    docs[0].active.length.should.equal(1);
-                    docs[0].staticAttributes.length.should.equal(1);
-                    docs[0].staticAttributes[0].name.should.equal('location');
-                    docs[0].active[0].name.should.equal('pressure');
-                    docs[0].commands[0].name.should.equal('position');
-                    docs[0].internalAttributes.customAttribute.should.equal('customValue');
-                    docs[0].resource.should.equal('/test');
-                    docs[0].endpoint.should.equal('http://testEndpoint.com');
-                    docs[0].transport.should.equal('HTTP');
-                    docs[0].protocol.should.equal('GENERIC_PROTOCOL');
-                    docs[0].apikey.should.equal('2345678ikjhgfr678i');
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('devices')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(1);
+                        should.exist(docs[0].internalAttributes);
+                        should.exist(docs[0].staticAttributes);
+                        should.exist(docs[0].internalAttributes.customAttribute);
+                        should.exist(docs[0].active);
+                        should.exist(docs[0].commands);
+                        should.exist(docs[0].resource);
+                        should.exist(docs[0].endpoint);
+                        should.exist(docs[0].transport);
+                        should.exist(docs[0].apikey);
+                        should.exist(docs[0].protocol);
+                        docs[0].active.length.should.equal(1);
+                        docs[0].staticAttributes.length.should.equal(1);
+                        docs[0].staticAttributes[0].name.should.equal('location');
+                        docs[0].active[0].name.should.equal('pressure');
+                        docs[0].commands[0].name.should.equal('position');
+                        docs[0].internalAttributes.customAttribute.should.equal('customValue');
+                        docs[0].resource.should.equal('/test');
+                        docs[0].endpoint.should.equal('http://testEndpoint.com');
+                        docs[0].transport.should.equal('HTTP');
+                        docs[0].protocol.should.equal('GENERIC_PROTOCOL');
+                        docs[0].apikey.should.equal('2345678ikjhgfr678i');
+                        done();
+                    });
             });
         });
     });
@@ -275,28 +291,44 @@ describe('MongoDB Device Registry', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
@@ -319,26 +351,42 @@ describe('MongoDB Device Registry', function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 done();
@@ -357,54 +405,73 @@ describe('MongoDB Device Registry', function() {
 
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
-            var expectedPayload3 = utils
-                .readExampleFile('./test/unit/examples/contextAvailabilityRequests/unregisterDevice3.json');
+            var expectedPayload3 = utils.readExampleFile(
+                './test/unit/examples/contextAvailabilityRequests/unregisterDevice3.json'
+            );
 
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext', expectedPayload3)
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.series([
-                    async.apply(iotAgentLib.register, device1),
-                    async.apply(iotAgentLib.register, device2)
-                ], done);
+                async.series(
+                    [async.apply(iotAgentLib.register, device1), async.apply(iotAgentLib.register, device2)],
+                    done
+                );
             });
         });
 
         it('should be removed from MongoDB', function(done) {
             iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
-                iotAgentDb.db().collection('devices').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(1);
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('devices')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(1);
+                        done();
+                    });
             });
         });
     });
@@ -416,9 +483,10 @@ describe('MongoDB Device Registry', function() {
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             var devices = [];
 
@@ -433,9 +501,9 @@ describe('MongoDB Device Registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i
-                        }
-                    ]
+                            value: i,
+                        },
+                    ],
                 });
             }
 
@@ -449,14 +517,16 @@ describe('MongoDB Device Registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function(done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens',
-                function(error, devices) {
-                    should.not.exist(error);
-                    should.exist(devices);
-                    devices.length.should.equal(1);
-                    devices[0].id.should.equal('id3');
-                    done();
-                });
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function(
+                error,
+                devices
+            ) {
+                should.not.exist(error);
+                should.exist(devices);
+                devices.length.should.equal(1);
+                devices[0].id.should.equal('id3');
+                done();
+            });
         });
     });
 
@@ -467,9 +537,10 @@ describe('MongoDB Device Registry', function() {
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             var devices = [];
 
@@ -484,9 +555,9 @@ describe('MongoDB Device Registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i
-                        }
-                    ]
+                            value: i,
+                        },
+                    ],
                 });
             }
 

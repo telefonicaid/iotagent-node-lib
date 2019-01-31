@@ -73,8 +73,7 @@ var commands = {
     },
     listdevices: {
         parameters: [],
-        description:
-            '\tList all the devices that have been registered in this IoT Agent session\n',
+        description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices,
     },
 };
@@ -92,20 +91,14 @@ function handleError(message) {
 }
 
 function listDevices() {
-    iotAgentLib.listDevices(config.service, config.subservice, function(
-        error,
-        devices
-    ) {
+    iotAgentLib.listDevices(config.service, config.subservice, function(error, devices) {
         if (error) {
             console.log('\n\033[31mERROR:\033[0m %s', error.message);
         } else {
             var keys = Object.keys(devices);
 
             for (var i = 0; i < keys.length; i++) {
-                console.log(
-                    '\n\n%s\n',
-                    JSON.stringify(devices[keys[i]], null, 4)
-                );
+                console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
             }
 
             commandUtils.prompt();
@@ -135,10 +128,7 @@ function extractAttributes(attributeString, callback) {
 }
 
 function showConfig() {
-    console.log(
-        'Current configuration file:\n\n%s',
-        JSON.stringify(config, null, 4)
-    );
+    console.log('Current configuration file:\n\n%s', JSON.stringify(config, null, 4));
 }
 
 function changeConfig(command) {
@@ -206,10 +196,7 @@ function registerDevice(command) {
     };
 
     console.log('Registering device');
-    iotAgentLib.register(
-        device,
-        handleError('Device registered in the Context Broker')
-    );
+    iotAgentLib.register(device, handleError('Device registered in the Context Broker'));
 }
 
 function unregisterDevice(command) {
@@ -243,10 +230,7 @@ function updateDeviceValue(command) {
 }
 
 function queryHandler(id, type, attributes, callback) {
-    console.log(
-        'Handling query for [%s] of type [%s]:\n%s',
-        JSON.stringify(attributes)
-    );
+    console.log('Handling query for [%s] of type [%s]:\n%s', JSON.stringify(attributes));
 
     callback(null, {
         type: type,
@@ -257,11 +241,7 @@ function queryHandler(id, type, attributes, callback) {
 }
 
 function updateHandler(id, type, attributes, callback) {
-    console.log(
-        'Update message received for device with id [%s] and type [%s]',
-        id,
-        type
-    );
+    console.log('Update message received for device with id [%s] and type [%s]', id, type);
 
     callback(null, {
         type: type,

@@ -37,56 +37,55 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'BrokenLight': {
+            BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'Termometer': {
+            Termometer: {
                 type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ]
+                active: [],
             },
-            'Humidity': {
+            Humidity: {
                 type: 'Humidity',
                 cbHost: 'http://192.168.1.1:3024',
                 commands: [],
@@ -94,41 +93,41 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
+                        type: 'percentage',
+                    },
+                ],
             },
-            'Motion': {
+            Motion: {
                 type: 'Motion',
                 commands: [],
                 lazy: [],
                 staticAttributes: [
                     {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
+                        name: 'location',
+                        type: 'Vector',
+                        value: '(123,523)',
+                    },
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
+                        type: 'percentage',
+                    },
+                ],
+            },
         },
         iotManager: {
             host: 'localhost',
             port: 8082,
             path: '/protocols',
             protocol: 'MQTT_UL',
-            description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)'
+            description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)',
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     groupCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
@@ -146,17 +145,17 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean'
-                        }
+                            type: 'Boolean',
+                        },
                     ],
-                    static_attributes: []
-                }
-            ]
+                    static_attributes: [],
+                },
+            ],
         },
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -164,12 +163,11 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     contextBrokerMock,
     iotamMock;
-
 
 /* jshint camelcase: false */
 describe('Device Service: utils', function() {
@@ -185,15 +183,11 @@ describe('Device Service: utils', function() {
 
     afterEach(function(done) {
         nock.cleanAll();
-        async.series([
-            iotAgentLib.clearAll,
-            iotAgentLib.deactivate
-        ], done);
+        async.series([iotAgentLib.clearAll, iotAgentLib.deactivate], done);
     });
 
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
         beforeEach(function(done) {
-
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
@@ -203,10 +197,10 @@ describe('Device Service: utils', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([
-                request.bind(request, groupCreation),
-                request.bind(request, deviceCreation)
-            ], function(error, results) {
+            async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function(
+                error,
+                results
+            ) {
                 done();
             });
         });
@@ -224,7 +218,6 @@ describe('Device Service: utils', function() {
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
         beforeEach(function(done) {
-
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
@@ -234,36 +227,38 @@ describe('Device Service: utils', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([
-                request.bind(request, groupCreation)
-            ], function(error, results) {
+            async.series([request.bind(request, groupCreation)], function(error, results) {
                 done();
             });
         });
 
         it('should register the device and return it', function(done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                function(error, device) {
-                    should.not.exist(error);
-                    should.exist(device);
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function(
+                error,
+                device
+            ) {
+                should.not.exist(error);
+                should.exist(device);
 
-                    device.id.should.equal('UNEXISTENT_DEV');
-                    should.exist(device.protocol);
-                    device.protocol.should.equal('MQTT_UL');
-                    done();
-                });
+                device.id.should.equal('UNEXISTENT_DEV');
+                should.exist(device.protocol);
+                device.protocol.should.equal('MQTT_UL');
+                done();
+            });
         });
     });
 
     describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
         it('should raise an error', function(done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092',
-                function(error, device) {
-                    should.exist(error);
-                    error.name.should.equal('DEVICE_GROUP_NOT_FOUND');
-                    should.not.exist(device);
-                    done();
-                });
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092', function(
+                error,
+                device
+            ) {
+                should.exist(error);
+                error.name.should.equal('DEVICE_GROUP_NOT_FOUND');
+                should.not.exist(device);
+                done();
+            });
         });
     });
 });

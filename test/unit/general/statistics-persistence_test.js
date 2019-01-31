@@ -32,35 +32,34 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         stats: {
             interval: 50,
-            persistence: true
+            persistence: true,
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent'
+            db: 'iotagent',
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     iotAgentDb,
     oldConfig;
 
 describe('Statistics persistence service', function() {
-
     function insertDummy(n, callback) {
-        iotAgentDb.collection('tests').insert({test: 'test'}, function() {
+        iotAgentDb.collection('tests').insert({ test: 'test' }, function() {
             callback();
         });
     }
@@ -90,23 +89,29 @@ describe('Statistics persistence service', function() {
 
     describe('When a periodic persitence action is set', function() {
         beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 10
-            }, function() {
-                statsService.add('stat1', 5, done);
-            });
+            statsService.globalLoad(
+                {
+                    stat1: 10,
+                },
+                function() {
+                    statsService.add('stat1', 5, done);
+                }
+            );
         });
 
         it('should store all the records in the database', function(done) {
             statsService.addTimerAction(statsService.mongodbPersistence, function() {
                 setTimeout(function() {
                     statsService.clearTimers(function() {
-                        iotAgentDb.collection('kpis').find({}).toArray(function(err, docs) {
-                            should.not.exist(err);
-                            should.exist(docs);
-                            docs.length.should.be.above(2);
-                            done();
-                        });
+                        iotAgentDb
+                            .collection('kpis')
+                            .find({})
+                            .toArray(function(err, docs) {
+                                should.not.exist(err);
+                                should.exist(docs);
+                                docs.length.should.be.above(2);
+                                done();
+                            });
                     });
                 }, 200);
             });

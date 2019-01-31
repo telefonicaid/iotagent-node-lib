@@ -32,17 +32,17 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Subscription tests', function() {
@@ -53,8 +53,8 @@ describe('Subscription tests', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         nock.cleanAll();
@@ -63,18 +63,26 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext',
-                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
+                );
 
             iotAgentLib.clearAll(function() {
                 request(optionsProvision, function(error, result, body) {
@@ -125,10 +133,14 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/unsubscribeContext',
-                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                .post(
+                    '/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
+                );
 
             done();
         });
@@ -165,10 +177,14 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/unsubscribeContext',
-                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                .post(
+                    '/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
+                );
 
             done();
         });
@@ -200,10 +216,9 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
+                        'fiware-servicepath': '/gardens',
+                    },
                 },
-
                 executedHandler = false;
 
             function mockedHandler(device, notification, callback) {
@@ -227,8 +242,8 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
+                        'fiware-servicepath': '/gardens',
+                    },
                 },
                 executedMiddlewares = false,
                 executedHandler = false,
@@ -245,7 +260,7 @@ describe('Subscription tests', function() {
                 notification.push({
                     name: 'middlewareAttribute',
                     type: 'middlewareType',
-                    value: 'middlewareValue'
+                    value: 'middlewareValue',
                 });
 
                 callback(null, device, notification);
@@ -269,14 +284,20 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
+                        'fiware-servicepath': '/gardens',
+                    },
                 },
                 rightFields = false;
 
             function mockedHandler(device, data, callback) {
-                if (device && device.id === 'MicroLight1' && device.name === 'FirstMicroLight' &&
-                    data && data.length === 1 && data[0].name === 'attr_name') {
+                if (
+                    device &&
+                    device.id === 'MicroLight1' &&
+                    device.name === 'FirstMicroLight' &&
+                    data &&
+                    data.length === 1 &&
+                    data[0].name === 'attr_name'
+                ) {
                     rightFields = true;
                 }
 
@@ -301,10 +322,9 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/errorNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
+                        'fiware-servicepath': '/gardens',
+                    },
                 },
-
                 executedHandler = false;
 
             function mockedHandler(device, notification, callback) {

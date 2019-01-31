@@ -35,7 +35,7 @@ describe('Expression interpreter', function() {
             big: 2000,
             number: 145,
             number2: 155,
-            number3inside: 200
+            number3inside: 200,
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -55,7 +55,7 @@ describe('Expression interpreter', function() {
         ['(5 + 2) * (@value + 7)', 91],
         ['(5 - @other) * (@value + 7)', 26],
         ['3 * 5.2', 15.6],
-        ['@value * 5.2', 31.2]
+        ['@value * 5.2', 31.2],
     ];
 
     function arithmeticUseCase(arithmeticExpr) {
@@ -87,21 +87,21 @@ describe('Expression interpreter', function() {
     describe('When string transformation functions are executed', function() {
         it('should return the appropriate piece of the string', function(done) {
             expressionParser.parse(
-                'trim(substr(@theString, indexOf(@theString, \",\") + 1, length(@theString)))',
+                'trim(substr(@theString, indexOf(@theString, ",") + 1, length(@theString)))',
                 scope,
                 'String',
                 function(error, result) {
                     should.not.exist(error);
                     result.should.equal('-19.4');
                     done();
-                });
+                }
+            );
         });
     });
 
     describe('When an expression contains variables with numbers', function() {
         it('should return the appropriate result', function(done) {
-            expressionParser.parse('@number + @number2 + @number3inside',
-                scope, 'String', function(error, result) {
+            expressionParser.parse('@number + @number2 + @number3inside', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal(500);
                 done();
@@ -111,26 +111,21 @@ describe('Expression interpreter', function() {
 
     describe('When an expression contains multiple parenthesis', function() {
         it('should return the appropriate result', function(done) {
-            expressionParser.parse('((@number) * (@number2))',
-                scope, 'String', function(error, result) {
-                    should.not.exist(error);
-                    result.should.equal(22475);
-                    done();
-                });
+            expressionParser.parse('((@number) * (@number2))', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal(22475);
+                done();
+            });
         });
     });
 
     describe('When trim() function is executed', function() {
         it('should return the appropriate piece of the string', function(done) {
-            expressionParser.parse(
-                'trim(@spaces)',
-                scope,
-                'String',
-                function(error, result) {
-                    should.not.exist(error);
-                    result.should.equal('5 a b c d 5');
-                    done();
-                });
+            expressionParser.parse('trim(@spaces)', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('5 a b c d 5');
+                done();
+            });
         });
     });
 
@@ -146,7 +141,7 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with strings with single quotation marks is parsed', function() {
         it('should accept the strings', function(done) {
-            expressionParser.parse('\'Pruebas \' # \'De Strings\'', scope, 'String', function(error, result) {
+            expressionParser.parse("'Pruebas ' # 'De Strings'", scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal('Pruebas De Strings');
                 done();
@@ -193,5 +188,4 @@ describe('Expression interpreter', function() {
             });
         });
     });
-
 });

@@ -33,13 +33,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [],
@@ -48,11 +48,11 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}'
-                    }
-                ]
+                        expression: '${@pressure * 20}',
+                    },
+                ],
             },
-            'LightError': {
+            LightError: {
                 commands: [],
                 type: 'Light',
                 lazy: [],
@@ -61,11 +61,11 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * / 20}'
-                    }
-                ]
+                        expression: '${@pressure * / 20}',
+                    },
+                ],
             },
-            'WeatherStation': {
+            WeatherStation: {
                 commands: [],
                 type: 'WeatherStation',
                 lazy: [],
@@ -74,21 +74,21 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}'
+                        expression: '${@pressure * 20}',
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
-                        type: 'Percentage'
+                        type: 'Percentage',
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}'
-                    }
-                ]
+                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}',
+                    },
+                ],
             },
-            'WeatherStationMultiple': {
+            WeatherStationMultiple: {
                 commands: [],
                 type: 'WeatherStation',
                 lazy: [],
@@ -97,26 +97,26 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure25',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}'
+                        expression: '${@pressure * 20}',
                     },
                     {
                         object_id: 'h',
                         name: 'humidity12',
-                        type: 'Percentage'
+                        type: 'Percentage',
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}'
-                    }
-                ]
-            }
+                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Expression-based transformations plugin', function() {
@@ -144,8 +144,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
-            }
+                value: '52',
+            },
         ];
 
         beforeEach(function() {
@@ -154,10 +154,16 @@ describe('Expression-based transformations plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextExpressionPlugin1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextExpressionPlugin1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextExpressionPlugin1Success.json'
+                    )
+                );
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -174,8 +180,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
-            }
+                value: '52',
+            },
         ];
 
         beforeEach(function() {
@@ -184,10 +190,16 @@ describe('Expression-based transformations plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextExpressionPlugin4.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextExpressionPlugin1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin4.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextExpressionPlugin1Success.json'
+                    )
+                );
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -205,13 +217,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
+                value: '52',
             },
             {
                 name: 'h',
                 type: 'percentage',
-                value: '12'
-            }
+                value: '12',
+            },
         ];
 
         beforeEach(function() {
@@ -220,10 +232,16 @@ describe('Expression-based transformations plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextExpressionPlugin2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextExpressionPlugin2Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextExpressionPlugin2Success.json'
+                    )
+                );
         });
 
         it('should calculate them and add them to the payload', function(done) {
@@ -240,13 +258,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
+                value: '52',
             },
             {
                 name: 'h',
                 type: 'percentage',
-                value: '12'
-            }
+                value: '12',
+            },
         ];
 
         beforeEach(function() {
@@ -255,10 +273,16 @@ describe('Expression-based transformations plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextExpressionPlugin5.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextExpressionPlugin5Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin5.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextExpressionPlugin5Success.json'
+                    )
+                );
         });
 
         it('should calculate it and add it to the payload', function(done) {
@@ -275,8 +299,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
-            }
+                value: '52',
+            },
         ];
 
         beforeEach(function() {
@@ -285,10 +309,16 @@ describe('Expression-based transformations plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextExpressionPlugin3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextExpressionPlugin3Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextExpressionPlugin3Success.json'
+                    )
+                );
         });
 
         it('should not calculate the expression', function(done) {

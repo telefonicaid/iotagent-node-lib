@@ -35,52 +35,52 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Number'
+                        type: 'Number',
                     },
                     {
                         name: 'temperature',
-                        type: 'Number'
+                        type: 'Number',
                     },
                     {
                         name: 'id',
-                        type: 'String'
+                        type: 'String',
                     },
                     {
                         name: 'status',
-                        type: 'Boolean'
+                        type: 'Boolean',
                     },
                     {
                         name: 'keep_alive',
-                        type: 'None'
+                        type: 'None',
                     },
                     {
                         name: 'tags',
-                        type: 'Array'
+                        type: 'Array',
                     },
                     {
                         name: 'configuration',
-                        type: 'Object'
-                    }
-                ]
-            }
+                        type: 'Object',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('JSON native types autocast test', function() {
@@ -92,150 +92,161 @@ describe('JSON native types autocast test', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device.' +
-        'Observation with Number type and Integer value', function() {
+    describe(
+        'When the IoT Agent receives new information from a device.' + 'Observation with Number type and Integer value',
+        function() {
+            var values = [
+                {
+                    name: 'pressure',
+                    type: 'Number',
+                    value: '23',
+                },
+            ];
 
-        var values = [
-            {
-                name: 'pressure',
-                type: 'Number',
-                value: '23'
-            }
-        ];
+            beforeEach(function(done) {
+                nock.cleanAll();
 
-        beforeEach(function(done) {
-            nock.cleanAll();
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post(
+                        '/v2/entities/light1/attrs',
+                        utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast1.json')
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast1.json'))
-                .query({type: 'Light'})
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
+                iotAgentLib.activate(iotAgentConfig, done);
             });
-        });
-    });
 
-    describe('When the IoT Agent receives new information from a device.' +
-        'Observation with Number type and Float value', function() {
-
-        var values = [
-            {
-                name: 'temperature',
-                type: 'Number',
-                value: '14.4'
-            }
-        ];
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast2.json'))
-                .query({type: 'Light'})
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
+            it('should change the value of the corresponding attribute in the context broker', function(done) {
+                iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
             });
-        });
-    });
+        }
+    );
 
-    describe('When the IoT Agent receives new information from a device.' +
-        'Observation with Boolean type and True value', function() {
+    describe(
+        'When the IoT Agent receives new information from a device.' + 'Observation with Number type and Float value',
+        function() {
+            var values = [
+                {
+                    name: 'temperature',
+                    type: 'Number',
+                    value: '14.4',
+                },
+            ];
 
-        var values = [
-            {
-                name: 'status',
-                type: 'Boolean',
-                value: 'true'
-            }
-        ];
+            beforeEach(function(done) {
+                nock.cleanAll();
 
-        beforeEach(function(done) {
-            nock.cleanAll();
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post(
+                        '/v2/entities/light1/attrs',
+                        utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast2.json')
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast3.json'))
-                .query({type: 'Light'})
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
+                iotAgentLib.activate(iotAgentConfig, done);
             });
-        });
-    });
 
-    describe('When the IoT Agent receives new information from a device.' +
-        'Observation with Boolean type and False value', function() {
-
-        var values = [
-            {
-                name: 'status',
-                type: 'Boolean',
-                value: 'false'
-            }
-        ];
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast4.json'))
-                .query({type: 'Light'})
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
+            it('should change the value of the corresponding attribute in the context broker', function(done) {
+                iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
             });
-        });
-    });
+        }
+    );
+
+    describe(
+        'When the IoT Agent receives new information from a device.' + 'Observation with Boolean type and True value',
+        function() {
+            var values = [
+                {
+                    name: 'status',
+                    type: 'Boolean',
+                    value: 'true',
+                },
+            ];
+
+            beforeEach(function(done) {
+                nock.cleanAll();
+
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post(
+                        '/v2/entities/light1/attrs',
+                        utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast3.json')
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
+
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+
+            it('should change the value of the corresponding attribute in the context broker', function(done) {
+                iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
+
+    describe(
+        'When the IoT Agent receives new information from a device.' + 'Observation with Boolean type and False value',
+        function() {
+            var values = [
+                {
+                    name: 'status',
+                    type: 'Boolean',
+                    value: 'false',
+                },
+            ];
+
+            beforeEach(function(done) {
+                nock.cleanAll();
+
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'gardens')
+                    .post(
+                        '/v2/entities/light1/attrs',
+                        utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast4.json')
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
+
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+
+            it('should change the value of the corresponding attribute in the context broker', function(done) {
+                iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
 
     describe('When the IoT Agent receives new information from a device. Observation with None type', function() {
-
         var values = [
             {
                 name: 'keep_alive',
                 type: 'None',
-                value: 'null'
-            }
+                value: 'null',
+            },
         ];
 
         beforeEach(function(done) {
@@ -244,9 +255,11 @@ describe('JSON native types autocast test', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast5.json'))
-                .query({type: 'Light'})
+                .post(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast5.json')
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -262,13 +275,12 @@ describe('JSON native types autocast test', function() {
     });
 
     describe('When the IoT Agent receives new information from a device. Observation with Array type', function() {
-
         var values = [
             {
                 name: 'tags',
                 type: 'Array',
-                value: '["iot","device"]'
-            }
+                value: '["iot","device"]',
+            },
         ];
 
         beforeEach(function(done) {
@@ -277,9 +289,11 @@ describe('JSON native types autocast test', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast6.json'))
-                .query({type: 'Light'})
+                .post(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast6.json')
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -295,13 +309,12 @@ describe('JSON native types autocast test', function() {
     });
 
     describe('When the IoT Agent receives new information from a device. Observation with Object type', function() {
-
         var values = [
             {
                 name: 'configuration',
                 type: 'Object',
-                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}'
-            }
+                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}',
+            },
         ];
 
         beforeEach(function(done) {
@@ -310,9 +323,11 @@ describe('JSON native types autocast test', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast7.json'))
-                .query({type: 'Light'})
+                .post(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast7.json')
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

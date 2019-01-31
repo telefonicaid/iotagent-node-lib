@@ -28,7 +28,6 @@
 
 var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     utils = require('../../../tools/utils'),
-
     should = require('should'),
     nock = require('nock'),
     contextBrokerMock,
@@ -39,11 +38,11 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         service: 'smartGondor',
@@ -51,7 +50,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     groupCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -59,8 +58,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -68,8 +67,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     };
 
 describe('Provisioning API: Single service mode', function() {
@@ -94,8 +93,8 @@ describe('Provisioning API: Single service mode', function() {
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
-            }
+                'fiware-servicepath': '/testingPath',
+            },
         };
 
         beforeEach(function(done) {
@@ -119,8 +118,8 @@ describe('Provisioning API: Single service mode', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
-            }
+                'fiware-servicepath': '/testingPath',
+            },
         };
 
         beforeEach(function(done) {
@@ -130,7 +129,7 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -165,8 +164,8 @@ describe('Provisioning API: Single service mode', function() {
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
                 headers: {
                     'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
+                    'fiware-servicepath': '/testingPath',
+                },
             },
             alternativeGroupCreation = {
                 url: 'http://localhost:4041/iot/services',
@@ -174,8 +173,8 @@ describe('Provisioning API: Single service mode', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
                 headers: {
                     'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
+                    'fiware-servicepath': '/testingPath',
+                },
             };
 
         beforeEach(function(done) {
@@ -185,7 +184,7 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -200,7 +199,7 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'AlternateService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -234,8 +233,8 @@ describe('Provisioning API: Single service mode', function() {
                 method: 'GET',
                 headers: {
                     'fiware-service': 'TestService',
-                    'fiware-servicepath': '/testingPath'
-                }
+                    'fiware-servicepath': '/testingPath',
+                },
             },
             oldType;
 
@@ -246,7 +245,7 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -287,18 +286,17 @@ describe('Provisioning API: Single service mode', function() {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json');
+                    var expectedBody = utils.readExampleFile(
+                        './test/unit/ngsiv2/examples' +
+                            '/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'
+                    );
 
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -309,18 +307,21 @@ describe('Provisioning API: Single service mode', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
+                    )
+                )
                 .reply(204);
 
             request(groupCreation, done);
@@ -340,6 +341,5 @@ describe('Provisioning API: Single service mode', function() {
                 done();
             });
         });
-
     });
 });

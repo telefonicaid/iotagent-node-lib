@@ -39,24 +39,17 @@ function manageULRequest(req, res, next) {
             });
         } else {
             values = parseUl(req.query.d, device);
-            iotAgentLib.update(
-                device.name,
-                device.type,
-                '',
-                values,
-                device,
-                function(error) {
-                    if (error) {
-                        res.status(500).send({
-                            message: 'Error updating the device',
-                        });
-                    } else {
-                        res.status(200).send({
-                            message: 'Device successfully updated',
-                        });
-                    }
+            iotAgentLib.update(device.name, device.type, '', values, device, function(error) {
+                if (error) {
+                    res.status(500).send({
+                        message: 'Error updating the device',
+                    });
+                } else {
+                    res.status(200).send({
+                        message: 'Device successfully updated',
+                    });
                 }
-            );
+            });
         }
     });
 }
@@ -75,11 +68,7 @@ function initSouthbound(callback) {
     southboundServer.server = http.createServer(southboundServer.app);
     southboundServer.app.use('/', southboundServer.router);
 
-    southboundServer.server.listen(
-        southboundServer.app.get('port'),
-        southboundServer.app.get('host'),
-        callback
-    );
+    southboundServer.server.listen(southboundServer.app.get('port'), southboundServer.app.get('host'), callback);
 }
 
 function createResponse(id, type, attributes, body) {
@@ -156,10 +145,7 @@ function updateContextHandler(id, type, attributes, callback) {
 }
 
 function provisioningHandler(device, callback) {
-    console.log(
-        '\n\n* REGISTERING A NEW DEVICE:\n%s\n\n',
-        JSON.stringify(device, null, 4)
-    );
+    console.log('\n\n* REGISTERING A NEW DEVICE:\n%s\n\n', JSON.stringify(device, null, 4));
 
     device.type = 'CertifiedType';
 
@@ -167,10 +153,7 @@ function provisioningHandler(device, callback) {
 }
 
 function configurationHandler(configuration, callback) {
-    console.log(
-        '\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n',
-        JSON.stringify(configuration, null, 4)
-    );
+    console.log('\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n', JSON.stringify(configuration, null, 4));
     callback(null, configuration);
 }
 
@@ -186,10 +169,7 @@ iotAgentLib.activate(config, function(error) {
 
         initSouthbound(function(error) {
             if (error) {
-                console.log(
-                    'Could not initialize South bound API due to the following error: %s',
-                    error
-                );
+                console.log('Could not initialize South bound API due to the following error: %s', error);
             } else {
                 console.log('Both APIs started successfully');
             }

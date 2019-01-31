@@ -32,56 +32,55 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'BrokenLight': {
+            BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'Termometer': {
+            Termometer: {
                 type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ]
+                active: [],
             },
-            'Humidity': {
+            Humidity: {
                 type: 'Humidity',
                 cbHost: 'http://192.168.1.1:3024',
                 commands: [],
@@ -89,34 +88,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
+                        type: 'percentage',
+                    },
+                ],
             },
-            'Motion': {
+            Motion: {
                 type: 'Motion',
                 commands: [],
                 lazy: [],
                 staticAttributes: [
                     {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
+                        name: 'location',
+                        type: 'Vector',
+                        value: '(123,523)',
+                    },
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
+                        type: 'percentage',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Timestamp compression plugin', function() {
@@ -142,13 +141,13 @@ describe('Timestamp compression plugin', function() {
             {
                 name: 'state',
                 type: 'Boolean',
-                value: 'true'
+                value: 'true',
             },
             {
                 name: 'The Target Value',
                 type: 'ISO8601',
-                value: '20071103T131805'
-            }
+                value: '20071103T131805',
+            },
         ];
 
         beforeEach(function() {
@@ -157,10 +156,16 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextCompressTimestamp1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'
+                    )
+                );
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -182,15 +187,15 @@ describe('Timestamp compression plugin', function() {
                     {
                         name: 'TimeInstant',
                         type: 'ISO8601',
-                        value: '20071103T131805'
-                    }
-                ]
+                        value: '20071103T131805',
+                    },
+                ],
             },
             {
                 name: 'The Target Value',
                 type: 'ISO8601',
-                value: '20071103T131805'
-            }
+                value: '20071103T131805',
+            },
         ];
 
         beforeEach(function() {
@@ -199,10 +204,16 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextCompressTimestamp2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'
+                    )
+                );
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -215,10 +226,7 @@ describe('Timestamp compression plugin', function() {
     });
 
     describe('When a query comes for a timestamp through the plugin', function() {
-        var values = [
-            'state',
-            'The Target Value'
-        ];
+        var values = ['state', 'The Target Value'];
 
         beforeEach(function() {
             nock.cleanAll();
@@ -226,10 +234,16 @@ describe('Timestamp compression plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/queryContextCompressTimestamp1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContextCompressTimestamp1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'
+                    )
+                );
         });
 
         it('should return an entity with all its timestamps without separators (basic format)', function(done) {

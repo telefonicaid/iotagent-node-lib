@@ -24,7 +24,6 @@
 
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     utils = require('../../tools/utils'),
-
     should = require('should'),
     nock = require('nock'),
     request = require('request'),
@@ -33,18 +32,18 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Device provisioning API: Provision devices', function() {
@@ -55,17 +54,27 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.clearAll(done);
         });
@@ -84,18 +93,30 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createProvisionedDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
         });
 
         var options = {
@@ -104,8 +125,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         it('should add the device to the devices list', function(done) {
@@ -218,8 +239,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionTimeInstant.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -238,10 +259,14 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createTimeinstantDevice.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createTimeinstantSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createTimeinstantDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createTimeinstantSuccess.json')
+                );
 
             done();
         });
@@ -261,8 +286,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -270,10 +295,14 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             done();
         });
@@ -317,8 +346,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionGeopointDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -326,12 +355,16 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext',
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createGeopointProvisionedDevice.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextRequests/createGeopointProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createGeopointProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextResponses/createGeopointProvisionedDeviceSuccess.json'
+                    )
+                );
 
             done();
         });
@@ -351,8 +384,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDatetimeDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -360,12 +393,16 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext',
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createDatetimeProvisionedDevice.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextRequests/createDatetimeProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createDatetimeProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextResponses/createDatetimeProvisionedDeviceSuccess.json'
+                    )
+                );
 
             done();
         });
@@ -378,43 +415,51 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
-
     describe('When two devices with the same ID but different services arrive to the agent', function() {
         var options1 = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             },
             options2 = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'
+                ),
                 headers: {
                     'fiware-service': 'smartMordor',
-                    'fiware-servicepath': '/electricity'
-                }
+                    'fiware-servicepath': '/electricity',
+                },
             };
 
         beforeEach(function(done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createMinimumProvisionedDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             done();
         });
@@ -455,8 +500,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -466,15 +511,18 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
-                .reply(200,
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
-                .replyWithError({'message': 'Description of the error', 'code': 'STRING_CODE'});
+                .replyWithError({ message: 'Description of the error', code: 'STRING_CODE' });
 
             done();
         });
@@ -496,8 +544,8 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -507,15 +555,18 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
-                .reply(200,
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
-                .replyWithError({'message': 'Description of the error', 'code': 123456789});
+                .replyWithError({ message: 'Description of the error', code: 123456789 });
 
             done();
         });
@@ -536,10 +587,11 @@ describe('Device provisioning API: Provision devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json'
+            ),
         };
 
         it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes', function(done) {
@@ -559,26 +611,35 @@ describe('Device provisioning API: Provision devices', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function(done) {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             done();
         });
@@ -599,11 +660,12 @@ describe('Device provisioning API: Provision devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMalformed1.json'),
+                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMalformed1.json'
+            ),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         it('should raise a WRONG_SYNTAX exception', function(done) {
@@ -623,9 +685,9 @@ describe('Device provisioning API: Provision devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         };
 
         beforeEach(function(done) {
@@ -657,7 +719,8 @@ describe('Device provisioning API: Provision devices', function() {
             method: 'POST',
             headers: {},
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json'
+            ),
         };
 
         it('should raise a MISSING_HEADERS error, indicating the missing attributes', function(done) {
@@ -670,21 +733,21 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device delete request arrives to the Agent for a not existing device', function() {
-      var options = {
-          url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
-          headers: {
-              'fiware-service': 'smartGondor',
-              'fiware-servicepath': '/gardens'
-          },
-          method: 'DELETE'
-      };
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens',
+            },
+            method: 'DELETE',
+        };
 
-      it('should return a 404 error', function(done) {
-          request(options, function(error, response, body) {
-              should.not.exist(error);
-              response.statusCode.should.equal(404);
-              done();
-          });
-      });
+        it('should return a 404 error', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(404);
+                done();
+            });
+        });
     });
 });

@@ -23,7 +23,7 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
- /* jshint camelcase: false */
+/* jshint camelcase: false */
 
 'use strict';
 
@@ -39,25 +39,22 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Device provisioning API: List provisioned devices', function() {
-    var provisioning1Options,
-        provisioning2Options,
-        provisioning3Options,
-        provisioning4Options;
+    var provisioning1Options, provisioning2Options, provisioning3Options, provisioning4Options;
 
     beforeEach(function(done) {
         provisioning1Options = {
@@ -65,9 +62,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         };
 
         provisioning2Options = {
@@ -75,9 +72,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json'),
         };
 
         provisioning4Options = {
@@ -85,53 +82,50 @@ describe('Device provisioning API: List provisioned devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionFullDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionFullDevice.json'),
         };
 
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning1Options),
-                async.apply(request, provisioning2Options),
-                async.apply(request, provisioning4Options)
-            ], function(error, results) {
-                done();
-            });
+            async.series(
+                [
+                    iotAgentLib.clearAll,
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options),
+                    async.apply(request, provisioning4Options),
+                ],
+                function(error, results) {
+                    done();
+                }
+            );
         });
     });
 
@@ -144,9 +138,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         it('should return all the provisioned devices', function(done) {
@@ -190,7 +184,6 @@ describe('Device provisioning API: List provisioned devices', function() {
             request(options, function(error, response, body) {
                 var parsedBody = JSON.parse(body);
 
-
                 should.exist(parsedBody.devices[2].attributes[0].entity_name);
                 should.exist(parsedBody.devices[2].attributes[0].entity_type);
                 should.exist(parsedBody.devices[2].attributes[1].expression);
@@ -208,9 +201,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         it('should return all the information on that particular device', function(done) {
@@ -251,9 +244,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         it('should return the appropriate attribute fields', function(done) {
@@ -282,9 +275,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         it('should return a 404 error', function(done) {
@@ -301,9 +294,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         function createDeviceRequest(i, callback) {
@@ -314,9 +307,9 @@ describe('Device provisioning API: List provisioned devices', function() {
                 method: 'POST',
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
+                    'fiware-servicepath': '/gardens',
                 },
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
             };
 
             provisioningDeviceOptions.json.devices[0].device_id =
@@ -333,7 +326,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .times(10)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -374,9 +367,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         function createDeviceRequest(i, callback) {
@@ -385,9 +378,9 @@ describe('Device provisioning API: List provisioned devices', function() {
                 method: 'POST',
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
+                    'fiware-servicepath': '/gardens',
                 },
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
             };
 
             provisioningDeviceOptions.json.devices[0].device_id =
@@ -406,7 +399,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .times(10)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.clearAll(function() {
                 async.timesSeries(10, createDeviceRequest, function(error, results) {
@@ -434,9 +427,9 @@ describe('Device provisioning API: List provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'GET'
+            method: 'GET',
         };
 
         beforeEach(function(done) {
@@ -445,15 +438,16 @@ describe('Device provisioning API: List provisioned devices', function() {
                 method: 'POST',
                 headers: {
                     'fiware-service': 'dumbMordor',
-                    'fiware-servicepath': '/gardens'
+                    'fiware-servicepath': '/gardens',
                 },
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json')
+                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json'
+                ),
             };
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             request(provisioning3Options, function(error) {
                 done();

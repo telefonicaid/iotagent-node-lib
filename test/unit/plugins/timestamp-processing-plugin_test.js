@@ -32,34 +32,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Timestamp processing plugin', function() {
@@ -84,13 +84,13 @@ describe('Timestamp processing plugin', function() {
             {
                 name: 'state',
                 type: 'Boolean',
-                value: 'true'
+                value: 'true',
             },
             {
                 name: 'TimeInstant',
                 type: 'ISO8601',
-                value: '2016-05-30T16:25:22.304Z'
-            }
+                value: '2016-05-30T16:25:22.304Z',
+            },
         ];
 
         beforeEach(function() {
@@ -99,10 +99,16 @@ describe('Timestamp processing plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextProcessTimestamp1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextProcessTimestamp1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextProcessTimestamp1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextProcessTimestamp1Success.json'
+                    )
+                );
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

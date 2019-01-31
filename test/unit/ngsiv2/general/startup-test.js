@@ -35,34 +35,33 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 attributes: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     iotamMock;
 
 describe('Startup tests', function() {
-
     describe('When the IoT Agent is started with environment variables', function() {
         beforeEach(function() {
             process.env.IOTA_CB_HOST = 'cbhost';
@@ -89,8 +88,10 @@ describe('Startup tests', function() {
 
             iotamMock = nock('http://iotamhost:4444')
                 .post('/iotampath')
-                .reply(200,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json')
+                );
         });
 
         afterEach(function() {

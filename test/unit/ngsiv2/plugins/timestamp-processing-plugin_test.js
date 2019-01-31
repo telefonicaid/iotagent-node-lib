@@ -35,34 +35,34 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Timestamp processing plugin', function() {
@@ -87,13 +87,13 @@ describe('Timestamp processing plugin', function() {
             {
                 name: 'state',
                 type: 'Boolean',
-                value: true
+                value: true,
             },
             {
                 name: 'TimeInstant',
                 type: 'DateTime',
-                value: '2016-05-30T16:25:22.304Z'
-            }
+                value: '2016-05-30T16:25:22.304Z',
+            },
         ];
 
         beforeEach(function() {
@@ -102,9 +102,13 @@ describe('Timestamp processing plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'))
-                .query({type: 'Light'})
+                .post(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'
+                    )
+                )
+                .query({ type: 'Light' })
                 .reply(204);
         });
 

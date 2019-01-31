@@ -36,18 +36,18 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Device provisioning API: Remove provisioned devices', function() {
@@ -56,40 +56,42 @@ describe('Device provisioning API: Remove provisioned devices', function() {
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         },
         provisioning2Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json'),
         },
         provisioning3Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/' +
-                'provisionDeviceActiveAtts.json')
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/' + 'provisionDeviceActiveAtts.json'
+            ),
         };
 
     beforeEach(function(done) {
         iotAgentLib.activate(iotAgentConfig, function() {
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -101,13 +103,14 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .reply(204);
 
             var nockBody2 = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'
+            );
             nockBody2.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody2)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -133,14 +136,17 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning1Options),
-                async.apply(request, provisioning2Options),
-                async.apply(request, provisioning3Options)
-            ], function(error, results) {
-                done();
-            });
+            async.series(
+                [
+                    iotAgentLib.clearAll,
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options),
+                    async.apply(request, provisioning3Options),
+                ],
+                function(error, results) {
+                    done();
+                }
+            );
         });
     });
 
@@ -153,9 +159,9 @@ describe('Device provisioning API: Remove provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'DELETE'
+            method: 'DELETE',
         };
 
         it('should return a 200 OK and no errors', function(done) {
@@ -172,9 +178,9 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
+                        'fiware-servicepath': '/gardens',
                     },
-                    method: 'GET'
+                    method: 'GET',
                 };
 
                 request(options, function(error, response, body) {
@@ -191,9 +197,9 @@ describe('Device provisioning API: Remove provisioned devices', function() {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
+                        'fiware-servicepath': '/gardens',
                     },
-                    method: 'GET'
+                    method: 'GET',
                 };
 
                 request(options, function(error, response, body) {
@@ -224,9 +230,9 @@ describe('Device provisioning API: Remove provisioned devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light3',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
+                'fiware-servicepath': '/gardens',
             },
-            method: 'DELETE'
+            method: 'DELETE',
         };
 
         it('should return a 200 OK and no errors', function(done) {

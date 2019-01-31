@@ -36,27 +36,27 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             name: 'testAgent',
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         deviceRegistry: {
-            type: 'mongodb'
+            type: 'mongodb',
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent'
+            db: 'iotagent',
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     mongo = require('mongodb').MongoClient,
     mongoUtils = require('./mongoDBUtils'),
@@ -74,33 +74,33 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     commands: [
                         {
                             name: 'wheel1',
-                            type: 'Wheel'
-                        }
+                            type: 'Wheel',
+                        },
                     ],
                     lazy: [
                         {
                             name: 'luminescence',
-                            type: 'Lumens'
-                        }
+                            type: 'Lumens',
+                        },
                     ],
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean'
-                        }
+                            type: 'Boolean',
+                        },
                     ],
                     internal_attributes: [
                         {
-                            customField: 'customValue'
-                        }
-                    ]
-                }
-            ]
+                            customField: 'customValue',
+                        },
+                    ],
+                },
+            ],
         },
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
@@ -108,12 +108,12 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         json: {},
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
+            'fiware-servicepath': '/testingPath',
         },
         qs: {
             resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+        },
     },
     optionsList = {
         url: 'http://localhost:4041/iot/services',
@@ -121,8 +121,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         json: {},
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
-        }
+            'fiware-servicepath': '/*',
+        },
     },
     optionsUpdate = {
         url: 'http://localhost:4041/iot/services',
@@ -134,37 +134,37 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             commands: [
                 {
                     name: 'wheel1',
-                    type: 'Wheel'
-                }
+                    type: 'Wheel',
+                },
             ],
             lazy: [
                 {
                     name: 'luminescence',
-                    type: 'Lumens'
-                }
+                    type: 'Lumens',
+                },
             ],
             attributes: [
                 {
                     name: 'status',
-                    type: 'Boolean'
-                }
+                    type: 'Boolean',
+                },
             ],
             static_attributes: [
                 {
                     name: 'bootstrapServer',
                     type: 'Address',
-                    value: '127.0.0.1'
-                }
-            ]
+                    value: '127.0.0.1',
+                },
+            ],
         },
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
+            'fiware-servicepath': '/testingPath',
         },
         qs: {
             resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+        },
     },
     optionsGet = {
         url: 'http://localhost:4041/iot/services',
@@ -172,22 +172,23 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         json: {},
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     iotAgentDb;
 
 describe('MongoDB Group Registry test', function() {
-
     beforeEach(function(done) {
         mongoUtils.cleanDbs(function() {
             iotAgentLib.activate(iotAgentConfig, function() {
-                mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
-                    iotAgentDb = db;
-                    done();
-                });
+                mongo.connect(
+                    'mongodb://localhost:27017/iotagent',
+                    function(err, db) {
+                        iotAgentDb = db;
+                        done();
+                    }
+                );
             });
-
         });
     });
 
@@ -201,35 +202,43 @@ describe('MongoDB Group Registry test', function() {
     describe('When a new device group creation request arrives', function() {
         it('should store it in the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(1);
-                    should.exist(docs[0].type);
-                    should.exist(docs[0].internalAttributes);
-                    should.exist(docs[0].attributes);
-                    should.exist(docs[0].apikey);
-                    docs[0].type.should.equal('Light');
-                    docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                    docs[0].internalAttributes.length.should.equal(1);
-                    docs[0].internalAttributes[0].customField.should.equal('customValue');
-                    docs[0].attributes.length.should.equal(1);
-                    docs[0].attributes[0].name.should.equal('status');
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(1);
+                        should.exist(docs[0].type);
+                        should.exist(docs[0].internalAttributes);
+                        should.exist(docs[0].attributes);
+                        should.exist(docs[0].apikey);
+                        docs[0].type.should.equal('Light');
+                        docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                        docs[0].internalAttributes.length.should.equal(1);
+                        docs[0].internalAttributes[0].customField.should.equal('customValue');
+                        docs[0].attributes.length.should.equal(1);
+                        docs[0].attributes[0].name.should.equal('status');
+                        done();
+                    });
             });
         });
         it('should store the service information from the headers into the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs[0].service);
-                    should.exist(docs[0].subservice);
-                    docs[0].service.should.equal('TestService');
-                    docs[0].subservice.should.equal('/testingPath');
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs[0].service);
+                        should.exist(docs[0].subservice);
+                        docs[0].service.should.equal('TestService');
+                        docs[0].subservice.should.equal('/testingPath');
+                        done();
+                    });
             });
         });
     });
@@ -253,13 +262,17 @@ describe('MongoDB Group Registry test', function() {
 
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(0);
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(0);
+                        done();
+                    });
             });
         });
 
@@ -278,15 +291,19 @@ describe('MongoDB Group Registry test', function() {
 
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs[0].cbHost);
-                    docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                    should.exist(docs[0].staticAttributes);
-                    docs[0].staticAttributes.length.should.equal(1);
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs[0].cbHost);
+                        docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                        should.exist(docs[0].staticAttributes);
+                        docs[0].staticAttributes.length.should.equal(1);
+                        done();
+                    });
             });
         });
     });
@@ -296,19 +313,24 @@ describe('MongoDB Group Registry test', function() {
 
         beforeEach(function(done) {
             optionsMultipleCreation.json = utils.readExampleFile(
-                './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json');
+                './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json'
+            );
 
             done();
         });
 
         it('should create the values in the database', function(done) {
             request(optionsMultipleCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    docs.length.should.equal(2);
-                    done();
-                });
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function(err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        docs.length.should.equal(2);
+                        done();
+                    });
             });
         });
     });
@@ -319,7 +341,6 @@ describe('MongoDB Group Registry test', function() {
                 optionsCreation2 = _.clone(optionsCreation),
                 optionsCreation3 = _.clone(optionsCreation);
 
-
             optionsCreation2.json = { services: [] };
             optionsCreation3.json = { services: [] };
 
@@ -329,11 +350,14 @@ describe('MongoDB Group Registry test', function() {
             optionsCreation2.json.services[0].apikey = 'qwertyuiop';
             optionsCreation3.json.services[0].apikey = 'lkjhgfds';
 
-            async.series([
-                async.apply(request, optionsCreation1),
-                async.apply(request, optionsCreation2),
-                async.apply(request, optionsCreation3)
-            ], done);
+            async.series(
+                [
+                    async.apply(request, optionsCreation1),
+                    async.apply(request, optionsCreation2),
+                    async.apply(request, optionsCreation3),
+                ],
+                done
+            );
         });
 
         it('should return all the configured device groups from the database', function(done) {
@@ -350,13 +374,13 @@ describe('MongoDB Group Registry test', function() {
             method: 'GET',
             qs: {
                 limit: 3,
-                offset: 2
+                offset: 2,
             },
             json: {},
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/*'
-            }
+                'fiware-servicepath': '/*',
+            },
         };
 
         beforeEach(function(done) {
@@ -384,9 +408,7 @@ describe('MongoDB Group Registry test', function() {
 
     describe('When a device info request arrives', function() {
         beforeEach(function(done) {
-            async.series([
-                async.apply(request, optionsCreation)
-            ], done);
+            async.series([async.apply(request, optionsCreation)], done);
         });
 
         it('should return all the configured device groups from the database', function(done) {

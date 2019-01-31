@@ -35,60 +35,59 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
+                        type: 'Hgmm',
+                    },
                 ],
                 service: 'smartGondor',
-                subservice: 'gardens'
+                subservice: 'gardens',
             },
-            'Termometer': {
+            Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ],
+                active: [],
                 service: 'smartGondor',
-                subservice: 'gardens'
-            }
+                subservice: 'gardens',
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     device1 = {
         id: 'light1',
         type: 'Light',
         service: 'smartGondor',
-        subservice: 'gardens'
+        subservice: 'gardens',
     },
     device2 = {
         id: 'term2',
         type: 'Termometer',
         service: 'smartGondor',
-        subservice: 'gardens'
+        subservice: 'gardens',
     };
 
 describe('IoT Agent Device Registration', function() {
@@ -119,14 +118,14 @@ describe('IoT Agent Device Registration', function() {
                 .reply(204);
 
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/registrations', nockBody)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
-
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -135,9 +134,9 @@ describe('IoT Agent Device Registration', function() {
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
             iotAgentLib.register(device1, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
         });
     });
@@ -147,7 +146,8 @@ describe('IoT Agent Device Registration', function() {
             nock.cleanAll();
 
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -174,7 +174,8 @@ describe('IoT Agent Device Registration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -204,13 +205,14 @@ describe('IoT Agent Device Registration', function() {
             nock.cleanAll();
 
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/registrations', nockBody)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -226,7 +228,7 @@ describe('IoT Agent Device Registration', function() {
             });
         });
 
-        it('should return all the device\'s information', function(done) {
+        it("should return all the device's information", function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);
@@ -244,13 +246,14 @@ describe('IoT Agent Device Registration', function() {
             nock.cleanAll();
 
             var nockBody = utils.readExampleFile(
-                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+            );
             nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/registrations', nockBody)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -272,41 +275,38 @@ describe('IoT Agent Device Registration', function() {
 
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
-
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
-                .reply(204, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
-
+                .reply(204, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.series([
-                    async.apply(iotAgentLib.clearAll),
-                    async.apply(iotAgentLib.register, device1),
-                    async.apply(iotAgentLib.register, device2)
-                ], done);
+                async.series(
+                    [
+                        async.apply(iotAgentLib.clearAll),
+                        async.apply(iotAgentLib.register, device1),
+                        async.apply(iotAgentLib.register, device2),
+                    ],
+                    done
+                );
             });
         });
 
@@ -324,36 +324,33 @@ describe('IoT Agent Device Registration', function() {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/8254b65a7d11650f45844319'});
+                .reply(201, null, { Location: '/v2/registrations/8254b65a7d11650f45844319' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            contextBrokerMock
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
-                .reply(500);
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(500);
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.series([
-                    async.apply(iotAgentLib.clearAll),
-                    async.apply(iotAgentLib.register, device1),
-                    async.apply(iotAgentLib.register, device2)
-                ], done);
+                async.series(
+                    [
+                        async.apply(iotAgentLib.clearAll),
+                        async.apply(iotAgentLib.register, device1),
+                        async.apply(iotAgentLib.register, device2),
+                    ],
+                    done
+                );
             });
         });
 

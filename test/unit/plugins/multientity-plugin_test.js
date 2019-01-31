@@ -33,13 +33,13 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'WeatherStation': {
+            WeatherStation: {
                 commands: [],
                 type: 'WeatherStation',
                 lazy: [],
@@ -47,18 +47,18 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm'
+                        type: 'Hgmm',
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
                         entity_name: 'Higro2000',
-                        entity_type: 'Higrometer'
-                    }
-                ]
+                        entity_type: 'Higrometer',
+                    },
+                ],
             },
-            'WeatherStation2': {
+            WeatherStation2: {
                 commands: [],
                 type: 'WeatherStation',
                 lazy: [],
@@ -66,17 +66,17 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm'
+                        type: 'Hgmm',
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
                         entity_name: 'Higro2000',
-                    }
-                ]
+                    },
+                ],
             },
-            'WeatherStation3': {
+            WeatherStation3: {
                 commands: [],
                 type: 'WeatherStation',
                 lazy: [],
@@ -84,22 +84,22 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm'
+                        type: 'Hgmm',
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
                         entity_name: 'Station Number ${@sn * 10}',
-                    }
-                ]
-            }
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Multi-entity plugin', function() {
@@ -127,13 +127,13 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
+                value: '52',
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12'
-            }
+                value: '12',
+            },
         ];
 
         beforeEach(function() {
@@ -142,10 +142,16 @@ describe('Multi-entity plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultientityPlugin1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultientityPlugin1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin1Success.json'
+                    )
+                );
         });
 
         it('should send two context elements, one for each entity', function(done) {
@@ -157,26 +163,23 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-
-
-
     describe('When an update comes for a multientity defined with an expression', function() {
         var values = [
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
+                value: '52',
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12'
+                value: '12',
             },
             {
                 name: 'sn',
                 type: 'Number',
-                value: '5'
-            }
+                value: '5',
+            },
         ];
 
         beforeEach(function() {
@@ -185,10 +188,16 @@ describe('Multi-entity plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultiEntityPlugin3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultiEntityPlugin3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'
+                    )
+                );
         });
 
         it('should send the update value to the resulting value of the expression', function(done) {
@@ -200,19 +209,18 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-
     describe('When an update comes for a multientity measurement without type for one entity', function() {
         var values = [
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52'
+                value: '52',
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12'
-            }
+                value: '12',
+            },
         ];
 
         beforeEach(function() {
@@ -221,10 +229,16 @@ describe('Multi-entity plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultientityPlugin2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin2Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultientityPlugin2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin2Success.json'
+                    )
+                );
         });
 
         it('should use the device type as a default value', function(done) {

@@ -31,22 +31,22 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             name: 'testAgent',
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         deviceRegistry: {
-            type: 'memory'
+            type: 'memory',
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     contextBrokerMock;
 
@@ -66,9 +66,10 @@ describe('In memory device registry', function() {
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             var devices = [];
 
@@ -83,9 +84,9 @@ describe('In memory device registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i
-                        }
-                    ]
+                            value: i,
+                        },
+                    ],
                 });
             }
 
@@ -97,14 +98,16 @@ describe('In memory device registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function(done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens',
-                function(error, devices) {
-                    should.not.exist(error);
-                    should.exist(devices);
-                    devices.length.should.equal(1);
-                    devices[0].id.should.equal('id3');
-                    done();
-                });
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function(
+                error,
+                devices
+            ) {
+                should.not.exist(error);
+                should.exist(devices);
+                devices.length.should.equal(1);
+                devices[0].id.should.equal('id3');
+                done();
+            });
         });
     });
 
@@ -113,26 +116,27 @@ describe('In memory device registry', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             var devices = [];
 
             for (var i = 0; i < 10; i++) {
                 devices.push({
                     id: 'id' + i,
-                    type: 'Light' + i % 2,
+                    type: 'Light' + (i % 2),
                     internalId: 'internal' + i,
-                    service: 'smartGondor' + i % 3,
+                    service: 'smartGondor' + (i % 3),
                     subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i
-                        }
-                    ]
+                            value: i,
+                        },
+                    ],
                 });
             }
 
@@ -144,13 +148,12 @@ describe('In memory device registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return all the matching devices', function(done) {
-            iotAgentLib.getDevicesByAttribute('type', 'Light0', undefined, 'gardens',
-                function(error, devices) {
-                    should.not.exist(error);
-                    should.exist(devices);
-                    devices.length.should.equal(5);
-                    done();
-                });
+            iotAgentLib.getDevicesByAttribute('type', 'Light0', undefined, 'gardens', function(error, devices) {
+                should.not.exist(error);
+                should.exist(devices);
+                devices.length.should.equal(5);
+                done();
+            });
         });
     });
 
@@ -159,9 +162,10 @@ describe('In memory device registry', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             var devices = [];
 
@@ -170,15 +174,15 @@ describe('In memory device registry', function() {
                     id: 'id' + i,
                     type: 'Light',
                     internalId: 'internal' + i,
-                    service: 'smartGondor' + i % 3,
+                    service: 'smartGondor' + (i % 3),
                     subservice: 'gardens',
                     active: [
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i
-                        }
-                    ]
+                            value: i,
+                        },
+                    ],
                 });
             }
 
@@ -190,13 +194,12 @@ describe('In memory device registry', function() {
             iotAgentLib.clearRegistry(done);
         });
         it('should return all the matching devices in  that service', function(done) {
-            iotAgentLib.getDevicesByAttribute('type', 'Light', 'smartGondor0', 'gardens',
-                function(error, devices) {
-                    should.not.exist(error);
-                    should.exist(devices);
-                    devices.length.should.equal(4);
-                    done();
-                });
+            iotAgentLib.getDevicesByAttribute('type', 'Light', 'smartGondor0', 'gardens', function(error, devices) {
+                should.not.exist(error);
+                should.exist(devices);
+                devices.length.should.equal(4);
+                done();
+            });
         });
     });
 });

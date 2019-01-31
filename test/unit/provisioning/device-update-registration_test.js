@@ -31,48 +31,47 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
+                        type: 'Hgmm',
+                    },
                 ],
                 service: 'smartGondor',
-                subservice: 'gardens'
+                subservice: 'gardens',
             },
-            'Termometer': {
+            Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ],
+                active: [],
                 service: 'smartGondor',
-                subservice: 'gardens'
-            }
+                subservice: 'gardens',
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     device1 = {
         id: 'light1',
@@ -90,15 +89,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         lazy: [
             {
                 name: 'pressure',
-                type: 'Hgmm'
-            }
+                type: 'Hgmm',
+            },
         ],
         active: [
             {
                 name: 'temperature',
-                type: 'centigrades'
-            }
-        ]
+                type: 'centigrades',
+            },
+        ],
     },
     deviceCommandUpdated = {
         id: 'light1',
@@ -110,15 +109,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'move',
-                type: 'command'
-            }
+                type: 'command',
+            },
         ],
         active: [
             {
                 name: 'temperature',
-                type: 'centigrades'
-            }
-        ]
+                type: 'centigrades',
+            },
+        ],
     },
     unknownDevice = {
         id: 'rotationSensor4',
@@ -129,7 +128,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         internalId: 'unknownInternalId',
 
         lazy: [],
-        active: []
+        active: [],
     };
 
 describe('IoT Agent Device Update Registration', function() {
@@ -142,15 +141,19 @@ describe('IoT Agent Device Update Registration', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext')
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json')
+            );
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+            );
 
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.register(device1, function(error) {
@@ -169,19 +172,30 @@ describe('IoT Agent Device Update Registration', function() {
     describe('When a device is preregistered and its registration information updated', function() {
         beforeEach(function() {
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateProvisionActiveAttributes1.json'))
-                .reply(200,
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateProvisionActiveAttributes1.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateProvisionActiveAttributes1Success.json'));
+                        './test/unit/examples/contextResponses/updateProvisionActiveAttributes1Success.json'
+                    )
+                );
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
@@ -210,17 +224,26 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateProvisionCommands1.json'))
-                .reply(200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateProvisionCommands1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateProvisionCommands1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateProvisionCommands1Success.json')
+                );
 
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateCommands1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateCommands1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/updateCommands1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/updateCommands1Success.json'
+                    )
+                );
         });
 
         it('should register as ContextProvider of its commands and create the additional attributes', function(done) {
@@ -247,10 +270,16 @@ describe('IoT Agent Device Update Registration', function() {
     describe('When a update action is executed in a non registered device', function() {
         beforeEach(function() {
             contextBrokerMock
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/updateIoTAgent1Success.json'
+                    )
+                );
         });
 
         it('should return a DEVICE_NOT_FOUND error', function(done) {
@@ -264,16 +293,20 @@ describe('IoT Agent Device Update Registration', function() {
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         beforeEach(function() {
             contextBrokerMock
-                .post('/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json'))
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/updateIoTAgent1.json')
+                )
                 .reply(500, {});
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
         });
 
         it('should return a REGISTRATION_ERROR error in the update action', function(done) {

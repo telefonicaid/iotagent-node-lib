@@ -28,35 +28,41 @@ var MongoClient = require('mongodb').MongoClient,
 function cleanDb(host, name, callback) {
     var url = 'mongodb://' + host + ':27017/' + name;
 
-    MongoClient.connect(url, function(err, db) {
-        if (db && db.db()) {
-            db.db().dropDatabase();
-            db.close();
-        }
+    MongoClient.connect(
+        url,
+        function(err, db) {
+            if (db && db.db()) {
+                db.db().dropDatabase();
+                db.close();
+            }
 
-        callback();
-    });
+            callback();
+        }
+    );
 }
 
 function cleanDbs(callback) {
-    async.series([
-        async.apply(cleanDb, 'localhost', 'iotagent')
-    ], callback);
+    async.series([async.apply(cleanDb, 'localhost', 'iotagent')], callback);
 }
 
 function populate(host, dbName, entityList, collectionName, callback) {
     var url = 'mongodb://' + host + ':27017/' + dbName;
 
-    MongoClient.connect(url, function(err, db) {
-        if (db) {
-            db.db().collection(collectionName).insertMany(entityList, function(err, r) {
-                db.close();
-                callback(err);
-            });
-        } else {
-            callback();
+    MongoClient.connect(
+        url,
+        function(err, db) {
+            if (db) {
+                db.db()
+                    .collection(collectionName)
+                    .insertMany(entityList, function(err, r) {
+                        db.close();
+                        callback(err);
+                    });
+            } else {
+                callback();
+            }
         }
-    });
+    );
 }
 
 exports.cleanDb = cleanDb;

@@ -31,41 +31,41 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         object_id: 't',
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm'
+                        type: 'Hgmm',
                     },
                     {
                         object_id: 'l',
                         name: 'luminance',
-                        type: 'lumens'
-                    }
-                ]
-            }
+                        type: 'lumens',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Log level API', function() {
@@ -93,11 +93,11 @@ describe('Log level API', function() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                Accept: 'application/json',
             },
             qs: {
-                level: 'ERROR'
-            }
+                level: 'ERROR',
+            },
         };
 
         it('the real log level should be changed', function(done) {
@@ -116,8 +116,8 @@ describe('Log level API', function() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
+                Accept: 'application/json',
+            },
         };
 
         it('should return a 200 OK', function(done) {
@@ -147,11 +147,11 @@ describe('Log level API', function() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                Accept: 'application/json',
             },
             qs: {
-                level: 'ALLRIGHT'
-            }
+                level: 'ALLRIGHT',
+            },
         };
 
         it('should return a 400 error indicating the log level is not valid', function(done) {
@@ -177,8 +177,8 @@ describe('Log level API', function() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
+                Accept: 'application/json',
+            },
         };
 
         it('should return a 400 error indicating the log level is missing', function(done) {

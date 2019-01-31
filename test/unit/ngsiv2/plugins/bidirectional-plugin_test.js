@@ -37,13 +37,12 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
-        types: {
-        },
+        types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
@@ -59,19 +58,20 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         // current date. This implies that in order to assert the value of the payload in the CB mock,
         // we have to calculate dynamically the expected `expires` field.
         // Please check lines 101, 151, 210, 332 and 404.
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Bidirectional data plugin', function() {
     var options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
-        json:
-            utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
+        json: utils.readExampleFile(
+            './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
+        ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens'
-        }
+            'fiware-servicepath': '/gardens',
+        },
     };
 
     beforeEach(function(done) {
@@ -79,12 +79,11 @@ describe('Bidirectional data plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addDeviceProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
-                iotAgentLib.addNotificationMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision
+                );
+                iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
                 done();
             });
         });
@@ -102,18 +101,15 @@ describe('Bidirectional data plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
-
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -124,20 +120,20 @@ describe('Bidirectional data plugin', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
-
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -155,8 +151,8 @@ describe('Bidirectional data plugin', function() {
             method: 'DELETE',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         beforeEach(function() {
@@ -165,16 +161,14 @@ describe('Bidirectional data plugin', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -185,18 +179,19 @@ describe('Bidirectional data plugin', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
 
             contextBrokerMock
@@ -221,12 +216,13 @@ describe('Bidirectional data plugin', function() {
         var notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                 method: 'POST',
-                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/' +
-                    'bidirectionalNotification.json'),
+                json: utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/' + 'bidirectionalNotification.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             },
             executedHandler = false;
 
@@ -236,16 +232,14 @@ describe('Bidirectional data plugin', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -256,18 +250,19 @@ describe('Bidirectional data plugin', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
         });
 
@@ -326,7 +321,7 @@ describe('Bidirectional data plugin', function() {
                     }
                 }
 
-                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
                 callback();
             }
 
@@ -346,22 +341,22 @@ describe('Bidirectional data plugin', function() {
         var provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
                 method: 'POST',
-                json:
-                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
+                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             };
 
         beforeEach(function() {
@@ -370,16 +365,14 @@ describe('Bidirectional data plugin', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -390,20 +383,20 @@ describe('Bidirectional data plugin', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
-
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
             request(provisionGroup, function(error, response, body) {
@@ -420,32 +413,33 @@ describe('Bidirectional data plugin', function() {
         var provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
                 method: 'POST',
-                json:
-                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             },
             notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                 method: 'POST',
-                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/' +
-                    'bidirectionalNotification.json'),
+                json: utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/' + 'bidirectionalNotification.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
+                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
+                    'fiware-servicepath': '/gardens',
+                },
             };
 
         beforeEach(function() {
@@ -454,16 +448,14 @@ describe('Bidirectional data plugin', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -474,18 +466,19 @@ describe('Bidirectional data plugin', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
         });
 
@@ -510,7 +503,7 @@ describe('Bidirectional data plugin', function() {
                     }
                 }
 
-                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
                 callback();
             }
 
@@ -532,12 +525,13 @@ describe('Bidirectional data plugin and CB is defined using environment variable
     var options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
-        json:
-            utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
+        json: utils.readExampleFile(
+            './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
+        ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens'
-        }
+            'fiware-servicepath': '/gardens',
+        },
     };
 
     beforeEach(function(done) {
@@ -545,12 +539,11 @@ describe('Bidirectional data plugin and CB is defined using environment variable
         process.env.IOTA_CB_HOST = 'cbhost';
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addDeviceProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
-                iotAgentLib.addNotificationMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision
+                );
+                iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
                 done();
             });
         });
@@ -569,18 +562,15 @@ describe('Bidirectional data plugin and CB is defined using environment variable
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/subscriptions', function(body) {
-
                     var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
+                        './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    );
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -591,20 +581,20 @@ describe('Bidirectional data plugin and CB is defined using environment variable
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createBidirectionalDevice.json')
+                )
                 .reply(204);
-
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -615,5 +605,4 @@ describe('Bidirectional data plugin and CB is defined using environment variable
             });
         });
     });
-
 });

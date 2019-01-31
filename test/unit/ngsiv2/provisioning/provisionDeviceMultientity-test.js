@@ -26,7 +26,6 @@
 
 var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     utils = require('../../../tools/utils'),
-
     should = require('should'),
     nock = require('nock'),
     moment = require('moment'),
@@ -37,18 +36,18 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2'
+            ngsiVersion: 'v2',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Device provisioning API: Provision devices', function() {
@@ -74,18 +73,16 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json');
+                    var expectedBody = utils.readExampleFile(
+                        './test/unit/ngsiv2/examples' + '/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    );
 
                     // Note that expired field is not included in the json used by this mock as it is a dynamic
                     // field. The following code performs such calculation and adds the field to the subscription
                     // payload of the mock.
-                    if (!body.expires)
-                    {
+                    if (!body.expires) {
                         return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
+                    } else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                         expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
                         var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
                         if (expiresDiff < 500) {
@@ -96,30 +93,34 @@ describe('Device provisioning API: Provision devices', function() {
                         }
 
                         return false;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 })
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceMultientity.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceMultientity.json'
+                    )
+                )
                 .reply(204);
         });
 
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/' +
-                'deviceProvisioningRequests/provisionNewDeviceMultientity.json'),
+            json: utils.readExampleFile(
+                './test/unit/examples/' + 'deviceProvisioningRequests/provisionNewDeviceMultientity.json'
+            ),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            }
+                'fiware-servicepath': '/gardens',
+            },
         };
 
         it('should add the device to the devices list', function(done) {
@@ -133,8 +134,5 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
-
     });
 });
-
-

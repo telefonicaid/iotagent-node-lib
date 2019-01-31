@@ -32,68 +32,67 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
+                        type: 'Hgmm',
+                    },
                 ],
                 staticAttributes: [
                     {
                         name: 'attr1',
-                        type: 'type1'
+                        type: 'type1',
                     },
                     {
                         name: 'attr2',
-                        type: 'type2'
+                        type: 'type2',
                     },
                     {
                         name: 'attr3',
-                        type: 'type3'
+                        type: 'type3',
                     },
                     {
                         name: 'attr4',
-                        type: 'type4'
+                        type: 'type4',
                     },
-                ]
-            }
+                ],
+            },
         },
         timestamp: true,
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
-
 
 describe('Static attributes test', function() {
     var values = [
         {
             name: 'state',
             type: 'Boolean',
-            value: 'true'
+            value: 'true',
         },
         {
             name: 'dimming',
             type: 'Percentage',
-            value: '87'
-        }
+            value: '87',
+        },
     ];
 
     beforeEach(function() {
@@ -113,8 +112,7 @@ describe('Static attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .times(4)
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'))
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'))
                 .post('/v1/updateContext', function(body) {
                     var metadatas = 0;
 
@@ -125,24 +123,26 @@ describe('Static attributes test', function() {
                     }
                     return metadatas === body.contextElements[0].attributes.length - 1;
                 })
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
         it('should send a single TimeInstant per attribute', function(done) {
-            async.series([
-                async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
-                async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
-                async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
-                async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
-                async.apply(iotAgentLib.update, 'light1', 'Light', '', values)
-            ], function(error, results) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            async.series(
+                [
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                ],
+                function(error, results) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                }
+            );
         });
     });
 });

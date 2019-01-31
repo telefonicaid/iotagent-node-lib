@@ -34,37 +34,36 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 // commands are not defined
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     device = {
         id: 'somelight',
         type: 'Light',
         service: 'smartGondor',
-        subservice: 'gardens'
+        subservice: 'gardens',
     };
 
 describe('Update attribute functionalities', function() {
-
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -74,15 +73,19 @@ describe('Update attribute functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext')
-            .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json')
+            );
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+            );
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -114,17 +117,17 @@ describe('Update attribute functionalities', function() {
                             {
                                 name: 'pressure',
                                 type: 'Hgmm',
-                                value: '200'
-                            }
-                        ]
-                    }
+                                value: '200',
+                            },
+                        ],
+                    },
                 ],
-                updateAction: 'UPDATE'
+                updateAction: 'UPDATE',
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens'
-            }
+                'fiware-servicepath': 'gardens',
+            },
         };
 
         beforeEach(function(done) {
@@ -151,10 +154,9 @@ describe('Update attribute functionalities', function() {
                 callback(null, {
                     id: id,
                     type: type,
-                    attributes: attributes
+                    attributes: attributes,
                 });
             });
-
 
             request(options, function(error, response, body) {
                 should.not.exist(error);

@@ -31,56 +31,55 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'BrokenLight': {
+            BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'Termometer': {
+            Termometer: {
                 type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ]
+                active: [],
             },
-            'Humidity': {
+            Humidity: {
                 type: 'Humidity',
                 cbHost: 'http://192.168.1.1:3024',
                 commands: [],
@@ -88,34 +87,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
+                        type: 'percentage',
+                    },
+                ],
             },
-            'Motion': {
+            Motion: {
                 type: 'Motion',
                 commands: [],
                 lazy: [],
                 staticAttributes: [
                     {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
+                        name: 'location',
+                        type: 'Vector',
+                        value: '(123,523)',
+                    },
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
+                        type: 'percentage',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Data Mapping Plugins: translation', function() {
@@ -140,10 +139,11 @@ describe('Data Mapping Plugins: translation', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMiddleware1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMiddleware1.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
         });
 
         it('should execute the translation middlewares', function(done) {
@@ -151,13 +151,13 @@ describe('Data Mapping Plugins: translation', function() {
                 {
                     name: 'state',
                     type: 'Boolean',
-                    value: 'true'
+                    value: 'true',
                 },
                 {
                     name: 'dimming',
                     type: 'Percentage',
-                    value: '87'
-                }
+                    value: '87',
+                },
             ];
 
             var executed = false;
@@ -182,13 +182,13 @@ describe('Data Mapping Plugins: translation', function() {
                 {
                     name: 'state',
                     type: 'Boolean',
-                    value: 'true'
+                    value: 'true',
                 },
                 {
                     name: 'dimming',
                     type: 'Percentage',
-                    value: '87'
-                }
+                    value: '87',
+                },
             ];
 
             function testMiddleware(entity, typeInformation, callback) {
@@ -206,12 +206,8 @@ describe('Data Mapping Plugins: translation', function() {
         });
     });
 
-
     describe('When a new query translation middleware is added to the IoT Agent', function() {
-        var attributes = [
-            'state',
-            'dimming'
-        ];
+        var attributes = ['state', 'dimming'];
 
         beforeEach(function() {
             nock.cleanAll();
@@ -219,10 +215,11 @@ describe('Data Mapping Plugins: translation', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
         it('should call the middleware', function(done) {
@@ -246,8 +243,7 @@ describe('Data Mapping Plugins: translation', function() {
             });
         });
         it('should call the middleware', function(done) {
-            function testMiddleware(entity, typeInformation,
-                                    callback) {
+            function testMiddleware(entity, typeInformation, callback) {
                 entity.contextResponses[0].contextElement.attributes[1].value =
                     entity.contextResponses[0].contextElement.attributes[1].value + '%';
 

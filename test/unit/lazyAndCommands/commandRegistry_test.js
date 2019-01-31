@@ -29,21 +29,21 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             name: 'testAgent',
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {},
         deviceRegistry: {
-            type: 'memory'
+            type: 'memory',
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent'
+            db: 'iotagent',
         },
         service: 'smartGondor',
         subservice: 'gardens',
@@ -51,7 +51,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S',
         pollingExpiration: 800,
-        pollingDaemonFrequency: 20
+        pollingDaemonFrequency: 20,
     };
 
 function testRegistry(registryType) {
@@ -59,7 +59,7 @@ function testRegistry(registryType) {
         var commandTemplate = {
             name: 'commandName',
             type: 'commandType',
-            value: 'commandValue'
+            value: 'commandValue',
         };
 
         beforeEach(function(done) {
@@ -111,7 +111,7 @@ function testRegistry(registryType) {
             var updatedCommand = {
                 name: 'commandName',
                 type: 'commandType',
-                value: 'newValueForTheCommand'
+                value: 'newValueForTheCommand',
             };
 
             beforeEach(function(done) {
@@ -145,17 +145,11 @@ function testRegistry(registryType) {
                         var newCommand = {
                             name: commandTemplate.name + j,
                             type: commandTemplate.type + j,
-                            value: commandTemplate.value + j
+                            value: commandTemplate.value + j,
                         };
 
                         commands.push(
-                            async.apply(
-                                iotAgentLib.addCommand,
-                                'smartGondor',
-                                'gardens',
-                                'devId' + i,
-                                newCommand
-                            )
+                            async.apply(iotAgentLib.addCommand, 'smartGondor', 'gardens', 'devId' + i, newCommand)
                         );
                     }
                 }
@@ -204,18 +198,10 @@ function testRegistry(registryType) {
                     var newCommand = {
                         name: commandTemplate.name + j,
                         type: commandTemplate.type + j,
-                        value: commandTemplate.value + j
+                        value: commandTemplate.value + j,
                     };
 
-                    commands.push(
-                        async.apply(
-                            iotAgentLib.addCommand,
-                            'smartGondor',
-                            'gardens',
-                            'devId',
-                            newCommand
-                        )
-                    );
+                    commands.push(async.apply(iotAgentLib.addCommand, 'smartGondor', 'gardens', 'devId', newCommand));
                 }
 
                 async.series(commands, function(error) {

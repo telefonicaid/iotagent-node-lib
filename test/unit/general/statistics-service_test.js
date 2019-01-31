@@ -29,21 +29,21 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         stats: {
-            interval: 100
+            interval: 100,
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     oldConfig;
 
@@ -67,9 +67,12 @@ describe('Statistics service', function() {
             statValue = 2;
 
         beforeEach(function(done) {
-            statsService.globalLoad({
-                fakeStat: 30
-            }, done);
+            statsService.globalLoad(
+                {
+                    fakeStat: 30,
+                },
+                done
+            );
         });
 
         it('should appear the modified value in the getCurrent() statistics', function(done) {
@@ -95,10 +98,13 @@ describe('Statistics service', function() {
     });
     describe('When the global statistics are requested', function() {
         beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 82,
-                stat2: 38789
-            }, done);
+            statsService.globalLoad(
+                {
+                    stat1: 82,
+                    stat2: 38789,
+                },
+                done
+            );
         });
 
         it('should return all the statistics that were created', function(done) {
@@ -142,11 +148,14 @@ describe('Statistics service', function() {
             times = 0;
 
         beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 10
-            }, function() {
-                statsService.add('stat1', 5, done);
-            });
+            statsService.globalLoad(
+                {
+                    stat1: 10,
+                },
+                function() {
+                    statsService.add('stat1', 5, done);
+                }
+            );
         });
 
         function mockedAction(current, global, callback) {

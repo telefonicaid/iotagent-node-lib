@@ -32,34 +32,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Event plugin', function() {
@@ -85,13 +85,13 @@ describe('Event plugin', function() {
             {
                 name: 'state',
                 type: 'Boolean',
-                value: 'true'
+                value: 'true',
             },
             {
                 name: 'activation',
                 type: 'Event',
-                value: '1'
-            }
+                value: '1',
+            },
         ];
 
         beforeEach(function() {
@@ -105,8 +105,10 @@ describe('Event plugin', function() {
 
                     return body.contextElements['0'].attributes['1'].value.match(dateRegex);
                 })
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextEvents1Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContextEvents1Success.json')
+                );
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

@@ -32,34 +32,34 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
+                        type: 'Hgmm',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     },
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -75,35 +75,35 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     commands: [
                         {
                             name: 'wheel1',
-                            type: 'Wheel'
-                        }
+                            type: 'Wheel',
+                        },
                     ],
                     lazy: [
                         {
                             name: 'luminescence',
-                            type: 'Lumens'
-                        }
+                            type: 'Lumens',
+                        },
                     ],
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean'
-                        }
+                            type: 'Boolean',
+                        },
                     ],
                     static_attributes: [
                         {
                             name: 'bootstrapServer',
                             type: 'Address',
-                            value: '127.0.0.1'
-                        }
-                    ]
-                }
-            ]
+                            value: '127.0.0.1',
+                        },
+                    ],
+                },
+            ],
         },
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     };
 
 describe('Data Mapping Plugins: configuration provision', function() {
@@ -114,7 +114,6 @@ describe('Data Mapping Plugins: configuration provision', function() {
             iotAgentLib.clearAll(done);
         });
     });
-
 
     afterEach(function(done) {
         iotAgentLib.clearAll(function() {

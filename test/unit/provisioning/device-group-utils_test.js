@@ -36,8 +36,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     alternateGroupCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -45,41 +45,40 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+            'fiware-servicepath': '/testingPath',
+        },
     },
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
             port: 4041,
-            baseRoot: '/'
+            baseRoot: '/',
         },
         types: {
-            'Termometer': {
+            Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ],
+                active: [],
                 apikey: '1234567890asdfghjkl',
                 service: 'TestService',
-                subservice: '/testingPath'
-            }
+                subservice: '/testingPath',
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S',
-        defaultKey: 'default1234'
+        defaultKey: 'default1234',
     };
 
 describe('Device Group utils', function() {
@@ -91,11 +90,14 @@ describe('Device Group utils', function() {
 
     describe('When an API Key is requested for a device in a group without the SingleConfiguration mode', function() {
         beforeEach(function(done) {
-            async.series([
-                async.apply(iotAgentLib.activate, iotAgentConfig),
-                async.apply(request, alternateGroupCreation),
-                async.apply(request, groupCreation)
-            ], done);
+            async.series(
+                [
+                    async.apply(iotAgentLib.activate, iotAgentConfig),
+                    async.apply(request, alternateGroupCreation),
+                    async.apply(request, groupCreation),
+                ],
+                done
+            );
         });
         it('should return the API Key of the group', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function(error, apiKey) {

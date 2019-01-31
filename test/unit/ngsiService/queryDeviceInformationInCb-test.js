@@ -31,56 +31,55 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026'
+            port: '1026',
         },
         server: {
-            port: 4041
+            port: 4041,
         },
         types: {
-            'Light': {
+            Light: {
                 commands: [],
                 type: 'Light',
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'BrokenLight': {
+            BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades'
-                    }
+                        type: 'centigrades',
+                    },
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
+                        type: 'Hgmm',
+                    },
+                ],
             },
-            'Termometer': {
+            Termometer: {
                 type: 'Termometer',
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin'
-                    }
+                        type: 'kelvin',
+                    },
                 ],
-                active: [
-                ]
+                active: [],
             },
-            'Humidity': {
+            Humidity: {
                 type: 'Humidity',
                 cbHost: 'http://192.168.1.1:3024',
                 commands: [],
@@ -88,45 +87,41 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
+                        type: 'percentage',
+                    },
+                ],
             },
-            'Motion': {
+            Motion: {
                 type: 'Motion',
                 commands: [],
                 lazy: [],
                 staticAttributes: [
                     {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
+                        name: 'location',
+                        type: 'Vector',
+                        value: '(123,523)',
+                    },
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
+                        type: 'percentage',
+                    },
+                ],
+            },
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        throttling: 'PT5S',
     };
 
 describe('Query device information in the Context Broker', function() {
-    var attributes = [
-        'state',
-        'dimming'
-    ];
+    var attributes = ['state', 'dimming'];
 
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -142,10 +137,11 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
         it('should return the information about the desired attributes', function(done) {
@@ -157,18 +153,18 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe('When the user requests information about a device that it\'s not in the CB', function() {
+    describe("When the user requests information about a device that it's not in the CB", function() {
         beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
         });
 
         it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
@@ -187,11 +183,11 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
         });
 
         it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
@@ -210,11 +206,14 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2UnknownError.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2UnknownError.json')
+                );
         });
 
         it('should return a ENTITY_GENERIC_ERROR', function(done) {
@@ -230,5 +229,4 @@ describe('Query device information in the Context Broker', function() {
             });
         });
     });
-
 });
