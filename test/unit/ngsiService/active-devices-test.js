@@ -513,7 +513,6 @@ describe('Active attributes test', function() {
 
                 done();
             });
-
             it('should not override the received instant and should not add metadatas for this request', function(done) {
                 iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                     should.not.exist(error);
@@ -524,7 +523,8 @@ describe('Active attributes test', function() {
         }
     );
 
-    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function() {
+    describe(/*jshint quotmark: double */
+    "When the IoT Agent receives information from a device whose type doesn't have a type name" /*jshint quotmark: single */, function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

@@ -493,7 +493,8 @@ describe('Active attributes test', function() {
         }
     );
 
-    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function() {
+    describe(/*jshint quotmark: double */
+    "When the IoT Agent receives information from a device whose type doesn't have a type name" /*jshint quotmark: single */, function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

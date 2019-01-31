@@ -141,11 +141,18 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with strings with single quotation marks is parsed', function() {
         it('should accept the strings', function(done) {
-            expressionParser.parse("'Pruebas ' # 'De Strings'", scope, 'String', function(error, result) {
-                should.not.exist(error);
-                result.should.equal('Pruebas De Strings');
-                done();
-            });
+            expressionParser.parse(
+                /*jshint quotmark: double */
+                "'Pruebas ' # 'De Strings'",
+                /*jshint quotmark: single */
+                scope,
+                'String',
+                function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal('Pruebas De Strings');
+                    done();
+                }
+            );
         });
     });
 

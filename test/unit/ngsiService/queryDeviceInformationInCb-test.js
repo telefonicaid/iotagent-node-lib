@@ -153,7 +153,8 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe("When the user requests information about a device that it's not in the CB", function() {
+    describe(/*jshint quotmark: double */
+    "When the user requests information about a device that it's not in the CB", /*jshint quotmark: single */ function() {
         beforeEach(function() {
             nock.cleanAll();
 

@@ -171,7 +171,8 @@ describe('MongoDB migration', function() {
             port: '27017',
         };
 
-        it("should migrate just the service's  configurations", function(done) {
+        it(/*jshint quotmark: double */
+        "should migrate just the service's  configurations", /*jshint quotmark: single */ function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
                 targetDb
                     .db()
@@ -184,7 +185,8 @@ describe('MongoDB migration', function() {
                     });
             });
         });
-        it("should migrate just the service's devices", function(done) {
+        it(/*jshint quotmark: double */
+        "should migrate just the service's devices", /*jshint quotmark: single */ function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
                 targetDb
                     .db()
@@ -227,7 +229,8 @@ describe('MongoDB migration', function() {
             port: '27017',
         };
 
-        it("should migrate just the subservice's devices", function(done) {
+        it(/*jshint quotmark: double */
+        "should migrate just the subservice's devices", /*jshint quotmark: single */ function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
                 targetDb
                     .db()

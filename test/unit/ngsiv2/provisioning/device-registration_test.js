@@ -228,7 +228,8 @@ describe('IoT Agent Device Registration', function() {
             });
         });
 
-        it("should return all the device's information", function(done) {
+        it(/*jshint quotmark: double */
+        "should return all the device's information" /*jshint quotmark: single */, function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);

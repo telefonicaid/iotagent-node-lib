@@ -13,7 +13,7 @@
     "maxparams": 6,
     "maxdepth": 4,
     "camelcase": true,
-    "maxlen": 120,
+    "maxlen": 180,
     "node": true,
     "expr": true,
     "unused": "vars",
