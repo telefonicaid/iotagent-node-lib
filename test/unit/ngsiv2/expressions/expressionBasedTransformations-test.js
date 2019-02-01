@@ -37,10 +37,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -51,40 +51,40 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 'a',
                         name: 'alive',
-                        type: 'None',
+                        type: 'None'
                     },
                     {
                         object_id: 'u',
                         name: 'updated',
-                        type: 'Boolean',
+                        type: 'Boolean'
                     },
                     {
                         object_id: 'm',
                         name: 'manufacturer',
-                        type: 'Object',
+                        type: 'Object'
                     },
                     {
                         object_id: 'r',
                         name: 'revisions',
-                        type: 'Array',
+                        type: 'Array'
                     },
                     {
                         object_id: 'x',
                         name: 'consumption_x',
                         type: 'Number',
-                        expression: '${@pressure * 20}',
-                    },
-                ],
+                        expression: '${@pressure * 20}'
+                    }
+                ]
             },
             LightError: {
                 commands: [],
@@ -95,9 +95,9 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Number',
-                        expression: '${@pressure * / 20}',
-                    },
-                ],
+                        expression: '${@pressure * / 20}'
+                    }
+                ]
             },
             WeatherStation: {
                 commands: [],
@@ -108,37 +108,37 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Number',
-                        expression: '${@pressure * 20}',
+                        expression: '${@pressure * 20}'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
                         type: 'Number',
-                        expression: '${@consumption * 20}',
+                        expression: '${@consumption * 20}'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
-                        type: 'Percentage',
+                        type: 'Percentage'
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}',
+                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}'
                     },
                     {
                         object_id: 'a',
                         name: 'alive',
                         type: 'None',
-                        expression: '${@alive *  20}',
+                        expression: '${@alive *  20}'
                     },
                     {
                         object_id: 'u',
                         name: 'updated',
                         type: 'Boolean',
-                        expression: '${@updated *  20}',
-                    },
-                ],
+                        expression: '${@updated *  20}'
+                    }
+                ]
             },
             WeatherStationMultiple: {
                 commands: [],
@@ -149,49 +149,49 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Number',
-                        expression: '${trim(@pressure)}',
+                        expression: '${trim(@pressure)}'
                     },
                     {
                         object_id: 'p25',
                         name: 'pressure25',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 'e',
                         name: 'consumption',
                         type: 'Number',
-                        expression: '${trim(@consumption)}',
+                        expression: '${trim(@consumption)}'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity12',
-                        type: 'Percentage',
+                        type: 'Percentage'
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}',
+                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}'
                     },
                     {
                         object_id: 'a',
                         name: 'alive',
                         type: 'None',
-                        expression: '${trim(@alive)}',
+                        expression: '${trim(@alive)}'
                     },
                     {
                         object_id: 'u',
                         name: 'updated',
                         type: 'Boolean',
-                        expression: '${trim(@updated)}',
-                    },
-                ],
-            },
+                        expression: '${trim(@updated)}'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Expression-based transformations plugin', function() {
@@ -220,8 +220,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
-            },
+                value: '52'
+            }
         ];
 
         it('should apply the expression before sending the values', function(done) {
@@ -240,13 +240,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'Number',
-                value: 52,
+                value: 52
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -281,13 +281,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p25',
                 type: 'Number',
-                value: 52,
+                value: 52
             },
             {
                 name: 'h',
                 type: 'percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -321,8 +321,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'e',
                 type: 'Number',
-                value: 52,
-            },
+                value: 52
+            }
         ];
 
         beforeEach(function() {
@@ -356,8 +356,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'Number',
-                value: 52,
-            },
+                value: 52
+            }
         ];
 
         beforeEach(function() {
@@ -391,8 +391,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'e',
                 type: 'Number',
-                value: 52,
-            },
+                value: 52
+            }
         ];
 
         beforeEach(function() {
@@ -427,8 +427,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'e',
                 type: 'Number',
-                value: 0.44,
-            },
+                value: 0.44
+            }
         ];
 
         beforeEach(function() {
@@ -463,8 +463,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'e',
                 type: 'Number',
-                value: 0.44,
-            },
+                value: 0.44
+            }
         ];
 
         beforeEach(function() {
@@ -499,8 +499,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'e',
                 type: 'Number',
-                value: 0.44,
-            },
+                value: 0.44
+            }
         ];
 
         beforeEach(function() {
@@ -535,8 +535,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'a',
                 type: 'None',
-                value: null,
-            },
+                value: null
+            }
         ];
 
         beforeEach(function() {
@@ -571,8 +571,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'a',
                 type: 'None',
-                value: null,
-            },
+                value: null
+            }
         ];
 
         beforeEach(function() {
@@ -607,8 +607,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'a',
                 type: 'None',
-                value: null,
-            },
+                value: null
+            }
         ];
 
         beforeEach(function() {
@@ -643,8 +643,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'u',
                 type: 'Boolean',
-                value: true,
-            },
+                value: true
+            }
         ];
 
         beforeEach(function() {
@@ -679,8 +679,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'u',
                 type: 'Boolean',
-                value: true,
-            },
+                value: true
+            }
         ];
 
         beforeEach(function() {
@@ -714,8 +714,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'u',
                 type: 'Boolean',
-                value: true,
-            },
+                value: true
+            }
         ];
 
         beforeEach(function() {
@@ -749,8 +749,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'm',
                 type: 'Object',
-                value: { name: 'Manufacturer1', VAT: 'U12345678' },
-            },
+                value: { name: 'Manufacturer1', VAT: 'U12345678' }
+            }
         ];
 
         beforeEach(function() {
@@ -785,8 +785,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'r',
                 type: 'Object',
-                value: ['v0.1', 'v0.2', 'v0.3'],
-            },
+                value: ['v0.1', 'v0.2', 'v0.3']
+            }
         ];
 
         beforeEach(function() {
@@ -819,8 +819,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'x',
                 type: 'Number',
-                value: 0.44,
-            },
+                value: 0.44
+            }
         ];
 
         beforeEach(function() {
@@ -853,8 +853,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'Number',
-                value: 10,
-            },
+                value: 10
+            }
         ];
 
         beforeEach(function() {
@@ -889,13 +889,13 @@ describe('Expression-based transformations plugin', function() {
                 {
                     name: 'x',
                     type: 'Number',
-                    value: 0.44,
+                    value: 0.44
                 },
                 {
                     name: 'p',
                     type: 'Number',
-                    value: 10,
-                },
+                    value: 10
+                }
             ];
 
             beforeEach(function() {

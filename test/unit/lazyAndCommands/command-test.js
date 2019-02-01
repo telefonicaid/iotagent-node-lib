@@ -34,10 +34,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -45,66 +45,66 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Motion: {
                 commands: [],
                 lazy: [
                     {
                         name: 'moving',
-                        type: 'Boolean',
-                    },
+                        type: 'Boolean'
+                    }
                 ],
                 staticAttributes: [
                     {
                         name: 'location',
                         type: 'Vector',
-                        value: '(123,523)',
-                    },
+                        value: '(123,523)'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Robot: {
                 commands: [
                     {
                         name: 'position',
-                        type: 'Array',
-                    },
+                        type: 'Array'
+                    }
                 ],
                 lazy: [],
                 staticAttributes: [],
-                active: [],
-            },
+                active: []
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     device3 = {
         id: 'r2d2',
         type: 'Robot',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     };
 
 describe('Command functionalities', function() {
@@ -174,17 +174,17 @@ describe('Command functionalities', function() {
                             {
                                 name: 'position',
                                 type: 'Array',
-                                value: '[28, -104, 23]',
-                            },
-                        ],
-                    },
+                                value: '[28, -104, 23]'
+                            }
+                        ]
+                    }
                 ],
-                updateAction: 'UPDATE',
+                updateAction: 'UPDATE'
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {
@@ -223,9 +223,9 @@ describe('Command functionalities', function() {
                         {
                             name: 'position',
                             type: 'Array',
-                            value: '[28, -104, 23]',
-                        },
-                    ],
+                            value: '[28, -104, 23]'
+                        }
+                    ]
                 });
             });
 
@@ -244,9 +244,9 @@ describe('Command functionalities', function() {
                         {
                             name: 'position',
                             type: 'Array',
-                            value: '[28, -104, 23]',
-                        },
-                    ],
+                            value: '[28, -104, 23]'
+                        }
+                    ]
                 });
             });
 
@@ -268,9 +268,9 @@ describe('Command functionalities', function() {
                         {
                             name: 'position',
                             type: 'Array',
-                            value: '[28, -104, 23]',
-                        },
-                    ],
+                            value: '[28, -104, 23]'
+                        }
+                    ]
                 });
             });
 

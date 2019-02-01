@@ -31,10 +31,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -43,30 +43,30 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 type: 'Termometer',
@@ -74,10 +74,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Humidity: {
                 type: 'Humidity',
@@ -87,9 +87,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
+                        type: 'percentage'
+                    }
+                ]
             },
             Motion: {
                 type: 'Motion',
@@ -99,22 +99,22 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     {
                         name: 'location',
                         type: 'Vector',
-                        value: '(123,523)',
-                    },
+                        value: '(123,523)'
+                    }
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
-            },
+                        type: 'percentage'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Data Mapping Plugins: translation', function() {
@@ -151,13 +151,13 @@ describe('Data Mapping Plugins: translation', function() {
                 {
                     name: 'state',
                     type: 'Boolean',
-                    value: 'true',
+                    value: 'true'
                 },
                 {
                     name: 'dimming',
                     type: 'Percentage',
-                    value: '87',
-                },
+                    value: '87'
+                }
             ];
 
             var executed = false;
@@ -182,13 +182,13 @@ describe('Data Mapping Plugins: translation', function() {
                 {
                     name: 'state',
                     type: 'Boolean',
-                    value: 'true',
+                    value: 'true'
                 },
                 {
                     name: 'dimming',
                     type: 'Percentage',
-                    value: '87',
-                },
+                    value: '87'
+                }
             ];
 
             function testMiddleware(entity, typeInformation, callback) {

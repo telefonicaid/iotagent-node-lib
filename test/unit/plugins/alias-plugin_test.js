@@ -33,10 +33,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -46,28 +46,28 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 't',
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'l',
                         name: 'luminance',
-                        type: 'lumens',
-                    },
-                ],
-            },
+                        type: 'lumens'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Attribute alias plugin', function() {
@@ -93,13 +93,13 @@ describe('Attribute alias plugin', function() {
             {
                 name: 't',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'p',
                 type: 'Hgmm',
-                value: '20071103T131805',
-            },
+                value: '20071103T131805'
+            }
         ];
 
         beforeEach(function() {
@@ -131,8 +131,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'l',
                 type: 'lums',
-                value: '9',
-            },
+                value: '9'
+            }
         ];
 
         beforeEach(function() {

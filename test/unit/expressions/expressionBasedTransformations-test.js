@@ -33,10 +33,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -48,9 +48,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}',
-                    },
-                ],
+                        expression: '${@pressure * 20}'
+                    }
+                ]
             },
             LightError: {
                 commands: [],
@@ -61,9 +61,9 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * / 20}',
-                    },
-                ],
+                        expression: '${@pressure * / 20}'
+                    }
+                ]
             },
             WeatherStation: {
                 commands: [],
@@ -74,19 +74,19 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}',
+                        expression: '${@pressure * 20}'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
-                        type: 'Percentage',
+                        type: 'Percentage'
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}',
-                    },
-                ],
+                        expression: 'Humidity ${@humidity / 2} and pressure ${@pressure * 20}'
+                    }
+                ]
             },
             WeatherStationMultiple: {
                 commands: [],
@@ -97,26 +97,26 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         object_id: 'p',
                         name: 'pressure25',
                         type: 'Hgmm',
-                        expression: '${@pressure * 20}',
+                        expression: '${@pressure * 20}'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity12',
-                        type: 'Percentage',
+                        type: 'Percentage'
                     },
                     {
                         name: 'weather',
                         type: 'Summary',
-                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}',
-                    },
-                ],
-            },
+                        expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Expression-based transformations plugin', function() {
@@ -144,8 +144,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
-            },
+                value: '52'
+            }
         ];
 
         beforeEach(function() {
@@ -180,8 +180,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
-            },
+                value: '52'
+            }
         ];
 
         beforeEach(function() {
@@ -217,13 +217,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -258,13 +258,13 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -299,8 +299,8 @@ describe('Expression-based transformations plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
-            },
+                value: '52'
+            }
         ];
 
         beforeEach(function() {

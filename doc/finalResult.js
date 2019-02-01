@@ -20,7 +20,7 @@ function parseUl(data, device) {
             attribute = {
                 name: pair[0],
                 value: pair[1],
-                type: findType(pair[0]),
+                type: findType(pair[0])
             };
 
         return attribute;
@@ -35,18 +35,18 @@ function manageULRequest(req, res, next) {
     iotAgentLib.getDevice(req.query.i, function(error, device) {
         if (error) {
             res.status(404).send({
-                message: "Couldn't find the device: " + JSON.stringify(error),
+                message: "Couldn't find the device: " + JSON.stringify(error)
             });
         } else {
             values = parseUl(req.query.d, device);
             iotAgentLib.update(device.name, device.type, '', values, device, function(error) {
                 if (error) {
                     res.status(500).send({
-                        message: 'Error updating the device',
+                        message: 'Error updating the device'
                     });
                 } else {
                     res.status(200).send({
-                        message: 'Device successfully updated',
+                        message: 'Device successfully updated'
                     });
                 }
             });
@@ -58,7 +58,7 @@ function initSouthbound(callback) {
     southboundServer = {
         server: null,
         app: express(),
-        router: express.Router(),
+        router: express.Router()
     };
 
     southboundServer.app.set('port', 8080);
@@ -79,14 +79,14 @@ function createResponse(id, type, attributes, body) {
         responses.push({
             name: attributes[i],
             type: 'string',
-            value: values[i],
+            value: values[i]
         });
     }
 
     return {
         id: id,
         type: type,
-        attributes: responses,
+        attributes: responses
     };
 }
 
@@ -95,8 +95,8 @@ function queryContextHandler(id, type, attributes, callback) {
         url: 'http://127.0.0.1:9999/iot/d',
         method: 'GET',
         qs: {
-            q: attributes.join(),
-        },
+            q: attributes.join()
+        }
     };
 
     request(options, function(error, response, body) {
@@ -127,8 +127,8 @@ function updateContextHandler(id, type, attributes, callback) {
         url: 'http://127.0.0.1:9999/iot/d',
         method: 'GET',
         qs: {
-            d: createQueryFromAttributes(attributes),
-        },
+            d: createQueryFromAttributes(attributes)
+        }
     };
 
     request(options, function(error, response, body) {
@@ -138,7 +138,7 @@ function updateContextHandler(id, type, attributes, callback) {
             callback(null, {
                 id: id,
                 type: type,
-                attributes: attributes,
+                attributes: attributes
             });
         }
     });

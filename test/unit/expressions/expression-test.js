@@ -35,7 +35,7 @@ describe('Expression interpreter', function() {
             big: 2000,
             number: 145,
             number2: 155,
-            number3inside: 200,
+            number3inside: 200
         };
 
     describe('When a expression with a single value is parsed', function() {
@@ -55,7 +55,7 @@ describe('Expression interpreter', function() {
         ['(5 + 2) * (@value + 7)', 91],
         ['(5 - @other) * (@value + 7)', 26],
         ['3 * 5.2', 15.6],
-        ['@value * 5.2', 31.2],
+        ['@value * 5.2', 31.2]
     ];
 
     function arithmeticUseCase(arithmeticExpr) {

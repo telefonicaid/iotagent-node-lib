@@ -35,10 +35,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -47,16 +47,16 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 attributes: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
-            },
+                        type: 'Hgmm'
+                    }
+                ]
+            }
         },
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
@@ -67,9 +67,9 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             path: '/protocols',
             protocol: 'GENERIC_PROTOCOL',
             description: 'A generic protocol',
-            agentPath: '/iot',
+            agentPath: '/iot'
         },
-        defaultResource: '/iot/d',
+        defaultResource: '/iot/d'
     },
     groupCreation = {
         service: 'theService',
@@ -82,21 +82,21 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'wheel1',
-                type: 'Wheel',
-            },
+                type: 'Wheel'
+            }
         ],
         lazy: [
             {
                 name: 'luminescence',
-                type: 'Lumens',
-            },
+                type: 'Lumens'
+            }
         ],
         attributes: [
             {
                 name: 'status',
-                type: 'Boolean',
-            },
-        ],
+                type: 'Boolean'
+            }
+        ]
     },
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -112,28 +112,28 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     commands: [
                         {
                             name: 'wheel1',
-                            type: 'Wheel',
-                        },
+                            type: 'Wheel'
+                        }
                     ],
                     lazy: [
                         {
                             name: 'luminescence',
-                            type: 'Lumens',
-                        },
+                            type: 'Lumens'
+                        }
                     ],
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean',
-                        },
-                    ],
-                },
-            ],
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
         },
         headers: {
             'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService',
-        },
+            'fiware-servicepath': 'theSubService'
+        }
     },
     optionsCreationStatic = {
         url: 'http://localhost:4041/iot/services',
@@ -149,29 +149,29 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     commands: [
                         {
                             name: 'wheel1',
-                            type: 'Wheel',
-                        },
+                            type: 'Wheel'
+                        }
                     ],
                     static_attributes: [
                         {
                             name: 'position',
                             type: 'location',
-                            values: '123,12',
-                        },
+                            values: '123,12'
+                        }
                     ],
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean',
-                        },
-                    ],
-                },
-            ],
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
         },
         headers: {
             'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService',
-        },
+            'fiware-servicepath': 'theSubService'
+        }
     },
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
@@ -179,12 +179,12 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: {},
         headers: {
             'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService',
+            'fiware-servicepath': 'theSubService'
         },
         qs: {
             resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-        },
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
     },
     iotamMock;
 

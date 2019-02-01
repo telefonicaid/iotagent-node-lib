@@ -32,10 +32,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -43,48 +43,48 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
+                        type: 'Hgmm'
+                    }
                 ],
                 service: 'smartGondor',
-                subservice: 'gardens',
+                subservice: 'gardens'
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
                 active: [],
                 service: 'smartGondor',
-                subservice: 'gardens',
-            },
+                subservice: 'gardens'
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     device1 = {
         id: 'light1',
         type: 'Light',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     },
     device2 = {
         id: 'term2',
         type: 'Termometer',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     };
 
 describe('IoT Agent Device Registration', function() {
@@ -343,7 +343,7 @@ describe('IoT Agent Device Registration', function() {
                     [
                         async.apply(iotAgentLib.clearAll),
                         async.apply(iotAgentLib.register, device1),
-                        async.apply(iotAgentLib.register, device2),
+                        async.apply(iotAgentLib.register, device2)
                     ],
                     done
                 );
@@ -412,7 +412,7 @@ describe('IoT Agent Device Registration', function() {
                     [
                         async.apply(iotAgentLib.clearAll),
                         async.apply(iotAgentLib.register, device1),
-                        async.apply(iotAgentLib.register, device2),
+                        async.apply(iotAgentLib.register, device2)
                     ],
                     done
                 );

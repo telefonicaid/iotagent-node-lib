@@ -34,69 +34,69 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
                 commands: [
                     {
                         name: 'position',
-                        type: 'Array',
-                    },
+                        type: 'Array'
+                    }
                 ],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 attributes: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
+                        type: 'Hgmm'
+                    }
                 ],
                 staticAttributes: [
                     {
                         name: 'location',
-                        type: 'Vector',
-                    },
+                        type: 'Vector'
+                    }
                 ],
                 service: 'smartGondor',
                 subservice: 'gardens',
                 internalAttributes: {
-                    customAttribute: 'customValue',
-                },
+                    customAttribute: 'customValue'
+                }
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
                 attributes: [],
                 service: 'smartGondor',
-                subservice: 'gardens',
-            },
+                subservice: 'gardens'
+            }
         },
         deviceRegistry: {
-            type: 'mongodb',
+            type: 'mongodb'
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent',
+            db: 'iotagent'
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     device1 = {
         id: 'light1',
@@ -111,30 +111,30 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'position',
-                type: 'Array',
-            },
+                type: 'Array'
+            }
         ],
         lazy: [
             {
                 name: 'temperature',
-                type: 'centigrades',
-            },
+                type: 'centigrades'
+            }
         ],
         active: [
             {
                 name: 'pressure',
-                type: 'Hgmm',
-            },
+                type: 'Hgmm'
+            }
         ],
         staticAttributes: [
             {
                 name: 'location',
-                type: 'Vector',
-            },
+                type: 'Vector'
+            }
         ],
         internalAttributes: {
-            customAttribute: 'customValue',
-        },
+            customAttribute: 'customValue'
+        }
     },
     device2 = {
         id: 'term2',
@@ -143,7 +143,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         resource: '/',
         apikey: 'dsf8yy789iyushu786',
-        protocol: 'GENERIC_PROTOCOL',
+        protocol: 'GENERIC_PROTOCOL'
     },
     device3 = {
         id: 'light1',
@@ -158,30 +158,30 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'position',
-                type: 'Array',
-            },
+                type: 'Array'
+            }
         ],
         lazy: [
             {
                 name: 'temperature',
-                type: 'centigrades',
-            },
+                type: 'centigrades'
+            }
         ],
         active: [
             {
                 name: 'pressure',
-                type: 'Hgmm',
-            },
+                type: 'Hgmm'
+            }
         ],
         staticAttributes: [
             {
                 name: 'location',
-                type: 'Vector',
-            },
+                type: 'Vector'
+            }
         ],
         internalAttributes: {
-            customAttribute: 'customValue',
-        },
+            customAttribute: 'customValue'
+        }
     },
     iotAgentDb;
 
@@ -501,9 +501,9 @@ describe('MongoDB Device Registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i,
-                        },
-                    ],
+                            value: i
+                        }
+                    ]
                 });
             }
 
@@ -555,9 +555,9 @@ describe('MongoDB Device Registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i,
-                        },
-                    ],
+                            value: i
+                        }
+                    ]
                 });
             }
 

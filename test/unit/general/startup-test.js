@@ -32,10 +32,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'ERROR',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -44,20 +44,20 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 attributes: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
-            },
+                        type: 'Hgmm'
+                    }
+                ]
+            }
         },
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     iotAgentConfigNoUrl = _.clone(iotAgentConfig),
     iotAgentConfigNoTypes = _.clone(iotAgentConfig),

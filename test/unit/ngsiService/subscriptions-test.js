@@ -32,17 +32,17 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Subscription tests', function() {
@@ -53,8 +53,8 @@ describe('Subscription tests', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens',
-            },
+                'fiware-servicepath': '/gardens'
+            }
         };
 
         nock.cleanAll();
@@ -216,8 +216,8 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedHandler = false;
 
@@ -242,8 +242,8 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedMiddlewares = false,
                 executedHandler = false,
@@ -260,7 +260,7 @@ describe('Subscription tests', function() {
                 notification.push({
                     name: 'middlewareAttribute',
                     type: 'middlewareType',
-                    value: 'middlewareValue',
+                    value: 'middlewareValue'
                 });
 
                 callback(null, device, notification);
@@ -284,8 +284,8 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 rightFields = false;
 
@@ -322,8 +322,8 @@ describe('Subscription tests', function() {
                     json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/errorNotification.json'),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedHandler = false;
 

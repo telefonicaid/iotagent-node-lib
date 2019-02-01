@@ -30,14 +30,14 @@ var commandLine = require('../lib/command/commandLine'),
         host: 'localhost',
         port: 1026,
         service: 'tester',
-        subservice: '/test',
+        subservice: '/test'
     },
     configIot = {
         host: 'localhost',
         port: 4041,
         name: 'default',
         service: 'tester',
-        subservice: '/test',
+        subservice: '/test'
     };
 
 commandLine.init(configCb, configIot);

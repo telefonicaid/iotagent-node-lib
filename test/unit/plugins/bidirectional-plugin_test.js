@@ -33,10 +33,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -45,22 +45,22 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
-            },
+                        type: 'Hgmm'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Bidirectional data plugin', function() {
@@ -72,8 +72,8 @@ describe('Bidirectional data plugin', function() {
         ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens',
-        },
+            'fiware-servicepath': '/gardens'
+        }
     };
 
     beforeEach(function(done) {
@@ -143,8 +143,8 @@ describe('Bidirectional data plugin', function() {
             method: 'DELETE',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens',
-            },
+                'fiware-servicepath': '/gardens'
+            }
         };
 
         beforeEach(function() {
@@ -209,8 +209,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             executedHandler = false;
 
@@ -333,8 +333,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -344,8 +344,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             };
 
         beforeEach(function() {
@@ -395,8 +395,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
@@ -404,8 +404,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -415,8 +415,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             };
 
         beforeEach(function() {
@@ -497,8 +497,8 @@ describe('Bidirectional data plugin and CB is defined using environment variable
         ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens',
-        },
+            'fiware-servicepath': '/gardens'
+        }
     };
 
     beforeEach(function(done) {

@@ -36,10 +36,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         authentication: {
             type: 'oauth2',
@@ -48,7 +48,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             clientId: 'context-broker',
             clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
             tokenPath: '/auth/realms/default/protocol/openid-connect/token',
-            enabled: true,
+            enabled: true
         },
         types: {
             Light: {
@@ -60,15 +60,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 commands: [],
@@ -76,17 +76,17 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
-            },
+                active: []
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Secured access to the Context Broker with OAuth2 provider', function() {
@@ -94,13 +94,13 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
         {
             name: 'state',
             type: 'Boolean',
-            value: 'true',
+            value: 'true'
         },
         {
             name: 'dimming',
             type: 'Percentage',
-            value: '87',
-        },
+            value: '87'
+        }
     ];
 
     beforeEach(function() {
@@ -260,13 +260,13 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
         {
             name: 'state',
             type: 'Boolean',
-            value: 'true',
+            value: 'true'
         },
         {
             name: 'dimming',
             type: 'Percentage',
-            value: '87',
-        },
+            value: '87'
+        }
     ];
 
     beforeEach(function() {
@@ -465,16 +465,16 @@ describe(
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath',
-            },
+                'fiware-servicepath': '/testingPath'
+            }
         };
 
         var values = [
             {
                 name: 'status',
                 type: 'String',
-                value: 'STARTING',
-            },
+                value: 'STARTING'
+            }
         ];
 
         beforeEach(function() {
@@ -579,8 +579,8 @@ describe(
                 {
                     name: 'status',
                     type: 'String',
-                    value: 'STARTING',
-                },
+                    value: 'STARTING'
+                }
             ];
             var deviceCreation = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -588,8 +588,8 @@ describe(
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice2.json'),
                 headers: {
                     'fiware-service': 'TestService',
-                    'fiware-servicepath': '/testingPath',
-                },
+                    'fiware-servicepath': '/testingPath'
+                }
             };
             var contextBrokerMock2;
             var contextBrokerMock3;
@@ -718,16 +718,16 @@ describe(
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath',
-            },
+                'fiware-servicepath': '/testingPath'
+            }
         };
 
         var values = [
             {
                 name: 'status',
                 type: 'String',
-                value: 'STARTING',
-            },
+                value: 'STARTING'
+            }
         ];
 
         beforeEach(function() {

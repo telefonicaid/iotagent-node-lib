@@ -25,20 +25,20 @@ var config = {
     logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.56.101',
-        port: '1026',
+        port: '1026'
     },
     server: {
-        port: 4041,
+        port: 4041
     },
     deviceRegistry: {
-        type: 'memory',
+        type: 'memory'
     },
     types: {},
     service: 'tester',
     subservice: '/test',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing',
+    defaultType: 'Thing'
 };
 
 module.exports = config;

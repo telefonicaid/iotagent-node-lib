@@ -52,13 +52,7 @@ describe('MongoDB migration', function() {
                         async.series(
                             [
                                 apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),
-                                apply(
-                                    mongoUtils.populate,
-                                    'localhost',
-                                    'iotOrigin',
-                                    configurationCollection,
-                                    'SERVICE'
-                                ),
+                                apply(mongoUtils.populate, 'localhost', 'iotOrigin', configurationCollection, 'SERVICE')
                             ],
                             done
                         );
@@ -83,7 +77,7 @@ describe('MongoDB migration', function() {
     describe('When the full migration command is executed for two databases', function() {
         var config = {
             host: 'localhost',
-            port: '27017',
+            port: '27017'
         };
 
         it('should migrate all the services', function(done) {
@@ -118,7 +112,7 @@ describe('MongoDB migration', function() {
                     .db()
                     .collection('groups')
                     .find({
-                        service: 'dumb_mordor',
+                        service: 'dumb_mordor'
                     })
                     .toArray(function(err, docs) {
                         should.not.exist(err);
@@ -140,7 +134,7 @@ describe('MongoDB migration', function() {
                     .db()
                     .collection('devices')
                     .find({
-                        id: 'gk20',
+                        id: 'gk20'
                     })
                     .toArray(function(err, docs) {
                         should.not.exist(err);
@@ -168,7 +162,7 @@ describe('MongoDB migration', function() {
     describe('When a service migration command is executed', function() {
         var config = {
             host: 'localhost',
-            port: '27017',
+            port: '27017'
         };
 
         it(/*jshint quotmark: double */
@@ -204,7 +198,7 @@ describe('MongoDB migration', function() {
     describe('When a device has an empty string in its name', function() {
         var config = {
             host: 'localhost',
-            port: '27017',
+            port: '27017'
         };
 
         it('should set the name as undefined', function(done) {
@@ -226,7 +220,7 @@ describe('MongoDB migration', function() {
     describe('When a subservice migration command is executed', function() {
         var config = {
             host: 'localhost',
-            port: '27017',
+            port: '27017'
         };
 
         it(/*jshint quotmark: double */
@@ -250,8 +244,8 @@ describe('MongoDB migration', function() {
             host: 'localhost',
             port: '27017',
             protocols: {
-                'PDI-IoTA-UltraLight': 'NODE-Ultralight',
-            },
+                'PDI-IoTA-UltraLight': 'NODE-Ultralight'
+            }
         };
 
         it('should change the protocol to the translated one', function(done) {

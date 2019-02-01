@@ -35,10 +35,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -46,50 +46,50 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Motion: {
                 commands: [],
                 lazy: [
                     {
                         name: 'moving',
-                        type: 'Boolean',
-                    },
+                        type: 'Boolean'
+                    }
                 ],
                 staticAttributes: [
                     {
                         name: 'location',
                         type: 'Vector',
-                        value: '(123,523)',
-                    },
+                        value: '(123,523)'
+                    }
                 ],
-                active: [],
+                active: []
             },
             RobotPre: {
                 commands: [],
                 lazy: [
                     {
                         name: 'moving',
-                        type: 'Boolean',
-                    },
+                        type: 'Boolean'
+                    }
                 ],
                 staticAttributes: [],
                 attributes: [],
@@ -98,29 +98,29 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                         position: {
                             objectType: 9090,
                             objectInstance: 0,
-                            objectResource: 0,
-                        },
-                    },
-                },
-            },
+                            objectResource: 0
+                        }
+                    }
+                }
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     device1 = {
         id: 'light1',
         type: 'Light',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     },
     device2 = {
         id: 'motion1',
         type: 'Motion',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     },
     device3 = {
         id: 'TestRobotPre',
@@ -132,10 +132,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 position: {
                     objectType: 6789,
                     objectInstance: 0,
-                    objectResource: 17,
-                },
-            },
-        },
+                    objectResource: 17
+                }
+            }
+        }
     };
 
 describe('IoT Agent Lazy Devices', function() {
@@ -169,17 +169,17 @@ describe('IoT Agent Lazy Devices', function() {
                             {
                                 name: 'dimming',
                                 type: 'Percentage',
-                                value: '12',
-                            },
-                        ],
-                    },
+                                value: '12'
+                            }
+                        ]
+                    }
                 ],
-                updateAction: 'APPEND',
+                updateAction: 'APPEND'
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {
@@ -244,15 +244,15 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'Light:light1',
-                        },
+                            id: 'Light:light1'
+                        }
                     ],
-                    attributes: ['dimming'],
+                    attributes: ['dimming']
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiare-servicepath': 'gardens',
-                },
+                    'fiare-servicepath': 'gardens'
+                }
             },
             sensorData = [
                 {
@@ -263,10 +263,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: '19',
-                        },
-                    ],
-                },
+                            value: '19'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -327,15 +327,15 @@ describe('IoT Agent Lazy Devices', function() {
                     {
                         type: 'Light',
                         isPattern: 'false',
-                        id: 'Light:light1',
-                    },
+                        id: 'Light:light1'
+                    }
                 ],
-                attributes: ['dimming'],
+                attributes: ['dimming']
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {
@@ -397,14 +397,14 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'Light:light1',
-                        },
-                    ],
+                            id: 'Light:light1'
+                        }
+                    ]
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens',
-                },
+                    'fiware-servicepath': 'gardens'
+                }
             },
             sensorData = [
                 {
@@ -415,10 +415,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'temperature',
                             type: 'centigrades',
-                            value: '19',
-                        },
-                    ],
-                },
+                            value: '19'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -479,15 +479,15 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Light',
                             isPattern: 'false',
-                            id: 'Light:light1',
-                        },
+                            id: 'Light:light1'
+                        }
                     ],
-                    attributes: [],
+                    attributes: []
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens',
-                },
+                    'fiware-servicepath': 'gardens'
+                }
             },
             sensorData = [
                 {
@@ -498,10 +498,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'temperature',
                             type: 'centigrades',
-                            value: '19',
-                        },
-                    ],
-                },
+                            value: '19'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -562,15 +562,15 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             type: 'Motion',
                             isPattern: 'false',
-                            id: 'Motion:motion1',
-                        },
+                            id: 'Motion:motion1'
+                        }
                     ],
-                    attributes: ['moving', 'location'],
+                    attributes: ['moving', 'location']
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens',
-                },
+                    'fiware-servicepath': 'gardens'
+                }
             },
             sensorData = [
                 {
@@ -580,10 +580,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'moving',
                             type: 'Boolean',
-                            value: 'true',
-                        },
-                    ],
-                },
+                            value: 'true'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -644,8 +644,8 @@ describe('IoT Agent Lazy Devices', function() {
                 headers: {
                     'Content-Type': 'text/plain',
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens',
-                },
+                    'fiware-servicepath': 'gardens'
+                }
             },
             sensorData = [
                 {
@@ -655,10 +655,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: '19',
-                        },
-                    ],
-                },
+                            value: '19'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -730,7 +730,7 @@ describe('IoT Agent Lazy Devices', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/queryContext',
                 method: 'POST',
-                json: {},
+                json: {}
             },
             sensorData = [
                 {
@@ -740,10 +740,10 @@ describe('IoT Agent Lazy Devices', function() {
                         {
                             name: 'dimming',
                             type: 'Percentage',
-                            value: '19',
-                        },
-                    ],
-                },
+                            value: '19'
+                        }
+                    ]
+                }
             ];
 
         beforeEach(function(done) {
@@ -809,17 +809,17 @@ describe('IoT Agent Lazy Devices', function() {
                                 {
                                     name: 'moving',
                                     type: 'Boolean',
-                                    value: 'True',
-                                },
-                            ],
-                        },
+                                    value: 'True'
+                                }
+                            ]
+                        }
                     ],
-                    updateAction: 'APPEND',
+                    updateAction: 'APPEND'
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens',
-                },
+                    'fiware-servicepath': 'gardens'
+                }
             };
 
             beforeEach(function(done) {

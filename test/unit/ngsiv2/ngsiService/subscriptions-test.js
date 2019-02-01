@@ -36,10 +36,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {},
         service: 'smartGondor',
@@ -57,7 +57,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         // current date. This implies that in order to assert the value of the payload in the CB mock,
         // we have to calculate dynamically the expected `expires` field.
         // Please check line 86.
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Subscription tests', function() {
@@ -68,8 +68,8 @@ describe('Subscription tests', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens',
-            },
+                'fiware-servicepath': '/gardens'
+            }
         };
 
         nock.cleanAll();
@@ -237,8 +237,8 @@ describe('Subscription tests', function() {
                     ),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedHandler = false;
 
@@ -265,8 +265,8 @@ describe('Subscription tests', function() {
                     ),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedMiddlewares = false,
                 executedHandler = false,
@@ -283,7 +283,7 @@ describe('Subscription tests', function() {
                 notification.push({
                     name: 'middlewareAttribute',
                     type: 'middlewareType',
-                    value: 'middlewareValue',
+                    value: 'middlewareValue'
                 });
 
                 callback(null, device, notification);
@@ -309,8 +309,8 @@ describe('Subscription tests', function() {
                     ),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 rightFields = false;
 
@@ -349,8 +349,8 @@ describe('Subscription tests', function() {
                     ),
                     headers: {
                         'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens',
-                    },
+                        'fiware-servicepath': '/gardens'
+                    }
                 },
                 executedHandler = false;
 

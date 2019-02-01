@@ -10,7 +10,7 @@ function initEcho(callback) {
     echoServer = {
         server: null,
         app: express(),
-        router: express.Router(),
+        router: express.Router()
     };
 
     echoServer.app.set('port', 9999);

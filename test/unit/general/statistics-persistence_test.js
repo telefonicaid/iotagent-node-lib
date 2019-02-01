@@ -32,27 +32,27 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
             port: 4041,
-            baseRoot: '/',
+            baseRoot: '/'
         },
         stats: {
             interval: 50,
-            persistence: true,
+            persistence: true
         },
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent',
+            db: 'iotagent'
         },
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     iotAgentDb,
     oldConfig;
@@ -91,7 +91,7 @@ describe('Statistics persistence service', function() {
         beforeEach(function(done) {
             statsService.globalLoad(
                 {
-                    stat1: 10,
+                    stat1: 10
                 },
                 function() {
                     statsService.add('stat1', 5, done);

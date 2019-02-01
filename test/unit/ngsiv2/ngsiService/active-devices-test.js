@@ -35,10 +35,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -47,30 +47,30 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 type: 'Termometer',
@@ -78,10 +78,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Humidity: {
                 type: 'Humidity',
@@ -91,9 +91,9 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
+                        type: 'percentage'
+                    }
+                ]
             },
             Motion: {
                 type: 'Motion',
@@ -103,22 +103,22 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         name: 'location',
                         type: 'geo:point',
-                        value: '153,523',
-                    },
+                        value: '153,523'
+                    }
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
-            },
+                        type: 'percentage'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Active attributes test', function() {
@@ -126,13 +126,13 @@ describe('Active attributes test', function() {
         {
             name: 'state',
             type: 'boolean',
-            value: true,
+            value: true
         },
         {
             name: 'dimming',
             type: 'number',
-            value: 87,
-        },
+            value: 87
+        }
     ];
 
     beforeEach(function() {
@@ -179,13 +179,13 @@ describe('Active attributes test', function() {
                 {
                     name: 'state',
                     type: 'boolean',
-                    value: true,
+                    value: true
                 },
                 {
                     name: 'dimming',
                     type: 'number',
-                    value: 87,
-                },
+                    value: 87
+                }
             ];
 
             timekeeper.freeze(time);
@@ -230,13 +230,13 @@ describe('Active attributes test', function() {
                 {
                     name: 'state',
                     type: 'Boolean',
-                    value: 'true',
+                    value: 'true'
                 },
                 {
                     name: 'TimeInstant',
                     type: 'ISO8601',
-                    value: '2018-10-05T11:03:56 00:00Z',
-                },
+                    value: '2018-10-05T11:03:56 00:00Z'
+                }
             ];
 
             nock.cleanAll();
@@ -272,13 +272,13 @@ describe('Active attributes test', function() {
                     {
                         name: 'state',
                         type: 'boolean',
-                        value: true,
+                        value: true
                     },
                     {
                         name: 'TimeInstant',
                         type: 'DateTime',
-                        value: '2022-10-22T22:22:22Z',
-                    },
+                        value: '2022-10-22T22:22:22Z'
+                    }
                 ];
 
                 timekeeper.freeze(time);
@@ -330,13 +330,13 @@ describe('Active attributes test', function() {
                     {
                         name: 'state',
                         type: 'boolean',
-                        value: true,
+                        value: true
                     },
                     {
                         name: 'dimming',
                         type: 'number',
-                        value: 87,
-                    },
+                        value: 87
+                    }
                 ];
 
                 timekeeper.freeze(time);
@@ -388,13 +388,13 @@ describe('Active attributes test', function() {
                 {
                     name: 'state',
                     type: 'boolean',
-                    value: true,
+                    value: true
                 },
                 {
                     name: 'TimeInstant',
                     type: 'DateTime',
-                    value: '2015-12-14T08:06:01.468Z',
-                },
+                    value: '2015-12-14T08:06:01.468Z'
+                }
             ];
 
             timekeeper.freeze(time);
@@ -445,13 +445,13 @@ describe('Active attributes test', function() {
                     {
                         name: 'state',
                         type: 'boolean',
-                        value: true,
+                        value: true
                     },
                     {
                         name: 'TimeInstant',
                         type: 'DateTime',
-                        value: '2015-12-14T08:06:01.468Z',
-                    },
+                        value: '2015-12-14T08:06:01.468Z'
+                    }
                 ];
 
                 timekeeper.freeze(time);
@@ -638,8 +638,8 @@ describe('Active attributes test', function() {
             {
                 name: 'moving',
                 type: 'boolean',
-                value: true,
-            },
+                value: true
+            }
         ];
 
         beforeEach(function(done) {

@@ -35,10 +35,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -46,42 +46,42 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
+                        type: 'Hgmm'
+                    }
                 ],
                 service: 'smartGondor',
-                subservice: 'gardens',
+                subservice: 'gardens'
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
                 active: [],
                 service: 'smartGondor',
-                subservice: 'gardens',
-            },
+                subservice: 'gardens'
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     device1 = {
         id: 'light1',
         type: 'Light',
         service: 'smartGondor',
-        subservice: 'gardens',
+        subservice: 'gardens'
     },
     deviceUpdated = {
         id: 'light1',
@@ -93,15 +93,15 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         lazy: [
             {
                 name: 'pressure',
-                type: 'Hgmm',
-            },
+                type: 'Hgmm'
+            }
         ],
         active: [
             {
                 name: 'temperature',
-                type: 'centigrades',
-            },
-        ],
+                type: 'centigrades'
+            }
+        ]
     },
     deviceCommandUpdated = {
         id: 'light1',
@@ -113,15 +113,15 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         commands: [
             {
                 name: 'move',
-                type: 'command',
-            },
+                type: 'command'
+            }
         ],
         active: [
             {
                 name: 'temperature',
-                type: 'centigrades',
-            },
-        ],
+                type: 'centigrades'
+            }
+        ]
     },
     unknownDevice = {
         id: 'rotationSensor4',
@@ -132,7 +132,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         internalId: 'unknownInternalId',
 
         lazy: [],
-        active: [],
+        active: []
     };
 
 describe('IoT Agent Device Update Registration', function() {

@@ -4,6 +4,6 @@
   "singleQuote": true,
   "parser": "flow",
   "printWidth": 120,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "tabWidth": 4
 }

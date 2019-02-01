@@ -37,10 +37,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -50,63 +50,63 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 't',
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'l',
                         name: 'luminance',
-                        type: 'lumens',
+                        type: 'lumens'
                     },
                     {
                         object_id: 'ut',
                         name: 'unix_timestamp',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 'ap',
                         name: 'active_power',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 'ap',
                         name: 'active_power',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         object_id: 's',
                         name: 'status',
-                        type: 'Boolean',
+                        type: 'Boolean'
                     },
                     {
                         object_id: 'al',
                         name: 'keep_alive',
-                        type: 'None',
+                        type: 'None'
                     },
                     {
                         object_id: 'ta',
                         name: 'tags',
-                        type: 'Array',
+                        type: 'Array'
                     },
                     {
                         object_id: 'c',
                         name: 'configuration',
-                        type: 'Object',
-                    },
-                ],
-            },
+                        type: 'Object'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Attribute alias plugin', function() {
@@ -132,13 +132,13 @@ describe('Attribute alias plugin', function() {
             {
                 name: 't',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'p',
                 type: 'Hgmm',
-                value: '20071103T131805',
-            },
+                value: '20071103T131805'
+            }
         ];
 
         beforeEach(function() {
@@ -171,8 +171,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'l',
                 type: 'lums',
-                value: '9',
-            },
+                value: '9'
+            }
         ];
 
         beforeEach(function() {
@@ -205,8 +205,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'ut',
                 type: 'Number',
-                value: '99823423',
-            },
+                value: '99823423'
+            }
         ];
 
         beforeEach(function() {
@@ -237,8 +237,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'ut',
                 type: 'Number',
-                value: '99823423',
-            },
+                value: '99823423'
+            }
         ];
 
         beforeEach(function() {
@@ -272,8 +272,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'ap',
                 type: 'Number',
-                value: '0.45',
-            },
+                value: '0.45'
+            }
         ];
 
         beforeEach(function() {
@@ -307,8 +307,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 's',
                 type: 'Boolean',
-                value: false,
-            },
+                value: false
+            }
         ];
 
         beforeEach(function() {
@@ -342,8 +342,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'al',
                 type: 'None',
-                value: 'null',
-            },
+                value: 'null'
+            }
         ];
 
         beforeEach(function() {
@@ -377,8 +377,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'ta',
                 type: 'Array',
-                value: '["iot","device"]',
-            },
+                value: '["iot","device"]'
+            }
         ];
 
         beforeEach(function() {
@@ -412,8 +412,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'c',
                 type: 'Object',
-                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}',
-            },
+                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}'
+            }
         ];
 
         beforeEach(function() {
@@ -447,8 +447,8 @@ describe('Attribute alias plugin', function() {
             {
                 name: 'c',
                 type: 'Object',
-                value: 'string_value',
-            },
+                value: 'string_value'
+            }
         ];
 
         beforeEach(function() {

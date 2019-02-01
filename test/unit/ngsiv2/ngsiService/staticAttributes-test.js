@@ -34,10 +34,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -46,41 +46,41 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
+                        type: 'Hgmm'
+                    }
                 ],
                 staticAttributes: [
                     {
                         name: 'attr1',
-                        type: 'type1',
+                        type: 'type1'
                     },
                     {
                         name: 'attr2',
-                        type: 'type2',
+                        type: 'type2'
                     },
                     {
                         name: 'attr3',
-                        type: 'type3',
+                        type: 'type3'
                     },
                     {
                         name: 'attr4',
-                        type: 'type4',
-                    },
-                ],
-            },
+                        type: 'type4'
+                    }
+                ]
+            }
         },
         timestamp: true,
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Static attributes test', function() {
@@ -88,13 +88,13 @@ describe('Static attributes test', function() {
         {
             name: 'state',
             type: 'boolean',
-            value: true,
+            value: true
         },
         {
             name: 'dimming',
             type: 'number',
-            value: 87,
-        },
+            value: 87
+        }
     ];
 
     beforeEach(function() {
@@ -138,7 +138,7 @@ describe('Static attributes test', function() {
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
-                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
+                    async.apply(iotAgentLib.update, 'light1', 'Light', '', values)
                 ],
                 function(error, results) {
                     should.not.exist(error);

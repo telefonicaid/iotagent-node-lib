@@ -37,10 +37,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -49,30 +49,30 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             BrokenLight: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 type: 'Termometer',
@@ -80,10 +80,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Humidity: {
                 type: 'Humidity',
@@ -93,9 +93,9 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
+                        type: 'percentage'
+                    }
+                ]
             },
             Motion: {
                 type: 'Motion',
@@ -105,29 +105,29 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         name: 'location',
                         type: 'Vector',
-                        value: '(123,523)',
-                    },
+                        value: '(123,523)'
+                    }
                 ],
                 active: [
                     {
                         name: 'humidity',
-                        type: 'percentage',
-                    },
-                ],
-            },
+                        type: 'percentage'
+                    }
+                ]
+            }
         },
         iotManager: {
             host: 'localhost',
             port: 8082,
             path: '/protocols',
             protocol: 'MQTT_UL',
-            description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)',
+            description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)'
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     groupCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
@@ -145,17 +145,17 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     attributes: [
                         {
                             name: 'status',
-                            type: 'Boolean',
-                        },
+                            type: 'Boolean'
+                        }
                     ],
-                    static_attributes: [],
-                },
-            ],
+                    static_attributes: []
+                }
+            ]
         },
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath',
-        },
+            'fiware-servicepath': '/testingPath'
+        }
     },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -163,8 +163,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath',
-        },
+            'fiware-servicepath': '/testingPath'
+        }
     },
     contextBrokerMock,
     iotamMock;

@@ -37,10 +37,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             WeatherStation: {
@@ -51,16 +51,16 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
                         entity_name: 'Higro2000',
-                        entity_type: 'Higrometer',
-                    },
-                ],
+                        entity_type: 'Higrometer'
+                    }
+                ]
             },
             WeatherStation2: {
                 commands: [],
@@ -70,15 +70,15 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
-                        entity_name: 'Higro2000',
-                    },
-                ],
+                        entity_name: 'Higro2000'
+                    }
+                ]
             },
             WeatherStation3: {
                 commands: [],
@@ -88,15 +88,15 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'h',
                         name: 'humidity',
                         type: 'Percentage',
-                        entity_name: 'Station Number ${@sn * 10}',
-                    },
-                ],
+                        entity_name: 'Station Number ${@sn * 10}'
+                    }
+                ]
             },
             WeatherStation5: {
                 commands: [],
@@ -106,16 +106,16 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm',
+                        type: 'Hgmm'
                     },
                     {
                         object_id: 'h',
                         name: 'pressure',
                         type: 'Hgmm',
                         entity_name: 'Higro2000',
-                        entity_type: 'Higrometer',
-                    },
-                ],
+                        entity_type: 'Higrometer'
+                    }
+                ]
             },
             WeatherStation6: {
                 commands: [],
@@ -127,16 +127,16 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         name: 'pressure',
                         type: 'Hgmm',
                         entity_name: 'Higro2002',
-                        entity_type: 'Higrometer',
+                        entity_type: 'Higrometer'
                     },
                     {
                         object_id: 'h',
                         name: 'pressure',
                         type: 'Hgmm',
                         entity_name: 'Higro2000',
-                        entity_type: 'Higrometer',
-                    },
-                ],
+                        entity_type: 'Higrometer'
+                    }
+                ]
             },
             Sensor001: {
                 commands: [],
@@ -148,44 +148,44 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         name: 'vol',
                         object_id: 'cont1',
                         entity_name: 'SO1',
-                        entity_type: 'WM',
+                        entity_type: 'WM'
                     },
                     {
                         type: 'number',
                         name: 'vol',
                         object_id: 'cont2',
                         entity_name: 'SO2',
-                        entity_type: 'WM',
+                        entity_type: 'WM'
                     },
                     {
                         type: 'number',
                         name: 'vol',
                         object_id: 'cont3',
                         entity_name: 'SO3',
-                        entity_type: 'WM',
+                        entity_type: 'WM'
                     },
                     {
                         type: 'number',
                         name: 'vol',
                         object_id: 'cont4',
                         entity_name: 'SO4',
-                        entity_type: 'WM',
+                        entity_type: 'WM'
                     },
                     {
                         type: 'number',
                         name: 'vol',
                         object_id: 'cont5',
                         entity_name: 'SO5',
-                        entity_type: 'WM',
-                    },
-                ],
-            },
+                        entity_type: 'WM'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Multi-entity plugin', function() {
@@ -213,13 +213,13 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -251,8 +251,8 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'h',
                 type: 'Hgmm',
-                value: '16',
-            },
+                value: '16'
+            }
         ];
 
         beforeEach(function() {
@@ -284,13 +284,13 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'h',
                 type: 'Hgmm',
-                value: '16',
+                value: '16'
             },
             {
                 name: 'p',
                 type: 'Hgmm',
-                value: '17',
-            },
+                value: '17'
+            }
         ];
 
         beforeEach(function() {
@@ -322,18 +322,18 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
+                value: '12'
             },
             {
                 name: 'sn',
                 type: 'Number',
-                value: '5',
-            },
+                value: '5'
+            }
         ];
 
         beforeEach(function() {
@@ -365,13 +365,13 @@ describe('Multi-entity plugin', function() {
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -406,8 +406,8 @@ describe('Multi-entity plugin', function() {
                 {
                     name: 'cont1',
                     type: 'number',
-                    value: '38',
-                },
+                    value: '38'
+                }
             ];
 
             beforeEach(function() {
@@ -443,23 +443,23 @@ describe('Multi-entity plugin', function() {
                 {
                     name: 'cont1',
                     type: 'number',
-                    value: '38',
+                    value: '38'
                 },
                 {
                     name: 'cont2',
                     type: 'number',
-                    value: '39',
+                    value: '39'
                 },
                 {
                     name: 'cont3',
                     type: 'number',
-                    value: '40',
+                    value: '40'
                 },
                 {
                     name: 'cont5',
                     type: 'number',
-                    value: '42',
-                },
+                    value: '42'
+                }
             ];
 
             beforeEach(function() {
@@ -515,26 +515,26 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
             {
                 name: 'p',
                 type: 'centigrades',
-                value: '52',
+                value: '52'
             },
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
+                value: '12'
             },
             {
                 name: 'TimeInstant',
                 type: 'DateTime',
-                value: '2016-05-30T16:25:22.304Z',
-            },
+                value: '2016-05-30T16:25:22.304Z'
+            }
         ];
 
         var singleValue = [
             {
                 name: 'h',
                 type: 'Percentage',
-                value: '12',
-            },
+                value: '12'
+            }
         ];
 
         beforeEach(function() {
@@ -635,14 +635,14 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                 {
                     name: 'h',
                     type: 'Percentage',
-                    value: '16',
+                    value: '16'
                 },
                 {
                     // Note this timestamp is the one used at updateContextMultientityTimestampPlugin3.json
                     name: 'TimeInstant',
                     type: 'DateTime',
-                    value: '2018-06-13T13:28:34.611Z',
-                },
+                    value: '2018-06-13T13:28:34.611Z'
+                }
             ];
 
             iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function(error) {

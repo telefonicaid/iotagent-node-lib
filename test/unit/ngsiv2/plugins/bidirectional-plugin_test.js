@@ -37,10 +37,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {},
         service: 'smartGondor',
@@ -58,7 +58,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         // current date. This implies that in order to assert the value of the payload in the CB mock,
         // we have to calculate dynamically the expected `expires` field.
         // Please check lines 101, 151, 210, 332 and 404.
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('Bidirectional data plugin', function() {
@@ -70,8 +70,8 @@ describe('Bidirectional data plugin', function() {
         ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens',
-        },
+            'fiware-servicepath': '/gardens'
+        }
     };
 
     beforeEach(function(done) {
@@ -151,8 +151,8 @@ describe('Bidirectional data plugin', function() {
             method: 'DELETE',
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens',
-            },
+                'fiware-servicepath': '/gardens'
+            }
         };
 
         beforeEach(function() {
@@ -221,8 +221,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             executedHandler = false;
 
@@ -344,8 +344,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -355,8 +355,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             };
 
         beforeEach(function() {
@@ -416,8 +416,8 @@ describe('Bidirectional data plugin', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
@@ -427,8 +427,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -438,8 +438,8 @@ describe('Bidirectional data plugin', function() {
                 ),
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens',
-                },
+                    'fiware-servicepath': '/gardens'
+                }
             };
 
         beforeEach(function() {
@@ -530,8 +530,8 @@ describe('Bidirectional data plugin and CB is defined using environment variable
         ),
         headers: {
             'fiware-service': 'smartGondor',
-            'fiware-servicepath': '/gardens',
-        },
+            'fiware-servicepath': '/gardens'
+        }
     };
 
     beforeEach(function(done) {

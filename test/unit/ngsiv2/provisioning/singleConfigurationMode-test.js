@@ -38,11 +38,11 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
             port: 4041,
-            baseRoot: '/',
+            baseRoot: '/'
         },
         types: {},
         service: 'smartGondor',
@@ -50,7 +50,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     groupCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -58,8 +58,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath',
-        },
+            'fiware-servicepath': '/testingPath'
+        }
     },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -67,8 +67,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
         headers: {
             'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath',
-        },
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
 describe('Provisioning API: Single service mode', function() {
@@ -93,8 +93,8 @@ describe('Provisioning API: Single service mode', function() {
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath',
-            },
+                'fiware-servicepath': '/testingPath'
+            }
         };
 
         beforeEach(function(done) {
@@ -118,8 +118,8 @@ describe('Provisioning API: Single service mode', function() {
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
             headers: {
                 'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath',
-            },
+                'fiware-servicepath': '/testingPath'
+            }
         };
 
         beforeEach(function(done) {
@@ -164,8 +164,8 @@ describe('Provisioning API: Single service mode', function() {
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
                 headers: {
                     'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath',
-                },
+                    'fiware-servicepath': '/testingPath'
+                }
             },
             alternativeGroupCreation = {
                 url: 'http://localhost:4041/iot/services',
@@ -173,8 +173,8 @@ describe('Provisioning API: Single service mode', function() {
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
                 headers: {
                     'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath',
-                },
+                    'fiware-servicepath': '/testingPath'
+                }
             };
 
         beforeEach(function(done) {
@@ -233,8 +233,8 @@ describe('Provisioning API: Single service mode', function() {
                 method: 'GET',
                 headers: {
                     'fiware-service': 'TestService',
-                    'fiware-servicepath': '/testingPath',
-                },
+                    'fiware-servicepath': '/testingPath'
+                }
             },
             oldType;
 

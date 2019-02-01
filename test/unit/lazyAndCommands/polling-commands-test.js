@@ -34,10 +34,10 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotAgentConfig = {
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -45,63 +45,63 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
                 lazy: [
                     {
                         name: 'temperature',
-                        type: 'centigrades',
-                    },
+                        type: 'centigrades'
+                    }
                 ],
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Hgmm',
-                    },
-                ],
+                        type: 'Hgmm'
+                    }
+                ]
             },
             Termometer: {
                 commands: [],
                 lazy: [
                     {
                         name: 'temp',
-                        type: 'kelvin',
-                    },
+                        type: 'kelvin'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Motion: {
                 commands: [],
                 lazy: [
                     {
                         name: 'moving',
-                        type: 'Boolean',
-                    },
+                        type: 'Boolean'
+                    }
                 ],
                 staticAttributes: [
                     {
                         name: 'location',
                         type: 'Vector',
-                        value: '(123,523)',
-                    },
+                        value: '(123,523)'
+                    }
                 ],
-                active: [],
+                active: []
             },
             Robot: {
                 commands: [
                     {
                         name: 'position',
-                        type: 'Array',
-                    },
+                        type: 'Array'
+                    }
                 ],
                 lazy: [],
                 staticAttributes: [],
-                active: [],
-            },
+                active: []
+            }
         },
         deviceRegistry: {
-            type: 'mongodb',
+            type: 'mongodb'
         },
 
         mongodb: {
             host: 'localhost',
             port: '27017',
-            db: 'iotagent',
+            db: 'iotagent'
         },
         service: 'smartGondor',
         subservice: 'gardens',
@@ -109,14 +109,14 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S',
         pollingExpiration: 200,
-        pollingDaemonFrequency: 20,
+        pollingDaemonFrequency: 20
     },
     device3 = {
         id: 'r2d2',
         type: 'Robot',
         service: 'smartGondor',
         subservice: 'gardens',
-        polling: true,
+        polling: true
     };
 
 describe('Polling commands', function() {
@@ -177,17 +177,17 @@ describe('Polling commands', function() {
                             {
                                 name: 'position',
                                 type: 'Array',
-                                value: '[28, -104, 23]',
-                            },
-                        ],
-                    },
+                                value: '[28, -104, 23]'
+                            }
+                        ]
+                    }
                 ],
-                updateAction: 'UPDATE',
+                updateAction: 'UPDATE'
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {
@@ -222,9 +222,9 @@ describe('Polling commands', function() {
                         {
                             name: 'position',
                             type: 'Array',
-                            value: '[28, -104, 23]',
-                        },
-                    ],
+                            value: '[28, -104, 23]'
+                        }
+                    ]
                 });
             });
 
@@ -279,18 +279,18 @@ describe('Polling commands', function() {
                                 type: 'Array',
                                 value: {
                                     attr1: 12,
-                                    attr2: 24,
-                                },
-                            },
-                        ],
-                    },
+                                    attr2: 24
+                                }
+                            }
+                        ]
+                    }
                 ],
-                updateAction: 'UPDATE',
+                updateAction: 'UPDATE'
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {
@@ -342,17 +342,17 @@ describe('Polling commands', function() {
                             {
                                 name: 'position',
                                 type: 'Array',
-                                value: '[28, -104, 23]',
-                            },
-                        ],
-                    },
+                                value: '[28, -104, 23]'
+                            }
+                        ]
+                    }
                 ],
-                updateAction: 'UPDATE',
+                updateAction: 'UPDATE'
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens',
-            },
+                'fiware-servicepath': 'gardens'
+            }
         };
 
         beforeEach(function(done) {

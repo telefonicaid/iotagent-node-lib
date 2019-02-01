@@ -25,11 +25,11 @@ var config = {
     logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.56.101',
-        port: '1026',
+        port: '1026'
     },
     server: {
         port: 4041,
-        host: '0.0.0.0',
+        host: '0.0.0.0'
     },
     authentication: {
         enabled: true,
@@ -38,10 +38,10 @@ var config = {
         host: 'localhost',
         port: '5000',
         user: 'iotagent',
-        password: 'iotagent',
+        password: 'iotagent'
     },
     deviceRegistry: {
-        type: 'memory',
+        type: 'memory'
     },
     types: {
         Light: {
@@ -56,22 +56,22 @@ var config = {
             lazy: [
                 {
                     name: 'luminescence',
-                    type: 'Lumens',
-                },
+                    type: 'Lumens'
+                }
             ],
             active: [
                 {
                     name: 'status',
-                    type: 'Boolean',
-                },
-            ],
-        },
+                    type: 'Boolean'
+                }
+            ]
+        }
     },
     service: 'smartGondor',
     subservice: '/gardens',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing',
+    defaultType: 'Thing'
 };
 
 module.exports = config;

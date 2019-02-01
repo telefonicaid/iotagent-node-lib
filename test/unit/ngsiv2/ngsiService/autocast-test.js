@@ -35,10 +35,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
-            ngsiVersion: 'v2',
+            ngsiVersion: 'v2'
         },
         server: {
-            port: 4041,
+            port: 4041
         },
         types: {
             Light: {
@@ -47,40 +47,40 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 active: [
                     {
                         name: 'pressure',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         name: 'temperature',
-                        type: 'Number',
+                        type: 'Number'
                     },
                     {
                         name: 'id',
-                        type: 'String',
+                        type: 'String'
                     },
                     {
                         name: 'status',
-                        type: 'Boolean',
+                        type: 'Boolean'
                     },
                     {
                         name: 'keep_alive',
-                        type: 'None',
+                        type: 'None'
                     },
                     {
                         name: 'tags',
-                        type: 'Array',
+                        type: 'Array'
                     },
                     {
                         name: 'configuration',
-                        type: 'Object',
-                    },
-                ],
-            },
+                        type: 'Object'
+                    }
+                ]
+            }
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     };
 
 describe('JSON native types autocast test', function() {
@@ -99,8 +99,8 @@ describe('JSON native types autocast test', function() {
                 {
                     name: 'pressure',
                     type: 'Number',
-                    value: '23',
-                },
+                    value: '23'
+                }
             ];
 
             beforeEach(function(done) {
@@ -136,8 +136,8 @@ describe('JSON native types autocast test', function() {
                 {
                     name: 'temperature',
                     type: 'Number',
-                    value: '14.4',
-                },
+                    value: '14.4'
+                }
             ];
 
             beforeEach(function(done) {
@@ -173,8 +173,8 @@ describe('JSON native types autocast test', function() {
                 {
                     name: 'status',
                     type: 'Boolean',
-                    value: 'true',
-                },
+                    value: 'true'
+                }
             ];
 
             beforeEach(function(done) {
@@ -210,8 +210,8 @@ describe('JSON native types autocast test', function() {
                 {
                     name: 'status',
                     type: 'Boolean',
-                    value: 'false',
-                },
+                    value: 'false'
+                }
             ];
 
             beforeEach(function(done) {
@@ -245,8 +245,8 @@ describe('JSON native types autocast test', function() {
             {
                 name: 'keep_alive',
                 type: 'None',
-                value: 'null',
-            },
+                value: 'null'
+            }
         ];
 
         beforeEach(function(done) {
@@ -279,8 +279,8 @@ describe('JSON native types autocast test', function() {
             {
                 name: 'tags',
                 type: 'Array',
-                value: '["iot","device"]',
-            },
+                value: '["iot","device"]'
+            }
         ];
 
         beforeEach(function(done) {
@@ -313,8 +313,8 @@ describe('JSON native types autocast test', function() {
             {
                 name: 'configuration',
                 type: 'Object',
-                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}',
-            },
+                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}'
+            }
         ];
 
         beforeEach(function(done) {

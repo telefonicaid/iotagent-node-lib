@@ -31,22 +31,22 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
-            port: '1026',
+            port: '1026'
         },
         server: {
             name: 'testAgent',
             port: 4041,
-            baseRoot: '/',
+            baseRoot: '/'
         },
         types: {},
         deviceRegistry: {
-            type: 'memory',
+            type: 'memory'
         },
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
+        throttling: 'PT5S'
     },
     contextBrokerMock;
 
@@ -84,9 +84,9 @@ describe('In memory device registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i,
-                        },
-                    ],
+                            value: i
+                        }
+                    ]
                 });
             }
 
@@ -134,9 +134,9 @@ describe('In memory device registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i,
-                        },
-                    ],
+                            value: i
+                        }
+                    ]
                 });
             }
 
@@ -180,9 +180,9 @@ describe('In memory device registry', function() {
                         {
                             id: 'attrId',
                             type: 'attrType' + i,
-                            value: i,
-                        },
-                    ],
+                            value: i
+                        }
+                    ]
                 });
             }
 
