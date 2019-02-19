@@ -28,6 +28,7 @@ The following list of features are planned to be addressed in the short term, an
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent release(s) generated in the next 9 months after the next planned release:
 - Support to FIWARE complex data models.
+- Removal support for NGSIv1 (which currently is deprecated)
 
 
 ### Long term
