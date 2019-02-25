@@ -2,12 +2,12 @@
     "dataProvided": {
         "entities": [
             {
-                "type": "Light",
-                "id": "Light:light1"
+                "type": "RobotPre",
+                "id": "RobotPre:TestRobotPre"
             }
         ],
         "attrs": [
-            "temperature"
+            "moving"
         ]
     },
     "provider": {

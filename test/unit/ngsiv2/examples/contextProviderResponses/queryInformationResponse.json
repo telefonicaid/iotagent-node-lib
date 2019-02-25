@@ -1,0 +1,8 @@
+{
+    "id":"Light:light1",
+    "type":"Light",
+    "dimming":{
+        "type": "Percentage",
+        "value": 19       
+    }
+}
