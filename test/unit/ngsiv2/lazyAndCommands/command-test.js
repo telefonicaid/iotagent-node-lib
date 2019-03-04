@@ -1,0 +1,311 @@
+/*
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, seehttp://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Daniel Calvo - ATOS Research & Innovation
+ */
+'use strict';
+
+var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
+    utils = require('../../../tools/utils'),
+    should = require('should'),
+    logger = require('logops'),
+    nock = require('nock'),
+    mongoUtils = require('../../mongodb/mongoDBUtils'),
+    request = require('request'),
+    timekeeper = require('timekeeper'),
+    contextBrokerMock,
+    statusAttributeMock,
+    iotAgentConfig = {
+        contextBroker: {
+            host: '192.168.1.1',
+            port: '1026',
+            ngsiVersion: 'v2'            
+        },
+        server: {
+            port: 4041
+        },
+        types: {
+            'Light': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'temperature',
+                        type: 'centigrades'
+                    }
+                ],
+                active: [
+                    {
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    }
+                ]
+            },
+            'Termometer': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'temp',
+                        type: 'kelvin'
+                    }
+                ],
+                active: [
+                ]
+            },
+            'Motion': {
+                commands: [],
+                lazy: [
+                    {
+                        name: 'moving',
+                        type: 'Boolean'
+                    }
+                ],
+                staticAttributes: [
+                    {
+                        'name': 'location',
+                        'type': 'Vector',
+                        'value': '(123,523)'
+                    }
+                ],
+                active: []
+            },
+            'Robot': {
+                commands: [
+                    {
+                        name: 'position',
+                        type: 'Array'
+                    }
+                ],
+                lazy: [],
+                staticAttributes: [],
+                active: []
+            }
+        },
+        service: 'smartGondor',
+        subservice: 'gardens',
+        providerUrl: 'http://smartGondor.com',
+        deviceRegistrationDuration: 'P1M',
+        throttling: 'PT5S'
+    },
+    device3 = {
+        id: 'r2d2',
+        type: 'Robot',
+        service: 'smartGondor',
+        subservice: 'gardens'
+    };
+
+describe('Command functionalities', function() {
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+        var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+        timekeeper.freeze(time);
+        nock.cleanAll();
+
+        contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v2/registrations',
+                utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'))
+            .reply(201, null,{'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v2/entities?options=upsert')
+            .reply(204);
+
+        iotAgentLib.activate(iotAgentConfig, done);
+    });
+
+    afterEach(function(done) {
+        timekeeper.reset();
+        delete(device3.registrationId);
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(function() {
+                mongoUtils.cleanDbs(function() {
+                    nock.cleanAll();
+                    iotAgentLib.setDataUpdateHandler();
+                    iotAgentLib.setCommandHandler();
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device is preregistered with commands', function() {
+        it('should register as Context Provider of the commands', function(done) {
+            iotAgentLib.register(device3, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When a command update arrives to the IoT Agent as Context Provider', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            method: 'POST',
+            json: {
+                actionType: 'append',
+                entities: [
+                    {
+                        id: 'Robot:r2d2',
+                        type: 'Robot',
+                        position: {
+                            type: 'Array',
+                            value:'[28, -104, 23]'
+                        }
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should call the client handler', function(done) {
+            var handlerCalled = false;
+
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                id.should.equal(device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                should.exist(attributes[0].position);
+                attributes[0].position.value.should.equal('[28, -104, 23]');
+                handlerCalled = true;
+                callback(null, {
+                    id: id,
+                    type: type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id: id,
+                    type: type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
+            var serviceAndSubservice = false;
+
+            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+                serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
+                callback(null, {
+                    id: id,
+                    type: type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function(error, response, body) {
+                serviceAndSubservice.should.equal(true);
+                done();
+            });
+        });
+    });
+    describe('When an update arrives from the south bound for a registered command', function() {
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/r2d2/attrs?type=Robot',
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandFinish.json'))
+                .reply(204);
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should update its value and status in the Context Broker', function(done) {
+            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', '[72, 368, 1]', 'FINISHED',
+                function(error) {
+                    should.not.exist(error);
+                    statusAttributeMock.done();
+                    done();
+                });
+        });
+    });
+    describe('When an error command arrives from the south bound for a registered command', function() {
+        beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/r2d2/attrs?type=Robot',
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandError.json'))
+                .reply(204);
+
+            iotAgentLib.register(device3, function(error) {
+                done();
+            });
+        });
+
+        it('should update its status in the Context Broker', function(done) {
+            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', 'Stalled', 'ERROR',
+                function(error) {
+                    should.not.exist(error);
+                    statusAttributeMock.done();
+                    done();
+                });
+        });
+    });
+});
