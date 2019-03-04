@@ -164,13 +164,20 @@ describe('IoT Agent Lazy Devices', function() {
 
     describe('When the IoT Agent receives an update on the device data in JSON format', function() {
         var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities/Light:light1/attrs',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
             json: {
-                dimming: {
-                    type: 'Percentage',
-                    value: 12
-                }
+                actionType: 'append',
+                entities: [
+                    {
+                        id: 'Light:light1',
+                        type: 'Light',
+                        dimming: {
+                            type: 'Percentage',
+                            value: 12
+                        }
+                    }
+                ]
             },
             headers: {
                 'fiware-service': 'smartGondor',
@@ -472,9 +479,21 @@ describe('IoT Agent Lazy Devices', function() {
     describe('When the IoT Agent receives an update on the device data in JSON format for a type with' +
         'internalAttributes', function() {
         var options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities/RobotPre:TestRobotPre/attrs/moving',
-            method: 'GET',
-            json: true,
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            method: 'POST',
+            json: {
+                actionType: 'append',
+                entities: [
+                    {
+                        id: 'RobotPre:TestRobotPre',
+                        type: 'RobotPre',
+                        moving: {
+                            type: 'Boolean',
+                            value: true
+                        }
+                    }
+                ]
+            },
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
@@ -505,20 +524,17 @@ describe('IoT Agent Lazy Devices', function() {
         });
 
         it('should call the device handler with the received data', function(done) {
-            var expectedResponse = utils
-                .readExampleFile('./test/unit/ngsiv2/examples/contextProviderResponses/' +
-                    'updateInformationResponse2.json');
-
+ 
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
-                attributes[0].value.should.equal('True');
+                attributes[0].moving.value.should.equal(true);
                 callback(null);
             });
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
-                body.should.eql(expectedResponse);
+                response.statusCode.should.equal(204);
                 done();
             });
         });
