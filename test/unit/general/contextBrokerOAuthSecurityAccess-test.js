@@ -262,7 +262,8 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'),
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': 'electricity'
@@ -275,6 +276,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 oauth2Mock = nock('http://192.168.1.1:3000')
                     .post('/auth/realms/default/protocol/openid-connect/token',
                         utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                    .times(3)
                     .reply(
                         201,
                         utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
@@ -286,25 +288,30 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                 contextBrokerMock
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', 'electricity')
+                    .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext4.json'))
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext5.json'))
                     .reply(
                     200,
                     utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
 
                 contextBrokerMock
                     .post('/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerNewDevice1.json'))
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerNewDevice1.json'))
                     .reply(
                     200,
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
 
                 contextBrokerMock
                     .post('/v1/subscribeContext',
-                        utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRequest1.json'))
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionRequests/simpleSubscriptionRequest1.json'))
                     .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .reply(200,
-                        utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
     
                 iotAgentLib.clearAll(function() {
                     request(optionsProvision, function(error, result, body) {
