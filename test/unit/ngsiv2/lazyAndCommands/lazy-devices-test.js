@@ -215,7 +215,7 @@ describe('IoT Agent Lazy Devices', function() {
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
-                attributes[0].dimming.value.should.equal(12);
+                attributes[0].value.should.equal(12);
                 callback(null);                
             });
 
@@ -530,7 +530,7 @@ describe('IoT Agent Lazy Devices', function() {
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
-                attributes[0].moving.value.should.equal(true);
+                attributes[0].value.should.equal(true);
                 callback(null);
             });
 

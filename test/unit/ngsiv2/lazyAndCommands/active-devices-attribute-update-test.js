@@ -32,7 +32,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     request = require('request'),
     contextBrokerMock,
     iotAgentConfig = {
-        logLevel: 'DEBUG',
+        logLevel: 'FATAL',
         contextBroker: {
             host: '192.168.1.1',
             port: '1026',
@@ -140,8 +140,8 @@ describe('Update attribute functionalities', function() {
                 type.should.equal('Light');
                 should.exist(attributes);
                 attributes.length.should.equal(1);
-                should.exist(attributes[0].pressure);
-                attributes[0].pressure.value.should.equal(200);
+                attributes[0].name.should.equal('pressure');
+                attributes[0].value.should.equal(200);
                 handlerCalled = true;
 
                 callback(null, {
