@@ -165,7 +165,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities/TheFirstLight/attrs', {})
+                .post('/v2/entities/TheFirstLight/attrs?type=TheLightType', {})
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -322,7 +322,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                .post('/v2/entities/SecondMicroLight/attrs?type=MicroLights', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionMinimumDevice.json'))
                 .reply(204);
 
@@ -399,7 +399,7 @@ describe('Device provisioning API: Update provisioned devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities/SecondMicroLight/attrs', utils.readExampleFile(
+                .post('/v2/entities/SecondMicroLight/attrs?type=MicroLights', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateProvisionDeviceStatic.json'))
                 .reply(204);
 

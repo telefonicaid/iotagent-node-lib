@@ -1,8 +1,5 @@
 # User & Programmers Manual
 
-## Index
-
-
 * [Usage](#usage)
   + [Stats Registry](#stats-registry)
   + [Alarm module](#alarm-module)
@@ -16,12 +13,9 @@
   + [Testing](#testing)
   + [Coding guidelines](#coding-guidelines)
   + [Continuous testing](#continuous-testing)
-  + [Source Code documentation](#source-code-documentation)
   + [Code Coverage](#code-coverage)
-  + [Code complexity](#code-complexity)
-  + [PLC](#plc)
-  + [Development environment](#development-environment)
-  + [Site generation](#site-generation)
+  + [Clean](#clean)
+
 
 ## Usage
 ### Stats Registry
@@ -331,6 +325,41 @@ values.
 
 The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in the IoT Agent).
 
+##### iotagentLib.setProvisioningHandler()
+###### Signature
+
+```javascript
+function setProvisioningHandler (newHandler)
+```
+###### Description
+Sets the new user handler for the provisioning of devices. This handler will be called every time a new device is
+created.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(newDevice, callback)
+```
+The `newDevice` parameter will contain the newly created device. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
+
+##### iotagentLib.setRemoveDeviceHandler()
+###### Signature
+
+```javascript
+function setRemoveDeviceHandler(newHandler)
+```
+###### Description
+Sets the new user handler for the removal of a device. This handler will be called every time a device is
+removed.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(deviceToDelete, callback)
+```
+The `deviceToDelete` parameter will contain the device to be deleted. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 ##### iotagentLib.setConfigurationHandler()
 ###### Signature
@@ -353,6 +382,23 @@ callback with no parameters (this handler should only be used for reconfiguratio
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
+##### iotagentLib.setRemoveConfigurationHandler()
+###### Signature
+
+```javascript
+function setRemoveConfigurationHandler(newHandler)
+```
+###### Description
+Sets the new user handler for the removal of configuratios. This handler will be called every time a configuration is
+removed.
+
+The handler must adhere to the following signature:
+
+```javascript
+function(configurationToDelete, callback)
+```
+The `configurationToDelete` parameter will contain the configuration to be deleted. The handler is expected to call its
+callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 ##### iotagentLib.getDevice()
 ###### Signature
@@ -609,56 +655,38 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 All contributions to this project are welcome. Developers planning to contribute should follow the [Contribution Guidelines](./docs/contribution.md)
 
 ### Project build
-The project is managed using Grunt Task Runner.
+The project is managed using npm.
 
 For a list of available task, type
 
 ```bash
-grunt --help
+npm run
 ```
 
 The following sections show the available options in detail.
 
 ### Testing
-[Mocha](http://visionmedia.github.io/mocha/) Test Runner + [Chai](http://chaijs.com/) Assertion Library + [Sinon](http://sinonjs.org/) Spies, stubs.
+[Mocha](http://visionmedia.github.io/mocha/) Test Runner + [Should.js](https://shouldjs.github.io/) Assertion Library.
 
-The test environment is preconfigured to run [BDD](http://chaijs.com/api/bdd/) testing style with
-`chai.expect` and `chai.should()` available globally while executing tests, as well as the [Sinon-Chai](http://chaijs.com/plugins/sinon-chai) plugin.
+The test environment is preconfigured to run BDD testing style.
 
 Module mocking during testing can be done with [proxyquire](https://github.com/thlorenz/proxyquire)
 
 To run tests, type
 
 ```bash
-grunt test
-```
-
-Tests reports can be used together with Jenkins to monitor project quality metrics by means of TAP or XUnit plugins.
-To generate TAP report in `report/test/unit_tests.tap`, type
-
-```bash
-grunt test-report
+npm test
 ```
 
 ### Coding guidelines
-jshint, gjslint
+jshint
 
-Uses provided .jshintrc and .gjslintrc flag files. The latter requires Python and its use can be disabled
-while creating the project skeleton with grunt-init.
+Uses provided .jshintrc flag file.
 To check source code style, type
 
 ```bash
-grunt lint
+npm run lint
 ```
-
-Checkstyle reports can be used together with Jenkins to monitor project quality metrics by means of Checkstyle
-and Violations plugins.
-To generate Checkstyle and JSLint reports under `report/lint/`, type
-
-```bash
-grunt lint-report
-```
-
 
 ### Continuous testing
 
@@ -666,20 +694,14 @@ Support for continuous testing by modifying a src file or a test.
 For continuous testing, type
 
 ```bash
-grunt watch
+npm run test:watch
 ```
 
-
-### Source Code documentation
-dox-foundation
-
-Generates HTML documentation under `site/doc/`. It can be used together with jenkins by means of DocLinks plugin.
-For compiling source code documentation, type
+If you want to continuously check also source code style, use instead:
 
 ```bash
-grunt doc
+npm run watch
 ```
-
 
 ### Code Coverage
 Istanbul
@@ -690,77 +712,14 @@ To generate an HTML coverage report under `site/coverage/` and to print out a su
 
 ```bash
 # Use git-bash on Windows
-grunt coverage
+npm run test:coverage
 ```
 
-To generate a Cobertura report in `report/coverage/cobertura-coverage.xml` that can be used together with Jenkins to
-monitor project quality metrics by means of Cobertura plugin, type
+### Clean
+
+Removes `node_modules` and `coverage` folders, and  `package-lock.json` file so that a fresh copy of the project is restored. 
 
 ```bash
 # Use git-bash on Windows
-grunt coverage-report
+npm run clean
 ```
-
-
-### Code complexity
-Plato
-
-Analizes code complexity using Plato and stores the report under `site/report/`. It can be used together with jenkins
-by means of DocLinks plugin.
-For complexity report, type
-
-```bash
-grunt complexity
-```
-
-### PLC
-
-Update the contributors for the project
-
-```bash
-grunt contributors
-```
-
-
-### Development environment
-
-Initialize your environment with git hooks.
-
-```bash
-grunt init-dev-env
-```
-
-We strongly suggest you to make an automatic execution of this task for every developer simply by adding the following
-lines to your `package.json`
-
-```json
-{
-  "scripts": {
-     "postinstall": "grunt init-dev-env"
-  }
-}
-```
-
-
-### Site generation
-
-There is a grunt task to generate the GitHub pages of the project, publishing also coverage, complexity and JSDocs pages.
-In order to initialize the GitHub pages, use:
-
-
-```bash
-grunt init-pages
-```
-
-This will also create a site folder under the root of your repository. This site folder is detached from your repository's
-history, and associated to the gh-pages branch, created for publishing. This initialization action should be done only
-once in the project history. Once the site has been initialized, publish with the following command:
-
-
-```bash
-grunt site
-```
-
-This command will only work after the developer has executed init-dev-env (that's the goal that will create the detached site).
-
-This command will also launch the coverage, doc and complexity task (see in the above sections).

@@ -153,6 +153,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -195,6 +196,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -209,6 +211,98 @@ describe('Active attributes test', function() {
         });
 
         it('should add the timestamp to the entity and all the attributes', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'Boolean',
+                    value: 'true'
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'ISO8601',
+                    value: '2018-10-05T11:03:56 00:00Z'
+                }
+            ];
+
+            nock.cleanAll();
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            done();
+        });
+
+        it('should fail with a 400 BAD_TIMESTAMP error', function(done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                should.exist(error);
+                error.code.should.equal(400);
+                error.name.should.equal('BAD_TIMESTAMP');
+                done();
+            });
+        });
+    });
+
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
+        'without milis', function() {
+        var modifiedValues;
+
+        beforeEach(function(done) {
+            var time = new Date(1666477342000); // 2022-10-22T22:22:22Z
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'boolean',
+                    value: true
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    value: '2022-10-22T22:22:22Z'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/light1/attrs', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'))
+                .query({type: 'Light'})
+                .reply(204);
+
+            iotAgentConfig.timestamp = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+
+        });
+
+        afterEach(function(done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should not fail', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -247,6 +341,7 @@ describe('Active attributes test', function() {
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/' +
                     'updateContextTimestampTimezone.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -299,6 +394,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -350,6 +446,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'))
+                .query({type: 'Light'})
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -400,6 +497,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(413,
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext1Failed.json'));
 
@@ -428,6 +526,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(400,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -453,6 +552,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Light'})
                 .reply(500,
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json'));
 
@@ -481,6 +581,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/humSensor/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json'))
+                .query({type: 'Humidity'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -512,6 +613,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/motion1/attrs',
                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'))
+                .query({type: 'Motion'})
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

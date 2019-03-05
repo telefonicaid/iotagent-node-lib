@@ -41,10 +41,10 @@ describe('MongoDB migration', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
-        mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, db) {
-            originDb = db;
-            mongo.connect('mongodb://localhost:27017/iotTarget', function(err, db) {
-                targetDb = db;
+        mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, client) {
+            originDb = client;
+            mongo.connect('mongodb://localhost:27017/iotTarget', function(err, client) {
+                targetDb = client;
                 async.series([
                     apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),
                     apply(mongoUtils.populate, 'localhost', 'iotOrigin', configurationCollection, 'SERVICE')
@@ -73,7 +73,7 @@ describe('MongoDB migration', function() {
 
         it('should migrate all the services', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
-                targetDb.collection('groups').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(3);
                     done();
@@ -82,7 +82,7 @@ describe('MongoDB migration', function() {
         });
         it('should migrate all the devices', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
-                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(4);
                     done();
@@ -91,7 +91,7 @@ describe('MongoDB migration', function() {
         });
         it('should migrate all the fields for each device', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
-                targetDb.collection('groups').find({
+                targetDb.db().collection('groups').find({
                     service: 'dumb_mordor'
                 }).toArray(function(err, docs) {
                     should.not.exist(err);
@@ -109,7 +109,7 @@ describe('MongoDB migration', function() {
         });
         it('should migrate all the fields for each service', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
-                targetDb.collection('devices').find({
+                targetDb.db().collection('devices').find({
                     id: 'gk20'
                 }).toArray(function(err, docs) {
                     should.not.exist(err);
@@ -142,7 +142,7 @@ describe('MongoDB migration', function() {
 
         it('should migrate just the service\'s  configurations', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
-                targetDb.collection('groups').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(1);
                     done();
@@ -151,7 +151,7 @@ describe('MongoDB migration', function() {
         });
         it('should migrate just the service\'s devices', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
-                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(3);
                     done();
@@ -168,7 +168,7 @@ describe('MongoDB migration', function() {
 
         it('should set the name as undefined', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'dumb_mordor', null, function() {
-                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     docs.length.should.equal(1);
                     should.exist(docs[0].name);
                     docs[0].name.should.equal(docs[0].type + ':' + docs[0].id);
@@ -186,7 +186,7 @@ describe('MongoDB migration', function() {
 
         it('should migrate just the subservice\'s devices', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
-                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(1);
                     done();
@@ -206,7 +206,7 @@ describe('MongoDB migration', function() {
 
         it('should change the protocol to the translated one', function(done) {
             migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
-                targetDb.collection('devices').find({}).toArray(function(err, docs) {
+                targetDb.db().collection('devices').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     docs.length.should.equal(1);
                     docs[0].protocol.should.equal('NODE-Ultralight');

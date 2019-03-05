@@ -149,6 +149,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin1.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -178,6 +179,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin2.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -207,6 +209,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -236,6 +239,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -266,6 +270,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin4.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -296,6 +301,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin5.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -326,6 +332,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin6.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -356,6 +363,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin7.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -386,6 +394,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin8.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 
@@ -417,6 +426,7 @@ describe('Attribute alias plugin', function() {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs', utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin9.json'))
+                .query({type: 'Light'})
                 .reply(204);
         });
 

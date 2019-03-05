@@ -1,7 +1,5 @@
 # Measurement Transformation Expression Language
 
-## Index
-
 * [Overview](#overview)
 * [Measurement transformation](#measurement-transformation)
   + [Expression definition](#expression-definition)
@@ -59,7 +57,7 @@ The following example shows a device provisioning payload with defined expressio
 
 The value of the `expression` attribute is a string that can contain any number of expression patterns. Each expression
 pattern is marked with the following secuence: `${<expression>}` where `<expression>` is a valid construction of the
-Expression Language (see definition [below](#description)). In order for the complete expression to be evaluated, all the
+Expression Language (see definition [below](#language-description)). In order for the complete expression to be evaluated, all the
 expression patterns must be evaluatable (there must be a value in the measurement for all the variables of all the
 expression patterns).
 
@@ -96,7 +94,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 {
    "name":"fillingLevel",
    "type":"Number",
-   "expression": "${@fillingLevel / 100}",
+   "expression": "${@level / 100}",
    "cast": "Number"
 },
 ```
@@ -215,7 +213,7 @@ The following table shows expressions and their expected outcomes for a measure 
 
 ## NGSIv2 support
 
-As it is explained in previous sections, expressions can have two return types: String or Number, being the former one the default. Whenever an expression is executed without error, its result will be cast to the configured type. 
+As it is explained in previous sections, expressions can have two return types: String or Number, being the former one the default. Whenever an expression is executed without error, its result will be cast to the configured type.
 
 On one hand, in NGSIv1 since all attributes' values are of type String, in the expression parser the expression type is set always to String and the transformation of the information coming from the SouthBound is done using replace instruction. Therefore, values sent to the CB will always be Strings. This can be seen in previous examples.
 
@@ -237,7 +235,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 {
    "name":"status",
    "type":"Boolean",
-   "expression": '${@status *  20}'
+   "expression": "${@status *  20}"
 }
 ```
 and a measurement with the following values arrive to the IoTAgent:

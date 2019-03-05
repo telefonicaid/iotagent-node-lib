@@ -137,7 +137,51 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         entity_type: 'Higrometer'
                     }
                 ]
-            }
+            },
+            'Sensor001': {
+                commands: [],
+                type: 'Sensor',
+                lazy: [],
+                active: [
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont1',
+                        entity_name : 'SO1',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont2',
+                        entity_name : 'SO2',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont3',
+                        entity_name : 'SO3',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont4',
+                        entity_name : 'SO4',
+                        entity_type : 'WM'
+                    },
+                    {
+                        type : 'number',
+                        name : 'vol',
+                        object_id : 'cont5',
+                        entity_name : 'SO5',
+                        entity_type : 'WM'
+                    }
+                ]
+
+            },
+
         },
         service: 'smartGondor',
         subservice: 'gardens',
@@ -336,6 +380,82 @@ describe('Multi-entity plugin', function() {
             });
         });
     });
+
+    describe('When an update comes for a multientity measurement and there are attributes with' +
+        ' the same name but different alias and mapped to different CB entities', function() {
+        var values = [
+            {
+                name: 'cont1',
+                type: 'number',
+                value: '38'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin6.json'))
+                .reply(204);
+        });
+
+        it('should update only the appropriate CB entity', function(done) {
+            iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    
+    describe('When an update comes for a multientity multi measurement and there are attributes with' +
+        ' the same name but different alias and mapped to different CB entities', function() {
+        var values = [
+            {
+                name: 'cont1',
+                type: 'number',
+                value: '38'
+            },
+            {
+                name: 'cont2',
+                type: 'number',
+                value: '39'
+            },
+            {
+                name: 'cont3',
+                type: 'number',
+                value: '40'
+            },
+            {
+                name: 'cont5',
+                type: 'number',
+                value: '42'
+            }                        
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin7.json'))
+                .reply(204);
+        });
+
+        it('should update only the appropriate CB entity', function(done) {
+            iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+   });
+    
 });
 
 describe('Multi-entity plugin is executed before timestamp process plugin', function() {
@@ -467,6 +587,35 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
                 .reply(204);
 
             iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+        it('should propagate user provider timestamp to mapped entities', function(done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextRequests/updateContextMultientityTimestampPlugin3.json'))
+                .reply(204);
+
+            var tsValue = [
+                {
+                    name: 'h',
+                    type: 'Percentage',
+                    value: '16'
+                },
+                {
+                    // Note this timestamp is the one used at updateContextMultientityTimestampPlugin3.json
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    value: '2018-06-13T13:28:34.611Z'
+                }
+            ];
+
+            iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
