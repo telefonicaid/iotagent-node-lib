@@ -11,8 +11,7 @@
             "attributes": [
                 {
                     "name": "pressure",
-                    "type": "Hgmm",
-                    "isDomain": "false"
+                    "type": "Hgmm"
                 }
             ],
             "providingApplication": "http://smartGondor.com"

@@ -1,0 +1,26 @@
+{
+  "devices": [
+    {
+      "device_id": "Light3",
+      "protocol": "GENERIC_PROTO",
+      "entity_name": "TheThirdLight",
+      "entity_type": "TheLightType",
+      "timezone": "America/Santiago",
+      "endpoint": "http://fakedEndpoint:1234",
+      "transport": "MQTT",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string"
+        }
+      ],
+      "static_attributes": [
+        {
+          "name": "hardcodedAttr",
+          "type": "hardcodedType",
+          "value": "hardcodedValue"
+        }
+      ]
+    }
+  ]
+}

@@ -122,7 +122,7 @@ describe('Provisioning API: Single service mode', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
+            contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
@@ -235,7 +235,7 @@ describe('Provisioning API: Single service mode', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
+            contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
@@ -276,7 +276,7 @@ describe('Provisioning API: Single service mode', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
+            contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext', utils.readExampleFile(

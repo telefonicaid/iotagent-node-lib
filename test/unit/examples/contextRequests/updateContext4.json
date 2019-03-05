@@ -1,22 +1,22 @@
 {
     "contextElements": [
         {
-            "type": "Light",
+            "type": "SensorMachine",
             "isPattern": "false",
-            "id": "light1",
+            "id": "Light1",
             "attributes": [
-                {
-                    "name": "state",
-                    "type": "Boolean",
-                    "value": " "
-                },
-                {
-                    "name": "dimming",
-                    "type": "Percentage",
-                    "value": " "
-                }
+              {
+                "name": "status",
+                "type": "String",
+                "value": "STARTING"
+              },
+              {
+                "name": "bootstrapServer",
+                "type": "Address",
+                "value": "127.0.0.1"
+              }
             ]
         }
     ],
-    "updateAction": "APPEND"
+    "updateAction": "UPDATE"
 }

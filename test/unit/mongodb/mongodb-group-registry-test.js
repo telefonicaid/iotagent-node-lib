@@ -19,6 +19,8 @@
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 'use strict';
 
@@ -199,7 +201,7 @@ describe('MongoDB Group Registry test', function() {
     describe('When a new device group creation request arrives', function() {
         it('should store it in the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
@@ -220,7 +222,7 @@ describe('MongoDB Group Registry test', function() {
         });
         it('should store the service information from the headers into the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs[0].service);
                     should.exist(docs[0].subservice);
@@ -251,7 +253,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs.length);
@@ -276,7 +278,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     should.exist(docs[0].cbHost);
@@ -301,7 +303,7 @@ describe('MongoDB Group Registry test', function() {
 
         it('should create the values in the database', function(done) {
             request(optionsMultipleCreation, function(error, response, body) {
-                iotAgentDb.collection('groups').find({}).toArray(function(err, docs) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
                     docs.length.should.equal(2);
@@ -389,7 +391,42 @@ describe('MongoDB Group Registry test', function() {
 
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
-                body.service.should.equal('TestService');
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(1);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(1);
+                body.services[0].service.should.equal('TestService');
+                done();
+            });
+        });
+    });
+
+    describe('When a device info request arrives and multiple groups have been created', function() {
+        beforeEach(function(done) {
+            var optionsCreationList = [],
+                creationFns = [];
+
+            for (var i = 0; i < 10; i++) {
+                optionsCreationList[i] = _.clone(optionsCreation);
+                optionsCreationList[i].json = { services: [] };
+                optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
+                optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
+                creationFns.push(async.apply(request, optionsCreationList[i]));
+            }
+
+            async.series(creationFns, done);
+        });
+
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGet, function(error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(10);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(10);
                 done();
             });
         });

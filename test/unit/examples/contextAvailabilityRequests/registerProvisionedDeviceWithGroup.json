@@ -11,23 +11,19 @@
       "attributes": [
         {
           "name": "luminance",
-          "type": "lumens",
-          "isDomain": "false"
+          "type": "lumens"
         },
         {
           "name": "luminescence",
-          "type": "Lumens",
-          "isDomain": "false"
+          "type": "Lumens"
         },
         {
           "name": "commandAttr",
-          "type": "commandType",
-          "isDomain": "false"
+          "type": "commandType"
         },
         {
           "name": "wheel1",
-          "type": "Wheel",
-          "isDomain": "false"
+          "type": "Wheel"
         }
       ],
       "providingApplication": "http://smartGondor.com"

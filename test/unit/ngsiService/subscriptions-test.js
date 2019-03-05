@@ -132,7 +132,7 @@ describe('Subscription tests', function() {
 
             done();
         });
-        it('should change the expiration date of the subscription to 0s', function(done) {
+        it('should delete the subscription from the CB', function(done) {
             iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
@@ -173,7 +173,7 @@ describe('Subscription tests', function() {
             done();
         });
 
-        it('should change the expiration dates of all its subscriptions to 0s', function(done) {
+        it('should delete the subscription from the CB', function(done) {
             iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
                     iotAgentLib.unregister(device.id, 'smartGondor', '/gardens', function(error) {

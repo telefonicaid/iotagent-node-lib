@@ -1,0 +1,19 @@
+{
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "Light",
+                "id": "light1"
+            }
+        ],
+        "attrs": [
+            "move"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        },
+        "legacyForwarding": true
+    }
+}

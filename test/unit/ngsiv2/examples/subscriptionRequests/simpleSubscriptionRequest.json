@@ -1,0 +1,23 @@
+{
+  "subject": {
+    "entities": [
+      {
+        "id": "FirstMicroLight",
+        "type": "MicroLights"
+      }
+    ],
+    "condition": {
+      "attrs": [
+        "attr_name"
+      ]
+    }
+  },
+  "notification": {
+    "http": {
+      "url": "http://smartGondor.com/notify"
+    },
+    "attrs": [],
+    "attrsFormat": "normalized"
+  },
+  "throttling": 5
+}

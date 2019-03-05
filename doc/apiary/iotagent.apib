@@ -68,13 +68,13 @@ The API needs two headers in order to manage requests:
 All API base URLs are relative and depend on where the IoT Agent is listening (depends on each service).
 For example, `http://127.0.0.1:8080/iot/`.
 
-# Group Configuration API
+# Configuration Group API
 
 ## Services [/services{?limit,offset,resource,apikey,device}]
-Services are the higher level in IoT Platform. When you manipulate a service, you use a Fiware-Service header with its name. Parameters apply to different operations.
+Configuration group for iotagents.
 
 
-Fields in JSON object representing a service are:
+Fields in JSON object representing a configuration group are:
 
 |Fields in JSON Object   |                                                             |
 |:-----------------------|:------------------------------------------------------------|
@@ -93,9 +93,9 @@ Mandatory fields are identified in every operation.
 
 
 
-### Retrieve a service [GET]
+### Retrieve a configuration group [GET]
 
-With Fiware-ServicePath you can retrieve a subservice or all subservices.
+Retrieve a configuration group.
 
 + Parameters [limit, offset, resource]
 
@@ -158,8 +158,9 @@ With Fiware-ServicePath you can retrieve a subservice or all subservices.
             }
 
 
-### Create a service [POST]
-With one subservice defined in Fiware-ServicePath header. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).
+### Create a configuration group [POST]
+
+Create a new configuration group. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).
 
 + Request (application/json)
 
@@ -185,7 +186,8 @@ With one subservice defined in Fiware-ServicePath header. From service model, ma
 + Response 201
 
 
-### Update a service/subservice [PUT]
+### Update a configuration group [PUT]
+
 If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. ("/*" is not allowed).
 
 + Parameters [apikey, resource]
@@ -209,8 +211,9 @@ If you want modify only a field, you can do it. You cannot modify an element int
 
 + Response 204
 
-### Remove a subservice/service [DELETE]
-You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' remove service and all subservices.
+### Remove a configuration group [DELETE]
+
+Remove a configuration group. 
 
 + Parameters [apikey, resource, device]
 
@@ -231,13 +234,16 @@ You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' re
 
 
 ## Devices [/devices{?limit,offset,detailed,protocol,entity}]
+
 A device is a resource that publish information to IoT Platform and it uses the IoT Agent.
+
 ### Device Model
+
 - `device_id`. Unique identifier into a service.
 - `protocol`. Protocol assigned to device. This field is easily provided by IoTA Manager if it is used. Every module implmenting a protocol has an identifier.
 - `entity_name`. Entity name used for entity publication (overload default)
 - `entity_type`. Entity type used for entity publication (overload entity_type defined in service).
-- `timezone`. Not used in this version.
+- `timezone`. Used to automatically generate timestamps attributes for the entity publication.
 - `attributes`. Mapping for protocol parameters to entity attributes.
 `object_id` (string, mandatory): protocol parameter to be mapped.
 `name` (string, mandatory): attribute name to publish.
@@ -308,6 +314,7 @@ Mandatory fields are identified in every operation.
             }
 
 ### Create a device [POST]
+
 From device model, mandatory fields are: device_id and protocol.
 
 + Request (application/json)
@@ -400,6 +407,7 @@ From device model, mandatory fields are: device_id and protocol.
             }
 
 ### Update a device [PUT]
+
 If you want modify only a field, you can do it, except field `protocol` (this field, if provided it is removed from request).
 
 + Request (application/json)
@@ -419,6 +427,7 @@ If you want modify only a field, you can do it, except field `protocol` (this fi
 + Response 204
 
 ### Remove a device [DELETE]
+
 If specific device is not found, we work as deleted.
 + Request (application/json)
 

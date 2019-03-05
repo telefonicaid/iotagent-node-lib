@@ -12,30 +12,37 @@ In order to start contributing:
 1. Fork this repository clicking on the "Fork" button on the upper-right area of the page.
 
 2. Clone your just forked repository:
-<pre>
+
+```bash
 git clone https://github.com/your-github-username/iotagent-node-lib.git
-</pre>
+```
+
 3. Add the main iotagent-node-lib repository as a remote to your forked repository (use any name for your remote
 repository, it does not have to be iotagent-node-lib, although we will use it in the next steps):
-<pre>
+
+```bash
 git remote add iotagent-node-lib https://github.com/telefonicaid/iotagent-node-lib.git
-</pre>
+```
 
 Before starting your contribution, remember to synchronize the `master` branch in your forked repository with the `master`
 branch in the main iotagent-node-lib repository, by following this steps
 
 1. Change to your local `master` branch (in case you are not in it already):
-<pre>
-  git checkout master
-</pre>
+
+```bash
+git checkout master
+```
 2. Fetch the remote changes:
-<pre>
-  git fetch iotagent-node-lib
-</pre>
+
+```bash
+git fetch iotagent-node-lib
+```
+
 3. Merge them:
-<pre>
-  git rebase iotagent-node-lib/master
-</pre>
+
+```bash
+git rebase iotagent-node-lib/master
+```
 
 Contributions following these guidelines will be added to the `master` branch, and released in the next version. The
 release process is explaind in the *Releasing* section below.
@@ -87,6 +94,7 @@ copied to the RPM spec.
 4. Create a release branch from the last version of `master` named with the version number.
 6. Create a new task for preparing the next release, adding the sufix `-next` to the current version number (to signal
 this as the development version), and flush the contents of the CHANGES_NEXT_RELEASE file.
+7. Upload the new library version to the NPM repository using `npm publish` command from the release branch.
 
 ## Version numbers
 The version number will change for each release, according to the following rules:

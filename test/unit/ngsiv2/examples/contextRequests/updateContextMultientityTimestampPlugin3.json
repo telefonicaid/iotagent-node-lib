@@ -1,0 +1,31 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+    {
+      "id": "ws5",
+      "type": "WeatherStation",
+      "TimeInstant": {
+          "type": "DateTime",
+          "value": "2018-06-13T13:28:34.611Z"
+      }
+    },
+    {
+      "id": "Higro2000",
+      "type": "Higrometer",
+      "humidity": {
+          "type": "Percentage",
+          "value": "16",
+          "metadata": {
+              "TimeInstant": {
+                  "type": "DateTime",
+                  "value": "2018-06-13T13:28:34.611Z"
+              }
+          }
+      },
+      "TimeInstant": {
+          "type": "DateTime",
+          "value": "2018-06-13T13:28:34.611Z"
+      }
+    }
+  ]
+}

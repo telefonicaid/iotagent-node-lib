@@ -1,16 +1,15 @@
 # Operations Manual: logs and alarms
-## Index
 
 * [Overview](#overview)
 * [Logs](#logs)
 * [Alarms](#alarms)
-* [Error naming code](#errorcode)
+* [Error naming code](#error-naming-code)
 
-## <a name="overview"/>  Overview
+## Overview
 The following document shows all the errors that can appear in an IoT Agent using this library, and gives a brief
 idea of the severity and how to react to those errors.
 
-## <a name="logs"/>  Logs
+## Logs
 The following section contains the error log entries that can appear in the IoT Agents logs, grouped by category.
 
 ### GENERAL-001 Couldn\'t find callback in listDevices() call.
@@ -34,9 +33,9 @@ in the configuration file. Check the configuration file and add all the required
 
 ### IOTAM-001: Error updating information in the IOTAM. Status Code [%d]
 
-The IoTAgent could not contact the IoTAgent manager to update its information. This condition may indicate a lack of
-connectivity between machines or a problem in the IoTAManager. IoTAgent information in the IoTAManager will be out of
-date until this problem is solved.
+The IoT Agent could not contact the IoT Agent manager to update its information. This condition may indicate a lack of
+connectivity between machines or a problem in the IoT Agent Manager. The IoT Agent information in the IoT Agent Manager
+will be out-of-date until this problem is solved.
 
 ### KEYSTONE-001: Error retrieving token from Keystone: %s
 
@@ -68,7 +67,7 @@ This may also be caused by an invalid `refresh_token` used by the user.
 ### OAUTH2-003: Token missing in the response body
 
 The JSON response body returned by the OAuth2 provider does not include a field `access_token`.
-Check the OAuth2 logs and configuration. 
+Check the OAuth2 logs and configuration.
 
 ### ORION-001: Connection error creating inital entity in the Context Broker: %s
 
@@ -78,14 +77,14 @@ Check connectivity between the machines, the status of the remote Context Broker
 ### ORION-002: Connection error sending registrations to the Context Broker: %s
 
 There was a connectivity error accessing Context Broker to register the IoTA as a Context Provider (or the Context Broker was down).
-Check connectivity between the machines, the status of the remote Context Broker and the configuration of the IoTAgent.
+Check connectivity between the machines, the status of the remote Context Broker and the configuration of the IoT Agent.
 
 ### VALIDATION-FATAL-001: Validation Request templates not found
 
 Validation templates were not found. Check all the validation templates are properly located in the IoTAgent Library
 folder and that the file permissions are correct.
 
-## <a name="alarms"/> Alarms
+## Alarms
 
 The following table shows the alarms that can be raised in the IoTAgent library. All the alarms are signaled by a
 error log starting with the prefix "Raising [%s]:" (where %s is the alarm name). All the alarms are released by an info
@@ -104,7 +103,7 @@ while the 'Severity' criterium is as follows:
 * **Warning** - It is happening something that must be notified
 
 
-## <a name="errorcode"/> Error naming code
+## Error naming code
 Every error has a code composed of a prefix and an ID, codified with the following table:
 
 | Prefix           | Type of operation      |

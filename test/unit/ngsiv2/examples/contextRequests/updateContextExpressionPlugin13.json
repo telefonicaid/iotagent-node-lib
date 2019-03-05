@@ -1,0 +1,10 @@
+{
+  "pressure": {
+    "type": "Number",
+    "value": 10
+  },
+  "consumption_x": {
+    "type": "Number",
+    "value": 200
+  }
+}

@@ -190,7 +190,7 @@ describe('Device Service: utils', function() {
 
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
         beforeEach(function(done) {
-            contextBrokerMock = nock('http://192.168.1.1:1026')
+            contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
@@ -225,7 +225,7 @@ describe('Device Service: utils', function() {
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
         beforeEach(function(done) {
-            contextBrokerMock = nock('http://192.168.1.1:1026')
+            contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')

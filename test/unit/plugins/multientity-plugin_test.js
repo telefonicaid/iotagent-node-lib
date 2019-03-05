@@ -157,6 +157,9 @@ describe('Multi-entity plugin', function() {
         });
     });
 
+
+
+
     describe('When an update comes for a multientity defined with an expression', function() {
         var values = [
             {
@@ -183,7 +186,7 @@ describe('Multi-entity plugin', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultientityPlugin3.json'))
+                    './test/unit/examples/contextRequests/updateContextMultiEntityPlugin3.json'))
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'));
         });

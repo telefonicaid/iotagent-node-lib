@@ -1,9 +1,8 @@
-- FIX Automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544).
-- FIX Static attributes seem not supported in Configuration Group provisioning (#550).
-- Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
-- Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
-- Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
-- FIX Correctly return 404 when asking to remove a not existing device (#585)
-- Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
-- Add: support OAuth2 provider as authentication backend (#591)
-- Add: support for authentication to NGSIv1 subscription requests (#592) 
+Fix: modified engine version >=6 in packages.json
+Fix: update logops dependency from 1.0.8 to 2.1.0
+Fix: user provider timestamp correctly propagated to mapped entities when multientity pluging is used (#748)
+Add: new functions to set callbacks for removal of devices and groups (#735)
+Fix: add ?type parameter in CB request updates to avoid potential entity ambiguities (#733)
+Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
+Add: support OAuth2 provider as authentication backend (#591)
+Add: support for authentication to NGSIv1 subscription requests (#592) 
