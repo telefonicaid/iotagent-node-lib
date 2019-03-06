@@ -233,7 +233,7 @@ describe('IoT Agent Lazy Devices', function() {
 
     describe('When a context query arrives to the IoT Agent', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities/Light:light1/attrs/dimming',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities?id=Light:light1&attrs=dimming',
                 method: 'GET',
                 json: true,
                 headers: {
@@ -297,7 +297,7 @@ describe('IoT Agent Lazy Devices', function() {
 
     describe('When a context query arrives to the IoT Agent and no handler is set', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities/Light:light1/attrs/dimming',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities?id=Light:light1&attrs=dimming',
                 method: 'GET',
                 headers: {
                     'fiware-service': 'smartGondor',
@@ -349,7 +349,7 @@ describe('IoT Agent Lazy Devices', function() {
 
     describe('When a query arrives to the IoT Agent without any attributes', function() {
         var options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities/Light:light1',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/entities?id=Light:light1',
                 method: 'GET',
                 json: true,
                 headers: {
@@ -415,7 +415,7 @@ describe('IoT Agent Lazy Devices', function() {
     describe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + 
-                '/v2/entities/Motion:motion1?attrs=moving,location',
+                '/v2/entities?id=Motion:motion1&attrs=moving,location',
                 method: 'GET',
                 json: true,
                 headers: {
