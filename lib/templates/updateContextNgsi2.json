@@ -3,7 +3,7 @@
   "properties": {
     "actionType": {
       "type": "string",
-      "enum": ["append"]
+      "enum": ["update"]
     },
     "entities": {
       "type": "array",

@@ -169,7 +169,7 @@ describe('IoT Agent Lazy Devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
             json: {
-                actionType: 'append',
+                actionType: 'update',
                 entities: [
                     {
                         id: 'Light:light1',
@@ -484,7 +484,7 @@ describe('IoT Agent Lazy Devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
             json: {
-                actionType: 'append',
+                actionType: 'update',
                 entities: [
                     {
                         id: 'RobotPre:TestRobotPre',
