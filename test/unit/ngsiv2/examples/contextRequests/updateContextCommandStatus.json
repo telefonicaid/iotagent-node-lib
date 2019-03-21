@@ -1,17 +1,6 @@
 {
-  "contextElements": [
-    {
-      "type": "Robot",
-      "isPattern": "false",
-      "id": "Robot:r2d2",
-      "attributes": [
-        {
-          "name": "position_status",
-          "type": "commandStatus",
-          "value": "PENDING"
-        }
-      ]
-    }
-  ],
-  "updateAction": "UPDATE"
+  "position_status": {
+    "type": "commandStatus",
+    "value": "PENDING"
+  }
 }

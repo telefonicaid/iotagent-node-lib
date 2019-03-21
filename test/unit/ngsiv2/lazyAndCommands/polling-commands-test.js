@@ -183,6 +183,13 @@ describe('Polling commands', function() {
         };
 
         beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json'))
+                .reply(204);
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -220,6 +227,7 @@ describe('Polling commands', function() {
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
+                statusAttributeMock.done();
                 done();
             });
         });
@@ -268,6 +276,13 @@ describe('Polling commands', function() {
         };
 
         beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json'))
+                .reply(204);
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -313,6 +328,13 @@ describe('Polling commands', function() {
         };
 
         beforeEach(function(done) {
+            statusAttributeMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json'))
+                .reply(204);
 
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
