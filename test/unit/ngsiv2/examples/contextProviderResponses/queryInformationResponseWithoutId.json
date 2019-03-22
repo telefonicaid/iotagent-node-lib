@@ -1,0 +1,30 @@
+[
+	{
+	    "id":"Light:light1",
+	    "type":"Light",
+	    "dimming":{
+	        "type": "Percentage",
+	        "value": 19       
+	    }
+	},
+	{
+    	"id": "Motion:motion1",
+    	"type": "Motion",
+    	"moving": {
+    		"type": "Boolean",
+    		"value": true
+    	},
+    	"location":{
+    		"type": "Vector",
+    		"value": "(123,523)"
+    	}
+	},
+	{
+	    "id":"RobotPre:TestRobotPre",
+	    "type":"RobotPre",
+	    "moving":{
+	        "type": "Boolean",
+	        "value": false       
+	    }
+	}
+]
