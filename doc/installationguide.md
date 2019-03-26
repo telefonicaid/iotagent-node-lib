@@ -24,7 +24,7 @@ These are the parameters that can be configured in the global section:
     port: '1026',
     ngsiVersion: 'v2'
   }
-``` 
+```
 
 * **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by default. E.g.:
 
@@ -42,8 +42,8 @@ These are the parameters that can be configured in the global section:
         interval: 100
     }
 ```
-* **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (required in scenarios with security enabled in the Context Broker side). 
-  Currently, two authentication provider are supported: `keystone` and `oauth2`. Authentication need to be enabled by setting the field `enabled` to `true`. 
+* **authentication**: authentication data, for use in retrieving tokens for devices with a trust token (required in scenarios with security enabled in the Context Broker side).
+  Currently, two authentication provider are supported: `keystone` and `oauth2`. Authentication need to be enabled by setting the field `enabled` to `true`.
   In `keystone` based authentication, the `trust` associated to the `device` or `deviceGroup` is a token representing a specific user and his rights on a given domain (i.e.
   combination of `fiware-service` and `fiware-servicepath`). The authentication process use the trust delegation workflow to check if the trust provided is valid, in which
   case return a `x-subject-token` that can be used to authenticate the request to the Context Broker. Required parameters are: the `url` of the keystone to be used
@@ -60,7 +60,7 @@ These are the parameters that can be configured in the global section:
           password: 'iotagent'
     }
 ```
-  In `oauth2` based authentication, two types of tokens can be used depending on the availability in the IDM to be used. On one hand, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client. 
+  In `oauth2` based authentication, two types of tokens can be used depending on the availability in the IDM to be used. On one hand, the `trust` associated to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user for the Context Broker client.
   The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) to obtain an `access_token`
   that can be used to authenticate the request to the Context Broker.
   At the time being the assumption is that the `refresh_token` is a not expiring `offline_token` (we believe this is the best solution in the case of IoT Devices,
@@ -176,10 +176,14 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_AUTH_ENABLED         | authentication.enabled              |
 | IOTA_AUTH_TYPE            | authentication.type                 |
 | IOTA_AUTH_HEADER          | authentication.header               |
+| IOTA_AUTH_URL             | authentication.url                  |
 | IOTA_AUTH_HOST            | authentication.host                 |
 | IOTA_AUTH_PORT            | authentication.port                 |
 | IOTA_AUTH_USER            | authentication.user                 |
 | IOTA_AUTH_PASSWORD        | authentication.password             |
+| IOTA_AUTH_CLIENT_ID       | authentication.clientId             |
+| IOTA_AUTH_CLIENT_SECRET   | authentication.clientSecret         |
+| IOTA_AUTH_TOKEN_PATH      | authentication.tokenPath            |
 | IOTA_AUTH_PERMANENT_TOKEN | authentication.permanentToken       |
 | IOTA_REGISTRY_TYPE        | deviceRegistry.type                 |
 | IOTA_LOG_LEVEL            | logLevel                            |
