@@ -196,8 +196,8 @@ describe('Command functionalities', function() {
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
-                should.exist(attributes[0].position);
-                attributes[0].position.value.should.equal('[28, -104, 23]');
+                attributes[0].name.should.equal('position');
+                attributes[0].value.should.equal('[28, -104, 23]');
                 handlerCalled = true;
                 callback(null, {
                     id: id,
