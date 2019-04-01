@@ -256,6 +256,111 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
         });
     });
 
+    describe('When subscriptions are used on a protected Context Broker', function() {
+          beforeEach(function(done) {
+
+            var optionsProvision = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': 'electricity'
+                }
+            };
+    
+            nock.cleanAll();
+    
+            iotAgentLib.activate(iotAgentConfig, function() {
+                oauth2Mock = nock('http://192.168.1.1:3000')
+                    .post('/auth/realms/default/protocol/openid-connect/token',
+                        utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+                    .times(3)
+                    .reply(
+                        201,
+                        utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                        {});
+
+
+                contextBrokerMock = nock('http://192.168.1.1:1026');
+
+                contextBrokerMock
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-servicepath', 'electricity')
+                    .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
+                    .post('/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext5.json'))
+                    .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+
+                contextBrokerMock
+                    .post('/NGSI9/registerContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerNewDevice1.json'))
+                    .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
+
+                contextBrokerMock
+                    .post('/v1/subscribeContext',
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionRequests/simpleSubscriptionRequest1.json'))
+                    .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
+                    .reply(200,
+                        utils.readExampleFile(
+                            './test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+    
+                iotAgentLib.clearAll(function() {
+                    request(optionsProvision, function(error, result, body) {
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('subscribe requests use auth header', function(done) {
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
+                    should.not.exist(error);
+
+                    contextBrokerMock.done();
+
+                    done();
+                });
+            });
+        });
+
+        it('unsubscribe requests use auth header', function(done) {
+
+          oauth2Mock
+              .post('/auth/realms/default/protocol/openid-connect/token',
+                  utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true))
+              .reply(
+                  201,
+                  utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'),
+                  {});
+
+          contextBrokerMock = nock('http://192.168.1.1:1026')
+              .post('/v1/unsubscribeContext',
+                  utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
+              .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
+              .reply(200,
+                  utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
+                        contextBrokerMock.done();
+                        done();
+                    });
+                });
+            });
+        });
+
+    });
 });
 
 describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
