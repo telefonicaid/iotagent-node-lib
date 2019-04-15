@@ -31,6 +31,14 @@ of the IoTA Manager. Check the conectivity, the state of the MongoDB cluster and
 This error will thrown if MongoDB is selected as the configured repository for data but some information is missing
 in the configuration file. Check the configuration file and add all the required information.
 
+### MONGODB-004: MongoDB connection was lost.
+
+Indicates that it was impossible to reestablish the connection with the MongoDB server after retrying N times. This could be caused
+by a connectivity problem with the MongoDB machine or by changes on the configuration of the MongoDB server done while the IoT Agent
+was running. This error is only thrown when using a single MongoDB instance or when using sharding but just a single mongos proxy.
+When using MongoDB instances using replica sets or multiple mongos servers, the IoT Agent will retry connecting forever alternating
+between the different nodes.
+
 ### IOTAM-001: Error updating information in the IOTAM. Status Code [%d]
 
 The IoT Agent could not contact the IoT Agent manager to update its information. This condition may indicate a lack of
