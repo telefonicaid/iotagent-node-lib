@@ -382,7 +382,7 @@ callback with no parameters (this handler should only be used for reconfiguratio
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
-The handler will be also called in the case of updates realted to configurations. In that situation, the `newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e., `service`, `subservice`, `resource` and `apikey`.
+The handler will be also called in the case of updates related to configurations. In that situation, the `newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e., `service`, `subservice`, `resource` and `apikey`.
 
 ##### iotagentLib.setRemoveConfigurationHandler()
 ###### Signature
