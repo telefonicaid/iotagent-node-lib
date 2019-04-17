@@ -455,7 +455,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
+    groupCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
@@ -658,7 +658,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
+    groupCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
