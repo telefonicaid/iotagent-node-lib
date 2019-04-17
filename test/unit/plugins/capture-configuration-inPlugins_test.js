@@ -105,7 +105,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-optionsCreationcgroups = {
+optionsCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
