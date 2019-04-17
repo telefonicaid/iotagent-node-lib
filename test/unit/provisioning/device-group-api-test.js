@@ -94,7 +94,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsCreationcgroups = {
+    optionsCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -160,7 +160,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDeletecgroups = {
+    optionsDelete = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
@@ -187,7 +187,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             device: 'true'
         }
     },
-    optionsDeleteDevicecgroups = {
+    optionsDeleteDevice = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
@@ -242,7 +242,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsUpdatecgroups = {
+    optionsUpdate = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'PUT',
         json: {
@@ -292,7 +292,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
-    optionsListcgroups = {
+    optionsList = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'GET',
         json: {},
@@ -310,7 +310,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsGetcgroups = {
+    optionsGet = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'GET',
         json: {},
@@ -980,7 +980,7 @@ describe('Device Group Configuration API', function() {
                     'fiware-servicepath': '/*'
                 }
             },
-        optConstrainedListcgroups = {
+        optConstrainedList = {
                 url: 'http://localhost:4041/iot/cgroups',
                 method: 'GET',
                 qs: {
