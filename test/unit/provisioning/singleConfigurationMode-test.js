@@ -58,6 +58,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
+    groupCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -86,6 +95,15 @@ describe('Provisioning API: Single service mode', function() {
     describe('When a new configuration arrives to an already configured subservice', function() {
         var groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        },
+        groupCreationDuplicatedcgroups = {
+            url: 'http://localhost:4041/iot/cgroups',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
             headers: {
@@ -165,6 +183,15 @@ describe('Provisioning API: Single service mode', function() {
             },
             alternativeGroupCreation = {
                 url: 'http://localhost:4041/iot/services',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+                headers: {
+                    'fiware-service': 'AlternateService',
+                    'fiware-servicepath': '/testingPath'
+                }
+            },
+            alternativeGroupCreationcgroups = {
+                url: 'http://localhost:4041/iot/cgroups',
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
                 headers: {
