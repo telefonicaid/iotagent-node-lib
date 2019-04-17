@@ -979,19 +979,6 @@ describe('Device Group Configuration API', function() {
                     'fiware-service': 'TestService',
                     'fiware-servicepath': '/*'
                 }
-            },
-        optConstrainedList = {
-                url: 'http://localhost:4041/iot/cgroups',
-                method: 'GET',
-                qs: {
-                    limit: 3,
-                    offset: 2
-                },
-                json: {},
-                headers: {
-                    'fiware-service': 'TestService',
-                    'fiware-servicepath': '/*'
-                }
             };
 
 
