@@ -290,6 +290,16 @@ describe('Bidirectional data plugin', function() {
                     'fiware-servicepath': '/gardens'
                 }
             },
+            provisionGroupcgroups = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/cgroups',
+                method: 'POST',
+                json:
+                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
             provisionDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -333,6 +343,16 @@ describe('Bidirectional data plugin', function() {
     describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
         var provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
+                method: 'POST',
+                json:
+                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            },
+            provisionGroupcgroups = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/cgroups',
                 method: 'POST',
                 json:
                     utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
