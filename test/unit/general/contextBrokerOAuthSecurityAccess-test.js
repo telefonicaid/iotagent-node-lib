@@ -454,6 +454,15 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
+    },
+    groupCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
     var values = [
@@ -642,6 +651,15 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
     'configured through group provisioning. Permanent token', function() {
     var groupCreation = {
         url: 'http://localhost:4041/iot/services',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
+    groupCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
