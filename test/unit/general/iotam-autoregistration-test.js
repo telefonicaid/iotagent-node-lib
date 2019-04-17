@@ -134,7 +134,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationcgroups = {
+    optionsCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -209,7 +209,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStaticcgroups = {
+    optionsCreationStatic = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -260,7 +260,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDeletecgroups = {
+    optionsDelete = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
