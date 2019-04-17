@@ -353,7 +353,7 @@ describe('Bidirectional data plugin', function() {
                     'fiware-servicepath': '/gardens'
                 }
             },
-            provisionGroupcgroups = {
+            provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/cgroups',
                 method: 'POST',
                 json:
@@ -437,7 +437,7 @@ describe('Bidirectional data plugin', function() {
                     'fiware-servicepath': '/gardens'
                 }
             },
-            provisionGroupcgroups = {
+            provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/cgroups',
                 method: 'POST',
                 json:
