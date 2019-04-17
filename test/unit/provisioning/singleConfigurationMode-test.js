@@ -101,15 +101,6 @@ describe('Provisioning API: Single service mode', function() {
                 'fiware-service': 'TestService',
                 'fiware-servicepath': '/testingPath'
             }
-        },
-        groupCreationDuplicated = {
-            url: 'http://localhost:4041/iot/cgroups',
-            method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
-            headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/testingPath'
-            }
         };
 
         beforeEach(function(done) {
@@ -183,15 +174,6 @@ describe('Provisioning API: Single service mode', function() {
             },
             alternativeGroupCreation = {
                 url: 'http://localhost:4041/iot/services',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-                headers: {
-                    'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            },
-            alternativeGroupCreation = {
-                url: 'http://localhost:4041/iot/cgroups',
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
                 headers: {
