@@ -39,7 +39,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
+    groupCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
@@ -57,7 +57,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    alternateGroupCreationcgroups = {
+    alternateGroupCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
