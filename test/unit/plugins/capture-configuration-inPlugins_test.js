@@ -104,6 +104,50 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
+    },
+optionsCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    entity_type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    lazy: [
+                        {
+                            name: 'luminescence',
+                            type: 'Lumens'
+                        }
+                    ],
+                    attributes: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ],
+                    static_attributes: [
+                        {
+                            name: 'bootstrapServer',
+                            type: 'Address',
+                            value: '127.0.0.1'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
     };
 
 describe('Data Mapping Plugins: configuration provision', function() {
