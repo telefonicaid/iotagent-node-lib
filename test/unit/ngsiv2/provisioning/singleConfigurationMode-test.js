@@ -62,7 +62,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
+    groupCreation = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
@@ -106,7 +106,7 @@ describe('Provisioning API: Single service mode', function() {
                 'fiware-servicepath': '/testingPath'
             }
         },
-        groupCreationDuplicatedcgroups = {
+        groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/cgroups',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
@@ -196,7 +196,7 @@ describe('Provisioning API: Single service mode', function() {
                     'fiware-servicepath': '/testingPath'
                 }
             },
-            alternativeGroupCreationcgroups = {
+            alternativeGroupCreation = {
                 url: 'http://localhost:4041/iot/cgroups',
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
