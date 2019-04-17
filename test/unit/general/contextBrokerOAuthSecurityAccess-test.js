@@ -454,7 +454,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
-    },
+    };
 
     var values = [
         {
@@ -648,7 +648,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
             'fiware-service': 'TestService',
             'fiware-servicepath': '/testingPath'
         }
-    },
+    };
     
     var values = [
         {
