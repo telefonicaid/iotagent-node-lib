@@ -472,21 +472,8 @@ describe('MongoDB Group Registry test', function() {
                 'fiware-service': 'TestService',
                 'fiware-servicepath': '/*'
             }
-        },
-        optionsConstrained = {
-            url: 'http://localhost:4041/iot/cgroups',
-            method: 'GET',
-            qs: {
-                limit: 3,
-                offset: 2
-            },
-            json: {},
-            headers: {
-                'fiware-service': 'TestService',
-                'fiware-servicepath': '/*'
-            }
         };
-
+        
         beforeEach(function(done) {
             var optionsCreationList = [],
                 creationFns = [];
