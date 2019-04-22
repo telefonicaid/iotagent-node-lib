@@ -260,7 +260,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDelete = {
+    optionsDeletecgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
@@ -388,7 +388,6 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
-    });
     
     it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationcgroups, function(error, result, body) {
@@ -428,6 +427,14 @@ describe('IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDelete, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+        
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsDeletecgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
