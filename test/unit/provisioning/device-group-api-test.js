@@ -337,31 +337,15 @@ describe('Device Group Configuration API', function() {
     });
     describe('When a new device group creation request arrives', function() {
         it('should return a 200 OK', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(201);
-                done();
-            });
-        });
-        it('should return a 200 OK', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
         it('should store it in the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsList, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                    done();
-                });
-            });
-        });
-        it('should store it in the DB', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
-                request(optionsListcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
+                request(optionsList, optionsListcgroups, function(error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     done();
@@ -369,32 +353,8 @@ describe('Device Group Configuration API', function() {
             });
         });
         it('should store attributes in the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsList, function(error, response, body) {
-                    body.count.should.equal(1);
-                    should.exist(body.services[0].attributes);
-                    body.services[0].attributes.length.should.equal(1);
-                    body.services[0].attributes[0].name.should.equal('status');
-
-                    should.exist(body.services[0].lazy);
-                    body.services[0].lazy.length.should.equal(1);
-                    body.services[0].lazy[0].name.should.equal('luminescence');
-
-                    should.exist(body.services[0].commands);
-                    body.services[0].commands.length.should.equal(1);
-                    body.services[0].commands[0].name.should.equal('wheel1');
-
-                    should.exist(body.services[0].static_attributes);
-                    body.services[0].static_attributes.length.should.equal(1);
-                    body.services[0].static_attributes[0].name.should.equal('bootstrapServer');
-
-                    done();
-                });
-            });
-        });
-        it('should store attributes in the DB', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
-                request(optionsListcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
+                request(optionsList, optionsListcgroups, function(error, response, body) {
                     body.count.should.equal(1);
                     should.exist(body.services[0].attributes);
                     body.services[0].attributes.length.should.equal(1);
@@ -417,18 +377,8 @@ describe('Device Group Configuration API', function() {
             });
         });
         it('should store the service information from the headers into the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsList, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].service.should.equal('TestService');
-                    body.services[0].subservice.should.equal('/testingPath');
-                    done();
-                });
-            });
-        });
-        it('should store the service information from the headers into the DB', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
-                request(optionsListcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
+                request(optionsList, optionsListcgroups, function(error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].service.should.equal('TestService');
                     body.services[0].subservice.should.equal('/testingPath');
@@ -448,12 +398,7 @@ describe('Device Group Configuration API', function() {
                 callback();
             });
 
-            request(optionsCreation, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-            
-            request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -461,18 +406,8 @@ describe('Device Group Configuration API', function() {
     });
     describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function() {
         it('should return a 400 DUPLICATE_GROUP error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsCreation, function(error, response, body) {
-                    should.not.exist(error);
-                    response.statusCode.should.equal(409);
-                    body.name.should.equal('DUPLICATE_GROUP');
-                    done();
-                });
-            });
-        });
-        it('should return a 400 DUPLICATE_GROUP error', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
-                request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
+                request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
@@ -499,16 +434,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -534,16 +460,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -569,16 +486,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 WRONG_SYNTAX error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('WRONG_SYNTAX');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 WRONG_SYNTAX error', function(done) {
-            request(optionsCreationcgroups, function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('WRONG_SYNTAX');
@@ -588,53 +496,26 @@ describe('Device Group Configuration API', function() {
     });
     describe('When a device group removal request arrives', function() {
         beforeEach(function(done) {
-            request(optionsCreation, done);
-        });
-        
-        beforeEach(function(done) {
-            request(optionsCreationcgroups, done);
+            request(optionsCreation, optionsCreationcgroups, done);
         });
 
         it('should return a 204 OK', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(204);
-                done();
-            });
-        });
-        it('should return a 204 OK', function(done) {
-            request(optionsDeletecgroups, function(error, response, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
         it('should remove it from the database', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                request(optionsList, function(error, response, body) {
-                    body.count.should.equal(0);
-                    done();
-                });
-            });
-        });
-        it('should remove it from the database', function(done) {
-            request(optionsDeletecgroups, function(error, response, body) {
-                request(optionsListcgroups, function(error, response, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, response, body) {
+                request(optionsList, optionsListcgroups, function(error, response, body) {
                     body.count.should.equal(0);
                     done();
                 });
             });
         });
         it('should remove it from the configuration', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                /* jshint sub:true */
-
-                should.not.exist(iotAgentConfig.types['SensorMachine']);
-                done();
-            });
-        });
-        it('should remove it from the configuration', function(done) {
-            request(optionsDeletecgroups, function(error, response, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, response, body) {
                 /* jshint sub:true */
 
                 should.not.exist(iotAgentConfig.types['SensorMachine']);
@@ -684,7 +565,6 @@ describe('Device Group Configuration API', function() {
             async.series([
                 iotAgentLib.clearAll,
                 async.apply(request, optionsCreation),
-                async.apply(request, optionsCreationcgroups),
                 async.apply(request, optionsDeviceCreation)
             ], done);
         });
@@ -706,7 +586,6 @@ describe('Device Group Configuration API', function() {
 
               async.series([
                   async.apply(request, optionsDeleteDevice),
-                  async.apply(request, optionsDeleteDevicecgroups),
                   async.apply(request, options),
                   async.apply(request, options, test),
               ], done);
@@ -722,12 +601,7 @@ describe('Device Group Configuration API', function() {
                 callback();
             });
 
-            request(optionsDeleteDevice, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-            
-            request(optionsDeleteDevicecgroups, function(error, response, body) {
+            request(optionsDeleteDevice, optionsDeleteDevicecgroups, function(error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -839,16 +713,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDeletecgroups, function(error, response, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -881,16 +746,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDeletecgroups, function(error, response, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -923,15 +779,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should return a 204 OK', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(204);
-                done();
-            });
-        });
-        
-        it('should return a 204 OK', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -939,28 +787,8 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should update the appropriate values in the database', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                request(optionsList, function(error, response, body) {
-                    var found = false;
-                    body.count.should.equal(3);
-
-                    for (var i = 0; i < body.services.length; i++) {
-                        if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
-                            body.services[i].resource === '/deviceTest') {
-                            body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                            body.services[i].static_attributes.length.should.equal(1);
-                            found = true;
-                        }
-                    }
-
-                    found.should.equal(true);
-                    done();
-                });
-            });
-        });
-        it('should update the appropriate values in the database', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
-                request(optionsListcgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
+                request(optionsList, optionsListcgroups, function(error, response, body) {
                     var found = false;
                     body.count.should.equal(3);
 
@@ -994,12 +822,7 @@ describe('Device Group Configuration API', function() {
                 callback();
             });
 
-            request(optionsUpdate, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-            
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -1009,12 +832,7 @@ describe('Device Group Configuration API', function() {
     describe('When a device group update request arrives declaring a different service', function() {
         beforeEach(function(done) {
             optionsUpdate.headers['fiware-service'] = 'UnexistentService';
-            request(optionsCreation, done);
-        });
-        
-        beforeEach(function(done) {
-            optionsUpdatecgroups.headers['fiware-service'] = 'UnexistentService';
-            request(optionsCreationcgroups, done);
+            request(optionsCreation, optionsCreationcgroups, done);
         });
 
         afterEach(function() {
@@ -1027,16 +845,7 @@ describe('Device Group Configuration API', function() {
 
 
         it('should return a 200 OK', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-        
-        it('should return a 200 OK', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -1048,12 +857,7 @@ describe('Device Group Configuration API', function() {
     describe('When a device group update request arrives declaring a different subservice', function() {
         beforeEach(function(done) {
             optionsUpdate.headers['fiware-servicepath'] = '/UnexistentServicepath';
-            request(optionsCreation, done);
-        });
-        
-        beforeEach(function(done) {
-            optionsUpdatecgroups.headers['fiware-servicepath'] = '/UnexistentServicepath';
-            request(optionsCreationcgroups, done);
+            request(optionsCreation, optionsCreationcgroups, done);
         });
 
         afterEach(function() {
@@ -1066,16 +870,7 @@ describe('Device Group Configuration API', function() {
 
 
         it('should return a 200 OK', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-        
-        it('should return a 200 OK', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -1102,16 +897,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1138,16 +924,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-        
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdatecgroups, function(error, response, body) {
+            request(optionsUpdate, optionsUpdatecgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1205,27 +982,14 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should return a 200 OK', function(done) {
-            request(optionsGet, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(200);
-                done();
-            });
-        });
-        it('should return a 200 OK', function(done) {
-            request(optionsGetcgroups, function(error, response, body) {
+            request(optionsGet, optionsGetcgroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
         it('should return all the configured device groups from the database', function(done) {
-            request(optionsGet, function(error, response, body) {
-                body.service.should.equal('TestService');
-                done();
-            });
-        });
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGetcgroups, function(error, response, body) {
+            request(optionsGet, optionsGetcgroups, function(error, response, body) {
                 body.service.should.equal('TestService');
                 done();
             });
