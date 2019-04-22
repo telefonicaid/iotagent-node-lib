@@ -105,7 +105,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-optionsCreation = {
+optionsCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -180,6 +180,12 @@ describe('Data Mapping Plugins: configuration provision', function() {
                 handlerCalled.should.equal(true);
                 done();
             });
+            
+            request(optionsCreationcgroups, function(error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(true);
+                done();
+            });
         });
 
         it('should still execute the configuration handlers', function(done) {
@@ -195,6 +201,11 @@ describe('Data Mapping Plugins: configuration provision', function() {
             });
 
             request(optionsCreation, function(error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+            
+            request(optionsCreationcgroups, function(error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -215,6 +226,11 @@ describe('Data Mapping Plugins: configuration provision', function() {
             });
 
             request(optionsCreation, function(error, response, body) {
+                handlerCalled.should.equal(false);
+                done();
+            });
+            
+            request(optionsCreationcgroups, function(error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });
