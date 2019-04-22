@@ -62,15 +62,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreation = {
-        url: 'http://localhost:4041/iot/cgroups',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -106,7 +97,6 @@ describe('Provisioning API: Single service mode', function() {
                 'fiware-servicepath': '/testingPath'
             }
         };
-
 
         beforeEach(function(done) {
             request(groupCreation, done);
