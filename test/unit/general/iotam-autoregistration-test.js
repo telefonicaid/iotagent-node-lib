@@ -134,7 +134,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreation = {
+    optionsCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -209,7 +209,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStatic = {
+    optionsCreationStaticcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -389,6 +389,15 @@ describe('IoT Manager autoregistration', function() {
             });
         });
     });
+    
+    it('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreationcgroups, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+    });
 
     describe('When a service is removed from the IoT Agent', function() {
         beforeEach(function(done) {
@@ -455,6 +464,14 @@ describe('IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStatic, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+        
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreationStaticcgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
