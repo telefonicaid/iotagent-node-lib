@@ -102,7 +102,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsCreation = {
+    optionsCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -157,7 +157,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDelete = {
+    optionsDeletecgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
@@ -179,7 +179,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
-    optionsList = {
+    optionsListcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'GET',
         json: {},
@@ -230,7 +230,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsUpdate = {
+    optionsUpdatecgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'PUT',
         json: {
@@ -281,7 +281,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsGet = {
+    optionsGetcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'GET',
         json: {},
@@ -335,8 +335,41 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
+        it('should store it in the DB', function(done) {
+            request(optionsCreationcgroups, function(error, response, body) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    should.exist(docs);
+                    should.exist(docs.length);
+                    docs.length.should.equal(1);
+                    should.exist(docs[0].type);
+                    should.exist(docs[0].internalAttributes);
+                    should.exist(docs[0].attributes);
+                    should.exist(docs[0].apikey);
+                    docs[0].type.should.equal('Light');
+                    docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    docs[0].internalAttributes.length.should.equal(1);
+                    docs[0].internalAttributes[0].customField.should.equal('customValue');
+                    docs[0].attributes.length.should.equal(1);
+                    docs[0].attributes[0].name.should.equal('status');
+                    done();
+                });
+            });
+        });
         it('should store the service information from the headers into the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    should.exist(docs[0].service);
+                    should.exist(docs[0].subservice);
+                    docs[0].service.should.equal('TestService');
+                    docs[0].subservice.should.equal('/testingPath');
+                    done();
+                });
+            });
+        });
+        it('should store the service information from the headers into the DB', function(done) {
+            request(optionsCreationcgroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs[0].service);
@@ -359,15 +392,40 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
+        it('should return a DUPLICATE_GROUP error', function(done) {
+            request(optionsCreationcgroups, function(error, response, body) {
+                request(optionsCreationcgroups, function(error, response, body) {
+                    response.statusCode.should.equal(409);
+                    body.name.should.equal('DUPLICATE_GROUP');
+                    done();
+                });
+            });
+        });
     });
 
     describe('When a device group removal request arrives', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
         });
+        
+        beforeEach(function(done) {
+            request(optionsCreationcgroups, done);
+        });
 
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    should.exist(docs);
+                    should.exist(docs.length);
+                    docs.length.should.equal(0);
+                    done();
+                });
+            });
+        });
+        
+        it('should remove it from the database', function(done) {
+            request(optionsDeletecgroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -384,6 +442,13 @@ describe('MongoDB Group Registry test', function() {
                 done();
             });
         });
+        
+        it('should return a 204 OK statusCode', function(done) {
+            request(optionsDeletecgroups, function(error, response, body) {
+                response.statusCode.should.equal(204);
+                done();
+            });
+        });
     });
 
     describe('When a device group update request arrives', function() {
@@ -393,6 +458,20 @@ describe('MongoDB Group Registry test', function() {
 
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
+                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
+                    should.not.exist(err);
+                    should.exist(docs);
+                    should.exist(docs[0].cbHost);
+                    docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                    should.exist(docs[0].staticAttributes);
+                    docs[0].staticAttributes.length.should.equal(1);
+                    done();
+                });
+            });
+        });
+        
+        it('should update the values in the database', function(done) {
+            request(optionsUpdatecgroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -457,6 +536,13 @@ describe('MongoDB Group Registry test', function() {
                 done();
             });
         });
+        
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsListcgroups, function(error, response, body) {
+                body.count.should.equal(3);
+                done();
+            });
+        });
     });
 
     describe('When a device group listing arrives with a limit', function() {
@@ -516,6 +602,19 @@ describe('MongoDB Group Registry test', function() {
                 done();
             });
         });
+        
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGetcgroups, function(error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(1);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(1);
+                body.services[0].service.should.equal('TestService');
+                done();
+            });
+        });
     });
 
     describe('When a device info request arrives and multiple groups have been created', function() {
@@ -536,6 +635,18 @@ describe('MongoDB Group Registry test', function() {
 
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(10);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(10);
+                done();
+            });
+        });
+        
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGetcgroups, function(error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(10);
