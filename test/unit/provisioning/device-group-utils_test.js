@@ -39,7 +39,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreation = {
+    groupCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
@@ -57,7 +57,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    alternateGroupCreation = {
+    alternateGroupCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
@@ -115,6 +115,13 @@ describe('Device Group utils', function() {
                 async.apply(request, groupCreation)
             ], done);
         });
+        beforeEach(function(done) {
+            async.series([
+                async.apply(iotAgentLib.activate, iotAgentConfig),
+                async.apply(request, alternateGroupCreationcgroups),
+                async.apply(request, groupCreationcgroups)
+            ], done);
+        });
         it('should return the API Key of the group', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function(error, apiKey) {
                 should.not.exist(error);
@@ -128,6 +135,11 @@ describe('Device Group utils', function() {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function() {
                 request(groupCreation, function(error, response, body) {
+                    done();
+                });
+            });
+            iotAgentLib.activate(iotAgentConfig, function() {
+                request(groupCreationcgroups, function(error, response, body) {
                     done();
                 });
             });
