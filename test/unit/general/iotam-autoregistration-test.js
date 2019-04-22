@@ -134,7 +134,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreation = {
+    optionsCreationcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -209,7 +209,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStatic = {
+    optionsCreationStaticcgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'POST',
         json: {
@@ -260,7 +260,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDelete = {
+    optionsDeletecgroups = {
         url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
@@ -388,6 +388,14 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
+        
+        t('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreationcgroups, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
     });
 
     describe('When a service is removed from the IoT Agent', function() {
@@ -424,6 +432,14 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
+        
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsDeletecgroups, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
     });
 
     describe('When a new service with static attributes is created in the IoT Agent', function() {
@@ -455,6 +471,14 @@ describe('IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStatic, function(error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+        
+        it('should update the registration in the IoT Manager', function(done) {
+            request(optionsCreationStaticcgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
