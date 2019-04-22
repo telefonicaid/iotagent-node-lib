@@ -1211,8 +1211,21 @@ describe('Device Group Configuration API', function() {
                 done();
             });
         });
+        it('should return a 200 OK', function(done) {
+            request(optionsGetcgroups, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
+                body.service.should.equal('TestService');
+                done();
+            });
+        });
+        it('should return all the configured device groups from the database', function(done) {
+            request(optionsGetcgroups, function(error, response, body) {
                 body.service.should.equal('TestService');
                 done();
             });
