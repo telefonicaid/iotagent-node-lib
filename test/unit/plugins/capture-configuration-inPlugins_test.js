@@ -175,7 +175,7 @@ describe('Data Mapping Plugins: configuration provision', function() {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, optionsCreationcgroups function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
@@ -194,7 +194,7 @@ describe('Data Mapping Plugins: configuration provision', function() {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, optionsCreationcgroups function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -214,7 +214,7 @@ describe('Data Mapping Plugins: configuration provision', function() {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, optionsCreationcgroups function(error, response, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });
