@@ -134,6 +134,43 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
+    optionsCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    entity_type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    lazy: [
+                        {
+                            name: 'luminescence',
+                            type: 'Lumens'
+                        }
+                    ],
+                    attributes: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        }
+    },
     optionsCreationStatic = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -172,8 +209,59 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
+    optionsCreationStaticcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: {
+            services: [
+                {
+                    resource: '/deviceTest',
+                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                    entity_type: 'SensorMachine',
+                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                    cbHost: 'http://unexistentHost:1026',
+                    commands: [
+                        {
+                            name: 'wheel1',
+                            type: 'Wheel'
+                        }
+                    ],
+                    static_attributes: [
+                        {
+                            name: 'position',
+                            type: 'location',
+                            values: '123,12'
+                        }
+                    ],
+                    attributes: [
+                        {
+                            name: 'status',
+                            type: 'Boolean'
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        }
+    },
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
+        method: 'DELETE',
+        json: {},
+        headers: {
+            'fiware-service': 'theService',
+            'fiware-servicepath': 'theSubService'
+        },
+        qs: {
+            resource: '/deviceTest',
+            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+        }
+    },
+    optionsDeletecgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
         method: 'DELETE',
         json: {},
         headers: {
@@ -294,7 +382,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreation, function(error, result, body) {
+            request(optionsCreation, optionsCreationcgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -330,7 +418,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsDelete, function(error, result, body) {
+            request(optionsDelete, optionsDeletecgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -366,7 +454,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStatic, function(error, result, body) {
+            request(optionsCreationStatic, optionsCreationStaticcgroups function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
