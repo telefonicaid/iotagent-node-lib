@@ -717,7 +717,7 @@ The IoT Agents provide two means to define those device groups:
 -   Static **Type Configuration**: configuring the `ngsi.types` property in the
     `config.js` file.
 -   Dynamic **Configuration API**: making use of the API URLS in the
-    configuration URI, `/iot/services`. Please, note that the configuration API
+    configuration URI, `/iot/services` or `/iot/cgroups`. Please, note that the configuration API
     manage servers under an URL that requires the `server.name` parameter to be
     set (the name of the IoT Agent we are using). If no name is configured
     `default` is taken as the default one.
@@ -766,7 +766,7 @@ same fields in the database model.
 | static_attributes   | staticAttributes   | this attributes will be added to all the entities of this group 'as is'.                                                            |
 | internal_attributes | internalAttributes | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry. |
 
-##### POST /iot/services
+##### POST /iot/services or /iot/cgroups
 
 Creates a set of device groups for the given service and service path. The
 service and subservice information will taken from the headers, overwritting any
@@ -818,7 +818,7 @@ Returns:
 -   400 WRONG_SYNTAX if the body doesn't comply with the schema.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### GET /iot/services
+##### GET /iot/services or /iot/cgroups
 
 Retrieves device groups from the database. If the servicepath header has the
 wildcard expression, `/*`, all the subservices for the service are returned. The
@@ -830,7 +830,7 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### PUT /iot/services
+##### PUT /iot/services or /iot/cgroups
 
 Modifies the information for a device group configuration, identified by the
 `resource` and `apikey` query parameters. Takes a device group body as the
@@ -852,7 +852,7 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### DELETE /iot/services
+##### DELETE /iot/services or /iot/cgroups
 
 Removes a device group configuration from the DB, specified by the `resource`
 and `apikey` query parameters.
