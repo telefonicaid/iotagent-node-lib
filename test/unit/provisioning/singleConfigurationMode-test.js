@@ -58,6 +58,15 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
+    groupCreationcgroups = {
+        url: 'http://localhost:4041/iot/cgroups',
+        method: 'POST',
+        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+        headers: {
+            'fiware-service': 'TestService',
+            'fiware-servicepath': '/testingPath'
+        }
+    },
     deviceCreation = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -108,6 +117,31 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
+    describe('When a new configuration arrives to an already configured subservice', function() {
+        var groupCreationDuplicatedcgroups = {
+            url: 'http://localhost:4041/iot/cgroups',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+
+        beforeEach(function(done) {
+            request(groupCreationcgroups, done);
+        });
+
+        it('should raise a DUPLICATE_GROUP error', function(done) {
+            request(groupCreationDuplicatedcgroups, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(409);
+                should.exist(body.name);
+                body.name.should.equal('DUPLICATE_GROUP');
+                done();
+            });
+        });
+    });
     describe('When a device is provisioned with an ID that already exists in the configuration', function() {
         var deviceCreationDuplicated = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -137,6 +171,51 @@ describe('Provisioning API: Single service mode', function() {
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             request(groupCreation, function(error) {
+                request(deviceCreation, function(error, response, body) {
+                    done();
+                });
+            });
+        });
+
+        it('should raise a DUPLICATE_DEVICE_ID error', function(done) {
+            request(deviceCreationDuplicated, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(409);
+                should.exist(body.name);
+                body.name.should.equal('DUPLICATE_DEVICE_ID');
+                done();
+            });
+        });
+    });
+    describe('When a device is provisioned with an ID that already exists in the configuration', function() {
+        var deviceCreationDuplicated = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            request(groupCreationcgroups, function(error) {
                 request(deviceCreation, function(error, response, body) {
                     done();
                 });
@@ -221,6 +300,74 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
+    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
+        var alternativeDeviceCreation = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+                headers: {
+                    'fiware-service': 'AlternateService',
+                    'fiware-servicepath': '/testingPath'
+                }
+            },
+            alternativeGroupCreationcgroups = {
+                url: 'http://localhost:4041/iot/cgroups',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+                headers: {
+                    'fiware-service': 'AlternateService',
+                    'fiware-servicepath': '/testingPath'
+                }
+            };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'AlternateService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'AlternateService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            request(groupCreation, function(error) {
+                request(deviceCreation, function(error, response, body) {
+                    request(alternativeGroupCreationcgroups, function(error, response, body) {
+                        done();
+                    });
+                });
+            });
+        });
+
+        it('should return a 201 OK', function(done) {
+            request(alternativeDeviceCreation, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+                done();
+            });
+        });
+    });
     describe('When a device is provisioned without a type and with a default configuration type', function() {
         var getDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
@@ -272,6 +419,57 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
+    describe('When a device is provisioned without a type and with a default configuration type', function() {
+        var getDevice = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+                method: 'GET',
+                headers: {
+                    'fiware-service': 'TestService',
+                    'fiware-servicepath': '/testingPath'
+                }
+            },
+            oldType;
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext')
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            oldType = deviceCreation.json.devices[0].entity_type;
+            delete deviceCreation.json.devices[0].entity_type;
+            request(groupCreationcgroups, done);
+        });
+
+        afterEach(function() {
+            deviceCreation.json.devices[0].entity_type = oldType;
+        });
+
+        it('should be provisioned with the default type', function(done) {
+            request(deviceCreation, function(error, response, body) {
+                request(getDevice, function(error, response, body) {
+                    var parsedBody;
+
+                    parsedBody = JSON.parse(body);
+
+                    parsedBody.entity_type.should.equal('SensorMachine');
+
+                    done();
+                });
+            });
+        });
+    });
     describe('When a device is provisioned for a configuration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
@@ -293,6 +491,45 @@ describe('Provisioning API: Single service mode', function() {
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
             request(groupCreation, done);
+        });
+
+        it('should not raise any error', function(done) {
+            request(deviceCreation, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+                done();
+            });
+        });
+
+        it('should send the mixed data to the Context Broker', function(done) {
+            request(deviceCreation, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+    });
+    describe('When a device is provisioned for a configuration', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://unexistentHost:1026')
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/NGSI9/registerContext', utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v1/updateContext', utils.readExampleFile(
+                    './test/unit/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
+                .reply(200, utils.readExampleFile(
+                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+
+            request(groupCreationcgroups, done);
         });
 
         it('should not raise any error', function(done) {
