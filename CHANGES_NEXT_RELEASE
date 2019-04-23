@@ -7,4 +7,5 @@ Upgrade from node-uuid ~1.4.1 to uuid ~3.3.2.
 Add: IOTA_AUTH_URL, IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET and IOTA_AUTH_TOKEN_PATH env vars
 Fix: incomplete HTTPS support for NGSI subscriptions (#593)
 Add: support for authentication to NGSI subscription requests (#592) 
-
+Fix: process dies if reconnection to DB fails instead of remain in a zombie state (#772)
+Add: handlers defined with setConfigurationHandler receive as argument the service, subservice, resource and apikey (#769)

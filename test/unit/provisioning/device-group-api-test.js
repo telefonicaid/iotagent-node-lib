@@ -676,6 +676,10 @@ describe('Device Group Configuration API', function() {
                 should.exist(callback);
                 newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
                 newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                newConfiguration.service.should.equal('TestService');
+                newConfiguration.subservice.should.equal('/testingPath');
+                newConfiguration.resource.should.equal('/deviceTest');
+                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                 handlerCalled = true;
                 callback();
             });
