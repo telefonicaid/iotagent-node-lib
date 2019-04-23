@@ -454,7 +454,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStatic, optionsCreationStaticcgroups function(error, result, body) {
+            request(optionsCreationStatic, optionsCreationStaticcgroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
