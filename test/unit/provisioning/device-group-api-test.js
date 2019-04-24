@@ -1686,7 +1686,7 @@ describe('Device Group Configuration API', function() {
             });
         });
         it('should use the limit parameter to constrain the number of entries', function(done) {
-            request(optConstrainedList, function(error, response, body) {
+            request(optConstrainedListcgroups, function(error, response, body) {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.services.length.should.equal(3);
