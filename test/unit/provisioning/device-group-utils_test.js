@@ -159,7 +159,7 @@ describe('Device Group utils', function() {
             });
         });
     });
-     describe('When an API Key is requested for a device in a subservice with the SingleConfiguration mode', function() {
+     describe('When an API Key is requested for device in a subservice with SingleConfiguration mode', function() {
         beforeEach(function(done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function() {
