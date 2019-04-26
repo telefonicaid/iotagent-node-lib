@@ -1,12 +1,14 @@
-{
-  "id": "Motion:motion1",
-  "type": "Motion",
-  "moving": {
-    "type": "Boolean",
-    "value": true
-  },
-  "location": {
-    "type": "Vector",
-    "value": "(123,523)"
+[
+  {
+    "id": "Motion:motion1",
+    "type": "Motion",
+    "moving": {
+      "type": "Boolean",
+      "value": true
+    },
+    "location": {
+      "type": "Vector",
+      "value": "(123,523)"
+    }
   }
-}
+]
