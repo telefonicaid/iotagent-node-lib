@@ -8,5 +8,6 @@ Add: IOTA_AUTH_URL, IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET and IOTA_AUTH_T
 Fix: incomplete HTTPS support for NGSI subscriptions (#593)
 Add: support for authentication to NGSI subscription requests (#592) 
 Fix: process dies if reconnection to DB fails instead of remain in a zombie state (#772)
+Add: handlers defined with setConfigurationHandler receive as argument the service, subservice, resource and apikey (#769)
 Add: basic operations of NGSIv2 context forwarding (#527)
 Fix: using "append" instead of "APPEND" (which is deprecated) in NGSIv2 operations
