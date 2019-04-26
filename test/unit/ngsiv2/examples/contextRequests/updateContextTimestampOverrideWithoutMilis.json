@@ -1,0 +1,10 @@
+{
+  "state": {
+    "value": true,
+    "type": "boolean"
+  },
+  "TimeInstant":{
+    "type": "DateTime",
+    "value": "2022-10-22T22:22:22Z"
+  }
+}

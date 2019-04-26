@@ -11,8 +11,7 @@
       "attributes": [
         {
           "name": "luminance",
-          "type": "lumens",
-          "isDomain": "false"
+          "type": "lumens"
         }
       ],
       "providingApplication": "http://smartGondor.com"

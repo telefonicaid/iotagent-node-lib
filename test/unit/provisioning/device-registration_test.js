@@ -94,6 +94,7 @@ describe('IoT Agent Device Registration', function() {
     });
 
     afterEach(function(done) {
+        delete(device1.registrationId);
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(done);
         });

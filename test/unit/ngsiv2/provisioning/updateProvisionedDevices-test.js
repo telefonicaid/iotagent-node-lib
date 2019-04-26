@@ -82,12 +82,13 @@ describe('Device provisioning API: Update provisioned devices', function() {
     beforeEach(function(done) {
         nock.cleanAll();
         iotAgentLib.activate(iotAgentConfig, function() {
+            var nockBody = utils.readExampleFile(
+                './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json');
+            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations',
-                utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
+                .post('/v2/registrations', nockBody)
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -99,12 +100,13 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
+            var nockBody2 = utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json');
+            nockBody2.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations',
-                utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'))
+                .post('/v2/registrations', nockBody2)
                 .reply(201, null, {'Location': '/v2/registrations/6719a7f5254b058441165849'});
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -125,12 +127,13 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 .delete('/v2/registrations/6719a7f5254b058441165849')
                 .reply(204);
 
+            var nockBody3 = utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/updateIoTAgent2.json');
+            nockBody3.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations',
-                utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/updateIoTAgent2.json'))
+                .post('/v2/registrations', nockBody3)
                 .reply(201, null, {'Location': '/v2/registrations/4419a7f5254b058441165849'});
 
             async.series([
