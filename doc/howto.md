@@ -28,7 +28,7 @@ Where:
 
 ### Requirements
 
-This tutorial expects a Node.js v0.10 (at least) installed and working on your machine. It also expects you to have
+This tutorial expects a Node.js v8 (at least) installed and working on your machine. It also expects you to have
 access to a Context Broker (without any security proxies).
 
 ##  Basic IoT Agent
