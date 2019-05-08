@@ -41,9 +41,9 @@ describe('MongoDB migration', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
-        mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, client) {
+        mongo.connect('mongodb://localhost:27017/iotOrigin', { useNewUrlParser: true }, function(err, client) {
             originDb = client;
-            mongo.connect('mongodb://localhost:27017/iotTarget', function(err, client) {
+            mongo.connect('mongodb://localhost:27017/iotTarget', { useNewUrlParser: true }, function(err, client) {
                 targetDb = client;
                 async.series([
                     apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),
