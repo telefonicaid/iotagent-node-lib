@@ -43,10 +43,12 @@ describe('MongoDB migration', function() {
 
         mongo.connect(
             'mongodb://localhost:27017/iotOrigin',
+            { useNewUrlParser: true },
             function(err, client) {
                 originDb = client;
                 mongo.connect(
                     'mongodb://localhost:27017/iotTarget',
+                    { useNewUrlParser: true },
                     function(err, client) {
                         targetDb = client;
                         async.series(

@@ -183,6 +183,7 @@ describe('MongoDB Group Registry test', function() {
             iotAgentLib.activate(iotAgentConfig, function() {
                 mongo.connect(
                     'mongodb://localhost:27017/iotagent',
+                    { useNewUrlParser: true },
                     function(err, db) {
                         iotAgentDb = db;
                         done();

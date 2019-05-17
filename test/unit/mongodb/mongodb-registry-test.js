@@ -192,6 +192,7 @@ describe('MongoDB Device Registry', function() {
         mongoUtils.cleanDbs(function() {
             mongo.connect(
                 'mongodb://localhost:27017/iotagent',
+                { useNewUrlParser: true },
                 function(err, db) {
                     iotAgentDb = db;
                     done();
@@ -206,7 +207,7 @@ describe('MongoDB Device Registry', function() {
             iotAgentDb
                 .db()
                 .collection('devices')
-                .remove(function(error) {
+                .deleteOne(function(error) {
                     iotAgentDb.close(function(error) {
                         mongoUtils.cleanDbs(done);
                     });

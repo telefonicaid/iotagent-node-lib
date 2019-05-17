@@ -30,13 +30,14 @@ function cleanDb(host, name, callback) {
 
     MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, db) {
             if (db && db.db()) {
-                db.db().dropDatabase();
-                db.close();
+                db.db().dropDatabase(function(err, result) {
+                    db.close();
+                    callback();
+                });
             }
-
-            callback();
         }
     );
 }
@@ -50,6 +51,7 @@ function populate(host, dbName, entityList, collectionName, callback) {
 
     MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, db) {
             if (db) {
                 db.db()
