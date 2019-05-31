@@ -30,6 +30,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     async = require('async'),
     groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
     request = require('request'),
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     groupCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -39,8 +40,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    groupCreationconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
@@ -48,6 +49,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     alternateGroupCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -57,8 +59,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    alternateGroupCreationcgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    alternateGroupCreationconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
         headers: {
@@ -127,8 +129,8 @@ describe('Device Group utils', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(iotAgentLib.activate, iotAgentConfig),
-                async.apply(request, alternateGroupCreationcgroups),
-                async.apply(request, groupCreationcgroups)
+                async.apply(request, alternateGroupCreationconfigGroups),
+                async.apply(request, groupCreationconfigGroups)
             ], done);
         });
         it('should return the API Key of the group', function(done) {
@@ -163,7 +165,7 @@ describe('Device Group utils', function() {
         beforeEach(function(done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function() {
-                request(groupCreationcgroups, function(error, response, body) {
+                request(groupCreationconfigGroups, function(error, response, body) {
                     done();
                 });
             });
