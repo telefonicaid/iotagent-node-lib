@@ -98,6 +98,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             }
         ]
     },
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -135,11 +136,11 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationcgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    optionsCreationconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
-            services: [
+            configGroups: [
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -172,6 +173,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsCreationStatic = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -210,11 +212,11 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStaticcgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    optionsCreationStaticconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
-            services: [
+            configGroups: [
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -248,6 +250,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
@@ -261,8 +264,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDeletecgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    optionsDeleteconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'DELETE',
         json: {},
         headers: {
@@ -418,7 +421,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationcgroups, function(error, result, body) {
+            request(optionsCreationconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -489,7 +492,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsDeletecgroups, function(error, result, body) {
+            request(optionsDeleteconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -560,7 +563,7 @@ describe('IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStaticcgroups, function(error, result, body) {
+            request(optionsCreationStaticconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
