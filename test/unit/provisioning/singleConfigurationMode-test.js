@@ -49,6 +49,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M',
         throttling: 'PT5S'
     },
+    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     groupCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -58,8 +59,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationcgroups = {
-        url: 'http://localhost:4041/iot/cgroups',
+    groupCreationconfigGroups = {
+        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
         headers: {
@@ -118,8 +119,8 @@ describe('Provisioning API: Single service mode', function() {
         });
     });
     describe('When a new configuration arrives to an already configured subservice', function() {
-        var groupCreationDuplicatedcgroups = {
-            url: 'http://localhost:4041/iot/cgroups',
+        var groupCreationDuplicatedconfigGroups = {
+            url: 'http://localhost:4041/iot/configGroups',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
             headers: {
@@ -129,11 +130,11 @@ describe('Provisioning API: Single service mode', function() {
         };
 
         beforeEach(function(done) {
-            request(groupCreationcgroups, done);
+            request(groupCreationconfigGroups, done);
         });
 
         it('should raise a DUPLICATE_GROUP error', function(done) {
-            request(groupCreationDuplicatedcgroups, function(error, response, body) {
+            request(groupCreationDuplicatedconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -215,7 +216,7 @@ describe('Provisioning API: Single service mode', function() {
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
-            request(groupCreationcgroups, function(error) {
+            request(groupCreationconfigGroups, function(error) {
                 request(deviceCreation, function(error, response, body) {
                     done();
                 });
@@ -310,8 +311,8 @@ describe('Provisioning API: Single service mode', function() {
                     'fiware-servicepath': '/testingPath'
                 }
             },
-            alternativeGroupCreationcgroups = {
-                url: 'http://localhost:4041/iot/cgroups',
+            alternativeGroupCreationconfigGroups = {
+                url: 'http://localhost:4041/iot/configGroups',
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
                 headers: {
@@ -353,7 +354,7 @@ describe('Provisioning API: Single service mode', function() {
 
             request(groupCreation, function(error) {
                 request(deviceCreation, function(error, response, body) {
-                    request(alternativeGroupCreationcgroups, function(error, response, body) {
+                    request(alternativeGroupCreationconfigGroups, function(error, response, body) {
                         done();
                     });
                 });
@@ -449,7 +450,7 @@ describe('Provisioning API: Single service mode', function() {
 
             oldType = deviceCreation.json.devices[0].entity_type;
             delete deviceCreation.json.devices[0].entity_type;
-            request(groupCreationcgroups, done);
+            request(groupCreationconfigGroups, done);
         });
 
         afterEach(function() {
@@ -529,7 +530,7 @@ describe('Provisioning API: Single service mode', function() {
                 .reply(200, utils.readExampleFile(
                     './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
 
-            request(groupCreationcgroups, done);
+            request(groupCreationconfigGroups, done);
         });
 
         it('should not raise any error', function(done) {
