@@ -60,7 +60,7 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
 describe('Statistics persistence service', function() {
 
     function insertDummy(n, callback) {
-        iotAgentDb.collection('tests').insert({test: 'test'}, function() {
+        iotAgentDb.collection('tests').insertOne({test: 'test'}, function() {
             callback();
         });
     }
