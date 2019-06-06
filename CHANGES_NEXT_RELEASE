@@ -1,12 +1,1 @@
-Fix: modified engine version >=6 in packages.json
-Fix: update logops dependency from 1.0.8 to 2.1.0
-Fix: user provider timestamp correctly propagated to mapped entities when multientity pluging is used (#748)
-Add: new functions to set callbacks for removal of devices and groups (#735)
-Fix: add ?type parameter in CB request updates to avoid potential entity ambiguities (#733)
-Upgrade from node-uuid ~1.4.1 to uuid ~3.3.2.
-Add: IOTA_AUTH_URL, IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET and IOTA_AUTH_TOKEN_PATH env vars
-Fix: incomplete HTTPS support for NGSI subscriptions (#593)
-Add: support for authentication to NGSI subscription requests (#592) 
-Fix: process dies if reconnection to DB fails instead of remain in a zombie state (#772)
-Add: handlers defined with setConfigurationHandler receive as argument the service, subservice, resource and apikey (#769)
 Add: /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
