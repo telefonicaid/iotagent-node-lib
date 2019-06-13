@@ -16,7 +16,7 @@ These are the parameters that can be configured in the global section:
         }
 ```
 
- * If you want to use NGSIv2 (sending updates for active attributes and NGISv2-based registration):
+ * If you want to use NGSIv2:
 
 ```javascript
   {
