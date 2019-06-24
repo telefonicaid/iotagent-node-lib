@@ -1,4 +1,3 @@
-- ADD use apikey to search group config at device creation time
 - ADD to use apikey to search group configuration at device registration time
 - Upgrade async dependency from 2.6.1 to 2.6.2
 - Upgrade body-parser dependency from ~1.18.3 to ~1.19.0
