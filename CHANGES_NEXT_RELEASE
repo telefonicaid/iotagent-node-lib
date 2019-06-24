@@ -1,1 +1,2 @@
+- ADD use apikey to search group config at device creation time
 - ADD to use apikey to search group configuration at device registration time
