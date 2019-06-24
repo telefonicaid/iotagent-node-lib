@@ -1,9 +1,10 @@
 site_name: Fiware-iotagent-node-lib
 site_url: https://fiware-iotagent-node-lib.readthedocs.org
-repo_url: https://github.com/telefonicaid/iotagent-node-lib.git
+repo_url: https://github.com/telefonicaid/iotagent-node-lib
 site_description: IoT Agent Library Documentation
 docs_dir: doc
 site_dir: html
+edit_uri: edit/master/doc/
 markdown_extensions: [toc,fenced_code]
 use_directory_urls: false
 theme: readthedocs
