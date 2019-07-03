@@ -13,7 +13,7 @@ RUN yum update -y && yum install -y wget \
   && touch /etc/mosquitto/pwfile \
   && sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf \
   && mv /root/aclfile /etc/mosquitto/aclfile \
-  && echo "log_dest file /var/log/mosquitto.log" >> /etc/mosquitto/mosquitto.conf \
+  && echo "log_dest file /var/log/mosquitto/mosquitto.log" >> /etc/mosquitto/mosquitto.conf \
   && echo "log_timestamp true" >> /etc/mosquitto/mosquitto.conf \
   && yum clean all
 
