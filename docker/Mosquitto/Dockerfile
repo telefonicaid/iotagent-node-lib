@@ -19,4 +19,4 @@ RUN yum update -y && yum install -y wget \
 
 EXPOSE 1883
 
-ENTRYPOINT /bin/startMosquitto.sh
+ENTRYPOINT ["/bin/startMosquitto.sh"]

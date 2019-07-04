@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 touch /var/log/mosquitto/mosquitto.log
 chmod 664 /var/log/mosquitto/mosquitto.log
