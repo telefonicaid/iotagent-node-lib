@@ -16,8 +16,8 @@
 
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
 information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
-language can be configured for provisioned attributes as explained in the Device Provisioning API section in the main
-README.md.
+language can be configured for provisioned attributes as explained in the Device Provisioning API section in the
+main README.md.
 
 ## Measurement transformation
 
@@ -301,3 +301,88 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 -   update (of type "Boolean"): true -> ${@update * 20} -> ${ 1 \* 20 } -> $ { 20 } -> $ { "20"} -> False
 -   update (of type "Boolean"): false -> ${@update * 20} -> ${ 0 \* 20 } -> $ { 0 } -> $ { "0"} -> False
 -   update (of type "Boolean"): true -> ${trim(@updated)} -> ${trim("true")} -> $ { "true" } -> $ { "true"} -> True
+
+## JEXL Based Transformations
+
+As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl).
+To use JEXL, you will need to either configure it as default
+language using the `defaultExpressionLanguage` field to `jexl` or configuring
+the usage of JEXL as expression language for a given device:
+
+```
+{
+   "devices":[
+      {
+         "device_id":"45",
+         "protocol":"GENERIC_PROTO",
+         "entity_name":"WasteContainer:WC45",
+         "entity_type":"WasteContainer",
+         "expressionLanguage": "jexl",
+         "attributes":[
+            {
+               "name":"location",
+               "type":"geo:point",
+               "expression": "..."
+            },
+            {
+               "name":"fillingLevel",
+               "type":"Number",
+               "expression": "..."
+            }
+         ]
+      }
+   ]
+}
+```
+
+In the following we provide examples of using JEXL to apply transformations.
+
+### Quick comparison to default language
+
+* JEXL supports the following types: Boolean, String, Number, Object, Array.
+* JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
+* JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
+* JEXL additionally supports the following operations:
+  Divide and floor `//`, Modulus `%`, Logical AND `&&` and 
+  Logical OR `||`. Negation operator is `!`
+* JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
+
+
+For more details, check JEXL language details
+[here](https://github.com/TomFrost/jexl#all-the-details).
+
+### Examples of expressions
+
+The following table shows expressions and their expected outcomes for a measure
+with four attributes: "value" with value 6, "name" with value "DevId629",
+an object with value {name: "John", surname: "Doe"} and array of value [1,3].
+
+| Expression                  | Expected outcome      |
+|:--------------------------- |:--------------------- |
+| '5 * value'                 | 30                    |
+| '(6 + value) * 3'           | 36                    |
+| 'value / 12 + 1'            | 1.5                   |
+| '(5 + 2) * (value + 7)'     | 91                    |
+| 'value * 5.2'               | 31.2                  |
+| '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
+| 'name + "value is " +value' | 'DevId629 value is 6' |
+
+Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
+
+| Expression                  | Expected outcome      |
+|:--------------------------- |:--------------------- |
+| '"   a    "|trim'           | 'a'                   |
+| 'name|length'               | 8                     |
+| 'name|indexOf("e")'         | 1                     |
+| 'name|substring(0,name|indexOf("e")+1)'| 'De'       |
+
+The following are some expressions not supported by the legacy expression
+language:
+
+| Expression                  | Expected outcome      |
+|:--------------------------- |:--------------------- |
+| 'value == 6? true : false'  | true                  |
+| 'value == 6 && name|indexOf("e")>0| true            |
+| 'array[1]+1'                | 3                     |
+| 'object.name'               | 'John'                |
+| '{type:"Point",coordinates: [value,value]}' | {type:"Point",coordinates: [6,6]}|
