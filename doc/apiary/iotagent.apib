@@ -86,7 +86,7 @@ Fields in JSON object representing a configuration group are:
 |`entity_type`           |Entity type used in entity publication (overload default).|
 |`attributes`            |Mapping for protocol parameters to entity attributes.<br> `object_id` (string, mandatory): protocol parameter to be mapped.<br> `name` (string, mandatory): attribute name to publish.<br> `type`: (string, mandatory): attribute type to publish.|
 |`static_attributes`     |Attributes published as defined.<br> `name` (string, mandatory): attribute name to publish.<br> `type` (string, mandatory): attribute type to publish.<br> `value` (string, mandatory): attribute value to publish.|
-| `timestamp`.           |(optional, boolean): This filed indicates if a attribute 'TimeInstant' will be added (true) or not (false). Otherwise IotAgent configuration timestamp configuration will be used.|
+| `timestamp`.           |(optional, boolean): This field indicates if an attribute 'TimeInstant' will be added (true) or not (false). If this field is omitted, the global IotAgent configuration timestamp will be used.|
 | `autoprovision`.       |(optional, boolean): This field idicates if appendMode will be APPEND if true (as default in iotAgent configuration appendMode) of UPDATE if false.|
 
 Mandatory fields are identified in every operation.
