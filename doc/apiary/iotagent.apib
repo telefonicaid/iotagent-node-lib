@@ -259,7 +259,7 @@ A device is a resource that publish information to IoT Platform and it uses the 
 `name` (string, mandatory): command identifier.
 `type` (string, mandatory). It must be 'command'.
 `value` (string, mandatory): command representation depends on protocol.
-- `timestamp`. (optional, boolean): This filed indicates if a attribute 'TimeInstant' will be added (true) or not (false). Otherwise IotAgent configuration timestamp configuration will be used.
+- `timestamp`. (optional, boolean): This field indicates if an attribute 'TimeInstant' will be added (true) or not (false). If this field is omitted, the global IotAgent configuration timestamp will be used.
 - `autoprovision`. (optional, boolean): This field idicates if appendMode will be APPEND if true (as default in iotAgent configuration appendMode) of UPDATE if false.
 
 Mandatory fields are identified in every operation.
