@@ -145,7 +145,7 @@ are 5 and 5 respectively). E.g.:
 * **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
 * **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
 * **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
-have implications in the use of attributes with Context Providers, so this flag should be used with care.
+have implications in the use of attributes with Context Providers, so this flag should be used with care. This flag is overwritten by `autoprovision` flag in group or device provision.
 * **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 * **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
 * **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device provision.
