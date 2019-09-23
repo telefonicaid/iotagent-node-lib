@@ -1,4 +1,8 @@
 {
   "id": "eii01201aaa",
-  "type": "sensor"
+  "type": "sensor",
+  "TimeInstant": {
+    "type": "ISO8601",
+    "value": " "
+  }
 }
