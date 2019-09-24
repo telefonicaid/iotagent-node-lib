@@ -7,10 +7,10 @@ from the `config.js` file.
 
 ### Global Configuration
 These are the parameters that can be configured in the global section:
-*   **logLevel**: minimum log level to log. May take one of the following values: 
+* **logLevel**: minimum log level to log. May take one of the following values: 
 DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
 
-*   **contextBroker**: connection data to the Context Broker (host and port). E.g.:
+* **contextBroker**: connection data to the Context Broker (host and port). E.g.:
 
 ```javascript
         contextBroker: {
@@ -19,7 +19,7 @@ DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
         }
 ```
 
-    If you want to use NGSIv2:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you want to use NGSIv2:
 
 ```javascript
         contextBroker: {
@@ -73,30 +73,30 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
         }
 ```
 
-  In `oauth2` based authentication, two types of tokens can be used depending 
-  on the availability in the IDM to be used. On one hand, the `trust` associated 
-  to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user 
-  for the Context Broker client.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In `oauth2` based authentication, two types of tokens can be used depending 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on the availability in the IDM to be used. On one hand, the `trust` associated 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for the Context Broker client.
   
-  The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) 
-  to obtain an `access_token` that can be used to authenticate the request to the 
-  Context Broker. At the time being the assumption is that the `refresh_token` is 
-  a not expiring `offline_token` (we believe this is the best solution in the case 
-  of IoT Devices, since injecting a refresh token look may slow down communication. 
-  Still, the developer would be able to invalidate the refresh token on the provider 
-  side in case of security issues connected to a token). The code was tested using 
-  [Keycloak](http://www.keycloak.org), [Auth0](https://auth0.com) and 
-  [FIWARE Keyrock](https://github.com/ging/fiware-idm) (it may require customisation 
-  for other providers - while OAuth2 is a standard, not all implementations behave in 
-  the same way, especially as regards status codes and error messages).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to obtain an `access_token` that can be used to authenticate the request to the 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context Broker. At the time being the assumption is that the `refresh_token` is 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a not expiring `offline_token` (we believe this is the best solution in the case 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of IoT Devices, since injecting a refresh token look may slow down communication. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Still, the developer would be able to invalidate the refresh token on the provider 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;side in case of security issues connected to a token). The code was tested using 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Keycloak](http://www.keycloak.org), [Auth0](https://auth0.com) and 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FIWARE Keyrock](https://github.com/ging/fiware-idm) (it may require customisation 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for other providers - while OAuth2 is a standard, not all implementations behave in 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the same way, especially as regards status codes and error messages).
   
-  Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively 
-  `host` and `port` but if you use this combination, the IoT Agent will assume that 
-  the protocol is HTTP), the `tokenPath` to which the validation request should be sent 
-  (`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, 
-  `/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the 
-  Context Broker, and the `header` field that should be used to send the authentication 
-  request (that will be sent in the form `Authorization: Bearer <access_token>`). E.g.:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`host` and `port` but if you use this combination, the IoT Agent will assume that 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the protocol is HTTP), the `tokenPath` to which the validation request should be sent 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context Broker, and the `header` field that should be used to send the authentication 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request (that will be sent in the form `Authorization: Bearer <access_token>`). E.g.:
 
 ```javascript
     authentication: {
@@ -110,16 +110,16 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
     }
 ```
 
-  Nevertheless, this kind of authentication relying on `refresh_token` grant type 
-  implies that when the `access_token` expires, it is needed to request a new one from 
-  the IDM, causing some overhead in the communication with the Context Broker. 
-  To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that 
-  can be retrieved using `scope=permanent`. With this approach, the IOTA does not 
-  need to interact with the IDM and directly include the `permanent token` in the 
-  header. In order to use this type of token, an additional parameter `permanentToken` 
-  must be set to `true` in the `authentication` configuration. An environment 
-  variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. 
-  For instance:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nevertheless, this kind of authentication relying on `refresh_token` grant type 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;implies that when the `access_token` expires, it is needed to request a new one from 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the IDM, causing some overhead in the communication with the Context Broker. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can be retrieved using `scope=permanent`. With this approach, the IOTA does not 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;need to interact with the IDM and directly include the `permanent token` in the 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header. In order to use this type of token, an additional parameter `permanentToken` 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;must be set to `true` in the `authentication` configuration. An environment 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For instance:
 
 ```javascript
     authentication: {
@@ -231,7 +231,9 @@ considering the JSON native type (only for NGSIv2).
 take advantage of multi-core systems. It allows two values True or False. This attribute 
 is optional with default to false, which means that the IoTAgent runs in a single thread. 
 
+
 ### Configuration using environment variables
+
 Some of the configuration parameters can be overridden with environment variables, 
 to ease the use of those parameters with container-based technologies, like Docker, 
 Heroku, etc...
