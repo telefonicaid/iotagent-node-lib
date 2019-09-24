@@ -7,21 +7,22 @@ from the `config.js` file.
 
 ### Global Configuration
 These are the parameters that can be configured in the global section:
-* **logLevel**: minimum log level to log. May take one of the following values: 
+*   **logLevel**: minimum log level to log. May take one of the following values: 
 DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
-* **contextBroker**: connection data to the Context Broker (host and port). E.g.:
+
+*   **contextBroker**: connection data to the Context Broker (host and port). E.g.:
 
 ```javascript
-        {
+        contextBroker: {
             host: '192.168.56.101',
             port: '1026'
         }
 ```
 
- * If you want to use NGSIv2:
+    If you want to use NGSIv2:
 
 ```javascript
-        {
+        contextBroker: {
             host: '192.168.56.101',
             port: '1026',
             ngsiVersion: 'v2'
@@ -34,7 +35,7 @@ The `port` attribute is required. If no `baseRoot` attribute is used, '/' is use
 default. E.g.:
 
 ```javascript
-        {
+        server: {
             baseRoot: '/',
             port: 4041
         }
@@ -48,6 +49,7 @@ milliseconds to set the time between stats writings.
             interval: 100
         }
 ```
+
 * **authentication**: authentication data, for use in retrieving tokens for devices 
 with a trust token (required in scenarios with security enabled in the Context Broker 
 side). Currently, two authentication provider are supported: `keystone` and `oauth2`. 
@@ -62,7 +64,7 @@ Required parameters are: the `url` of the keystone to be used (alternatively `ho
 HTTP), the `user` and `password` to which it is delegated the `trust` verification. E.g.:
 
 ```javascript
-        {
+        authentication: {
             enabled: true,
             url: 'https://localhost:5000',
             type: 'keystone',
@@ -97,7 +99,7 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
   request (that will be sent in the form `Authorization: Bearer <access_token>`). E.g.:
 
 ```javascript
-    {
+    authentication: {
         enabled: true,
         type: 'oauth2',
         url: 'http://localhost:3000',
@@ -109,7 +111,7 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
 ```
 
   Nevertheless, this kind of authentication relying on `refresh_token` grant type 
-  implies that when the acces_token expires, it is needed to request a new one from 
+  implies that when the `access_token` expires, it is needed to request a new one from 
   the IDM, causing some overhead in the communication with the Context Broker. 
   To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that 
   can be retrieved using `scope=permanent`. With this approach, the IOTA does not 
@@ -120,7 +122,7 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
   For instance:
 
 ```javascript
-    {
+    authentication: {
         type: 'oauth2',
         url: 'http://localhost:3000',
         header: 'Authorization',
@@ -141,7 +143,7 @@ be persistent from one execution to the other. Mongodb databases must be configu
 in the `mongob` section (as described bellow). E.g.:
 
 ```javascript
-    {
+    deviceRegistry: {
         type: 'mongodb'
     }
 ```
@@ -155,7 +157,7 @@ attempts, if those attributes are present (default values are 5 and 5 respective
 E.g.:
 
 ```javascript
-    {
+    mongodb: {
         host: 'localhost',
         port: '27017',
         db: 'iotagent',
@@ -171,7 +173,7 @@ configured in the object. The IoTAgent URL that will be reported will be the
 `providedUrl` (described below) with the added `agentPath`:
 
 ```javascript
-    {
+    iotManager: {
         host: 'mockediotam.com',
         port: 9876,
         path: '/protocols',
@@ -226,11 +228,11 @@ This attribute is optional (if this parameter doesn't exist the polling daemon w
 * **autocast**: When enabled, the IoT Agents will try to cast attribute's values 
 considering the JSON native type (only for NGSIv2).
 * **multiCore**: When enabled, the IoT Agents runs in multi-thread environment to 
-take advantage of multi-core systems. It allows two values True or False. By default 
-the value is False, which means that the IoTAgent runs in a single thread. 
+take advantage of multi-core systems. It allows two values True or False. This attribute 
+is optional with default to false, which means that the IoTAgent runs in a single thread. 
 
 ### Configuration using environment variables
-Some of the configuration parameters can be overriden with environment variables, 
+Some of the configuration parameters can be overridden with environment variables, 
 to ease the use of those parameters with container-based technologies, like Docker, 
 Heroku, etc...
 
