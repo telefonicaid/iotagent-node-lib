@@ -32,6 +32,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     logger = require('logops'),
     nock = require('nock'),
     moment = require('moment'),
+    timekeeper = require('timekeeper'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -181,6 +182,16 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 ]
 
             },
+            'SensorCommand':{
+                commands: [
+                    {
+                      name: 'PING',
+                      type: 'command'
+                    }
+                ],
+                type: 'SensorCommand',
+                lazy: []
+            }
 
         },
         service: 'smartGondor',
@@ -624,3 +635,56 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
     });
 });
 
+describe('Multi-entity plugin is executed for a command update for a regular entity ', function () {
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+
+        iotAgentConfig.timestamp = true;
+        var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+        timekeeper.freeze(time);
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(function() {
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
+                done();
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        timekeeper.reset();
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    it('Should send the update to the context broker', function(done) {
+
+        contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v2/op/update', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                    '/contextRequests/updateContextMultientityTimestampPlugin4.json'))
+            .reply(204);
+        var commands = [
+            {
+                name: 'PING_status',
+                type: 'commandStatus',
+                value: 'OK',
+            },
+            {
+                name: 'PING_info',
+                type: 'commandResult',
+                value:'1234567890'
+            }
+        ];
+
+        iotAgentLib.update('sensorCommand', 'SensorCommand', '', commands, function(error) {
+            should.not.exist(error);
+            contextBrokerMock.done();
+            done();
+        });
+    });
+});

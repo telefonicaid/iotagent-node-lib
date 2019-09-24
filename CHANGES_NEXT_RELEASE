@@ -1,1 +1,3 @@
 - Add autoprovision (appendMode) in device and group provosion (#805)
+- Add: basic operations of NGSIv2 context forwarding (#527)
+- Fix: using "append" instead of "APPEND" (which is deprecated) in NGSIv2 operations
