@@ -12,43 +12,44 @@ DEBUG, INFO, ERROR, FATAL. E.g.: 'DEBUG'.
 
 * **contextBroker**: connection data to the Context Broker (host and port). E.g.:
 
-```javascript
+    ```javascript
         contextBroker: {
             host: '192.168.56.101',
             port: '1026'
         }
-```
+    ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you want to use NGSIv2:
+    If you want to use NGSIv2:
 
-```javascript
+    ```javascript
         contextBroker: {
             host: '192.168.56.101',
             port: '1026',
             ngsiVersion: 'v2'
         }
-```
+    ```
 
 * **server**: configuration used to create the Context Server (port where the IoT 
 Agent will be listening as a Context Provider and base root to prefix all the paths). 
 The `port` attribute is required. If no `baseRoot` attribute is used, '/' is used by 
 default. E.g.:
 
-```javascript
+    ```javascript
         server: {
             baseRoot: '/',
             port: 4041
         }
 
-```
+    ```
+  
 * **stats**: configure the periodic collection of statistics. Use `interval` in 
 milliseconds to set the time between stats writings.
 
-```javascript
+    ```javascript
         stats: {
             interval: 100
         }
-```
+    ```
 
 * **authentication**: authentication data, for use in retrieving tokens for devices 
 with a trust token (required in scenarios with security enabled in the Context Broker 
@@ -63,7 +64,7 @@ Required parameters are: the `url` of the keystone to be used (alternatively `ho
 `port` but if you use this combination, the IoT Agent will assume that the protocol is 
 HTTP), the `user` and `password` to which it is delegated the `trust` verification. E.g.:
 
-```javascript
+    ```javascript
         authentication: {
             enabled: true,
             url: 'https://localhost:5000',
@@ -71,68 +72,67 @@ HTTP), the `user` and `password` to which it is delegated the `trust` verificati
             user: 'iotagent',
             password: 'iotagent'
         }
-```
+    ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In `oauth2` based authentication, two types of tokens can be used depending 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on the availability in the IDM to be used. On one hand, the `trust` associated 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for the Context Broker client.
+    In `oauth2` based authentication, two types of tokens can be used depending on the availability in the IDM to be used. On one hand, the `trust` associated 
+to the `device` or `deviceGroup` is a `refresh_token` issued by a specific user 
+for the Context Broker client.
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to obtain an `access_token` that can be used to authenticate the request to the 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context Broker. At the time being the assumption is that the `refresh_token` is 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a not expiring `offline_token` (we believe this is the best solution in the case 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of IoT Devices, since injecting a refresh token look may slow down communication. 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Still, the developer would be able to invalidate the refresh token on the provider 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;side in case of security issues connected to a token). The code was tested using 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Keycloak](http://www.keycloak.org), [Auth0](https://auth0.com) and 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FIWARE Keyrock](https://github.com/ging/fiware-idm) (it may require customisation 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for other providers - while OAuth2 is a standard, not all implementations behave in 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the same way, especially as regards status codes and error messages).
+    The authentication process uses the [`refresh_token` grant type](https://tools.ietf.org/html/rfc6749#section-1.5) 
+to obtain an `access_token` that can be used to authenticate the request to the 
+Context Broker. At the time being the assumption is that the `refresh_token` is 
+a not expiring `offline_token` (we believe this is the best solution in the case 
+of IoT Devices, since injecting a refresh token look may slow down communication. 
+Still, the developer would be able to invalidate the refresh token on the provider 
+side in case of security issues connected to a token). The code was tested using 
+[Keycloak](http://www.keycloak.org), [Auth0](https://auth0.com) and 
+[FIWARE Keyrock](https://github.com/ging/fiware-idm) (it may require customisation 
+for other providers - while OAuth2 is a standard, not all implementations behave in 
+the same way, especially as regards status codes and error messages).
   
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`host` and `port` but if you use this combination, the IoT Agent will assume that 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the protocol is HTTP), the `tokenPath` to which the validation request should be sent 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context Broker, and the `header` field that should be used to send the authentication 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request (that will be sent in the form `Authorization: Bearer <access_token>`). E.g.:
+    Required parameters are: the `url` of the OAuth 2 provider to be used (alternatively 
+`host` and `port` but if you use this combination, the IoT Agent will assume that 
+the protocol is HTTP), the `tokenPath` to which the validation request should be sent 
+(`/auth/realms/default/protocol/openid-connect/token` for Keycloak and Auth0, 
+`/oauth2/token` for Keyrock), the `clientId` and `clientSecret` that identify the 
+Context Broker, and the `header` field that should be used to send the authentication 
+request (that will be sent in the form `Authorization: Bearer <access_token>`). E.g.:
 
-```javascript
-    authentication: {
-        enabled: true,
-        type: 'oauth2',
-        url: 'http://localhost:3000',
-        header: 'Authorization',
-        clientId: 'context-broker',
-        clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
-        tokenPath: '/auth/realms/default/protocol/openid-connect/token'
-    }
-```
+    ```javascript
+        authentication: {
+            enabled: true,
+            type: 'oauth2',
+            url: 'http://localhost:3000',
+            header: 'Authorization',
+            clientId: 'context-broker',
+            clientSecret: 'c8d58d16-0a42-400e-9765-f32e154a5a9e',
+            tokenPath: '/auth/realms/default/protocol/openid-connect/token'
+        }
+    ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nevertheless, this kind of authentication relying on `refresh_token` grant type 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;implies that when the `access_token` expires, it is needed to request a new one from 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the IDM, causing some overhead in the communication with the Context Broker. 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can be retrieved using `scope=permanent`. With this approach, the IOTA does not 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;need to interact with the IDM and directly include the `permanent token` in the 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header. In order to use this type of token, an additional parameter `permanentToken` 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;must be set to `true` in the `authentication` configuration. An environment 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For instance:
+    Nevertheless, this kind of authentication relying on `refresh_token` grant type 
+implies that when the `access_token` expires, it is needed to request a new one from 
+the IDM, causing some overhead in the communication with the Context Broker. 
+To mitigate this issue, FIWARE KeyRock IDM  implements `permanent tokens` that 
+can be retrieved using `scope=permanent`. With this approach, the IOTA does not 
+need to interact with the IDM and directly include the `permanent token` in the 
+header. In order to use this type of token, an additional parameter `permanentToken` 
+must be set to `true` in the `authentication` configuration. An environment 
+variable `IOTA_AUTH_PERMANENT_TOKEN` can be also used for the same purpose. 
+For instance:
 
-```javascript
-    authentication: {
-        type: 'oauth2',
-        url: 'http://localhost:3000',
-        header: 'Authorization',
-        clientId: 'context-broker',
-        clientSecret: '0c2492e1-3ce3-4cca-9723-e6075b89c244',
-        tokenPath: '/oauth2/token',
-        enabled: true,
-        permanentToken: true
-    }
-```
+    ```javascript
+        authentication: {
+            type: 'oauth2',
+            url: 'http://localhost:3000',
+            header: 'Authorization',
+            clientId: 'context-broker',
+            clientSecret: '0c2492e1-3ce3-4cca-9723-e6075b89c244',
+            tokenPath: '/oauth2/token',
+            enabled: true,
+            permanentToken: true
+        }
+    ```
 
 * **deviceRegistry**: type of Device Registry to create. Currently, two values 
 are supported: `memory` and `mongodb`. If the former is configured, a transient 
@@ -142,11 +142,11 @@ a MongoDB database will be used to store all the device information, so it will
 be persistent from one execution to the other. Mongodb databases must be configured 
 in the `mongob` section (as described bellow). E.g.:
 
-```javascript
-    deviceRegistry: {
-        type: 'mongodb'
-    }
-```
+    ```javascript
+        deviceRegistry: {
+            type: 'mongodb'
+        }
+    ```
 
 * **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' 
 type. If the `host` parameter is a list of comma-separated IPs, they will be 
@@ -156,15 +156,15 @@ the connection at startup time `retries` times, waiting `retryTime` seconds betw
 attempts, if those attributes are present (default values are 5 and 5 respectively). 
 E.g.:
 
-```javascript
-    mongodb: {
-        host: 'localhost',
-        port: '27017',
-        db: 'iotagent',
-        retries: 5,
-        retryTime: 5
-    }
-```
+    ```javascript
+        mongodb: {
+            host: 'localhost',
+            port: '27017',
+            db: 'iotagent',
+            retries: 5,
+            retryTime: 5
+        }
+    ```
 
 * **iotManager**: configures all the information needed to register the IoT 
 Agent in the IoTManager. If this section is present, the IoTA will try to 
@@ -172,16 +172,16 @@ register to a IoTAM in the `host`, `port` and `path` indicated, with the informa
 configured in the object. The IoTAgent URL that will be reported will be the 
 `providedUrl` (described below) with the added `agentPath`:
 
-```javascript
-    iotManager: {
-        host: 'mockediotam.com',
-        port: 9876,
-        path: '/protocols',
-        protocol: 'GENERIC_PROTOCOL',
-        description: 'A generic protocol',
-        agentPath: '/iot'
-    }
-```
+    ```javascript
+        iotManager: {
+            host: 'mockediotam.com',
+            port: 9876,
+            path: '/protocols',
+            protocol: 'GENERIC_PROTOCOL',
+            description: 'A generic protocol',
+            agentPath: '/iot'
+        }
+    ```
 
 * **types**: See **Type Configuration** in the [Configuration API](#configurationapi) 
 section below.

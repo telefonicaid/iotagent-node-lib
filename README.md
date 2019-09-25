@@ -497,7 +497,7 @@ attributes:
 -   **entity_type**: configures the type of an alternative entity.
 -   **reverse**: add bidirectionality expressions to the attribute. See the
     **bidirectionality** transformation plugin in the
-    [Data Mapping Plugins section](#datamapping) for details.
+    [Data Mapping Plugins section](#data-mapping-plugins) for details.
 
 See the transformation plugins Section for more details.
 
@@ -614,6 +614,8 @@ Example of return payload:
       ],
       "internal_attributes": []
     }
+  ]
+}
 ```
 
 ##### GET /iot/devices/:deviceId
@@ -727,7 +729,7 @@ they, in fact, end up in the same configuration collection).
 
 Both approaches are better described in the sections bellow.
 
-#### Configuration API
+#### Overview
 
 The following sections show the available operations for the Configuration API.
 Every operation in the API require the `fiware-service` and `fiware-servicepath`
