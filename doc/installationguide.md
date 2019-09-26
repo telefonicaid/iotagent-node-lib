@@ -228,7 +228,7 @@ This attribute is optional (if this parameter doesn't exist the polling daemon w
 * **autocast**: When enabled, the IoT Agents will try to cast attribute's values 
 considering the JSON native type (only for NGSIv2).
 * **multiCore**: When enabled, the IoT Agents runs in multi-thread environment to 
-take advantage of multi-core systems. It allows two values True or False. This attribute 
+take advantage of multi-core systems. It allows two values `true` or `false`. This attribute 
 is optional with default to false, which means that the IoTAgent runs in a single thread. 
 
 
