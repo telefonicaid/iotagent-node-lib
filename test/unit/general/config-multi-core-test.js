@@ -65,7 +65,7 @@ describe('Startup Multi-Core tests', function() {
     describe('When the IoT Agent is started with Multi-Core environment variable with value \'true\'', function() {
         beforeEach(function() {
             process.env.IOTA_MULTI_CORE = 'true';
-            iotAgentConfig.multiCore = true
+            iotAgentConfig.multiCore = false;
         });
 
         afterEach(function() {
@@ -152,7 +152,7 @@ describe('Startup Multi-Core tests', function() {
         });
     });
 
-    describe('When the IoT Agent is not started with Multi-Core environment variable and it is not ' +
+    describe('When the IoT Agent is either started with Multi-Core environment variable nor it is ' +
         'configured', function() {
         beforeEach(function() {
         });
