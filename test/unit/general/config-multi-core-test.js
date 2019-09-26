@@ -72,16 +72,12 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
+        it('should load the correct configuration parameter with value \'true\'', function(done) {
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(true);
+            done();
         });
 
-        it('should load the correct configuration parameter with value \'true\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(true);
-                done();
-            });
-        });
     });
 
     describe('When the IoT Agent is started with Multi-Core environment variable with value \'false\'', function() {
@@ -94,15 +90,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -118,15 +109,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -140,15 +126,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -161,15 +142,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -183,15 +159,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'true\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(true);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(true);
+            done();
         });
     });
 
@@ -205,15 +176,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -227,15 +193,10 @@ describe('Startup Multi-Core tests', function() {
             delete process.env.IOTA_MULTI_CORE;
         });
 
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 
@@ -248,16 +209,10 @@ describe('Startup Multi-Core tests', function() {
         afterEach(function() {
             delete process.env.IOTA_MULTI_CORE;
         });
-
-        afterEach(function(done) {
-            iotAgentLib.deactivate(done);
-        });
-
         it('should load the correct configuration parameter with value \'false\'', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                config.getConfig().multiCore.should.equal(false);
-                done();
-            });
+            config.setConfig(iotAgentConfig);
+            config.getConfig().multiCore.should.equal(false);
+            done();
         });
     });
 });
