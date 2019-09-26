@@ -130,6 +130,28 @@ describe('Startup Multi-Core tests', function() {
         });
     });
 
+    describe('When the IoT Agent is started with Multi-Core environment variable with a numeric value', function() {
+        beforeEach(function() {
+            process.env.IOTA_MULTI_CORE = 123;
+            iotAgentConfig.multiCore = true;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent is not started with Multi-Core environment variable and it is not ' +
         'configured', function() {
         beforeEach(function() {
@@ -217,4 +239,25 @@ describe('Startup Multi-Core tests', function() {
         });
     });
 
+    describe('When the IoT Agent is not started with Multi-Core environment variable and it is configured with ' +
+        'a numeric value', function() {
+        beforeEach(function() {
+            iotAgentConfig.multiCore = 123;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
 });
