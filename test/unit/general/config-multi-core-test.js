@@ -1,0 +1,220 @@
+/*
+ * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, seehttp://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ *
+ *  Modified by: Fernando López - FIWARE Foundation, e.V.
+ *
+ */
+'use strict';
+
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
+    config = require('../../../lib/commonConfig'),
+    iotAgentConfig = {
+        logLevel: 'FATAL',
+        contextBroker: {
+            host: '192.168.1.1',
+            port: '1026',
+        },
+        server: {
+            port: 4041
+        },
+        types: {
+            'Light': {
+                commands: [],
+                type: 'Light',
+                lazy: [
+                    {
+                        name: 'temperature',
+                        type: 'centigrades'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'pressure',
+                        type: 'Hgmm'
+                    }
+                ]
+            }
+        },
+        providerUrl: 'http://smartGondor.com',
+        deviceRegistrationDuration: 'P1M',
+        throttling: 'PT5S',
+    };
+
+
+describe('Startup Multi-Core tests', function() {
+
+    describe('When the IoT Agent is started with Multi-Core environment variable with value \'true\'', function() {
+        beforeEach(function() {
+            process.env.IOTA_MULTI_CORE = 'true';
+            iotAgentConfig.multiCore = true
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'true\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is started with Multi-Core environment variable with value \'false\'', function() {
+        beforeEach(function() {
+            process.env.IOTA_MULTI_CORE = 'false';
+            iotAgentConfig.multiCore = true;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
+
+    describe('When the IoT Agent is started with Multi-Core environment variable with any other value except ' +
+        '\'true\' or \'false\'', function() {
+        beforeEach(function() {
+            process.env.IOTA_MULTI_CORE = 'foo';
+            iotAgentConfig.multiCore = true;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is not started with Multi-Core environment variable and it is not ' +
+        'configured', function() {
+        beforeEach(function() {
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is not started with Multi-Core environment variable and it is configured with ' +
+        'value \'true\'', function() {
+        beforeEach(function() {
+            iotAgentConfig.multiCore = true;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'true\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is not started with Multi-Core environment variable and it is configured with ' +
+        'value \'false\'', function() {
+        beforeEach(function() {
+            iotAgentConfig.multiCore = false;
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is not started with Multi-Core environment variable and it is configured with ' +
+        'any other value except \'true\' or \'false\'', function() {
+        beforeEach(function() {
+            iotAgentConfig.multiCore = 'foo';
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MULTI_CORE;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameter with value \'false\'', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().multiCore.should.equal(false);
+                done();
+            });
+        });
+    });
+
+});
