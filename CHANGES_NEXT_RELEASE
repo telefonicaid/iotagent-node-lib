@@ -1,1 +1,2 @@
 - Add autoprovision (appendMode) in device and group provosion (#805)
+- Configure multithreading using cluster nodejs module.
