@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -28,13 +28,14 @@ var MongoClient = require('mongodb').MongoClient,
 function cleanDb(host, name, callback) {
     var url = 'mongodb://' + host + ':27017/' + name;
 
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
         if (db && db.db()) {
-            db.db().dropDatabase();
-            db.close();
+            db.db().dropDatabase( function (err, result) {
+                db.close();
+                callback();
+            });
+            
         }
-
-        callback();
     });
 }
 
@@ -47,7 +48,7 @@ function cleanDbs(callback) {
 function populate(host, dbName, entityList, collectionName, callback) {
     var url = 'mongodb://' + host + ':27017/' + dbName;
 
-    MongoClient.connect(url, function(err, db) {
+    MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
         if (db) {
             db.db().collection(collectionName).insertMany(entityList, function(err, r) {
                 db.close();

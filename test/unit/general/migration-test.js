@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -41,9 +41,9 @@ describe('MongoDB migration', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
-        mongo.connect('mongodb://localhost:27017/iotOrigin', function(err, client) {
+        mongo.connect('mongodb://localhost:27017/iotOrigin', { useNewUrlParser: true }, function(err, client) {
             originDb = client;
-            mongo.connect('mongodb://localhost:27017/iotTarget', function(err, client) {
+            mongo.connect('mongodb://localhost:27017/iotTarget', { useNewUrlParser: true }, function(err, client) {
                 targetDb = client;
                 async.series([
                     apply(mongoUtils.populate, 'localhost', 'iotOrigin', deviceCollection, 'DEVICE'),

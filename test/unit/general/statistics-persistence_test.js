@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -60,7 +60,7 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
 describe('Statistics persistence service', function() {
 
     function insertDummy(n, callback) {
-        iotAgentDb.collection('tests').insert({test: 'test'}, function() {
+        iotAgentDb.collection('tests').insertOne({test: 'test'}, function() {
             callback();
         });
     }

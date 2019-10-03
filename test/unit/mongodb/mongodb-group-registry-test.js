@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -182,7 +182,7 @@ describe('MongoDB Group Registry test', function() {
     beforeEach(function(done) {
         mongoUtils.cleanDbs(function() {
             iotAgentLib.activate(iotAgentConfig, function() {
-                mongo.connect('mongodb://localhost:27017/iotagent', function(err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function(err, db) {
                     iotAgentDb = db;
                     done();
                 });

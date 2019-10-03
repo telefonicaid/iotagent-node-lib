@@ -1,9 +1,9 @@
 language: node_js
 
 node_js:
- - "6"
  - "8"
  - "10"
+ - "12"
 
 branches:
   only:
@@ -21,5 +21,6 @@ before_install:
 before_script:
   - npm run lint
 
-after_script: 
-  - npm run test:coveralls
+after_script:
+  # Trigger only one coverage file
+  - if [ "$TRAVIS_NODE_VERSION" = "10" ]; then npm run test:coveralls; fi

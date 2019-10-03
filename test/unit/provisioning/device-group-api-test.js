@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -641,6 +641,10 @@ describe('Device Group Configuration API', function() {
                 should.exist(callback);
                 newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
                 newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                newConfiguration.service.should.equal('TestService');
+                newConfiguration.subservice.should.equal('/testingPath');
+                newConfiguration.resource.should.equal('/deviceTest');
+                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                 handlerCalled = true;
                 callback();
             });
