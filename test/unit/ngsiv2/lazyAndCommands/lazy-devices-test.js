@@ -592,34 +592,7 @@ describe('IoT Agent Lazy Devices', function() {
                         }
                     ]
                 }
-            },
-            sensorData = [
-                {
-                    id: 'Light:light1',
-                    type: 'Light',
-                    dimming:
-                    {
-                        type: 'Percentage',
-                        value: 19
-                    }
-                }, {
-                    id: 'Motion:motion1',
-                    type: 'Motion',
-                    moving:
-                    {
-                        type: 'Boolean',
-                        value: true
-                    }          
-                }, {
-                    id: 'RobotPre:TestRobotPre',
-                    type: 'RobotPre',
-                    moving:
-                    {
-                        type: 'Boolean',
-                        value: false
-                    }
-                }
-            ];
+            };
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -692,18 +665,7 @@ describe('IoT Agent Lazy Devices', function() {
                         }
                     ]
                 }
-            },
-            sensorData = [
-                {
-                    id: 'Light:light1',
-                    type: 'Light',
-                    dimming:
-                    {
-                        type: 'Percentage',
-                        value: 19
-                    }
-                }
-            ];
+            };
 
         beforeEach(function(done) {
             nock.cleanAll();
