@@ -1,3 +1,4 @@
 - Add autoprovision (appendMode) in device and group provosion (#805)
 - Configure multithreading using cluster nodejs module (through multicore config.js parameter or IOTA_MULTI_CORE
 environment variable).
+- Allow blank as an override for defaultResource 
