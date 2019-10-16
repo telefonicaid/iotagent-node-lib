@@ -20,8 +20,8 @@
 ## Usage
 ### Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
-the use of the periodic stats, it must be configured in the config file, as described in the [Configuration](#configuration)
-section.
+the use of the periodic stats, it must be configured in the config file, as described in the 
+[Configuration](installationguide.md#configuration) section.
 
 The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
 historical global value and the other one stores the value since the last value reporting (or current value).
@@ -61,7 +61,7 @@ All this functions can be accessed through the `.alarms` attribute of the librar
 ### Logs
 The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library
 is required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across
-the diferent modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
+the different modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
 particular IoTAgent), the `logger` object is exported in the `logModule` property of the library. The agents should
 use this module for logging.
 
@@ -123,7 +123,7 @@ function activate(newConfig, callback)
 ###### Description
 Activates the IoT Agent to start listening for NGSI Calls (acting as a Context Provider). It also creates the device registry for the IoT Agent (based on the deviceRegistry.type configuration option).
 ###### Params
-* newConfig: Configuration of the Context Server (described in the [Configuration](#configuration) section).
+* newConfig: Configuration of the Context Server (described in the [Configuration](installationguide.md#configuration) section).
 
 ##### iotagentLib.deactivate()
 ###### Signature
@@ -174,7 +174,7 @@ Unregister a device from the Context broker and the internal registry.
 ###### Params
  * id: Device ID of the device to register.
  * service: Service of the device to unregister.
- * subservice: Subservice inside the service for the unregisterd device.
+ * subservice: Subservice inside the service for the unregistered device.
 
 ##### iotagentLib.update()
 ###### Signature
@@ -200,8 +200,8 @@ function setCommandResult(entityName, resource, apikey, commandName, commandResu
 ```
 ###### Description
 Update the result of a command in the Context Broker. The result of the command has two components: the result
-of the command itself will be represented with the sufix `_result` in the entity while the status is updated in the
-attribute with the `_info` sufix.
+of the command itself will be represented with the suffix `_result` in the entity while the status is updated in the
+attribute with the `_info` suffix.
 
 ###### Params
  * entityName: Name of the entity holding the command.
@@ -382,7 +382,9 @@ callback with no parameters (this handler should only be used for reconfiguratio
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
-The handler will be also called in the case of updates related to configurations. In that situation, the `newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e., `service`, `subservice`, `resource` and `apikey`.
+The handler will be also called in the case of updates related to configurations. In that situation, the 
+`newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e., 
+`service`, `subservice`, `resource` and `apikey`.
 
 ##### iotagentLib.setRemoveConfigurationHandler()
 ###### Signature
@@ -561,12 +563,35 @@ If the function is executed in the context of a previous transaction, just the c
 
 
 ##### iotagentLib.finishSouthBoundTransaction()
+###### Signature
 
 ```javascript
 function finishSouthboundTransaction(callback)
 ```
 ###### Description
 Terminates the current transaction, if there is any, cleaning its context.
+
+##### iotagentLib.startServer()
+###### Signature
+
+```javascript
+function startServer(newConfig, iotAgent, callback)
+```
+
+###### Description
+Start the HTTP server either in single-thread or multi-thread (multi-core) based on the value of *multiCore*
+variable (described in the [Configuration](installationguide.md#configuration) section). If the value is 
+`False` (either was directly specified `False` in the `config.js` or it was not specified and by default is
+assigned `False`), it is a normal (single-thread) behaviour. Nevertheless, if *multiCore* is `True`, the IoTAgent
+is executed in multi-thread environment.
+
+The number of parallel processes is calculated based on the number of available CPUs. In case of some of the process
+unexpectedly dead, a new process is created automatically to keep always the maximum of them working in parallel.
+
+###### Params
+* newConfig: Configuration of the Context Server (described in the [Configuration](installationguide.md#configuration) section).
+* iotAgent: The IoT Agent Objects, used to start the agent.
+* callback: The callback function.
 
 #### Generic middlewares
 
@@ -654,7 +679,8 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 
 ## Development documentation
 ### Contributions
-All contributions to this project are welcome. Developers planning to contribute should follow the [Contribution Guidelines](./docs/contribution.md)
+All contributions to this project are welcome. Developers planning to contribute should follow the 
+[Contribution Guidelines](Contribution.md)
 
 ### Project build
 The project is managed using npm.
@@ -668,7 +694,7 @@ npm run
 The following sections show the available options in detail.
 
 ### Testing
-[Mocha](http://visionmedia.github.io/mocha/) Test Runner + [Should.js](https://shouldjs.github.io/) Assertion Library.
+[Mocha](https://mochajs.org/) Test Runner + [Should.js](https://shouldjs.github.io/) Assertion Library.
 
 The test environment is preconfigured to run BDD testing style.
 

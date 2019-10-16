@@ -3,8 +3,8 @@
 * [Overview](#overview)
   + [Protocol](#protocol)
   + [Requirements](#requirements)
-* [Basic IOTA](#basic-iota)
-* [IOTA With Active attributes](#iota-with-active-attributes)
+* [Basic IOTA](#basic-iot-agent)
+* [IOTA With Active attributes](#iot-agent-with-active-attributes)
 * [IOTA With Lazy attributes](#iota-with-lazy-attributes)
   + [Previous considerations](#previous-considerations)
   + [Implementation](#implementation)
@@ -34,7 +34,7 @@ access to a Context Broker (without any security proxies).
 ##  Basic IoT Agent
 
 In this first chapter, we will just develop an IoT Agent with a fully connected North Port. This will
-send and receive NSGI traffic and can be administered using the IoT Agent's Device Provisioning
+send and receive NGSI traffic and can be administered using the IoT Agent's Device Provisioning
 API. The South Port will remain unconnected and no native protocol traffic will be sent to the devices.
 This may seem useless (and indeed it is) but it will serve us well on showing the basic steps in the creation
 of an IoT Agent.
@@ -275,7 +275,7 @@ curl -X GET 'http://127.0.0.1:9999/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 Both types of calls to the device will be distinguished by the presence or absence of the `d` and `q` attributes.
 
 A HTTP request library will be needed in order to make those calls. To this extent, `mikeal/request` library will be used.
-In order to do so, add the following require statement to the initialiation code:
+In order to do so, add the following require statement to the initialization code:
 
 ```javascript
     request = require('request');
@@ -430,7 +430,7 @@ in the `nc` console (although for testing purposes this is not needed).
 
 While netcat is great to test simple connectivity, you will need something just a bit more complex to get the complete
 scenario working (at least without the need to be incredibly fast sending your response). In order to do so, a simple
-echo server was created, that ansers 42 to any query to its `/iot/d` path. You can use it to test your attributes one by
+echo server was created, that answers 42 to any query to its `/iot/d` path. You can use it to test your attributes one by
 one (or you can modify it to accept more requests and give more complex responses). Copy the [Echo Server script](echo.js)
 to the same folder of your IoTAgent (as it uses the same dependencies). In order to run the echo server, just
 execute the following command:
@@ -516,6 +516,54 @@ Content-Length: 3
 
 This same response can be used both for updates and queries for testing purposes (even though in the former the body won't
 be read).
+
+## IoT Agent in multi-thread mode
+
+It is possible that an IoT Agent cwn be executed in multi-thread approach, which will increase the number of request/seconds
+that can be manage by the server. It's important to remark that the nature of this functionality in included in the 
+IoT Agent Node Lib but it is not mandatory that you activate this functionality. In this example, we will see how to
+use this functionality to deploy an IoT Agent in multi-thread environment.
+
+In order to activate the functionality, you have two options, configure the `config.js` file to add the following line:
+
+```javascript
+/**
+ * flag indicating whether the node server will be executed in multi-core option (true) or it will be a
+ * single-thread one (false).
+ */
+config.multiCore = true;
+```
+
+or you can define the proper IOTA_MULTI_CORE environment variable. By default, the first choice is the environment 
+variable and afterward the value of the multiCore in the `config.js`file. The require section would end up like this 
+(the standard `http` module is also needed):
+
+
+```javascript
+var iotAgent = require('../lib/iotagent-implementation'),
+    iotAgentLib = require('iotagent-node-lib'),
+    config = require('./config');
+```
+
+It is important to mention the purpose of the `iotAgent` variable. It is the proper implementation of the IoT Agent 
+based on the IoT Agent Node Lib. We will need this variable just to make a callback to the corresponding `start()`
+process from the library. The variable `config` is used to get details of the configuration file and send that 
+information to the Node Lib. The Node Lib will take the decision of single-thread or multi-thread execution base on
+the value of `config.multiCore` attribute.
+
+Finally, we can call the corresponding [iotagentLib.startServer()](usermanual.md#iotagentlibstartserver) like the 
+following code with a callback function to show details about any error during the execution or just print the message
+about starting the IoTAgent:
+ 
+```javascript
+iotAgentLib.startServer(config, iotAgent, function (error) {
+    if (error) {
+        console.log(context, 'Error starting IoT Agent: [%s] Exiting process', error);
+    } else {
+        console.log(context, 'IoT Agent started');
+    }
+});
+```
 
 ## Configuration management
 
