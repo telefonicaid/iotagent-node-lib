@@ -249,7 +249,7 @@ describe('IoT Agent Lazy Devices', function() {
                 },
                 headers: {
                     'fiware-service': 'smartGondor',
-                    'fiare-servicepath': 'gardens'
+                    'fiware-servicepath': 'gardens'
                 }
             },
             sensorData = [
