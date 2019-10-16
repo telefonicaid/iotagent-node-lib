@@ -8,6 +8,7 @@
 * [IOTA With Lazy attributes](#iota-with-lazy-attributes)
   + [Previous considerations](#previous-considerations)
   + [Implementation](#implementation)
+* [IoT Agent in multi-thread mode](#iot-agent-in-multi-thread-mode)
 * [Configuration management](#configuration-management)
   + [Provisioning handlers](#provisioning-handlers)
 
@@ -519,7 +520,7 @@ be read).
 
 ## IoT Agent in multi-thread mode
 
-It is possible that an IoT Agent cwn be executed in multi-thread approach, which will increase the number of request/seconds
+It is possible that an IoT Agent can be executed in multi-thread approach, which will increase the number of request/seconds
 that can be manage by the server. It's important to remark that the nature of this functionality in included in the 
 IoT Agent Node Lib but it is not mandatory that you activate this functionality. In this example, we will see how to
 use this functionality to deploy an IoT Agent in multi-thread environment.
@@ -535,7 +536,7 @@ config.multiCore = true;
 ```
 
 or you can define the proper IOTA_MULTI_CORE environment variable. By default, the first choice is the environment 
-variable and afterward the value of the multiCore in the `config.js`file. The require section would end up like this 
+variable and afterward the value of the multiCore in the `config.js` file. The require section would end up like this 
 (the standard `http` module is also needed):
 
 
