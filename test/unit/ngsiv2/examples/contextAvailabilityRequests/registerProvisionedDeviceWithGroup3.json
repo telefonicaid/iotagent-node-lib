@@ -11,8 +11,7 @@
   "provider": {
     "http": {
       "url": "http://smartGondor.com"
-    },
-    "legacyForwarding": true
+    }
   },
   "expires": "2015-09-05T07:35:01.468Z"
 }

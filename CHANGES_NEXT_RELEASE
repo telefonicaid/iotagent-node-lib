@@ -1,4 +1,6 @@
 - Add autoprovision (appendMode) in device and group provosion (#805)
 - Configure multithreading using cluster nodejs module (through multicore config.js parameter or IOTA_MULTI_CORE
 environment variable).
+- Add: basic operations of NGSIv2 context forwarding (#527)
+- Fix: using "append" instead of "APPEND" (which is deprecated) in NGSIv2 operations
 - Allow blank as an override for defaultResource 

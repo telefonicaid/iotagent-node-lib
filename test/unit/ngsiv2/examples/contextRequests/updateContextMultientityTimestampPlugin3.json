@@ -1,5 +1,5 @@
 {
-  "actionType": "APPEND",
+  "actionType": "append",
   "entities": [
     {
       "id": "ws5",
