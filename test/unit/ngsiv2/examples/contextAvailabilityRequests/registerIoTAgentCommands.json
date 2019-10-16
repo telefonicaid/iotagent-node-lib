@@ -2,12 +2,12 @@
     "dataProvided": {
         "entities": [
             {
-                "type": "Light",
-                "id": "Light:light1"
+                "type": "Robot",
+                "id": "Robot:r2d2"
             }
         ],
         "attrs": [
-            "temperature"
+            "position"
         ]
     },
     "provider": {
