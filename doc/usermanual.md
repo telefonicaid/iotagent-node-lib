@@ -588,6 +588,10 @@ is executed in multi-thread environment.
 The number of parallel processes is calculated based on the number of available CPUs. In case of some of the process
 unexpectedly dead, a new process is created automatically to keep always the maximum of them working in parallel.
 
+> Note: `startServer()` initializes the server but it does not activate the library. The function in the Node Lib
+> will call the `iotAgent.start()` in order to complete the activation of the library. Therefore, it is expected that 
+> the IoT Agent implement the `iotAgent.start()` function with the proper invocation to the `iotAgentLib.activate()`.
+
 ###### Params
 * newConfig: Configuration of the Context Server (described in the [Configuration](installationguide.md#configuration) section).
 * iotAgent: The IoT Agent Objects, used to start the agent.

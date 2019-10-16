@@ -566,6 +566,10 @@ iotAgentLib.startServer(config, iotAgent, function (error) {
 });
 ```
 
+> Note: `startServer()` initializes the server but it does not activate the library. The function in the Node Lib
+> will call the `iotAgent.start()` in order to complete the activation of the library. Therefore, it is expected that 
+> the IoT Agent implement the `iotAgent.start()` function with the proper invocation to the `iotAgentLib.activate()`.
+
 ## Configuration management
 
 For some IoT Agents, it will be useful to know what devices or configurations were registered in the Agent, or to do some
