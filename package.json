@@ -47,7 +47,7 @@
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.25",
     "mongodb": "3.2.3",
-    "mongoose": "5.5.4",
+    "mongoose": "5.7.5",
     "mu2": "~0.5.20",
     "query-string": "6.5.0",
     "request": "2.88.0",
