@@ -1067,6 +1067,42 @@ Allows the devices provisioned in the IoTAgent to map their attributes to more
 than one entity, declaring the target entity through the Configuration or Device
 provisioning APIs.
 
+```
+{
+  "devices": [
+    {
+      "protocol": "IoTA-UL",
+      "entity_name": "contador12",
+      "entity_type": "multientity",
+      "attributes": [
+        {
+          "object_id": "cont1",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria01",
+          "entity_type": "WaterMeter"
+        },
+        {
+          "object_id": "cont2",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria02",
+          "entity_type": "WaterMeter"
+        },
+        {
+          "object_id": "cont3",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria03",
+          "entity_type": "WaterMeter"
+        }
+      ],
+      "device_id": "contador12"
+    }
+  ]
+}
+```
+
 ##### Bidirectionality plugin (bidirectional)
 
 This plugin allows the devices with composite values an expression to update the
