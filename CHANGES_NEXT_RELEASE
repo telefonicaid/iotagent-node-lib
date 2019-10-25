@@ -1,4 +1,4 @@
-- Fix: possible startup fail using IOTA_CB_ env vars due to uninitization of config object
+- Fix: possible startup fail using IOTA_CB_ and IOTA_NORTH_ env vars due to uninitization of config object
 - Add autoprovision (appendMode) in device and group provosion (#805)
 - Configure multithreading using cluster nodejs module (through multicore config.js parameter or IOTA_MULTI_CORE
 environment variable).
