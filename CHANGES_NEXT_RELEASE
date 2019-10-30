@@ -1,4 +1,4 @@
-- Fix: avoid using thorttling in subscriptions (both in NGSIv1 and NGSIv2 configurations)
+- Fix: avoid using throttling in subscriptions (both in NGSIv1 and NGSIv2 configurations)
 - Fix: deviceRegistrationDuration ignored in NGSIv2 registrations and subscriptions creation so they are non-expirable
 - Fix: possible startup fail using IOTA_CB_ and IOTA_NORTH_ env vars due to uninitization of config object
 - Add autoprovision (appendMode) in device and group provosion (#805)
