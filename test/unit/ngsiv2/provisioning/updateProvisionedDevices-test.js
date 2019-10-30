@@ -84,7 +84,6 @@ describe('Device provisioning API: Update provisioned devices', function() {
         iotAgentLib.activate(iotAgentConfig, function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json');
-            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
