@@ -1,4 +1,4 @@
-- Fix: deviceRegistrationDuration must be ignored when agent runs in NGSIv2 mode (as is a NGSIv2 setting) 
+- Fix: deviceRegistrationDuration ignored in NGSIv2 registrations and subscriptions creation so they are non-expirable
 - Fix: possible startup fail using IOTA_CB_ and IOTA_NORTH_ env vars due to uninitization of config object
 - Add autoprovision (appendMode) in device and group provosion (#805)
 - Add: basic operations of NGSIv2 context forwarding (#527)

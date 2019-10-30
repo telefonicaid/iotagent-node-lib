@@ -19,6 +19,5 @@
     "attrs": [],
     "attrsFormat": "normalized"
   },
-  "throttling": 5,
-  "expires": "2015-09-05T07:35:01.468Z"
+  "throttling": 5
 }
