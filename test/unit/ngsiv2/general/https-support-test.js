@@ -77,7 +77,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
         iotManager: {
             url: 'https://mockediotam.com:9876',
             path: '/protocols',

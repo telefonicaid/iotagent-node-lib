@@ -110,7 +110,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
         pollingExpiration: 200,
         pollingDaemonFrequency: 20
     },

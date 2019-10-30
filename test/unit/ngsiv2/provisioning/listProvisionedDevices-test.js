@@ -48,8 +48,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+        providerUrl: 'http://smartGondor.com'
     };
 
 describe('Device provisioning API: List provisioned devices', function() {

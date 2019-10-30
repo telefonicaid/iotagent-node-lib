@@ -86,8 +86,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+        providerUrl: 'http://smartGondor.com'
     };
 
 describe('Secured access to the Context Broker with OAuth2 provider', function() {
