@@ -44,19 +44,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        // As it can be seen in
-        // https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/user/walkthrough_apiv2.md#subscriptions,
-        // in NGSIv2, the `expires` element of the payload to create a subscription must be specified
-        // using the ISO 8601 standard format (e.g., 2016-04-05T14:00:00.00Z). However, in the IOTA,
-        // this value is load from the `deviceRegistrationDuration` property of the configuration file,
-        // which is expressed using ISO 8601 duration format (e.g., P1M). Therefore, in order to
-        // maintain compatibility with previous versions, for NGSIv2, the expires field is calculated
-        // adding the `deviceRegistrationDuration` property of the IOTA configuration file to the
-        // current date. This implies that in order to assert the value of the payload in the CB mock,
-        // we have to calculate dynamically the expected `expires` field.
-        // Please check line 86.
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     };
 
 describe('Subscription tests', function() {

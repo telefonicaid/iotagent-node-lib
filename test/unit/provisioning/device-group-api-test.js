@@ -47,8 +47,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     },
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
