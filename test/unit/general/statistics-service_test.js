@@ -42,8 +42,7 @@ var statsService = require('../../../lib/services/stats/statsRegistry'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     },
     oldConfig;
 

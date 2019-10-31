@@ -31,7 +31,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     logger = require('logops'),
     nock = require('nock'),
     request = require('request'),
-    moment = require('moment'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -46,20 +45,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        // As it can be seen in
-        // https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/user/walkthrough_apiv2.md#subscriptions,
-        // in NGSIv2, the `expires` element of the payload to create a subscription must be specified
-        // using the ISO 8601 standard format (e.g., 2016-04-05T14:00:00.00Z). However, in the IOTA,
-        // this value is load from the `deviceRegistrationDuration` property of the configuration file,
-        // which is expressed using ISO 8601 duration format (e.g., P1M). Therefore, in order to
-        // maintain compatibility with previous versions, for NGSIv2, the expires field is calculated
-        // adding the `deviceRegistrationDuration` property of the IOTA configuration file to the
-        // current date. This implies that in order to assert the value of the payload in the CB mock,
-        // we have to calculate dynamically the expected `expires` field.
-        // Please check lines 101, 151, 210, 332 and 404.
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
 describe('Bidirectional data plugin', function() {
@@ -101,34 +87,8 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock
@@ -163,33 +123,8 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock
@@ -234,33 +169,8 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock
@@ -368,33 +278,8 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock
@@ -452,33 +337,8 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock
@@ -568,34 +428,8 @@ describe('Bidirectional data plugin and CB is defined using environment variable
             contextBrokerMock = nock('http://cbhost:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', function(body) {
-
-                    var expectedBody = utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/subscriptions', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
                 .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
             contextBrokerMock

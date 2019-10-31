@@ -86,9 +86,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
 describe('Secured access to the Context Broker with OAuth2 provider', function() {
@@ -255,8 +253,6 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
     });
     describe('When subscriptions are used on a protected Context Broker', function() {
           beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-            timekeeper.freeze(time);
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -267,11 +263,6 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                     'fiware-servicepath': 'electricity'
                 }
             };
-
-        afterEach(function(done) {
-            timekeeper.reset();
-            done();
-        });
     
             nock.cleanAll();
     

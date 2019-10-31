@@ -114,8 +114,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     };
 
 describe('Query device information in the Context Broker', function() {
