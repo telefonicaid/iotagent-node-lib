@@ -161,7 +161,7 @@ being collected by the device, the expiration daemon will reclaim it. This attri
 take advantage of multi-core systems. It allows two values `true` or `false`. This attribute 
 is optional with default to false, which means that the IoTAgent runs in a single thread.
 For more details about multi-core functionality, please refer to the 
-[Cluster](https://nodejs.org/api/cluster.html) module in Node.js.
+[Cluster](https://nodejs.org/api/cluster.html) module in Node.js and [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
