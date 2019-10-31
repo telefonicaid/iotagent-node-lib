@@ -525,6 +525,11 @@ that can be manage by the server. It's important to remark that the nature of th
 IoT Agent Node Lib but it is not mandatory that you activate this functionality. In this example, we will see how to
 use this functionality to deploy an IoT Agent in multi-thread environment.
 
+
+**WARNING:** it has been observed in Orion-IOTA integration tests some fails in bidirectional plugin usage scenarios in
+multi-thread mode. The fail has not been confirmed yet (it could be a glitch of the testing environment). However, take
+this into account if you use multi-thread in combination with bidirectional plugin.
+
 In order to activate the functionality, you have two options, configure the `config.js` file to add the following line:
 
 ```javascript
