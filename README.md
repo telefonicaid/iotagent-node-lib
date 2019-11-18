@@ -459,6 +459,7 @@ in the database model.
 | entity_name         | name               | Name of the entity representing the device in the Context Broker                                                                       | ParkLamplight12                                 |
 | entity_type         | type               | Type of the entity in the Context Broker                                                                                               | Lamplights                                      |
 | timezone            | timezone           | Time zone of the sensor if it has any                                                                                                  | America/Santiago                                |
+| commandLegacy       | commandLegacy      | mqtt command will not include topic in protocol (true) or not (false)                                                                                                                                                           |
 | endpoint            | endpoint           | Endpoint where the device is going to receive commands, if any.                                                                        | http://theDeviceUrl:1234/commands               |
 | protocol            | protocol           | Name of the device protocol, for its use with an IoT Manager.                                                                          | IoTA-UL                                         |
 | transport           | transport          | Name of the device transport protocol, for the IoT Agents with multiple transport protocols.                                           | MQTT                                            |
@@ -759,6 +760,7 @@ same fields in the database model.
 | subservice          | subservice         | Subservice of the devices of this type.                                                                                             |
 | resource            | resource           | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port). |
 | apikey              | apikey             | API Key string.                                                                                                                     |
+| commandLegacy       | commandLegacy      | mqtt command will not include topic in protocol (true) or not (false)                                                                                                                                                           |
 | entity_type         | entity_type        | name of the type to assign to the group.                                                                                            |
 | trust               | trust              | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios). |
 | cbHost              | cbHost             | Context Broker connection information. This options can be used to override the global ones for specific types of devices.          |
@@ -1213,51 +1215,51 @@ The command line client creates a console that offers the following options:
 ```
 stressInit
 
-	Start recording a stress batch.
+    Start recording a stress batch.
 
 stressCommit <delay> <times> <threads> <initTime>
 
-	Executes the recorded batch as many times as requested, with delay (ms) between commands.
-	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
-	parameter indicates the mean of the random initial waiting times for each agent.
+    Executes the recorded batch as many times as requested, with delay (ms) between commands.
+    The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+    parameter indicates the mean of the random initial waiting times for each agent.
 
 exit
 
-	Exit from the command line.
+    Exit from the command line.
 
 start
 
-	Start the IoT Agent
+    Start the IoT Agent
 
 stop
 
-	Stop the IoT Agent
+    Stop the IoT Agent
 
 register <id> <type>
 
-	Register a new device in the IoT Agent. The attributes to register will be extracted from the
-	type configuration
+    Register a new device in the IoT Agent. The attributes to register will be extracted from the
+    type configuration
 
 unregister <id> <type>
 
-	Unregister the selected device
+    Unregister the selected device
 
 showConfig
 
-	Show the current configuration file
+    Show the current configuration file
 
 config <newConfig>
 
-	Change the configuration file to a new one
+    Change the configuration file to a new one
 
 updatevalue <deviceId> <deviceType> <attributes>
 
-	Update a device value in the Context Broker. The attributes should be triads with the following
-	format: "name/type/value" sepparated by commas.
+    Update a device value in the Context Broker. The attributes should be triads with the following
+    format: "name/type/value" sepparated by commas.
 
 listdevices
 
-	List all the devices that have been registered in this IoT Agent session
+    List all the devices that have been registered in this IoT Agent session
 ```
 
 ### Agent tester
@@ -1286,114 +1288,114 @@ the currently supported features. These are the following:
 ```
 stressInit
 
-	Start recording a stress batch.
+    Start recording a stress batch.
 
 stressCommit <delay> <times> <threads> <initTime>
 
-	Executes the recorded batch as many times as requested, with delay (ms) between commands.
-	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
-	parameter indicates the mean of the random initial waiting times for each agent.
+    Executes the recorded batch as many times as requested, with delay (ms) between commands.
+    The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+    parameter indicates the mean of the random initial waiting times for each agent.
 
 exit
 
-	Exit from the command line.
+    Exit from the command line.
 
 update <entity> <type> <attributes>
 
-	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
+    Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
 
 append <entity> <type> <attributes>
 
-	Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+    Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
 
 query <entity> <type>
 
-	Get all the information on the selected object.
+    Get all the information on the selected object.
 
 queryAttr <entity> <type> <attributes>
 
-	Get information on the selected object for the selected attributes.
+    Get information on the selected object for the selected attributes.
 
 discover <entity> <type>
 
-	Get all the context providers for a entity and type.
+    Get all the context providers for a entity and type.
 
 configCb <host> <port> <service> <subservice>
 
-	Config a new host and port for the remote Context Broker.
+    Config a new host and port for the remote Context Broker.
 
 showConfigCb
 
-	Show the current configuration of the client for the Context Broker.
+    Show the current configuration of the client for the Context Broker.
 
 configIot <host> <port> <service> <subservice>
 
-	Config a new host and port for the remote IoT Agent.
+    Config a new host and port for the remote IoT Agent.
 
 showConfigIot
 
-	Show the current configuration of the client for the IoT Agent.
+    Show the current configuration of the client for the IoT Agent.
 
 provision <filename>
 
-	Provision a new device using the Device Provisioning API. The device configuration is
-	read from the file specified in the "filename" parameter.
+    Provision a new device using the Device Provisioning API. The device configuration is
+    read from the file specified in the "filename" parameter.
 
 provisionGroup <template> <data> <type>
 
-	Provision a group of devices with the selected template, taking the information needed to
-	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
-	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
-	to the same IoT Agent, once the templates have been fulfilled.
+    Provision a group of devices with the selected template, taking the information needed to
+    fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
+    will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
+    to the same IoT Agent, once the templates have been fulfilled.
 
 listProvisioned
 
-	List all the provisioned devices in an IoT Agent.
+    List all the provisioned devices in an IoT Agent.
 
 removeProvisioned <deviceId>
 
-	Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
+    Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
 
 addGroup <filename>
 
-	Add a new device group to the specified IoT Agent through the Configuration API. The
-	body is taken from the file specified in the "filename" parameter.
+    Add a new device group to the specified IoT Agent through the Configuration API. The
+    body is taken from the file specified in the "filename" parameter.
 
 listGroups
 
-	List all the device groups created in the selected IoT Agent for the configured service
+    List all the device groups created in the selected IoT Agent for the configured service
 
 removeGroup <apiKey> <resource>
 
-	Remove the device group corresponding to the current configured subservice.
+    Remove the device group corresponding to the current configured subservice.
 
 authenticate <host> <port> <user> <password> <service>
 
-	Authenticates to the given authentication server, and use the token in subsequent requests.
+    Authenticates to the given authentication server, and use the token in subsequent requests.
 
 setProtocol <protocol>
 
-	Sets the protocol to use in the requests (http or https). Defaults to http.
+    Sets the protocol to use in the requests (http or https). Defaults to http.
 
 configMigration <host> <port> <originDb>
 
-	Sets the configuration for a migration between a C++ IoTA and a Node.js one.
+    Sets the configuration for a migration between a C++ IoTA and a Node.js one.
 
 showConfigMigration
 
-	Shows the current migration configuration.
+    Shows the current migration configuration.
 
 addProtocols <protocols>
 
-	Add a protocol translation table, in the following format:
-		protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
+    Add a protocol translation table, in the following format:
+        protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
 
 
 migrate <targetDb> <service> <subservice>
 
-	Migrate all the devices and services for the selected service and subservice into the
-	specified Mongo database. To perform the migration for all the services or all the
-	subservices, use the "*" value.
+    Migrate all the devices and services for the selected service and subservice into the
+    specified Mongo database. To perform the migration for all the services or all the
+    subservices, use the "*" value.
 ```
 
 The agent session stores transient configuration data about the target Context
