@@ -73,9 +73,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     },
     device1 = {
         id: 'light1',
@@ -120,7 +118,6 @@ describe('IoT Agent Device Registration', function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            nockBody.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -148,7 +145,6 @@ describe('IoT Agent Device Registration', function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -176,7 +172,6 @@ describe('IoT Agent Device Registration', function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -207,7 +202,6 @@ describe('IoT Agent Device Registration', function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -228,8 +222,7 @@ describe('IoT Agent Device Registration', function() {
             });
         });
 
-        it(/*jshint quotmark: double */
-        "should return all the device's information" /*jshint quotmark: single */, function(done) {
+        it(/*jshint quotmark: double */ "should return all the device's information" /*jshint quotmark: single */, function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);
@@ -249,7 +242,6 @@ describe('IoT Agent Device Registration', function() {
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            nockBody.expires = /.+/i;
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')

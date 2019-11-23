@@ -56,8 +56,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             }
         },
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     },
     iotAgentConfigNoUrl = _.clone(iotAgentConfig),
     iotAgentConfigNoTypes = _.clone(iotAgentConfig),

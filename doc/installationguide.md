@@ -142,7 +142,7 @@ are 5 and 5 respectively). E.g.:
 * **service**: default service for the IoT Agent. If a device is being registered, and no service information comes with the device data, and no service information is configured for the given type, the default IoT agent service will be used instead. E.g.: 'smartGondor'.
 * **subservice**: default subservice for the IoT Agent. If a device is being registered, and no subservice information comes with the device data, and no subservice information is configured for the given type, the default IoT agent subservice will be used instead. E.g.: '/gardens'.
 * **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.: 'http://192.168.56.1:4041'.
-* **deviceRegistrationDuration**: duration of the registrations as Context Providers, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'.
+* **deviceRegistrationDuration**: duration of the registrations as Context Providers and the subscriptions done by bidirectional plugin, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'. Only used if agent is configured in NGSIv1 mode. In NGSIv2 mode the setting is ignored (registrations and subscriptions are non-expirable and the IOTA manages its removal explicitely).
 * **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each IoTA).
 * **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
 have implications in the use of attributes with Context Providers, so this flag should be used with care. This flag is overwritten by `autoprovision` flag in group or device provision.
@@ -157,6 +157,11 @@ being collected by the device, the expiration daemon will reclaim it. This attri
 * **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
 (if this parameter doesn't exist the polling daemon won't be started).
  * **autocast**: When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type (only for NGSIv2).
+* **multiCore**: When enabled, the IoT Agents runs in multi-thread environment to 
+take advantage of multi-core systems. It allows two values `true` or `false`. This attribute 
+is optional with default to false, which means that the IoTAgent runs in a single thread.
+For more details about multi-core functionality, please refer to the 
+[Cluster](https://nodejs.org/api/cluster.html) module in Node.js and [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
 
 ### Configuration using environment variables
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters with
@@ -206,3 +211,4 @@ The following table shows the accepted environment variables, as well as the con
 | IOTA_POLLING_EXPIRATION   | pollingExpiration                   |
 | IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency              |
 | IOTA_AUTOCAST             | autocast                            |
+| IOTA_MULTI_CORE           | multiCore                           |

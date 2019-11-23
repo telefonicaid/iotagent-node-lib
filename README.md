@@ -497,7 +497,7 @@ attributes:
 -   **entity_type**: configures the type of an alternative entity.
 -   **reverse**: add bidirectionality expressions to the attribute. See the
     **bidirectionality** transformation plugin in the
-    [Data Mapping Plugins section](#datamapping) for details.
+    [Data Mapping Plugins section](#data-mapping-plugins) for details.
 
 See the transformation plugins Section for more details.
 
@@ -614,6 +614,8 @@ Example of return payload:
       ],
       "internal_attributes": []
     }
+  ]
+}
 ```
 
 ##### GET /iot/devices/:deviceId
@@ -727,7 +729,7 @@ they, in fact, end up in the same configuration collection).
 
 Both approaches are better described in the sections bellow.
 
-#### Configuration API
+#### Overview
 
 The following sections show the available operations for the Configuration API.
 Every operation in the API require the `fiware-service` and `fiware-servicepath`
@@ -1066,6 +1068,42 @@ For further information on how the expressions work, refer to the
 Allows the devices provisioned in the IoTAgent to map their attributes to more
 than one entity, declaring the target entity through the Configuration or Device
 provisioning APIs.
+
+```
+{
+  "devices": [
+    {
+      "protocol": "IoTA-UL",
+      "entity_name": "contador12",
+      "entity_type": "multientity",
+      "attributes": [
+        {
+          "object_id": "cont1",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria01",
+          "entity_type": "WaterMeter"
+        },
+        {
+          "object_id": "cont2",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria02",
+          "entity_type": "WaterMeter"
+        },
+        {
+          "object_id": "cont3",
+          "name": "vol",
+          "type": "string",
+          "entity_name": "WaterMeterSoria03",
+          "entity_type": "WaterMeter"
+        }
+      ],
+      "device_id": "contador12"
+    }
+  ]
+}
+```
 
 ##### Bidirectionality plugin (bidirectional)
 
