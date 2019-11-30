@@ -420,7 +420,7 @@ describe('Active attributes test', function() {
                 .post(
                     '/v1/updateContext',
                     utils.readExampleFile(
-                        './test/unit/examples/contextRequests/ updateContextTimestampOverrideWithoutMilis.json'
+                        './test/unit/examples/contextRequests/updateContext/TimestampOverrideWithoutMilis.json'
                     )
                 )
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));

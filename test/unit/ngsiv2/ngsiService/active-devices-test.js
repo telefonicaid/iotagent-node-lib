@@ -343,7 +343,7 @@ describe('Active attributes test', function() {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/ updateContextTimestampTimezone.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
                     )
                 )
                 .query({ type: 'Light' })
