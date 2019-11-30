@@ -21,7 +21,7 @@
 ## Usage
 ### Stats Registry
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
-the use of the periodic stats, it must be configured in the config file, as described in the 
+the use of the periodic stats, it must be configured in the config file, as described in the
 [Configuration](installationguide.md#configuration) section.
 
 The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
@@ -383,8 +383,8 @@ callback with no parameters (this handler should only be used for reconfiguratio
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
 handler will be called once for each of the configurations (both in the case of the creations and the updates).
 
-The handler will be also called in the case of updates related to configurations. In that situation, the 
-`newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e., 
+The handler will be also called in the case of updates related to configurations. In that situation, the
+`newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e.,
 `service`, `subservice`, `resource` and `apikey`.
 
 ##### iotagentLib.setRemoveConfigurationHandler()
@@ -581,7 +581,7 @@ function startServer(newConfig, iotAgent, callback)
 
 ###### Description
 Start the HTTP server either in single-thread or multi-thread (multi-core) based on the value of *multiCore*
-variable (described in the [Configuration](installationguide.md#configuration) section). If the value is 
+variable (described in the [Configuration](installationguide.md#configuration) section). If the value is
 `False` (either was directly specified `False` in the `config.js` or it was not specified and by default is
 assigned `False`), it is a normal (single-thread) behaviour. Nevertheless, if *multiCore* is `True`, the IoTAgent
 is executed in multi-thread environment.
@@ -590,7 +590,7 @@ The number of parallel processes is calculated based on the number of available 
 unexpectedly dead, a new process is created automatically to keep always the maximum of them working in parallel.
 
 > Note: `startServer()` initializes the server but it does not activate the library. The function in the Node Lib
-> will call the `iotAgent.start()` in order to complete the activation of the library. Therefore, it is expected that 
+> will call the `iotAgent.start()` in order to complete the activation of the library. Therefore, it is expected that
 > the IoT Agent implement the `iotAgent.start()` function with the proper invocation to the `iotAgentLib.activate()`.
 
 ###### Params
@@ -684,7 +684,7 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 
 ## Development documentation
 ### Contributions
-All contributions to this project are welcome. Developers planning to contribute should follow the 
+All contributions to this project are welcome. Developers planning to contribute should follow the
 [Contribution Guidelines](Contribution.md)
 
 ### Project build
@@ -712,9 +712,9 @@ npm test
 ```
 
 ### Coding guidelines
-jshint
+eslint
 
-Uses provided .jshintrc flag file.
+Uses provided `.eslintrc.json` flag file.
 To check source code style, type
 
 ```bash

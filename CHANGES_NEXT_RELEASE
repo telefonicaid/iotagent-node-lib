@@ -1,0 +1,3 @@
+- Replace jshint with eslint
+- Add prettier code formatting
+- Add husky and lint-staged
