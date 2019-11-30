@@ -20,23 +20,23 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var should = require('should'),
-    expressionParser = require('../../../lib/plugins/expressionParser');
+/* eslint-disable no-unused-vars */
+
+const should = require('should');
+const expressionParser = require('../../../lib/plugins/expressionParser');
 
 describe('Expression interpreter', function() {
-    var arithmetic,
-        scope = {
-            value: 6,
-            other: 3,
-            theString: '12.6,   -19.4',
-            spaces: '5 a b c d 5',
-            big: 2000,
-            number: 145,
-            number2: 155,
-            number3inside: 200
-        };
+    const scope = {
+        value: 6,
+        other: 3,
+        theString: '12.6,   -19.4',
+        spaces: '5 a b c d 5',
+        big: 2000,
+        number: 145,
+        number2: 155,
+        number3inside: 200
+    };
 
     describe('When a expression with a single value is parsed', function() {
         it('should return that value', function(done) {
@@ -48,7 +48,7 @@ describe('Expression interpreter', function() {
         });
     });
 
-    arithmetic = [
+    const arithmetic = [
         ['5 * @value', 30],
         ['(6 + @value) * 3', 36],
         ['@value / 12 + 1', 1.5],
@@ -70,7 +70,7 @@ describe('Expression interpreter', function() {
         });
     }
 
-    for (var i = 0; i < arithmetic.length; i++) {
+    for (let i = 0; i < arithmetic.length; i++) {
         arithmeticUseCase(arithmetic[i]);
     }
 
@@ -87,21 +87,21 @@ describe('Expression interpreter', function() {
     describe('When string transformation functions are executed', function() {
         it('should return the appropriate piece of the string', function(done) {
             expressionParser.parse(
-                'trim(substr(@theString, indexOf(@theString, \",\") + 1, length(@theString)))',
+                'trim(substr(@theString, indexOf(@theString, ",") + 1, length(@theString)))',
                 scope,
                 'String',
                 function(error, result) {
                     should.not.exist(error);
                     result.should.equal('-19.4');
                     done();
-                });
+                }
+            );
         });
     });
 
     describe('When an expression contains variables with numbers', function() {
         it('should return the appropriate result', function(done) {
-            expressionParser.parse('@number + @number2 + @number3inside',
-                scope, 'String', function(error, result) {
+            expressionParser.parse('@number + @number2 + @number3inside', scope, 'String', function(error, result) {
                 should.not.exist(error);
                 result.should.equal(500);
                 done();
@@ -111,26 +111,21 @@ describe('Expression interpreter', function() {
 
     describe('When an expression contains multiple parenthesis', function() {
         it('should return the appropriate result', function(done) {
-            expressionParser.parse('((@number) * (@number2))',
-                scope, 'String', function(error, result) {
-                    should.not.exist(error);
-                    result.should.equal(22475);
-                    done();
-                });
+            expressionParser.parse('((@number) * (@number2))', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal(22475);
+                done();
+            });
         });
     });
 
     describe('When trim() function is executed', function() {
         it('should return the appropriate piece of the string', function(done) {
-            expressionParser.parse(
-                'trim(@spaces)',
-                scope,
-                'String',
-                function(error, result) {
-                    should.not.exist(error);
-                    result.should.equal('5 a b c d 5');
-                    done();
-                });
+            expressionParser.parse('trim(@spaces)', scope, 'String', function(error, result) {
+                should.not.exist(error);
+                result.should.equal('5 a b c d 5');
+                done();
+            });
         });
     });
 
@@ -146,11 +141,17 @@ describe('Expression interpreter', function() {
 
     describe('When an expression with strings with single quotation marks is parsed', function() {
         it('should accept the strings', function(done) {
-            expressionParser.parse('\'Pruebas \' # \'De Strings\'', scope, 'String', function(error, result) {
-                should.not.exist(error);
-                result.should.equal('Pruebas De Strings');
-                done();
-            });
+            expressionParser.parse(
+                "'Pruebas ' # 'De Strings'",
+
+                scope,
+                'String',
+                function(error, result) {
+                    should.not.exist(error);
+                    result.should.equal('Pruebas De Strings');
+                    done();
+                }
+            );
         });
     });
 
@@ -193,5 +194,4 @@ describe('Expression interpreter', function() {
             });
         });
     });
-
 });

@@ -20,72 +20,72 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    async = require('async'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            },
-            'Termometer': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const async = require('async');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    device1 = {
-        id: 'light1',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens'
+    server: {
+        port: 4041
     },
-    device2 = {
-        id: 'term2',
-        type: 'Termometer',
-        service: 'smartGondor',
-        subservice: 'gardens'
-    };
+    types: {
+        Light: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ],
+            service: 'smartGondor',
+            subservice: 'gardens'
+        },
+        Termometer: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: [],
+            service: 'smartGondor',
+            subservice: 'gardens'
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const device1 = {
+    id: 'light1',
+    type: 'Light',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
+const device2 = {
+    id: 'term2',
+    type: 'Termometer',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
 
 describe('IoT Agent Device Registration', function() {
     beforeEach(function() {
@@ -93,7 +93,7 @@ describe('IoT Agent Device Registration', function() {
     });
 
     afterEach(function(done) {
-        delete(device1.registrationId);
+        delete device1.registrationId;
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(done);
         });
@@ -106,17 +106,25 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -125,9 +133,9 @@ describe('IoT Agent Device Registration', function() {
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
             iotAgentLib.register(device1, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
         });
     });
@@ -139,10 +147,16 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Failed.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -166,10 +180,16 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(500, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Failed.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    500,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Failed.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -195,24 +215,32 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should return all the device\'s information', function(done) {
+        it("should return all the device's information", function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);
@@ -232,10 +260,16 @@ describe('IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -257,44 +291,61 @@ describe('IoT Agent Device Registration', function() {
 
     describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
-            var expectedPayload3 = utils
-                    .readExampleFile('./test/unit/examples/contextAvailabilityRequests/unregisterDevice1.json');
+            const expectedPayload3 = utils.readExampleFile(
+                './test/unit/examples/contextAvailabilityRequests/unregisterDevice1.json'
+            );
 
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext', expectedPayload3)
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
-
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.series([
-                    async.apply(iotAgentLib.clearAll),
-                    async.apply(iotAgentLib.register, device1),
-                    async.apply(iotAgentLib.register, device2)
-                ], done);
+                async.series(
+                    [
+                        async.apply(iotAgentLib.clearAll),
+                        async.apply(iotAgentLib.register, device1),
+                        async.apply(iotAgentLib.register, device2)
+                    ],
+                    done
+                );
             });
         });
 
@@ -309,43 +360,61 @@ describe('IoT Agent Device Registration', function() {
 
     describe('When the Context Broker returns an error while unregistering a device', function() {
         beforeEach(function(done) {
-            var expectedPayload3 = utils
-                .readExampleFile('./test/unit/examples/contextAvailabilityRequests/unregisterDevice1.json');
+            const expectedPayload3 = utils.readExampleFile(
+                './test/unit/examples/contextAvailabilityRequests/unregisterDevice1.json'
+            );
 
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .post('/v1/updateContext')
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock
                 .post('/NGSI9/registerContext', expectedPayload3)
-                .reply(500, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Failed.json'));
+                .reply(
+                    500,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Failed.json'
+                    )
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.series([
-                    async.apply(iotAgentLib.clearAll),
-                    async.apply(iotAgentLib.register, device1),
-                    async.apply(iotAgentLib.register, device2)
-                ], done);
+                async.series(
+                    [
+                        async.apply(iotAgentLib.clearAll),
+                        async.apply(iotAgentLib.register, device1),
+                        async.apply(iotAgentLib.register, device2)
+                    ],
+                    done
+                );
             });
         });
 

@@ -20,66 +20,64 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    async = require('async'),
-    groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
-    request = require('request'),
-    groupCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const async = require('async');
+const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
+const request = require('request');
+const groupCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const alternateGroupCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {
+        Termometer: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: [],
+            apikey: '1234567890asdfghjkl',
+            service: 'TestService',
+            subservice: '/testingPath'
         }
     },
-    alternateGroupCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {
-            'Termometer': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ],
-                apikey: '1234567890asdfghjkl',
-                service: 'TestService',
-                subservice: '/testingPath'
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        defaultKey: 'default1234'
-    };
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    defaultKey: 'default1234'
+};
 
 describe('Device Group utils', function() {
     afterEach(function(done) {
@@ -90,11 +88,14 @@ describe('Device Group utils', function() {
 
     describe('When an API Key is requested for a device in a group without the SingleConfiguration mode', function() {
         beforeEach(function(done) {
-            async.series([
-                async.apply(iotAgentLib.activate, iotAgentConfig),
-                async.apply(request, alternateGroupCreation),
-                async.apply(request, groupCreation)
-            ], done);
+            async.series(
+                [
+                    async.apply(iotAgentLib.activate, iotAgentConfig),
+                    async.apply(request, alternateGroupCreation),
+                    async.apply(request, groupCreation)
+                ],
+                done
+            );
         });
         it('should return the API Key of the group', function(done) {
             iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function(error, apiKey) {

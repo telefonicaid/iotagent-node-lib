@@ -22,49 +22,49 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    mongoUtils = require('../../mongodb/mongoDBUtils'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                // commands are not defined
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const mongoUtils = require('../../mongodb/mongoDBUtils');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
     },
-    device = {
-        id: 'somelight',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens'
-    };
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            // commands are not defined
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
+const device = {
+    id: 'somelight',
+    type: 'Light',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
 
 describe('Update attribute functionalities', function() {
-
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -74,7 +74,7 @@ describe('Update attribute functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/registrations')
-            .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -99,7 +99,7 @@ describe('Update attribute functionalities', function() {
     });
 
     describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
             json: {
@@ -131,7 +131,7 @@ describe('Update attribute functionalities', function() {
         });
 
         it('should call the client handler with correct values, even if commands are not defined', function(done) {
-            var handlerCalled = false;
+            let handlerCalled = false;
 
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
                 id.should.equal('Light:somelight');
@@ -143,12 +143,11 @@ describe('Update attribute functionalities', function() {
                 handlerCalled = true;
 
                 callback(null, {
-                    id: id,
-                    type: type,
-                    attributes: attributes
+                    id,
+                    type,
+                    attributes
                 });
             });
-
 
             request(options, function(error, response, body) {
                 should.not.exist(error);

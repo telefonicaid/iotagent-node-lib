@@ -22,31 +22,31 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
+/* eslint-disable no-unused-vars */
 
-    should = require('should'),
-    nock = require('nock'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const nock = require('nock');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
@@ -70,23 +70,32 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post(
+                    '/v2/registrations',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceMultientity.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceMultientity.json'
+                    )
+                )
                 .reply(204);
         });
 
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/' +
-                'deviceProvisioningRequests/provisionNewDeviceMultientity.json'),
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMultientity.json'
+            ),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -104,8 +113,5 @@ describe('Device provisioning API: Provision devices', function() {
                 });
             });
         });
-
     });
 });
-
-

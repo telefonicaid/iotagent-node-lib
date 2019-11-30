@@ -23,116 +23,113 @@
  * Modified by: Federico M. Facca - Martel Innovate
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    request = require('request'),
-    nock = require('nock'),
-    utils = require('../../tools/utils'),
-    groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
-    should = require('should'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            url: 'https://192.168.1.1:1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            },
-            'Termometer': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        iotManager: {
-            url: 'https://mockediotam.com:9876',
-            path: '/protocols',
-            protocol: 'GENERIC_PROTOCOL',
-            description: 'A generic protocol',
-            agentPath: '/iot'
-        },
-        defaultResource: '/iot/d'
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const request = require('request');
+const nock = require('nock');
+const utils = require('../../tools/utils');
+const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
+const should = require('should');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        url: 'https://192.168.1.1:1026'
     },
-    groupCreation = {
-        service: 'theService',
-        subservice: 'theSubService',
-        resource: '/deviceTest',
-        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-        type: 'SensorMachine',
-        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-        commands: [
-            {
-                name: 'wheel1',
-                type: 'Wheel'
-            }
-        ],
-        lazy: [
-            {
-                name: 'luminescence',
-                type: 'Lumens'
-            }
-        ],
-        attributes: [
-            {
-                name: 'status',
-                type: 'Boolean'
-            }
-        ]
+    server: {
+        port: 4041
     },
-    device1 = {
-        id: 'light1',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens'
+    types: {
+        Light: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ],
+            service: 'smartGondor',
+            subservice: 'gardens'
+        },
+        Termometer: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: [],
+            service: 'smartGondor',
+            subservice: 'gardens'
+        }
     },
-    contextBrokerMock,
-    iotamMock;
-
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    iotManager: {
+        url: 'https://mockediotam.com:9876',
+        path: '/protocols',
+        protocol: 'GENERIC_PROTOCOL',
+        description: 'A generic protocol',
+        agentPath: '/iot'
+    },
+    defaultResource: '/iot/d'
+};
+const groupCreation = {
+    service: 'theService',
+    subservice: 'theSubService',
+    resource: '/deviceTest',
+    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+    type: 'SensorMachine',
+    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+    commands: [
+        {
+            name: 'wheel1',
+            type: 'Wheel'
+        }
+    ],
+    lazy: [
+        {
+            name: 'luminescence',
+            type: 'Lumens'
+        }
+    ],
+    attributes: [
+        {
+            name: 'status',
+            type: 'Boolean'
+        }
+    ]
+};
+const device1 = {
+    id: 'light1',
+    type: 'Light',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
+let contextBrokerMock;
+let iotamMock;
 
 describe('HTTPS support tests IOTAM', function() {
-
     describe('When the IoT Agents is started with https "iotManager" config', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
             iotamMock = nock('https://mockediotam.com:9876')
-                .post('/protocols',
-                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroupsWithoutCB.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+                .post(
+                    '/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroupsWithoutCB.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
             groupRegistryMemory.create(groupCreation, done);
         });
@@ -155,14 +152,14 @@ describe('HTTPS support tests IOTAM', function() {
 });
 
 describe('HTTPS support tests', function() {
-
     describe('When subscription is sent to HTTPS context broker', function() {
         beforeEach(function(done) {
-            var optionsProvision = {
+            const optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'
+                ),
                 headers: {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': '/gardens'
@@ -177,22 +174,34 @@ describe('HTTPS support tests', function() {
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
-                    .post('/v1/updateContext',
+                    .post(
+                        '/v1/updateContext',
                         utils.readExampleFile(
-                            './test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'))
-                    .reply(200,
+                            './test/unit/examples/contextRequests/createMinimumProvisionedDevice.json'
+                        )
+                    )
+                    .reply(
+                        200,
                         utils.readExampleFile(
-                            './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                            './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'
+                        )
+                    );
 
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
-                    .post('/v1/subscribeContext',
+                    .post(
+                        '/v1/subscribeContext',
                         utils.readExampleFile(
-                            './test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'))
-                    .reply(200,
+                            './test/unit/examples/subscriptionRequests/simpleSubscriptionRequest.json'
+                        )
+                    )
+                    .reply(
+                        200,
                         utils.readExampleFile(
-                            './test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'));
+                            './test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json'
+                        )
+                    );
 
                 iotAgentLib.clearAll(function() {
                     request(optionsProvision, function(error, result, body) {
@@ -232,17 +241,25 @@ describe('HTTPS support tests', function() {
             contextBrokerMock = nock('https://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -251,20 +268,19 @@ describe('HTTPS support tests', function() {
 
         it('should register as ContextProvider using HTTPS', function(done) {
             iotAgentLib.register(device1, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
         });
 
         afterEach(function(done) {
-          nock.cleanAll();
-          iotAgentLib.clearAll(function() {
-              // We need to remove the registrationId so that the library does not consider next operatios as updates.
-              delete device1.registrationId;
-              iotAgentLib.deactivate(done);
-          });
+            nock.cleanAll();
+            iotAgentLib.clearAll(function() {
+                // We need to remove the registrationId so that the library does not consider next operatios as updates.
+                delete device1.registrationId;
+                iotAgentLib.deactivate(done);
+            });
         });
-
     });
 });

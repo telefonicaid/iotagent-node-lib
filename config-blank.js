@@ -33,8 +33,7 @@ var config = {
     deviceRegistry: {
         type: 'memory'
     },
-    types: {
-    },
+    types: {},
     service: 'tester',
     subservice: '/test',
     providerUrl: 'http://192.168.56.1:4041',

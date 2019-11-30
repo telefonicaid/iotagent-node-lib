@@ -459,8 +459,8 @@ in the database model.
 | entity_name         | name               | Name of the entity representing the device in the Context Broker                                                                       | ParkLamplight12                                 |
 | entity_type         | type               | Type of the entity in the Context Broker                                                                                               | Lamplights                                      |
 | timezone            | timezone           | Time zone of the sensor if it has any                                                                                                  | America/Santiago                                |
-| timestamp	      | timestamp          | Optional flag about add or not the TimeInstant attribute to devide entity created, as well  as a TimeInstant metadata to each attribute, with the current timestamp   | true                           |
-| apikey	      | apikey             | Optional Apikey key string to use instead of group apikey
+| timestamp.          | timestamp          | Optional flag about add or not the TimeInstant attribute to devide entity created, as well  as a TimeInstant metadata to each attribute, with the current timestamp   | true                           |
+| apikey	          | apikey             | Optional Apikey key string to use instead of group apikey
 |  9n4hb1vpwbjozzmw9f0flf9c2                          |
 | endpoint            | endpoint           | Endpoint where the device is going to receive commands, if any.                                                                        | http://theDeviceUrl:1234/commands               |
 | protocol            | protocol           | Name of the device protocol, for its use with an IoT Manager.                                                                          | IoTA-UL                                         |
@@ -1477,17 +1477,17 @@ version 3](./LICENSE).
 
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
-There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL 
-(or AGPL) licenses are mostly related with the fact that different people assign different 
+There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL
+(or AGPL) licenses are mostly related with the fact that different people assign different
 interpretations on the meaning of the term “derivate work” used in these licenses. Due to this,
 some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
 (even without _modifying_ it).
 
-For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license  
+For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license
 wish to make a clarifying public statement as follows:
 
 > Please note that software derived as a result of modifying the source code of this
-> software in order to fix a bug or incorporate enhancements is considered a derivative 
-> work of the product. Software that merely uses or aggregates (i.e. links to) an otherwise 
+> software in order to fix a bug or incorporate enhancements is considered a derivative
+> work of the product. Software that merely uses or aggregates (i.e. links to) an otherwise
 > unmodified version of existing software is not considered a derivative work, and therefore
 > it does not need to be released as under the same license, or even released as open source.

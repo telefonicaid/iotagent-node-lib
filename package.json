@@ -1,5 +1,6 @@
 {
   "name": "iotagent-node-lib",
+  "license": "AGPL-3.0-only",
   "description": "IoT Agent library to interface with NGSI Context Broker",
   "version": "2.11.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
@@ -32,7 +33,8 @@
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
     "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
-    "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
+    "lint": "eslint lib/ bin/ test/ --cache --fix",
+    "prettier": "prettier --config .prettierrc.json --write '**/**/**/**/*.js' '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -57,12 +59,28 @@
   },
   "devDependencies": {
     "coveralls": "~3.0.3",
+    "husky": "~1.1.0",
     "istanbul": "~0.4.5",
-    "jshint": "~2.10.2",
+    "eslint": "~5.16.0",
+    "eslint-config-tamia": "~6.2.1",
+    "eslint-plugin-prettier": "~3.1.0",
+    "lint-staged": "~7.3.0",
     "mocha": "6.1.4",
     "nock": "10.0.6",
+    "prettier": "~1.14.2",
     "should": "13.2.3",
     "timekeeper": "2.2.0",
     "watch": "~1.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --config .prettierrc.json --write",
+      "git add"
+    ]
   }
 }

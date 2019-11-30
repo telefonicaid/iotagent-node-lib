@@ -21,49 +21,49 @@
  * please contact with::daniel.moranjimenez@telefonica.com
  */
 
-'use strict';
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
-    };
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
 
 describe('Data Mapping Plugins: device provision', function() {
-    var options = {
+    const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
@@ -81,24 +81,33 @@ describe('Data Mapping Plugins: device provision', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post('/NGSI9/registerContext', utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+            .post(
+                '/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json')
+            )
+            .reply(
+                200,
+                utils.readExampleFile(
+                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                )
+            );
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post('/v1/updateContext', utils.readExampleFile(
-                './test/unit/examples/contextRequests/createProvisionedDevice.json'))
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+            .post(
+                '/v1/updateContext',
+                utils.readExampleFile('./test/unit/examples/contextRequests/createProvisionedDevice.json')
+            )
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+            );
 
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.clearAll(done);
         });
     });
-
 
     afterEach(function(done) {
         iotAgentLib.clearAll(function() {
@@ -108,7 +117,7 @@ describe('Data Mapping Plugins: device provision', function() {
 
     describe('When a provision request arrives to a IoTA with provisioning middleware', function() {
         it('should execute the translation middlewares', function(done) {
-            var executed = false;
+            let executed = false;
 
             function testMiddleware(device, callback) {
                 executed = true;
@@ -138,7 +147,7 @@ describe('Data Mapping Plugins: device provision', function() {
         });
 
         it('should execute the device provisioning handlers', function(done) {
-            var executed = false;
+            let executed = false;
 
             function testMiddleware(device, callback) {
                 callback(null, device);
@@ -156,7 +165,6 @@ describe('Data Mapping Plugins: device provision', function() {
                 executed.should.equal(true);
                 done();
             });
-
         });
     });
 
@@ -175,7 +183,7 @@ describe('Data Mapping Plugins: device provision', function() {
         });
 
         it('should not execute the device provisioning handlers', function(done) {
-            var executed = false;
+            let executed = false;
 
             function testMiddleware(device, callback) {
                 callback(new Error('This provisioning should not progress'));
@@ -193,7 +201,6 @@ describe('Data Mapping Plugins: device provision', function() {
                 executed.should.equal(false);
                 done();
             });
-
         });
     });
 });

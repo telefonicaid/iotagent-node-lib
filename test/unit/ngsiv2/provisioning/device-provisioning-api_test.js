@@ -22,31 +22,32 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    nock = require('nock'),
-    request = require('request'),
-    moment = require('moment'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const nock = require('nock');
+const request = require('request');
+const moment = require('moment');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
@@ -56,9 +57,13 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post(
+                    '/v2/registrations',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -85,19 +90,25 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post(
+                    '/v2/registrations',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/createProvisionedDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createProvisionedDevice.json')
+                )
                 .reply(204);
         });
 
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
@@ -120,7 +131,7 @@ describe('Device provisioning API: Provision devices', function() {
         });
 
         it('should call the device provisioning handler if present', function(done) {
-            var handlerCalled = false;
+            let handlerCalled = false;
 
             iotAgentLib.setProvisioningHandler(function(device, callback) {
                 handlerCalled = true;
@@ -175,7 +186,6 @@ describe('Device provisioning API: Provision devices', function() {
         });
 
         it('should store fill the device ID in case only the name is provided', function(done) {
-            /* jshint camelcase:false */
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
@@ -211,7 +221,7 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device provisioning request with a TimeInstant attribute arrives to the IoTA', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionTimeInstant.json'),
@@ -237,8 +247,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json')
+                )
                 .reply(204);
 
             done();
@@ -252,9 +264,8 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
-
     describe('When a device provisioning request with a timestamp provision attribute arrives to the IoTA', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionTimeInstant2.json'),
@@ -280,8 +291,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json')
+                )
                 .reply(204);
 
             done();
@@ -296,7 +309,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
@@ -322,8 +335,10 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json')
+                )
                 .reply(204);
             done();
         });
@@ -336,9 +351,8 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
-    describe('When a device provisioning request arrives to the IoTA' +
-        'and timestamp is enabled in configuration', function() {
-        var options = {
+    describe('When a device provisioning request arrives to the IoTAand timestamp is enabled in configuration', function() {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -365,15 +379,13 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples/' +
-                        'contextRequests/createTimeInstantMinimumDevice.json');
-                    if (!body.TimeInstant.value)
-                    {
+                    const expectedBody = utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createTimeInstantMinimumDevice.json'
+                    );
+                    if (!body.TimeInstant.value) {
                         return false;
-                    }
-                    else if (moment(body.TimeInstant.value, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        var timeInstantDiff = moment().diff(body.TimeInstant.value, 'milliseconds');
+                    } else if (moment(body.TimeInstant.value, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
+                        const timeInstantDiff = moment().diff(body.TimeInstant.value, 'milliseconds');
                         if (timeInstantDiff < 500) {
                             delete body.TimeInstant;
 
@@ -382,9 +394,7 @@ describe('Device provisioning API: Provision devices', function() {
 
                         return false;
                     }
-                    else {
-                        return false;
-                    }
+                    return false;
                 })
                 .reply(204);
 
@@ -400,7 +410,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -415,9 +425,12 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
-                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
             done();
@@ -456,7 +469,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with geo:point attributes arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionGeopointDevice.json'),
@@ -471,9 +484,12 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createGeopointProvisionedDevice.json'))
+                        './test/unit/ngsiv2/examples/contextRequests/createGeopointProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
             done();
@@ -488,7 +504,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with DateTime attributes arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDatetimeDevice.json'),
@@ -503,9 +519,12 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createDatetimeProvisionedDevice.json'))
+                        './test/unit/ngsiv2/examples/contextRequests/createDatetimeProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
             done();
@@ -519,42 +538,44 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
 
-
     describe('When two devices with the same ID but different services arrive to the agent', function() {
-        var options1 = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            },
-            options2 = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
-                headers: {
-                    'fiware-service': 'smartMordor',
-                    'fiware-servicepath': '/electricity'
-                }
-            };
+        const options1 = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const options2 = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartMordor',
+                'fiware-servicepath': '/electricity'
+            }
+        };
 
         beforeEach(function(done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
-                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
-
             contextBrokerMock
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
-                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
             done();
@@ -590,7 +611,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When there is a connection error with a String code connecting the CB', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -607,7 +628,7 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -616,7 +637,7 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
-                .replyWithError({'message': 'Description of the error', 'code': 'STRING_CODE'});
+                .replyWithError({ message: 'Description of the error', code: 'STRING_CODE' });
 
             done();
         });
@@ -632,7 +653,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When there is a connection error with a Number code connecting the CB', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -649,7 +670,7 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -658,7 +679,7 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
-                .replyWithError({'message': 'Description of the error', 'code': 123456789});
+                .replyWithError({ message: 'Description of the error', code: 123456789 });
 
             done();
         });
@@ -674,7 +695,7 @@ describe('Device provisioning API: Provision devices', function() {
     });
 
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
@@ -682,7 +703,8 @@ describe('Device provisioning API: Provision devices', function() {
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json'
+            )
         };
 
         it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes', function(done) {
@@ -696,7 +718,7 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When two device provisioning requests with the same service and Device ID arrive', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
@@ -711,7 +733,7 @@ describe('Device provisioning API: Provision devices', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -737,11 +759,12 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device provisioning request is malformed', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMalformed1.json'),
+                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMalformed1.json'
+            ),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -760,7 +783,7 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When an agent is activated with a different base root', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
             method: 'POST',
             headers: {
@@ -794,12 +817,13 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device provisioning request without the mandatory headers arrives to the Agent', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {},
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json')
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceMissingParameters.json'
+            )
         };
 
         it('should raise a MISSING_HEADERS error, indicating the missing attributes', function(done) {
@@ -812,21 +836,21 @@ describe('Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device delete request arrives to the Agent for a not existing device', function() {
-      var options = {
-          url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
-          headers: {
-              'fiware-service': 'smartGondor',
-              'fiware-servicepath': '/gardens'
-          },
-          method: 'DELETE'
-      };
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'DELETE'
+        };
 
-      it('should return a 404 error', function(done) {
-          request(options, function(error, response, body) {
-              should.not.exist(error);
-              response.statusCode.should.equal(404);
-              done();
-          });
-      });
+        it('should return a 404 error', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(404);
+                done();
+            });
+        });
     });
 });

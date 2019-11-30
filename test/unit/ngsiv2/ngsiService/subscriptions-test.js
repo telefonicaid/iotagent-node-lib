@@ -22,33 +22,34 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    request = require('request'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const request = require('request');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('Subscription tests', function() {
     beforeEach(function(done) {
-        var optionsProvision = {
+        const optionsProvision = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -64,17 +65,24 @@ describe('Subscription tests', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
-                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
+                    )
+                )
                 .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/subscriptions', utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/subscriptionRequests/simpleSubscriptionRequest.json'))
-                .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
+                .post(
+                    '/v2/subscriptions',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/subscriptionRequests/simpleSubscriptionRequest.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             iotAgentLib.clearAll(function() {
                 request(optionsProvision, function(error, result, body) {
@@ -95,7 +103,6 @@ describe('Subscription tests', function() {
     describe('When a client invokes the subscribe() function for device', function() {
         it('should send the appropriate request to the Context Broker', function(done) {
             iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
-
                 iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
                     should.not.exist(error);
 
@@ -136,7 +143,6 @@ describe('Subscription tests', function() {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
                         iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
-
                             contextBrokerMock.done();
                             done();
                         });
@@ -192,18 +198,16 @@ describe('Subscription tests', function() {
         });
 
         it('should invoke the user defined callback', function(done) {
-            var notificationOptions = {
-                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                    method: 'POST',
-                    json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests' +
-                        '/simpleNotification.json'),
-                    headers: {
-                        'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
-                },
-
-                executedHandler = false;
+            const notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+            let executedHandler = false;
 
             function mockedHandler(device, notification, callback) {
                 executedHandler = true;
@@ -220,19 +224,18 @@ describe('Subscription tests', function() {
             });
         });
         it('should invoke all the notification middlewares before the user defined callback', function(done) {
-            var notificationOptions = {
-                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                    method: 'POST',
-                    json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests' +
-                        '/simpleNotification.json'),
-                    headers: {
-                        'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
-                },
-                executedMiddlewares = false,
-                executedHandler = false,
-                modifiedData = false;
+            const notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+            let executedMiddlewares = false;
+            let executedHandler = false;
+            let modifiedData = false;
 
             function mockedHandler(device, notification, callback) {
                 executedHandler = true;
@@ -263,21 +266,26 @@ describe('Subscription tests', function() {
             });
         });
         it('should get the correspondent device information', function(done) {
-            var notificationOptions = {
-                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                    method: 'POST',
-                    json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/' +
-                        'simpleNotification.json'),
-                    headers: {
-                        'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
-                },
-                rightFields = false;
+            const notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+            let rightFields = false;
 
             function mockedHandler(device, data, callback) {
-                if (device && device.id === 'MicroLight1' && device.name === 'FirstMicroLight' &&
-                    data && data.length === 1 && data[0].name === 'attr_name') {
+                if (
+                    device &&
+                    device.id === 'MicroLight1' &&
+                    device.name === 'FirstMicroLight' &&
+                    data &&
+                    data.length === 1 &&
+                    data[0].name === 'attr_name'
+                ) {
                     rightFields = true;
                 }
 
@@ -296,18 +304,16 @@ describe('Subscription tests', function() {
     });
     describe('When a wrong notification arrives at the IOTA', function() {
         it('should not call the handler', function(done) {
-            var notificationOptions = {
-                    url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                    method: 'POST',
-                    json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/' +
-                        'errorNotification.json'),
-                    headers: {
-                        'fiware-service': 'smartGondor',
-                        'fiware-servicepath': '/gardens'
-                    }
-                },
-
-                executedHandler = false;
+            const notificationOptions = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+                method: 'POST',
+                json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/errorNotification.json'),
+                headers: {
+                    'fiware-service': 'smartGondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+            let executedHandler = false;
 
             function mockedHandler(device, notification, callback) {
                 executedHandler = true;

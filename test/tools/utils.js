@@ -21,18 +21,15 @@
  * please contact with::[daniel.moranjimenez@telefonica.com]
  */
 
-'use strict';
-
-var fs = require('fs');
+const fs = require('fs');
 
 function readExampleFile(name, raw) {
-    var text = fs.readFileSync(name, 'UTF8');
+    const text = fs.readFileSync(name, 'UTF8');
 
     if (raw) {
         return text;
-    } else {
-        return JSON.parse(text);
     }
+    return JSON.parse(text);
 }
 
 exports.readExampleFile = readExampleFile;

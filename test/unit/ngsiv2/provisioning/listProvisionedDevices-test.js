@@ -23,39 +23,37 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
- /* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
-'use strict';
-
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    nock = require('nock'),
-    async = require('async'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const nock = require('nock');
+const async = require('async');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('Device provisioning API: List provisioned devices', function() {
-    var provisioning1Options,
-        provisioning2Options,
-        provisioning3Options,
-        provisioning4Options;
+    let provisioning1Options;
+    let provisioning2Options;
+    let provisioning3Options;
+    let provisioning4Options;
 
     beforeEach(function(done) {
         provisioning1Options = {
@@ -91,45 +89,42 @@ describe('Device provisioning API: List provisioned devices', function() {
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning1Options),
-                async.apply(request, provisioning2Options),
-                async.apply(request, provisioning4Options)
-            ], function(error, results) {
-                done();
-            });
+            async.series(
+                [
+                    iotAgentLib.clearAll,
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options),
+                    async.apply(request, provisioning4Options)
+                ],
+                function(error, results) {
+                    done();
+                }
+            );
         });
     });
 
@@ -138,7 +133,7 @@ describe('Device provisioning API: List provisioned devices', function() {
     });
 
     describe('When a request for the list of provisioned devices arrive', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -149,7 +144,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return all the provisioned devices', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 should.exist(parsedBody.devices);
                 response.statusCode.should.equal(200);
@@ -160,10 +155,8 @@ describe('Device provisioning API: List provisioned devices', function() {
         });
 
         it('should return all the appropriate field names', function(done) {
-            /* jshint camelcase:false */
-
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
 
                 should.exist(parsedBody.devices[0].attributes);
                 parsedBody.devices[0].attributes.length.should.equal(1);
@@ -186,8 +179,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return all the plugin attributes', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
-
+                const parsedBody = JSON.parse(body);
 
                 should.exist(parsedBody.devices[2].attributes[0].entity_name);
                 should.exist(parsedBody.devices[2].attributes[0].entity_type);
@@ -202,7 +194,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         });
     });
     describe('When a request for the information about a specific device arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -213,14 +205,10 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return all the information on that particular device', function(done) {
             request(options, function(error, response, body) {
-                /* jshint camelcase:false */
-
-                var parsedBody;
-
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 parsedBody.entity_name.should.equal('TheFirstLight');
                 parsedBody.device_id.should.equal('Light1');
                 done();
@@ -229,13 +217,9 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return the appropriate attribute fields', function(done) {
             request(options, function(error, response, body) {
-                /* jshint camelcase:false */
-
-                var parsedBody;
-
                 should.not.exist(error);
 
-                parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.exist(parsedBody.attributes[0].object_id);
                 parsedBody.attributes[0].object_id.should.equal('attr_name');
                 parsedBody.attributes[0].name.should.equal('attr_name');
@@ -245,7 +229,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         });
     });
     describe('When a request for a device with plugin attributes arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -256,13 +240,9 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return the appropriate attribute fields', function(done) {
             request(options, function(error, response, body) {
-                /* jshint camelcase:false */
-
-                var parsedBody;
-
                 should.not.exist(error);
 
-                parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.exist(parsedBody.attributes[0].entity_name);
                 should.exist(parsedBody.attributes[0].entity_type);
                 should.exist(parsedBody.attributes[1].expression);
@@ -276,7 +256,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         });
     });
     describe('When a request for an unexistent device arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -295,7 +275,7 @@ describe('Device provisioning API: List provisioned devices', function() {
     });
 
     describe('When a request for listing all the devices with a limit of 3 arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -305,9 +285,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         };
 
         function createDeviceRequest(i, callback) {
-            /* jshint camelcase: false */
-
-            var provisioningDeviceOptions = {
+            const provisioningDeviceOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 headers: {
@@ -331,7 +309,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .times(10)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -350,7 +328,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return just 3 devices', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 parsedBody.devices.length.should.equal(3);
                 done();
@@ -359,7 +337,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return a count with the complete number of devices', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 parsedBody.count.should.equal(10);
                 done();
@@ -368,7 +346,7 @@ describe('Device provisioning API: List provisioned devices', function() {
     });
 
     describe('When a request for listing all the devices with a offset of 3 arrives', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -378,7 +356,7 @@ describe('Device provisioning API: List provisioned devices', function() {
         };
 
         function createDeviceRequest(i, callback) {
-            var provisioningDeviceOptions = {
+            const provisioningDeviceOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 headers: {
@@ -404,7 +382,7 @@ describe('Device provisioning API: List provisioned devices', function() {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .times(10)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.clearAll(function() {
                 async.timesSeries(10, createDeviceRequest, function(error, results) {
@@ -415,10 +393,10 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should skip the first 3 devices', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.not.exist(error);
 
-                for (var i = 0; i < parsedBody.devices.length; i++) {
+                for (let i = 0; i < parsedBody.devices.length; i++) {
                     ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody.devices[i].id).should.equal(-1);
                 }
 
@@ -428,7 +406,7 @@ describe('Device provisioning API: List provisioned devices', function() {
     });
 
     describe('When a listing request arrives and there are devices in other service and servicepath', function() {
-        var options = {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
                 'fiware-service': 'smartGondor',
@@ -446,12 +424,13 @@ describe('Device provisioning API: List provisioned devices', function() {
                     'fiware-servicepath': '/gardens'
                 },
                 json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json')
+                    './test/unit/examples/deviceProvisioningRequests/provisionYetAnotherDevice.json'
+                )
             };
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             request(provisioning3Options, function(error) {
                 done();
@@ -460,7 +439,7 @@ describe('Device provisioning API: List provisioned devices', function() {
 
         it('should return just the ones in the selected service', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
+                const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 parsedBody.devices.length.should.equal(3);

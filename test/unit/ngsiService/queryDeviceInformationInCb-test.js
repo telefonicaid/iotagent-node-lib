@@ -20,112 +20,106 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
         },
-        server: {
-            port: 4041
+        BrokenLight: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
         },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'BrokenLight': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'Termometer': {
-                type: 'Termometer',
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ]
-            },
-            'Humidity': {
-                type: 'Humidity',
-                cbHost: 'http://192.168.1.1:3024',
-                commands: [],
-                lazy: [],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            },
-            'Motion': {
-                type: 'Motion',
-                commands: [],
-                lazy: [],
-                staticAttributes: [
-                    {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
+        Termometer: {
+            type: 'Termometer',
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: []
         },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
-    };
+        Humidity: {
+            type: 'Humidity',
+            cbHost: 'http://192.168.1.1:3024',
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        },
+        Motion: {
+            type: 'Motion',
+            commands: [],
+            lazy: [],
+            staticAttributes: [
+                {
+                    name: 'location',
+                    type: 'Vector',
+                    value: '(123,523)'
+                }
+            ],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
 
 describe('Query device information in the Context Broker', function() {
-    var attributes = [
-        'state',
-        'dimming'
-    ];
+    const attributes = ['state', 'dimming'];
 
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -141,10 +135,11 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext1.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
         it('should return the information about the desired attributes', function(done) {
@@ -156,18 +151,18 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe('When the user requests information about a device that it\'s not in the CB', function() {
+    describe("When the user requests information about a device that it's not in the CB", function() {
         beforeEach(function() {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
         });
 
         it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
@@ -186,11 +181,11 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
         });
 
         it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
@@ -209,11 +204,14 @@ describe('Query device information in the Context Broker', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2UnknownError.json'));
-
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContext2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2UnknownError.json')
+                );
         });
 
         it('should return a ENTITY_GENERIC_ERROR', function(done) {
@@ -229,5 +227,4 @@ describe('Query device information in the Context Broker', function() {
             });
         });
     });
-
 });

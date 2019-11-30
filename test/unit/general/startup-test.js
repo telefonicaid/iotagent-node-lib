@@ -20,47 +20,48 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    nock = require('nock'),
-    utils = require('../../tools/utils'),
-    config = require('../../../lib/commonConfig'),
-    _ = require('underscore'),
-    iotAgentConfig = {
-        logLevel: 'ERROR',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                attributes: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const nock = require('nock');
+const utils = require('../../tools/utils');
+const config = require('../../../lib/commonConfig');
+const _ = require('underscore');
+const iotAgentConfig = {
+    logLevel: 'ERROR',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    iotAgentConfigNoUrl = _.clone(iotAgentConfig),
-    iotAgentConfigNoTypes = _.clone(iotAgentConfig),
-    iotamMock;
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const iotAgentConfigNoUrl = _.clone(iotAgentConfig);
+const iotAgentConfigNoTypes = _.clone(iotAgentConfig);
+let iotamMock;
 
 describe('Startup tests', function() {
     describe('When the IoT Agent is started without a "providerUrl" config parameter', function() {

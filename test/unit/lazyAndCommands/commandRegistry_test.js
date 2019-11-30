@@ -20,42 +20,43 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    async = require('async'),
-    should = require('should'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            name: 'testAgent',
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        deviceRegistry: {
-            type: 'memory'
-        },
-        mongodb: {
-            host: 'localhost',
-            port: '27017',
-            db: 'iotagent'
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        pollingExpiration: 800,
-        pollingDaemonFrequency: 20
-    };
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const async = require('async');
+const should = require('should');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        name: 'testAgent',
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {},
+    deviceRegistry: {
+        type: 'memory'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    pollingExpiration: 800,
+    pollingDaemonFrequency: 20
+};
 
 function testRegistry(registryType) {
     describe('Command registries test [' + registryType + ']', function() {
-        var commandTemplate = {
+        const commandTemplate = {
             name: 'commandName',
             type: 'commandType',
             value: 'commandValue'
@@ -107,7 +108,7 @@ function testRegistry(registryType) {
         });
 
         describe('When an already existing command arrives to the registry', function() {
-            var updatedCommand = {
+            const updatedCommand = {
                 name: 'commandName',
                 type: 'commandType',
                 value: 'newValueForTheCommand'
@@ -137,24 +138,18 @@ function testRegistry(registryType) {
 
         describe('When a command listing is requested for a device', function() {
             beforeEach(function(done) {
-                var commands = [];
+                const commands = [];
 
-                for (var i = 0; i < 3; i++) {
-                    for (var j = 0; j < 5; j++) {
-                        var newCommand = {
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 5; j++) {
+                        const newCommand = {
                             name: commandTemplate.name + j,
                             type: commandTemplate.type + j,
                             value: commandTemplate.value + j
                         };
 
                         commands.push(
-                            async.apply(
-                                iotAgentLib.addCommand,
-                                'smartGondor',
-                                'gardens',
-                                'devId' + i,
-                                newCommand
-                            )
+                            async.apply(iotAgentLib.addCommand, 'smartGondor', 'gardens', 'devId' + i, newCommand)
                         );
                     }
                 }
@@ -168,7 +163,7 @@ function testRegistry(registryType) {
                 iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId1', function(error, commandList) {
                     commandList.count.should.equal(5);
 
-                    for (var i = 0; i < 5; i++) {
+                    for (let i = 0; i < 5; i++) {
                         commandList.commands[i].deviceId.should.equal('devId1');
                     }
 
@@ -180,7 +175,7 @@ function testRegistry(registryType) {
                 iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId1', function(error, commandList) {
                     commandList.count.should.equal(5);
 
-                    for (var i = 0; i < 5; i++) {
+                    for (let i = 0; i < 5; i++) {
                         commandList.commands[i].name.should.equal('commandName' + i);
                         commandList.commands[i].type.should.equal('commandType' + i);
                         commandList.commands[i].value.should.equal('commandValue' + i);
@@ -197,24 +192,16 @@ function testRegistry(registryType) {
 
         describe('When a command is removed from the queue', function() {
             beforeEach(function(done) {
-                var commands = [];
+                const commands = [];
 
-                for (var j = 0; j < 5; j++) {
-                    var newCommand = {
+                for (let j = 0; j < 5; j++) {
+                    const newCommand = {
                         name: commandTemplate.name + j,
                         type: commandTemplate.type + j,
                         value: commandTemplate.value + j
                     };
 
-                    commands.push(
-                        async.apply(
-                            iotAgentLib.addCommand,
-                            'smartGondor',
-                            'gardens',
-                            'devId',
-                            newCommand
-                        )
-                    );
+                    commands.push(async.apply(iotAgentLib.addCommand, 'smartGondor', 'gardens', 'devId', newCommand));
                 }
 
                 async.series(commands, function(error) {
@@ -227,7 +214,7 @@ function testRegistry(registryType) {
                     iotAgentLib.commandQueue('smartGondor', 'gardens', 'devId', function(error, commandList) {
                         commandList.commands.length.should.equal(4);
 
-                        for (var i = 0; i < commandList.commands.length; i++) {
+                        for (let i = 0; i < commandList.commands.length; i++) {
                             commandList.commands[i].name.should.not.equal('commandName2');
                         }
 

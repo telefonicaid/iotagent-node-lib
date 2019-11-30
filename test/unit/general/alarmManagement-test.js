@@ -20,16 +20,13 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotagentLib = require('../../../lib/fiware-iotagent-lib'),
-    alarmManagement = iotagentLib.alarms,
-    logger = require('logops'),
-    should = require('should');
+const iotagentLib = require('../../../lib/fiware-iotagent-lib');
+const alarmManagement = iotagentLib.alarms;
+const logger = require('logops');
+const should = require('should');
 
 describe('Alarm management system', function() {
-    /* jshint sub:true */
-
     beforeEach(function() {
         logger.setLevel('FATAL');
 
@@ -42,27 +39,23 @@ describe('Alarm management system', function() {
 
     describe('When a new alarm is raised', function() {
         it('should add it to the list of risen alarms', function() {
-            var alarmList;
-
             alarmManagement.raise('TEST_ALARM', 'Test description');
-            alarmList = alarmManagement.list();
+            const alarmList = alarmManagement.list();
 
-            should.exist(alarmList['TEST_ALARM']);
-            alarmList['TEST_ALARM'].name.should.equal('TEST_ALARM');
-            alarmList['TEST_ALARM'].description.should.equal('Test description');
+            should.exist(alarmList.TEST_ALARM);
+            alarmList.TEST_ALARM.name.should.equal('TEST_ALARM');
+            alarmList.TEST_ALARM.description.should.equal('Test description');
         });
     });
 
     describe('When a new alarm is raised multiple times', function() {
         it('should only add it once to the risen alarms list', function() {
-            var alarmList;
-
             alarmManagement.raise('TEST_ALARM', 'Test description');
             alarmManagement.raise('TEST_ALARM', 'Test description');
             alarmManagement.raise('TEST_ALARM', 'Test description');
             alarmManagement.raise('TEST_ALARM', 'Test description');
             alarmManagement.raise('TEST_ALARM', 'Test description');
-            alarmList = alarmManagement.list();
+            const alarmList = alarmManagement.list();
 
             Object.keys(alarmList).length.should.equal(1);
         });
@@ -79,22 +72,22 @@ describe('Alarm management system', function() {
         });
 
         it('should disappear from the alarms list', function() {
-            var alarmList = alarmManagement.list();
+            const alarmList = alarmManagement.list();
 
-            should.not.exist(alarmList['TEST_ALARM3']);
+            should.not.exist(alarmList.TEST_ALARM3);
         });
 
         it('should not affect other alarms', function() {
-            var alarmList = alarmManagement.list();
+            const alarmList = alarmManagement.list();
 
-            should.exist(alarmList['TEST_ALARM1']);
-            should.exist(alarmList['TEST_ALARM2']);
-            should.exist(alarmList['TEST_ALARM4']);
+            should.exist(alarmList.TEST_ALARM1);
+            should.exist(alarmList.TEST_ALARM2);
+            should.exist(alarmList.TEST_ALARM4);
         });
     });
 
     describe('When the alarm instrumentation function is used on a function', function() {
-        var interceptedFn;
+        let interceptedFn;
 
         function mockFunction(raiseError, callback) {
             if (raiseError) {
@@ -112,18 +105,18 @@ describe('Alarm management system', function() {
             alarmManagement.raise('TEST_INTERCEPT', 'Test description');
 
             interceptedFn(false, function() {
-                var alarmList = alarmManagement.list();
+                const alarmList = alarmManagement.list();
 
-                should.not.exist(alarmList['TEST_INTERCEPT']);
+                should.not.exist(alarmList.TEST_INTERCEPT);
 
                 done();
             });
         });
         it('should raise the alarm if the funciton returns an error result', function(done) {
             interceptedFn(true, function() {
-                var alarmList = alarmManagement.list();
+                const alarmList = alarmManagement.list();
 
-                should.exist(alarmList['TEST_INTERCEPT']);
+                should.exist(alarmList.TEST_INTERCEPT);
 
                 done();
             });
@@ -131,7 +124,7 @@ describe('Alarm management system', function() {
     });
 
     describe('When an instrumented function calls the callback with a null value', function() {
-        var interceptedFn;
+        let interceptedFn;
 
         function mockFunction(raiseError, callback) {
             if (raiseError) {
@@ -147,9 +140,9 @@ describe('Alarm management system', function() {
 
         it('should not raise the alarm', function(done) {
             interceptedFn(false, function() {
-                var alarmList = alarmManagement.list();
+                const alarmList = alarmManagement.list();
 
-                should.not.exist(alarmList['TEST_INTERCEPT']);
+                should.not.exist(alarmList.TEST_INTERCEPT);
 
                 done();
             });

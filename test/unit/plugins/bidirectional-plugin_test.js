@@ -21,53 +21,54 @@
  * please contact with::daniel.moranjimenez@telefonica.com
  */
 
-'use strict';
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
-    };
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
 
 describe('Bidirectional data plugin', function() {
-    var options = {
+    const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
-        json:
-            utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
+        json: utils.readExampleFile(
+            './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
+        ),
         headers: {
             'fiware-service': 'smartGondor',
             'fiware-servicepath': '/gardens'
@@ -79,12 +80,11 @@ describe('Bidirectional data plugin', function() {
 
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addDeviceProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
-                iotAgentLib.addNotificationMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision
+                );
+                iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
                 done();
             });
         });
@@ -101,19 +101,30 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
-
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -126,7 +137,7 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a device with bidirectionality subscriptions is removed', function() {
-        var deleteRequest = {
+        const deleteRequest = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'DELETE',
             headers: {
@@ -139,26 +150,44 @@ describe('Bidirectional data plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/unsubscribeContext', utils.readExampleFile(
-                        './test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
-                .reply(200, utils.readExampleFile(
-                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
         });
 
         it('should remove its subscriptions from the Context Broker', function(done) {
@@ -173,41 +202,59 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a notification arrives for a bidirectional attribute', function() {
-        var notificationOptions = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            },
-            executedHandler = false;
+        const notificationOptions = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        let executedHandler = false;
 
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/unsubscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/unsubscribeContext',
+                    utils.readExampleFile('./test/unit/examples/subscriptionRequests/simpleSubscriptionRemove.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
         });
 
         afterEach(function() {
@@ -247,13 +294,13 @@ describe('Bidirectional data plugin', function() {
         });
 
         it('should return the transformed values', function(done) {
-            var transformedHandler = false;
+            let transformedHandler = false;
 
             function mockedHandler(device, values, callback) {
-                var latitudeFound = false,
-                    longitudeFound = false;
+                let latitudeFound = false;
+                let longitudeFound = false;
 
-                for (var i = 0; i < values.length; i++) {
+                for (let i = 0; i < values.length; i++) {
                     if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
                         latitudeFound = true;
                     }
@@ -263,7 +310,7 @@ describe('Bidirectional data plugin', function() {
                     }
                 }
 
-                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
                 callback();
             }
 
@@ -279,44 +326,55 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a new Group provisioning request arrives with bidirectional attributes', function() {
-        var provisionGroup = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
-                method: 'POST',
-                json:
-                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            },
-            provisionDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            };
+        const provisionGroup = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const provisionDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
+            ),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
 
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
-
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
             request(provisionGroup, function(error, response, body) {
@@ -330,53 +388,64 @@ describe('Bidirectional data plugin', function() {
     });
 
     describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
-        var provisionGroup = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
-                method: 'POST',
-                json:
-                    utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            },
-            notificationOptions = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            },
-            provisionDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile(
-                    './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'),
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            };
+        const provisionGroup = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const notificationOptions = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/subscriptionRequests/bidirectionalNotification.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const provisionDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
+            ),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
 
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
-
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
         });
 
         afterEach(function() {
@@ -384,13 +453,13 @@ describe('Bidirectional data plugin', function() {
         });
 
         it('should return the transformed values', function(done) {
-            var transformedHandler = false;
+            let transformedHandler = false;
 
             function mockedHandler(device, values, callback) {
-                var latitudeFound = false,
-                    longitudeFound = false;
+                let latitudeFound = false;
+                let longitudeFound = false;
 
-                for (var i = 0; i < values.length; i++) {
+                for (let i = 0; i < values.length; i++) {
                     if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
                         latitudeFound = true;
                     }
@@ -400,7 +469,7 @@ describe('Bidirectional data plugin', function() {
                     }
                 }
 
-                transformedHandler = (values.length >= 2 && longitudeFound && latitudeFound);
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
                 callback();
             }
 
@@ -419,11 +488,12 @@ describe('Bidirectional data plugin', function() {
 });
 
 describe('Bidirectional data plugin and CB is defined using environment variables', function() {
-    var options = {
+    const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
-        json:
-            utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'),
+        json: utils.readExampleFile(
+            './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
+        ),
         headers: {
             'fiware-service': 'smartGondor',
             'fiware-servicepath': '/gardens'
@@ -435,12 +505,11 @@ describe('Bidirectional data plugin and CB is defined using environment variable
         process.env.IOTA_CB_HOST = 'cbhost';
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
-                iotAgentLib.addDeviceProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+                iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
                 iotAgentLib.addConfigurationProvisionMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
-                iotAgentLib.addNotificationMiddleware(
-                    iotAgentLib.dataPlugins.bidirectionalData.notification);
+                    iotAgentLib.dataPlugins.bidirectionalData.groupProvision
+                );
+                iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
                 done();
             });
         });
@@ -458,19 +527,30 @@ describe('Bidirectional data plugin and CB is defined using environment variable
             contextBrokerMock = nock('http://cbhost:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/subscribeContext', utils.readExampleFile(
-                    './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'));
+                .post(
+                    '/v1/subscribeContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/subscriptionResponses/bidirectionalSubscriptionSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createBidirectionalDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json'));
-
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createBidirectionalDeviceSuccess.json')
+                );
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {

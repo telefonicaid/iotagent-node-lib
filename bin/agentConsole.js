@@ -23,53 +23,58 @@
  * please contact with::[contacto@tid.es]
  */
 
-var readline = require('readline'),
-    iotAgentLib = require('../lib/fiware-iotagent-lib'),
-    commandUtils = require('command-shell-lib'),
-    config = require('../config'),
-    logger = require('logops'),
-    async = require('async'),
-    separator = '\n\n\t';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 
-var commands = {
-    'start': {
+const readline = require('readline');
+const iotAgentLib = require('../lib/fiware-iotagent-lib');
+const commandUtils = require('command-shell-lib');
+let config = require('../config');
+const logger = require('logops');
+const async = require('async');
+const separator = '\n\n\t';
+
+const commands = {
+    start: {
         parameters: [],
         description: '\tStart the IoT Agent',
         handler: startApp
     },
-    'stop': {
+    stop: {
         parameters: [],
         description: '\tStop the IoT Agent',
         handler: stopApp
     },
-    'register': {
+    register: {
         parameters: ['id', 'type'],
-        description: '\tRegister a new device in the IoT Agent. The attributes to register will be extracted from the\n' +
+        description:
+            '\tRegister a new device in the IoT Agent. The attributes to register will be extracted from the\n' +
             '\ttype configuration',
         handler: registerDevice
     },
-    'unregister': {
+    unregister: {
         parameters: ['id', 'type'],
         description: '\tUnregister the selected device',
         handler: unregisterDevice
     },
-    'showConfig': {
+    showConfig: {
         parameters: [],
         description: '\tShow the current configuration file',
         handler: showConfig
     },
-    'config': {
+    config: {
         parameters: ['newConfig'],
         description: '\tChange the configuration file to a new one',
         handler: changeConfig
     },
-    'updatevalue': {
+    updatevalue: {
         parameters: ['deviceId', 'deviceType', 'attributes'],
-        description: '\tUpdate a device value in the Context Broker. The attributes should be triads with the following\n' +
+        description:
+            '\tUpdate a device value in the Context Broker. The attributes should be triads with the following\n' +
             '\tformat: "name/type/value" sepparated by commas.',
         handler: updateDeviceValue
     },
-    'listdevices': {
+    listdevices: {
         parameters: [],
         description: '\tList all the devices that have been registered in this IoT Agent session\n',
         handler: listDevices
@@ -77,11 +82,11 @@ var commands = {
 };
 
 function handleError(message) {
-    return function (error) {
+    return function(error) {
         if (error) {
-            console.log('\n\033[31mERROR:\033[0m %s', error.message);
+            console.log('\n\\033[31mERROR:\\033[0m %s', error.message);
         } else {
-            console.log(message)
+            console.log(message);
         }
 
         commandUtils.prompt();
@@ -89,13 +94,13 @@ function handleError(message) {
 }
 
 function listDevices() {
-    iotAgentLib.listDevices(config.service, config.subservice, function (error, devices) {
+    iotAgentLib.listDevices(config.service, config.subservice, function(error, devices) {
         if (error) {
-            console.log('\n\033[31mERROR:\033[0m %s', error.message);
+            console.log('\n\\033[31mERROR:\\033[0m %s', error.message);
         } else {
-            var keys = Object.keys(devices);
+            const keys = Object.keys(devices);
 
-            for (var i = 0; i < keys.length; i++) {
+            for (let i = 0; i < keys.length; i++) {
                 console.log('\n\n%s\n', JSON.stringify(devices[keys[i]], null, 4));
             }
 
@@ -105,16 +110,15 @@ function listDevices() {
 }
 
 function extractAttributes(attributeString, callback) {
-    var attributes = attributeString.split(','),
-        attributesResult = [];
+    const attributes = attributeString.split(',');
+    const attributesResult = [];
 
-    for (var i = 0; i < attributes.length; i++) {
-        var fields = attributes[i].split('/'),
-            attribute = {
-                name: fields[0],
-                type: fields[1]
-            };
-
+    for (let i = 0; i < attributes.length; i++) {
+        const fields = attributes[i].split('/');
+        const attribute = {
+            name: fields[0],
+            type: fields[1]
+        };
 
         if (fields[2]) {
             attribute.value = fields[2];
@@ -135,24 +139,32 @@ function changeConfig(command) {
 }
 
 function writeHandler(id, type, attributes, callback) {
-    console.log('\n\nFake WRITE handler for update in entity [%s] with type [%s]\n%s\n',
-        id, type, JSON.stringify(attributes, null, 4));
+    console.log(
+        '\n\nFake WRITE handler for update in entity [%s] with type [%s]\n%s\n',
+        id,
+        type,
+        JSON.stringify(attributes, null, 4)
+    );
 
     callback(null, {
-        id: id,
-        type: type,
-        attributes: attributes
+        id,
+        type,
+        attributes
     });
 }
 
 function readHandler(id, type, attributes, callback) {
-    console.log('\n\nFake READ handler for update in entity [%s] with type [%s]\n%s\n'
-        , id, type, JSON.stringify(attributes, null, 4));
+    console.log(
+        '\n\nFake READ handler for update in entity [%s] with type [%s]\n%s\n',
+        id,
+        type,
+        JSON.stringify(attributes, null, 4)
+    );
 
-    var sensorData = {
-        id: id,
+    const sensorData = {
+        id,
         isPattern: false,
-        type: type,
+        type,
         attributes: [
             {
                 name: 'luminance',
@@ -181,7 +193,7 @@ function exitAgent(command) {
 }
 
 function registerDevice(command) {
-    var device =  {
+    const device = {
         id: command[0],
         type: command[1]
     };
@@ -199,14 +211,23 @@ function updateDeviceValue(command) {
     iotAgentLib.getDevice(command[0], function(error, device) {
         if (device) {
             extractAttributes(command[2], function(error, attributes) {
-                iotAgentLib.update(device.name, device.type, '', attributes, device,
-                    handleError('Device value updated'));
+                iotAgentLib.update(
+                    device.name,
+                    device.type,
+                    '',
+                    attributes,
+                    device,
+                    handleError('Device value updated')
+                );
             });
         } else {
-            async.waterfall([
-                async.apply(extractAttributes, command[2]),
-                async.apply(iotAgentLib.update, command[0], command[1], '')
-            ], handleError('Device value updated'));
+            async.waterfall(
+                [
+                    async.apply(extractAttributes, command[2]),
+                    async.apply(iotAgentLib.update, command[0], command[1], '')
+                ],
+                handleError('Device value updated')
+            );
         }
     });
 }
@@ -215,20 +236,20 @@ function queryHandler(id, type, attributes, callback) {
     console.log('Handling query for [%s] of type [%s]:\n%s', JSON.stringify(attributes));
 
     callback(null, {
-        type: type,
+        type,
         isPattern: false,
-        id: id,
+        id,
         attributes: []
     });
 }
 
 function updateHandler(id, type, attributes, callback) {
-    console.log("Update message received for device with id [%s] and type [%s]", id, type);
+    console.log('Update message received for device with id [%s] and type [%s]', id, type);
 
     callback(null, {
-        type: type,
+        type,
         isPattern: false,
-        id: id,
+        id,
         attributes: []
     });
 }

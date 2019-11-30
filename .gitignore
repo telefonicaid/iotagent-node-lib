@@ -12,4 +12,5 @@
 .project
 .metadata
 npm-debug.log
+.eslintcache
 
