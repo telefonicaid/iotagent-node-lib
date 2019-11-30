@@ -33,11 +33,7 @@ function readExampleFile(name, raw) {
         /* eslint-disable no-console */
         console.error(JSON.stringify(e));
     }
-
-    if (raw) {
-        return text;
-    }
-    return JSON.parse(text);
+    return raw ? text : JSON.parse(text);
 }
 
 exports.readExampleFile = readExampleFile;
