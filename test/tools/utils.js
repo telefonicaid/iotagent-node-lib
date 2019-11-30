@@ -26,13 +26,18 @@
 var fs = require('fs');
 
 function readExampleFile(name, raw) {
-    var text = fs.readFileSync(name, 'UTF8');
+    let text = null;
+    try {
+        text = fs.readFileSync(name, 'UTF8');
+    } catch (e) {
+        /* eslint-disable no-console */
+        console.error(JSON.stringify(e));
+    }
 
     if (raw) {
         return text;
-    } else {
-        return JSON.parse(text);
     }
+    return JSON.parse(text);
 }
 
 exports.readExampleFile = readExampleFile;
