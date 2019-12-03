@@ -8,7 +8,6 @@ node_js:
 branches:
   only:
     - master
-    - patch-1
 
 services:
  - mongodb
