@@ -24,12 +24,14 @@
 const fs = require('fs');
 
 function readExampleFile(name, raw) {
-    const text = fs.readFileSync(name, 'UTF8');
-
-    if (raw) {
-        return text;
+    let text = null;
+    try {
+        text = fs.readFileSync(name, 'UTF8');
+    } catch (e) {
+        /* eslint-disable no-console */
+        console.error(JSON.stringify(e));
     }
-    return JSON.parse(text);
+    return raw ? text : JSON.parse(text);
 }
 
 exports.readExampleFile = readExampleFile;
