@@ -6,3 +6,5 @@ Fix: log always writing the same correlator id and transaction id (iota-json #42
 Add template to allow `metadata` to be set via the Device API  (#870)
 Fix: correct jexl support for concatenation of float numbers and strings (#868)
 Add Null check within executeWithSecurity() to avoid crash 
+Added feature: selectively ignore some of the measures (iotagent-json#416)
+Add Null check within executeWithSecurity() to avoid crash 
