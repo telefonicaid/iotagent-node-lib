@@ -1,1 +1,2 @@
+Added feature: selectively ignore some of the measures (iotagent-json#416)
 Add Null check within executeWithSecurity() to avoid crash 
