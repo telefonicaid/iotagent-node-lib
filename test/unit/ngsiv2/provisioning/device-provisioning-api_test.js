@@ -45,7 +45,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
+        providerUrl: 'http://smartGondor.com',
+        defaultExplicitAttrs: false
     };
 
 describe('Device provisioning API: Provision devices', function() {
@@ -291,6 +292,169 @@ describe('Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 contextBrokerMock.done();
                 done();
+            });
+        });
+    });
+    
+    describe('When a device provisioning request with explicitAttrs'+
+             ' provision attribute arrives to the IoTA', function () {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionExplicitAttrs.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            iotAgentLib.deactivate(function () {
+                iotAgentConfig.explicitAttrs = false;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function () {
+            iotAgentConfig.explicitAttrs = false;
+        });
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createExplicitAttrsDevice.json'))
+                .reply(204);
+
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+        it('should store the device with explicitAttrs:true device information', function (done) {
+            request(options, function (error, response, body) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
+                    should.exist(results.devices[0].explicitAttrs);
+                    results.devices[0].explicitAttrs.should.equal(true);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device provisioning request without explicitAttrs provision attribute arrives to the IoTA'+
+             ' and explicitAttrs is not configured at group level', function () {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            iotAgentLib.deactivate(function () {
+                iotAgentConfig.explicitAttrs = false;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function () {
+            iotAgentConfig.explicitAttrs = false;
+        });
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
+                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .reply(204);
+
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+        it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            request(options, function (error, response, body) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
+                    should.exist(results.devices[0].explicitAttrs);
+                    results.devices[0].explicitAttrs.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device provisioning request without explicitAttrs provision attribute arrives to the IoTA'+
+             ' and explicitAttrs is configured at group level', function () {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        },
+        groupCreation = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/Thing',
+                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                        /*jshint camelcase: false */
+                        entity_type: 'MicroLights',
+                        cbroker: 'http://192.168.1.1:1026',
+                        explicitAttrs: true
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/' +
+                        'contextRequests/createMinimumProvisionedDevice.json'))
+                .reply(204);
+
+            done();
+        });
+
+        it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            request(groupCreation, function (error, response, body) {
+                request(options, function (error, response, body) {
+                    iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
+                        should.exist(results.devices[0].explicitAttrs);
+                        results.devices[0].explicitAttrs.should.equal(true);
+                        done();
+                    });
+                });
             });
         });
     });
