@@ -190,10 +190,10 @@ describe('Query device information in the Context Broker', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
         });
 
-        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
+        it('should return a ATTRIBUTE_NOT_FOUND_ERROR', function(done) {
             iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
                 should.exist(error);
-                error.name.should.equal('DEVICE_NOT_FOUND');
+                error.name.should.equal('ATTRIBUTE_NOT_FOUND');
                 done();
             });
         });
