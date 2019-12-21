@@ -712,6 +712,7 @@ npm test
 ```
 
 ### Coding guidelines
+
 eslint
 
 Uses provided `.eslintrc.json` flag file.
@@ -759,7 +760,7 @@ npm run clean
 
 ### Prettify Code
 
-Runs the [prettier](https://prettier.io) code formatter to ensure consistent code style (whitespacing, parameter placement and breakup of long lines etc.) within the codebase.
+Runs the [prettier](https://prettier.io) code formatter to ensure consistent code style (whitespacing, parameter placement and breakup of long lines etc.) within the codebase. Uses the and `prettierrc.json` flag file.
 
 ```bash
 # Use git-bash on Windows
