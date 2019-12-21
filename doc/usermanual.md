@@ -715,8 +715,7 @@ npm test
 
 eslint
 
-Uses provided `.eslintrc.json` flag file.
-To check source code style, type
+Uses the provided `.eslintrc.json` flag files. To check source code style, type
 
 ```bash
 npm run lint
@@ -760,7 +759,8 @@ npm run clean
 
 ### Prettify Code
 
-Runs the [prettier](https://prettier.io) code formatter to ensure consistent code style (whitespacing, parameter placement and breakup of long lines etc.) within the codebase. Uses the and `prettierrc.json` flag file.
+Runs the [prettier](https://prettier.io) code formatter to ensure consistent code style (whitespacing, parameter placement and breakup of long lines etc.) within the codebase. Uses the `prettierrc.json` flag file. The codebase
+also offers an `.editorconfig` to maintain consistent coding styles across multiple IDEs.
 
 ```bash
 # Use git-bash on Windows
