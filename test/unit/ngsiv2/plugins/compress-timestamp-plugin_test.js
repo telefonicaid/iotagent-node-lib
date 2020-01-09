@@ -122,7 +122,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
 
 describe('Timestamp compression plugin', function() {
     beforeEach(function(done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.updateNgsi2);
