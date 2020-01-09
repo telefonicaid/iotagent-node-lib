@@ -650,7 +650,7 @@ describe('Active attributes test', function() {
     });
 
 
-     xdescribe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
+    describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
         var newValues = [
             {
                 name: 'luminosity',
@@ -666,7 +666,7 @@ describe('Active attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/lamp1/attrs',
-                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'))
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'))
                 .query({type: 'Lamp'})
                 .reply(204);
 

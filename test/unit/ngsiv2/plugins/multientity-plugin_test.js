@@ -340,6 +340,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
+    /* jshint maxlen: 200 */
     describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
         var values = [
             {
