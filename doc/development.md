@@ -77,3 +77,24 @@ restored.
 # Use git-bash on Windows
 npm run clean
 ```
+
+
+### Documentation Markdown validation
+
+Checks the markdown documentation for consistency
+
+```bash
+# Use git-bash on Windows
+npm run lint:md
+```
+
+
+### Documentation Spell-checking
+
+Checks the markdown documentation for spelling and grammar errors, dead links & etc.
+
+```bash
+# Use git-bash on Windows
+npm run lint:text
+```
+
