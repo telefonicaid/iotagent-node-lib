@@ -21,7 +21,6 @@ pages:
     - 'How to develop a new IoT Agent': 'howto.md'
     - 'North Port - NGSI Interactions': 'northboundinteractions.md'
     - 'Development Documentation': development.md
-    - 'Testing': 'testing.md'
   - 'Installation & Administration Manual': 
     - 'Installation Guide': 'installationguide.md'
     - 'Operations (logs & alarms)': 'operations.md'
