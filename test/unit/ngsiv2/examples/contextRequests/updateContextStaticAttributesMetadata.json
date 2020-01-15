@@ -1,0 +1,16 @@
+{
+  "luminosity": {
+    "value": "100",
+    "type": "text"
+  },
+  "controlledProperty": {
+    "value": "StaticValue",
+    "type": "text",
+    "metadata": {
+      "includes": {
+        "type": "Text",
+        "value": "bell"
+      }
+    }
+  }
+}
