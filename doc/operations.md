@@ -77,7 +77,7 @@ provider log for errors and the security configuration in the IoTAgent. This may
 The JSON response body returned by the OAuth2 provider does not include a field `access_token`. Check the OAuth2 logs
 and configuration.
 
-##### ORION-001: Connection error creating inital entity in the Context Broker: %s
+##### ORION-001: Connection error creating initial entity in the Context Broker: %s
 
 There was a connectivity error accessing Context Broker to create an initial entity (or the Context Broker was down).
 Check connectivity between the machines, the status of the remote Context Broker and the configuration of the IoTAgent.

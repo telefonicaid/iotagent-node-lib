@@ -20,7 +20,7 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
--   If you want to use NGSIv2:
+-   If you want to use NGSI v2:
 
 ```javascript
 {
@@ -179,7 +179,7 @@ used for the same purpose. For instance:
     'http://192.168.56.1:4041'.
 -   **deviceRegistrationDuration**: duration of the registrations as Context Providers and the subscriptions done by
     bidirectional plugin, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'. Only used
-    if agent is configured in NGSIv1 mode. In NGSIv2 mode the setting is ignored (registrations and subscriptions are
+    if agent is configured in NGSI v1 mode. In NGSI v2 mode the setting is ignored (registrations and subscriptions are
     non-expirable and the IOTA manages its removal explicitely).
 -   **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled
     automatically by each IoTA).
@@ -204,7 +204,7 @@ used for the same purpose. For instance:
 -   **pollingDaemonFrequency**: time between collection of expired commands in milliseconds. This attribute is optional
     (if this parameter doesn't exist the polling daemon won't be started).
 -   **autocast**: When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type
-    (only for NGSIv2).
+    (only for NGSI v2).
 -   **multiCore**: When enabled, the IoT Agents runs in multi-thread environment to take advantage of multi-core
     systems. It allows two values `true` or `false`. This attribute is optional with default to false, which means that
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
@@ -219,46 +219,46 @@ with container-based technologies, like Docker, Heroku, etc...
 The following table shows the accepted environment variables, as well as the configuration parameter the variable
 overrides.
 
-| Environment variable      | Configuration attribute       |
-| :------------------------ | :---------------------------- |
-| IOTA_CB_URL               | contextBroker.url             |
-| IOTA_CB_HOST              | contextBroker.host            |
-| IOTA_CB_PORT              | contextBroker.port            |
-| IOTA_CB_NGSI_VERSION      | contextBroker.ngsiVersion     |
-| IOTA_NORTH_HOST           | server.host                   |
-| IOTA_NORTH_PORT           | server.port                   |
-| IOTA_PROVIDER_URL         | providerUrl                   |
-| IOTA_AUTH_ENABLED         | authentication.enabled        |
-| IOTA_AUTH_TYPE            | authentication.type           |
-| IOTA_AUTH_HEADER          | authentication.header         |
-| IOTA_AUTH_URL             | authentication.url            |
-| IOTA_AUTH_HOST            | authentication.host           |
-| IOTA_AUTH_PORT            | authentication.port           |
-| IOTA_AUTH_USER            | authentication.user           |
-| IOTA_AUTH_PASSWORD        | authentication.password       |
-| IOTA_AUTH_CLIENT_ID       | authentication.clientId       |
-| IOTA_AUTH_CLIENT_SECRET   | authentication.clientSecret   |
-| IOTA_AUTH_TOKEN_PATH      | authentication.tokenPath      |
-| IOTA_AUTH_PERMANENT_TOKEN | authentication.permanentToken |
-| IOTA_REGISTRY_TYPE        | deviceRegistry.type           |
-| IOTA_LOG_LEVEL            | logLevel                      |
-| IOTA_TIMESTAMP            | timestamp                     |
-| IOTA_IOTAM_URL            | iotManager.url                |
-| IOTA_IOTAM_HOST           | iotManager.host               |
-| IOTA_IOTAM_PORT           | iotManager.port               |
-| IOTA_IOTAM_PATH           | iotManager.path               |
-| IOTA_IOTAM_AGENTPATH      | iotManager.agentPath          |
-| IOTA_IOTAM_PROTOCOL       | iotManager.protocol           |
-| IOTA_IOTAM_DESCRIPTION    | iotManager.description        |
-| IOTA_MONGO_HOST           | mongodb.host                  |
-| IOTA_MONGO_PORT           | mongodb.port                  |
-| IOTA_MONGO_DB             | mongodb.db                    |
-| IOTA_MONGO_REPLICASET     | mongodb.replicaSet            |
-| IOTA_MONGO_RETRIES        | mongodb.retries               |
-| IOTA_MONGO_RETRY_TIME     | mongodb.retryTime             |
-| IOTA_SINGLE_MODE          | singleConfigurationMode       |
-| IOTA_APPEND_MODE          | appendMode                    |
-| IOTA_POLLING_EXPIRATION   | pollingExpiration             |
-| IOTA_POLLING_DAEMON_FREQ  | pollingDaemonFrequency        |
-| IOTA_AUTOCAST             | autocast                      |
-| IOTA_MULTI_CORE           | multiCore                     |
+| Environment variable      | Configuration attribute         |
+| :------------------------ | :------------------------------ |
+| IOTA_CB_URL               | `contextBroker.url`             |
+| IOTA_CB_HOST              | `contextBroker.host`            |
+| IOTA_CB_PORT              | `contextBroker.port`            |
+| IOTA_CB_NGSI_VERSION      | `contextBroker.ngsiVersion`     |
+| IOTA_NORTH_HOST           | `server.host`                   |
+| IOTA_NORTH_PORT           | `server.port`                   |
+| IOTA_PROVIDER_URL         | `providerUrl`                   |
+| IOTA_AUTH_ENABLED         | `authentication.enabled`        |
+| IOTA_AUTH_TYPE            | `authentication.type`           |
+| IOTA_AUTH_HEADER          | `authentication.header`         |
+| IOTA_AUTH_URL             | `authentication.url`            |
+| IOTA_AUTH_HOST            | `authentication.host`           |
+| IOTA_AUTH_PORT            | `authentication.port`           |
+| IOTA_AUTH_USER            | `authentication.user`           |
+| IOTA_AUTH_PASSWORD        | `authentication.password`       |
+| IOTA_AUTH_CLIENT_ID       | `authentication.clientId`       |
+| IOTA_AUTH_CLIENT_SECRET   | `authentication.clientSecret`   |
+| IOTA_AUTH_TOKEN_PATH      | `authentication.tokenPath`      |
+| IOTA_AUTH_PERMANENT_TOKEN | `authentication.permanentToken` |
+| IOTA_REGISTRY_TYPE        | `deviceRegistry.type`           |
+| IOTA_LOG_LEVEL            | `logLevel`                      |
+| IOTA_TIMESTAMP            | `timestamp`                     |
+| IOTA_IOTAM_URL            | `iotManager.url`                |
+| IOTA_IOTAM_HOST           | `iotManager.host`               |
+| IOTA_IOTAM_PORT           | `iotManager.port`               |
+| IOTA_IOTAM_PATH           | `iotManager.path`               |
+| IOTA_IOTAM_AGENTPATH      | `iotManager.agentPath`          |
+| IOTA_IOTAM_PROTOCOL       | `iotManager.protocol`           |
+| IOTA_IOTAM_DESCRIPTION    | `iotManager.description`        |
+| IOTA_MONGO_HOST           | `mongodb.host`                  |
+| IOTA_MONGO_PORT           | `mongodb.port`                  |
+| IOTA_MONGO_DB             | `mongodb.db`                    |
+| IOTA_MONGO_REPLICASET     | `mongodb.replicaSet`            |
+| IOTA_MONGO_RETRIES        | `mongodb.retries`               |
+| IOTA_MONGO_RETRY_TIME     | `mongodb.retryTime`             |
+| IOTA_SINGLE_MODE          | `singleConfigurationMode`       |
+| IOTA_APPEND_MODE          | `appendMode`                    |
+| IOTA_POLLING_EXPIRATION   | `pollingExpiration`             |
+| IOTA_POLLING_DAEMON_FREQ  | `pollingDaemonFrequency`        |
+| IOTA_AUTOCAST             | `autocast`                      |
+| IOTA_MULTI_CORE           | `multiCore`                     |

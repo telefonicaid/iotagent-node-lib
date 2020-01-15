@@ -1,6 +1,6 @@
 ## Getting Started
 
-Every IoT Agent whcih uses the library is different, but the concepts for provisioning IoT devices remain the same
+Every IoT Agent which uses the library is different, but the concepts for provisioning IoT devices remain the same
 regardless of protocol.
 
 ### `config.js` - IoT Agent settings
@@ -31,7 +31,7 @@ config = {
 ```
 
 In this case the context broker is called `orion` and is listening on port `1026`, the IoT Agent can be provisioned by
-sending requests to port `4041` which is also the port used to receive NSGI requests. The IoT Agent is holding the
+sending requests to port `4041` which is also the port used to receive NGSI requests. The IoT Agent is holding the
 device mappings in memory.
 
 The remaining settings help to define the NGSI interactions - the IoT Agent will be using the `fiware-service=openiot`

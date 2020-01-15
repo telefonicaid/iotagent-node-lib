@@ -100,8 +100,8 @@ decommission devices.
 
 ### Agent Console
 
-A command line client to experiment with the library is packed with it. The
-command line client can be started using the following command:
+A command-line client to experiment with the library is packed with it. The
+command-line client can be started using the following command:
 
 ```console
 bin/agentConsole.js
@@ -112,7 +112,7 @@ and stop an IoT agent, register and unregister devices, send measures mimicking
 the device and receive updates of the device data. Take into account that, by
 default, the console uses the same `config.js` file than the IoT Agent.
 
-The command line client creates a console that offers the following options:
+The command-line client creates a console that offers the following options:
 
 ```text
 stressInit
@@ -127,7 +127,7 @@ stressCommit <delay> <times> <threads> <initTime>
 
 exit
 
-	Exit from the command line.
+	Exit from the command-line.
 
 start
 
@@ -166,7 +166,7 @@ listdevices
 
 ### Agent tester
 
-#### Command line testing
+#### Command-line testing
 
 The library also offers a Context Broker and IoT Agent client that can be used
 to:
@@ -184,7 +184,7 @@ the project:
 bin/iotAgentTester.js
 ```
 
-From the command line, the `help` command can be used to show a description of
+From the command-line, the `help` command can be used to show a description of
 the currently supported features. These are the following:
 
 ```text
@@ -200,7 +200,7 @@ stressCommit <delay> <times> <threads> <initTime>
 
 exit
 
-	Exit from the command line.
+	Exit from the command-line.
 
 update <entity> <type> <attributes>
 
@@ -308,21 +308,21 @@ respectively. The new configurations will be deleted upon startup.
 
 #### Creating specialized testers
 
-The command line testing tools make use of the
+The command-line testing tools make use of the
 [command-node Node.js library](https://github.com/telefonicaid/command-shell-lib)
-for command line utils. In order to help creating testing tools for IoTAgents of
+for command-line utils. In order to help creating testing tools for IoTAgents of
 specific protocols, all the commands of the library tester are offered as a
-array that can be directly imported into other Command Line tools, using the
+array that can be directly imported into other Command-Line tools, using the
 following steps:
 
--   Require the `iotagent-node-lib` command line module in your command line
+-   Require the `iotagent-node-lib` command-line module in your command-line
     tool:
 
 ```javascript
   var iotaCommands = require('iotagent-node-lib').commandLine;
 ```
 
--   Initialize the command line utils (the initialization function takes two
+-   Initialize the command-line utils (the initialization function takes two
     arguments, that will be explained in detail below:
 
 ```javascript
@@ -335,14 +335,14 @@ iotaCommands.init(configCb, configIot);
 commands = commands.concat(commands, iotaCommands.commands);
 ```
 
--   Execute the command line interpreter as usual:
+-   Execute the command-line interpreter as usual:
 
 ```javascript
 clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
 ```
 
-The command line module makes use of two configuration objects. Both can be
-shown and edited in the command line using the provided commands, but a default
+The command-line module makes use of two configuration objects. Both can be
+shown and edited in the command-line using the provided commands, but a default
 value must be present.
 
 The Context Broker configuration object holds all the information about the

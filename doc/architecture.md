@@ -4,7 +4,7 @@ The following section defines the archtecture and message flow which is common t
 
 ### Device to NGSI Mapping
 
-Each Device will be mapped as an Entity associated to a Context Provider: the Device Id will be mapped by default to the
+Each Device will be mapped as an Entity associated to a Context Provider: the Device ID will be mapped by default to the
 entity ID and the type of the entity will be selected by the IoT Agent in a protocol-dependent way (e.g: with different
 URLs for different types). Both the name and type will be configurable by the user, either by type configuration or with
 the device preprovisioning.
@@ -108,14 +108,14 @@ device is removed from the IoT Agent's internal registry.
 
 When a request for data from a lazy attribute arrives to the Context Broker, it forwards the request to the Context
 Provider of that entity, in this case the IoT Agent. The IoT Agent will in turn ask the device for the information
-needed, transform that information to a NSGI format and return it to the Context Broker. The latter will the forward the
+needed, transform that information to a NGSI format and return it to the Context Broker. The latter will the forward the
 response to the caller, transparently.
 
 #### Commands
 
 **IMPORTANT NOTE:** at the present moment, commands (both push and poll) are supported only in the case of explictely
 provisioned agents. For autoprovisioned agents commands are not currently supported, although [an
-issue](https://github.com/telefonicaid/iot agent-node-lib/issues/572) has been created about this functionality.
+issue](https://github.com/telefonicaid/iot-agent-node-lib/issues/572) has been created about this functionality.
 
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command
 will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the
@@ -166,7 +166,7 @@ The library does not deal with protocol transformation or South Bound communicat
 
 #### Active attributes
 
-Whenever a device proactively sends a message to the IoT Agent, it should tranform its data to the appropriate NGSI
+Whenever a device proactively sends a message to the IoT Agent, it should transform its data to the appropriate NGSI
 format, and send it to the Context Broker as an `updateContext` request.
 
 ### Features
@@ -252,5 +252,5 @@ particularly under consideration:
     devices each time a device sends a measure. To this extent, two flavours of the Device Registry has been provided: a
     transient one (In-memory Registry) and a persistent one (based in MongoDB).
 -   The IoT Agent does not care about the origin of the data, its type or structure. The mapping from raw data to the
-    entity model, if there is any, is a responsability of the particular IoT Agent implementation, or of another third
+    entity model, if there is any, is a responsibility of the particular IoT Agent implementation, or of another third
     party library.

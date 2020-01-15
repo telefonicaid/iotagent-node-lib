@@ -15,7 +15,7 @@
 ## Overview
 
 This document's goal is to show how to develop a new IoT Agent step by step. To do so, a simple invented HTTP protocol
-will be used, so it can be tested with simple command line instructions as `curl` and `nc`.
+will be used, so it can be tested with simple command-line instructions as `curl` and `nc`.
 
 ### Protocol
 
@@ -31,8 +31,8 @@ Where:
 
 -   **i**: is the device ID.
 -   **k**: the API Key for the device's service.
--   **d**: the data payload, consisting of key/value pairs separated by a pipe ('|'), with each pair separated by comma
-    (',');
+-   **d**: the data payload, consisting of key-value pairs separated by a pipe (`|`), with each pair separated by comma
+    (`,`);
 
 ### Requirements
 
@@ -433,7 +433,7 @@ iotAgentLib.setDataQueryHandler(queryContextHandler);
 #### IOTA Testing
 
 In order to test it, we need to create an HTTP server simulating the device. The quickest way to do that may be using
-netcat. In order to start it just run the following command from the command line (Linux and Mac only):
+netcat. In order to start it just run the following command from the command-line (Linux and Mac only):
 
 ```bash
 nc -l 9999
@@ -601,7 +601,7 @@ used for registering the device in external services, for storing important info
 in new ports in the case of new configuration. For the simple example we are developing, we will just print the
 information we are receiving whenever a new device or configuration is provisioned.
 
-We need to complete two steps to have a working set of provisioning handlers. First of all, defining the handlers
+We need to complete two further steps to have a working set of provisioning handlers. First of all, defining the handlers
 themselves. Here we can see the definition of the configuration handler:
 
 ```javascript

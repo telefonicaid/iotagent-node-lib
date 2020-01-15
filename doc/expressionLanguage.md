@@ -10,7 +10,7 @@
     -   [Values](#values)
     -   [Allowed operations](#allowed-operations)
 -   [Examples of expressions](#examples-of-expressions)
--   [NGSIv2 support](#ngsiv2-support)
+-   [NGSI v2 support](#ngsi-v2-support)
 
 ## Overview
 
@@ -113,7 +113,7 @@ level: 85.3
 The only expression rule that will be executed will be that of the 'fillingLevel' attribute. It will produce the value
 '0.853' that will be sent to the Context Broker.
 
-Note that expressions are only applied if the attribute name (as received by the IOT Agent in the southbound interface)
+Note that expressions are only applied if the attribute name (as received by the IoT Agent in the southbound interface)
 matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following
 example:
 
@@ -170,9 +170,9 @@ The way the parse() function works (at expressionParser.js) is as follows:
     error will be reported to the device.
 
 However, the usage that the Expression Translation plugin does of that function is using always String type. That means
-that at the end, the result of the expression will be always cast to String. However, in NGSIv2 that String result could
+that at the end, the result of the expression will be always cast to String. However, in NGSI v2 that String result could
 be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at the
-[NGSIv2 support](#ngsiv2) for more information on this.
+[NGSI v2 support](#ngsiv2) for more information on this.
 
 ### Values
 
@@ -203,7 +203,7 @@ The following operations are currently available, divided by attribute type
 -   multiplication ('\*')
 -   division ('/')
 -   addition ('+')
--   substraction ('-' binary)
+-   subtraction ('-' binary)
 -   negation ('-' unary)
 -   power ('^')
 
@@ -235,7 +235,7 @@ The following table shows expressions and their expected outcomes for a measure 
 | '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
 | '@name value is @value'     | 'DevId629 value is 6' |
 
-## NGSIv2 support
+## NGSI v2 support
 
 As it is explained in previous sections, expressions can have two return types: String or Number, being the former one
 the default. Whenever an expression is executed without error, its result will be cast to the configured type.
@@ -244,7 +244,7 @@ On one hand, in NGSIv1 since all attributes' values are of type String, in the e
 set always to String and the transformation of the information coming from the SouthBound is done using replace
 instruction. Therefore, values sent to the CB will always be Strings. This can be seen in previous examples.
 
-On the other hand, NGSIv2 fully supports all the types described in the JSON specification (string, number, boolean,
+On the other hand, NGSI v2 fully supports all the types described in the JSON specification (string, number, boolean,
 object, array and null). Therefore, the result of an expression must be cast to the appropriate type (the type used to
 define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of the
 value that is being sent.
@@ -286,7 +286,7 @@ status: true
 4. The attribute type is `Boolean` so the result is casted to Boolean before sending it to CB. The cast of `20` to
    boolean is false (only `true` or `1` are cast to true).
 
-More examples of this workflow are presented below for the different types of attributes supported in NGSIv2 and the two
+More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the two
 possible types of expressions: Integer (arithmetic operations) or Strings.
 
 -   pressure (of type "Number" and value's type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 \* 20 } -> $ { 1040 } -> $

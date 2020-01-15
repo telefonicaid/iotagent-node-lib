@@ -59,7 +59,7 @@ npm run watch
 
 Istanbul
 
-Analizes the code coverage of your tests.
+Analyze the code coverage of your tests.
 
 To generate an HTML coverage report under `site/coverage/` and to print out a summary, type
 

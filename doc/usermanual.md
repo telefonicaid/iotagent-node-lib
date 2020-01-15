@@ -147,18 +147,18 @@ Context Broker for all its lazy attributes.
 
 The device Object can have the following attributes:
 
--   id: Device ID of the device.
--   type: type to be assigned to the device.
--   name: name that will be used for the Entity representing the device in the Context Broker.
--   service: name of the service associated with the device.
--   subservice: name of the subservice associated with th device.
--   lazy: list of lazy attributes with their types.
--   active: list of active attributes with their types.
--   staticAttributes: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
--   internalAttributes: optional section with free format, to allow specific IoT Agents to store information along with
+-   `id`: Device ID of the device.
+-   `type`: type to be assigned to the device.
+-   `name`: name that will be used for the Entity representing the device in the Context Broker.
+-   `service`: name of the service associated with the device.
+-   `subservice`: name of the subservice associated with th device.
+-   `lazy`: list of lazy attributes with their types.
+-   `active`: list of active attributes with their types.
+-   `staticAttributes`: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
+-   `internalAttributes`: optional section with free format, to allow specific IoT Agents to store information along with
     the devices in the Device Registry.
 
-The device id and type are required fields for any registration. The rest of the attributes are optional, but, if they
+The device `id` and `type` are required fields for any registration. The rest of the attributes are optional, but, if they
 are not present in the function call arguments, the type must be registered in the configuration, so the service can
 infer their default values from the configured type. If an optional attribute is not given in the parameter list and
 there isn't a default configuration for the given type, a TypeNotFound error is raised.
@@ -629,12 +629,12 @@ function unsubscribe(device, id, callback)
 
 ###### Description
 
-Removes a single subscription from the selected device, identified by its id.
+Removes a single subscription from the selected device, identified by its ID.
 
 ###### Params
 
--   device: Object containing all the information about a particular device.
--   id: ID of the subscription to remove.
+-   `device`: Object containing all the information about a particular device.
+-   `id`: ID of the subscription to remove.
 
 ##### iotagentLib.ensureSouthboundDomain()
 

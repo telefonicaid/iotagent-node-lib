@@ -29,7 +29,7 @@ assigned type, its configuration values can be extracted from those of the type.
 The IoT Agents provide two means to define those service groups:
 
 -   Static **Type Configuration**: configuring the `ngsi.types` attribute within the `config.js` file.
--   Dynamic **Configuration API**: making use of the API URLS in the configuration URI, `/iot/services`. Please, note
+-   Dynamic **Configuration API**: making use of the API URLs in the configuration URI, `/iot/services`. Please, note
     that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name
     of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
@@ -43,7 +43,7 @@ subservices of the service given by the `fiware-service` header.
 
 For every service group, the pair (resource, apikey) _must_ be unique (as it is used to identify which group to assign
 to which device). Those operations of the API targeting specific resources will need the use of the `resource` and
-`apikey` parameters to select the apropriate instance.
+`apikey` parameters to select the appropriate instance.
 
 Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
 naming; e.g.: subservice -> service_path).
@@ -67,7 +67,7 @@ information configured:
     must be provided, additional `metadata` is optional.
 -   **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only
     needed for secured scenarios). Trust tokens may be called `access_tokens` by some Oauth2 providers.
--   **cbHost**: Context Broker host url. This option can be used to override the global CB configuration for specific
+-   **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific
     types of devices.
 
 ### Service Group Model
@@ -77,19 +77,19 @@ correspondence between the API resource fields and the same fields in the databa
 
 | Payload Field       | DB Field           | Definition                                                                                                                                                       |
 | ------------------- | ------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| service             | service            | Service of the devices of this type                                                                                                                              |
-| subservice          | subservice         | Subservice of the devices of this type.                                                                                                                          |
-| resource            | resource           | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                              |
-| apikey              | apikey             | API Key string.                                                                                                                                                  |
-| timestamp           | timestamp          | Optional flagw whether to include the `TimeInstant`within each entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp |
-| entity_type         | entity_type        | name of the Entity `type` to assign to the group.                                                                                                                |
-| trust               | trust              | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                              |
-| cbHost              | cbHost             | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                       |
-| lazy                | lazy               | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                        |
-| commands            | commands           | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                 |
-| attributes          | attributes         | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                   |
-| static_attributes   | staticAttributes   | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                      |
-| internal_attributes | internalAttributes | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                              |
+| `service`             | `service`            | Service of the devices of this type                                                                                                                              |
+| `subservice`          | `subservice`         | Subservice of the devices of this type.                                                                                                                          |
+| `resource`            | `resource`           | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                              |
+| `apikey`              | `apikey`             | API Key string.                                                                                                                                                  |
+| `timestamp`           | `timestamp`          | Optional flagw whether to include the `TimeInstant`within each entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp |
+| `entity_type`         | `entity_type`        | name of the Entity `type` to assign to the group.                                                                                                                |
+| `trust`               | `trust`              | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                              |
+| `cbHost`              | `cbHost`             | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                       |
+| `lazy`                | `lazy`               | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                        |
+| `commands`            | `commands`           | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                 |
+| `attributes`          | `attributes`         | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                   |
+| `static_attributes`   | `staticAttributes`   | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                      |
+| `internal_attributes` | `internalAttributes` | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                              |
 
 ### Service Group Endpoint
 
@@ -205,23 +205,23 @@ the API resource fields and the same fields in the database model.
 
 | Payload Field             | DB Field           | Definition                                                                                                                                                         | Example of value                              |
 | ------------------------- | ------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- |
-| device_id                 | id                 | Device ID that will be used to identify the device.                                                                                                                | UO834IO                                       |
-| service                   | service            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                             | smartGondor                                   |
-| service_path              | subservice         | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                              | /gardens                                      |
-| entity_name               | name               | Name of the entity representing the device in the Context Broker                                                                                                   | ParkLamplight12                               |
-| entity_type               | type               | Type of the entity in the Context Broker                                                                                                                           | Lamplights                                    |
-| timezone                  | timezone           | Time zone of the sensor if it has any                                                                                                                              | America/Santiago                              |
-| timestamp                 | timestamp          | Optional flag about add or not the TimeInstant attribute to devide entity created, as well as a TimeInstant metadata to each attribute, with the current timestamp | true                                          |
-| apikey                    | apikey             | Optional Apikey key string to use instead of group apikey                                                                                                          |
+| `device_id`                 | `id`                 | Device ID that will be used to identify the device.                                                                                                                | UO834IO                                       |
+| `service`                   | `service`            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                             | smartGondor                                   |
+| `service_path`              | `subservice`         | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                              | /gardens                                      |
+| `entity_name`               | `name`               | Name of the entity representing the device in the Context Broker                                                                                                   | ParkLamplight12                               |
+| `entity_type`               | `type`               | Type of the entity in the Context Broker                                                                                                                           | Lamplights                                    |
+| `timezone`                  | `timezone`           | Time zone of the sensor if it has any                                                                                                                              | America/Santiago                              |
+| `timestamp`                 | `timestamp`          | Optional flag about whether or not to addthe TimeInstant attribute to the device entity created, as well as a TimeInstant metadata to each attribute, with the current timestamp | true                                          |
+| `apikey`                    | `apikey`             | Optional Apikey key string to use instead of group apikey                                                                                                          |
 | 9n4hb1vpwbjozzmw9f0flf9c2 |
-| endpoint                  | endpoint           | Endpoint where the device is going to receive commands, if any.                                                                                                    | http://theDeviceUrl:1234/commands             |
-| protocol                  | protocol           | Name of the device protocol, for its use with an IoT Manager.                                                                                                      | IoTA-UL                                       |
-| transport                 | transport          | Name of the device transport protocol, for the IoT Agents with multiple transport protocols.                                                                       | MQTT                                          |
-| attributes                | active             | List of active attributes of the device                                                                                                                            | `[ { "name": "attr_name", "type": "Text" } ]` |
-| lazy                      | lazy               | List of lazy attributes of the device                                                                                                                              | `[ { "name": "attr_name", "type": "Text" } ]` |
-| commands                  | commands           | List of commands of the device                                                                                                                                     | `[ { "name": "attr_name", "type": "Text" } ]` |
-| internal_attributes       | internalAttributes | List of internal attributes with free format for specific IoT Agent configuration                                                                                  | LWM2M mappings from object URIs to attributes |
-| static_attributes         | staticAttributes   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                             | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `endpoint`                  | `endpoint`           | Endpoint where the device is going to receive commands, if any.                                                                                                    | http://theDeviceUrl:1234/commands             |
+| `protocol`                  | `protocol`           | Name of the device protocol, for its use with an IoT Manager.                                                                                                      | IoTA-UL                                       |
+| `transport`                 | `transport`          | Name of the device transport protocol, for the IoT Agents with multiple transport protocols.                                                                       | MQTT                                          |
+| `attributes`                | `active`             | List of active attributes of the device                                                                                                                            | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `lazy`                      | `lazy`               | List of lazy attributes of the device                                                                                                                              | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `commands`                 | `commands`           | List of commands of the device                                                                                                                                     | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `internal_attributes`       | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration                                                                                  | LWM2M mappings from object URIs to attributes |
+| `static_attributes`         | `staticAttributes`   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                             | `[ { "name": "attr_name", "type": "Text" } ]` |
 
 #### Attribute lists
 
@@ -229,7 +229,7 @@ In the device model there are three list of attributes that can be declared: att
 have the same syntax, an object containing the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): id of the attribute in the target entity in the Context Broker.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 

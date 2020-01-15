@@ -14,8 +14,8 @@ configured, and the `authentication.enabled` subattribute should have the value 
 When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured
 Context Broker, he should follow this steps:
 
--   First, a Trust Token Id should be requested to Keystone, using the service administrator credentials, the role ID
-    and the IOT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
+-   First, a Trust Token ID should be requested to Keystone, using the service administrator credentials, the role ID
+    and the IoT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
 
 ```bash
 curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
@@ -37,9 +37,9 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 }'
 ```
 
--   Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token Id in
+-   Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token ID in
     its configuration.
--   Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust Token Id to generate a
+-   Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust Token ID to generate a
     temporary access token, that is attached to the request (in the `X-Auth-token` header) (using Keystone API
     https://developer.openstack.org/api-ref/identity/v3-ext/#consuming-a-trust).
 
@@ -118,7 +118,7 @@ The arguments for any middleware are the NGSI data over which it can operate:
 -   a typeInformation object containing all the information about the device stored during registration.
 -   and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call
     this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an
-    optional error in the first argument and the same arguments recieved (potentially modified) as the following.
+    optional error in the first argument and the same arguments received (potentially modified) as the following.
 
 In order to manage the middlewares to the system, the following functions can be used:
 
@@ -155,8 +155,8 @@ it in queries (and viceversa, receive the extended one in queries and return it 
 
 ##### Attribute Alias plugin (attributeAlias)
 
-In the Device provision, an id can be specified for each attribute, along with its name. The Id can be used then as the
-left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the id and name
+In the Device provision, an ID can be specified for each attribute, along with its name. The ID can be used then as the
+left part of a mapping from attribute names in the south bound to attribute names in the North Bound. If the ID and name
 attributes are used in this way, this plugin makes the translation from one to the other automatically.
 
 ##### Event plugin (addEvents)
@@ -269,11 +269,11 @@ how the value is then progressed to the device are protocol-specific.
 
 In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
 implementations, a data migration tool has been developed. This data migration tool has been integrated as a command in
-the IoTAgent command line tester.
+the IoTAgent command-line tester.
 
 In order to perform a full migration, follow this steps:
 
--   From the project root, start the command line tester:
+-   From the project root, start the command-line tester:
 
 ```bash
     bin/iotAgentTester.js

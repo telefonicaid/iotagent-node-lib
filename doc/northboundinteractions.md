@@ -40,7 +40,7 @@ information should always be sent:
 
 The practical part of this document has the following requirements:
 
--   A Unix-line command line interpreter. All the workshop will take place in the command line, making use of different
+-   A Unix-line command-line interpreter. All the workshop will take place in the command-line, making use of different
     command-line tools to simulate the different interactions.
 
 -   Curl command-line HTTP client should be installed.
@@ -73,7 +73,7 @@ In this document, we are going to focus on the NGSI interactions between the IoT
 three actors will appear eventually in sequence diagrams, as all of them take part at some point in the interactions.
 
 All the interactions between the IoTAgents and the Context Broker are standard NGSI, as described in the
-[Fiware Orion Context Broker manual](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv1/index.html#ngsi10-standard-operations).
+[FIWARE Orion Context Broker manual](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv1/index.html#ngsi10-standard-operations).
 
 The general purpose of the interactions between both components is:
 
@@ -96,7 +96,7 @@ here. Inside the scope of the IoTAgents documentation, a "synchronous scenario" 
 
 There are only two kinds of possible data interactions between the IoTAgents and the Context Broker: the queryContext
 and updateContext interactions described in NGSIv10. Lots of examples can be found in the
-[Fiware Orion Context Broker manual](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv1/index.html#ngsi10-standard-operations)
+[FIWARE Orion Context Broker manual](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv1/index.html#ngsi10-standard-operations)
 but this section shows some examples of each one of them.
 
 There are six different payloads that may appear in this interactions:
@@ -328,10 +328,10 @@ use three kinds of attributes:
 In this scenario, the interaction is also initiated by the User. The user starts the scenario by sending an update
 request P1 to the Context Broker, to the input attribute (1). The Context Broker redirects this same payload to the
 Context Provider of the attribute (the IoTAgent) (2). The IoTA immediately answers the request by issuing an R1 (3).
-This response is not the final answer to the query, and does not contain any usefull data apart from the status Code.
+This response is not the final answer to the query, and does not contain any useful data apart from the status Code.
 Answering with a 200 code to this request implies that the IoTAgent has accepted the command, but is yet to process it;
 once the IoTA has processed the command, it will update the information. The Context Broker then forwards this same
-response to teh User who started the interactions and all HTTP connections are closed (4). This part of the scenario is
+response to the User who started the interactions and all HTTP connections are closed (4). This part of the scenario is
 100% synchronous for the User, but does not provide him with the data he queried; it just initiates the asynchronous
 background process.
 
