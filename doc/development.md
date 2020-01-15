@@ -1,5 +1,14 @@
 ## Development documentation
 
+
+-   [Contributions](#contributions)
+-   [Project build](#project-build)
+-   [Testing](#testing)
+-   [Coding guidelines](#coding-guidelines)
+-   [Continuous testing](#continuous-testing)
+-   [Code Coverage](#code-coverage)
+-   [Clean](#clean)
+
 ### Contributions
 
 All contributions to this project are welcome. Developers planning to contribute should follow the

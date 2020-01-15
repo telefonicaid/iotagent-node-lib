@@ -1,21 +1,11 @@
 # Library Functions
 
--   [Usage](#usage)
-    -   [Stats Registry](#stats-registry)
-    -   [Alarm module](#alarm-module)
-    -   [Transactions](#transactions)
-    -   [Library overview](#library-overview)
-    -   [Function reference](#function-reference)
--   [Development documentation](#development-documentation)
-    -   [Contributions](#contributions)
-    -   [Project build](#project-build)
-    -   [Testing](#testing)
-    -   [Coding guidelines](#coding-guidelines)
-    -   [Continuous testing](#continuous-testing)
-    -   [Code Coverage](#code-coverage)
-    -   [Clean](#clean)
 
-## Usage
+-   [Stats Registry](#stats-registry)
+-   [Alarm module](#alarm-module)
+-   [Transactions](#transactions)
+-   [Library overview](#library-overview)
+-   [Function reference](#function-reference)
 
 ### Stats Registry
 
