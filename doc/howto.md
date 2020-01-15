@@ -23,7 +23,7 @@ The invented protocol will be freely adapted from
 [Ultralight 2.0](https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus/blob/develop/doc/modules.md#ultra-light-agent).
 Whenever a device wants to send an update, it will send a request as the following:
 
-```
+```bash
 curl -X GET 'http://127.0.0.1:8080/iot/d?i=ULSensor&k=abc&d=t|15,l|19.6' -i
 ```
 
@@ -291,7 +291,7 @@ request = require("request");
 
 and add the `request` dependency to the `package.json` file:
 
-```
+```json
   "dependencies": [
   [...]
 
@@ -459,7 +459,7 @@ implementation:
 
 1. Provision a device with two lazy attributes. The following request can be used as an example:
 
-```bash
+```text
 POST /iot/devices HTTP/1.1
 Host: localhost:4041
 Content-Type: application/json
@@ -493,7 +493,7 @@ Postman-Token: 993ac66b-72da-9e96-ab46-779677a5896a
 
 2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
 
-```bash
+```text
 POST /v1/queryContext HTTP/1.1
 Host: localhost:1026
 Content-Type: application/json
@@ -522,7 +522,7 @@ Postman-Token: 1dc568a1-5588-059c-fa9b-ff217a7d7aa2
    `queryContext` or `updateContext` request is the expected one. An example of HTTP response, for a query to the `t`
    and `l` attributes would be:
 
-```
+```text
 HTTP/1.0 200 OK
 Content-Type: text/plain
 Content-Length: 3

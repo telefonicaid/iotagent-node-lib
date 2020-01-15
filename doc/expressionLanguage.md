@@ -26,7 +26,7 @@ README.md.
 Expressions can be defined for Active attributes, either in the Device provisioning or in the Configuration
 provisioning. The following example shows a device provisioning payload with defined expressions:
 
-```
+```json
 {
    "devices":[
       {
@@ -89,7 +89,7 @@ the Context Broker.
 
 E.g.: if a device with the following provisioning information is provisioned in the IoTAgent:
 
-```
+```json
 {
    "name":"location",
    "type":"geo:point",
@@ -105,7 +105,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 
 and a measurement with the following values arrive to the IoTAgent:
 
-```
+```text
 latitude: 1.9
 level: 85.3
 ```
@@ -117,7 +117,7 @@ Note that expressions are only applied if the attribute name (as received by the
 matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following
 example:
 
-```
+```json
   "consumption": {
    "type": "String",
    "value": "${trim(@spaces)}"
@@ -126,14 +126,14 @@ example:
 
 -   Case 1: the following measure is received at the southbound interface:
 
-```
+```text
 consumption: "0.44"
 ```
 
 As `spaces` attribute is not included, then the expression is not applied and the `consumption` measure value is
 directly used, so the following is sent to CB:
 
-```
+```json
 "consumption": {
  "type": "String",
  "value": "0.44"
@@ -142,7 +142,7 @@ directly used, so the following is sent to CB:
 
 -   Case 2: the following measure is received at the southbound interface:
 
-```
+```text
 consumption: "0.44"
 spaces: "  foobar  "
 ```
@@ -150,7 +150,7 @@ spaces: "  foobar  "
 As `spaces` attribute is included, then the expression is evaluated, so overriding the 0.44 value and sending the
 following to CB:
 
-```
+```json
 "consumption": {
  "type": "String",
  "value": "foobar"
@@ -265,7 +265,7 @@ following:
 
 E.g.: if a device with the following provisioning information is provisioned in the IoTAgent:
 
-```
+```json
 {
    "name":"status",
    "type":"Boolean",
