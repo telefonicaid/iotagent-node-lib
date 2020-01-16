@@ -1,6 +1,5 @@
 # Library Functions
 
-
 -   [Stats Registry](#stats-registry)
 -   [Alarm module](#alarm-module)
 -   [Transactions](#transactions)
@@ -26,7 +25,7 @@ More values will be added in the future to the library. The applications using t
 Registry just by using the following function:
 
 ```javascript
-iotagentLib.statsRegistry.add("statName", statIncrementalValue, callback);
+iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
@@ -81,7 +80,7 @@ In order to use the library, add the following dependency to your package.json f
 In order to use this library, first you must require it:
 
 ```javascript
-var iotagentLib = require("iotagent-node-lib");
+var iotagentLib = require('iotagent-node-lib');
 ```
 
 The library supports four groups of features, one for each direction of the communication: client-to-server and
@@ -144,13 +143,14 @@ The device Object can have the following attributes:
 -   `subservice`: name of the subservice associated with th device.
 -   `lazy`: list of lazy attributes with their types.
 -   `active`: list of active attributes with their types.
--   `staticAttributes`: list of NGSI attributes to add to the device entity 'as is' in updates, queries and registrations.
--   `internalAttributes`: optional section with free format, to allow specific IoT Agents to store information along with
-    the devices in the Device Registry.
+-   `staticAttributes`: list of NGSI attributes to add to the device entity 'as is' in updates, queries and
+    registrations.
+-   `internalAttributes`: optional section with free format, to allow specific IoT Agents to store information along
+    with the devices in the Device Registry.
 
-The device `id` and `type` are required fields for any registration. The rest of the attributes are optional, but, if they
-are not present in the function call arguments, the type must be registered in the configuration, so the service can
-infer their default values from the configured type. If an optional attribute is not given in the parameter list and
+The device `id` and `type` are required fields for any registration. The rest of the attributes are optional, but, if
+they are not present in the function call arguments, the type must be registered in the configuration, so the service
+can infer their default values from the configured type. If an optional attribute is not given in the parameter list and
 there isn't a default configuration for the given type, a TypeNotFound error is raised.
 
 If the device has been previously preprovisioned, the missing data will be completed with the values from the registered
@@ -265,14 +265,14 @@ Once all the updates have taken place, the callback must be invoked with the upd
 
 ```javascript
 callback(null, {
-    type: "TheType",
+    type: 'TheType',
     isPattern: false,
-    id: "EntityID",
+    id: 'EntityID',
     attributes: [
         {
-            name: "lumniscence",
-            type: "Lumens",
-            value: "432"
+            name: 'lumniscence',
+            type: 'Lumens',
+            value: '432'
         }
     ]
 });
@@ -303,14 +303,14 @@ The callback must be invoked with the updated Context Element, using the informa
 
 ```javascript
 callback(null, {
-    type: "TheType",
+    type: 'TheType',
     isPattern: false,
-    id: "EntityID",
+    id: 'EntityID',
     attributes: [
         {
-            name: "lumniscence",
-            type: "Lumens",
-            value: "432"
+            name: 'lumniscence',
+            type: 'Lumens',
+            value: '432'
         }
     ]
 });

@@ -261,7 +261,7 @@ Context Element, but with the request as a whole.
 
 ### Scenario 1: active attributes
 
-![General ](./img/scenario1.png "Scenario 1: active attributes")
+![General ](./img/scenario1.png 'Scenario 1: active attributes')
 
 In this scenario, the interaction is started by the device, that is going to actively send a piece of data to the
 platform. When the IoTAgent receives the data, it sends it to the Context Broker through a P1 request. The Context
@@ -275,7 +275,7 @@ updating process, and can occur at any time (they are to completely different pr
 
 ### Scenario 2: lazy attributes
 
-![General ](./img/scenario2.png "Scenario 2: lazy attributes")
+![General ](./img/scenario2.png 'Scenario 2: lazy attributes')
 
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section
@@ -301,7 +301,7 @@ queries (and thus P2 and R2 payloads).
 
 ### Scenario 3: commands
 
-![General ](./img/scenario3.png "Scenario 3: commands")
+![General ](./img/scenario3.png 'Scenario 3: commands')
 
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section

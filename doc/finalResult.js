@@ -6,7 +6,7 @@ var iotAgentLib = require('iotagent-node-lib'),
 
 function parseUl(data, device) {
     function findType(name) {
-        for (var i=0; i < device.active.length; i++) {
+        for (var i = 0; i < device.active.length; i++) {
             if (device.active[i].name === name) {
                 return device.active[i].type;
             }
@@ -22,11 +22,11 @@ function parseUl(data, device) {
                 value: pair[1],
                 type: findType(pair[0])
             };
-        
+
         return attribute;
     }
-    
-    return data.split("#").map(createAttribute);
+
+    return data.split('#').map(createAttribute);
 }
 
 function manageULRequest(req, res, next) {
@@ -35,7 +35,7 @@ function manageULRequest(req, res, next) {
     iotAgentLib.getDevice(req.query.i, function(error, device) {
         if (error) {
             res.status(404).send({
-                message: 'Couldn\'t find the device: ' + JSON.stringify(error)
+                message: "Couldn't find the device: " + JSON.stringify(error)
             });
         } else {
             values = parseUl(req.query.d, device);
@@ -43,15 +43,15 @@ function manageULRequest(req, res, next) {
                 if (error) {
                     res.status(500).send({
                         message: 'Error updating the device'
-                   });
+                    });
                 } else {
                     res.status(200).send({
                         message: 'Device successfully updated'
                     });
-                }        
+                }
             });
         }
-    });  
+    });
 }
 
 function initSouthbound(callback) {
@@ -77,9 +77,9 @@ function createResponse(id, type, attributes, body) {
 
     for (var i = 0; i < attributes.length; i++) {
         responses.push({
-                name: attributes[i],
-                type: "string",
-                value: values[i]
+            name: attributes[i],
+            type: 'string',
+            value: values[i]
         });
     }
 
@@ -99,7 +99,7 @@ function queryContextHandler(id, type, attributes, callback) {
         }
     };
 
-    request(options, function (error, response, body) {
+    request(options, function(error, response, body) {
         if (error) {
             callback(error);
         } else {
@@ -109,12 +109,12 @@ function queryContextHandler(id, type, attributes, callback) {
 }
 
 function createQueryFromAttributes(attributes) {
-    var query = "";
+    var query = '';
 
     for (var i in attributes) {
         query += attributes[i].name + '|' + attributes[i].value;
 
-        if (i != attributes.length -1) {
+        if (i != attributes.length - 1) {
             query += ',';
         }
     }
@@ -131,7 +131,7 @@ function updateContextHandler(id, type, attributes, callback) {
         }
     };
 
-    request(options, function (error, response, body) {
+    request(options, function(error, response, body) {
         if (error) {
             callback(error);
         } else {
@@ -167,7 +167,7 @@ iotAgentLib.activate(config, function(error) {
         iotAgentLib.setConfigurationHandler(configurationHandler);
         iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-        initSouthbound(function (error) {
+        initSouthbound(function(error) {
             if (error) {
                 console.log('Could not initialize South bound API due to the following error: %s', error);
             } else {
@@ -176,5 +176,3 @@ iotAgentLib.activate(config, function(error) {
         });
     }
 });
-
-

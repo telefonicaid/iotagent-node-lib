@@ -51,5 +51,5 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require("iotagent-node-lib");
+const iotagentLib = require('iotagent-node-lib');
 ```
