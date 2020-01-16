@@ -71,8 +71,7 @@ This branch must be created from the current version of the `master` branch. Onc
 completed, a Pull Request will be created from the feature branch to `master`. Remember to check both the linters and
 the tests before creating the Pull Request.
 
-Bugfixes work the same way as other tasks, with the exception of the branch name, that should be called
-`bug/<bugName>`.
+Bugfixes work the same way as other tasks, with the exception of the branch name, that should be called `bug/<bugName>`.
 
 In order to contribute to the repository, these same scheme should be replicated in the forked repositories, so the new
 features or fixes should all come from the current version of `master` and end up in `master` again.
@@ -114,8 +113,8 @@ The version number will change for each release, according to the following rule
 -   All version numbers will always follow the common pattern: `X.Y.Z`
 -   _X_ will change only when there are changes in the release breaking backwards compatibility, or when there are very
     important changes in the feature set of the component. If X changes, Y is set to 0.
--   _Y_ will change every time a new version is released. If only Y changes, it means some new features or bugfixes
-    have been released, but the component is just an improved version of the current major release.
+-   _Y_ will change every time a new version is released. If only Y changes, it means some new features or bugfixes have
+    been released, but the component is just an improved version of the current major release.
 -   _Z_ will be reserved for bugfixes inside the releases.
 
 Between releases, the version number in the master branch will be `X.Y.Z-next` (where `X.Y.Z` is the last stable

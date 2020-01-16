@@ -28,33 +28,32 @@ provisioning. The following example shows a device provisioning payload with def
 
 ```json
 {
-   "devices":[
-      {
-         "device_id":"45",
-         "protocol":"GENERIC_PROTO",
-         "entity_name":"WasteContainer:WC45",
-         "entity_type":"WasteContainer",
-         "attributes":[
-            {
-               "name":"location",
-               "type":"geo:point",
-               "expression": "${@latitude}, ${@longitude}"
-            },
-            {
-               "name":"fillingLevel",
-               "type":"Number",
-               "expression": "${@level / 100}"
-            },
-            {
-               "object_id":"tt",
-               "name":"temperature",
-               "type":"Number"
-            }
-         ]
-      }
-   ]
+    "devices": [
+        {
+            "device_id": "45",
+            "protocol": "GENERIC_PROTO",
+            "entity_name": "WasteContainer:WC45",
+            "entity_type": "WasteContainer",
+            "attributes": [
+                {
+                    "name": "location",
+                    "type": "geo:point",
+                    "expression": "${@latitude}, ${@longitude}"
+                },
+                {
+                    "name": "fillingLevel",
+                    "type": "Number",
+                    "expression": "${@level / 100}"
+                },
+                {
+                    "object_id": "tt",
+                    "name": "temperature",
+                    "type": "Number"
+                }
+            ]
+        }
+    ]
 }
-
 ```
 
 The value of the `expression` attribute is a string that can contain any number of expression patterns. Each expression
@@ -170,9 +169,9 @@ The way the parse() function works (at expressionParser.js) is as follows:
     error will be reported to the device.
 
 However, the usage that the Expression Translation plugin does of that function is using always String type. That means
-that at the end, the result of the expression will be always cast to String. However, in NGSI v2 that String result could
-be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at the
-[NGSI v2 support](#ngsiv2) for more information on this.
+that at the end, the result of the expression will be always cast to String. However, in NGSI v2 that String result
+could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at
+the [NGSI v2 support](#ngsiv2) for more information on this.
 
 ### Values
 
@@ -267,9 +266,9 @@ E.g.: if a device with the following provisioning information is provisioned in 
 
 ```json
 {
-   "name":"status",
-   "type":"Boolean",
-   "expression": "${@status *  20}"
+    "name": "status",
+    "type": "Boolean",
+    "expression": "${@status *  20}"
 }
 ```
 
@@ -286,8 +285,8 @@ status: true
 4. The attribute type is `Boolean` so the result is casted to Boolean before sending it to CB. The cast of `20` to
    boolean is false (only `true` or `1` are cast to true).
 
-More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the two
-possible types of expressions: Integer (arithmetic operations) or Strings.
+More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the
+two possible types of expressions: Integer (arithmetic operations) or Strings.
 
 -   pressure (of type "Number" and value's type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 \* 20 } -> $ { 1040 } -> $
     { "1040"} -> 1040

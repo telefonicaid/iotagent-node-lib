@@ -75,12 +75,12 @@ folder of your project. Remember to change the Context Broker IP to your local C
 Now we can begin with the code of our IoT Agent. The very minimum code we need to start an IoT Agent is the following:
 
 ```javascript
-var iotAgentLib = require("iotagent-node-lib"),
-    config = require("./config");
+var iotAgentLib = require('iotagent-node-lib'),
+    config = require('./config');
 
 iotAgentLib.activate(config, function(error) {
     if (error) {
-        console.log("There was an error activating the IOTA");
+        console.log('There was an error activating the IOTA');
         process.exit(1);
     }
 });
@@ -112,10 +112,10 @@ In order to add the Express dependency to your project, add the following line t
 The require section would end up like this (the standard `http` module is also needed):
 
 ```javascript
-var iotAgentLib = require("iotagent-node-lib"),
-    http = require("http"),
-    express = require("express"),
-    config = require("./config");
+var iotAgentLib = require('iotagent-node-lib'),
+    http = require('http'),
+    express = require('express'),
+    config = require('./config');
 ```
 
 And install the dependencies as usual with `npm install`. You will have to require both `express` and `http` in your
@@ -132,13 +132,13 @@ function initSouthbound(callback) {
         router: express.Router()
     };
 
-    southboundServer.app.set("port", 8080);
-    southboundServer.app.set("host", "0.0.0.0");
+    southboundServer.app.set('port', 8080);
+    southboundServer.app.set('host', '0.0.0.0');
 
-    southboundServer.router.get("/iot/d", manageULRequest);
+    southboundServer.router.get('/iot/d', manageULRequest);
     southboundServer.server = http.createServer(southboundServer.app);
-    southboundServer.app.use("/", southboundServer.router);
-    southboundServer.server.listen(southboundServer.app.get("port"), southboundServer.app.get("host"), callback);
+    southboundServer.app.use('/', southboundServer.router);
+    southboundServer.server.listen(southboundServer.app.get('port'), southboundServer.app.get('host'), callback);
 }
 ```
 
@@ -158,14 +158,14 @@ function manageULRequest(req, res, next) {
             });
         } else {
             values = parseUl(req.query.d, device);
-            iotAgentLib.update(device.name, device.type, "", values, device, function(error) {
+            iotAgentLib.update(device.name, device.type, '', values, device, function(error) {
                 if (error) {
                     res.status(500).send({
-                        message: "Error updating the device"
+                        message: 'Error updating the device'
                     });
                 } else {
                     res.status(200).send({
-                        message: "Device successfully updated"
+                        message: 'Device successfully updated'
                     });
                 }
             });
@@ -190,7 +190,7 @@ function parseUl(data, device) {
     }
 
     function createAttribute(element) {
-        var pair = element.split("|"),
+        var pair = element.split('|'),
             attribute = {
                 name: pair[0],
                 value: pair[1],
@@ -200,7 +200,7 @@ function parseUl(data, device) {
         return attribute;
     }
 
-    return data.split(",").map(createAttribute);
+    return data.split(',').map(createAttribute);
 }
 ```
 
@@ -227,14 +227,14 @@ show the modifications in the `activate()` function:
 ```javascript
 iotAgentLib.activate(config, function(error) {
     if (error) {
-        console.log("There was an error activating the IOTA");
+        console.log('There was an error activating the IOTA');
         process.exit(1);
     } else {
         initSouthbound(function(error) {
             if (error) {
-                console.log("Could not initialize South bound API due to the following error: %s", error);
+                console.log('Could not initialize South bound API due to the following error: %s', error);
             } else {
-                console.log("Both APIs started successfully");
+                console.log('Both APIs started successfully');
             }
         });
     }
@@ -286,7 +286,7 @@ A HTTP request library will be needed in order to make those calls. To this exte
 used. In order to do so, add the following require statement to the initialization code:
 
 ```javascript
-request = require("request");
+request = require('request');
 ```
 
 and add the `request` dependency to the `package.json` file:
@@ -303,11 +303,11 @@ and add the `request` dependency to the `package.json` file:
 The require section should now look like this:
 
 ```javascript
-var iotAgentLib = require("iotagent-node-lib"),
-    http = require("http"),
-    express = require("express"),
-    request = require("request"),
-    config = require("./config");
+var iotAgentLib = require('iotagent-node-lib'),
+    http = require('http'),
+    express = require('express'),
+    request = require('request'),
+    config = require('./config');
 ```
 
 ### Implementation
@@ -321,8 +321,8 @@ for the context provisioning requests. At this point, we should provide two hand
 ```javascript
 function queryContextHandler(id, type, service, subservice, attributes, callback) {
     var options = {
-        url: "http://127.0.0.1:9999/iot/d",
-        method: "GET",
+        url: 'http://127.0.0.1:9999/iot/d',
+        method: 'GET',
         qs: {
             q: attributes.join()
         }
@@ -350,13 +350,13 @@ attributes). Here is the code for the `createResponse()` function:
 
 ```javascript
 function createResponse(id, type, attributes, body) {
-    var values = body.split(","),
+    var values = body.split(','),
         responses = [];
 
     for (var i = 0; i < attributes.length; i++) {
         responses.push({
             name: attributes[i],
-            type: "string",
+            type: 'string',
             value: values[i]
         });
     }
@@ -374,8 +374,8 @@ function createResponse(id, type, attributes, body) {
 ```javascript
 function updateContextHandler(id, type, service, subservice, attributes, callback) {
     var options = {
-        url: "http://127.0.0.1:9999/iot/d",
-        method: "GET",
+        url: 'http://127.0.0.1:9999/iot/d',
+        method: 'GET',
         qs: {
             d: createQueryFromAttributes(attributes)
         }
@@ -406,13 +406,13 @@ representation of the attributes to the UL type expected by the device:
 
 ```javascript
 function createQueryFromAttributes(attributes) {
-    var query = "";
+    var query = '';
 
     for (var i in attributes) {
-        query += attributes[i].name + "|" + attributes[i].value;
+        query += attributes[i].name + '|' + attributes[i].value;
 
         if (i != attributes.length - 1) {
-            query += ",";
+            query += ',';
         }
     }
 
@@ -559,9 +559,9 @@ variable and afterward the value of the multiCore in the `config.js` file. The r
 (the standard `http` module is also needed):
 
 ```javascript
-var iotAgent = require("../lib/iotagent-implementation"),
-    iotAgentLib = require("iotagent-node-lib"),
-    config = require("./config");
+var iotAgent = require('../lib/iotagent-implementation'),
+    iotAgentLib = require('iotagent-node-lib'),
+    config = require('./config');
 ```
 
 It is important to mention the purpose of the `iotAgent` variable. It is the proper implementation of the IoT Agent
@@ -577,9 +577,9 @@ about starting the IoTAgent:
 ```javascript
 iotAgentLib.startServer(config, iotAgent, function(error) {
     if (error) {
-        console.log(context, "Error starting IoT Agent: [%s] Exiting process", error);
+        console.log(context, 'Error starting IoT Agent: [%s] Exiting process', error);
     } else {
-        console.log(context, "IoT Agent started");
+        console.log(context, 'IoT Agent started');
     }
 });
 ```
@@ -601,12 +601,12 @@ used for registering the device in external services, for storing important info
 in new ports in the case of new configuration. For the simple example we are developing, we will just print the
 information we are receiving whenever a new device or configuration is provisioned.
 
-We need to complete two further steps to have a working set of provisioning handlers. First of all, defining the handlers
-themselves. Here we can see the definition of the configuration handler:
+We need to complete two further steps to have a working set of provisioning handlers. First of all, defining the
+handlers themselves. Here we can see the definition of the configuration handler:
 
 ```javascript
 function configurationHandler(configuration, callback) {
-    console.log("\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n", JSON.stringify(configuration, null, 4));
+    console.log('\n\n* REGISTERING A NEW CONFIGURATION:\n%s\n\n', JSON.stringify(configuration, null, 4));
     callback(null, configuration);
 }
 ```
@@ -623,8 +623,8 @@ feature, let's use the provisioning handler to change the value of the type of t
 
 ```javascript
 function provisioningHandler(device, callback) {
-    console.log("\n\n* REGISTERING A NEW DEVICE:\n%s\n\n", JSON.stringify(device, null, 4));
-    device.type = "CertifiedType";
+    console.log('\n\n* REGISTERING A NEW DEVICE:\n%s\n\n', JSON.stringify(device, null, 4));
+    device.type = 'CertifiedType';
     callback(null, device);
 }
 ```

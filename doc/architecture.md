@@ -32,7 +32,7 @@ basis preprovisioning the devices). Device measures can have three different beh
 The following sequence diagram shows the different NGSI interactions an IoT Agent makes with the Context Broker,
 explained in the following subsections (using the example of a OMA Lightweight M2M device).
 
-![General ](./img/ngsiInteractions.png "NGSI Interactions")
+![General ](./img/ngsiInteractions.png 'NGSI Interactions')
 
 Be aware that the IoT Agents are only required to support NGSI10 operations `updateContext` and `queryContext` in their
 standard formats (currently in JSON format; XML deprecated) but will not answer to NGSI9 operations (or NGSI convenience
@@ -114,8 +114,8 @@ response to the caller, transparently.
 #### Commands
 
 **IMPORTANT NOTE:** at the present moment, commands (both push and poll) are supported only in the case of explictely
-provisioned agents. For autoprovisioned agents commands are not currently supported, although [an
-issue](https://github.com/telefonicaid/iot-agent-node-lib/issues/572) has been created about this functionality.
+provisioned agents. For autoprovisioned agents commands are not currently supported, although
+[an issue](https://github.com/telefonicaid/iot-agent-node-lib/issues/572) has been created about this functionality.
 
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command
 will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the
@@ -207,7 +207,7 @@ the concrete IoT Agent implementations will be to map between the native device 
 The following figure offers a graphical example of how a COAP IoT Agent work, ordered from the registration of the
 device to a command update to the device.
 
-![General ](./img/iotAgentLib.png "Architecture Overview")
+![General ](./img/iotAgentLib.png 'Architecture Overview')
 
 ### The `TimeInstant` element
 

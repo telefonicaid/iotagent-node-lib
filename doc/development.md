@@ -1,6 +1,5 @@
 ## Development documentation
 
-
 -   [Contributions](#contributions)
 -   [Project build](#project-build)
 -   [Testing](#testing)
@@ -87,7 +86,6 @@ restored.
 npm run clean
 ```
 
-
 ### Documentation Markdown validation
 
 Checks the markdown documentation for consistency
@@ -97,7 +95,6 @@ Checks the markdown documentation for consistency
 npm run lint:md
 ```
 
-
 ### Documentation Spell-checking
 
 Checks the markdown documentation for spelling and grammar errors, dead links & etc.
@@ -106,4 +103,3 @@ Checks the markdown documentation for spelling and grammar errors, dead links & 
 # Use git-bash on Windows
 npm run lint:text
 ```
-

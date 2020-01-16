@@ -46,10 +46,10 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
 
-
 ### Metadata support
 
-Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the units of measurement can be placed into the resultant entity.
+Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
+units of measurement can be placed into the resultant entity.
 
 e.g.:
 
@@ -59,7 +59,7 @@ e.g.:
      "resource":    "/iot/d",
      "protocol":    "PDI-IoTA-UltraLight",
 ..etc
-     "commands": [ 
+     "commands": [
         {"name": "on","type": "command"},
         {"name": "off","type": "command"}
      ],
@@ -82,8 +82,6 @@ e.g.:
      ]
    }
 ```
-
-
 
 ### Data mapping plugins
 
@@ -140,7 +138,7 @@ The library provides some plugins out of the box, in the `dataPlugins` collectio
 use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
 
 ```javascript
-var iotaLib = require("iotagent-node-lib");
+var iotaLib = require('iotagent-node-lib');
 
 iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
 iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
@@ -186,37 +184,37 @@ entity through the Configuration or Device provisioning APIs.
 
 ```json
 {
-  "devices": [
-    {
-      "protocol": "IoTA-UL",
-      "entity_name": "urn:ngsi-ld:Device:contador12",
-      "entity_type": "multientity",
-      "attributes": [
+    "devices": [
         {
-          "object_id": "cont1",
-          "name": "vol",
-          "type": "Text",
-          "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria01",
-          "entity_type": "WaterMeter"
-        },
-        {
-          "object_id": "cont2",
-          "name": "vol",
-          "type": "Text",
-          "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria02",
-          "entity_type": "WaterMeter"
-        },
-        {
-          "object_id": "cont3",
-          "name": "vol",
-          "type": "Text",
-          "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria03",
-          "entity_type": "WaterMeter"
+            "protocol": "IoTA-UL",
+            "entity_name": "urn:ngsi-ld:Device:contador12",
+            "entity_type": "multientity",
+            "attributes": [
+                {
+                    "object_id": "cont1",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria01",
+                    "entity_type": "WaterMeter"
+                },
+                {
+                    "object_id": "cont2",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria02",
+                    "entity_type": "WaterMeter"
+                },
+                {
+                    "object_id": "cont3",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria03",
+                    "entity_type": "WaterMeter"
+                }
+            ],
+            "device_id": "contador12"
         }
-      ],
-      "device_id": "contador12"
-    }
-  ]
+    ]
 }
 ```
 
