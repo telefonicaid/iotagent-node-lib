@@ -23,8 +23,6 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
-/* eslint-disable no-useless-concat */
-
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const timekeeper = require('timekeeper');
@@ -111,6 +109,30 @@ const iotAgentConfig = {
                 {
                     name: 'humidity',
                     type: 'percentage'
+                }
+            ]
+        },
+        Lamp: {
+            type: 'Lamp',
+            commands: [],
+            lazy: [],
+            staticAttributes: [
+                {
+                    name: 'controlledProperty',
+                    type: 'text',
+                    value: 'StaticValue',
+                    metadata: {
+                        includes: { type: 'Text', value: 'bell' }
+                    }
+                }
+            ],
+            active: [
+                {
+                    name: 'luminosity',
+                    type: 'text',
+                    metadata: {
+                        unitCode: { type: 'Text', value: 'CAL' }
+                    }
                 }
             ]
         }
@@ -343,7 +365,7 @@ describe('Active attributes test', function() {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
+                        './test/unit/ngsiv2/examples/contextRequests/ updateContextTimestampTimezone.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -650,6 +672,42 @@ describe('Active attributes test', function() {
         });
         it('should decorate the entity with the static attributes', function(done) {
             iotAgentLib.update('motion1', 'Motion', '', newValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
+        const newValues = [
+            {
+                name: 'luminosity',
+                type: 'text',
+                value: '100'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            /* jshint maxlen: 200 */
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities/lamp1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'
+                    )
+                )
+                .query({ type: 'Lamp' })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+        it('should decorate the entity with the static attributes', function(done) {
+            iotAgentLib.update('lamp1', 'Lamp', '', newValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
