@@ -90,7 +90,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', function() {
+xdescribe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', function() {
     var values = [
         {
             name: 'state',
@@ -346,7 +346,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
     });
 });
 
-describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
+xdescribe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
 
     var values = [
         {
