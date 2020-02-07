@@ -1,0 +1,30 @@
+{
+        "type": "ContextSourceRegistration",
+        "information": [
+            {
+                "entities": [
+                    {
+                        "type": "TheLightType",
+                        "id": "TheFirstLight"
+                    }
+                ],
+                "properties": [
+                    "luminance",
+                    "luminescence",
+                    "commandAttr",
+                    "wheel1"
+                ]
+            }
+        ],
+        "endpoint": "http://smartGondor.com",
+        "@context": [
+            {
+                "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
+                "luminance": "ngsi-ld:luminance",
+                "luminescence": "ngsi-ld:luminescence",
+                "commandAttr": "ngsi-ld:commandAttr",
+                "wheel1": "ngsi-ld:wheel1"
+            },
+            "http://context.json-ld"
+        ]
+    }

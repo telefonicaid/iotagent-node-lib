@@ -1,0 +1,24 @@
+{
+        "type": "ContextSourceRegistration",
+        "information": [
+            {
+                "entities": [
+                    {
+                        "type": "Light",
+                        "id": "Light:light1"
+                    }
+                ],
+                "properties": [
+                    "temperature"
+                ]
+            }
+        ],
+        "endpoint": "http://smartGondor.com",
+        "@context": [
+            {
+                "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
+                "temperature": "ngsi-ld:temperature"
+            },
+            "http://context.json-ld"
+        ]
+    }

@@ -1,0 +1,7 @@
+{
+    "@context": "http://context.json-ld",
+    "status": {
+        "type": "Property",
+        "value": true
+    }
+}

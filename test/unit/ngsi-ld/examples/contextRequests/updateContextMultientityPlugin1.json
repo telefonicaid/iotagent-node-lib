@@ -1,0 +1,21 @@
+{
+  "actionType": "append",
+  "entities": [
+    {
+      "id": "ws4",
+      "type": "WeatherStation",
+      "pressure": {
+        "type": "Hgmm",
+        "value": "52"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Percentage",
+        "value": "12"
+      },
+      "type": "Higrometer",
+      "id": "Higro2000"
+    }
+  ]
+}

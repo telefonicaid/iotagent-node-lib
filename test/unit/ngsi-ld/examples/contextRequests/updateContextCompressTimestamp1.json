@@ -1,0 +1,14 @@
+{
+    "@context": "http://context.json-ld",
+    "state": {
+        "type": "Property",
+        "value": true
+    },
+    "TheTargetValue": {
+        "type": "Property",
+        "value": {
+            "@type": "DateTime",
+            "@value": "+002007-11-03T13:18:05"
+        }
+    }
+}

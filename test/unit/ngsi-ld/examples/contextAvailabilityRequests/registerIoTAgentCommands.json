@@ -1,0 +1,24 @@
+{
+        "type": "ContextSourceRegistration",
+        "information": [
+            {
+                "entities": [
+                    {
+                        "type": "Robot",
+                        "id": "Robot:r2d2"
+                    }
+                ],
+                "properties": [
+                    "position"
+                ]
+            }
+        ],
+        "endpoint": "http://smartGondor.com",
+        "@context": [
+            {
+                "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
+                "position": "ngsi-ld:position"
+            },
+            "http://context.json-ld"
+        ]
+    }

@@ -1,0 +1,17 @@
+ [
+    {
+        "id": "light1",
+        "type": "Light",
+        "state": {
+            "type": "Property",
+            "value": true
+        },
+        "dimming": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": " "
+            }
+        }
+    }
+]

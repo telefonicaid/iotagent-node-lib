@@ -1,0 +1,18 @@
+{
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "RobotPre",
+                "id": "RobotPre:TestRobotPre"
+            }
+        ],
+        "attrs": [
+            "moving"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        }
+    }
+}

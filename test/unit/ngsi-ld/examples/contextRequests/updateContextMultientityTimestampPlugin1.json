@@ -1,0 +1,37 @@
+{
+  "actionType": "append",
+  "entities": [
+    {
+      "id": "ws4",
+      "type": "WeatherStation",
+      "pressure": {
+        "type": "Hgmm",
+        "value": "52",
+        "metadata": {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2016-05-30T16:25:22.304Z"
+            }
+        }
+      },
+      "TimeInstant": {
+          "type": "DateTime",
+          "value": "2016-05-30T16:25:22.304Z"
+      }
+    },
+    {
+      "id": "Higro2000",
+      "type": "Higrometer",
+      "humidity": {
+        "type": "Percentage",
+        "value": "12",
+        "metadata": {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2016-05-30T16:25:22.304Z"
+            }
+        }
+      }
+    }
+  ]
+}

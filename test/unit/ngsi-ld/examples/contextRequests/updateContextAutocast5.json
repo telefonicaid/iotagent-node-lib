@@ -1,0 +1,10 @@
+{
+    "@context": "http://context.json-ld",
+    "keep_alive": {
+        "type": "Property",
+        "value": {
+            "@type": "None",
+            "@value": null
+        }
+    }
+}
