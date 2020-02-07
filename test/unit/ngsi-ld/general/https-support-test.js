@@ -230,10 +230,8 @@ describe('NGSI-LD - HTTPS support tests', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(200);
-
-            var nockBody = utils.readExampleFile(
-                './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json');
-            contextBrokerMock
+ 
+            contextBrokerMock = nock('https://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});

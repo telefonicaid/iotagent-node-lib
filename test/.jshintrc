@@ -30,6 +30,6 @@
     },
     "predef":
         [
-            "describe", "beforeEach", "afterEach", "it"
+            "describe", "beforeEach", "afterEach", "it", "xdescribe", "xit"
         ]
 }
