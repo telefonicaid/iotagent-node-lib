@@ -63,7 +63,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Timestamp processing plugin', function() {
+describe('NGSI-v2 - Timestamp processing plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -80,7 +80,7 @@ describe('Timestamp processing plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
+   describe('When an update comes with a timestamp through the plugin', function() {
         var values = [
             {
                 name: 'state',

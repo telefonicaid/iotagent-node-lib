@@ -89,7 +89,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens'
     };
 
-describe('IoT Agent Device Registration', function() {
+describe('NGSI-v2 - IoT Agent Device Registration', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });
@@ -103,7 +103,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a new device is connected to the IoT Agent', function() {
+   describe('When a new device is connected to the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -139,7 +139,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns a NGSI error while registering a device', function() {
+   describe('When the Context Broker returns a NGSI error while registering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -166,7 +166,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns an HTTP transport error while registering a device', function() {
+   describe('When the Context Broker returns an HTTP transport error while registering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
             var nockBody = utils.readExampleFile(
@@ -194,7 +194,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a device is requested to the library using its ID', function() {
+   describe('When a device is requested to the library using its ID', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -233,7 +233,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When an unexistent device is requested to the library using its ID', function() {
+   describe('When an unexistent device is requested to the library using its ID', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -263,7 +263,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a device is removed from the IoT Agent', function() {
+   describe('When a device is removed from the IoT Agent', function() {
         beforeEach(function(done) {
 
             nock.cleanAll();
@@ -312,7 +312,7 @@ describe('IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns an error while unregistering a device', function() {
+   describe('When the Context Broker returns an error while unregistering a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')

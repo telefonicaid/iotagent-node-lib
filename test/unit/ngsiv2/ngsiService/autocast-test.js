@@ -81,7 +81,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('JSON native types autocast test', function() {
+describe('NGSI-v2 - JSON native types autocast test', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });
@@ -90,7 +90,7 @@ describe('JSON native types autocast test', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device.' +
+   describe('When the IoT Agent receives new information from a device.' +
         'Observation with Number type and Integer value', function() {
 
         var values = [
@@ -124,7 +124,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device.' +
+   describe('When the IoT Agent receives new information from a device.' +
         'Observation with Number type and Float value', function() {
 
         var values = [
@@ -158,7 +158,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device.' +
+   describe('When the IoT Agent receives new information from a device.' +
         'Observation with Boolean type and True value', function() {
 
         var values = [
@@ -192,7 +192,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device.' +
+   describe('When the IoT Agent receives new information from a device.' +
         'Observation with Boolean type and False value', function() {
 
         var values = [
@@ -226,7 +226,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with None type', function() {
+   describe('When the IoT Agent receives new information from a device. Observation with None type', function() {
 
         var values = [
             {
@@ -259,7 +259,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Array type', function() {
+   describe('When the IoT Agent receives new information from a device. Observation with Array type', function() {
 
         var values = [
             {
@@ -292,7 +292,7 @@ describe('JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Object type', function() {
+   describe('When the IoT Agent receives new information from a device. Observation with Object type', function() {
 
         var values = [
             {

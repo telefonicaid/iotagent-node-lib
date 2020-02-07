@@ -48,7 +48,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Device provisioning API: Remove provisioned devices', function() {
+describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', function() {
     var provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -144,7 +144,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a request to remove a provision device arrives', function() {
+   describe('When a request to remove a provision device arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
@@ -215,7 +215,7 @@ describe('Device provisioning API: Remove provisioned devices', function() {
         });
     });
 
-    describe('When a request to remove a provision device arrives. Device without lazy atts or commands', function() {
+   describe('When a request to remove a provision device arrives. Device without lazy atts or commands', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light3',
             headers: {

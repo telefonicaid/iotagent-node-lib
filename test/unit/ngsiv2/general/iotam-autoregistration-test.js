@@ -186,8 +186,8 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     },
     iotamMock;
 
-describe('IoT Manager autoregistration', function() {
-    describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
+describe('NGSI-v2 - IoT Manager autoregistration', function() {
+   describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
         beforeEach(function() {
             nock.cleanAll();
 
@@ -211,7 +211,7 @@ describe('IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When the IoT Agents is started with "iotManager" config with missing attributes', function() {
+   describe('When the IoT Agents is started with "iotManager" config with missing attributes', function() {
         beforeEach(function() {
             nock.cleanAll();
 
@@ -237,7 +237,7 @@ describe('IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When the IoT Agents is started with "iotManager" config and multiple services', function() {
+   describe('When the IoT Agents is started with "iotManager" config and multiple services', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -265,7 +265,7 @@ describe('IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a new service is created in the IoT Agent', function() {
+   describe('When a new service is created in the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -301,7 +301,7 @@ describe('IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a service is removed from the IoT Agent', function() {
+   describe('When a service is removed from the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -337,7 +337,7 @@ describe('IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a new service with static attributes is created in the IoT Agent', function() {
+   describe('When a new service with static attributes is created in the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

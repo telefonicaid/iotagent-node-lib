@@ -46,7 +46,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Subscription tests', function() {
+describe('NGSI-v2 - Subscription tests', function() {
     beforeEach(function(done) {
         var optionsProvision = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -92,7 +92,7 @@ describe('Subscription tests', function() {
         });
     });
 
-    describe('When a client invokes the subscribe() function for device', function() {
+   describe('When a client invokes the subscribe() function for device', function() {
         it('should send the appropriate request to the Context Broker', function(done) {
             iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
 
@@ -121,7 +121,7 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe('When a client invokes the unsubscribe() function for an entity', function() {
+   describe('When a client invokes the unsubscribe() function for an entity', function() {
         beforeEach(function(done) {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -160,7 +160,7 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe('When a client removes a device from the registry', function() {
+   describe('When a client removes a device from the registry', function() {
         beforeEach(function(done) {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -182,7 +182,7 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe('When a new notification comes to the IoTAgent', function() {
+   describe('When a new notification comes to the IoTAgent', function() {
         beforeEach(function(done) {
             iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
@@ -294,7 +294,7 @@ describe('Subscription tests', function() {
             });
         });
     });
-    describe('When a wrong notification arrives at the IOTA', function() {
+   describe('When a wrong notification arrives at the IOTA', function() {
         it('should not call the handler', function(done) {
             var notificationOptions = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',

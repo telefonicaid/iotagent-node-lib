@@ -223,7 +223,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Multi-entity plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -243,7 +243,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement', function() {
+   describe('When an update comes for a multientity measurement', function() {
         var values = [
             {
                 name: 'p',
@@ -277,7 +277,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement with same attribute name', function() {
+   describe('When an update comes for a multientity measurement with same attribute name', function() {
         var values = [
             {
                 name: 'h',
@@ -306,7 +306,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity multi measurement with same attribute name', function() {
+   describe('When an update comes for a multientity multi measurement with same attribute name', function() {
         var values = [
             {
                 name: 'h',
@@ -341,7 +341,7 @@ describe('Multi-entity plugin', function() {
     });
 
     /* jshint maxlen: 200 */
-    describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
+   describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
         var values = [
             {
                 name: 'h',
@@ -376,7 +376,7 @@ describe('Multi-entity plugin', function() {
     });
 
 
-    describe('When an update comes for a multientity defined with an expression', function() {
+   describe('When an update comes for a multientity defined with an expression', function() {
         var values = [
             {
                 name: 'p',
@@ -415,7 +415,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement without type for one entity', function() {
+   describe('When an update comes for a multientity measurement without type for one entity', function() {
         var values = [
             {
                 name: 'p',
@@ -449,7 +449,7 @@ describe('Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement and there are attributes with' +
+   describe('When an update comes for a multientity measurement and there are attributes with' +
         ' the same name but different alias and mapped to different CB entities', function() {
         var values = [
             {
@@ -479,7 +479,7 @@ describe('Multi-entity plugin', function() {
         });
     });
     
-    describe('When an update comes for a multientity multi measurement and there are attributes with' +
+   describe('When an update comes for a multientity multi measurement and there are attributes with' +
         ' the same name but different alias and mapped to different CB entities', function() {
         var values = [
             {
@@ -526,7 +526,7 @@ describe('Multi-entity plugin', function() {
     
 });
 
-describe('Multi-entity plugin is executed before timestamp process plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -548,7 +548,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
         });
     });
 
-    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function() {
+   describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function() {
         var values = [
             {
                 name: 'p',
@@ -692,7 +692,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
     });
 });
 
-describe('Multi-entity plugin is executed for a command update for a regular entity ', function () {
+describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a regular entity ', function () {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

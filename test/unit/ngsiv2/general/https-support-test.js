@@ -122,9 +122,9 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotamMock;
 
 
-describe('HTTPS support tests IOTAM', function() {
+describe('NGSI-v2 - HTTPS support tests IOTAM', function() {
 
-    describe('When the IoT Agents is started with https "iotManager" config', function() {
+   describe('When the IoT Agents is started with https "iotManager" config', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -154,9 +154,9 @@ describe('HTTPS support tests IOTAM', function() {
     });
 });
 
-describe('HTTPS support tests', function() {
+describe('NGSI-v2 - HTTPS support tests', function() {
 
-    describe('When subscription is sent to HTTPS context broker', function() {
+   describe('When subscription is sent to HTTPS context broker', function() {
         beforeEach(function(done) {
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -217,7 +217,7 @@ describe('HTTPS support tests', function() {
         });
     });
 
-    describe('When a new device is connected to the IoT Agent', function() {
+   describe('When a new device is connected to the IoT Agent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

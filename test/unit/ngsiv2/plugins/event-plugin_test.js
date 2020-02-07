@@ -62,7 +62,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Event plugin', function() {
+describe('NGSI-v2 - Event plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -80,7 +80,7 @@ describe('Event plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with an event to the plugin', function() {
+   describe('When an update comes with an event to the plugin', function() {
         var values = [
             {
                 name: 'state',

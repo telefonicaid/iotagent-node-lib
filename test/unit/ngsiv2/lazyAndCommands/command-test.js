@@ -110,7 +110,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens'
     };
 
-describe('Command functionalities', function() {
+describe('NGSI-v2 - Command functionalities', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
@@ -149,7 +149,7 @@ describe('Command functionalities', function() {
         });
     });
 
-    describe('When a device is preregistered with commands', function() {
+   describe('When a device is preregistered with commands', function() {
         it('should register as Context Provider of the commands', function(done) {
             iotAgentLib.register(device3, function(error) {
                 should.not.exist(error);
@@ -158,7 +158,7 @@ describe('Command functionalities', function() {
             });
         });
     });
-    describe('When a command update arrives to the IoT Agent as Context Provider', function() {
+   describe('When a command update arrives to the IoT Agent as Context Provider', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
@@ -260,7 +260,7 @@ describe('Command functionalities', function() {
             });
         });
     });
-    describe('When an update arrives from the south bound for a registered command', function() {
+   describe('When an update arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -283,7 +283,7 @@ describe('Command functionalities', function() {
                 });
         });
     });
-    describe('When an error command arrives from the south bound for a registered command', function() {
+   describe('When an error command arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')

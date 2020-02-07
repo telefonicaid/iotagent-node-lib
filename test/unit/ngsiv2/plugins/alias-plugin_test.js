@@ -107,7 +107,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Attribute alias plugin', function() {
+describe('NGSI-v2 - Attribute alias plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -125,7 +125,7 @@ describe('Attribute alias plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes for attributes with aliases', function() {
+   describe('When an update comes for attributes with aliases', function() {
         var values = [
             {
                 name: 't',
@@ -160,7 +160,7 @@ describe('Attribute alias plugin', function() {
             });
         });
     });
-    describe('When an update comes for attributes with aliases and a different type', function() {
+   describe('When an update comes for attributes with aliases and a different type', function() {
         var values = [
             {
                 name: 'l',
@@ -190,7 +190,7 @@ describe('Attribute alias plugin', function() {
             });
         });
     });
-    describe('When an update comes for attributes with aliases and integer type', function() {
+   describe('When an update comes for attributes with aliases and integer type', function() {
         var values = [
             {
                 name: 'ut',
@@ -220,7 +220,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and integer type.', function() {
+   describe('When an update comes for attributes with aliases and integer type.', function() {
         var values = [
             {
                 name: 'ut',
@@ -251,7 +251,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and float type', function() {
+   describe('When an update comes for attributes with aliases and float type', function() {
         var values = [
             {
                 name: 'ap',
@@ -282,7 +282,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and boolean type', function() {
+   describe('When an update comes for attributes with aliases and boolean type', function() {
         var values = [
             {
                 name: 's',
@@ -313,7 +313,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and None type', function() {
+   describe('When an update comes for attributes with aliases and None type', function() {
         var values = [
             {
                 name: 'al',
@@ -344,7 +344,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and Array type', function() {
+   describe('When an update comes for attributes with aliases and Array type', function() {
         var values = [
             {
                 name: 'ta',
@@ -375,7 +375,7 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and Object type', function() {
+   describe('When an update comes for attributes with aliases and Object type', function() {
         var values = [
             {
                 name: 'c',
@@ -407,7 +407,7 @@ describe('Attribute alias plugin', function() {
     });
 
 
-    describe('When an update comes for attributes with aliases and Object type, but value is String', function() {
+   describe('When an update comes for attributes with aliases and Object type, but value is String', function() {
         var values = [
             {
                 name: 'c',

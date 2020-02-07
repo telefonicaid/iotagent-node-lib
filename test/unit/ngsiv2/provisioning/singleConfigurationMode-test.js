@@ -69,7 +69,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         }
     };
 
-describe('Provisioning API: Single service mode', function() {
+describe('NGSI-v2 - Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 
@@ -84,7 +84,7 @@ describe('Provisioning API: Single service mode', function() {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a new configuration arrives to an already configured subservice', function() {
+   describe('When a new configuration arrives to an already configured subservice', function() {
         var groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
@@ -109,7 +109,7 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that already exists in the configuration', function() {
+   describe('When a device is provisioned with an ID that already exists in the configuration', function() {
         var deviceCreationDuplicated = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -155,7 +155,7 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
+   describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
         var alternativeDeviceCreation = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -225,7 +225,7 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned without a type and with a default configuration type', function() {
+   describe('When a device is provisioned without a type and with a default configuration type', function() {
         var getDevice = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                 method: 'GET',
@@ -277,7 +277,7 @@ describe('Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned for a configuration', function() {
+   describe('When a device is provisioned for a configuration', function() {
         beforeEach(function(done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://unexistentHost:1026')

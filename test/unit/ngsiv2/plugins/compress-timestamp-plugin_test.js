@@ -120,7 +120,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Timestamp compression plugin', function() {
+describe('NGSI-v2 - Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function() {
@@ -137,7 +137,7 @@ describe('Timestamp compression plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
+   describe('When an update comes with a timestamp through the plugin', function() {
         var values = [
             {
                 name: 'state',
@@ -172,7 +172,7 @@ describe('Timestamp compression plugin', function() {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadata.', function() {
+   describe('When an update comes with a timestamp through the plugin with metadata.', function() {
         var values = [
             {
                 name: 'state',
@@ -214,7 +214,7 @@ describe('Timestamp compression plugin', function() {
         });
     });
 
-    describe('When a query comes for a timestamp through the plugin', function() {
+   describe('When a query comes for a timestamp through the plugin', function() {
         var values = [
             'state',
             'TheTargetValue'

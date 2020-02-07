@@ -63,7 +63,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens'
     };
 
-describe('Update attribute functionalities', function() {
+describe('NGSI-v2 - Update attribute functionalities', function() {
 
     beforeEach(function(done) {
         logger.setLevel('FATAL');
@@ -98,7 +98,7 @@ describe('Update attribute functionalities', function() {
         });
     });
 
-    describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
+   describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
