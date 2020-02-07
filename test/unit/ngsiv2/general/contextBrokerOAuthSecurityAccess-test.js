@@ -112,7 +112,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
         nock.cleanAll();
     });
 
-   describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -151,7 +151,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             });
         });
     });
-   describe('When a measure is sent to the Context Broker and the access is forbidden', function() {
+    describe('When a measure is sent to the Context Broker and the access is forbidden', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -184,7 +184,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             });
         });
     });
-   describe('When a measure is sent and the trust is rejected asking for the token', function() {
+    describe('When a measure is sent and the trust is rejected asking for the token', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -215,7 +215,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
         });
     });
 
-   describe('When the user requests information about a device in a protected CB', function() {
+    describe('When the user requests information about a device in a protected CB', function() {
         var attributes = [
             'state',
             'dimming'
@@ -251,7 +251,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             });
         });
     });
-   describe('When subscriptions are used on a protected Context Broker', function() {
+    describe('When subscriptions are used on a protected Context Broker', function() {
           beforeEach(function(done) {
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -368,7 +368,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         nock.cleanAll();
     });
 
-   describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -409,7 +409,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-   describe('When the user requests information about a device in a protected CB', function() {
+    describe('When the user requests information about a device in a protected CB', function() {
         var attributes = [
             'state',
             'dimming'
@@ -446,7 +446,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-   describe('When a measure is sent and the refresh token is not valid', function() {
+    describe('When a measure is sent and the refresh token is not valid', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -469,7 +469,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-   describe('When a measure is sent to the Context Broker and the client credentials are invalid', function() {
+    describe('When a measure is sent to the Context Broker and the client credentials are invalid', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -493,7 +493,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-   describe('When a measure is sent to the Context Broker and the access is unauthorized', function() {
+    describe('When a measure is sent to the Context Broker and the access is unauthorized', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -556,7 +556,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         nock.cleanAll();
     });
 
-   describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
         var oauth2Mock2;
         var contextBrokerMock2;
         beforeEach(function(done) {
@@ -623,7 +623,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
     });
 
 
-   describe('When a device is provisioned for a configuration contains an OAuth2 trust token', function() {
+    describe('When a device is provisioned for a configuration contains an OAuth2 trust token', function() {
         var values = [
             {
                 name: 'status',
@@ -757,7 +757,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         nock.cleanAll();
     });
 
-   describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

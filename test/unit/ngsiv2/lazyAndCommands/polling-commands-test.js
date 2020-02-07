@@ -157,7 +157,7 @@ describe('NGSI-v2 - Polling commands', function() {
         });
     });
 
-   describe('When a command update arrives to the IoT Agent for a device with polling', function() {
+    describe('When a command update arrives to the IoT Agent for a device with polling', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
@@ -247,7 +247,7 @@ describe('NGSI-v2 - Polling commands', function() {
         });
     });
 
-   describe('When a command arrives with multiple values in the value field', function() {
+    describe('When a command arrives with multiple values in the value field', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
@@ -302,7 +302,7 @@ describe('NGSI-v2 - Polling commands', function() {
         });
     });
 
-   describe('When a polling command expires', function() {
+    describe('When a polling command expires', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',

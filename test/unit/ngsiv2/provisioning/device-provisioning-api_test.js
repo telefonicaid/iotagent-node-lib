@@ -79,7 +79,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         iotAgentLib.deactivate(done);
     });
 
-   describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
+    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
         beforeEach(function() {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -210,7 +210,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When a device provisioning request with a TimeInstant attribute arrives to the IoTA', function() {
+    describe('When a device provisioning request with a TimeInstant attribute arrives to the IoTA', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -253,7 +253,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
     });
 
 
-   describe('When a device provisioning request with a timestamp provision attribute arrives to the IoTA', function() {
+    describe('When a device provisioning request with a timestamp provision attribute arrives to the IoTA', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -295,7 +295,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function() {
+    describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -336,7 +336,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request arrives to the IoTA' +
+    describe('When a device provisioning request arrives to the IoTA' +
         'and timestamp is enabled in configuration', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
@@ -399,7 +399,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
+    describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -455,7 +455,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request with geo:point attributes arrives', function() {
+    describe('When a device provisioning request with geo:point attributes arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -487,7 +487,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request with DateTime attributes arrives', function() {
+    describe('When a device provisioning request with DateTime attributes arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -520,7 +520,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
     });
 
 
-   describe('When two devices with the same ID but different services arrive to the agent', function() {
+    describe('When two devices with the same ID but different services arrive to the agent', function() {
         var options1 = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -589,7 +589,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When there is a connection error with a String code connecting the CB', function() {
+    describe('When there is a connection error with a String code connecting the CB', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -631,7 +631,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When there is a connection error with a Number code connecting the CB', function() {
+    describe('When there is a connection error with a Number code connecting the CB', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -673,7 +673,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         });
     });
 
-   describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
+    describe('When a device provisioning request with missing data arrives to the IoT Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -695,7 +695,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When two device provisioning requests with the same service and Device ID arrive', function() {
+    describe('When two device provisioning requests with the same service and Device ID arrive', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -736,7 +736,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When a device provisioning request is malformed', function() {
+    describe('When a device provisioning request is malformed', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -759,7 +759,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When an agent is activated with a different base root', function() {
+    describe('When an agent is activated with a different base root', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/newBaseRoot/iot/devices',
             method: 'POST',
@@ -793,7 +793,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When a device provisioning request without the mandatory headers arrives to the Agent', function() {
+    describe('When a device provisioning request without the mandatory headers arrives to the Agent', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -811,7 +811,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             });
         });
     });
-   describe('When a device delete request arrives to the Agent for a not existing device', function() {
+    describe('When a device delete request arrives to the Agent for a not existing device', function() {
       var options = {
           url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
           headers: {

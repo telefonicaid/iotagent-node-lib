@@ -147,7 +147,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-   describe('When a request to update a provision device arrives', function() {
+    describe('When a request to update a provision device arrives', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -244,7 +244,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
     });
-   describe('When an update request arrives with a new Device ID', function() {
+    describe('When an update request arrives with a new Device ID', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -264,7 +264,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
     });
-   describe('When a wrong update request payload arrives', function() {
+    describe('When a wrong update request payload arrives', function() {
         var optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -285,7 +285,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-   describe('When a device is provisioned without attributes and new ones are added through an update', function() {
+    describe('When a device is provisioned without attributes and new ones are added through an update', function() {
         var optionsUpdate = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
                 method: 'PUT',
@@ -360,7 +360,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-   describe('When a device is updated to add static attributes', function() {
+    describe('When a device is updated to add static attributes', function() {
         /* jshint camelcase: false */
 
         var optionsUpdate = {

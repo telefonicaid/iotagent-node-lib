@@ -189,7 +189,7 @@ describe('NGSI-v2 - Device Service: utils', function() {
         ], done);
     });
 
-   describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
+    describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
         beforeEach(function(done) {
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -220,7 +220,7 @@ describe('NGSI-v2 - Device Service: utils', function() {
         });
     });
 
-   describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
+    describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
         beforeEach(function(done) {
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -253,7 +253,7 @@ describe('NGSI-v2 - Device Service: utils', function() {
         });
     });
 
-   describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
+    describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
         it('should raise an error', function(done) {
             iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092',
                 function(error, device) {

@@ -166,7 +166,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         iotAgentLib.deactivate(done);
     });
 
-   describe('When the IoT Agent receives new information from a device', function() {
+    describe('When the IoT Agent receives new information from a device', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -190,7 +190,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
+    describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
@@ -241,7 +241,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
@@ -280,7 +280,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
         'without milis', function() {
         var modifiedValues;
 
@@ -333,7 +333,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoT Agent receives new information, the timestamp flag is on' +
+    describe('When the IoT Agent receives new information, the timestamp flag is on' +
     'and timezone is defined', function() {
         var modifiedValues;
 
@@ -388,7 +388,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function() {
         var modifiedValues;
 
         beforeEach(function(done) {
@@ -439,7 +439,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' +
+    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' +
     'and timezone is defined', function() {
         var modifiedValues;
 
@@ -493,7 +493,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
+    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -510,7 +510,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the Context Broker returns an HTTP error code updating an entity', function() {
+    describe('When the Context Broker returns an HTTP error code updating an entity', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -539,7 +539,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the Context Broker returns an application error code updating an entity', function() {
+    describe('When the Context Broker returns an application error code updating an entity', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -565,7 +565,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When there is a transport error connecting to the Context Broker', function() {
+    describe('When there is a transport error connecting to the Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -594,7 +594,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When the IoT Agent recieves information for a type with a configured Context Broker', function() {
+    describe('When the IoT Agent recieves information for a type with a configured Context Broker', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -618,7 +618,7 @@ describe('NGSI-v2 - Active attributes test', function() {
         });
     });
 
-   describe('When an IoT Agent receives information for a type with static attributes', function() {
+    describe('When an IoT Agent receives information for a type with static attributes', function() {
         var newValues = [
             {
                 name: 'moving',
@@ -650,7 +650,7 @@ describe('NGSI-v2 - Active attributes test', function() {
     });
 
 
-   describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
+    describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
         var newValues = [
             {
                 name: 'luminosity',

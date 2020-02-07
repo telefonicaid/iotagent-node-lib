@@ -169,7 +169,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
         });
     });
 
-   describe('When a device is preregistered and its registration information updated', function() {
+    describe('When a device is preregistered and its registration information updated', function() {
         beforeEach(function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -217,7 +217,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
         });
     });
 
-   describe('When a device is preregistered and it is updated with new commands', function() {
+    describe('When a device is preregistered and it is updated with new commands', function() {
         beforeEach(function() {
 
             delete deviceCommandUpdated.registrationId;
@@ -267,7 +267,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
         });
     });
 
-   describe('When a update action is executed in a non registered device', function() {
+    describe('When a update action is executed in a non registered device', function() {
 
         it('should return a DEVICE_NOT_FOUND error', function(done) {
             iotAgentLib.updateRegister(unknownDevice, function(error) {
@@ -277,7 +277,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
             });
         });
     });
-   describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
+    describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         beforeEach(function() {
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -302,7 +302,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
             });
         });
     });
-   describe('When a device register is updated in the Context Broker and the registration is not found', function() {
+    describe('When a device register is updated in the Context Broker and the registration is not found', function() {
         it('should create the registration anew');
     });
 });

@@ -80,7 +80,7 @@ describe('NGSI-v2 - Timestamp processing plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-   describe('When an update comes with a timestamp through the plugin', function() {
+    describe('When an update comes with a timestamp through the plugin', function() {
         var values = [
             {
                 name: 'state',

@@ -213,7 +213,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for expressions with syntax errors', function() {
+    describe('When an update comes for expressions with syntax errors', function() {
         // Case: Update for an attribute with bad expression
         var values = [
             {
@@ -233,7 +233,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When there are expression attributes that are just calculated (not sent by the device)', function() {
+    describe('When there are expression attributes that are just calculated (not sent by the device)', function() {
         // Case: Expression which results is sent as a new attribute
         var values = [
             {
@@ -269,7 +269,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an expression with multiple variables with numbers arrive', function() {
+    describe('When an expression with multiple variables with numbers arrive', function() {
         // Case: Update for integer and string attributes with expression
 
         var values = [
@@ -306,7 +306,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and type integer', function() {
+    describe('When an update comes for attributes without expressions and type integer', function() {
         // Case: Update for an integer attribute without expression
         var values = [
             {
@@ -337,7 +337,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with numeric expressions and type integer', function() {
+    describe('When an update comes for attributes with numeric expressions and type integer', function() {
         // Case: Update for an integer attribute with arithmetic expression
         var values = [
             {
@@ -368,7 +368,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with string expression and type integer', function() {
+    describe('When an update comes for attributes with string expression and type integer', function() {
         // Case: Update for an integer attribute with string expression
         var values = [
             {
@@ -399,7 +399,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and type float', function() {
+    describe('When an update comes for attributes without expressions and type float', function() {
         // Case: Update for a Float attribute without expressions
 
         var values = [
@@ -431,7 +431,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with numeric expressions and type float', function() {
+    describe('When an update comes for attributes with numeric expressions and type float', function() {
         // Case: Update for a Float attribute with arithmetic expression
 
         var values = [
@@ -463,7 +463,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with string expressions and type float', function() {
+    describe('When an update comes for attributes with string expressions and type float', function() {
         // Case: Update for a Float attribute with string expression
 
         var values = [
@@ -495,7 +495,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and NULL type', function() {
+    describe('When an update comes for attributes without expressions and NULL type', function() {
         // Case: Update for a Null attribute without expression
 
         var values = [
@@ -527,7 +527,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with numeric expressions and NULL type', function() {
+    describe('When an update comes for attributes with numeric expressions and NULL type', function() {
         // Case: Update for a Null attribute with arithmetic expression
 
         var values = [
@@ -559,7 +559,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with string expressions and NULL type', function() {
+    describe('When an update comes for attributes with string expressions and NULL type', function() {
         // Case: Update for a Null attribute with string expression
 
         var values = [
@@ -591,7 +591,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and Boolean type', function() {
+    describe('When an update comes for attributes without expressions and Boolean type', function() {
         // Case: Update for a Boolean attribute without expression
 
         var values = [
@@ -623,7 +623,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with numeric expressions and Boolean type', function() {
+    describe('When an update comes for attributes with numeric expressions and Boolean type', function() {
         // Case: Update for a Boolean attribute with arithmetic expression
 
         var values = [
@@ -655,7 +655,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes with string expressions and Boolean type', function() {
+    describe('When an update comes for attributes with string expressions and Boolean type', function() {
         // Case: Update for a Boolean attribute with string expression
         var values = [
             {
@@ -686,7 +686,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and Object type', function() {
+    describe('When an update comes for attributes without expressions and Object type', function() {
         // Case: Update for a JSON document attribute without expression
         var values = [
             {
@@ -717,7 +717,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When an update comes for attributes without expressions and Object type', function() {
+    describe('When an update comes for attributes without expressions and Object type', function() {
         // Case: Update for a JSON array attribute without expression
 
         var values = [
@@ -749,7 +749,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When there are expressions including other attributes and they are not updated', function() {
+    describe('When there are expressions including other attributes and they are not updated', function() {
 
         var values = [
             {
@@ -780,7 +780,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When there are expressions including other attributes and they are updated', function() {
+    describe('When there are expressions including other attributes and they are updated', function() {
 
         var values = [
             {
@@ -811,7 +811,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function() {
         });
     });
 
-   describe('When there are expressions including other attributes and they are updated' +
+    describe('When there are expressions including other attributes and they are updated' +
         '(overriding situation)', function() {
 
         var values = [

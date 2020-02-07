@@ -82,7 +82,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function() {
         });
     });
 
-   describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
+    describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
         beforeEach(function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -109,7 +109,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function() {
         });
     });
 
-   describe('When a device with bidirectionality subscriptions is removed', function() {
+    describe('When a device with bidirectionality subscriptions is removed', function() {
         var deleteRequest = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'DELETE',
@@ -152,7 +152,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function() {
         });
     });
 
-   describe('When a notification arrives for a bidirectional attribute', function() {
+    describe('When a notification arrives for a bidirectional attribute', function() {
         var notificationOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
                 method: 'POST',
@@ -252,7 +252,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function() {
         });
     });
 
-   describe('When a new Group provisioning request arrives with bidirectional attributes', function() {
+    describe('When a new Group provisioning request arrives with bidirectional attributes', function() {
         var provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
                 method: 'POST',
@@ -301,7 +301,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function() {
         });
     });
 
-   describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
+    describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function() {
         var provisionGroup = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
                 method: 'POST',
@@ -423,7 +423,7 @@ describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environmen
         });
     });
 
-   describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
+    describe('When a new provisioning request arrives to the IoTA with bidirectionality', function() {
         beforeEach(function() {
             contextBrokerMock = nock('http://cbhost:1026')
                 .matchHeader('fiware-service', 'smartGondor')

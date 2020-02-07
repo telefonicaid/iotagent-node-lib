@@ -80,7 +80,7 @@ describe('NGSI-v2 - Event plugin', function() {
             iotAgentLib.deactivate(done);
         });
     });
-   describe('When an update comes with an event to the plugin', function() {
+    describe('When an update comes with an event to the plugin', function() {
         var values = [
             {
                 name: 'state',

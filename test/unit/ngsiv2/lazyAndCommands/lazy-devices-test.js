@@ -165,7 +165,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When the IoT Agent receives an update on the device data in JSON format', function() {
+    describe('When the IoT Agent receives an update on the device data in JSON format', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
@@ -228,11 +228,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a IoT Agent receives an update on multiple contexts', function() {
+    describe('When a IoT Agent receives an update on multiple contexts', function() {
         it('should call the device handler for each of the contexts');
     });
 
-   describe('When a context query arrives to the IoT Agent', function() {
+    describe('When a context query arrives to the IoT Agent', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -304,7 +304,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a context query arrives to the IoT Agent and no handler is set', function() {
+    describe('When a context query arrives to the IoT Agent and no handler is set', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -365,7 +365,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a query arrives to the IoT Agent without any attributes', function() {
+    describe('When a query arrives to the IoT Agent without any attributes', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -437,7 +437,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
+    describe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -510,7 +510,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When the IoT Agent receives an update on the device data in JSON format for a type with' +
+    describe('When the IoT Agent receives an update on the device data in JSON format for a type with' +
         'internalAttributes', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
@@ -574,7 +574,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a context query arrives to the IoT Agent and id and type query params are not present', function() {
+    describe('When a context query arrives to the IoT Agent and id and type query params are not present', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -646,7 +646,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a context query arrives to the IoT Agent and id query param is not present', function() {
+    describe('When a context query arrives to the IoT Agent and id query param is not present', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
                 method: 'POST',
@@ -719,7 +719,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
         });
     });
 
-   describe('When a query arrives to the IoT Agent with id, type and attributes', function() {
+    describe('When a query arrives to the IoT Agent with id, type and attributes', function() {
         var options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port +  '/v2/op/query',
                 method: 'POST',

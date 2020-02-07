@@ -104,7 +104,7 @@ describe('NGSI-v2 - Static attributes test', function() {
         iotAgentLib.deactivate(done);
     });
 
-   describe('When information from a device with multiple static attributes and metadata is sent', function() {
+    describe('When information from a device with multiple static attributes and metadata is sent', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

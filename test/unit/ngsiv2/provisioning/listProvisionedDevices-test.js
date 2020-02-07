@@ -137,7 +137,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         iotAgentLib.deactivate(done);
     });
 
-   describe('When a request for the list of provisioned devices arrive', function() {
+    describe('When a request for the list of provisioned devices arrive', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
@@ -201,7 +201,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-   describe('When a request for the information about a specific device arrives', function() {
+    describe('When a request for the information about a specific device arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
@@ -244,7 +244,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-   describe('When a request for a device with plugin attributes arrives', function() {
+    describe('When a request for a device with plugin attributes arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
             headers: {
@@ -275,7 +275,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-   describe('When a request for an unexistent device arrives', function() {
+    describe('When a request for an unexistent device arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
@@ -294,7 +294,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
     });
 
-   describe('When a request for listing all the devices with a limit of 3 arrives', function() {
+    describe('When a request for listing all the devices with a limit of 3 arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
             headers: {
@@ -367,7 +367,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
     });
 
-   describe('When a request for listing all the devices with a offset of 3 arrives', function() {
+    describe('When a request for listing all the devices with a offset of 3 arrives', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
             headers: {
@@ -427,7 +427,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
     });
 
-   describe('When a listing request arrives and there are devices in other service and servicepath', function() {
+    describe('When a listing request arrives and there are devices in other service and servicepath', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
