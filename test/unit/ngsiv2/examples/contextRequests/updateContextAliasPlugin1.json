@@ -1,10 +1,19 @@
 {
-  "temperature": {
-    "type": "centigrades",
-    "value": "52"
-  },
-  "pressure": {
-    "type": "Hgmm",
-    "value": "20071103T131805"
-  }
+	"temperature": {
+		"type":"Number",
+		"value":52,
+		"metadata": {
+			"type":"Property",
+			"value":"CEL"
+		}
+	},
+	"pressure": {
+		"type":"Number",
+		"value":20071103,
+		"metadata": {
+			"type":"Property",
+			"value":"Hgmm"
+		}
+	}
 }
+
