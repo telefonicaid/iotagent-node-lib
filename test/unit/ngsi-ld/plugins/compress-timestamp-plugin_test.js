@@ -43,6 +43,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         types: {
             'Light': {
+                timezone: "America/Santiago",
                 commands: [],
                 type: 'Light',
                 lazy: [
