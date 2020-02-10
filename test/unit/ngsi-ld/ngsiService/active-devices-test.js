@@ -231,7 +231,7 @@ describe('NGSI-LD - Active attributes test', function() {
             done();
         });
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
+        it('should calculate the timestamp for the entity and all the attributes', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -376,7 +376,7 @@ describe('NGSI-LD - Active attributes test', function() {
             done();
         });
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
+        it('should calculate the timestamp for the entity and all the attributes', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();

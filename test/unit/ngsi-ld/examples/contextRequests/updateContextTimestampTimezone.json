@@ -3,12 +3,12 @@
     "state": {
         "type": "Property",
         "value": true,
-        "observedAt": "2015-08-05T00:35:01.468-07:00"
+        "observedAt": "2015-08-05T07:35:01.468Z"
     },
     "dimming": {
         "type": "Property",
         "value": 87,
-        "observedAt": "2015-08-05T00:35:01.468-07:00"
+        "observedAt": "2015-08-05T07:35:01.468Z"
     },
-    "observedAt": "2015-08-05T00:35:01.468-07:00"
+    "observedAt": "2015-08-05T07:35:01.468Z"
 }
