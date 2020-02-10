@@ -361,16 +361,16 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
                     var expectedBody = utils.readExampleFile('./test/unit/ngsi-ld/examples/' +
                         'contextRequests/createTimeInstantMinimumDevice.json');
-                    if (!body[0].TimeInstant.value['@value'])
+                    
+                    if (!body[0].observedAt)
                     {
                         return false;
                     }
-                    else if (moment(body[0].TimeInstant.value['@value'], 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
+                    else if (moment(body[0].observedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
                     {
-                        var timeInstantDiff = moment().diff(body[0].TimeInstant.value['@value'], 'milliseconds');
+                        var timeInstantDiff = moment().diff(body[0].observedAt, 'milliseconds');
                         if (timeInstantDiff < 500) {
-                            delete body[0].TimeInstant;
-
+                            delete body[0].observedAt;
                             return JSON.stringify(body) === JSON.stringify(expectedBody);
                         }
 

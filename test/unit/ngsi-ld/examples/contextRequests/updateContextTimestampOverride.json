@@ -2,16 +2,7 @@
     "@context": "http://context.json-ld",
     "state": {
         "type": "Property",
-        "value": {
-            "@type": "boolean",
-            "@value": true
-        }
+        "value": true
     },
-    "TimeInstant": {
-        "type": "Property",
-        "value": {
-            "@type": "DateTime",
-            "@value": "2015-12-14T08:06:01.468Z"
-        }
-    }
+    "observedAt": "2015-12-14T08:06:01.468Z"
 }

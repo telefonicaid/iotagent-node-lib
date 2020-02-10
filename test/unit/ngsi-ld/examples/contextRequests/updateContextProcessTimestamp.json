@@ -3,19 +3,7 @@
     "state": {
         "type": "Property",
         "value": true,
-        "TimeInstant": {
-            "type": "Property",
-            "value": {
-                "@type": "DateTime",
-                "@value": "2016-05-30T16:25:22.304Z"
-            }
-        }
+        "observedAt": "2016-05-30T16:25:22.304Z"
     },
-    "TimeInstant": {
-        "type": "Property",
-        "value": {
-            "@type": "DateTime",
-            "@value": "2016-05-30T16:25:22.304Z"
-        }
-    }
+    "observedAt": "2016-05-30T16:25:22.304Z"
 }
