@@ -4,10 +4,7 @@
             "type": "TheLightType",
             "attr_name": {
                 "type": "Property",
-                "value": {
-                    "@type": "string",
-                    "@value": " "
-                }
+                "value": " "
             },
             "hardcodedAttr": {
                 "type": "Property",

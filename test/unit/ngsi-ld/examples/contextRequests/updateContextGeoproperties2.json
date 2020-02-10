@@ -1,0 +1,19 @@
+{
+    "@context": "http://context.json-ld",
+    "location": {
+        "type": "GeoProperty",
+        "value": {
+            "type": "LineString",
+            "coordinates": [
+                [
+                    23,
+                    12.5
+                ],
+                [
+                    22,
+                    12.5
+                ]
+            ]
+        }
+    }
+}
