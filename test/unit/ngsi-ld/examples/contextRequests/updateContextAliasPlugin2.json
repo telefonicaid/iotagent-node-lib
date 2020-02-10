@@ -3,9 +3,6 @@
     "luminance": {
         "type": "Property",
         "value": 9,
-        "unitCode": {
-            "type": "Property",
-            "value": "CAL"
-        }
+        "unitCode": "CAL"
     }
 }

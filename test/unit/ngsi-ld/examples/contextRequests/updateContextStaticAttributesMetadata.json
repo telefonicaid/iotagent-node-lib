@@ -3,10 +3,7 @@
     "luminosity": {
         "type": "Property",
         "value": 100,
-        "unitCode": {
-            "type": "Property",
-            "value": "CAL"
-        }
+        "unitCode": "CAL"
     },
     "controlledProperty": {
         "type": "Property",
