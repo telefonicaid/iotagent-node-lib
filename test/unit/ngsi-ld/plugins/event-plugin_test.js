@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,48 +20,46 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
 
-'use strict';
-
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('NGSI-LD - Event plugin', function() {
     beforeEach(function(done) {
@@ -82,7 +80,7 @@ describe('NGSI-LD - Event plugin', function() {
         });
     });
     describe('When an update comes with an event to the plugin', function() {
-        var values = [
+        const values = [
             {
                 name: 'state',
                 type: 'Boolean',
@@ -101,10 +99,10 @@ describe('NGSI-LD - Event plugin', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .patch('/ngsi-ld/v1/entities/light1/attrs', function(body) {
-                    var dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
+                    const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
                     return body.activation.value['@value'].match(dateRegex);
                 })
-                .query({type: 'Light'})
+                .query({ type: 'Light' })
                 .reply(204);
         });
 

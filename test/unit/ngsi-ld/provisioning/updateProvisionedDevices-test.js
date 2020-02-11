@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,73 +20,73 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    nock = require('nock'),
-    async = require('async'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const nock = require('nock');
+const async = require('async');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
+    },
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', function() {
-    var provisioning1Options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-            method: 'POST',
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+    const provisioning1Options = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        headers: {
+            'fiware-service': 'smartGondor',
+            'fiware-servicepath': '/gardens'
         },
-        provisioning2Options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-            method: 'POST',
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
+    };
+    const provisioning2Options = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        headers: {
+            'fiware-service': 'smartGondor',
+            'fiware-servicepath': '/gardens'
         },
-        provisioning3Options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-            method: 'POST',
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': '/gardens'
-            },
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice2.json')
-        };
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
+    };
+    const provisioning3Options = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        headers: {
+            'fiware-service': 'smartGondor',
+            'fiware-servicepath': '/gardens'
+        },
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice2.json')
+    };
 
     beforeEach(function(done) {
         nock.cleanAll();
         iotAgentLib.activate(iotAgentConfig, function() {
-            var nockBody = utils.readExampleFile(
-                './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice.json');
+            const nockBody = utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
+            );
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -96,20 +96,21 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(200);
 
-            var nockBody2 = utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice2.json');
+            const nockBody2 = utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'
+            );
             nockBody2.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody2)
-                .reply(201, null, {'Location': '/v2/registrations/6719a7f5254b058441165849'});
+                .reply(201, null, { Location: '/v2/registrations/6719a7f5254b058441165849' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                 .post('/ngsi-ld/v1/entityOperations/upsert/')
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(200);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -120,19 +121,23 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 .delete('/v2/registrations/6719a7f5254b058441165849')
                 .reply(204);
 
-            var nockBody3 = utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent2.json');
+            const nockBody3 = utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent2.json'
+            );
             nockBody3.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody3)
-                .reply(201, null, {'Location': '/v2/registrations/4419a7f5254b058441165849'});
+                .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning1Options),
-                async.apply(request, provisioning2Options)
-            ], done);
+            async.series(
+                [
+                    iotAgentLib.clearAll,
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options)
+                ],
+                done
+            );
         });
     });
 
@@ -143,7 +148,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
     });
 
     describe('When a request to update a provision device arrives', function() {
-        var optionsUpdate = {
+        const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
@@ -170,17 +175,23 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/csourceRegistrations/',
-                utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent2.json'))
-                .reply(201, null, {'Location': '/v2/registrations/4419a7f5254b058441165849'});
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent2.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/csourceRegistrations/',
-                utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent3.json'))
-                .reply(201, null, {'Location': '/v2/registrations/4419a7f52546658441165849'});
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent3.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/4419a7f52546658441165849' });
         });
 
         it('should return a 200 OK and no errors', function(done) {
@@ -193,7 +204,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
 
         it('should have updated the data when asking for the particular device', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                var options = {
+                const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
                         'fiware-service': 'smartGondor',
@@ -205,7 +216,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 request(options, function(error, response, body) {
                     /* jshint camelcase:false */
 
-                    var parsedBody = JSON.parse(body);
+                    const parsedBody = JSON.parse(body);
                     parsedBody.entity_name.should.equal('ANewLightName');
                     parsedBody.timezone.should.equal('Europe/Madrid');
                     done();
@@ -215,7 +226,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
 
         it('should not modify the attributes not present in the update request', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                var options = {
+                const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
                         'fiware-service': 'smartGondor',
@@ -227,7 +238,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 request(options, function(error, response, body) {
                     /* jshint camelcase:false */
 
-                    var parsedBody = JSON.parse(body);
+                    const parsedBody = JSON.parse(body);
                     parsedBody.entity_type.should.equal('TheLightType');
                     parsedBody.service.should.equal('smartGondor');
                     done();
@@ -236,7 +247,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
         });
     });
     describe('When an update request arrives with a new Device ID', function() {
-        var optionsUpdate = {
+        const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
@@ -244,7 +255,8 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithId.json')
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithId.json'
+            )
         };
 
         it('should raise a 400 error', function(done) {
@@ -256,7 +268,7 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
         });
     });
     describe('When a wrong update request payload arrives', function() {
-        var optionsUpdate = {
+        const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
@@ -264,7 +276,8 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
-                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWrong.json')
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWrong.json'
+            )
         };
 
         it('should raise a 400 error', function(done) {
@@ -277,23 +290,23 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
     });
 
     describe('When a device is provisioned without attributes and new ones are added through an update', function() {
-        var optionsUpdate = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
-                method: 'PUT',
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                },
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateMinimumDevice.json')
+        const optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
             },
-            optionsGetDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
-                method: 'GET',
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            };
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateMinimumDevice.json')
+        };
+        const optionsGetDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -308,14 +321,15 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entities/SecondMicroLight/attrs?type=MicroLights', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateProvisionMinimumDevice.json'))
+                .post(
+                    '/ngsi-ld/v1/entities/SecondMicroLight/attrs?type=MicroLights',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateProvisionMinimumDevice.json'
+                    )
+                )
                 .reply(204);
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning3Options)
-            ], done);
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
         it('should not raise any error', function(done) {
@@ -328,11 +342,10 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
         it('should provision the attributes appropriately', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 request(optionsGetDevice, function(error, response, body) {
-                    var parsedBody;
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    parsedBody = JSON.parse(body);
+                    const parsedBody = JSON.parse(body);
 
                     parsedBody.attributes.length.should.equal(1);
                     parsedBody.attributes[0].name.should.equal('newAttribute');
@@ -352,23 +365,23 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
     describe('When a device is updated to add static attributes', function() {
         /* jshint camelcase: false */
 
-        var optionsUpdate = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
-                method: 'PUT',
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                },
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateDeviceStatic.json')
+        const optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
             },
-            optionsGetDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
-                method: 'GET',
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': '/gardens'
-                }
-            };
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateDeviceStatic.json')
+        };
+        const optionsGetDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -383,24 +396,24 @@ xdescribe('NGSI-LD - Device provisioning API: Update provisioned devices', funct
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entities/SecondMicroLight/attrs?type=MicroLights', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateProvisionDeviceStatic.json'))
+                .post(
+                    '/ngsi-ld/v1/entities/SecondMicroLight/attrs?type=MicroLights',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateProvisionDeviceStatic.json'
+                    )
+                )
                 .reply(204);
 
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, provisioning3Options)
-            ], done);
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
         it('should provision the attributes appropriately', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 request(optionsGetDevice, function(error, response, body) {
-                    var parsedBody;
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    parsedBody = JSON.parse(body);
+                    const parsedBody = JSON.parse(body);
 
                     parsedBody.static_attributes.length.should.equal(3);
                     parsedBody.static_attributes[0].name.should.equal('cellID');

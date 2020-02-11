@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,47 +20,45 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    nock = require('nock'),
-    utils = require('../../../tools/utils'),
-    config = require('../../../../lib/commonConfig'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                attributes: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        providerUrl: 'http://smartGondor.com'
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const nock = require('nock');
+const utils = require('../../../tools/utils');
+const config = require('../../../../lib/commonConfig');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    iotamMock;
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    providerUrl: 'http://smartGondor.com'
+};
+let iotamMock;
 
 describe('NGSI-LD - Startup tests', function() {
-
     describe('When the IoT Agent is started with environment variables', function() {
         beforeEach(function() {
             process.env.IOTA_CB_HOST = 'cbhost';
@@ -87,8 +85,10 @@ describe('NGSI-LD - Startup tests', function() {
 
             iotamMock = nock('http://iotamhost:4444')
                 .post('/iotampath')
-                .reply(200,
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/iotamResponses/registrationSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/iotamResponses/registrationSuccess.json')
+                );
         });
 
         afterEach(function() {

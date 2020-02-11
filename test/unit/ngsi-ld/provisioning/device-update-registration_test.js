@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,119 +20,117 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld'
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ],
+            service: 'smartGondor',
+            subservice: 'gardens'
         },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            },
-            'Termometer': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ],
-                service: 'smartGondor',
-                subservice: 'gardens'
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
+        Termometer: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: [],
+            service: 'smartGondor',
+            subservice: 'gardens'
+        }
     },
-    device1 = {
-        id: 'light1',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens',
-    },
-    deviceUpdated = {
-        id: 'light1',
-        type: 'Light',
-        name: 'light1',
-        service: 'smartGondor',
-        subservice: 'gardens',
-        internalId: 'newInternalId',
-        lazy: [
-            {
-                name: 'pressure',
-                type: 'Hgmm'
-            }
-        ],
-        active: [
-            {
-                name: 'temperature',
-                type: 'centigrades'
-            }
-        ]
-    },
-    deviceCommandUpdated = {
-        id: 'light1',
-        type: 'Light',
-        name: 'light1',
-        service: 'smartGondor',
-        subservice: 'gardens',
-        internalId: 'newInternalId',
-        commands: [
-            {
-                name: 'move',
-                type: 'command'
-            }
-        ],
-        active: [
-            {
-                name: 'temperature',
-                type: 'centigrades'
-            }
-        ]
-    },
-    unknownDevice = {
-        id: 'rotationSensor4',
-        type: 'Rotation',
-        name: 'Rotation4',
-        service: 'dumbMordor',
-        subservice: 'gardens',
-        internalId: 'unknownInternalId',
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
+const device1 = {
+    id: 'light1',
+    type: 'Light',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
+const deviceUpdated = {
+    id: 'light1',
+    type: 'Light',
+    name: 'light1',
+    service: 'smartGondor',
+    subservice: 'gardens',
+    internalId: 'newInternalId',
+    lazy: [
+        {
+            name: 'pressure',
+            type: 'Hgmm'
+        }
+    ],
+    active: [
+        {
+            name: 'temperature',
+            type: 'centigrades'
+        }
+    ]
+};
+const deviceCommandUpdated = {
+    id: 'light1',
+    type: 'Light',
+    name: 'light1',
+    service: 'smartGondor',
+    subservice: 'gardens',
+    internalId: 'newInternalId',
+    commands: [
+        {
+            name: 'move',
+            type: 'command'
+        }
+    ],
+    active: [
+        {
+            name: 'temperature',
+            type: 'centigrades'
+        }
+    ]
+};
+const unknownDevice = {
+    id: 'rotationSensor4',
+    type: 'Rotation',
+    name: 'Rotation4',
+    service: 'dumbMordor',
+    subservice: 'gardens',
+    internalId: 'unknownInternalId',
 
-        lazy: [],
-        active: []
-    };
+    lazy: [],
+    active: []
+};
 
 xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
     beforeEach(function(done) {
@@ -144,8 +142,8 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-                .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+            .post('/ngsi-ld/v1/csourceRegistrations/')
+            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         // This mock does not check the payload since the aim of the test is not to verify
         // device provisioning functionality. Appropriate verification is done in tests under
@@ -175,8 +173,12 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/ngsi-ld/v1/entities/Light:light1/attrs?type=Light', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateProvisionActiveAttributes1.json'))
+                .post(
+                    '/ngsi-ld/v1/entities/Light:light1/attrs?type=Light',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateProvisionActiveAttributes1.json'
+                    )
+                )
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -191,10 +193,13 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/ngsi-ld/v1/csourceRegistrations/', utils.readExampleFile('./test/unit/ngsi-ld/examples' +
-                        '/contextAvailabilityRequests/updateIoTAgent1.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
-
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/updateIoTAgent1.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
         it('should register as ContextProvider of its lazy attributes', function(done) {
@@ -220,13 +225,14 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
 
     describe('When a device is preregistered and it is updated with new commands', function() {
         beforeEach(function() {
-
             delete deviceCommandUpdated.registrationId;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/ngsi-ld/v1/entities/Light:light1/attrs?type=Light', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateProvisionCommands1.json'))
+                .post(
+                    '/ngsi-ld/v1/entities/Light:light1/attrs?type=Light',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateProvisionCommands1.json')
+                )
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -242,9 +248,13 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/ngsi-ld/v1/csourceRegistrations/', utils.readExampleFile('./test/unit/ngsi-ld/examples' +
-                        '/contextAvailabilityRequests/updateCommands1.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/updateCommands1.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
         it('should register as ContextProvider of its commands and create the additional attributes', function(done) {
@@ -269,7 +279,6 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
     });
 
     describe('When a update action is executed in a non registered device', function() {
-
         it('should return a DEVICE_NOT_FOUND error', function(done) {
             iotAgentLib.updateRegister(unknownDevice, function(error) {
                 should.exist(error);
@@ -280,13 +289,10 @@ xdescribe('NGSI-LD - IoT Agent Device Update Registration', function() {
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         beforeEach(function() {
-
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
             // this function should use the new API. This is just a temporary solution which implies deleting the
             // registration and creating a new one.
-            contextBrokerMock
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
-                .reply(500, {});
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(500, {});
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
