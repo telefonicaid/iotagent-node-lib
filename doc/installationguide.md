@@ -211,7 +211,7 @@ used for the same purpose. For instance:
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
 -   **defaultExpressionLanguage**: the default expression language used to
-    compute expressions, possible values are: `legacy|jexl`. When not set or 
+    compute expressions, possible values are: `legacy` or `jexl`. When not set or 
     wrongly set, `legacy` is used as default value.
 
 
