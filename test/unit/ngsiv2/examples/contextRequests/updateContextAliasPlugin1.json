@@ -1,19 +1,18 @@
 {
-	"temperature": {
-		"type":"Number",
-		"value":52,
-		"metadata": {
-			"type":"Property",
-			"value":"CEL"
-		}
-	},
-	"pressure": {
-		"type":"Number",
-		"value":20071103,
-		"metadata": {
-			"type":"Property",
-			"value":"Hgmm"
-		}
-	}
+  "temperature": {
+    "type":"Number",
+    "value":52,
+    "metadata": {
+      "type":"Property",
+      "value":"CEL"
+    }
+  },
+  "pressure": {
+    "type":"Number",
+    "value":20071103,
+    "metadata": {
+      "type":"Property",
+      "value":"Hgmm"
+    }
+  }
 }
-

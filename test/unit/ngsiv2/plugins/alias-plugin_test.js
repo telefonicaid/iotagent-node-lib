@@ -113,7 +113,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Attribute alias plugin', function() {
+describe('NGSI-v2 - Attribute alias plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
