@@ -353,36 +353,41 @@ For more details, check JEXL language details
 
 ### Examples of expressions
 
-The following table shows expressions and their expected outcomes for a measure
-with four attributes: "value" with value 6, "name" with value "DevId629",
-an object with value {name: "John", surname: "Doe"} and array of value [1,3].
+The following table shows expressions and their expected outcomes taking into
+account the following measures at southbound interface:
+ 
+* `value` with value 6 (number)
+* `name` with value `"DevId629"` (string)
+* `object` with value `{name: "John", surname: "Doe"}` (JSON object)
+* `array` with value `[1, 3]` (JSON Array)
 
-| Expression                  | Expected outcome      |
-|:--------------------------- |:--------------------- |
-| '5 * value'                 | 30                    |
-| '(6 + value) * 3'           | 36                    |
-| 'value / 12 + 1'            | 1.5                   |
-| '(5 + 2) * (value + 7)'     | 91                    |
-| 'value * 5.2'               | 31.2                  |
-| '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
-| 'name + "value is " +value' | 'DevId629 value is 6' |
+
+| Expression                  | Expected outcome        |
+|:--------------------------- |:----------------------- |
+| `5 * value`                 | `30`                    |
+| `(6 + value) * 3`           | `36`                    |
+| `value / 12 + 1`            | `1.5`                   |
+| `(5 + 2) * (value + 7)`     | `91`                    |
+| `value * 5.2`               | `31.2`                  |
+| `"Pruebas " + "De Strings"` | `"Pruebas De Strings"`  |
+| `name + "value is " +value` | `"DevId629 value is 6"` |
 
 Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
-| Expression                  | Expected outcome      |
-|:--------------------------- |:--------------------- |
-| '"   a    "|trim'           | 'a'                   |
-| 'name|length'               | 8                     |
-| 'name|indexOf("e")'         | 1                     |
-| 'name|substring(0,name|indexOf("e")+1)'| 'De'       |
+| Expression                  | Expected outcome        |
+|:--------------------------- |:----------------------- |
+| <code>" a "&vert;trim</code>  | `a`                     |
+| <code>name&vert;length</code> | `8`                     |
+| <code>name&vert;indexOf("e")</code>| `1`                     |
+| <code>name&vert;substring(0,name&vert;indexOf("e")+1)</code>| `"De"`       |
 
 The following are some expressions not supported by the legacy expression
 language:
 
-| Expression                  | Expected outcome      |
-|:--------------------------- |:--------------------- |
-| 'value == 6? true : false'  | true                  |
-| 'value == 6 && name|indexOf("e")>0| true            |
-| 'array[1]+1'                | 3                     |
-| 'object.name'               | 'John'                |
-| '{type:"Point",coordinates: [value,value]}' | {type:"Point",coordinates: [6,6]}|
+| Expression                          | Expected outcome        |
+|:----------------------------------- |:----------------------- |
+| `value == 6? true : false`          | `true`                  |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                  |
+| `array[1]+1`                        | `3`                     |
+| `object.name`                       | `"John"`                |
+| `{type:"Point",coordinates: [value,value]}`| `{type:"Point",coordinates: [6,6]}` |
