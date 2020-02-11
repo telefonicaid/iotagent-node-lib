@@ -81,7 +81,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     };
 
 
-describe('Static attributes test', function() {
+describe('NGSI-v1 - Static attributes test', function() {
     var values = [
         {
             name: 'state',
