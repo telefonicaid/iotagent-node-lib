@@ -306,7 +306,8 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 
 As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl).
 To use JEXL, you will need to either configure it as default
-language using the `defaultExpressionLanguage` field to `jexl` or configuring
+language using the `defaultExpressionLanguage` field to `jexl`
+(see [configuration documentation](installationguide.md)) or configuring
 the usage of JEXL as expression language for a given device:
 
 ```
