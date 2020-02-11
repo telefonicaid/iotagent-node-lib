@@ -139,6 +139,30 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     }
                 ]
             },
+            WeatherStation7: {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        metadata: {
+                            unitCode: { type: 'Text', value: 'Hgmm' }
+                        },
+                        entity_name: 'Higro2002',
+                        entity_type: 'Higrometer'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        entity_name: 'Higro2000',
+                        entity_type: 'Higrometer'
+                    }
+                ]
+            },
             Sensor001: {
                 commands: [],
                 type: 'Sensor',
@@ -319,6 +343,45 @@ describe('Multi-entity plugin', function() {
 
         it('should send context elements', function(done) {
             iotAgentLib.update('ws6', 'WeatherStation6', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    /* jshint maxlen: 200 */
+    describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
+        var values = [
+            {
+                name: 'h',
+                type: 'Hgmm',
+                value: '16'
+            },
+            {
+                name: 'p',
+                type: 'Hgmm',
+                value: '17'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin8.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send context elements', function(done) {
+            iotAgentLib.update('ws7', 'WeatherStation7', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

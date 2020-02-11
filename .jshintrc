@@ -18,6 +18,7 @@
   "expr": true,
   "unused": "vars",
   "esversion": 6,
+  "laxbreak": true,
   "globals": {
     "describe":true,
     "it": true,

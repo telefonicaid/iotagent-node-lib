@@ -175,19 +175,18 @@ describe('Timestamp compression plugin', function() {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadata', function() {
+    describe('When an update comes with a timestamp through the plugin with metadata.', function() {
         var values = [
             {
                 name: 'state',
                 type: 'Boolean',
                 value: true,
-                metadata: [
-                    {
-                        name: 'TimeInstant',
+                metadata: {
+                    TimeInstant: {
                         type: 'DateTime',
                         value: '20071103T131805'
                     }
-                ]
+                }
             },
             {
                 name: 'TheTargetValue',

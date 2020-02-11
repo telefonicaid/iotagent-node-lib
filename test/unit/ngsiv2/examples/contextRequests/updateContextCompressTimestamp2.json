@@ -2,15 +2,14 @@
   "state": {
     "type": "Boolean",
     "value": true,
-    "metadata": [
-      {
-        "name": "TimeInstant",
+    "metadata": {
+      "TimeInstant": {
         "type": "DateTime",
         "value": "+002007-11-03T13:18:05"
       }
-    ]
+    }
   },
-  "TheTargetValue":{
+  "TheTargetValue": {
     "type": "DateTime",
     "value": "+002007-11-03T13:18:05"
   }
