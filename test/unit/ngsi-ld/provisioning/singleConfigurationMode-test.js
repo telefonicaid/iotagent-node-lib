@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,55 +20,54 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
-'use strict';
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
 
-    should = require('should'),
-    nock = require('nock'),
-    contextBrokerMock,
-    request = require('request'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        singleConfigurationMode: true,
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
+const should = require('should');
+const nock = require('nock');
+let contextBrokerMock;
+const request = require('request');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
     },
-    groupCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+    server: {
+        port: 4041,
+        baseRoot: '/'
     },
-    deviceCreation = {
-        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    };
+    types: {},
+    service: 'smartGondor',
+    singleConfigurationMode: true,
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
+const groupCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const deviceCreation = {
+    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
 
 describe('NGSI-LD - Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
@@ -86,7 +85,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
     });
 
     describe('When a new configuration arrives to an already configured subservice', function() {
-        var groupCreationDuplicated = {
+        const groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
@@ -111,7 +110,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
         });
     });
     describe('When a device is provisioned with an ID that already exists in the configuration', function() {
-        var deviceCreationDuplicated = {
+        const deviceCreationDuplicated = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
@@ -127,7 +126,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -155,24 +154,24 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
         });
     });
     describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
-        var alternativeDeviceCreation = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
-                headers: {
-                    'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            },
-            alternativeGroupCreation = {
-                url: 'http://localhost:4041/iot/services',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-                headers: {
-                    'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            };
+        const alternativeDeviceCreation = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'AlternateService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+        const alternativeGroupCreation = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+            headers: {
+                'fiware-service': 'AlternateService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -180,7 +179,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -193,7 +192,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'AlternateService')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -221,15 +220,15 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
         });
     });
     describe('When a device is provisioned without a type and with a default configuration type', function() {
-        var getDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
-                method: 'GET',
-                headers: {
-                    'fiware-service': 'TestService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            },
-            oldType;
+        const getDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+        let oldType;
 
         beforeEach(function(done) {
             nock.cleanAll();
@@ -237,7 +236,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -259,9 +258,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
         it('should be provisioned with the default type', function(done) {
             request(deviceCreation, function(error, response, body) {
                 request(getDevice, function(error, response, body) {
-                    var parsedBody;
-
-                    parsedBody = JSON.parse(body);
+                    const parsedBody = JSON.parse(body);
 
                     parsedBody.entity_type.should.equal('SensorMachine');
 
@@ -275,14 +272,23 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             nock.cleanAll();
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
-                .post('/ngsi-ld/v1/csourceRegistrations/', utils.readExampleFile('./test/unit/ngsi-ld/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'))
-                .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples' +
+                            '/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
-                .post('/ngsi-ld/v1/entityOperations/upsert/', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
+                    )
+                )
                 .reply(200);
 
             request(groupCreation, done);
@@ -302,6 +308,5 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
                 done();
             });
         });
-
     });
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -20,133 +20,131 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  *
- * Modified by: Daniel Calvo - ATOS Research & Innovation
+ * Modified by: Jason Fox - FIWARE Foundation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    timekeeper = require('timekeeper'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld'
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const timekeeper = require('timekeeper');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
         },
-        server: {
-            port: 4041
+        BrokenLight: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
         },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'BrokenLight': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'Termometer': {
-                type: 'Termometer',
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ]
-            },
-            'Humidity': {
-                type: 'Humidity',
-                cbHost: 'http://192.168.1.1:3024',
-                commands: [],
-                lazy: [],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            },
-            'Motion': {
-                type: 'Motion',
-                commands: [],
-                lazy: [],
-                staticAttributes: [
-                    {
-                        'name': 'location',
-                        'type': 'geo:point',
-                        'value': '153,523'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            },
-            'Lamp': {
-                type: 'Lamp',
-                commands: [],
-                lazy: [],
-                staticAttributes: [
-                    {
-                        'name': 'controlledProperty',
-                        'type': 'Property',
-                        'value': 'StaticValue',
-                        'metadata':{
-                            'includes':{'type': 'Property', 'value' :'bell'}
-                        }
-                    }
-                ],
-                active: [
-                    {
-                        'name': 'luminosity',
-                        'type': 'Number',
-                        'metadata':{
-                            'unitCode':{type: 'Property', value :'CAL'}
-                        }
-                    }
-                ]
-            }
+        Termometer: {
+            type: 'Termometer',
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: []
         },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com'
-    };
+        Humidity: {
+            type: 'Humidity',
+            cbHost: 'http://192.168.1.1:3024',
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        },
+        Motion: {
+            type: 'Motion',
+            commands: [],
+            lazy: [],
+            staticAttributes: [
+                {
+                    name: 'location',
+                    type: 'geo:point',
+                    value: '153,523'
+                }
+            ],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        },
+        Lamp: {
+            type: 'Lamp',
+            commands: [],
+            lazy: [],
+            staticAttributes: [
+                {
+                    name: 'controlledProperty',
+                    type: 'Property',
+                    value: 'StaticValue',
+                    metadata: {
+                        includes: { type: 'Property', value: 'bell' }
+                    }
+                }
+            ],
+            active: [
+                {
+                    name: 'luminosity',
+                    type: 'Number',
+                    metadata: {
+                        unitCode: { type: 'Property', value: 'CAL' }
+                    }
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
 describe('NGSI-LD - Active attributes test', function() {
-    var values = [
+    const values = [
         {
             name: 'state',
             type: 'Boolean',
@@ -173,9 +171,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json'))
-                .query({type: 'Light'})
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -191,10 +191,10 @@ describe('NGSI-LD - Active attributes test', function() {
     });
 
     describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
-        var modifiedValues;
+        let modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
@@ -215,9 +215,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextTimestamp.json'))
-                .query({type: 'Light'})
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextTimestamp.json')
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -241,10 +243,9 @@ describe('NGSI-LD - Active attributes test', function() {
     });
 
     describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
-        var modifiedValues;
+        let modifiedValues;
 
         beforeEach(function(done) {
-
             modifiedValues = [
                 {
                     name: 'state',
@@ -279,117 +280,128 @@ describe('NGSI-LD - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' +
-        'without milis', function() {
-        var modifiedValues;
+    describe(
+        'When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format ' + 'without milis',
+        function() {
+            let modifiedValues;
 
-        beforeEach(function(done) {
-            var time = new Date(1666477342000); // 2022-10-22T22:22:22Z
+            beforeEach(function(done) {
+                const time = new Date(1666477342000); // 2022-10-22T22:22:22Z
 
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2022-10-22T22:22:22Z'
-                }
-            ];
+                modifiedValues = [
+                    {
+                        name: 'state',
+                        type: 'boolean',
+                        value: true
+                    },
+                    {
+                        name: 'TimeInstant',
+                        type: 'DateTime',
+                        value: '2022-10-22T22:22:22Z'
+                    }
+                ];
 
-            timekeeper.freeze(time);
+                timekeeper.freeze(time);
 
-            nock.cleanAll();
+                nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'))
-                .query({type: 'Light'})
-                .reply(204);
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .patch(
+                        '/ngsi-ld/v1/entities/light1/attrs',
+                        utils.readExampleFile(
+                            './test/unit/ngsi-ld/examples/contextRequests/' +
+                            'updateContextTimestampOverrideWithoutMilis.json'
+                        )
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
 
-            iotAgentConfig.timestamp = true;
-            iotAgentLib.activate(iotAgentConfig, done);
+                iotAgentConfig.timestamp = true;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
 
-        });
+            afterEach(function(done) {
+                delete iotAgentConfig.timestamp;
+                timekeeper.reset();
 
-        afterEach(function(done) {
-            delete iotAgentConfig.timestamp;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should not fail', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
-        });
-    });
 
-    describe('When the IoT Agent receives new information, the timestamp flag is on' +
-    'and timezone is defined', function() {
-        var modifiedValues;
+            it('should not fail', function(done) {
+                iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
 
-        beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+    describe(
+        'When the IoT Agent receives new information, the timestamp flag is on' + 'and timezone is defined',
+        function() {
+            let modifiedValues;
 
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'dimming',
-                    type: 'number',
-                    value: 87
-                }
-            ];
+            beforeEach(function(done) {
+                const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
-            timekeeper.freeze(time);
+                modifiedValues = [
+                    {
+                        name: 'state',
+                        type: 'boolean',
+                        value: true
+                    },
+                    {
+                        name: 'dimming',
+                        type: 'number',
+                        value: 87
+                    }
+                ];
 
-            nock.cleanAll();
+                timekeeper.freeze(time);
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/' +
-                    'updateContextTimestampTimezone.json'))
-                .query({type: 'Light'})
-                .reply(204);
+                nock.cleanAll();
 
-            iotAgentConfig.timestamp = true;
-            iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .patch(
+                        '/ngsi-ld/v1/entities/light1/attrs',
+                        utils.readExampleFile(
+                            './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextTimestampTimezone.json'
+                        )
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
 
-        afterEach(function(done) {
-            delete iotAgentConfig.timestamp;
-            delete iotAgentConfig.types.Light.timezone;
-            timekeeper.reset();
+                iotAgentConfig.timestamp = true;
+                iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
 
-            done();
-        });
+            afterEach(function(done) {
+                delete iotAgentConfig.timestamp;
+                delete iotAgentConfig.types.Light.timezone;
+                timekeeper.reset();
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
-        });
-    });
+
+            it('should add the timestamp to the entity and all the attributes', function(done) {
+                iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
 
     describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function() {
-        var modifiedValues;
+        let modifiedValues;
 
         beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
                 {
@@ -410,9 +422,13 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'))
-                .query({type: 'Light'})
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'
+                    )
+                )
+                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentConfig.timestamp = true;
@@ -435,60 +451,68 @@ describe('NGSI-LD - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' +
-    'and timezone is defined', function() {
-        var modifiedValues;
+    describe(
+        'When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on' + 'and timezone is defined',
+        function() {
+            let modifiedValues;
 
-        beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+            beforeEach(function(done) {
+                const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2015-12-14T08:06:01.468Z'
-                }
-            ];
+                modifiedValues = [
+                    {
+                        name: 'state',
+                        type: 'boolean',
+                        value: true
+                    },
+                    {
+                        name: 'TimeInstant',
+                        type: 'DateTime',
+                        value: '2015-12-14T08:06:01.468Z'
+                    }
+                ];
 
-            timekeeper.freeze(time);
+                timekeeper.freeze(time);
 
-            nock.cleanAll();
+                nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs', utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'))
-                .query({type: 'Light'})
-                .reply(204);
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .patch(
+                        '/ngsi-ld/v1/entities/light1/attrs',
+                        utils.readExampleFile(
+                            './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'
+                        )
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
 
-            iotAgentConfig.timestamp = true;
-            iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+                iotAgentConfig.timestamp = true;
+                iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
 
-        afterEach(function(done) {
-            delete iotAgentConfig.timestamp;
-            delete iotAgentConfig.types.Light.timezone;
-            timekeeper.reset();
+            afterEach(function(done) {
+                delete iotAgentConfig.timestamp;
+                delete iotAgentConfig.types.Light.timezone;
+                timekeeper.reset();
 
-            done();
-        });
-
-        it('should not override the received instant and should not add metadatas for this request', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
-        });
-    });
 
-    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
+            it('should not override the received instant and should not add' +
+                ' metadatas for this request', function(done) {
+                iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
+
+    describe('When the IoT Agent receives information from a device whose type doesn\'t' +
+     ' have a type name', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -511,11 +535,15 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json'))
-                .query({type: 'Light'})
-                .reply(413,
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext1Failed.json'));
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
+                .reply(
+                    413,
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext1Failed.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -539,11 +567,15 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json'))
-                .query({type: 'Light'})
-                .reply(400,
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json'));
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
+                .reply(
+                    400,
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -564,11 +596,15 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs',
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json'))
-                .query({type: 'Light'})
-                .reply(500,
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json'));
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
+                .reply(
+                    500,
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json')
+                );
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -592,9 +628,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:3024')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/humSensor/attrs',
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json'))
-                .query({type: 'Humidity'})
+                .patch(
+                    '/ngsi-ld/v1/entities/humSensor/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Humidity' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -610,7 +648,7 @@ describe('NGSI-LD - Active attributes test', function() {
     });
 
     describe('When an IoT Agent receives information for a type with static attributes', function() {
-        var newValues = [
+        const newValues = [
             {
                 name: 'moving',
                 type: 'Boolean',
@@ -623,10 +661,13 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/motion1/attrs',
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/' + 
-                    'contextRequests/updateContextStaticAttributes.json'))
-                .query({type: 'Motion'})
+                .patch(
+                    '/ngsi-ld/v1/entities/motion1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/' + 'contextRequests/updateContextStaticAttributes.json'
+                    )
+                )
+                .query({ type: 'Motion' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -640,15 +681,14 @@ describe('NGSI-LD - Active attributes test', function() {
         });
     });
 
-
     describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
-        var newValues = [
+        const newValues = [
             {
                 name: 'luminosity',
                 type: 'Number',
                 value: '100',
-                metadata:{
-                    unitCode:{type: 'Property', value :'CAL'}
+                metadata: {
+                    unitCode: { type: 'Property', value: 'CAL' }
                 }
             }
         ];
@@ -659,9 +699,13 @@ describe('NGSI-LD - Active attributes test', function() {
             /* jshint maxlen: 200 */
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/lamp1/attrs',
-                utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextStaticAttributesMetadata.json'))
-                .query({type: 'Lamp'})
+                .patch(
+                    '/ngsi-ld/v1/entities/lamp1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextStaticAttributesMetadata.json'
+                    )
+                )
+                .query({ type: 'Lamp' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
