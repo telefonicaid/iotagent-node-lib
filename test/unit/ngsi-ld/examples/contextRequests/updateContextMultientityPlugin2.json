@@ -1,22 +1,21 @@
 {
-  "actionType": "append",
-  "entities": [
-    {
-      "id": "ws4",
-      "type": "WeatherStation",
-      "pressure": {
-        "type": "Hgmm",
-        "value": "52"
-      }
-    },
-    {
-      "humidity": {
-        "type": "Percentage",
-        "value": "12"
-      },
-      "type": "WeatherStation",
-      "id": "Higro2000"
-    }
-  ]
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws4",
+            "pressure": {
+                "type": "Hgmm",
+                "value": "52"
+            },
+            "type": "WeatherStation"
+        },
+        {
+            "humidity": {
+                "type": "Percentage",
+                "value": "12"
+            },
+            "id": "Higro2000",
+            "type": "WeatherStation"
+        }
+    ]
 }
-

@@ -1,38 +1,38 @@
 {
     "@context": "http://context.json-ld",
-    "state": {
-        "type": "Property",
-        "value": {
-            "@type": "boolean",
-            "@value": true
-        },
-        "TimeInstant": {
-            "type": "Property",
-            "value": {
-                "@type": "DateTime",
-                "@value": "2015-08-05T07:35:01.468Z"
-            }
-        }
-    },
-    "dimming": {
-        "type": "Property",
-        "value": {
-            "@type": "number",
-            "@value": 87
-        },
-        "TimeInstant": {
-            "type": "Property",
-            "value": {
-                "@type": "DateTime",
-                "@value": "2015-08-05T07:35:01.468Z"
-            }
-        }
-    },
     "TimeInstant": {
         "type": "Property",
         "value": {
             "@type": "DateTime",
             "@value": "2015-08-05T07:35:01.468Z"
+        }
+    },
+    "dimming": {
+        "TimeInstant": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "2015-08-05T07:35:01.468Z"
+            }
+        },
+        "type": "Property",
+        "value": {
+            "@type": "number",
+            "@value": 87
+        }
+    },
+    "state": {
+        "TimeInstant": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "2015-08-05T07:35:01.468Z"
+            }
+        },
+        "type": "Property",
+        "value": {
+            "@type": "boolean",
+            "@value": true
         }
     }
 }

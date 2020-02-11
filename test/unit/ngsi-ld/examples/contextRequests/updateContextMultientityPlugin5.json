@@ -1,24 +1,25 @@
 {
-  "actionType": "append",
-  "entities": [
-    { "id": "ws6",
-      "type": "WeatherStation"
-    },
-    {
-      "id": "Higro2002",
-      "type": "Higrometer",
-      "pressure": {
-        "type": "Hgmm",
-        "value": "17"
-      }
-    },
-    {
-      "id": "Higro2000",
-      "type": "Higrometer",
-      "pressure": {
-        "type": "Hgmm",
-        "value": "16"
-      }
-    }
-  ]
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws6",
+            "type": "WeatherStation"
+        },
+        {
+            "id": "Higro2002",
+            "pressure": {
+                "type": "Hgmm",
+                "value": "17"
+            },
+            "type": "Higrometer"
+        },
+        {
+            "id": "Higro2000",
+            "pressure": {
+                "type": "Hgmm",
+                "value": "16"
+            },
+            "type": "Higrometer"
+        }
+    ]
 }

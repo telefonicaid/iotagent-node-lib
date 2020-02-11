@@ -1,11 +1,11 @@
 {
     "@context": "http://context.json-ld",
-    "pressure": {
-        "type": "Property",
-        "value": 10
-    },
     "consumption_x": {
         "type": "Property",
         "value": 200
+    },
+    "pressure": {
+        "type": "Property",
+        "value": 10
     }
 }

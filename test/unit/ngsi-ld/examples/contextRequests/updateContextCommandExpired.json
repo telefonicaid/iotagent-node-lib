@@ -1,10 +1,10 @@
 {
-  "position_status": {
-    "value": "ERROR",
-    "type": "commandStatus"
-  },
-  "position_info": {
-    "value": "EXPIRED",
-    "type": "commandResult"
-  }
+    "position_info": {
+        "type": "commandResult",
+        "value": "EXPIRED"
+    },
+    "position_status": {
+        "type": "commandStatus",
+        "value": "ERROR"
+    }
 }

@@ -1,21 +1,21 @@
 {
     "@context": "http://context.json-ld",
-    "state": {
-        "type": "Property",
-        "value": true,
-        "TimeInstant": {
-            "type": "Property",
-            "value": {
-                "@type": "DateTime",
-                "@value": "+002007-11-03T13:18:05"
-            }
-        }
-    },
     "TheTargetValue": {
         "type": "Property",
         "value": {
             "@type": "DateTime",
             "@value": "+002007-11-03T13:18:05"
         }
+    },
+    "state": {
+        "TimeInstant": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "+002007-11-03T13:18:05"
+            }
+        },
+        "type": "Property",
+        "value": true
     }
 }

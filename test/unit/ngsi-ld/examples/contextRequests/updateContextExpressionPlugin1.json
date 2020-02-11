@@ -1,4 +1,4 @@
- {
+{
     "@context": "http://context.json-ld",
     "pressure": {
         "type": "Property",

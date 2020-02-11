@@ -1,13 +1,13 @@
 {
     "dataProvided": {
-        "entities": [
-            {
-                "type": "RobotPre",
-                "id": "RobotPre:TestRobotPre"
-            }
-        ],
         "attrs": [
             "moving"
+        ],
+        "entities": [
+            {
+                "id": "RobotPre:TestRobotPre",
+                "type": "RobotPre"
+            }
         ]
     },
     "provider": {

@@ -5,8 +5,8 @@
         "value": {
             "@type": "Object",
             "@value": {
-                "name": "Manufacturer1",
-                "VAT": "U12345678"
+                "VAT": "U12345678",
+                "name": "Manufacturer1"
             }
         }
     }

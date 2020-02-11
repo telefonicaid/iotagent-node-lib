@@ -1,13 +1,13 @@
 {
     "dataProvided": {
-        "entities": [
-            {
-                "type": "TheLightType",
-                "id": "TheSecondLight"
-            }
-        ],
         "attrs": [
             "luminance"
+        ],
+        "entities": [
+            {
+                "id": "TheSecondLight",
+                "type": "TheLightType"
+            }
         ]
     },
     "provider": {

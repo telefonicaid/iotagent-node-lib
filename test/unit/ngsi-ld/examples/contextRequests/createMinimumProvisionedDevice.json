@@ -1,13 +1,13 @@
- [
-        {
-            "id": "FirstMicroLight",
-            "type": "MicroLights",
-            "attr_name": {
-                "type": "Property",
-                "value": {
-                    "@type": "string",
-                    "@value": " "
-                }
+[
+    {
+        "attr_name": {
+            "type": "Property",
+            "value": {
+                "@type": "string",
+                "@value": " "
             }
-        }
-    ]
+        },
+        "id": "FirstMicroLight",
+        "type": "MicroLights"
+    }
+]

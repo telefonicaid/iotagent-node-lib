@@ -1,8 +1,8 @@
 {
     "id": "RobotPre:TestRobotPre",
-    "type": "RobotPre",
     "moving": {
         "type": "string",
         "value": ""
-    }
+    },
+    "type": "RobotPre"
 }

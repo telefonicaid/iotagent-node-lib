@@ -1,13 +1,13 @@
 {
     "dataProvided": {
-        "entities": [
-            {
-                "type": "Light",
-                "id": "light1"
-            }
-        ],
         "attrs": [
             "move"
+        ],
+        "entities": [
+            {
+                "id": "light1",
+                "type": "Light"
+            }
         ]
     },
     "provider": {

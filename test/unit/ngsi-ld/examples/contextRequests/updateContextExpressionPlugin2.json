@@ -1,15 +1,15 @@
 {
     "@context": "http://context.json-ld",
-    "pressure": {
-        "type": "Property",
-        "value": 1040
-    },
     "humidity": {
         "type": "Property",
         "value": {
             "@type": "Percentage",
             "@value": "12"
         }
+    },
+    "pressure": {
+        "type": "Property",
+        "value": 1040
     },
     "weather": {
         "type": "Property",
