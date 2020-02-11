@@ -1,31 +1,33 @@
 {
-  "actionType": "append",
-  "entities": [{
-    "id": "sensorCommand",
-    "type": "SensorCommand",
-    "PING_status": {
-      "type": "commandStatus",
-      "value": "OK",
-      "metadata": {
-        "TimeInstant": {
-          "type": "DateTime",
-          "value": "2015-08-05T07:35:01.468Z"
+    "actionType": "append",
+    "entities": [
+        {
+            "PING_info": {
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2015-08-05T07:35:01.468Z"
+                    }
+                },
+                "type": "commandResult",
+                "value": "1234567890"
+            },
+            "PING_status": {
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2015-08-05T07:35:01.468Z"
+                    }
+                },
+                "type": "commandStatus",
+                "value": "OK"
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2015-08-05T07:35:01.468Z"
+            },
+            "id": "sensorCommand",
+            "type": "SensorCommand"
         }
-      }
-    },
-    "PING_info": {
-      "type": "commandResult",
-      "value": "1234567890",
-      "metadata": {
-        "TimeInstant": {
-          "type": "DateTime",
-          "value": "2015-08-05T07:35:01.468Z"
-        }
-      }
-    },
-    "TimeInstant": {
-      "type": "DateTime",
-      "value": "2015-08-05T07:35:01.468Z"
-    }
-  }]
+    ]
 }

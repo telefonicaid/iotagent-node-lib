@@ -1,10 +1,10 @@
 {
-  "position_status": {
-    "value": "ERROR",
-    "type": "commandStatus"
-  },
-  "position_info": {
-    "value": "Stalled",
-    "type": "commandResult"
-  }
+    "position_info": {
+        "type": "commandResult",
+        "value": "Stalled"
+    },
+    "position_status": {
+        "type": "commandStatus",
+        "value": "ERROR"
+    }
 }

@@ -1,15 +1,15 @@
 {
     "@context": "http://context.json-ld",
-    "state": {
-        "type": "Property",
-        "value": true,
-        "observedAt": "2007-11-03T13:18:05.000Z"
-    },
     "TheTargetValue": {
         "type": "Property",
         "value": {
             "@type": "DateTime",
             "@value": "2007-11-03T13:18:05.000Z"
         }
+    },
+    "state": {
+        "observedAt": "2007-11-03T13:18:05.000Z",
+        "type": "Property",
+        "value": true
     }
 }

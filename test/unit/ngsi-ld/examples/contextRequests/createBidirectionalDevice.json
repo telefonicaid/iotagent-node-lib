@@ -1,16 +1,16 @@
 [
     {
         "id": "TheFirstLight",
-        "type": "TheLightType",
         "location": {
             "type": "GeoProperty",
-        "value": {
-            "type": "Point",
-            "coordinates": [
-                0,
-                0
-            ]
-        }
-        }
+            "value": {
+                "coordinates": [
+                    0,
+                    0
+                ],
+                "type": "Point"
+            }
+        },
+        "type": "TheLightType"
     }
 ]

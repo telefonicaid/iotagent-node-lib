@@ -1,14 +1,14 @@
 {
-  "temperature": {
-    "type": "centigrades",
-    "value": " "
-  },
-  "move_status": {
-    "type": "commandStatus",
-    "value": "UNKNOWN"
-  },
-  "move_info": {
-    "type": "commandResult",
-    "value": " "
-  }
+    "move_info": {
+        "type": "commandResult",
+        "value": " "
+    },
+    "move_status": {
+        "type": "commandStatus",
+        "value": "UNKNOWN"
+    },
+    "temperature": {
+        "type": "centigrades",
+        "value": " "
+    }
 }

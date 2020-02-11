@@ -3,11 +3,11 @@
     "location": {
         "type": "GeoProperty",
         "value": {
-            "type": "Point",
             "coordinates": [
                 23,
                 12.5
-            ]
+            ],
+            "type": "Point"
         }
     }
 }

@@ -1,11 +1,19 @@
- {
-    "type": "ContextSourceRegistration",
+{
+    "@context": [
+        {
+            "commandAttr": "ngsi-ld:commandAttr",
+            "luminance": "ngsi-ld:luminance",
+            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/"
+        },
+        "http://context.json-ld"
+    ],
+    "endpoint": "http://smartGondor.com",
     "information": [
         {
             "entities": [
                 {
-                    "type": "TheLightType",
-                    "id": "TheFirstLight"
+                    "id": "TheFirstLight",
+                    "type": "TheLightType"
                 }
             ],
             "properties": [
@@ -14,13 +22,5 @@
             ]
         }
     ],
-    "endpoint": "http://smartGondor.com",
-    "@context": [
-        {
-            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
-            "luminance": "ngsi-ld:luminance",
-            "commandAttr": "ngsi-ld:commandAttr"
-        },
-        "http://context.json-ld"
-    ]
+    "type": "ContextSourceRegistration"
 }

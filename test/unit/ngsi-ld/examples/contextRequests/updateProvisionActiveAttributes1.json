@@ -1,6 +1,6 @@
 {
-  "temperature": {
-    "type": "centigrades",
-    "value": " "    
-  }
+    "temperature": {
+        "type": "centigrades",
+        "value": " "
+    }
 }

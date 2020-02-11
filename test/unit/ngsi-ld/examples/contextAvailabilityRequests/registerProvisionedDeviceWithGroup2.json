@@ -1,30 +1,30 @@
- {
-        "type": "ContextSourceRegistration",
-        "information": [
-            {
-                "entities": [
-                    {
-                        "type": "SensorMachine",
-                        "id": "TheFirstLight"
-                    }
-                ],
-                "properties": [
-                    "luminance",
-                    "luminescence",
-                    "commandAttr",
-                    "wheel1"
-                ]
-            }
-        ],
-        "endpoint": "http://smartGondor.com",
-        "@context": [
-            {
-                "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
-                "luminance": "ngsi-ld:luminance",
-                "luminescence": "ngsi-ld:luminescence",
-                "commandAttr": "ngsi-ld:commandAttr",
-                "wheel1": "ngsi-ld:wheel1"
-            },
-            "http://context.json-ld"
-        ]
-    }
+{
+    "@context": [
+        {
+            "commandAttr": "ngsi-ld:commandAttr",
+            "luminance": "ngsi-ld:luminance",
+            "luminescence": "ngsi-ld:luminescence",
+            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
+            "wheel1": "ngsi-ld:wheel1"
+        },
+        "http://context.json-ld"
+    ],
+    "endpoint": "http://smartGondor.com",
+    "information": [
+        {
+            "entities": [
+                {
+                    "id": "TheFirstLight",
+                    "type": "SensorMachine"
+                }
+            ],
+            "properties": [
+                "luminance",
+                "luminescence",
+                "commandAttr",
+                "wheel1"
+            ]
+        }
+    ],
+    "type": "ContextSourceRegistration"
+}

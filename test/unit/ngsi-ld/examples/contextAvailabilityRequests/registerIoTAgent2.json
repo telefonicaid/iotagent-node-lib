@@ -1,13 +1,13 @@
 {
     "dataProvided": {
-        "entities": [
-            {
-                "type": "Motion",
-                "id": "Motion:motion1"
-            }
-        ],
         "attrs": [
             "moving"
+        ],
+        "entities": [
+            {
+                "id": "Motion:motion1",
+                "type": "Motion"
+            }
         ]
     },
     "provider": {

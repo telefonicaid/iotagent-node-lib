@@ -1,10 +1,10 @@
 {
-  "position_status": {
-    "value": "FINISHED",
-    "type": "commandStatus"
-  },
-  "position_info": {
-    "value": "[72, 368, 1]",
-    "type": "commandResult"
-  }
+    "position_info": {
+        "type": "commandResult",
+        "value": "[72, 368, 1]"
+    },
+    "position_status": {
+        "type": "commandStatus",
+        "value": "FINISHED"
+    }
 }

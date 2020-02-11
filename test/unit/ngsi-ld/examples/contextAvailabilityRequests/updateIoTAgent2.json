@@ -1,14 +1,14 @@
 {
     "dataProvided": {
-        "entities": [
-            {
-                "type": "TheLightType",
-                "id": "ANewLightName"
-            }
-        ],
         "attrs": [
             "luminance",
             "commandAttr"
+        ],
+        "entities": [
+            {
+                "id": "ANewLightName",
+                "type": "TheLightType"
+            }
         ]
     },
     "provider": {

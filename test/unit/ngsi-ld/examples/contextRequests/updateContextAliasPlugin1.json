@@ -1,13 +1,13 @@
 {
     "@context": "http://context.json-ld",
-    "temperature": {
-        "type": "Property",
-        "value": 52,
-        "unitCode": "CEL"
-    },
     "pressure": {
         "type": "Property",
-        "value": 20071103,
-        "unitCode": "Hgmm"
+        "unitCode": "Hgmm",
+        "value": 20071103
+    },
+    "temperature": {
+        "type": "Property",
+        "unitCode": "CEL",
+        "value": 52
     }
 }

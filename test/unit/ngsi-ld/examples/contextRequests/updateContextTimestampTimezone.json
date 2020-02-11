@@ -1,14 +1,14 @@
 {
     "@context": "http://context.json-ld",
-    "state": {
-        "type": "Property",
-        "value": true,
-        "observedAt": "2015-08-05T07:35:01.468Z"
-    },
     "dimming": {
+        "observedAt": "2015-08-05T07:35:01.468Z",
         "type": "Property",
-        "value": 87,
-        "observedAt": "2015-08-05T07:35:01.468Z"
+        "value": 87
     },
-    "observedAt": "2015-08-05T07:35:01.468Z"
+    "observedAt": "2015-08-05T07:35:01.468Z",
+    "state": {
+        "observedAt": "2015-08-05T07:35:01.468Z",
+        "type": "Property",
+        "value": true
+    }
 }

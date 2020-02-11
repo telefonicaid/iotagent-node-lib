@@ -3,7 +3,6 @@
     "location": {
         "type": "GeoProperty",
         "value": {
-            "type": "Polygon",
             "coordinates": [
                 [
                     23,
@@ -17,7 +16,8 @@
                     22,
                     13.5
                 ]
-            ]
+            ],
+            "type": "Polygon"
         }
     }
 }
