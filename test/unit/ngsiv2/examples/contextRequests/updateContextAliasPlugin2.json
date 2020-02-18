@@ -1,6 +1,10 @@
 {
   "luminance": {
-    "type": "lumens",
-    "value": "9"
+    "type": "Number",
+    "value": 9,
+    "metadata": {
+      "type":"Property",
+      "value":"CAL"
+    }
   }
 }

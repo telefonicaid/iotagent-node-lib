@@ -193,7 +193,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Expression-based transformations plugin', function() {
+describe('NGSI-v2 - Expression-based transformations plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

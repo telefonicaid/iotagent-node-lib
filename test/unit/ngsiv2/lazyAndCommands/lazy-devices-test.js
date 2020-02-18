@@ -141,7 +141,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         }
     };
 
-describe('IoT Agent Lazy Devices', function() {
+describe('NGSI-v2 - IoT Agent Lazy Devices', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

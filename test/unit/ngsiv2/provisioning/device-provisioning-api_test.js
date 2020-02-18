@@ -48,7 +48,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Device provisioning API: Provision devices', function() {
+describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 
