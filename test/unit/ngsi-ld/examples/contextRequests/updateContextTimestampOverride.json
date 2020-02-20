@@ -1,6 +1,5 @@
 {
     "@context": "http://context.json-ld",
-    "observedAt": "2015-12-14T08:06:01.468Z",
     "state": {
         "type": "Property",
         "value": true

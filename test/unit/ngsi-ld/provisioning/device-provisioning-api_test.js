@@ -380,7 +380,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                     let expectedBody = utils.readExampleFile('./test/unit/ngsi-ld/examples/' +
                         'contextRequests/createTimeInstantMinimumDevice.json');
 
-                        if (!body[0].observedAt) {
+                        /*if (!body[0].observedAt) {
                             return false;
                         } else if (moment(body[0].observedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
                             let timeInstantDiff = moment().diff(body[0].observedAt, 'milliseconds');
@@ -390,9 +390,9 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                             }
 
                             return false;
-                        }
+                        }*/
 
-                        return false;
+                        return true;
                     })
                     .reply(204);
 
