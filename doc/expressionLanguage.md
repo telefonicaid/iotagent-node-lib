@@ -46,8 +46,15 @@ provisioning. The following example shows a device provisioning payload with def
                     "expression": "${@level / 100}"
                 },
                 {
-                    "object_id": "tt",
-                    "name": "temperature",
+                    "name": "level",
+                    "type": "Number"
+                },
+                {
+                    "name": "latitude",
+                    "type": "Number"
+                },
+                {
+                    "name": "longitude",
                     "type": "Number"
                 }
             ]
@@ -61,6 +68,11 @@ pattern is marked with the following secuence: `${<expression>}` where `<express
 Expression Language (see definition [below](#language-description)). In order for the complete expression to be
 evaluated, all the expression patterns must be evaluatable (there must be a value in the measurement for all the
 variables of all the expression patterns).
+
+Note that you need to include in the provision operation all the attributes required as inputs for the expressions.
+In this example, they are `level`, `latitude` and `longitude`. Otherwise the device sending the measures will get
+`{"name":"ATTRIBUTE_NOT_FOUND","message":"Some of the attributes does not exist"}` when it sends some of these
+and the expression will not be calculated.
 
 The exact same syntax works for Configuration and Device provisioning.
 
