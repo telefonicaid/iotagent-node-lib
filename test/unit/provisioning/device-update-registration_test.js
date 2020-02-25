@@ -131,7 +131,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         active: []
     };
 
-describe('IoT Agent Device Update Registration', function() {
+describe('NGSI-v1 - IoT Agent Device Update Registration', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

@@ -49,7 +49,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         explicitAttrs: false
     };
 
-describe('Device provisioning API: Provision devices', function() {
+describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 

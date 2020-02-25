@@ -110,7 +110,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens'
     };
 
-describe('Command functionalities', function() {
+describe('NGSI-v2 - Command functionalities', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00

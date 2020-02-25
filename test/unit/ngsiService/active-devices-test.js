@@ -118,7 +118,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M'
     };
 
-describe('Active attributes test', function() {
+describe('NGSI-v1 - Active attributes test', function() {
     var values = [
         {
             name: 'state',
