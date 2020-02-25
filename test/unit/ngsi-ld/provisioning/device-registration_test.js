@@ -216,7 +216,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             });
         });
 
-        it("should return all the device's information", function(done) {
+        it('should return all the device\'s information', function(done) {
             iotAgentLib.register(device1, function(error) {
                 iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
                     should.not.exist(error);

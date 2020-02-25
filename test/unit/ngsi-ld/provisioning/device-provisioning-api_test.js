@@ -28,7 +28,6 @@ var utils = require('../../../tools/utils');
 var should = require('should');
 var nock = require('nock');
 var request = require('request');
-var moment = require('moment');
 var contextBrokerMock;
 var iotAgentConfig = {
     logLevel: 'FATAL',
@@ -376,25 +375,11 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 nock.cleanAll();
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
-                        let expectedBody = utils.readExampleFile(
+                    .post('/ngsi-ld/v1/entityOperations/upsert/', 
+                        utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/' + 'contextRequests/createTimeInstantMinimumDevice.json'
-                        );
-
-                        /*if (!body[0].observedAt) {
-                            return false;
-                        } else if (moment(body[0].observedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
-                            let timeInstantDiff = moment().diff(body[0].observedAt, 'milliseconds');
-                            if (timeInstantDiff < 500) {
-                                delete body[0].observedAt;
-                                return JSON.stringify(body) === JSON.stringify(expectedBody);
-                            }
-
-                            return false;
-                        }*/
-
-                        return true;
-                    })
+                        )
+                    )
                     .reply(200);
 
                 done();

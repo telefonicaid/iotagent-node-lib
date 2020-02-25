@@ -512,7 +512,7 @@ describe('NGSI-LD - Active attributes test', function() {
         }
     );
 
-    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function() {
+    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

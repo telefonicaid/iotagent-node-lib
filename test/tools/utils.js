@@ -37,10 +37,10 @@ function readExampleFile(name, raw) {
         console.error(JSON.stringify(e));
     }
 
-    if(!raw){
+//    if(!raw){
 //    	console.error(name);
 //    	console.error(JSON.stringify(JSON.parse(text), null, 4));
-    }
+//    }
 
     return raw ? text : JSON.parse(text);
 }
