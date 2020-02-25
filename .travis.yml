@@ -8,7 +8,6 @@ node_js:
 branches:
   only:
     - master
-    - feature/ngsi-ld-multimeasure
 
 services:
  - mongodb
