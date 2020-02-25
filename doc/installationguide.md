@@ -295,8 +295,5 @@ overrides.
 | IOTA_POLLING_DAEMON_FREQ  | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
-<<<<<<< HEAD
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | defaultExpressionLanguage    |
-=======
 | IOTA_EXPLICIT_ATTRS       | `explicitAttrs`                 |
->>>>>>> ac1120b... Updated documentation
