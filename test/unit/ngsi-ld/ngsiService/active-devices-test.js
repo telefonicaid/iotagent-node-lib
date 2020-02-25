@@ -171,12 +171,12 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -215,12 +215,12 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextTimestamp.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+
+                .reply(200);
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -307,15 +307,15 @@ describe('NGSI-LD - Active attributes test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/' +
-                            'contextRequests/updateContextTimestampOverrideWithoutMilis.json'
+                                'contextRequests/updateContextTimestampOverrideWithoutMilis.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+
+                    .reply(200);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentLib.activate(iotAgentConfig, done);
@@ -365,14 +365,14 @@ describe('NGSI-LD - Active attributes test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextTimestampTimezone.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+
+                    .reply(200);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
@@ -422,14 +422,14 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+
+                .reply(200);
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -478,14 +478,14 @@ describe('NGSI-LD - Active attributes test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextTimestampOverride.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+
+                    .reply(200);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
@@ -500,8 +500,9 @@ describe('NGSI-LD - Active attributes test', function() {
                 done();
             });
 
-            it('should not override the received instant and should not ' +
-                'add metadatas for this request', function(done) {
+            it('should not override the received instant and should not ' + 'add metadatas for this request', function(
+                done
+            ) {
                 iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -511,7 +512,7 @@ describe('NGSI-LD - Active attributes test', function() {
         }
     );
 
-    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
+    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function() {
         beforeEach(function(done) {
             nock.cleanAll();
 
@@ -534,11 +535,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-                .query({ type: 'Light' })
+
                 .reply(
                     413,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext1Failed.json')
@@ -566,11 +567,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-                .query({ type: 'Light' })
+
                 .reply(
                     400,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json')
@@ -595,11 +596,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-                .query({ type: 'Light' })
+
                 .reply(
                     500,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/updateContext2Failed.json')
@@ -627,12 +628,11 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:3024')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/humSensor/attrs',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext2.json')
                 )
-                .query({ type: 'Humidity' })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -660,14 +660,13 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/motion1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/updateContextStaticAttributes.json'
                     )
                 )
-                .query({ type: 'Motion' })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -698,14 +697,14 @@ describe('NGSI-LD - Active attributes test', function() {
             /* jshint maxlen: 200 */
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/lamp1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextStaticAttributesMetadata.json'
                     )
                 )
-                .query({ type: 'Lamp' })
-                .reply(204);
+
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

@@ -14,7 +14,7 @@
         {
             "entities": [
                 {
-                    "id": "TheFirstLight",
+                    "id": "urn:ngsi-ld:SensorMachine:TheFirstLight",
                     "type": "SensorMachine"
                 }
             ],

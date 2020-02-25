@@ -31,7 +31,7 @@ const async = require('async');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'ERROR',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -48,7 +48,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-xdescribe('NGSI-LD - Device provisioning API: Remove provisioned devices', function() {
+describe('NGSI-LD - Device provisioning API: Remove provisioned devices', function() {
     const provisioning1Options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -87,7 +87,7 @@ xdescribe('NGSI-LD - Device provisioning API: Remove provisioned devices', funct
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -103,7 +103,7 @@ xdescribe('NGSI-LD - Device provisioning API: Remove provisioned devices', funct
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody2)
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -115,7 +115,7 @@ xdescribe('NGSI-LD - Device provisioning API: Remove provisioned devices', funct
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
                 .reply(204);
 
             // This mock does not check the payload since the aim of the test is not to verify

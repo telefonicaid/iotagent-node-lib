@@ -1,18 +1,24 @@
 {
-    "dataProvided": {
-        "attrs": [
-            "move"
-        ],
-        "entities": [
-            {
-                "id": "light1",
-                "type": "Light"
-            }
-        ]
-    },
-    "provider": {
-        "http": {
-            "url": "http://smartGondor.com"
+    "type":"ContextSourceRegistration",
+    "information":[
+        {
+            "entities":[
+                {
+                    "type":"Light",
+                    "id":"urn:ngsi-ld:Light:light1"
+                }
+            ],
+            "properties":[
+                "move"
+            ]
         }
-    }
+    ],
+    "endpoint":"http://smartGondor.com",
+    "@context":[
+        {
+            "ngsi-ld":"https://uri.etsi.org/ngsi-ld/default-context/",
+            "move":"ngsi-ld:move"
+        },
+        "http://context.json-ld"
+    ]
 }

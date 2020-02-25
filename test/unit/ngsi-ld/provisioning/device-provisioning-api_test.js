@@ -61,7 +61,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/registerProvisionedDevice.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mockupsert does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -92,7 +92,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/registerProvisionedDevice.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -377,8 +377,9 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
-                    let expectedBody = utils.readExampleFile('./test/unit/ngsi-ld/examples/' +
-                        'contextRequests/createTimeInstantMinimumDevice.json');
+                        let expectedBody = utils.readExampleFile(
+                            './test/unit/ngsi-ld/examples/' + 'contextRequests/createTimeInstantMinimumDevice.json'
+                        );
 
                         /*if (!body[0].observedAt) {
                             return false;
@@ -394,7 +395,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
 
                         return true;
                     })
-                    .reply(204);
+                    .reply(200);
 
                 done();
             });
@@ -521,7 +522,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/createDatetimeProvisionedDevice.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
 
             done();
         });
@@ -623,7 +624,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -663,7 +664,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -724,7 +725,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under

@@ -81,7 +81,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-xdescribe('NGSI-LD - Static attributes test', function() {
+describe('NGSI-LD - Static attributes test', function() {
     const values = [
         {
             name: 'state',
@@ -109,26 +109,27 @@ xdescribe('NGSI-LD - Static attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch('/ngsi-ld/v1/entities/light1/attrs')
-                .query({ type: 'Light' })
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .times(4)
-                .reply(204)
-                .patch('/ngsi-ld/v1/entities/light1/attrs', function(body) {
-                    let metadatas = 0;
+                .reply(200)
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
+                    // Since the TimeInstant plugin is in use,
+                    // Each property should contain observedAt
+                    // metadata.
+                    let count = 0;
                     for (const i in body) {
-                        if (body[i].metadata) {
-                            metadatas += Object.keys(body[i].metadata).length;
+                        if (body[i].observedAt) {
+                            count++;
                         }
                     }
-                    return metadatas === Object.keys(body).length - 1;
+                    return count === Object.keys(body).length - 1;
                 })
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send a single TimeInstant per attribute', function(done) {
+        it('should send a single observedAt per attribute', function(done) {
             async.series(
                 [
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),

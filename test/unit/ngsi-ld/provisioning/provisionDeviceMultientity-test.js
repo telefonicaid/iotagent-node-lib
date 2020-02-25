@@ -75,7 +75,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/registerProvisionedDevice.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

@@ -26,6 +26,9 @@
 var fs = require('fs');
 
 function readExampleFile(name, raw) {
+
+	
+
     let text = null;
     try {
         text = fs.readFileSync(name, 'UTF8');
@@ -33,6 +36,12 @@ function readExampleFile(name, raw) {
         /* eslint-disable no-console */
         console.error(JSON.stringify(e));
     }
+
+    if(!raw){
+//    	console.error(name);
+//    	console.error(JSON.stringify(JSON.parse(text), null, 4));
+    }
+
     return raw ? text : JSON.parse(text);
 }
 

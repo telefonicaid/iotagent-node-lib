@@ -11,7 +11,7 @@
         {
             "entities": [
                 {
-                    "id": "Robot:r2d2",
+                    "id": "urn:ngsi-ld:Robot:r2d2",
                     "type": "Robot"
                 }
             ],

@@ -154,14 +154,13 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp1.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -198,14 +197,13 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp2.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

@@ -252,14 +252,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should calculate them and add them to the payload', function(done) {
@@ -292,14 +291,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should calculate it and add it to the payload', function(done) {
@@ -326,14 +324,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -360,14 +357,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -394,14 +390,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin18.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -429,14 +424,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -464,14 +458,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -499,14 +492,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin19.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -534,14 +526,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -569,14 +560,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin16.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -604,14 +594,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin17.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -639,14 +628,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -674,14 +662,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin10.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -708,14 +695,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -742,14 +728,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -777,14 +762,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -810,14 +794,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin12.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -843,14 +826,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -883,14 +865,14 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
+                            './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin14.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+
+                    .reply(200);
             });
 
             it('should apply the expression before sending the values', function(done) {

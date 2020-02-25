@@ -191,7 +191,7 @@ describe('NGSI-LD - HTTPS support tests', function() {
                             './test/unit/ngsi-ld/examples' + '/subscriptionRequests/simpleSubscriptionRequest.json'
                         )
                     )
-                    .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                    .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
                 iotAgentLib.clearAll(function() {
                     request(optionsProvision, function(error, result, body) {
@@ -237,7 +237,7 @@ describe('NGSI-LD - HTTPS support tests', function() {
             contextBrokerMock = nock('https://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);

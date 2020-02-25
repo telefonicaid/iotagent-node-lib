@@ -1,10 +1,10 @@
- [
-        {
-            "id": "FirstMicroLight",
-            "type": "MicroLights",
-            "attr_name": {
-                "type": "Property",
-                "value": " "
-            }
-        }
-    ]
+[
+    {
+        "attr_name": {
+            "type": "Property",
+            "value": " "
+        },
+        "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
+        "type": "MicroLights"
+    }
+]

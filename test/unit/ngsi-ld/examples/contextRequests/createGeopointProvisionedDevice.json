@@ -1,6 +1,6 @@
 [
     {
-        "id": "FirstMicroLight",
+        "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
         "location": {
             "type": "GeoProperty",
             "value": {

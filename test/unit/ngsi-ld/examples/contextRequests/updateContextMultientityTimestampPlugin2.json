@@ -1,27 +1,19 @@
-{
-    "actionType": "append",
-    "entities": [
-        {
-            "id": "ws4",
-            "type": "WeatherStation"
-        },
-        {
-            "TimeInstant": {
-                "type": "DateTime",
-                "value": "2018-06-13T13:28:34.611Z"
-            },
-            "humidity": {
-                "metadata": {
-                    "TimeInstant": {
-                        "type": "DateTime",
-                        "value": "2018-06-13T13:28:34.611Z"
-                    }
-                },
-                "type": "Percentage",
-                "value": "12"
-            },
-            "id": "Higro2000",
-            "type": "Higrometer"
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws4",
+        "type": "WeatherStation"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "type": "Higrometer",
+        "humidity": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": "12"
+            }
         }
-    ]
-}
+    }
+]

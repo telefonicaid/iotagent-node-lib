@@ -1,7 +1,11 @@
-{
-    "@context": "http://context.json-ld",
-    "state": {
-        "type": "Property",
-        "value": true
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "state": {
+            "type": "Property",
+            "value": true
+        },
+        "type": "Light"
     }
-}
+]

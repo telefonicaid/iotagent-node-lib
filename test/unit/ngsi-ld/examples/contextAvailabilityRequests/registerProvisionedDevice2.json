@@ -1,18 +1,24 @@
 {
-    "dataProvided": {
-        "attrs": [
-            "luminance"
-        ],
-        "entities": [
-            {
-                "id": "TheSecondLight",
-                "type": "TheLightType"
-            }
-        ]
-    },
-    "provider": {
-        "http": {
-            "url": "http://smartGondor.com"
+    "@context": [
+        {
+            "luminance": "ngsi-ld:luminance",
+            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/"
+        },
+        "http://context.json-ld"
+    ],
+    "endpoint": "http://smartGondor.com",
+    "information": [
+        {
+            "entities": [
+                {
+                    "id": "urn:ngsi-ld:TheLightType:TheSecondLight",
+                    "type": "TheLightType"
+                }
+            ],
+            "properties": [
+                "luminance"
+            ]
         }
-    }
+    ],
+    "type": "ContextSourceRegistration"
 }

@@ -129,7 +129,7 @@ describe('NGSI-LD - Polling commands', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/csourceRegistrations/')
-            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+            .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
