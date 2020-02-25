@@ -221,8 +221,6 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
                 )
                 .reply(200);
 
-            
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
@@ -266,7 +264,6 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
     });
     describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
         beforeEach(function() {
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')

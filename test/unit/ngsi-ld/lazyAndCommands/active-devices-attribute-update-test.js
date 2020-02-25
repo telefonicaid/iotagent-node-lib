@@ -131,7 +131,6 @@ describe('NGSI-LD - Update attribute functionalities', function() {
             let handlerCalled = false;
 
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
-
                 id.should.equal('urn:ngsi-ld:Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);

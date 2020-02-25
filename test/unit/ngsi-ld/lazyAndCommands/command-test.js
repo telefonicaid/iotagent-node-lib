@@ -228,7 +228,7 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             });
         });
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            let service = false;
+            const service = false;
 
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 console.error(service);
