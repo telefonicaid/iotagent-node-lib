@@ -60,7 +60,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Event plugin', function() {
+describe('NGSI-v2 - Event plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

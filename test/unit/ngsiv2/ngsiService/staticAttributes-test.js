@@ -82,7 +82,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Static attributes test', function() {
+describe('NGSI-v2 - Static attributes test', function() {
     const values = [
         {
             name: 'state',

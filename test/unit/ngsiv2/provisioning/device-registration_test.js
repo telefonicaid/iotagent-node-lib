@@ -89,7 +89,7 @@ const device2 = {
     subservice: 'gardens'
 };
 
-describe('IoT Agent Device Registration', function() {
+describe('NGSI-v2 - IoT Agent Device Registration', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });

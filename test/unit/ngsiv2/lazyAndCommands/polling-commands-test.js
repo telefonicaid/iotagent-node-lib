@@ -121,7 +121,7 @@ const device3 = {
     polling: true
 };
 
-describe('Polling commands', function() {
+describe('NGSI-v2 - Polling commands', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

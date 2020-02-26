@@ -135,9 +135,10 @@ used for the same purpose. For instance:
 
 -   **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a
     list of comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional
-    property `replicaSet` should contain the Replica Set name. The MongoBD driver will retry the connection at startup
-    time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
-    are 5 and 5 respectively). E.g.:
+    property `replicaSet` should contain the Replica Set name. If the database requires authentication, username
+    (`username`), password (`password`) and authSource (`authSource`) can be set. For The MongoBD driver will retry the
+    connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are
+    present (default values are 5 and 5 respectively). E.g.:
 
 ```javascript
 {
@@ -254,6 +255,9 @@ overrides.
 | IOTA_MONGO_PORT           | `mongodb.port`                  |
 | IOTA_MONGO_DB             | `mongodb.db`                    |
 | IOTA_MONGO_REPLICASET     | `mongodb.replicaSet`            |
+| IOTA_MONGO_USER           | `mongodb.user`                  |
+| IOTA_MONGO_PASSWORD       | `mongodb.password`              |
+| IOTA_MONGO_AUTH_SOURCE    | `mongodb.authSource`            |
 | IOTA_MONGO_RETRIES        | `mongodb.retries`               |
 | IOTA_MONGO_RETRY_TIME     | `mongodb.retryTime`             |
 | IOTA_SINGLE_MODE          | `singleConfigurationMode`       |

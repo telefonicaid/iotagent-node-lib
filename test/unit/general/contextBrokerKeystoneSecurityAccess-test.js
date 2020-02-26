@@ -87,7 +87,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Secured access to the Context Broker with Keystone', function() {
+describe('NGSI-v1 - Secured access to the Context Broker with Keystone', function() {
     const values = [
         {
             name: 'state',

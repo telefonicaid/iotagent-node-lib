@@ -117,7 +117,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Timestamp compression plugin', function() {
+describe('NGSI-v2 - Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function() {

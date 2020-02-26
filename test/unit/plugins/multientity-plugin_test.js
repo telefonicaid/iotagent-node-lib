@@ -98,7 +98,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Multi-entity plugin', function() {
+describe('NGSI-v1 - Multi-entity plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

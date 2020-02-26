@@ -23,6 +23,8 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const timekeeper = require('timekeeper');
@@ -142,7 +144,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Active attributes test', function() {
+describe('NGSI-v2 - Active attributes test', function() {
     const values = [
         {
             name: 'state',
@@ -281,7 +283,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format  without milis', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format without milis', function() {
         let modifiedValues;
 
         beforeEach(function(done) {
@@ -336,7 +338,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information, the timestamp flag is on and timezone is defined', function() {
+    describe('When the IoT Agent receives new information, the timestamp flag is onand timezone is defined', function() {
         let modifiedValues;
 
         beforeEach(function(done) {
@@ -365,7 +367,7 @@ describe('Active attributes test', function() {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/ updateContextTimestampTimezone.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -448,7 +450,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on and timezone is defined', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function() {
         let modifiedValues;
 
         beforeEach(function(done) {

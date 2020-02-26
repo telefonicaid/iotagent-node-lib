@@ -116,7 +116,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Active attributes test', function() {
+describe('NGSI-v1 - Active attributes test', function() {
     const values = [
         {
             name: 'state',
@@ -247,7 +247,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information, the timestamp flag is on and timezone is defined', function() {
+    describe('When the IoT Agent receives new information, the timestamp flag is onand timezone is defined', function() {
         let modifiedValues;
 
         beforeEach(function(done) {
@@ -446,7 +446,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is on and timezone is defined', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function() {
         let modifiedValues;
 
         beforeEach(function(done) {
@@ -490,6 +490,7 @@ describe('Active attributes test', function() {
 
             done();
         });
+
         it('should not override the received instant and should not add metadatas for this request', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
@@ -657,7 +658,7 @@ describe('Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and CB is defined using environment variables', function() {
+    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function() {
         beforeEach(function(done) {
             process.env.IOTA_CB_HOST = 'cbhost';
 

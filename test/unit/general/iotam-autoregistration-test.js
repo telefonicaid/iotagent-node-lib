@@ -185,7 +185,7 @@ const optionsDelete = {
 };
 let iotamMock;
 
-describe('IoT Manager autoregistration', function() {
+describe('NGSI-v1 - IoT Manager autoregistration', function() {
     describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
         beforeEach(function() {
             nock.cleanAll();

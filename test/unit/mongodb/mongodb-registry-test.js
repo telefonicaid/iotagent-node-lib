@@ -190,14 +190,10 @@ describe('MongoDB Device Registry', function() {
         logger.setLevel('FATAL');
 
         mongoUtils.cleanDbs(function() {
-            mongo.connect(
-                'mongodb://localhost:27017/iotagent',
-                { useNewUrlParser: true },
-                function(err, db) {
-                    iotAgentDb = db;
-                    done();
-                }
-            );
+            mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function(err, db) {
+                iotAgentDb = db;
+                done();
+            });
         });
     });
 

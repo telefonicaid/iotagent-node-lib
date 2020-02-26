@@ -65,7 +65,7 @@ const deviceCreation = {
     }
 };
 
-describe('Provisioning API: Single service mode', function() {
+describe('NGSI-v1 - Provisioning API: Single service mode', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 

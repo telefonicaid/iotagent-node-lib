@@ -61,7 +61,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Timestamp processing plugin', function() {
+describe('NGSI-v2 - Timestamp processing plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

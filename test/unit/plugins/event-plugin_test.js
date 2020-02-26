@@ -59,7 +59,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Event plugin', function() {
+describe('NGSI-v1 - Event plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

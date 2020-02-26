@@ -63,7 +63,7 @@ const iotAgentConfigNoUrl = _.clone(iotAgentConfig);
 const iotAgentConfigNoTypes = _.clone(iotAgentConfig);
 let iotamMock;
 
-describe('Startup tests', function() {
+describe('NGSI-v1 - Startup tests', function() {
     describe('When the IoT Agent is started without a "providerUrl" config parameter', function() {
         beforeEach(function() {
             delete iotAgentConfigNoUrl.providerUrl;

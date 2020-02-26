@@ -115,7 +115,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Timestamp compression plugin', function() {
+describe('NGSI-v1 - Timestamp compression plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

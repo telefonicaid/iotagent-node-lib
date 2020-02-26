@@ -47,7 +47,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Bidirectional data plugin', function() {
+describe('NGSI-v2 - Bidirectional data plugin', function() {
     const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -417,7 +417,7 @@ describe('Bidirectional data plugin', function() {
     });
 });
 
-describe('Bidirectional data plugin and CB is defined using environment variables', function() {
+describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environment variables', function() {
     const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',

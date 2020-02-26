@@ -47,7 +47,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Device provisioning API: Remove provisioned devices', function() {
+describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', function() {
     const provisioning1Options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',

@@ -47,7 +47,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Device provisioning API: Update provisioned devices', function() {
+describe('NGSI-v1 - Device provisioning API: Update provisioned devices', function() {
     const provisioning1Options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -217,6 +217,8 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 };
 
                 request(options, function(error, response, body) {
+                    /* jshint camelcase:false */
+
                     const parsedBody = JSON.parse(body);
                     parsedBody.entity_name.should.equal('ANewLightName');
                     parsedBody.timezone.should.equal('Europe/Madrid');
@@ -237,6 +239,8 @@ describe('Device provisioning API: Update provisioned devices', function() {
                 };
 
                 request(options, function(error, response, body) {
+                    /* jshint camelcase:false */
+
                     const parsedBody = JSON.parse(body);
                     parsedBody.entity_type.should.equal('TheLightType');
                     parsedBody.service.should.equal('smartGondor');
@@ -366,6 +370,8 @@ describe('Device provisioning API: Update provisioned devices', function() {
     });
 
     describe('When a device is updated to add static attributes', function() {
+        /* jshint camelcase: false */
+
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'PUT',

@@ -166,7 +166,8 @@ const deviceCreation = {
 let contextBrokerMock;
 let iotamMock;
 
-describe('Device Service: utils', function() {
+/* jshint camelcase: false */
+describe('NGSI-v2 - Device Service: utils', function() {
     beforeEach(function(done) {
         nock.cleanAll();
         logger.setLevel('FATAL');

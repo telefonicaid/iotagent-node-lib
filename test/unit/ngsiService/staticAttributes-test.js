@@ -81,7 +81,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Static attributes test', function() {
+describe('NGSI-v1 - Static attributes test', function() {
     const values = [
         {
             name: 'state',

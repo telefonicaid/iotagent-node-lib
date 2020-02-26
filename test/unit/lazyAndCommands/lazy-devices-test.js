@@ -138,7 +138,7 @@ const device3 = {
     }
 };
 
-describe('IoT Agent Lazy Devices', function() {
+describe('NGSI-v1 - IoT Agent Lazy Devices', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
         mongoUtils.cleanDbs(done);

@@ -49,7 +49,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Device provisioning API: List provisioned devices', function() {
+describe('NGSI-v2 - Device provisioning API: List provisioned devices', function() {
     let provisioning1Options;
     let provisioning2Options;
     let provisioning3Options;
@@ -155,6 +155,8 @@ describe('Device provisioning API: List provisioned devices', function() {
         });
 
         it('should return all the appropriate field names', function(done) {
+            /* jshint camelcase:false */
+
             request(options, function(error, response, body) {
                 const parsedBody = JSON.parse(body);
 
@@ -285,6 +287,8 @@ describe('Device provisioning API: List provisioned devices', function() {
         };
 
         function createDeviceRequest(i, callback) {
+            /* jshint camelcase: false */
+
             const provisioningDeviceOptions = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',

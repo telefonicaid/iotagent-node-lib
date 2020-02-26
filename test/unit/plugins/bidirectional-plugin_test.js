@@ -62,7 +62,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Bidirectional data plugin', function() {
+describe('NGSI-v1 - Bidirectional data plugin', function() {
     const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',

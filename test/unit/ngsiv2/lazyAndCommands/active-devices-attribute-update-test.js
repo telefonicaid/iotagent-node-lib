@@ -64,7 +64,7 @@ const device = {
     subservice: 'gardens'
 };
 
-describe('Update attribute functionalities', function() {
+describe('NGSI-v2 - Update attribute functionalities', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

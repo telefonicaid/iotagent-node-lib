@@ -23,6 +23,8 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
+/* jshint camelcase: false */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
@@ -47,19 +49,22 @@ const iotAgentConfig = {
                 {
                     object_id: 't',
                     name: 'temperature',
-                    type: 'centigrades'
+                    type: 'Number',
+                    metadata: { type: 'Property', value: 'CEL' }
                 }
             ],
             active: [
                 {
                     object_id: 'p',
                     name: 'pressure',
-                    type: 'Hgmm'
+                    type: 'Number',
+                    metadata: { type: 'Property', value: 'Hgmm' }
                 },
                 {
                     object_id: 'l',
                     name: 'luminance',
-                    type: 'lumens'
+                    type: 'Number',
+                    metadata: { type: 'Property', value: 'CAL' }
                 },
                 {
                     object_id: 'ut',
@@ -104,7 +109,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('Attribute alias plugin', function() {
+describe('NGSI-v2 - Attribute alias plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
