@@ -1,3 +1,6 @@
+Replace jshint with eslint
+Add prettier code formatting
+Add husky and lint-staged
 Refresh Documentation
 Add NGSIv2 metadata support to device provisioned attributes
 Fix: Error message when sending measures with unknown/undefined attribute
