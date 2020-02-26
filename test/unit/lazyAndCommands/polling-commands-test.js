@@ -118,7 +118,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         polling: true
     };
 
-describe('Polling commands', function() {
+describe('NGSI-v1 - Polling commands', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

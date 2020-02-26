@@ -86,7 +86,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M'
     };
 
-describe('Secured access to the Context Broker with Keystone', function() {
+describe('NGSI-v1 - Secured access to the Context Broker with Keystone', function() {
     var values = [
         {
             name: 'state',

@@ -61,7 +61,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M'
     };
 
-describe('Timestamp processing plugin', function() {
+describe('NGSI-v1 - Timestamp processing plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

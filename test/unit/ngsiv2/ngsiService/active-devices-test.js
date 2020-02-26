@@ -143,7 +143,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Active attributes test', function() {
+describe('NGSI-v2 - Active attributes test', function() {
     var values = [
         {
             name: 'state',

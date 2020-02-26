@@ -59,7 +59,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     },
     iotamMock;
 
-describe('Startup tests', function() {
+describe('NGSI-v2 - Startup tests', function() {
     describe('When the IoT Agent is started with environment variables', function() {
         beforeEach(function() {
             process.env.IOTA_CB_HOST = 'cbhost';

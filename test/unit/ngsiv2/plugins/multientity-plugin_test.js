@@ -221,7 +221,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Multi-entity plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -560,7 +560,7 @@ describe('Multi-entity plugin', function() {
     );
 });
 
-describe('Multi-entity plugin is executed before timestamp process plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -726,7 +726,7 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
     });
 });
 
-describe('Multi-entity plugin is executed for a command update for a regular entity ', function() {
+describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a regular entity ', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

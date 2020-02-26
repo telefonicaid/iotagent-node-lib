@@ -81,7 +81,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('JSON native types autocast test', function() {
+describe('NGSI-v2 - JSON native types autocast test', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });

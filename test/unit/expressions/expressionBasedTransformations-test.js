@@ -118,7 +118,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M'
     };
 
-describe('Expression-based transformations plugin', function() {
+describe('NGSI-v1 - Expression-based transformations plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

@@ -120,7 +120,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     contextBrokerMock,
     iotamMock;
 
-describe('HTTPS support tests IOTAM', function() {
+describe('NGSI-v2 - HTTPS support tests IOTAM', function() {
     describe('When the IoT Agents is started with https "iotManager" config', function() {
         beforeEach(function(done) {
             nock.cleanAll();
@@ -152,7 +152,7 @@ describe('HTTPS support tests IOTAM', function() {
     });
 });
 
-describe('HTTPS support tests', function() {
+describe('NGSI-v2 - HTTPS support tests', function() {
     describe('When subscription is sent to HTTPS context broker', function() {
         beforeEach(function(done) {
             var optionsProvision = {

@@ -106,7 +106,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens'
     };
 
-describe('Command functionalities', function() {
+describe('NGSI-v1 - Command functionalities', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

@@ -166,7 +166,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotamMock;
 
 /* jshint camelcase: false */
-describe('Device Service: utils', function() {
+describe('NGSI-v1 - Device Service: utils', function() {
     beforeEach(function(done) {
         nock.cleanAll();
         logger.setLevel('FATAL');

@@ -62,7 +62,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         deviceRegistrationDuration: 'P1M'
     };
 
-describe('Bidirectional data plugin', function() {
+describe('NGSI-v1 - Bidirectional data plugin', function() {
     var options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',

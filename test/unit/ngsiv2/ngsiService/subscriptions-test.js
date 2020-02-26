@@ -46,7 +46,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com'
     };
 
-describe('Subscription tests', function() {
+describe('NGSI-v2 - Subscription tests', function() {
     beforeEach(function(done) {
         var optionsProvision = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
