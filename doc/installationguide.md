@@ -30,6 +30,20 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
+-   If you want to use NGSI-LD (experimental):
+
+```javascript
+{
+    host: '192.168.56.101',
+    port: '1026',
+    ngsiVersion: 'ld',
+    jsonLdContext: 'http://context.json-ld''
+}
+```
+
+Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information allowing the computer to
+interpret the rest of the data with more clarity and depth. Read the [JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more informtaion.
+
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
     used, '/' is used by default. E.g.:
@@ -262,3 +276,4 @@ overrides.
 | IOTA_POLLING_DAEMON_FREQ  | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
+| IOTA_JSON_LD_CONTEXT      | `jsonLdContext`                 |
