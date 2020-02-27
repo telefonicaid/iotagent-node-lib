@@ -95,26 +95,18 @@ describe('NGSI-LD - Update attribute functionalities', function() {
         });
     });
 
-    xdescribe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
+    describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-            method: 'POST',
-            json: {
-                actionType: 'update',
-                entities: [
-                    {
-                        id: 'Light:somelight',
-                        type: 'Light',
-                        pressure: {
-                            type: 'Hgmm',
-                            value: 200
-                        }
-                    }
-                ]
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+            '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:somelight/attrs/pressure',
+            method: 'PATCH',
+            json:  {
+                type: 'Hgmm',
+                value: 200
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens'
+                'content-type': 'application/ld+json'
             }
         };
 
