@@ -160,7 +160,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp1.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -203,7 +203,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp2.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

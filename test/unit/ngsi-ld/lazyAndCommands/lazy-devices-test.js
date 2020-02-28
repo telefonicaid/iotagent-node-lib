@@ -203,7 +203,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
         });
@@ -273,7 +273,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
         });
@@ -333,7 +333,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], function(
                 error
@@ -403,7 +403,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
         });
@@ -474,7 +474,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device2)], done);
         });
@@ -542,7 +542,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                 contextBrokerMock
                     .matchHeader('fiware-service', 'smartGondor')
                     .post('/ngsi-ld/v1/entityOperations/upsert/')
-                    .reply(200);
+                    .reply(204);
 
                 async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device3)], done);
             });
@@ -769,7 +769,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
         });

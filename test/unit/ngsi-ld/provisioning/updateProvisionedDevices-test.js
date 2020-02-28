@@ -93,7 +93,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             const nockBody2 = utils.readExampleFile(
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'
@@ -110,7 +110,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
             // this function should use the new API. This is just a temporary solution which implies deleting the
@@ -195,7 +195,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/4419a7f52546658441165849' });
         });
 
-        it('should return a 200 OK and no errors', function(done) {
+        it('should return a 204 OK and no errors', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
@@ -318,7 +318,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -328,7 +328,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                         './test/unit/ngsi-ld/examples/contextRequests/updateProvisionMinimumDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
@@ -393,7 +393,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -403,7 +403,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                         './test/unit/ngsi-ld/examples/contextRequests/updateProvisionDeviceStatic.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });

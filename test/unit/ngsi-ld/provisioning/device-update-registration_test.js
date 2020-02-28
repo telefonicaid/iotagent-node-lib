@@ -150,7 +150,7 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(200);
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, function(error) {
             iotAgentLib.register(device1, function(error) {
@@ -176,7 +176,7 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateProvisionActiveAttributes1.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -219,7 +219,7 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateProvisionCommands1.json')
                 )
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

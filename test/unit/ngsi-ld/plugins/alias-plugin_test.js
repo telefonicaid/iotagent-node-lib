@@ -151,7 +151,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin1.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -183,7 +183,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin2.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -215,7 +215,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {
@@ -245,7 +245,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -278,7 +278,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin4.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -311,7 +311,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin5.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -344,7 +344,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin6.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -377,7 +377,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin7.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -410,7 +410,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin8.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(
@@ -443,7 +443,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin9.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it(

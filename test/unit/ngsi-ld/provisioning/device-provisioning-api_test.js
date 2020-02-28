@@ -68,7 +68,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.clearAll(done);
         });
@@ -99,7 +99,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createProvisionedDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         const options = {
@@ -245,7 +245,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createTimeinstantDevice.json')
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -288,7 +288,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createTimeinstantDevice.json')
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -333,7 +333,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/createAutoprovisionDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
             done();
         });
 
@@ -381,7 +381,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                             './test/unit/ngsi-ld/examples/' + 'contextRequests/createTimeInstantMinimumDevice.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 done();
             });
@@ -416,7 +416,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/createMinimumProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -474,7 +474,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/createGeopointProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -508,7 +508,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/createDatetimeProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -550,7 +550,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/createMinimumProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .post(
@@ -559,7 +559,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/createMinimumProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             done();
         });
@@ -719,7 +719,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             done();
         });

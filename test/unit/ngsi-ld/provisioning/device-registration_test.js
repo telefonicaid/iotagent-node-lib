@@ -112,7 +112,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
@@ -209,7 +209,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function(error) {
                 iotAgentLib.clearAll(done);
@@ -269,7 +269,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -278,7 +278,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock
                 .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
@@ -315,7 +315,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -324,7 +324,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock.delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d').reply(500);
 

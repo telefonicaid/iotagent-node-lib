@@ -95,7 +95,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -104,7 +104,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -113,7 +113,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(200);
+            contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             async.series(
                 [
@@ -324,7 +324,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
             contextBrokerMock
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .times(10)
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.clearAll(function() {
                 async.times(10, createDeviceRequest, function(error, results) {

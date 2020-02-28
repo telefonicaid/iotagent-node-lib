@@ -129,7 +129,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -201,7 +201,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -294,7 +294,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic3.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock
                     .post(
@@ -394,7 +394,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, done);
@@ -619,7 +619,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock2 = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'TestService')
@@ -630,7 +630,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {
@@ -748,7 +748,7 @@ describe(
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock3 = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'TestService')
@@ -757,7 +757,7 @@ describe(
                         '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext5.json')
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {
@@ -837,7 +837,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {

@@ -265,7 +265,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin1.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should send two context elements, one for each entity', function(done) {
@@ -297,7 +297,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin4.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should send context elements', function(done) {
@@ -334,7 +334,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin5.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should send context elements', function(done) {
@@ -372,7 +372,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin8.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should send context elements', function(done) {
@@ -414,7 +414,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin3.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should send the update value to the resulting value of the expression', function(done) {
@@ -451,7 +451,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin2.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should use the device type as a default value', function(done) {
@@ -486,7 +486,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin6.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
             });
 
             it('should update only the appropriate CB entity', function(done) {
@@ -537,7 +537,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin7.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
             });
 
             it('should update only the appropriate CB entity', function(done) {
@@ -626,7 +626,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                     }
                     return false;
                 })
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
                 should.not.exist(error);
@@ -658,7 +658,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                     }
                     return false;
                 })
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function(error) {
                 should.not.exist(error);
@@ -677,7 +677,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                             '/contextRequests/updateContextMultientityTimestampPlugin3.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             const tsValue = [
                 {
@@ -736,7 +736,7 @@ describe('NGSI-LD - Multi-entity plugin is executed for a command update for a r
                     './test/unit/ngsi-ld/examples' + '/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )
             )
-            .reply(200);
+            .reply(204);
 
         const commands = [
             {

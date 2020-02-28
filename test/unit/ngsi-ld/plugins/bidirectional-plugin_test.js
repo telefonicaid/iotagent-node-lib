@@ -98,7 +98,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
@@ -137,7 +137,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -187,7 +187,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         afterEach(function() {
@@ -300,7 +300,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {
             request(provisionGroup, function(error, response, body) {
@@ -363,7 +363,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         afterEach(function() {
@@ -458,7 +458,7 @@ describe('NGSI-LD - Bidirectional data plugin and CB is defined using environmen
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function(done) {

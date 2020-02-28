@@ -14,11 +14,5 @@
         }
     ],
     "endpoint":"http://smartGondor.com",
-    "@context":[
-        {
-            "ngsi-ld":"https://uri.etsi.org/ngsi-ld/default-context/",
-            "move":"ngsi-ld:move"
-        },
-        "http://context.json-ld"
-    ]
+    "@context": "http://context.json-ld"
 }

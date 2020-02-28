@@ -126,7 +126,7 @@ describe('NGSI-LD - Command functionalities', function() {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(200);
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -260,7 +260,7 @@ describe('NGSI-LD - Command functionalities', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandFinish.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.register(device3, function(error) {
                 done();
@@ -283,7 +283,7 @@ describe('NGSI-LD - Command functionalities', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextCommandError.json')
                 )
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.register(device3, function(error) {
                 done();

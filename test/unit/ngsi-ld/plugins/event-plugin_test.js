@@ -102,7 +102,7 @@ describe('NGSI-LD - Event plugin', function() {
                     const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
                     return body[0].activation.value['@value'].match(dateRegex);
                 })
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

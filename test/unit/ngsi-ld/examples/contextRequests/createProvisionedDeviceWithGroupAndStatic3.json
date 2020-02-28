@@ -1,5 +1,6 @@
 [
     {
+        "@context": "http://context.json-ld",
         "dimming": {
             "type": "Property",
             "value": {

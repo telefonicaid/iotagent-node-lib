@@ -192,7 +192,7 @@ describe('NGSI-LD - Device Service: utils', function() {
             contextBrokerMock = nock('http://unexistenthost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function(
                 error,
@@ -221,7 +221,7 @@ describe('NGSI-LD - Device Service: utils', function() {
             contextBrokerMock = nock('http://unexistenthost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             async.series([request.bind(request, groupCreation)], function(error, results) {
                 done();

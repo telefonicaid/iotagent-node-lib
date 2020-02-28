@@ -134,7 +134,7 @@ describe('NGSI-LD - Polling commands', function() {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(200);
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
