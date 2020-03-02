@@ -231,7 +231,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .get('/ngsi-ld/v1/entities/light1/attrs?attrs=state,dimming&type=Light')
+                .get('/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=state,dimming')
                 .reply(
                     200,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/queryContext1Success.json')
@@ -240,7 +240,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        xit('should send the Auth Token along with the information query', function(done) {
+        it('!should send the Auth Token along with the information query', function(done) {
             iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
