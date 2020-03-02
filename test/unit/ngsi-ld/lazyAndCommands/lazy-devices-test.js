@@ -164,22 +164,14 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         });
     });
 
-    xdescribe('When the IoT Agent receives an update on the device data in JSON format', function() {
+    describe('When the IoT Agent receives an update on the device data in JSON format', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1/attrs/dimming',
+            method: 'PATCH',
             json: {
-                actionType: 'update',
-                entities: [
-                    {
-                        id: 'Light:light1',
-                        type: 'Light',
-                        dimming: {
-                            type: 'Percentage',
-                            value: 12
-                        }
-                    }
-                ]
+                type: 'Percentage',
+                value: 12
             },
             headers: {
                 'fiware-service': 'smartGondor',
@@ -210,7 +202,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
 
         it('should call the device handler with the received data', function(done) {
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
-                id.should.equal(device1.type + ':' + device1.id);
+                id.should.equal( 'urn:ngsi-ld:' + device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].value.should.equal(12);
                 callback(null);
@@ -228,22 +220,15 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         it('should call the device handler for each of the contexts');
     });
 
-    xdescribe('When a context query arrives to the IoT Agent', function() {
+    describe('When a context query arrives to the IoT Agent', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=dimming',
+            method: 'GET',
             json: true,
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        id: 'Light:light1'
-                    }
-                ],
-                attrs: ['dimming']
             }
         };
         const sensorData = [
@@ -283,8 +268,13 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                 './test/unit/ngsi-ld/examples/contextProviderResponses/queryInformationResponse.json'
             );
 
+
+            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback){ 
+                callback(null);
+            });
+             
             iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
-                id.should.equal(device1.type + ':' + device1.id);
+                id.should.equal('urn:ngsi-ld:' + device1.type + ':' + device1.id);
                 type.should.equal(device1.type);
                 attributes[0].should.equal('dimming');
                 callback(null, sensorData[0]);
@@ -298,22 +288,15 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         });
     });
 
-    xdescribe('When a context query arrives to the IoT Agent and no handler is set', function() {
+    describe('When a context query arrives to the IoT Agent and no handler is set', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=dimming',
+            method: 'GET',
             json: true,
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        id: 'Light:light1'
-                    }
-                ],
-                attrs: ['dimming']
             }
         };
 
@@ -359,21 +342,15 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         });
     });
 
-    xdescribe('When a query arrives to the IoT Agent without any attributes', function() {
+    describe('When a query arrives to the IoT Agent without any attributes', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1',
+            method: 'GET',
             json: true,
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        id: 'Light:light1'
-                    }
-                ]
             }
         };
         const sensorData = [
@@ -429,22 +406,15 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         });
     });
 
-    xdescribe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
+    describe('When a context query arrives to the IoT Agent for a type with static attributes', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Motion:motion1?attrs=moving,location',
+            method: 'GET',
             json: true,
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        id: 'Motion:motion1'
-                    }
-                ],
-                attrs: ['moving', 'location']
             }
         };
         const sensorData = [
@@ -485,7 +455,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
             );
 
             iotAgentLib.setDataQueryHandler(function(id, type, service, subservice, attributes, callback) {
-                id.should.equal('Motion:motion1');
+                id.should.equal('urn:ngsi-ld:Motion:motion1');
                 type.should.equal('Motion');
                 attributes[0].should.equal('moving');
                 attributes[1].should.equal('location');
@@ -500,246 +470,16 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         });
     });
 
-    xdescribe(
-        'When the IoT Agent receives an update on the device data in JSON format for a type with' +
-            'internalAttributes',
-        function() {
-            const options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-                method: 'POST',
-                json: {
-                    actionType: 'update',
-                    entities: [
-                        {
-                            id: 'RobotPre:TestRobotPre',
-                            type: 'RobotPre',
-                            moving: {
-                                type: 'Boolean',
-                                value: true
-                            }
-                        }
-                    ]
-                },
-                headers: {
-                    'fiware-service': 'smartGondor',
-                    'fiware-servicepath': 'gardens'
-                }
-            };
-
-            beforeEach(function(done) {
-                nock.cleanAll();
-
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/ngsi-ld/v1/csourceRegistrations/',
-                        utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
-                        )
-                    )
-                    .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-                contextBrokerMock
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post('/ngsi-ld/v1/entityOperations/upsert/')
-                    .reply(204);
-
-                async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device3)], done);
-            });
-
-            it('should call the device handler with the received data', function(done) {
-                iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
-                    id.should.equal(device3.type + ':' + device3.id);
-                    type.should.equal(device3.type);
-                    attributes[0].value.should.equal(true);
-                    callback(null);
-                });
-
-                request(options, function(error, response, body) {
-                    should.not.exist(error);
-                    response.statusCode.should.equal(204);
-                    done();
-                });
-            });
-        }
-    );
-
-    xdescribe('When a context query arrives to the IoT Agent and id and type query params are not present', function() {
+   
+    describe('When a query arrives to the IoT Agent with id, type and attributes', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=temperature',
+            method: 'GET',
             json: true,
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        idPattern: '.*'
-                    }
-                ]
-            }
-        };
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent2.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .times(3)
-                .reply(204);
-
-            async.series(
-                [
-                    apply(iotAgentLib.activate, iotAgentConfig),
-                    apply(iotAgentLib.register, device1),
-                    apply(iotAgentLib.register, device2),
-                    apply(iotAgentLib.register, device3)
-                ],
-                done
-            );
-        });
-
-        it('should return error as idPattern is not supported', function(done) {
-            request(options, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.error.should.equal('BadRequest');
-                body.description.should.equal('idPattern usage in query');
-                done();
-            });
-        });
-    });
-
-    xdescribe('When a context query arrives to the IoT Agent and id query param is not present', function() {
-        const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
-            json: true,
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        idPattern: '.*',
-                        type: 'Light'
-                    }
-                ]
-            }
-        };
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent2.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/csourceRegistrations/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
-                    )
-                )
-                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .times(3)
-                .reply(204);
-
-            async.series(
-                [
-                    apply(iotAgentLib.activate, iotAgentConfig),
-                    apply(iotAgentLib.register, device1),
-                    apply(iotAgentLib.register, device2),
-                    apply(iotAgentLib.register, device3)
-                ],
-                done
-            );
-        });
-
-        it('should return error as idPattern is not supported', function(done) {
-            request(options, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.error.should.equal('BadRequest');
-                body.description.should.equal('idPattern usage in query');
-                done();
-            });
-        });
-    });
-
-    xdescribe('When a query arrives to the IoT Agent with id, type and attributes', function() {
-        const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
-            method: 'POST',
-            json: true,
-            headers: {
-                'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens'
-            },
-            body: {
-                entities: [
-                    {
-                        id: 'Light:light1',
-                        type: 'Light'
-                    }
-                ],
-                attrs: ['temperature']
             }
         };
         const sensorData = [
