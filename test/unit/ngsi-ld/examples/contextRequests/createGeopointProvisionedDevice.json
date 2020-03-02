@@ -1,0 +1,13 @@
+[
+    {
+        "id": "FirstMicroLight",
+        "location": {
+            "type": "Property",
+            "value": {
+                "@type": "geo:point",
+                "@value": "0, 0"
+            }
+        },
+        "type": "MicroLights"
+    }
+]

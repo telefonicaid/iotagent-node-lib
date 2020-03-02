@@ -1,0 +1,7 @@
+{
+    "@context": "http://context.json-ld",
+    "consumption_x": {
+        "type": "Property",
+        "value": 0.44
+    }
+}

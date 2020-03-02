@@ -1,0 +1,13 @@
+{
+    "@context": "http://context.json-ld",
+    "tags": {
+        "type": "Property",
+        "value": {
+            "@type": "Array",
+            "@value": [
+                "iot",
+                "device"
+            ]
+        }
+    }
+}

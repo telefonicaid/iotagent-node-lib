@@ -1,0 +1,11 @@
+{
+    "@context": "http://context.json-ld",
+    "dimming": {
+        "type": "Property",
+        "value": 87
+    },
+    "state": {
+        "type": "Property",
+        "value": true
+    }
+}

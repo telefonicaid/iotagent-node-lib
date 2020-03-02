@@ -1,0 +1,14 @@
+{
+    "@context": "http://context.json-ld",
+    "location": {
+        "type": "Property",
+        "value": {
+            "@type": "geo:point",
+            "@value": "153,523"
+        }
+    },
+    "moving": {
+        "type": "Property",
+        "value": true
+    }
+}

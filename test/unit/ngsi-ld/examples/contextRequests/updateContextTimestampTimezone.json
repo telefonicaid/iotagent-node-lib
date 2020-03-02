@@ -1,0 +1,38 @@
+{
+    "@context": "http://context.json-ld",
+    "TimeInstant": {
+        "type": "Property",
+        "value": {
+            "@type": "DateTime",
+            "@value": "2015-08-05T00:35:01.468-07:00"
+        }
+    },
+    "dimming": {
+        "TimeInstant": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "2015-08-05T00:35:01.468-07:00"
+            }
+        },
+        "type": "Property",
+        "value": {
+            "@type": "number",
+            "@value": 87
+        }
+    },
+    "state": {
+        "TimeInstant": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "2015-08-05T00:35:01.468-07:00"
+            }
+        },
+        "type": "Property",
+        "value": {
+            "@type": "boolean",
+            "@value": true
+        }
+    }
+}

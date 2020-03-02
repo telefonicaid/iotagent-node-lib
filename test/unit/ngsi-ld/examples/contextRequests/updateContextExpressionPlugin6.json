@@ -1,0 +1,13 @@
+{
+    "@context": "http://context.json-ld",
+    "manufacturer": {
+        "type": "Property",
+        "value": {
+            "@type": "Object",
+            "@value": {
+                "VAT": "U12345678",
+                "name": "Manufacturer1"
+            }
+        }
+    }
+}

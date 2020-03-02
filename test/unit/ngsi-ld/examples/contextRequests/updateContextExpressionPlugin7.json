@@ -1,0 +1,14 @@
+{
+    "@context": "http://context.json-ld",
+    "revisions": {
+        "type": "Property",
+        "value": {
+            "@type": "Array",
+            "@value": [
+                "v0.1",
+                "v0.2",
+                "v0.3"
+            ]
+        }
+    }
+}

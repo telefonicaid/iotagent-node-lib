@@ -1,0 +1,7 @@
+{
+    "@context": "http://context.json-ld",
+    "temperature": {
+        "type": "Property",
+        "value": 14.4
+    }
+}

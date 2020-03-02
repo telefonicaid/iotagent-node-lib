@@ -1,0 +1,13 @@
+{
+    "data": [
+        {
+            "id": "TheFirstLight",
+            "location": {
+                "type": "geo:point",
+                "value": "12.4, -9.6"
+            },
+            "type": "TheLightType"
+        }
+    ],
+    "subscriptionId": "51c0ac9ed714fb3b37d7d5a8"
+}

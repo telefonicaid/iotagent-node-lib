@@ -1,0 +1,19 @@
+{
+    "@context": "http://context.json-ld",
+    "controlledProperty": {
+        "includes": {
+            "type": "Property",
+            "value": "bell"
+        },
+        "type": "Property",
+        "value": "StaticValue"
+    },
+    "luminosity": {
+        "type": "Property",
+        "unitCode": {
+            "type": "Property",
+            "value": "CAL"
+        },
+        "value": 100
+    }
+}

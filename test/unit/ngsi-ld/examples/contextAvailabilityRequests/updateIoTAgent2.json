@@ -1,0 +1,19 @@
+{
+    "dataProvided": {
+        "attrs": [
+            "luminance",
+            "commandAttr"
+        ],
+        "entities": [
+            {
+                "id": "ANewLightName",
+                "type": "TheLightType"
+            }
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "@context": "http://context.json-ld",
+    "bootstrapServer": {
+        "type": "Property",
+        "value": {
+            "@type": "Address",
+            "@value": "127.0.0.1"
+        }
+    },
+    "status": {
+        "type": "Property",
+        "value": {
+            "@type": "String",
+            "@value": "STARTING"
+        }
+    }
+}

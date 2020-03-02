@@ -1,0 +1,27 @@
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws4",
+            "type": "WeatherStation"
+        },
+        {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2018-06-13T13:28:34.611Z"
+            },
+            "humidity": {
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2018-06-13T13:28:34.611Z"
+                    }
+                },
+                "type": "Percentage",
+                "value": "12"
+            },
+            "id": "Higro2000",
+            "type": "Higrometer"
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "PING_info": {
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2015-08-05T07:35:01.468Z"
+                    }
+                },
+                "type": "commandResult",
+                "value": "1234567890"
+            },
+            "PING_status": {
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2015-08-05T07:35:01.468Z"
+                    }
+                },
+                "type": "commandStatus",
+                "value": "OK"
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2015-08-05T07:35:01.468Z"
+            },
+            "id": "sensorCommand",
+            "type": "SensorCommand"
+        }
+    ]
+}

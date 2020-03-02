@@ -1,0 +1,10 @@
+[
+    {
+        "id": "Light:light1",
+        "temperature": {
+            "type": "centigrades",
+            "value": 19
+        },
+        "type": "Light"
+    }
+]
