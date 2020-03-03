@@ -216,7 +216,7 @@ This timestamp is represented as two different properties of the mapped entity::
 
 -   With NGSIv1/NGSI-v2, an attribute metadata named `TimeInstant` (per dynamic attribute mapped, which captures as an
     ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
-    Standard `observedAt` metadata attribute is used instead.
+    Standard `observedAt` property-of-a-property is used instead.
 
 -   For NGSIv1/NGSI-v2 only, an additional attribute `TimeInstant` is added to the entity which captures as an
     ISO8601 timestamp when the last measurement received from the device was observed.
