@@ -222,7 +222,7 @@ This timestamp is represented as two different properties of the mapped entity::
     ISO8601 timestamp when the last measurement received from the device was observed.
 
 If no information about the measurement timestamp is received by the IoT Agent, the arrival time of the measurement will
-be used to generate a `TimeInstant` for both the property and the attribute metadata.
+be used to generate a `TimeInstant` for both the entity attribute and the attribute metadata.
 
 Take into account that:
 
