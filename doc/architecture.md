@@ -218,7 +218,7 @@ This timestamp is represented as two different properties of the mapped entity::
     ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
     Standard `observedAt` metadata attribute is used instead.
 
--   For NGSIv1/NGSI-v2 only, an additional propert called `TimeInstant` is added to the entity which captures as an
+-   For NGSIv1/NGSI-v2 only, an additional attribute `TimeInstant` is added to the entity which captures as an
     ISO8601 timestamp when the last measurement received from the device was observed.
 
 If no information about the measurement timestamp is received by the IoT Agent, the arrival time of the measurement will
