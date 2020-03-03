@@ -209,7 +209,7 @@ used for the same purpose. For instance:
 -   **timestamp**: if this flag is activated:
     -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
     provision.
-    -   With NGSI-LD, the standard `observedAt` metadata attribute is created instead.
+    -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
 -   **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
