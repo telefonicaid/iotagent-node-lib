@@ -131,10 +131,6 @@ describe('NGSI-LD - Polling commands', function() {
             .post('/ngsi-ld/v1/csourceRegistrations/')
             .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-        contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
-            .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -153,22 +149,14 @@ describe('NGSI-LD - Polling commands', function() {
         });
     });
 
-    xdescribe('When a command update arrives to the IoT Agent for a device with polling', function() {
+    describe('When a command update arrives to the IoT Agent for a device with polling', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PATCH',
             json: {
-                actionType: 'update',
-                entities: [
-                    {
-                        id: 'Robot:r2d2',
-                        type: 'Robot',
-                        position: {
-                            type: 'Array',
-                            value: '[28, -104, 23]'
-                        }
-                    }
-                ]
+                type: 'Property',
+                value: [28, -104, 23]
             },
             headers: {
                 'fiware-service': 'smartGondor',
@@ -179,11 +167,10 @@ describe('NGSI-LD - Polling commands', function() {
         beforeEach(function(done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-
                 .post(
-                    '/ngsi-ld/v1/entities/Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus1.json'
                     )
                 )
                 .reply(204);
@@ -228,7 +215,7 @@ describe('NGSI-LD - Polling commands', function() {
                 done();
             });
         });
-        it('should store the commands in the queue', function(done) {
+        xit('should store the commands in the queue', function(done) {
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
@@ -246,25 +233,18 @@ describe('NGSI-LD - Polling commands', function() {
         });
     });
 
-    xdescribe('When a command arrives with multiple values in the value field', function() {
+    describe('When a command arrives with multiple values in the value field', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-            method: 'POST',
+            url: 'http://localhost:' + iotAgentConfig.server.port + 
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PATCH',
             json: {
-                actionType: 'update',
-                entities: [
-                    {
-                        id: 'Robot:r2d2',
-                        type: 'Robot',
-                        position: {
-                            type: 'Array',
-                            value: {
-                                attr1: 12,
-                                attr2: 24
-                            }
-                        }
+                    '@type': 'Array',
+                    '@value': {
+                        attr1: 12,
+                        attr2: 24
                     }
-                ]
+                
             },
             headers: {
                 'fiware-service': 'smartGondor',
@@ -277,9 +257,9 @@ describe('NGSI-LD - Polling commands', function() {
                 .matchHeader('fiware-service', 'smartGondor')
 
                 .post(
-                    '/ngsi-ld/v1/entities/Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus1.json'
                     )
                 )
                 .reply(204);
@@ -304,7 +284,7 @@ describe('NGSI-LD - Polling commands', function() {
         });
     });
 
-    xdescribe('When a polling command expires', function() {
+    describe('When a polling command expires', function() {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
             method: 'POST',
@@ -332,7 +312,7 @@ describe('NGSI-LD - Polling commands', function() {
                 .matchHeader('fiware-service', 'smartGondor')
 
                 .post(
-                    '/ngsi-ld/v1/entities/Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus.json'
                     )
@@ -343,9 +323,9 @@ describe('NGSI-LD - Polling commands', function() {
                 .matchHeader('fiware-service', 'smartGondor')
 
                 .post(
-                    '/ngsi-ld/v1/entities/Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
-                        './test/unit//ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandExpired.json'
                     )
                 )
                 .reply(204);
@@ -371,7 +351,7 @@ describe('NGSI-LD - Polling commands', function() {
             });
         });
 
-        it('should mark it as ERROR in the Context Broker', function(done) {
+        xit('should mark it as ERROR in the Context Broker', function(done) {
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
