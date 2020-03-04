@@ -340,4 +340,103 @@ describe('NGSI-LD - JSON native types autocast test', function() {
             });
         });
     });
+
+    describe('When the IoT Agent receives new information from a device. Observation with Time type', function() {
+        const values = [
+            {
+                name: 'configuration',
+                type: 'Time',
+                value: '2016-04-30T14:59:46.000Z'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast8.json')
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information from a device. Observation with DateTime type', function() {
+        const values = [
+            {
+                name: 'configuration',
+                type: 'DateTime',
+                value: '2016-04-30Z'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast9.json')
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information from a device. Observation with Date type', function() {
+        const values = [
+            {
+                name: 'configuration',
+                type: 'Date',
+                value: '2016-04-30T14:59:46.000Z'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .patch(
+                    '/ngsi-ld/v1/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast10.json')
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });

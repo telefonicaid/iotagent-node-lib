@@ -1,17 +1,7 @@
 {
     "@context": "http://context.json-ld",
-    "TimeInstant": {
-        "type": "Property",
-        "value": {
-            "@type": "DateTime",
-            "@value": "2022-10-22T22:22:22Z"
-        }
-    },
     "state": {
         "type": "Property",
-        "value": {
-            "@type": "boolean",
-            "@value": true
-        }
+        "value": true
     }
 }

@@ -4,10 +4,7 @@
             "type": "MicroLights",
             "attr_name": {
                 "type": "Property",
-                "value": {
-                    "@type": "string",
-                    "@value": " "
-                }
+                "value": " "
             }
         }
     ]

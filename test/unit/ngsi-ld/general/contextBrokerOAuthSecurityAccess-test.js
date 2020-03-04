@@ -749,7 +749,7 @@ describe(
                         '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/' +
-                            'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
+                                'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
                         )
                     )
                     .reply(200, {});

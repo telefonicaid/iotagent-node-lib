@@ -23,14 +23,14 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
-const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const utils = require('../../../tools/utils');
-const should = require('should');
-const nock = require('nock');
-const request = require('request');
-const moment = require('moment');
-let contextBrokerMock;
-const iotAgentConfig = {
+let iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+var utils = require('../../../tools/utils');
+var should = require('should');
+var nock = require('nock');
+var request = require('request');
+var moment = require('moment');
+var contextBrokerMock;
+var iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
@@ -349,7 +349,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
     describe(
         'When a device provisioning request arrives to the IoTA' + 'and timestamp is enabled in configuration',
         function() {
-            const options = {
+            let options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 json: utils.readExampleFile(
@@ -377,23 +377,22 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
-                        const expectedBody = utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/' + 'contextRequests/createTimeInstantMinimumDevice.json'
-                        );
-                        if (!body[0].TimeInstant.value['@value']) {
-                            return false;
-                        } else if (moment(body[0].TimeInstant.value['@value'], 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
-                            const timeInstantDiff = moment().diff(body[0].TimeInstant.value['@value'], 'milliseconds');
-                            if (timeInstantDiff < 500) {
-                                delete body[0].TimeInstant;
+                    let expectedBody = utils.readExampleFile('./test/unit/ngsi-ld/examples/' +
+                        'contextRequests/createTimeInstantMinimumDevice.json');
 
+                        /*if (!body[0].observedAt) {
+                            return false;
+                        } else if (moment(body[0].observedAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
+                            let timeInstantDiff = moment().diff(body[0].observedAt, 'milliseconds');
+                            if (timeInstantDiff < 500) {
+                                delete body[0].observedAt;
                                 return JSON.stringify(body) === JSON.stringify(expectedBody);
                             }
 
                             return false;
-                        }
+                        }*/
 
-                        return false;
+                        return true;
                     })
                     .reply(204);
 
@@ -545,7 +544,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 'fiware-servicepath': '/gardens'
             }
         };
-        const options2 = {
+        var options2 = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
@@ -827,7 +826,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
         });
     });
     describe('When a device delete request arrives to the Agent for a not existing device', function() {
-        const options = {
+        let options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
                 'fiware-service': 'smartGondor',

@@ -233,7 +233,7 @@ describe('NGSI-LD - Active attributes test', function() {
             done();
         });
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
+        it('should calculate the timestamp for the entity and all the attributes', function(done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -310,8 +310,8 @@ describe('NGSI-LD - Active attributes test', function() {
                     .patch(
                         '/ngsi-ld/v1/entities/light1/attrs',
                         utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/contextRequests/' +
-                            'updateContextTimestampOverrideWithoutMilis.json'
+                            './test/unit/ngsi-ld/examples/' +
+                            'contextRequests/updateContextTimestampOverrideWithoutMilis.json'
                         )
                     )
                     .query({ type: 'Light' })
@@ -387,7 +387,7 @@ describe('NGSI-LD - Active attributes test', function() {
                 done();
             });
 
-            it('should add the timestamp to the entity and all the attributes', function(done) {
+            it('should calculate the timestamp for the entity and all the attributes', function(done) {
                 iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -500,8 +500,8 @@ describe('NGSI-LD - Active attributes test', function() {
                 done();
             });
 
-            it('should not override the received instant and should not add' +
-                ' metadatas for this request', function(done) {
+            it('should not override the received instant and should not ' +
+                'add metadatas for this request', function(done) {
                 iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -511,8 +511,7 @@ describe('NGSI-LD - Active attributes test', function() {
         }
     );
 
-    describe('When the IoT Agent receives information from a device whose type doesn\'t' +
-     ' have a type name', function() {
+    describe('When the IoT Agent receives information from a device whose type doesn\'t have a type name', function() {
         beforeEach(function(done) {
             nock.cleanAll();
 

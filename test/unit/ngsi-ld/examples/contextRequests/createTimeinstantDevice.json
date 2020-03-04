@@ -1,12 +1,5 @@
 [
     {
-        "TimeInstant": {
-            "type": "Property",
-            "value": {
-                "@type": "ISO8601",
-                "@value": " "
-            }
-        },
         "id": "eii01201ttt",
         "type": "sensor"
     }

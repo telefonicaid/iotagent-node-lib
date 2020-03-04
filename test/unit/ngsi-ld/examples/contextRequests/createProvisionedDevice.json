@@ -2,10 +2,7 @@
     {
         "attr_name": {
             "type": "Property",
-            "value": {
-                "@type": "string",
-                "@value": " "
-            }
+            "value": " "
         },
         "commandAttr_info": {
             "type": "Property",

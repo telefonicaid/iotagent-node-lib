@@ -1,0 +1,10 @@
+{
+    "@context": "http://context.json-ld",
+    "location": {
+        "type": "Property",
+        "value": {
+            "@type": "None",
+            "@value": null
+        }
+    }
+}

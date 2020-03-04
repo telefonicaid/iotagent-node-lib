@@ -2,10 +2,7 @@
     "@context": "http://context.json-ld",
     "luminance": {
         "type": "Property",
-        "unitCode": {
-            "type": "Property",
-            "value": "CAL"
-        },
+        "unitCode": "CAL",
         "value": 9
     }
 }

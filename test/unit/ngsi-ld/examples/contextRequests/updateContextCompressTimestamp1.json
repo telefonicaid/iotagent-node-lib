@@ -4,7 +4,7 @@
         "type": "Property",
         "value": {
             "@type": "DateTime",
-            "@value": "+002007-11-03T13:18:05"
+            "@value": "2007-11-03T13:18:05.000Z"
         }
     },
     "state": {

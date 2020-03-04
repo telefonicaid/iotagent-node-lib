@@ -4,14 +4,10 @@
         "type": "GeoProperty",
         "value": {
             "coordinates": [
-                153,
-                523
+                23,
+                12.5
             ],
             "type": "Point"
         }
-    },
-    "moving": {
-        "type": "Property",
-        "value": true
     }
 }

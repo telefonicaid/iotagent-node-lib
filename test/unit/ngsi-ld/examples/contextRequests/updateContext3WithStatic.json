@@ -9,9 +9,6 @@
     },
     "status": {
         "type": "Property",
-        "value": {
-            "@type": "String",
-            "@value": "STARTING"
-        }
+        "value": "STARTING"
     }
 }

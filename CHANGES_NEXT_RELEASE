@@ -3,5 +3,8 @@ Add NGSIv2 metadata support to device provisioned attributes
 Fix: Error message when sending measures with unknown/undefined attribute
 Add Null check within executeWithSecurity() to avoid crash (#829)
 Basic NGSI-LD active measures support (#841)
+Add GeoJSON and DateTime, unitCode and observedAt NGSI-LD support (#843)
+-  The NGSI v2 `TimeInstant` element has been mapped onto the NGSI-LD `observedAt` property
+-  The NGSI v2 `metadata.unitCode` attribute has been mapped onto the NGSI-LD `unitCode` property
 Add NGSIv2 metadata support to attributeAlias plugin.
 Add mongodb authentication: IOTA_MONGO_USER, IOTA_MONGO_PASSWORD and IOTA_MONGO_AUTH_SOURCE (#844)

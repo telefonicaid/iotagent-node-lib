@@ -149,9 +149,9 @@ used for the same purpose. For instance:
 
 -   **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a
     list of comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional
-    property `replicaSet` should contain the Replica Set name. If the database requires authentication, username 
-    (`username`), password (`password`) and authSource (`authSource`) can be set. For The MongoBD driver will retry the 
-    connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are 
+    property `replicaSet` should contain the Replica Set name. If the database requires authentication, username
+    (`username`), password (`password`) and authSource (`authSource`) can be set. For The MongoBD driver will retry the
+    connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are
     present (default values are 5 and 5 respectively). E.g.:
 
 ```javascript
@@ -206,9 +206,10 @@ used for the same purpose. For instance:
     any unexpected error.
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
--   **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the
-    attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
+-   **timestamp**: if this flag is activated:
+    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
     provision.
+    -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
 -   **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
