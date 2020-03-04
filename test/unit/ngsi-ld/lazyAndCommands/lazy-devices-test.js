@@ -198,7 +198,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -268,7 +268,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -328,7 +328,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -398,7 +398,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -469,7 +469,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent2.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -537,7 +537,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                             './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
                         )
                     )
-                    .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                    .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
                 contextBrokerMock
                     .matchHeader('fiware-service', 'smartGondor')
@@ -593,7 +593,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -603,7 +603,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent2.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -613,7 +613,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -673,7 +673,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -683,7 +683,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent2.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -693,7 +693,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent4.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -764,7 +764,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
                         './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

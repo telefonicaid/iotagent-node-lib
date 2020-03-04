@@ -90,7 +90,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -129,7 +129,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -141,7 +141,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
         });
 
@@ -179,7 +179,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -292,7 +292,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -355,7 +355,7 @@ describe('NGSI-LD - Bidirectional data plugin', function() {
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -450,7 +450,7 @@ describe('NGSI-LD - Bidirectional data plugin and CB is defined using environmen
                         './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

@@ -1,6 +1,6 @@
 [
     {
-        "id": "TheFirstLight",
+        "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
         "location": {
             "type": "GeoProperty",
             "value": {

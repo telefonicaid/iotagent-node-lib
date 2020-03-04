@@ -1,6 +1,6 @@
 [
     {
-        "id": "FirstMicroLight",
+        "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
         "timestamp": {
             "type": "Property",
             "value": {

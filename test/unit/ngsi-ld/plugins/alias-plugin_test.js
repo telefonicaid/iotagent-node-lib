@@ -147,12 +147,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin1.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -180,12 +179,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin2.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -213,12 +211,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it('should rename the attributes as expected by the mappings', function(done) {
@@ -244,12 +241,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -278,12 +274,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin4.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -312,12 +307,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin5.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -346,12 +340,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin6.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -380,12 +373,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin7.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -414,12 +406,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin8.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(
@@ -448,12 +439,11 @@ describe('NGSI-LD - Attribute alias plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAliasPlugin9.json')
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
         });
 
         it(

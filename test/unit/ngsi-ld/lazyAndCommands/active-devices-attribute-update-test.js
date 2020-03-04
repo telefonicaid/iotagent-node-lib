@@ -72,7 +72,7 @@ describe('NGSI-LD - Update attribute functionalities', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/csourceRegistrations/')
-            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+            .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -131,7 +131,7 @@ describe('NGSI-LD - Update attribute functionalities', function() {
             let handlerCalled = false;
 
             iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
-                id.should.equal('Light:somelight');
+                id.should.equal('urn:ngsi-ld:Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);
                 attributes.length.should.equal(1);

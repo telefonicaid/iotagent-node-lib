@@ -221,10 +221,9 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-xdescribe('NGSI-LD - Multi-entity plugin', function() {
+describe('NGSI-LD - Multi-entity plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
-
         iotAgentLib.activate(iotAgentConfig, function() {
             iotAgentLib.clearAll(function() {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
@@ -260,14 +259,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin1.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should send two context elements, one for each entity', function(done) {
@@ -293,14 +291,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin4.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should send context elements', function(done) {
@@ -331,14 +328,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin5.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should send context elements', function(done) {
@@ -370,14 +366,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin8.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should send context elements', function(done) {
@@ -410,17 +405,16 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
         beforeEach(function() {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
+
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin3.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should send the update value to the resulting value of the expression', function(done) {
@@ -451,14 +445,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin2.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
         });
 
         it('should use the device type as a default value', function(done) {
@@ -487,14 +480,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .matchHeader('fiware-servicepath', 'gardens')
                     .post(
-                        '/v2/op/update',
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin6.json'
                         )
                     )
-                    .reply(204);
+                    .reply(200);
             });
 
             it('should update only the appropriate CB entity', function(done) {
@@ -539,14 +531,13 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .matchHeader('fiware-servicepath', 'gardens')
                     .post(
-                        '/v2/op/update',
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin7.json'
                         )
                     )
-                    .reply(204);
+                    .reply(200);
             });
 
             it('should update only the appropriate CB entity', function(done) {
@@ -560,7 +551,7 @@ xdescribe('NGSI-LD - Multi-entity plugin', function() {
     );
 });
 
-xdescribe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function() {
+describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -616,34 +607,26 @@ xdescribe('NGSI-LD - Multi-entity plugin is executed before timestamp process pl
         it('should send two context elements, one for each entity', function(done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/op/update', function(body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin1.json'
                     );
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
                     // fields. The following code just checks that TimeInstant fields are present.
-                    if (!body.entities[1].TimeInstant || !body.entities[1].humidity.metadata.TimeInstant) {
+                    if (!body[1].humidity.observedAt) {
                         return false;
                     }
 
-                    const timeInstantEntity = body.entities[1].TimeInstant;
-                    const timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
-                    if (
-                        moment(timeInstantEntity, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
-                        moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid
-                    ) {
-                        delete body.entities[1].TimeInstant;
-                        delete body.entities[1].humidity.metadata.TimeInstant;
-
-                        delete expectedBody.entities[1].TimeInstant;
-                        delete expectedBody.entities[1].humidity.metadata.TimeInstant;
+                    const timeInstantAtt = body[1].humidity.observedAt;
+                    if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+                        delete body[1].humidity.observedAt;
+                        delete expectedBody[1].humidity.observedAt;
                         return JSON.stringify(body) === JSON.stringify(expectedBody);
                     }
                     return false;
                 })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
                 should.not.exist(error);
@@ -655,34 +638,27 @@ xdescribe('NGSI-LD - Multi-entity plugin is executed before timestamp process pl
         it('should send two context elements, one for each entity', function(done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/op/update', function(body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin2.json'
                     );
+
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
                     // fields. The following code just checks that TimeInstant fields are present.
-                    if (!body.entities[1].TimeInstant || !body.entities[1].humidity.metadata.TimeInstant) {
+                    if (!body[1].humidity.observedAt) {
                         return false;
                     }
 
-                    const timeInstantEntity2 = body.entities[1].TimeInstant;
-                    const timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
-                    if (
-                        moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
-                        moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid
-                    ) {
-                        delete body.entities[1].TimeInstant;
-                        delete body.entities[1].humidity.metadata.TimeInstant;
-
-                        delete expectedBody.entities[1].TimeInstant;
-                        delete expectedBody.entities[1].humidity.metadata.TimeInstant;
+                    const timeInstantAtt = body[1].humidity.observedAt;
+                    if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+                        delete body[1].humidity.observedAt;
+                        delete expectedBody[1].humidity.observedAt;
                         return JSON.stringify(body) === JSON.stringify(expectedBody);
                     }
                     return false;
                 })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function(error) {
                 should.not.exist(error);
@@ -694,15 +670,14 @@ xdescribe('NGSI-LD - Multi-entity plugin is executed before timestamp process pl
         it('should propagate user provider timestamp to mapped entities', function(done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin3.json'
                     )
                 )
-                .reply(204);
+                .reply(200);
 
             const tsValue = [
                 {
@@ -727,7 +702,7 @@ xdescribe('NGSI-LD - Multi-entity plugin is executed before timestamp process pl
     });
 });
 
-xdescribe('NGSI-LD - Multi-entity plugin is executed for a command update for a regular entity ', function() {
+describe('NGSI-LD - Multi-entity plugin is executed for a command update for a regular entity ', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -755,14 +730,14 @@ xdescribe('NGSI-LD - Multi-entity plugin is executed for a command update for a 
     it('Should send the update to the context broker', function(done) {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
-            .matchHeader('fiware-servicepath', 'gardens')
             .post(
-                '/v2/op/update',
+                '/ngsi-ld/v1/entityOperations/upsert/',
                 utils.readExampleFile(
                     './test/unit/ngsi-ld/examples' + '/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )
             )
-            .reply(204);
+            .reply(200);
+
         const commands = [
             {
                 name: 'PING_status',

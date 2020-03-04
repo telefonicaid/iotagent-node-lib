@@ -1,31 +1,32 @@
-{
-    "actionType": "append",
-    "entities": [
-        {
-            "id": "ws7",
-            "type": "WeatherStation"
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws7",
+        "type": "WeatherStation"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2002",
+        "pressure": {
+            "type": "Property",
+            "unitCode": "Hgmm",
+            "value": {
+                "@type": "Hgmm",
+                "@value": "17"
+            }
         },
-        {
-            "id": "Higro2002",
-            "pressure": {
-                "metadata": {
-                    "unitCode": {
-                        "type": "Text",
-                        "value": "Hgmm"
-                    }
-                },
-                "type": "Hgmm",
-                "value": "17"
-            },
-            "type": "Higrometer"
+        "type": "Higrometer"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "pressure": {
+            "type": "Property",
+            "value": {
+                "@type": "Hgmm",
+                "@value": "16"
+            }
         },
-        {
-            "id": "Higro2000",
-            "pressure": {
-                "type": "Hgmm",
-                "value": "16"
-            },
-            "type": "Higrometer"
-        }
-    ]
-}
+        "type": "Higrometer"
+    }
+]

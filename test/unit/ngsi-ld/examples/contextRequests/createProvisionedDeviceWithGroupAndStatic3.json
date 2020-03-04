@@ -7,7 +7,7 @@
                 "@value": " "
             }
         },
-        "id": "light1",
+        "id": "urn:ngsi-ld:Light:light1",
         "state": {
             "type": "Property",
             "value": true

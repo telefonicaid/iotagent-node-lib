@@ -1,6 +1,14 @@
-{
-    "temperature": {
-        "type": "centigrades",
-        "value": " "
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "temperature": {
+            "type": "Property",
+            "value": {
+                "@type": "centigrades",
+                "@value": " "
+            }
+        },
+        "type": "Light"
     }
-}
+]

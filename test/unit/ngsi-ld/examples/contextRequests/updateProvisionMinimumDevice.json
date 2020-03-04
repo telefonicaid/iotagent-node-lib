@@ -1,6 +1,14 @@
-{
-    "newAttribute": {
-        "type": "Integer",
-        "value": " "
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:MicroLights:SecondMicroLight",
+        "newAttribute": {
+            "type": "Property",
+            "value": {
+                "@type": "Intangible",
+                "@value": null
+            }
+        },
+        "type": "MicroLights"
     }
-}
+]

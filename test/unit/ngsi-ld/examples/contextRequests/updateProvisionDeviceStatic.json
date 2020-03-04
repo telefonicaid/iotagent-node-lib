@@ -1,24 +1,38 @@
-{
-    "cellID": {
-        "type": "Integer",
-        "value": "435"
-    },
-    "location": {
-        "type": "geo:json",
-        "value": {
-            "coordinates": [
-                -3.164485591715449,
-                40.62785133667262
-            ],
-            "type": "Point"
-        }
-    },
-    "newAttribute": {
-        "type": "Integer",
-        "value": " "
-    },
-    "serverURL": {
-        "type": "URL",
-        "value": "http://fakeserver.com"
+[
+    {
+        "@context": "http://context.json-ld",
+        "cellID": {
+            "type": "Property",
+            "value": 435
+        },
+        "id": "urn:ngsi-ld:MicroLights:SecondMicroLight",
+        "location": {
+            "type": "Property",
+            "value": {
+                "@type": "geo:json",
+                "@value": {
+                    "coordinates": [
+                        -3.164485591715449,
+                        40.62785133667262
+                    ],
+                    "type": "Point"
+                }
+            }
+        },
+        "newAttribute": {
+            "type": "Property",
+            "value": {
+                "@type": "Intangible",
+                "@value": null
+            }
+        },
+        "serverURL": {
+            "type": "Property",
+            "value": {
+                "@type": "URL",
+                "@value": "http://fakeserver.com"
+            }
+        },
+        "type": "MicroLights"
     }
-}
+]

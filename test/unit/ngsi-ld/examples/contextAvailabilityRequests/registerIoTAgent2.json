@@ -5,7 +5,7 @@
         ],
         "entities": [
             {
-                "id": "Motion:motion1",
+                "id": "urn:ngsi-ld:Motion:motion1",
                 "type": "Motion"
             }
         ]

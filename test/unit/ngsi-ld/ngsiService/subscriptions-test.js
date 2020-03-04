@@ -79,7 +79,7 @@ describe('NGSI-LD - Subscription tests', function() {
                         './test/unit/ngsi-ld/examples' + '/subscriptionRequests/simpleSubscriptionRequest.json'
                     )
                 )
-                .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             iotAgentLib.clearAll(function() {
                 request(optionsProvision, function(error, result, body) {
@@ -129,7 +129,7 @@ describe('NGSI-LD - Subscription tests', function() {
         beforeEach(function(done) {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
 
             done();
@@ -166,7 +166,7 @@ describe('NGSI-LD - Subscription tests', function() {
         beforeEach(function(done) {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
 
             done();

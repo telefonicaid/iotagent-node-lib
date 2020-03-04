@@ -83,14 +83,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties1.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -121,14 +120,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties1.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -160,14 +158,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties2.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -199,14 +196,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties2.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -235,14 +231,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .patch(
-                    '/ngsi-ld/v1/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties3.json'
                     )
                 )
-                .query({ type: 'Light' })
-                .reply(204);
+                .reply(200);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -273,14 +268,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties4.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -312,14 +306,13 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .patch(
-                        '/ngsi-ld/v1/entities/light1/attrs',
+                    .post(
+                        '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties4.json'
                         )
                     )
-                    .query({ type: 'Light' })
-                    .reply(204);
+                    .reply(200);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -353,7 +346,6 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
             it('should throw a BadGeocoordinates Error', function(done) {
                 iotAgentLib.update('light1', 'Light', '', values, function(error) {
                     should.exist(error);
-                    contextBrokerMock.done();
                     done();
                 });
             });
@@ -379,7 +371,6 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
             it('should throw a BadGeocoordinates Error', function(done) {
                 iotAgentLib.update('light1', 'Light', '', values, function(error) {
                     should.exist(error);
-                    contextBrokerMock.done();
                     done();
                 });
             });

@@ -32,7 +32,7 @@
                 "@value": "hardcodedValue"
             }
         },
-        "id": "TheFirstLight",
+        "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
         "status": {
             "type": "Property",
             "value": true

@@ -32,7 +32,7 @@
                 "@value": "hardcodedValue"
             }
         },
-        "id": "TheFirstLight",
+        "id": "urn:ngsi-ld:SensorMachine:TheFirstLight",
         "status": {
             "type": "Property",
             "value": true

@@ -90,7 +90,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
         iotAgentLib.activate(iotAgentConfig, function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -99,7 +99,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -108,7 +108,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -316,7 +316,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .times(10)
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
@@ -388,7 +388,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .times(10)
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.clearAll(function() {
                 async.timesSeries(10, createDeviceRequest, function(error, results) {
@@ -436,7 +436,7 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
 
             contextBrokerMock
                 .post('/ngsi-ld/v1/csourceRegistrations/')
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             request(provisioning3Options, function(error) {
                 done();

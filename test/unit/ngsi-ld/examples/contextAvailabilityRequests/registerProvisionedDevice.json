@@ -12,7 +12,7 @@
         {
             "entities": [
                 {
-                    "id": "TheFirstLight",
+                    "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
                     "type": "TheLightType"
                 }
             ],

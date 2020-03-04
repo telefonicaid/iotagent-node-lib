@@ -99,19 +99,16 @@ const iotAgentConfig = {
         }
     },
     service: 'smartGondor',
-    subservice: 'gardens',
     providerUrl: 'http://smartGondor.com'
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
-    subservice: 'gardens'
+    service: 'smartGondor'
 };
 
-describe('NGSI-LD - Command functionalities', function() {
+xdescribe('NGSI-LD - Command functionalities', function() {
     beforeEach(function(done) {
-        logger.setLevel('FATAL');
         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
         timekeeper.freeze(time);
         nock.cleanAll();
@@ -124,7 +121,7 @@ describe('NGSI-LD - Command functionalities', function() {
                     './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'
                 )
             )
-            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+            .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -158,30 +155,25 @@ describe('NGSI-LD - Command functionalities', function() {
             });
         });
     });
-    xdescribe('When a command update arrives to the IoT Agent as Context Provider', function() {
+    describe('When a command update arrives to the IoT Agent as Context Provider', function() {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
-            method: 'POST',
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PATCH',
             json: {
-                actionType: 'update',
-                entities: [
-                    {
-                        id: 'Robot:r2d2',
-                        type: 'Robot',
-                        position: {
-                            type: 'Array',
-                            value: '[28, -104, 23]'
-                        }
-                    }
-                ]
+                type: 'Property',
+                value: [28, -104, 23]
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'fiware-servicepath': 'gardens'
+                'content-type': 'application/json'
             }
         };
 
         beforeEach(function(done) {
+            logger.setLevel('FATAL');
             iotAgentLib.register(device3, function(error) {
                 done();
             });
@@ -236,10 +228,13 @@ describe('NGSI-LD - Command functionalities', function() {
             });
         });
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            let serviceAndSubservice = false;
+            const service = false;
 
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
-                serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
+                console.error(service);
+                console.error(subservice);
+
+                service === 'smartGondor';
                 callback(null, {
                     id,
                     type,
@@ -254,17 +249,17 @@ describe('NGSI-LD - Command functionalities', function() {
             });
 
             request(options, function(error, response, body) {
-                serviceAndSubservice.should.equal(true);
+                service.should.equal(true);
                 done();
             });
         });
     });
-    xdescribe('When an update arrives from the south bound for a registered command', function() {
+    describe('When an update arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entities/r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs?type=Robot',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandFinish.json'
                     )
@@ -284,12 +279,12 @@ describe('NGSI-LD - Command functionalities', function() {
             });
         });
     });
-    xdescribe('When an error command arrives from the south bound for a registered command', function() {
+    describe('When an error command arrives from the south bound for a registered command', function() {
         beforeEach(function(done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entities/r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextCommandError.json')
                 )
                 .reply(204);
