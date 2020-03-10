@@ -226,8 +226,6 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
--  **jsonLdContext**: the location of the NGSI-LD `@context` element which provides additional information allowing the computer to
-    interpret the rest of the data with more clarity and depth. Read the [JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more information.
 -  **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for suppling the `NGSILD-Tenant` header.
     Note that for backwards compatibility with NGSI v2, the `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
 -  **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative mechanism for suppling the `NGSILD-Path` header.
