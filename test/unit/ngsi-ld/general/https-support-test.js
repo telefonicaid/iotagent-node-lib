@@ -37,7 +37,8 @@ const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         url: 'https://192.168.1.1:1026',
-        ngsiVersion: 'ld'
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
     },
     server: {
         port: 4041
@@ -177,10 +178,11 @@ describe('NGSI-LD - HTTPS support tests', function() {
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/' + 'contextRequests/createMinimumProvisionedDevice.json'
+                            './test/unit/ngsi-ld/examples/' + 
+                            'contextRequests/createMinimumProvisionedDevice.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
@@ -232,7 +234,7 @@ describe('NGSI-LD - HTTPS support tests', function() {
             contextBrokerMock = nock('https://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock = nock('https://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')

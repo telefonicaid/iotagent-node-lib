@@ -129,7 +129,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -201,7 +201,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -231,7 +231,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .get('/ngsi-ld/v1/entities/light1/attrs?attrs=state,dimming&type=Light')
+                .get('/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=state,dimming')
                 .reply(
                     200,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/queryContext1Success.json')
@@ -240,7 +240,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        xit('should send the Auth Token along with the information query', function(done) {
+        it('should send the Auth Token along with the information query', function(done) {
             iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -294,7 +294,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic3.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock
                     .post(
@@ -394,7 +394,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
-                .reply(200, {});
+                .reply(204);
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
             iotAgentLib.activate(iotAgentConfig, done);
@@ -436,7 +436,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .get('/ngsi-ld/v1/entities/light1/attrs?attrs=state,dimming&type=Light')
+                .get('/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=state,dimming')
                 .reply(
                     200,
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextResponses/queryContext1Success.json')
@@ -445,7 +445,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        xit('should send the Auth Token along with the information query', function(done) {
+        it('should send the Auth Token along with the information query', function(done) {
             iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -619,7 +619,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock2 = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'TestService')
@@ -630,7 +630,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {
@@ -748,7 +748,7 @@ describe(
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 contextBrokerMock3 = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'TestService')
@@ -757,7 +757,7 @@ describe(
                         '/ngsi-ld/v1/entityOperations/upsert/',
                         utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext5.json')
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {
@@ -837,7 +837,7 @@ describe(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .reply(200, {});
+                    .reply(204);
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function() {

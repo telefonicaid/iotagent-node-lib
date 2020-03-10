@@ -176,7 +176,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -220,7 +220,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextTimestamp.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -315,7 +315,7 @@ describe('NGSI-LD - Active attributes test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentLib.activate(iotAgentConfig, done);
@@ -372,7 +372,7 @@ describe('NGSI-LD - Active attributes test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
@@ -429,7 +429,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     )
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentConfig.timestamp = true;
             iotAgentLib.activate(iotAgentConfig, done);
@@ -485,7 +485,7 @@ describe('NGSI-LD - Active attributes test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentConfig.timestamp = true;
                 iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
@@ -632,7 +632,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext2.json')
                 )
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -666,7 +666,7 @@ describe('NGSI-LD - Active attributes test', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/updateContextStaticAttributes.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -704,7 +704,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     )
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

@@ -69,7 +69,7 @@ describe('NGSI-LD - Subscription tests', function() {
                         './test/unit/ngsi-ld/examples/' + 'contextRequests/createMinimumProvisionedDevice.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

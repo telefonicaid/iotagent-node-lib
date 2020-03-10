@@ -1,12 +1,5 @@
 {
-    "@context": [
-        {
-            "commandAttr": "ngsi-ld:commandAttr",
-            "luminance": "ngsi-ld:luminance",
-            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/"
-        },
-        "http://context.json-ld"
-    ],
+    "@context": "http://context.json-ld",
     "endpoint": "http://smartGondor.com",
     "information": [
         {

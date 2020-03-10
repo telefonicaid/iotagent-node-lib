@@ -1,18 +1,18 @@
 {
-    "dataProvided": {
-        "attrs": [
-            "moving"
-        ],
-        "entities": [
-            {
-                "id": "urn:ngsi-ld:Motion:motion1",
-                "type": "Motion"
-            }
-        ]
-    },
-    "provider": {
-        "http": {
-            "url": "http://smartGondor.com"
+  "type": "ContextSourceRegistration",
+  "information": [
+    {
+      "entities": [
+        {
+          "type": "Motion",
+          "id": "urn:ngsi-ld:Motion:motion1"
         }
+      ],
+      "properties": [
+        "moving"
+      ]
     }
+  ],
+  "endpoint": "http://smartGondor.com",
+  "@context": "http://context.json-ld"
 }

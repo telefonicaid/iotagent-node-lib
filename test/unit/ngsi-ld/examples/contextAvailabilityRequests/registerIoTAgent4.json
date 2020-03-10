@@ -1,18 +1,18 @@
 {
-    "dataProvided": {
-        "attrs": [
-            "moving"
-        ],
-        "entities": [
-            {
-                "id": "urn:ngsi-ld:RobotPre:TestRobotPre",
-                "type": "RobotPre"
-            }
-        ]
-    },
-    "provider": {
-        "http": {
-            "url": "http://smartGondor.com"
+  "type": "ContextSourceRegistration",
+  "information": [
+    {
+      "entities": [
+        {
+          "type": "RobotPre",
+          "id": "urn:ngsi-ld:RobotPre:TestRobotPre"
         }
+      ],
+      "properties": [
+        "moving"
+      ]
     }
+  ],
+  "endpoint": "http://smartGondor.com",
+  "@context": "http://context.json-ld"
 }

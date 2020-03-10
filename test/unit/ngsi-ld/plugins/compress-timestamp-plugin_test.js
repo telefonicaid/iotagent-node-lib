@@ -160,7 +160,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp1.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -203,7 +203,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCompressTimestamp2.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {
@@ -223,7 +223,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .get('/ngsi-ld/v1/entities/light1/attrs?attrs=state,TheTargetValue&type=Light')
+                .get('/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=state,TheTargetValue')
                 .reply(
                     200,
                     utils.readExampleFile(
@@ -232,7 +232,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                 );
         });
 
-        xit('should return an entity with all its timestamps without separators (basic format)', function(done) {
+        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
             iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
                 should.not.exist(error);
                 should.exist(response);

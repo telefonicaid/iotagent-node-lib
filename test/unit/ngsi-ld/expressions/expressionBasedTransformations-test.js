@@ -258,7 +258,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should calculate them and add them to the payload', function(done) {
@@ -297,7 +297,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should calculate it and add it to the payload', function(done) {
@@ -330,7 +330,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -363,7 +363,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -396,7 +396,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin18.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -430,7 +430,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -464,7 +464,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -498,7 +498,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin19.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -532,7 +532,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -566,7 +566,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin16.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -600,7 +600,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin17.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -634,7 +634,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -668,7 +668,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin10.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -701,7 +701,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -734,7 +734,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -768,7 +768,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -800,7 +800,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin12.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -832,7 +832,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should apply the expression before sending the values', function(done) {
@@ -872,7 +872,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
             });
 
             it('should apply the expression before sending the values', function(done) {

@@ -107,7 +107,7 @@ const device3 = {
     service: 'smartGondor'
 };
 
-xdescribe('NGSI-LD - Command functionalities', function() {
+describe('NGSI-LD - Command functionalities', function() {
     beforeEach(function(done) {
         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
         timekeeper.freeze(time);
@@ -126,7 +126,7 @@ xdescribe('NGSI-LD - Command functionalities', function() {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(200);
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -168,12 +168,12 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             },
             headers: {
                 'fiware-service': 'smartGondor',
-                'content-type': 'application/json'
+                'content-type': 'application/ld+json'
             }
         };
 
         beforeEach(function(done) {
-            logger.setLevel('FATAL');
+            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function(error) {
                 done();
             });
@@ -181,12 +181,12 @@ xdescribe('NGSI-LD - Command functionalities', function() {
 
         it('should call the client handler', function(done) {
             let handlerCalled = false;
-
+           
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
-                id.should.equal(device3.type + ':' + device3.id);
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
-                attributes[0].value.should.equal('[28, -104, 23]');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
                 handlerCalled = true;
                 callback(null, {
                     id,
@@ -228,13 +228,9 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             });
         });
         it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            const service = false;
-
+            let serviceReceived = false;
             iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
-                console.error(service);
-                console.error(subservice);
-
-                service === 'smartGondor';
+                serviceReceived = (service === 'smartGondor');
                 callback(null, {
                     id,
                     type,
@@ -249,7 +245,7 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             });
 
             request(options, function(error, response, body) {
-                service.should.equal(true);
+                serviceReceived.should.equal(true);
                 done();
             });
         });
@@ -259,7 +255,7 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandFinish.json'
                     )
@@ -284,7 +280,7 @@ xdescribe('NGSI-LD - Command functionalities', function() {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs?type=Robot',
+                    '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextCommandError.json')
                 )
                 .reply(204);

@@ -134,7 +134,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             request(groupCreation, function(error) {
                 request(deviceCreation, function(error, response, body) {
@@ -187,7 +187,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'AlternateService')
@@ -200,7 +200,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'AlternateService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             request(groupCreation, function(error) {
                 request(deviceCreation, function(error, response, body) {
@@ -244,7 +244,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(200);
+                .reply(204);
 
             oldType = deviceCreation.json.devices[0].entity_type;
             delete deviceCreation.json.devices[0].entity_type;
@@ -289,7 +289,7 @@ describe('NGSI-LD - Provisioning API: Single service mode', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             request(groupCreation, done);
         });

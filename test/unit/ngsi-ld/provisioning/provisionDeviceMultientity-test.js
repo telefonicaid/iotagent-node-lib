@@ -85,7 +85,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/createProvisionedDeviceMultientity.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         const options = {

@@ -1,5 +1,6 @@
 [
     {
+        "@context": "http://context.json-ld",
         "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
         "location": {
             "type": "GeoProperty",

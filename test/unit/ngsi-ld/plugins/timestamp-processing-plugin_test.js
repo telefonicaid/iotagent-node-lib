@@ -104,7 +104,7 @@ describe('NGSI-LD - Timestamp processing plugin', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextProcessTimestamp.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
         });
 
         it('should return an entity with all its timestamps expanded to have separators', function(done) {

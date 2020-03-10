@@ -89,7 +89,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties1.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -126,7 +126,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties1.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -164,7 +164,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties2.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -202,7 +202,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties2.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -237,7 +237,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                         './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties3.json'
                     )
                 )
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -274,7 +274,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties4.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -312,7 +312,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function() {
                             './test/unit/ngsi-ld/examples/contextRequests/' + 'updateContextGeoproperties4.json'
                         )
                     )
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });

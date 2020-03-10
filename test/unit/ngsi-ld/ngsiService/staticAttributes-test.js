@@ -111,7 +111,7 @@ describe('NGSI-LD - Static attributes test', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .times(4)
-                .reply(200)
+                .reply(204)
                 .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
                     // Since the TimeInstant plugin is in use,
                     // Each property should contain observedAt
@@ -124,7 +124,7 @@ describe('NGSI-LD - Static attributes test', function() {
                     }
                     return count === Object.keys(body).length - 1;
                 })
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

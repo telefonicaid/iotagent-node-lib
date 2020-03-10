@@ -1,11 +1,5 @@
 {
-    "@context": [
-        {
-            "ngsi-ld": "https://uri.etsi.org/ngsi-ld/default-context/",
-            "temperature": "ngsi-ld:temperature"
-        },
-        "http://context.json-ld"
-    ],
+    "@context": "http://context.json-ld",
     "endpoint": "http://smartGondor.com",
     "information": [
         {

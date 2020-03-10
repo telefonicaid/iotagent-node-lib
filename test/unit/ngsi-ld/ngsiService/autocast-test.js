@@ -113,7 +113,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -151,7 +151,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -189,7 +189,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -227,7 +227,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                         )
                     )
 
-                    .reply(200);
+                    .reply(204);
 
                 iotAgentLib.activate(iotAgentConfig, done);
             });
@@ -261,7 +261,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast5.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -294,7 +294,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast6.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -327,7 +327,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast7.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -360,7 +360,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast8.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -393,7 +393,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast9.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -426,7 +426,7 @@ describe('NGSI-LD - JSON native types autocast test', function() {
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextAutocast10.json')
                 )
 
-                .reply(200);
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
