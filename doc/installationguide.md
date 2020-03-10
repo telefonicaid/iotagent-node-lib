@@ -149,9 +149,10 @@ used for the same purpose. For instance:
 
 -   **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a
     list of comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional
-    property `replicaSet` should contain the Replica Set name. The MongoBD driver will retry the connection at startup
-    time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values
-    are 5 and 5 respectively). E.g.:
+    property `replicaSet` should contain the Replica Set name. If the database requires authentication, username
+    (`username`), password (`password`) and authSource (`authSource`) can be set. For The MongoBD driver will retry the
+    connection at startup time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are
+    present (default values are 5 and 5 respectively). E.g.:
 
 ```javascript
 {
@@ -205,9 +206,10 @@ used for the same purpose. For instance:
     any unexpected error.
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
--   **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the
-    attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
+-   **timestamp**: if this flag is activated:
+    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
     provision.
+    -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
 -   **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
@@ -224,6 +226,10 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
+-  **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for suppling the `NGSILD-Tenant` header.
+    Note that for backwards compatibility with NGSI v2, the `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
+-  **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative mechanism for suppling the `NGSILD-Path` header.
+    Note that for backwards compatibility with NGSI v2, the `fiware-service-path` header is already used as alternative if the `NGSILD-Path` header is not supplied.
 
 ### Configuration using environment variables
 
@@ -268,6 +274,9 @@ overrides.
 | IOTA_MONGO_PORT           | `mongodb.port`                  |
 | IOTA_MONGO_DB             | `mongodb.db`                    |
 | IOTA_MONGO_REPLICASET     | `mongodb.replicaSet`            |
+| IOTA_MONGO_USER 	        | `mongodb.user`		          |
+| IOTA_MONGO_PASSWORD	    | `mongodb.password`	          |
+| IOTA_MONGO_AUTH_SOURCE    | `mongodb.authSource`	          |
 | IOTA_MONGO_RETRIES        | `mongodb.retries`               |
 | IOTA_MONGO_RETRY_TIME     | `mongodb.retryTime`             |
 | IOTA_SINGLE_MODE          | `singleConfigurationMode`       |
@@ -277,3 +286,5 @@ overrides.
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
 | IOTA_JSON_LD_CONTEXT      | `jsonLdContext`                 |
+| IOTA_FALLBACK_TENANT      | `fallbackTenant`                |
+| IOTA_FALLBACK_PATH        | `fallbackPath`                  |
