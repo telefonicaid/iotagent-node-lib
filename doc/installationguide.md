@@ -226,7 +226,7 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
--  **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for suppling the `NGSILD-Tenant` header.
+-  **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for supplying the `NGSILD-Tenant` header. Note that NGSILD-Tenant has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change.
     Note that for backwards compatibility with NGSI v2, the `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
 -  **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative mechanism for suppling the `NGSILD-Path` header.
     Note that for backwards compatibility with NGSI v2, the `fiware-service-path` header is already used as alternative if the `NGSILD-Path` header is not supplied.
