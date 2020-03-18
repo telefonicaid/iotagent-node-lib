@@ -8,7 +8,7 @@ This section elaborates on proposed new features or tasks which are expected to 
 
 Disclaimer:
 
-* This section has been last updated in January 2019. Please take into account its 
+* This section has been last updated in March 2020. Please take into account its 
   content could be obsolete.
 * Note we develop this software in Agile way, so development plan is continuously 
   under review. Thus, this roadmap has to be understood as rough plan of features 
@@ -21,17 +21,21 @@ Disclaimer:
 ### Short term
 
 The following list of features are planned to be addressed in the short term, and incorporated in a release of the product:
-- Removal of warnings and deprecation warnings.
 
+- Selectively ignore measure in the southbound interface (community)
+- JEXL support in expressions (community)
+- cgroup literal in configuration groups management API (community)
+- Metadata processing improvements
+- Add MongoDB authentication support
 
 ### Medium term
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent release(s) generated in the next 9 months after the next planned release:
-- Support to FIWARE complex data models.
+- Support for "delta" measures (i.e. "temperature *increased* in 5 degress" instead of "temperature *is* 25")
 - Removal support for NGSIv1 (which currently is deprecated)
-
 
 ### Long term
 
 The following list of features are proposals regarding the longer-term evolution of the product even though the development of these features has not yet been scheduled for a release in the near future.  Please feel free to contact us if you wish to get involved in the implementation or influence the roadmap:
 - Incremental introduccion of ECMAScript6 syntax (previous analysis of which sub-set of interesting aspect we want to take)
+- Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker
