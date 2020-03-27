@@ -468,7 +468,6 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
-  });
     
     describe('When a device group listing arrives with a limit', function() {
         var optionsConstrained = {
