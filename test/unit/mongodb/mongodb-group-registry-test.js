@@ -474,7 +474,7 @@ describe('MongoDB Group Registry test', function() {
                 async.apply(request, optionsCreation3),
                 async.apply(request, optionsCreation4),
                 async.apply(request, optionsCreation5),
-                async.apply(request, optionsCreation6);
+                async.apply(request, optionsCreation6)
             ], done);
         });
 
