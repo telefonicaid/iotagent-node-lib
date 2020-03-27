@@ -158,19 +158,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDeleteconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
   // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsList = {
         url: 'http://localhost:4041/iot/services',
@@ -365,7 +352,6 @@ describe('MongoDB Group Registry test', function() {
 
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
-              request(optionsDeleteconfigGroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -375,17 +361,14 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
-      });
 
         it('should return a 204 OK statusCode', function(done) {
             request(optionsDelete, function(error, response, body) {
-              request(optionsDeleteconfigGroups, function(error, response, body) {
                 response.statusCode.should.equal(204);
                 done();
             });
         });
     });
-  });
     
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
