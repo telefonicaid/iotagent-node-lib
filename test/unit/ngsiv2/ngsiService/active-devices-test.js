@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -113,16 +113,38 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         type: 'percentage'
                     }
                 ]
+            },
+            'Lamp': {
+                type: 'Lamp',
+                commands: [],
+                lazy: [],
+                staticAttributes: [
+                    {
+                        'name': 'controlledProperty',
+                        'type': 'text',
+                        'value': 'StaticValue',
+                        'metadata':{
+                            'includes':{'type': 'Text', 'value' :'bell'}
+                        }
+                    }
+                ],
+                active: [
+                    {
+                        name: 'luminosity',
+                        type: 'text',
+                        metadata:{
+                            unitCode:{type: 'Text', value :'CAL'}
+                        }
+                    }
+                ]
             }
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('Active attributes test', function() {
+describe('NGSI-v2 - Active attributes test', function() {
     var values = [
         {
             name: 'state',
@@ -620,6 +642,39 @@ describe('Active attributes test', function() {
         });
         it('should decorate the entity with the static attributes', function(done) {
             iotAgentLib.update('motion1', 'Motion', '', newValues, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+
+    describe('When an IoT Agent receives information for a type with static attributes with metadata', function() {
+        var newValues = [
+            {
+                name: 'luminosity',
+                type: 'text',
+                value: '100'
+            }
+        ];
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            /* jshint maxlen: 200 */
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities/lamp1/attrs',
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'))
+                .query({type: 'Lamp'})
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+        it('should decorate the entity with the static attributes', function(done) {
+            iotAgentLib.update('lamp1', 'Lamp', '', newValues, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

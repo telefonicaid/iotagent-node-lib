@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -32,6 +32,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     logger = require('logops'),
     nock = require('nock'),
     moment = require('moment'),
+    timekeeper = require('timekeeper'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -138,6 +139,30 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     }
                 ]
             },
+            'WeatherStation7': {
+                commands: [],
+                type: 'WeatherStation',
+                lazy: [],
+                active: [
+                    {
+                        object_id: 'p',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        metadata: {
+                            unitCode:{type: 'Text', value :'Hgmm'}
+                        },
+                        entity_name: 'Higro2002',
+                        entity_type: 'Higrometer'
+                    },
+                    {
+                        object_id: 'h',
+                        name: 'pressure',
+                        type: 'Hgmm',
+                        entity_name: 'Higro2000',
+                        entity_type: 'Higrometer'
+                    }
+                ]
+            },
             'Sensor001': {
                 commands: [],
                 type: 'Sensor',
@@ -181,16 +206,24 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                 ]
 
             },
+            'SensorCommand':{
+                commands: [
+                    {
+                      name: 'PING',
+                      type: 'command'
+                    }
+                ],
+                type: 'SensorCommand',
+                lazy: []
+            }
 
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('Multi-entity plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -300,6 +333,41 @@ describe('Multi-entity plugin', function() {
 
         it('should send context elements', function(done) {
             iotAgentLib.update('ws6', 'WeatherStation6', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    /* jshint maxlen: 200 */
+    describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
+        var values = [
+            {
+                name: 'h',
+                type: 'Hgmm',
+                value: '16'
+            },
+            {
+                name: 'p',
+                type: 'Hgmm',
+                value: '17'
+            }
+        ];
+
+        beforeEach(function() {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/op/update', utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin8.json'))
+                .reply(204);
+        });
+
+        it('should send context elements', function(done) {
+            iotAgentLib.update('ws7', 'WeatherStation7', '', values, function(error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -458,7 +526,7 @@ describe('Multi-entity plugin', function() {
     
 });
 
-describe('Multi-entity plugin is executed before timestamp process plugin', function() {
+describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 
@@ -624,3 +692,56 @@ describe('Multi-entity plugin is executed before timestamp process plugin', func
     });
 });
 
+describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a regular entity ', function () {
+    beforeEach(function(done) {
+        logger.setLevel('FATAL');
+
+        iotAgentConfig.timestamp = true;
+        var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+        timekeeper.freeze(time);
+        iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.clearAll(function() {
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
+                done();
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        timekeeper.reset();
+        iotAgentLib.clearAll(function() {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    it('Should send the update to the context broker', function(done) {
+
+        contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v2/op/update', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                    '/contextRequests/updateContextMultientityTimestampPlugin4.json'))
+            .reply(204);
+        var commands = [
+            {
+                name: 'PING_status',
+                type: 'commandStatus',
+                value: 'OK',
+            },
+            {
+                name: 'PING_info',
+                type: 'commandResult',
+                value:'1234567890'
+            }
+        ];
+
+        iotAgentLib.update('sensorCommand', 'SensorCommand', '', commands, function(error) {
+            should.not.exist(error);
+            contextBrokerMock.done();
+            done();
+        });
+    });
+});

@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -77,7 +77,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
         iotManager: {
             url: 'https://mockediotam.com:9876',
             path: '/protocols',
@@ -123,7 +122,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     iotamMock;
 
 
-describe('HTTPS support tests IOTAM', function() {
+describe('NGSI-v1 - HTTPS support tests IOTAM', function() {
 
     describe('When the IoT Agents is started with https "iotManager" config', function() {
         beforeEach(function(done) {
@@ -155,7 +154,7 @@ describe('HTTPS support tests IOTAM', function() {
     });
 });
 
-describe('HTTPS support tests', function() {
+describe('NGSI-v1 - HTTPS support tests', function() {
 
     describe('When subscription is sent to HTTPS context broker', function() {
         beforeEach(function(done) {

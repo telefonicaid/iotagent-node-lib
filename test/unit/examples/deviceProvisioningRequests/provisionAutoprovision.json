@@ -1,0 +1,19 @@
+{
+  "devices": [{
+    "device_id": "xxx014",
+    "protocol": "IoTA-UL",
+    "entity_name": "eii01201aaa",
+    "entity_type": "sensor",
+    "attributes": [
+      {
+        "object_id": "tt",
+        "name": "TimeInstant",
+        "type": "ISO8601"
+      }
+    ],
+    "lazy": [],
+    "commands": [],
+    "static_attributes": [],
+    "autoprovision": true
+  }]
+}

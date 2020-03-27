@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -47,8 +47,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        deviceRegistrationDuration: 'P1M'
     },
    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsCreation = {

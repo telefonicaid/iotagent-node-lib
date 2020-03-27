@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -86,12 +86,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('Secured access to the Context Broker with OAuth2 provider', function() {
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', function() {
     var values = [
         {
             name: 'state',
@@ -255,8 +253,6 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
     });
     describe('When subscriptions are used on a protected Context Broker', function() {
           beforeEach(function(done) {
-            var time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-            timekeeper.freeze(time);
             var optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -267,11 +263,6 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
                     'fiware-servicepath': 'electricity'
                 }
             };
-
-        afterEach(function(done) {
-            timekeeper.reset();
-            done();
-        });
     
             nock.cleanAll();
     
@@ -353,7 +344,7 @@ describe('Secured access to the Context Broker with OAuth2 provider', function()
     });
 });
 
-describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
 
     var values = [
         {
@@ -536,7 +527,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
     });
 });
 
-describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
     'configured through group provisioning', function() {
     var groupCreation = {
         url: 'http://localhost:4041/iot/services',
@@ -736,7 +727,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
     });
 });
 
-describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
     'configured through group provisioning. Permanent token', function() {
     var groupCreation = {
         url: 'http://localhost:4041/iot/services',

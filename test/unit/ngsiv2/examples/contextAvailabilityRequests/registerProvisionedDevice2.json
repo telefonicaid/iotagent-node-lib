@@ -13,7 +13,6 @@
     "provider": {
         "http": {
             "url": "http://smartGondor.com"
-        },
-        "legacyForwarding": true
+        }
     }
 }

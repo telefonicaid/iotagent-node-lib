@@ -1,0 +1,18 @@
+{
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "Robot",
+                "id": "Robot:r2d2"
+            }
+        ],
+        "attrs": [
+            "position"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        }
+    }
+}

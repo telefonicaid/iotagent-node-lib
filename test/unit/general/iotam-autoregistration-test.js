@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -59,7 +59,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         },
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
         iotManager: {
             host: 'mockediotam.com',
             port: 9876,
@@ -275,7 +274,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     iotamMock;
 
-describe('IoT Manager autoregistration', function() {
+describe('NGSI-v1 - IoT Manager autoregistration', function() {
     describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
         beforeEach(function() {
             nock.cleanAll();
