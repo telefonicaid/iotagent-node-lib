@@ -382,14 +382,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreation, function(error, result, body) {
-                should.not.exist(error);
-                iotamMock.done();
-                done();
-            });
-        });
-    
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationconfigGroups, function(error, result, body) {
+              request(optionsCreationconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -426,14 +419,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDelete, function(error, result, body) {
-                should.not.exist(error);
-                iotamMock.done();
-                done();
-            });
-        });
-    
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsDeleteconfigGroups, function(error, result, body) {
+              request(optionsDeleteconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -471,14 +457,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
 
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStatic, function(error, result, body) {
-                should.not.exist(error);
-                iotamMock.done();
-                done();
-            });
-        });
-    
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStaticconfigGroups, function(error, result, body) {
+              request(optionsCreationStaticconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
