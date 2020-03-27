@@ -388,34 +388,7 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
-    });
-    describe('When a new service is created in the IoT Agent', function() {
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            iotamMock = nock('http://mockediotam.com:9876')
-                .post('/protocols',
-                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            iotamMock
-                .post('/protocols',
-                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
-            });
-        });
-
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
-                iotAgentLib.deactivate(done);
-            });
-        });
-
+    
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationconfigGroups, function(error, result, body) {
                 should.not.exist(error);
@@ -459,34 +432,7 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
-    });
-    describe('When a service is removed from the IoT Agent', function() {
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            iotamMock = nock('http://mockediotam.com:9876')
-                .post('/protocols',
-                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            iotamMock
-                .post('/protocols',
-                utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            groupRegistryMemory.create(groupCreation, function() {
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
-        });
-
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
-                iotAgentLib.deactivate(done);
-            });
-        });
-
+    
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDeleteconfigGroups, function(error, result, body) {
                 should.not.exist(error);
@@ -531,34 +477,7 @@ describe('IoT Manager autoregistration', function() {
                 done();
             });
         });
-    });
-    describe('When a new service with static attributes is created in the IoT Agent', function() {
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            iotamMock = nock('http://mockediotam.com:9876')
-                .post('/protocols',
-                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            iotamMock
-                .post('/protocols',
-                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithStaticGroups.json'))
-                .reply(200,
-                    utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
-
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                done();
-            });
-        });
-
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
-                iotAgentLib.deactivate(done);
-            });
-        });
-
+    
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStaticconfigGroups, function(error, result, body) {
                 should.not.exist(error);
@@ -567,4 +486,3 @@ describe('IoT Manager autoregistration', function() {
             });
         });
     });
-});
