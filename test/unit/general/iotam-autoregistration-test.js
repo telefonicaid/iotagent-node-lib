@@ -464,4 +464,5 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
     });
-});
+  });
+ });
