@@ -389,6 +389,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
     });
+  });
 
     describe('When a service is removed from the IoT Agent', function() {
         beforeEach(function(done) {
@@ -426,7 +427,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
     });
-
+  });
 
     describe('When a new service with static attributes is created in the IoT Agent', function() {
         beforeEach(function(done) {
