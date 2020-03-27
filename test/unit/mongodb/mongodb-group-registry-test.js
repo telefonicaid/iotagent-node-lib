@@ -350,16 +350,17 @@ describe('MongoDB Group Registry test', function() {
     describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
         it('should return a DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
+                request(optionsCreation, function(error, response, body) {
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
                 });
             });
         });
-    
+    });
     describe('When a device group removal request arrives', function() {
         beforeEach(function(done) {
-            request(optionsCreation, optionsCreationconfigGroups, done);
+            request(optionsCreation, done);
         });
 
         it('should remove it from the database', function(done) {
@@ -388,7 +389,7 @@ describe('MongoDB Group Registry test', function() {
     
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
-            request(optionsCreation, optionsCreationconfigGroups,done);
+            request(optionsCreation, done);
         });
 
         it('should update the values in the database', function(done) {
