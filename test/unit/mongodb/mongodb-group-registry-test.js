@@ -181,15 +181,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
-    optionsListconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
-        }
-    },
  // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsUpdate = {
         url: 'http://localhost:4041/iot/services',
