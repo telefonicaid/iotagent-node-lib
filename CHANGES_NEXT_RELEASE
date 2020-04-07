@@ -1,6 +1,0 @@
-Refresh Documentation
-Add NGSIv2 metadata support to device provisioned attributes
-Fix: Error message when sending measures with unknown/undefined attribute
-Add Null check within executeWithSecurity() to avoid crash (#829)
-Add NGSIv2 metadata support to attributeAlias plugin.
-Add mongodb authentication: IOTA_MONGO_USER, IOTA_MONGO_PASSWORD and IOTA_MONGO_AUTH_SOURCE (#844)
