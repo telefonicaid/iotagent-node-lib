@@ -248,7 +248,7 @@ describe('NGSI-v1 - Startup tests', function() {
 
         ['', 'undefined'].forEach(function(t) {
             it('should load no ssl parameter with ssl=' + t, function (done) {
-                if (t != "undefined") {
+                if (t !== 'undefined') {
                     process.env.IOTA_MONGO_SSL = t;
                 }
 
@@ -272,7 +272,7 @@ describe('NGSI-v1 - Startup tests', function() {
         [
             {in: '{"a": "b"}', expect: {a: 'b'}},
             {in: '{"a": "b", "c": "d"}', expect: {a: 'b', c: 'd'}},
-            {in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}', expect: {a: 'b', c: [1, 2], d: -5, e: {f: "g"}}},
+            {in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}', expect: {a: 'b', c: [1, 2], d: -5, e: {f: 'g'}}},
             {in: '{}', expect: {}}
         ].forEach(function(param) {
             it('should load estraArgs with param=' + param.in, function (done) {

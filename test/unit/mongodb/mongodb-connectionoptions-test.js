@@ -28,6 +28,7 @@ var dbConn = require('../../../lib/model/dbConn'),
     config = require('../../../lib/commonConfig'),
     mongoose = require('mongoose'),
     sinon = require('sinon'),
+    should = require('should'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -302,7 +303,8 @@ describe('dbConn.configureDb', function() {
       }
     ];
     tests.forEach(function (params) {
-      it('mongodb options = ' + JSON.stringify(params.mongodb) + ', expected = ' + JSON.stringify(params.expected), function(done) {
+      it('mongodb options = ' + JSON.stringify(params.mongodb) + ', ' +
+         'expected = ' + JSON.stringify(params.expected), function(done) {
         var cfg = Object.assign({}, iotAgentConfig, {
           mongodb: params.mongodb
         });
@@ -314,7 +316,7 @@ describe('dbConn.configureDb', function() {
         config.setConfig(cfg);
         dbConn.configureDb(function(error) {
           if (error) {
-            fail();
+            should.fail();
           }
         });
       });
@@ -341,12 +343,12 @@ describe('dbConn.configureDb', function() {
           mongodb: params.mongodb
         });
         stub = sinon.stub(mongoose, 'createConnection').callsFake(function (url, options, fn) {
-          fail();
+          should.fail();
         });
         config.setConfig(cfg);
         dbConn.configureDb(function (error) {
           if (!error) {
-            fail();
+            should.fail();
           }
           done();
         });
