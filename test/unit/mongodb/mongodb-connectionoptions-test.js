@@ -1,3 +1,27 @@
+/*
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Nobuyuki Matsui - TIS Inc.
+ */
 'use strict';
 
 var dbConn = require('../../../lib/model/dbConn'),
@@ -163,6 +187,115 @@ describe('dbConn.configureDb', function() {
               password: 'pass01'
             },
             authSource: 'admin',
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          ssl: true
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
+          options: {
+            ssl: true,
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          extraArgs: {
+            retryWrites: true
+          }
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true',
+          options: {
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          extraArgs: {
+            retryWrites: true,
+            readPreference: 'nearest'
+          }
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true&readPreference=nearest',
+          options: {
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          extraArgs: {}
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
+          options: {
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          extraArgs: []
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
+          options: {
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          extraArgs: null
+        },
+        expected: {
+          url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
+          options: {
+            useNewUrlParser: true
+          }
+        }
+      },
+      {
+        mongodb: {
+          host: 'example.com',
+          port: '98765',
+          db: 'examples',
+          replicaSet: 'rs0',
+          user: 'user01',
+          password: 'pass01',
+          authSource: 'admin',
+          ssl: true,
+          extraArgs: {
+            retryWrites: true,
+            readPreference: 'nearest',
+            w: 'majority'
+          },
+          unknownparam: 'unknown'
+        },
+        expected: {
+          url: 'mongodb://example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority',
+          options: {
+            replicaSet: 'rs0',
+            auth: {
+              user: 'user01',
+              password: 'pass01'
+            },
+            authSource: 'admin',
+            ssl: true,
             useNewUrlParser: true
           }
         }
