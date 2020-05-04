@@ -74,7 +74,7 @@
     },
       "configGroups": {
       "type": "array",
-      "id": "services",
+      "id": "configGroups",
       "required": true,
       "items": {
         "type": "object",
