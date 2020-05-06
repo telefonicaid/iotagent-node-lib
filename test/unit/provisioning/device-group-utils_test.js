@@ -30,7 +30,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     async = require('async'),
     groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory'),
     request = require('request'),
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     groupCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -40,27 +39,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    groupCreationconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     alternateGroupCreation = {
         url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
-    alternateGroupCreationconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
         headers: {
@@ -124,47 +104,11 @@ describe('Device Group utils', function() {
             });
         });
     });
-    describe('When an API Key is requested for a device in a group without the SingleConfiguration mode', function() {
-        beforeEach(function(done) {
-            async.series([
-                async.apply(iotAgentLib.activate, iotAgentConfig),
-                async.apply(request, alternateGroupCreationconfigGroups),
-                async.apply(request, groupCreationconfigGroups)
-            ], done);
-        });
-        it('should return the API Key of the group', function(done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function(error, apiKey) {
-                should.not.exist(error);
-                apiKey.should.equal('754KL23Y9090DSFL123HSFL12380KL23Y2');
-                done();
-            });
-        });
-    });
     describe('When an API Key is requested for a device in a subservice with the SingleConfiguration mode', function() {
         beforeEach(function(done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function() {
                 request(groupCreation, function(error, response, body) {
-                    done();
-                });
-            });
-        });
-        afterEach(function() {
-            iotAgentConfig.singleConfigurationMode = false;
-        });
-        it('should return the API Key of the related subservice', function(done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', null, function(error, apiKey) {
-                should.not.exist(error);
-                apiKey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                done();
-            });
-        });
-    });
-     describe('When an API Key is requested for device in a subservice with SingleConfiguration mode', function() {
-        beforeEach(function(done) {
-            iotAgentConfig.singleConfigurationMode = true;
-            iotAgentLib.activate(iotAgentConfig, function() {
-                request(groupCreationconfigGroups, function(error, response, body) {
                     done();
                 });
             });
