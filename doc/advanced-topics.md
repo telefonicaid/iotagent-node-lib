@@ -175,7 +175,7 @@ This plugin allows the devices and configurations that have defined expressions 
 expressions and the reported measure information.
 
 For further information on how the expressions work, refer to the
-[Expression Language Reference](doc/expressionLanguage.md).
+[Expression Language Reference](expressionLanguage.md).
 
 ##### Multientity plugin (multiEntity)
 
