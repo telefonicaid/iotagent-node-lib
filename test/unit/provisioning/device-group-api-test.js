@@ -49,56 +49,11 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         providerUrl: 'http://smartGondor.com',
         deviceRegistrationDuration: 'P1M'
     },
-   // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
         json: {
             services: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'SensorMachine',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ],
-                    static_attributes: [
-                        {
-                            name: 'bootstrapServer',
-                            type: 'Address',
-                            value: '127.0.0.1'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
-    optionsCreationconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'POST',
-        json: {
-            configGroups: [
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -147,7 +102,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
@@ -161,20 +115,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsDeleteconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsDeleteDevice = {
         url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
@@ -189,21 +129,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             device: 'true'
         }
     },
-    optionsDeleteDeviceconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-            device: 'true'
-        }
-    },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsUpdate = {
         url: 'http://localhost:4041/iot/services',
         method: 'PUT',
@@ -245,48 +170,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-    optionsUpdateconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'PUT',
-        json: {
-            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-            cbHost: 'http://anotherUnexistentHost:1026',
-            commands: [
-                {
-                    name: 'wheel1',
-                    type: 'Wheel'
-                }
-            ],
-            lazy: [
-                {
-                    name: 'luminescence',
-                    type: 'Lumens'
-                }
-            ],
-            attributes: [
-                {
-                    name: 'status',
-                    type: 'Boolean'
-                }
-            ],
-            static_attributes: [
-                {
-                    name: 'identifier',
-                    type: 'UUID',
-                    value: 'WERTYUIOP234567890'
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsList = {
         url: 'http://localhost:4041/iot/services',
         method: 'GET',
@@ -296,27 +179,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
-    optionsListconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
-        }
-    },
-    // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsGet = {
         url: 'http://localhost:4041/iot/services',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
-    optionsGetconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
         method: 'GET',
         json: {},
         headers: {
@@ -409,91 +273,10 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a new device group creation request arrives', function() {
-        it('should return a 200 OK', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(201);
-                done();
-            });
-        });
-        it('should store it in the DB', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                    done();
-                });
-            });
-        });
-        it('should store attributes in the DB', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    body.count.should.equal(1);
-                    should.exist(body.services[0].attributes);
-                    body.services[0].attributes.length.should.equal(1);
-                    body.services[0].attributes[0].name.should.equal('status');
-
-                    should.exist(body.services[0].lazy);
-                    body.services[0].lazy.length.should.equal(1);
-                    body.services[0].lazy[0].name.should.equal('luminescence');
-
-                    should.exist(body.services[0].commands);
-                    body.services[0].commands.length.should.equal(1);
-                    body.services[0].commands[0].name.should.equal('wheel1');
-
-                    should.exist(body.services[0].static_attributes);
-                    body.services[0].static_attributes.length.should.equal(1);
-                    body.services[0].static_attributes[0].name.should.equal('bootstrapServer');
-
-                    done();
-                });
-            });
-        });
-        it('should store the service information from the headers into the DB', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    body.count.should.equal(1);
-                    body.services[0].service.should.equal('TestService');
-                    body.services[0].subservice.should.equal('/testingPath');
-                    done();
-                });
-            });
-        });
-        it('should call the configuration creation handler', function(done) {
-            var handlerCalled = false;
-
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
-                should.exist(newConfiguration);
-                should.exist(callback);
-                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
-                handlerCalled = true;
-                callback();
-            });
-
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-        });
-    });
     describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function() {
         it('should return a 400 DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
-                    should.not.exist(error);
-                    response.statusCode.should.equal(409);
-                    body.name.should.equal('DUPLICATE_GROUP');
-                    done();
-                });
-            });
-        });
-    });
-     describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function() {
-        it('should return a 400 DUPLICATE_GROUP error', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                request(optionsCreationconfigGroups, function(error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
@@ -520,24 +303,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a creation request arrives without the fiware-service header', function() {
-        beforeEach(function() {
-            delete optionsCreationconfigGroups.headers['fiware-service'];
-        });
-
-        afterEach(function() {
-            optionsCreationconfigGroups.headers['fiware-service'] = 'TestService';
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
     describe('When a creation request arrives without the fiware-servicepath header', function() {
         beforeEach(function() {
             delete optionsCreation.headers['fiware-servicepath'];
@@ -556,24 +321,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a creation request arrives without the fiware-servicepath header', function() {
-        beforeEach(function() {
-            delete optionsCreationconfigGroups.headers['fiware-servicepath'];
-        });
-
-        afterEach(function() {
-            optionsCreationconfigGroups.headers['fiware-servicepath'] = '/testingPath';
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
     describe('When a device group with a missing mandatory attribute in the payload arrives', function() {
         beforeEach(function() {
             delete optionsCreation.json.services[0].resource;
@@ -585,24 +332,6 @@ describe('Device Group Configuration API', function() {
 
         it('should fail with a 400 WRONG_SYNTAX error', function(done) {
             request(optionsCreation, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('WRONG_SYNTAX');
-                done();
-            });
-        });
-    });
-    describe('When a device group with a missing mandatory attribute in the payload arrives', function() {
-        beforeEach(function() {
-            delete optionsCreationconfigGroups.json.services[0].resource;
-        });
-
-        afterEach(function() {
-            optionsCreationconfigGroups.json.services[0].resource = '/deviceTest';
-        });
-
-        it('should fail with a 400 WRONG_SYNTAX error', function(done) {
-            request(optionsCreationconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('WRONG_SYNTAX');
@@ -632,35 +361,6 @@ describe('Device Group Configuration API', function() {
         });
         it('should remove it from the configuration', function(done) {
             request(optionsDelete, function(error, response, body) {
-                /* jshint sub:true */
-
-                should.not.exist(iotAgentConfig.types['SensorMachine']);
-                done();
-            });
-        });
-    });
-    describe('When a device group removal request arrives', function() {
-        beforeEach(function(done) {
-            request(optionsCreationconfigGroups, done);
-        });
-
-        it('should return a 204 OK', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(204);
-                done();
-            });
-        });
-        it('should remove it from the database', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    body.count.should.equal(0);
-                    done();
-                });
-            });
-        });
-        it('should remove it from the configuration', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
                 /* jshint sub:true */
 
                 should.not.exist(iotAgentConfig.types['SensorMachine']);
@@ -757,95 +457,6 @@ describe('Device Group Configuration API', function() {
             done();
         });
     });
-    describe('When a device group removal request arrives with device=true option', function() {
-        var contextBrokerMock;
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'TestService')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/unregisterProvisionedDevice.json'))
-                .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'));
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDevice.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
-            async.series([
-                iotAgentLib.clearAll,
-                async.apply(request, optionsCreationconfigGroups),
-                async.apply(request, optionsDeviceCreation)
-            ], done);
-        });
-
-        it('should remove all associated devices', function(done) {
-              var options = {
-                  url: 'http://localhost:4041/iot/devices/Light1',
-                  headers: {
-                      'fiware-service': 'TestService',
-                      'fiware-servicepath': '/testingPath'
-                  },
-                  method: 'GET'
-              };
-
-              function test (error, response, body) {
-                  response.statusCode.should.equal(404);
-                  done();
-              }
-
-              async.series([
-                  async.apply(request, optionsDeleteDeviceconfigGroups),
-                  async.apply(request, options),
-                  async.apply(request, options, test),
-              ], done);
-        });
-
-        it('should call the remove configuration handler', function(done) {
-            var handlerCalled = false;
-
-            iotAgentLib.setRemoveConfigurationHandler(function(newConfiguration, callback) {
-                should.exist(newConfiguration);
-                should.exist(callback);
-                handlerCalled = true;
-                callback();
-            });
-
-            request(optionsDeleteDeviceconfigGroups, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-        });
-
-        afterEach(function(done) {
-            nock.cleanAll();
-            done();
-        });
-    });
     describe('When a device group removal arrives declaring a different service', function() {
         var optionsDeleteDifferentService = _.clone(optionsDelete);
 
@@ -861,28 +472,6 @@ describe('Device Group Configuration API', function() {
 
         it('should return a 403 MISMATCHED_SERVICE error', function(done) {
             request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-    });
-    describe('When a device group removal arrives declaring a different service', function() {
-        var optionsDeleteDifferentService = _.clone(optionsDeleteconfigGroups);
-
-        beforeEach(function(done) {
-            optionsDeleteDifferentService.headers['fiware-service'] = 'unexistentService';
-            request(optionsCreationconfigGroups, done);
-        });
-
-        afterEach(function(done) {
-            optionsDeleteDifferentService.headers['fiware-service'] = 'TestService';
-            done();
-        });
-
-        it('should return a 403 MISMATCHED_SERVICE error', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -906,28 +495,6 @@ describe('Device Group Configuration API', function() {
 
         it('should return a 403 MISMATCHED_SERVICE error', function(done) {
             request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-    });
-    describe('When a device group removal arrives declaring a different subservice', function() {
-        var optionsDeleteDifferentService = _.clone(optionsDeleteconfigGroups);
-
-        beforeEach(function(done) {
-            optionsDeleteDifferentService.headers['fiware-servicepath'] = '/unexistentSubservice';
-            request(optionsCreationconfigGroups, done);
-        });
-
-        afterEach(function(done) {
-            optionsDeleteDifferentService.headers['fiware-servicepath'] = '/testingPath';
-            done();
-        });
-
-        it('should return a 403 MISMATCHED_SERVICE error', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -972,42 +539,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a device group removal arrives to a DB with three groups', function() {
-        beforeEach(function(done) {
-            var optionsCreation1 = _.clone(optionsCreationconfigGroups),
-                optionsCreation2 = _.clone(optionsCreationconfigGroups),
-                optionsCreation3 = _.clone(optionsCreationconfigGroups);
-
-            optionsCreation1.json = { services: [] };
-            optionsCreation3.json = { services: [] };
-
-            optionsCreation1.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-            optionsCreation3.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-
-            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
-            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
-
-            async.series([
-                async.apply(request, optionsCreation1),
-                async.apply(request, optionsCreation2),
-                async.apply(request, optionsCreation3)
-            ], done);
-        });
-
-        it('should remove just the selected group', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    body.count.should.equal(2);
-
-                    for (var i = 0; i < body.services.length; i++) {
-                        body.services[i].apikey.should.not.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                    }
-
-                    done();
-                });
-            });
-        });
-    });
 
     describe('When a device group removal request arrives without the mandatory headers', function() {
         beforeEach(function() {
@@ -1019,7 +550,7 @@ describe('Device Group Configuration API', function() {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDelete,function(error, response, body) {
+            request(optionsDelete, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1027,25 +558,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a device group removal request arrives without the mandatory headers', function() {
-        beforeEach(function() {
-            delete optionsDeleteconfigGroups.headers['fiware-servicepath'];
-        });
-
-        afterEach(function() {
-            optionsDeleteconfigGroups.headers['fiware-servicepath'] = '/testingPath';
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
-
 
     describe('When a device group removal request arrives without the mandatory parameters', function() {
         beforeEach(function() {
@@ -1061,27 +573,6 @@ describe('Device Group Configuration API', function() {
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
             request(optionsDelete, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
-     describe('When a device group removal request arrives without the mandatory parameters', function() {
-        beforeEach(function() {
-            delete optionsDeleteconfigGroups.qs;
-        });
-
-        afterEach(function() {
-            optionsDeleteconfigGroups.qs = {
-                resource: '/deviceTest',
-                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-            };
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsDeleteconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1163,79 +654,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-     describe('When a device group update request arrives', function() {
-        beforeEach(function(done) {
-            var optionsCreation1 = _.clone(optionsCreationconfigGroups),
-                optionsCreation2 = _.clone(optionsCreationconfigGroups),
-                optionsCreation3 = _.clone(optionsCreationconfigGroups);
-
-
-            optionsCreation1.json = { services: [] };
-            optionsCreation3.json = { services: [] };
-
-            optionsCreation1.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-            optionsCreation3.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-
-            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
-            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
-
-            async.series([
-                async.apply(request, optionsCreation1),
-                async.apply(request, optionsCreation2),
-                async.apply(request, optionsCreation3)
-            ], done);
-        });
-
-        it('should return a 204 OK', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(204);
-                done();
-            });
-        });
-
-        it('should update the appropriate values in the database', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
-                request(optionsListconfigGroups, function(error, response, body) {
-                    var found = false;
-                    body.count.should.equal(3);
-
-                    for (var i = 0; i < body.services.length; i++) {
-                        if (body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
-                            body.services[i].resource === '/deviceTest') {
-                            body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                            body.services[i].static_attributes.length.should.equal(1);
-                            found = true;
-                        }
-                    }
-
-                    found.should.equal(true);
-                    done();
-                });
-            });
-        });
-        it('should call the configuration creation handler', function(done) {
-            var handlerCalled = false;
-
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
-                should.exist(newConfiguration);
-                should.exist(callback);
-                newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
-                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
-                newConfiguration.service.should.equal('TestService');
-                newConfiguration.subservice.should.equal('/testingPath');
-                newConfiguration.resource.should.equal('/deviceTest');
-                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                handlerCalled = true;
-                callback();
-            });
-
-            request(optionsUpdateconfigGroups, function(error, response, body) {
-                handlerCalled.should.equal(true);
-                done();
-            });
-        });
-    });
 
     describe('When a device group update request arrives declaring a different service', function() {
         beforeEach(function(done) {
@@ -1250,26 +668,6 @@ describe('Device Group Configuration API', function() {
 
         it('should return a 200 OK', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-    });
-    describe('When a device group update request arrives declaring a different service', function() {
-        beforeEach(function(done) {
-            optionsUpdateconfigGroups.headers['fiware-service'] = 'UnexistentService';
-            request(optionsCreationconfigGroups, done);
-        });
-
-        afterEach(function() {
-            optionsUpdateconfigGroups.headers['fiware-service'] = 'TestService';
-        });
-
-
-        it('should return a 200 OK', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -1298,26 +696,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a device group update request arrives declaring a different subservice', function() {
-        beforeEach(function(done) {
-            optionsUpdateconfigGroups.headers['fiware-servicepath'] = '/UnexistentServicepath';
-            request(optionsCreationconfigGroups, done);
-        });
-
-        afterEach(function() {
-            optionsUpdateconfigGroups.headers['fiware-servicepath'] = '/testingPath';
-        });
-
-
-        it('should return a 200 OK', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(403);
-                body.name.should.equal('MISMATCHED_SERVICE');
-                done();
-            });
-        });
-    });
 
     describe('When a device group update request arrives without the mandatory headers', function() {
         beforeEach(function() {
@@ -1337,24 +715,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-     describe('When a device group update request arrives without the mandatory headers', function() {
-        beforeEach(function() {
-            delete optionsUpdateconfigGroups.headers['fiware-servicepath'];
-        });
-
-        afterEach(function() {
-            optionsUpdateconfigGroups.headers['fiware-servicepath'] = '/testingPath';
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
 
     describe('When a device group update request arrives without the mandatory parameters', function() {
         beforeEach(function() {
@@ -1367,24 +727,6 @@ describe('Device Group Configuration API', function() {
 
         it('should fail with a 400 MISSING_HEADERS Error', function(done) {
             request(optionsUpdate, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(400);
-                body.name.should.equal('MISSING_HEADERS');
-                done();
-            });
-        });
-    });
-    describe('When a device group update request arrives without the mandatory parameters', function() {
-        beforeEach(function() {
-            delete optionsUpdateconfigGroups.qs.resource;
-        });
-
-        afterEach(function() {
-            optionsUpdateconfigGroups.qs.resource = '/deviceTest';
-        });
-
-        it('should fail with a 400 MISSING_HEADERS Error', function(done) {
-            request(optionsUpdateconfigGroups, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1433,47 +775,6 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
-    describe('When a device group listing request arrives', function() {
-        beforeEach(function(done) {
-            var optionsCreation1 = _.clone(optionsCreationconfigGroups),
-                optionsCreation2 = _.clone(optionsCreationconfigGroups),
-                optionsCreation3 = _.clone(optionsCreationconfigGroups);
-
-
-            optionsCreation2.json = { services: [] };
-            optionsCreation3.json = { services: [] };
-
-            optionsCreation2.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-            optionsCreation3.json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-
-            optionsCreation2.json.services[0].apikey = 'qwertyuiop';
-            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
-
-            async.series([
-                async.apply(request, optionsCreation1),
-                async.apply(request, optionsCreation2),
-                async.apply(request, optionsCreation3)
-            ], done);
-        });
-
-        it('should return a 200 OK', function(done) {
-            request(optionsListconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(200);
-                done();
-            });
-        });
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsListconfigGroups, function(error, response, body) {
-                should.exist(body.count);
-                should.exist(body.services);
-                body.count.should.equal(3);
-                body.services.length.should.equal(3);
-                done();
-            });
-        });
-    });
-
 
     describe('When a device info request arrives', function() {
         beforeEach(function(done) {
@@ -1491,27 +792,6 @@ describe('Device Group Configuration API', function() {
         });
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
-                body.service.should.equal('TestService');
-                done();
-            });
-        });
-    });
-    describe('When a device info request arrives', function() {
-        beforeEach(function(done) {
-            async.series([
-                async.apply(request, optionsCreationconfigGroups)
-            ], done);
-        });
-
-        it('should return a 200 OK', function(done) {
-            request(optionsGetconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(200);
-                done();
-            });
-        });
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGetconfigGroups, function(error, response, body) {
                 body.service.should.equal('TestService');
                 done();
             });
@@ -1541,46 +821,6 @@ describe('Device Group Configuration API', function() {
 
             async.series([
                 async.apply(request, optionsCreation)
-            ], done);
-        });
-
-        afterEach(function(done) {
-            nock.cleanAll();
-            done();
-        });
-
-        it('should use the configured data', function(done) {
-            iotAgentLib.update('machine1', 'SensorMachine', '801230BJKL23Y9090DSFL123HJK09H324HV8732', values,
-                function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-        });
-    });
-    describe('When a new device from a created group arrives to the IoT Agent and sends a measure', function() {
-        var contextBrokerMock,
-            values = [
-                {
-                    name: 'status',
-                    type: 'String',
-                    value: 'STARTING'
-                }
-            ];
-
-        beforeEach(function(done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json'))
-                .reply(200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
-
-            async.series([
-                async.apply(request, optionsCreationconfigGroups)
             ], done);
         });
 
@@ -1646,60 +886,6 @@ describe('Device Group Configuration API', function() {
         });
         it('should use return the total number of entities', function(done) {
             request(optConstrainedList, function(error, response, body) {
-                should.exist(body.count);
-                should.exist(body.services);
-                body.count.should.equal(10);
-                done();
-            });
-        });
-    });
-     describe('When a group listing request arrives with offset and limit parameters', function() {
-        var optConstrainedListconfigGroups = {
-                url: 'http://localhost:4041/iot/configGroups',
-                method: 'GET',
-                qs: {
-                    limit: 3,
-                    offset: 2
-                },
-                json: {},
-                headers: {
-                    'fiware-service': 'TestService',
-                    'fiware-servicepath': '/*'
-                }
-            };
-
-        beforeEach(function(done) {
-            var optionsCreationList = [],
-                creationFns = [];
-
-            for (var i = 0; i < 10; i++) {
-                optionsCreationList[i] = _.clone(optionsCreationconfigGroups);
-                optionsCreationList[i].json = { services: [] };
-                optionsCreationList[i].json.services[0] = _.clone(optionsCreationconfigGroups.json.services[0]);
-                optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
-                creationFns.push(async.apply(request, optionsCreationList[i]));
-            }
-
-            async.series(creationFns, done);
-        });
-
-        it('should return a 200 OK', function(done) {
-            request(optConstrainedListconfigGroups, function(error, response, body) {
-                should.not.exist(error);
-                response.statusCode.should.equal(200);
-                done();
-            });
-        });
-        it('should use the limit parameter to constrain the number of entries', function(done) {
-            request(optConstrainedListconfigGroups, function(error, response, body) {
-                should.exist(body.count);
-                should.exist(body.services);
-                body.services.length.should.equal(3);
-                done();
-            });
-        });
-        it('should use return the total number of entities', function(done) {
-            request(optConstrainedListconfigGroups, function(error, response, body) {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.count.should.equal(10);
