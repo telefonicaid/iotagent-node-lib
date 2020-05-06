@@ -100,7 +100,7 @@ decommission devices.
 ## Testing
 
 
-Contribitions to development can be found [here](doc/development.md) - additional contributions are welcome.
+Contributions to development can be found [here](doc/development.md) - additional contributions are welcome.
 
 ### Agent Console
 
