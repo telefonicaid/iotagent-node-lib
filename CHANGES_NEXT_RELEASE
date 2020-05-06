@@ -1,1 +1,2 @@
 Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
+Add mongodb additional options (`ssl` and `extraArgs`) to be able to connect "MongoDB as a Cloud Service" (#859)
