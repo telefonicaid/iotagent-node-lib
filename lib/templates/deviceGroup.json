@@ -37,6 +37,10 @@
             "description": "list of lazy attributes of the devices",
             "type": "array"
           },
+          "expressionLanguage": {
+            "description": "Expression language used to for the group of devices",
+            "type": "string"
+          },
           "attributes": {
             "description": "list of active attributes of the devices",
             "type": "array"
