@@ -36,6 +36,10 @@
             "description": "Transport protocol used by the platform to communicate with the device",
             "type": "string"
           },
+          "expressionLanguage": {
+            "description": "Expression language used to apply expressions for this device",
+            "type": "string"
+          },
           "lazy": {
             "description": "list of lazy attributes of the devices",
             "type": "array",
@@ -89,8 +93,7 @@
                 },
                 "expression": {
                   "description": "Optional expression for measurement transformation",
-                  "type": "string",
-                  "pattern": "^([^<>;'=]+)+$"
+                  "type": "string"
                 },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",

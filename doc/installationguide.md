@@ -232,6 +232,10 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
+-   **defaultExpressionLanguage**: the default expression language used to
+    compute expressions, possible values are: `legacy` or `jexl`. When not set or 
+    wrongly set, `legacy` is used as default value.
+
 
 ### Configuration using environment variables
 
@@ -289,3 +293,4 @@ overrides.
 | IOTA_POLLING_DAEMON_FREQ  | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
+| IOTA_DEFAULT_EXPRESSION_LANGUAGE | defaultExpressionLanguage    |
