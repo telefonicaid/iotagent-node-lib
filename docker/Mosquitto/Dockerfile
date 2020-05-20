@@ -14,6 +14,9 @@ RUN yum update -y && yum install -y wget \
   && sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf \
   && echo 'listener 9001' >> /etc/mosquitto/mosquitto.conf \
   && echo 'protocol websockets' >> /etc/mosquitto/mosquitto.conf \
+  && echo 'listener 1883' >> /etc/mosquitto/mosquitto.conf \
+  && echo 'protocol mqtt' >> /etc/mosquitto/mosquitto.conf \
+
   && mv /root/aclfile /etc/mosquitto/aclfile \
   && yum clean all
 
