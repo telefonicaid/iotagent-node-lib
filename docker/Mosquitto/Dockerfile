@@ -16,7 +16,6 @@ RUN yum update -y && yum install -y wget \
   && echo 'protocol websockets' >> /etc/mosquitto/mosquitto.conf \
   && echo 'listener 1883' >> /etc/mosquitto/mosquitto.conf \
   && echo 'protocol mqtt' >> /etc/mosquitto/mosquitto.conf \
-
   && mv /root/aclfile /etc/mosquitto/aclfile \
   && yum clean all
 
