@@ -12,9 +12,12 @@ RUN yum update -y && yum install -y wget \
   && chown mosquitto:mosquitto /var/log/mosquitto \
   && touch /etc/mosquitto/pwfile \
   && sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf \
+  && echo 'listener 9001' >> /etc/mosquitto/mosquitto.conf \
+  && echo 'protocol websockets' >> /etc/mosquitto/mosquitto.conf \
   && mv /root/aclfile /etc/mosquitto/aclfile \
   && yum clean all
 
 EXPOSE 1883
+EXPOSE 9001
 
 ENTRYPOINT /bin/startMosquitto.sh
