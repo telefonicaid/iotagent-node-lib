@@ -1,3 +1,5 @@
 Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
 Add mongodb additional options (`ssl` and `extraArgs`) to be able to connect "MongoDB as a Cloud Service" (#859)
 Add support for JEXL as expression language (#801, #687)
+
+Fix: log always writing the same correlator id and transaction id (iota-json #426, iota-ul #326)
