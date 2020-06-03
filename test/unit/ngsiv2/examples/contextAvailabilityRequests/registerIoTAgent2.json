@@ -1,0 +1,18 @@
+{
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "Motion",
+                "id": "Motion:motion1"
+            }
+        ],
+        "attrs": [
+            "moving"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        }
+    }
+}

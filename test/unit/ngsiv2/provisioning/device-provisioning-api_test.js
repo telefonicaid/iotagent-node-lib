@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -45,12 +45,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         types: {},
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('Device provisioning API: Provision devices', function() {
+describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
     beforeEach(function(done) {
         nock.cleanAll();
 
@@ -58,34 +56,8 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json');
-
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextAvailabilityRequests/registerProvisionedDevice.json'))
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -113,35 +85,8 @@ describe('Device provisioning API: Provision devices', function() {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations', function(body) {
-
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/registerProvisionedDevice.json');
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextAvailabilityRequests/registerProvisionedDevice.json'))
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
             contextBrokerMock
@@ -339,6 +284,47 @@ describe('Device provisioning API: Provision devices', function() {
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json'))
                 .reply(204);
 
+            done();
+        });
+
+        it('should send the appropriate requests to the Context Broker', function(done) {
+            request(options, function(error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function() {
+        var options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            iotAgentLib.deactivate(function() {
+                iotAgentConfig.appendMode = false;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function() {
+            iotAgentConfig.appendMode = false;
+        });
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json'))
+                .reply(204);
             done();
         });
 

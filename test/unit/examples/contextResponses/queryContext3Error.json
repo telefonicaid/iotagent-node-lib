@@ -26,7 +26,8 @@
     {
       "statusCode": {
         "code": "404",
-        "reasonPhrase": "Not Found"
+        "reasonPhrase": "Not Found",
+        "details": "light1"
       }
     }
   ]

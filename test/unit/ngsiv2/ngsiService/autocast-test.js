@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -78,12 +78,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('JSON native types autocast test', function() {
+describe('NGSI-v2 - JSON native types autocast test', function() {
     beforeEach(function() {
         logger.setLevel('FATAL');
     });

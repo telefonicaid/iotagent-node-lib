@@ -1,7 +1,7 @@
 {
   "name": "iotagent-node-lib",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "2.9.0-next",
+  "version": "2.12.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
   "keywords": [
     "fiware",
@@ -26,13 +26,15 @@
   },
   "main": "lib/fiware-iotagent-lib",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
     "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
+    "lint:md": "remark  -f '*.md' 'doc/*.md'",
+    "lint:text": "textlint '*.md' 'doc/*.md'",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -42,12 +44,13 @@
     "body-parser": "~1.19.0",
     "command-shell-lib": "1.0.0",
     "express": "~4.16.4",
+    "jexl": "2.1.1",
     "jison": "0.4.18",
     "logops": "2.1.0",
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.25",
     "mongodb": "3.2.3",
-    "mongoose": "5.5.4",
+    "mongoose": "5.7.5",
     "mu2": "~0.5.20",
     "query-string": "6.5.0",
     "request": "2.88.0",
@@ -63,6 +66,15 @@
     "nock": "10.0.6",
     "should": "13.2.3",
     "timekeeper": "2.2.0",
-    "watch": "~1.0.2"
+    "watch": "~1.0.2",
+    "remark-cli": "~6.0.1",
+    "remark-preset-lint-recommended": "~3.0.3",
+    "textlint": "~11.3.1",
+    "textlint-filter-rule-comments": "~1.2.2",
+    "textlint-rule-common-misspellings": "~1.0.1",
+    "textlint-rule-no-dead-link": "~4.6.1",
+    "textlint-rule-terminology": "~1.1.29",
+    "textlint-rule-write-good": "~1.6.2",
+    "sinon": "~9.0.2"
   }
 }

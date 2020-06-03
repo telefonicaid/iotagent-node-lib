@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -50,19 +50,25 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                     {
                         object_id: 't',
                         name: 'temperature',
-                        type: 'centigrades'
+                        type: 'Number',
+                        metadata: { type: 'Property', value:'CEL'}
+
                     }
                 ],
                 active: [
                     {
                         object_id: 'p',
                         name: 'pressure',
-                        type: 'Hgmm'
+                        type: 'Number',
+                        metadata: { type: 'Property', value:'Hgmm'}
+
                     },
                     {
                         object_id: 'l',
                         name: 'luminance',
-                        type: 'lumens'
+                        type: 'Number',
+                        metadata: { type: 'Property', value:'CAL'}
+
                     },
                     {
                         object_id: 'ut',
@@ -104,12 +110,10 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     };
 
-describe('Attribute alias plugin', function() {
+describe('NGSI-v2 - Attribute alias plugin', function() {
     beforeEach(function(done) {
         logger.setLevel('FATAL');
 

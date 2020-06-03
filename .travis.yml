@@ -1,7 +1,6 @@
 language: node_js
 
 node_js:
- - "8"
  - "10"
  - "12"
 
@@ -13,6 +12,9 @@ services:
  - mongodb
 
 install:
+ # It seems to be a good idea to clean before install
+ # see https://travis-ci.community/t/i-needed-an-explicit-cleanup-before-starting-my-tests-to-have-then-working-again-is-that-normal/5512/2
+ - npm run clean
  - npm install
 
 before_install:
@@ -21,5 +23,6 @@ before_install:
 before_script:
   - npm run lint
 
-after_script: 
-  - npm run test:coveralls
+after_script:
+  # Trigger only one coverage file
+  - if [ "$TRAVIS_NODE_VERSION" = "10" ]; then npm run test:coveralls; fi

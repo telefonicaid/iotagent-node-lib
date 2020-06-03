@@ -1,6 +1,7 @@
 {
   "errorCode": {
     "code": "404",
-    "reasonPhrase": "No context elements found"
+    "reasonPhrase": "No context elements found",
+    "details": "Light:light3"
   }
 }

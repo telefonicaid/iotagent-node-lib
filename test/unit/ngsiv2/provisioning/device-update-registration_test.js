@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -29,7 +29,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     should = require('should'),
     logger = require('logops'),
     nock = require('nock'),
-    moment = require('moment'),
     contextBrokerMock,
     iotAgentConfig = {
         contextBroker: {
@@ -74,9 +73,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         },
         service: 'smartGondor',
         subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        providerUrl: 'http://smartGondor.com'
     },
     device1 = {
         id: 'light1',
@@ -136,7 +133,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         active: []
     };
 
-describe('IoT Agent Device Update Registration', function() {
+describe('NGSI-v2 - IoT Agent Device Update Registration', function() {
     beforeEach(function(done) {
         delete device1.registrationId;
         logger.setLevel('FATAL');
@@ -193,34 +190,8 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/updateIoTAgent1.json');
-
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextAvailabilityRequests/updateIoTAgent1.json'))
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
 
         });
@@ -270,34 +241,8 @@ describe('IoT Agent Device Update Registration', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/registrations', function(body) {
-                    var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                        '/contextAvailabilityRequests/updateCommands1.json');
-
-                    // Note that expired field is not included in the json used by this mock as it is a dynamic
-                    // field. The following code performs such calculation and adds the field to the subscription
-                    // payload of the mock.
-                    if (!body.expires)
-                    {
-                        return false;
-                    }
-                    else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                    {
-                        expectedBody.expires = moment().add(moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                        var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                        if (expiresDiff < 500) {
-                            delete expectedBody.expires;
-                            delete body.expires;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    }
-                    else {
-                        return false;
-                    }
-                })
+                .post('/v2/registrations', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                        '/contextAvailabilityRequests/updateCommands1.json'))
                 .reply(201, null, {'Location': '/v2/registrations/6319a7f5254b05844116584d'});
         });
 

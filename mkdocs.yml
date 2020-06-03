@@ -8,14 +8,19 @@ edit_uri: edit/master/doc/
 markdown_extensions: [toc,fenced_code]
 use_directory_urls: false
 theme: readthedocs
-extra_css: ["https://fiware.org/style/fiware_readthedocs.css", "https://fiware.org/style/fiware_readthedocs_iot.css"]
+extra_css: ["https://www.fiware.org/style/fiware_readthedocs.css", "https://www.fiware.org/style/fiware_readthedocs_iot.css"]
 pages:
   - Home: 'index.md'
+  - 'Getting Started' : 'getting-started.md'
   - 'User & Programmers Manual':
-    - 'API Walkthrough & Development intro': 'usermanual.md'
+    - 'Architecture' : 'architecture.md'
+    - 'IoT Agent API' : 'api.md'
+    - 'Advanced Topics' : 'advanced-topics.md'
+    - 'Library Functions': 'usermanual.md'
     - 'Measurement Transformation Expression Language': 'expressionLanguage.md'
-    - 'How to develop a new IOTAgent': 'howto.md'
+    - 'How to develop a new IoT Agent': 'howto.md'
     - 'North Port - NGSI Interactions': 'northboundinteractions.md'
+    - 'Development Documentation': development.md
   - 'Installation & Administration Manual': 
     - 'Installation Guide': 'installationguide.md'
     - 'Operations (logs & alarms)': 'operations.md'

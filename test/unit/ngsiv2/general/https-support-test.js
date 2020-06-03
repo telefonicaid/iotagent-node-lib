@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -33,7 +33,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     utils = require('../../../tools/utils'),
     groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory'),
     should = require('should'),
-    moment = require('moment'),
     iotAgentConfig = {
         logLevel: 'FATAL',
         contextBroker: {
@@ -78,8 +77,6 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
         service: 'smartGondor',
         subservice: 'gardens',
         providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
         iotManager: {
             url: 'https://mockediotam.com:9876',
             path: '/protocols',
@@ -125,7 +122,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
     iotamMock;
 
 
-describe('HTTPS support tests IOTAM', function() {
+describe('NGSI-v2 - HTTPS support tests IOTAM', function() {
 
     describe('When the IoT Agents is started with https "iotManager" config', function() {
         beforeEach(function(done) {
@@ -157,7 +154,7 @@ describe('HTTPS support tests IOTAM', function() {
     });
 });
 
-describe('HTTPS support tests', function() {
+describe('NGSI-v2 - HTTPS support tests', function() {
 
     describe('When subscription is sent to HTTPS context broker', function() {
         beforeEach(function(done) {
@@ -186,34 +183,8 @@ describe('HTTPS support tests', function() {
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
-                    .post('/v2/subscriptions', function(body) {
-                        var expectedBody = utils.readExampleFile('./test/unit/ngsiv2/examples' +
-                            '/subscriptionRequests/simpleSubscriptionRequest.json');
-                        // Note that expired field is not included in the json used by this mock as it is a dynamic
-                        // field. The following code performs such calculation and adds the field to the subscription
-                        // payload of the mock.
-                        if (!body.expires)
-                        {
-                            return false;
-                        }
-                        else if (moment(body.expires, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid())
-                        {
-                            expectedBody.expires = moment().add(
-                                moment.duration(iotAgentConfig.deviceRegistrationDuration));
-                            var expiresDiff = moment(expectedBody.expires).diff(body.expires, 'milliseconds');
-                            if (expiresDiff < 500) {
-                                delete expectedBody.expires;
-                                delete body.expires;
-
-                                return JSON.stringify(body) === JSON.stringify(expectedBody);
-                            }
-
-                            return false;
-                        }
-                        else {
-                            return false;
-                        }
-                    })
+                    .post('/v2/subscriptions', utils.readExampleFile('./test/unit/ngsiv2/examples' +
+                            '/subscriptionRequests/simpleSubscriptionRequest.json'))
                     .reply(201, null, {'Location': '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8'});
 
 
@@ -261,7 +232,6 @@ describe('HTTPS support tests', function() {
 
             var nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json');
-            nockBody.expires = /.+/i;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
