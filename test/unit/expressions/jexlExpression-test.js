@@ -36,6 +36,7 @@ describe('Jexl expression interpreter', function() {
             number: 145,
             number2: 155,
             number3inside: 200,
+            floatNumber: 1.2,
             array: [1,2],
             object: {
               name: 'John',
@@ -108,6 +109,28 @@ describe('Jexl expression interpreter', function() {
                 scope, function(error, result) {
                 should.not.exist(error);
                 result.should.equal(500);
+                done();
+            });
+        });
+    });
+
+    describe('When an expression contains variables with float numbers', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('floatNumber * 2',
+                scope, function(error, result) {
+                should.not.exist(error);
+                result.should.equal(2.4);
+                done();
+            });
+        });
+    });
+
+    describe('When an expression contains variables with float numbers and strings', function() {
+        it('should return the appropriate result', function(done) {
+            expressionParser.parse('floatNumber +"echo"',
+                scope, function(error, result) {
+                should.not.exist(error);
+                result.should.equal('1.2echo');
                 done();
             });
         });
