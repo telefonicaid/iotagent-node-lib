@@ -62,7 +62,7 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
                         entity_type: 'Higrometer',
                         metadata:{
                             unitCode:{
-                                type: "Text", value :"Hgmm"
+                                type: 'Text', value : 'Hgmm'
                             }
                         }
                     }
