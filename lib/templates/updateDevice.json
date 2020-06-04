@@ -116,6 +116,10 @@
                 }
               }
             }
+          },
+          "metadata": {
+              "description": "Attribute Metadata",
+              "type": "object"
           }
         }
       }
