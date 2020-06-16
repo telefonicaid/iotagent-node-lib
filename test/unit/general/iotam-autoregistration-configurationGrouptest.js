@@ -100,7 +100,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
-            services: [
+            configGroups: [
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -137,7 +137,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
         url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
-            services: [
+            configGroups: [
                 {
                     resource: '/deviceTest',
                     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
