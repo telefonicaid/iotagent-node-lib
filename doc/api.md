@@ -180,7 +180,7 @@ Returns:
 ##### PUT /iot/services or PUT /iot/configGroups
 
 Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
-Takes a service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
+Takes a service/configuration group body as the payload. The body does not have to be complete: for incomplete bodies, just the
 existing attributes will be updated
 
 E.g.:
