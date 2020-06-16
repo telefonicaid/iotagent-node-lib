@@ -96,7 +96,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             }
         ]
     },
-    optionsCreationconfigGroups = {
+    optionsCreation = {
         url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
@@ -133,7 +133,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStaticconfigGroups = {
+    optionsCreationStatic = {
         url: 'http://localhost:4041/iot/configGroups',
         method: 'POST',
         json: {
@@ -171,7 +171,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsDeleteconfigGroups = {
+    optionsDelete = {
         url: 'http://localhost:4041/iot/configGroups',
         method: 'DELETE',
         json: {},
@@ -293,7 +293,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationconfigGroups, function(error, result, body) {
+            request(optionsCreation, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -329,7 +329,7 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsDeleteconfigGroups, function(error, result, body) {
+            request(optionsDelete, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -365,11 +365,11 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
         });
 
         it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStaticconfigGroups, function(error, result, body) {
+            request(optionsCreationStatic, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
             });
         });
     });
-  });
+});
