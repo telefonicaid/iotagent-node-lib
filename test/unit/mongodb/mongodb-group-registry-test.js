@@ -423,7 +423,6 @@ describe('MongoDB Group Registry test', function() {
 
             optionsCreation2.json.services[0] = _.clone(optionsCreation.json.services[0]);
             optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
-            
             optionsCreation2.json.services[0].apikey = 'qwertyuiop';
             optionsCreation3.json.services[0].apikey = 'lkjhgfds';
             
