@@ -102,8 +102,8 @@ taken from the headers, overwritting any preexisting values.
 
 Body params:
 
--   `services`: list of service groups to create. Each one adheres to the service group Model.
--   `configGroups`: list of service groups to create. Each one adheres to the service group Model.
+-   `services`: list of service groups to create. Each one adheres to the service group Model (when `/iot/services` route is used)
+-   `configGroups`: list of service groups to create. Each one adheres to the service group Model (when `/iot/configGroups` is used)
 
 
 E.g.:
