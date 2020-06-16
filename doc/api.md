@@ -168,7 +168,7 @@ Returns:
 
 ##### GET /iot/services or GET /iot/configGroups
 
-Retrieves service groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
+Retrieves service/configuration groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
 subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns:
