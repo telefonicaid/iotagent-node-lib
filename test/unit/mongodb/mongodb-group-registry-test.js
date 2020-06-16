@@ -368,7 +368,6 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
-    
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
