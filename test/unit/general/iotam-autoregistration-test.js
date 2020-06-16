@@ -133,43 +133,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'POST',
-        json: {
-            configGroups: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'SensorMachine',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService'
-        }
-    },
     optionsCreationStatic = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -208,59 +171,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': 'theSubService'
         }
     },
-    optionsCreationStaticconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'POST',
-        json: {
-            configGroups: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'SensorMachine',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    static_attributes: [
-                        {
-                            name: 'position',
-                            type: 'location',
-                            values: '123,12'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService'
-        }
-    },
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    optionsDeleteconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
         method: 'DELETE',
         json: {},
         headers: {
@@ -380,16 +292,15 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreation, function(error, result, body) {
-              request(optionsCreationconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
             });
         });
     });
-  });
 
     describe('When a service is removed from the IoT Agent', function() {
         beforeEach(function(done) {
@@ -418,16 +329,15 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDelete, function(error, result, body) {
-              request(optionsDeleteconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
             });
         });
     });
-  });
 
     describe('When a new service with static attributes is created in the IoT Agent', function() {
         beforeEach(function(done) {
@@ -456,14 +366,13 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStatic, function(error, result, body) {
-              request(optionsCreationStaticconfigGroups, function(error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
             });
         });
     });
-  });
- });
+});
