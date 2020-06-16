@@ -333,7 +333,6 @@ describe('MongoDB Group Registry test', function() {
         });
       });
     });
-    
     describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
         it('should return a DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
