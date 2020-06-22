@@ -186,7 +186,7 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     iotamMock;
 
-describe('NGSI-v1 - IoT Manager autoregistration', function() {
+describe('IoT Manager autoregistration', function() {
     describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
         beforeEach(function() {
             nock.cleanAll();
@@ -292,7 +292,6 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreation, function(error, result, body) {
                 should.not.exist(error);
@@ -329,7 +328,6 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsDelete, function(error, result, body) {
                 should.not.exist(error);
@@ -366,7 +364,6 @@ describe('NGSI-v1 - IoT Manager autoregistration', function() {
             });
         });
 
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the registration in the IoT Manager', function(done) {
             request(optionsCreationStatic, function(error, result, body) {
                 should.not.exist(error);
