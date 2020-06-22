@@ -59,7 +59,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     },
     mongo = require('mongodb').MongoClient,
     mongoUtils = require('./mongoDBUtils'),
-// This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsCreation = {
         url: 'http://localhost:4041/iot/services',
         method: 'POST',
@@ -102,49 +101,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsCreationconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'POST',
-        json: {
-            configGroups: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'Light',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ],
-                    internal_attributes: [
-                        {
-                            customField: 'customValue'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
- // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsDelete = {
         url: 'http://localhost:4041/iot/services',
         method: 'DELETE',
@@ -158,7 +114,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
         }
     },
-  // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsList = {
         url: 'http://localhost:4041/iot/services',
         method: 'GET',
@@ -168,51 +123,8 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/*'
         }
     },
- // This test will be removed if at the end the /iot/services API (now deprecated) is removed
     optionsUpdate = {
         url: 'http://localhost:4041/iot/services',
-        method: 'PUT',
-        json: {
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-            cbHost: 'http://anotherUnexistentHost:1026',
-            commands: [
-                {
-                    name: 'wheel1',
-                    type: 'Wheel'
-                }
-            ],
-            lazy: [
-                {
-                    name: 'luminescence',
-                    type: 'Lumens'
-                }
-            ],
-            attributes: [
-                {
-                    name: 'status',
-                    type: 'Boolean'
-                }
-            ],
-            static_attributes: [
-                {
-                    name: 'bootstrapServer',
-                    type: 'Address',
-                    value: '127.0.0.1'
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    optionsUpdateconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
         method: 'PUT',
         json: {
             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -262,15 +174,6 @@ var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
             'fiware-servicepath': '/testingPath'
         }
     },
-    optionsGetconfigGroups = {
-        url: 'http://localhost:4041/iot/configGroups',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    },
     iotAgentDb;
 
 describe('MongoDB Group Registry test', function() {
@@ -295,9 +198,9 @@ describe('MongoDB Group Registry test', function() {
         });
     });
     describe('When a new device group creation request arrives', function() {
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should store it in the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-              request(optionsCreationconfigGroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -317,10 +220,8 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
-      });
         it('should store the service information from the headers into the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
-              request(optionsCreationconfigGroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs[0].service);
@@ -331,9 +232,10 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
-      });
     });
+
     describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return a DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
@@ -344,11 +246,12 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
+
     describe('When a device group removal request arrives', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -360,7 +263,7 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return a 204 OK statusCode', function(done) {
             request(optionsDelete, function(error, response, body) {
                 response.statusCode.should.equal(204);
@@ -368,14 +271,14 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
+
     describe('When a device group update request arrives', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
-              request(optionsUpdateconfigGroups, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
                     should.not.exist(err);
                     should.exist(docs);
@@ -388,7 +291,6 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
-  });
 
     describe('When a multiple device group creation arrives', function() {
         var optionsMultipleCreation = _.clone(optionsCreation);
@@ -399,7 +301,7 @@ describe('MongoDB Group Registry test', function() {
 
             done();
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should create the values in the database', function(done) {
             request(optionsMultipleCreation, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -418,21 +320,23 @@ describe('MongoDB Group Registry test', function() {
                 optionsCreation2 = _.clone(optionsCreation),
                 optionsCreation3 = _.clone(optionsCreation);
 
+
             optionsCreation2.json = { services: [] };
             optionsCreation3.json = { services: [] };
 
             optionsCreation2.json.services[0] = _.clone(optionsCreation.json.services[0]);
             optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
             optionsCreation2.json.services[0].apikey = 'qwertyuiop';
             optionsCreation3.json.services[0].apikey = 'lkjhgfds';
-            
+
             async.series([
                 async.apply(request, optionsCreation1),
                 async.apply(request, optionsCreation2),
                 async.apply(request, optionsCreation3)
             ], done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
                 body.count.should.equal(3);
@@ -440,7 +344,7 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
-    
+
     describe('When a device group listing arrives with a limit', function() {
         var optionsConstrained = {
             url: 'http://localhost:4041/iot/services',
@@ -470,7 +374,7 @@ describe('MongoDB Group Registry test', function() {
 
             async.series(creationFns, done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return the appropriate count of services', function(done) {
             request(optionsConstrained, function(error, response, body) {
                 body.count.should.equal(10);
@@ -482,14 +386,12 @@ describe('MongoDB Group Registry test', function() {
     describe('When a device info request arrives', function() {
         beforeEach(function(done) {
             async.series([
-                async.apply(request, optionsCreation),
-                async.apply(request, optionsCreationconfigGroups)
+                async.apply(request, optionsCreation)
             ], done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
-              request(optionsGetconfigGroups, function(error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(1);
@@ -501,7 +403,6 @@ describe('MongoDB Group Registry test', function() {
             });
         });
     });
-  });
 
     describe('When a device info request arrives and multiple groups have been created', function() {
         beforeEach(function(done) {
@@ -518,7 +419,7 @@ describe('MongoDB Group Registry test', function() {
 
             async.series(creationFns, done);
         });
-
+        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
                 should.exist(body);
