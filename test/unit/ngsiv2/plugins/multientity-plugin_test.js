@@ -23,7 +23,7 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
@@ -58,7 +58,13 @@ const iotAgentConfig = {
                     name: 'humidity',
                     type: 'Percentage',
                     entity_name: 'Higro2000',
-                    entity_type: 'Higrometer'
+                    entity_type: 'Higrometer',
+                    metadata: {
+                        unitCode: {
+                            type: 'Text',
+                            value: 'Hgmm'
+                        }
+                    }
                 }
             ]
         },

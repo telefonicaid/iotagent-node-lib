@@ -22,6 +22,7 @@
  */
 
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const should = require('should');
@@ -164,6 +165,159 @@ describe('NGSI-v1 - Startup tests', function() {
                 config.getConfig().mongodb.db.should.equal('themongodb');
                 config.getConfig().mongodb.replicaSet.should.equal('customReplica');
                 done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is started with mongodb params', function() {
+        beforeEach(function() {
+            process.env.IOTA_MONGO_HOST = 'mongohost';
+            process.env.IOTA_MONGO_PORT = '5555';
+            process.env.IOTA_MONGO_DB = 'themongodb';
+            process.env.IOTA_MONGO_REPLICASET = 'customReplica';
+            process.env.IOTA_MONGO_USER = 'customUser';
+            process.env.IOTA_MONGO_PASSWORD = 'customPassword';
+            process.env.IOTA_MONGO_AUTH_SOURCE = 'customAuthSource';
+            process.env.IOTA_MONGO_RETRIES = '10';
+            process.env.IOTA_MONGO_RETRY_TIME = '5';
+
+            nock.cleanAll();
+
+            iotamMock = nock('http://iotamhost:4444')
+                .post('/iotampath')
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_MONGO_HOST;
+            delete process.env.IOTA_MONGO_PORT;
+            delete process.env.IOTA_MONGO_DB;
+            delete process.env.IOTA_MONGO_REPLICASET;
+            delete process.env.IOTA_MONGO_USER;
+            delete process.env.IOTA_MONGO_PASSWORD;
+            delete process.env.IOTA_MONGO_AUTH_SOURCE;
+            delete process.env.IOTA_MONGO_RETRIES;
+            delete process.env.IOTA_MONGO_RETRY_TIME;
+            delete process.env.IOTA_MONGO_SSL;
+            delete process.env.IOTA_MONGO_EXTRAARGS;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        ['true', 'True', 'TRUE'].forEach(function(t) {
+            it('should load ssl=ture with ssl=' + t, function(done) {
+                process.env.IOTA_MONGO_SSL = t;
+
+                iotAgentLib.activate(iotAgentConfig, function(error) {
+                    config.getConfig().mongodb.host.should.equal('mongohost');
+                    config.getConfig().mongodb.port.should.equal('5555');
+                    config.getConfig().mongodb.db.should.equal('themongodb');
+                    config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                    config.getConfig().mongodb.user.should.equal('customUser');
+                    config.getConfig().mongodb.password.should.equal('customPassword');
+                    config.getConfig().mongodb.authSource.should.equal('customAuthSource');
+                    config.getConfig().mongodb.retries.should.equal('10');
+                    config.getConfig().mongodb.retryTime.should.equal('5');
+                    config.getConfig().mongodb.ssl.should.be.true;
+                    should.not.exist(config.getConfig().mongodb.extraArgs);
+                    done();
+                });
+            });
+        });
+
+        ['false', 'False', 'FALSE', 'invalid'].forEach(function(t) {
+            it('should load ssl=false with ssl=' + t, function(done) {
+                process.env.IOTA_MONGO_SSL = t;
+
+                iotAgentLib.activate(iotAgentConfig, function(error) {
+                    config.getConfig().mongodb.host.should.equal('mongohost');
+                    config.getConfig().mongodb.port.should.equal('5555');
+                    config.getConfig().mongodb.db.should.equal('themongodb');
+                    config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                    config.getConfig().mongodb.user.should.equal('customUser');
+                    config.getConfig().mongodb.password.should.equal('customPassword');
+                    config.getConfig().mongodb.authSource.should.equal('customAuthSource');
+                    config.getConfig().mongodb.retries.should.equal('10');
+                    config.getConfig().mongodb.retryTime.should.equal('5');
+                    config.getConfig().mongodb.ssl.should.be.not.true;
+                    should.not.exist(config.getConfig().mongodb.extraArgs);
+                    done();
+                });
+            });
+        });
+
+        ['', 'undefined'].forEach(function(t) {
+            it('should load no ssl parameter with ssl=' + t, function(done) {
+                if (t !== 'undefined') {
+                    process.env.IOTA_MONGO_SSL = t;
+                }
+
+                iotAgentLib.activate(iotAgentConfig, function(error) {
+                    config.getConfig().mongodb.host.should.equal('mongohost');
+                    config.getConfig().mongodb.port.should.equal('5555');
+                    config.getConfig().mongodb.db.should.equal('themongodb');
+                    config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                    config.getConfig().mongodb.user.should.equal('customUser');
+                    config.getConfig().mongodb.password.should.equal('customPassword');
+                    config.getConfig().mongodb.authSource.should.equal('customAuthSource');
+                    config.getConfig().mongodb.retries.should.equal('10');
+                    config.getConfig().mongodb.retryTime.should.equal('5');
+                    should.not.exist(config.getConfig().mongodb.ssl);
+                    should.not.exist(config.getConfig().mongodb.extraArgs);
+                    done();
+                });
+            });
+        });
+
+        [
+            { in: '{"a": "b"}', expect: { a: 'b' } },
+            { in: '{"a": "b", "c": "d"}', expect: { a: 'b', c: 'd' } },
+            {
+                in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}',
+                expect: { a: 'b', c: [1, 2], d: -5, e: { f: 'g' } }
+            },
+            { in: '{}', expect: {} }
+        ].forEach(function(param) {
+            it('should load estraArgs with param=' + param.in, function(done) {
+                process.env.IOTA_MONGO_EXTRAARGS = param.in;
+
+                iotAgentLib.activate(iotAgentConfig, function(error) {
+                    config.getConfig().mongodb.host.should.equal('mongohost');
+                    config.getConfig().mongodb.port.should.equal('5555');
+                    config.getConfig().mongodb.db.should.equal('themongodb');
+                    config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                    config.getConfig().mongodb.user.should.equal('customUser');
+                    config.getConfig().mongodb.password.should.equal('customPassword');
+                    config.getConfig().mongodb.authSource.should.equal('customAuthSource');
+                    config.getConfig().mongodb.retries.should.equal('10');
+                    config.getConfig().mongodb.retryTime.should.equal('5');
+                    should.not.exist(config.getConfig().mongodb.ssl);
+                    config.getConfig().mongodb.extraArgs.should.eql(param.expect);
+                    done();
+                });
+            });
+        });
+
+        ['', 'str', '[]'].forEach(function(param) {
+            it('should not load estraArgs with param=' + param, function(done) {
+                process.env.IOTA_MONGO_EXTRAARGS = param;
+
+                iotAgentLib.activate(iotAgentConfig, function(error) {
+                    config.getConfig().mongodb.host.should.equal('mongohost');
+                    config.getConfig().mongodb.port.should.equal('5555');
+                    config.getConfig().mongodb.db.should.equal('themongodb');
+                    config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                    config.getConfig().mongodb.user.should.equal('customUser');
+                    config.getConfig().mongodb.password.should.equal('customPassword');
+                    config.getConfig().mongodb.authSource.should.equal('customAuthSource');
+                    config.getConfig().mongodb.retries.should.equal('10');
+                    config.getConfig().mongodb.retryTime.should.equal('5');
+                    should.not.exist(config.getConfig().mongodb.ssl);
+                    should.not.exist(config.getConfig().mongodb.extraArgs);
+                    done();
+                });
             });
         });
     });

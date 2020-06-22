@@ -8,15 +8,15 @@
         "type": "Hgmm",
         "value": "52",
         "metadata": {
-            "TimeInstant": {
-                "type": "DateTime",
-                "value": "2016-05-30T16:25:22.304Z"
-            }
+          "TimeInstant": {
+            "type": "DateTime",
+            "value": "2016-05-30T16:25:22.304Z"
+          }
         }
       },
       "TimeInstant": {
-          "type": "DateTime",
-          "value": "2016-05-30T16:25:22.304Z"
+        "type": "DateTime",
+        "value": "2016-05-30T16:25:22.304Z"
       }
     },
     {
@@ -26,11 +26,19 @@
         "type": "Percentage",
         "value": "12",
         "metadata": {
-            "TimeInstant": {
-                "type": "DateTime",
-                "value": "2016-05-30T16:25:22.304Z"
-            }
+          "unitCode": {
+            "type": "Text",
+            "value": "Hgmm"
+          },
+          "TimeInstant": {
+            "type": "DateTime",
+            "value": "2016-05-30T16:25:22.304Z"
+          }
         }
+      },
+      "TimeInstant": {
+        "type": "DateTime",
+        "value": "2016-05-30T16:25:22.304Z"
       }
     }
   ]

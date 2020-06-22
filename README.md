@@ -79,8 +79,8 @@ Information about how to configure the Library can be found at the corresponding
 
 ## Usage
 
-This library has no packaging or build processes. The [Getting Started](doc/gettin-started.md) is a good place to start.
-Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
+This library has no packaging or build processes. The [Getting Started](doc/getting-started.md) is a good place to
+start. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
 -   Details of the architecture of an IoT Agent be found [here](doc/architecture.md).
 -   Further Advanced topics can be found [here](doc/advanced-topics.md).
@@ -93,7 +93,7 @@ decommission devices. [API](doc/api.md).
 
 ## Testing
 
-Contribitions to development can be found [here](doc/development.md) - additional contributions are welcome.
+Contributions to development can be found [here](doc/development.md) - additional contributions are welcome.
 
 ### Agent Console
 
