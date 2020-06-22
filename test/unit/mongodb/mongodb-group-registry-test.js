@@ -198,7 +198,6 @@ describe('MongoDB Group Registry test', function() {
         });
     });
     describe('When a new device group creation request arrives', function() {
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should store it in the DB', function(done) {
             request(optionsCreation, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -235,7 +234,6 @@ describe('MongoDB Group Registry test', function() {
     });
 
     describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
         it('should return a DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
                 request(optionsCreation, function(error, response, body) {
@@ -251,7 +249,7 @@ describe('MongoDB Group Registry test', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should remove it from the database', function(done) {
             request(optionsDelete, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -263,7 +261,7 @@ describe('MongoDB Group Registry test', function() {
                 });
             });
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should return a 204 OK statusCode', function(done) {
             request(optionsDelete, function(error, response, body) {
                 response.statusCode.should.equal(204);
@@ -276,7 +274,7 @@ describe('MongoDB Group Registry test', function() {
         beforeEach(function(done) {
             request(optionsCreation, done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should update the values in the database', function(done) {
             request(optionsUpdate, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -301,7 +299,7 @@ describe('MongoDB Group Registry test', function() {
 
             done();
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should create the values in the database', function(done) {
             request(optionsMultipleCreation, function(error, response, body) {
                 iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
@@ -336,7 +334,7 @@ describe('MongoDB Group Registry test', function() {
                 async.apply(request, optionsCreation3)
             ], done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should return all the configured device groups from the database', function(done) {
             request(optionsList, function(error, response, body) {
                 body.count.should.equal(3);
@@ -374,7 +372,7 @@ describe('MongoDB Group Registry test', function() {
 
             async.series(creationFns, done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should return the appropriate count of services', function(done) {
             request(optionsConstrained, function(error, response, body) {
                 body.count.should.equal(10);
@@ -389,7 +387,7 @@ describe('MongoDB Group Registry test', function() {
                 async.apply(request, optionsCreation)
             ], done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
                 should.exist(body);
@@ -419,7 +417,7 @@ describe('MongoDB Group Registry test', function() {
 
             async.series(creationFns, done);
         });
-        // This test will be removed if at the end the /iot/services API (now deprecated) is removed
+
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
                 should.exist(body);
