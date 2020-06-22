@@ -36,7 +36,7 @@ These are the parameters that can be configured in the global section:
     host: '192.168.56.101',
     port: '1026',
     ngsiVersion: 'ld',
-    jsonLdContext: 'http://context.json-ld'
+    jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
 }
 ```
 
