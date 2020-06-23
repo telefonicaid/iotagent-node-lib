@@ -5,7 +5,4 @@ Add support for JEXL as expression language (#801, #687)
 Fix: log always writing the same correlator id and transaction id (iota-json #426, iota-ul #326)
 Add template to allow `metadata` to be set via the Device API  (#870)
 Fix: correct jexl support for concatenation of float numbers and strings (#868)
-Add Null check within executeWithSecurity() to avoid crash 
-Added feature: selectively ignore some of the measures (iotagent-json#416)
-Fix: Error message when sending measures with unknown/undefined attribute
-Add Null check within executeWithSecurity() to avoid crash (#829)
+Added feature: selectively ignore some of the measures (iotagent-json#416, iotagent-ul#372)
