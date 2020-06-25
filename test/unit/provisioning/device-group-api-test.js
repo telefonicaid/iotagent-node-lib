@@ -273,6 +273,45 @@ describe('Device Group Configuration API', function() {
             });
         });
     });
+    describe('When a new device group creation request arrives with explicitAttrs', function() {
+        var optionsCreation1 = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/deviceTest',
+                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                        entity_type: 'SensorMachine',
+                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                        cbHost: 'http://unexistentHost:1026',
+                        explicitAttrs: true
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+        it('should return a 200 OK', function(done) {
+            request(optionsCreation1, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+                done();
+            });
+        });
+        it('should store it in the DB', function(done) {
+            request(optionsCreation1, function(error, response, body) {
+                request(optionsList, function(error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body.services[0].explicitAttrs.should.equal(true);
+                    done();
+                });
+            });
+        });
+    });
     describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function() {
         it('should return a 400 DUPLICATE_GROUP error', function(done) {
             request(optionsCreation, function(error, response, body) {
@@ -731,6 +770,59 @@ describe('Device Group Configuration API', function() {
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
                 done();
+            });
+        });
+    });
+
+    describe('When a device group update request arrives with a different explicitAttrs value', function () {
+        var optionsCreation1 = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/deviceTest',
+                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                        entity_type: 'SensorMachine',
+                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                        cbHost: 'http://unexistentHost:1026',
+                        explicitAttrs: true
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        },
+        optionsUpdate1 = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'PUT',
+            json: {
+                'explicitAttrs': false
+            },
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            },
+            qs: {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+            }
+        };
+
+        beforeEach(function (done) {
+            request(optionsCreation1, done);
+        });
+
+        it('should update value of explicitAttrs', function (done) {
+            request(optionsUpdate1, function (error, response, body) {
+                request(optionsList, function (error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body.services[0].explicitAttrs.should.equal(false);
+                    done();
+                });
             });
         });
     });

@@ -236,6 +236,8 @@ used for the same purpose. For instance:
     compute expressions, possible values are: `legacy` or `jexl`. When not set or 
     wrongly set, `legacy` is used as default value.
 
+-   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. 
+    This flag is overwritten by `explicitAttrs` flag in group or device provision.
 
 ### Configuration using environment variables
 
@@ -294,3 +296,4 @@ overrides.
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | defaultExpressionLanguage    |
+| IOTA_EXPLICIT_ATTRS       | `explicitAttrs`                 |
