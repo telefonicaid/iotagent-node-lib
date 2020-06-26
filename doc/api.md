@@ -90,6 +90,7 @@ correspondence between the API resource fields and the same fields in the databa
 | `attributes`          | `attributes`         | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                   |
 | `static_attributes`   | `staticAttributes`   | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                      |
 | `internal_attributes` | `internalAttributes` | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                              |
+| `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is false.                                |
 
 ### Service Group Endpoint
 
@@ -222,6 +223,7 @@ the API resource fields and the same fields in the database model.
 | `commands`                | `commands`           | List of commands of the device                                                                                                                                                   | `[ { "name": "attr_name", "type": "Text" } ]` |
 | `internal_attributes`     | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration                                                                                                | LWM2M mappings from object URIs to attributes |
 | `static_attributes`       | `staticAttributes`   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                                           | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `explicitAttrs`           | `explicitAttrs`      | Boolean value to support selective ignore of measures for device so that IOTA doesn’t progress. If not specified default is false.                                               | `true/false`                                  |
 
 #### Attribute lists
 

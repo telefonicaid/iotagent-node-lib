@@ -77,6 +77,15 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice2.json')
     };
+    const provisioning4Options = {
+        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+        method: 'POST',
+        headers: {
+            'fiware-service': 'smartGondor',
+            'fiware-servicepath': '/gardens'
+        },
+        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionExplicitAttrs.json')
+    };
 
     beforeEach(function(done) {
         nock.cleanAll();
@@ -432,6 +441,57 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
                     parsedBody.static_attributes.length.should.equal(3);
                     parsedBody.static_attributes[0].name.should.equal('cellID');
+                    done();
+                });
+            });
+        });
+    });
+    describe('When a device is updated to update explicitAttrs', function() {
+        /* jshint camelcase: false */
+
+        const optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/xxx014',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/updateDeviceExplicitAttrs.json'
+            )
+        };
+        const optionsGetDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/xxx014',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartGondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/entities?options=upsert')
+                .reply(204);
+
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning4Options)], done);
+        });
+
+        it('should provision the explicitAttrs attribute appropriately', function(done) {
+            request(optionsUpdate, function(error, response, body) {
+                request(optionsGetDevice, function(error, response, body) {
+                    should.not.exist(error);
+                    response.statusCode.should.equal(200);
+
+                    const parsedBody = JSON.parse(body);
+                    parsedBody.explicitAttrs.should.equal(false);
                     done();
                 });
             });
