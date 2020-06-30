@@ -90,6 +90,7 @@ correspondence between the API resource fields and the same fields in the databa
 | `attributes`          | `attributes`         | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                   |
 | `static_attributes`   | `staticAttributes`   | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                      |
 | `internal_attributes` | `internalAttributes` | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                              |
+| `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.                                |
 | `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is false.                                |
 
 ### Service Group Endpoint
@@ -213,8 +214,8 @@ the API resource fields and the same fields in the database model.
 | `entity_type`             | `type`               | Type of the entity in the Context Broker                                                                                                                                         | Lamplights                                    |
 | `timezone`                | `timezone`           | Time zone of the sensor if it has any                                                                                                                                            | America/Santiago                              |
 | `timestamp`               | `timestamp`          | Optional flag about whether or not to addthe TimeInstant attribute to the device entity created, as well as a TimeInstant metadata to each attribute, with the current timestamp | true                                          |
-| `apikey`                  | `apikey`             | Optional Apikey key string to use instead of group apikey                                                                                                                        |
-| 9n4hb1vpwbjozzmw9f0flf9c2 |
+| `apikey`                  | `apikey`             | Optional Apikey key string to use instead of group apikey                                                                                                                        
+| 9n4hb1vpwbjozzmw9f0flf9c2                     |
 | `endpoint`                | `endpoint`           | Endpoint where the device is going to receive commands, if any.                                                                                                                  | http://theDeviceUrl:1234/commands             |
 | `protocol`                | `protocol`           | Name of the device protocol, for its use with an IoT Manager.                                                                                                                    | IoTA-UL                                       |
 | `transport`               | `transport`          | Name of the device transport protocol, for the IoT Agents with multiple transport protocols.                                                                                     | MQTT                                          |
@@ -223,6 +224,7 @@ the API resource fields and the same fields in the database model.
 | `commands`                | `commands`           | List of commands of the device                                                                                                                                                   | `[ { "name": "attr_name", "type": "Text" } ]` |
 | `internal_attributes`     | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration                                                                                                | LWM2M mappings from object URIs to attributes |
 | `static_attributes`       | `staticAttributes`   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                                           | `[ { "name": "attr_name", "type": "Text" } ]` |
+| `expressionLanguage`      | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.       
 | `explicitAttrs`           | `explicitAttrs`      | Boolean value to support selective ignore of measures for device so that IOTA doesn’t progress. If not specified default is false.                                               | `true/false`                                  |
 
 #### Attribute lists
