@@ -1,3 +1,4 @@
+Fix: multientity when more than 2 attribute with same name and object_id  (#877)
 Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
 Add mongodb additional options (`ssl` and `extraArgs`) to be able to connect "MongoDB as a Cloud Service" (#859)
 Add support for JEXL as expression language (#801, #687)
@@ -12,3 +13,4 @@ Add basic NGSI-LD support as experimental feature (#842)
     - Multi-measures
     - Lazy Attributes
     - Commands
+Added feature: selectively ignore some of the measures (iotagent-json#416, iotagent-ul#372)

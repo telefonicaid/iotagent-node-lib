@@ -30,20 +30,6 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
--   If you want to use NGSI-LD (experimental):
-
-```javascript
-{
-    host: '192.168.56.101',
-    port: '1026',
-    ngsiVersion: 'ld',
-    jsonLdContext: 'http://context.json-ld'
-}
-```
-
-Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information allowing the computer to
-interpret the rest of the data with more clarity and depth. Read the [JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more informtaion.
-
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
     used, '/' is used by default. E.g.:
@@ -227,10 +213,9 @@ used for the same purpose. For instance:
     any unexpected error.
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
--   **timestamp**: if this flag is activated:
-    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
+-   **timestamp**: if this flag is activated, the IoT Agent will add a 'TimeInstant' metadata attribute to all the
+    attributes updated from device information. This flag is overwritten by `timestamp` flag in group or device
     provision.
-    -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
 -   **defaultKey**: default string to use as API Key for devices that do not belong to a particular Configuration.
@@ -250,10 +235,9 @@ used for the same purpose. For instance:
 -   **defaultExpressionLanguage**: the default expression language used to
     compute expressions, possible values are: `legacy` or `jexl`. When not set or 
     wrongly set, `legacy` is used as default value.
--   **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for supplying the `NGSILD-Tenant` header. Note that NGSILD-Tenant has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change.
-    Note that for backwards compatibility with NGSI v2, the `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
--   **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative mechanism for suppling the `NGSILD-Path` header.
-    Note that for backwards compatibility with NGSI v2, the `fiware-servicepath` header is already used as alternative if the `NGSILD-Path` header is not supplied. Note that NGSILD-Path has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change
+
+-   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. 
+    This flag is overwritten by `explicitAttrs` flag in group or device provision.
 
 ### Configuration using environment variables
 
@@ -312,6 +296,4 @@ overrides.
 | IOTA_AUTOCAST             | `autocast`                      |
 | IOTA_MULTI_CORE           | `multiCore`                     |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | defaultExpressionLanguage    |
-| IOTA_JSON_LD_CONTEXT      | `jsonLdContext`                 |
-| IOTA_FALLBACK_TENANT      | `fallbackTenant`                |
-| IOTA_FALLBACK_PATH        | `fallbackPath`                  |
+| IOTA_EXPLICIT_ATTRS       | `explicitAttrs`                 |
