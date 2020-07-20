@@ -38,7 +38,11 @@
           },
           "expressionLanguage": {
             "description": "Expression language used to apply expressions for this device",
-            "type": "string"
+            "type": "boolean"
+          },
+          "explicitAttrs": {
+            "description": "Flag about only provisioned attributes will be processed to Context Broker",
+            "type": "boolean"
           },
           "lazy": {
             "description": "list of lazy attributes of the devices",
