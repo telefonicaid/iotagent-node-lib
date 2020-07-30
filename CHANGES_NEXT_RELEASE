@@ -1,4 +1,4 @@
-Update dev package dependencies
+Overall update of update dev package dependencies
 Add. expressionLanguage to save/update device and group
 Fix: multientity when more than 2 attribute with same name and object_id  (#877)
 Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
