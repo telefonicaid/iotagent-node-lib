@@ -30,11 +30,12 @@
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
-    "lint": "eslint lib/ bin/ test/ --cache --fix",
-    "lint:md": "remark -f 'README.md' docs",
-    "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
-    "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
-    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
+    "test:watch": "npm run test -- -w ./lib",
+    "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
+    "lint:md": "remark  -f '*.md' 'doc/*.md'",
+    "lint:text": "textlint '*.md' 'doc/*.md'",
+    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
