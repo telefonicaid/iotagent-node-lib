@@ -1,0 +1,9 @@
+{
+    "humidity": {
+        "type": "Property",
+        "value": {
+            "@type": "Percentage",
+            "@value": "12"
+        }
+    }
+}

@@ -158,7 +158,7 @@ describe('NGSI-LD - Active attributes test', function() {
     ];
 
     beforeEach(function() {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
     });
 
     afterEach(function(done) {
@@ -171,11 +171,10 @@ describe('NGSI-LD - Active attributes test', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                .patch(
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1/attrs',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

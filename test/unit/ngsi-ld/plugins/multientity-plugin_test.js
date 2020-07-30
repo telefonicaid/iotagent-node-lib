@@ -259,10 +259,20 @@ describe('NGSI-LD - Multi-entity plugin', function() {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                .patch(
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:WeatherStation:ws4/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin1.json'
+                    )
+                )
+                .reply(204);
+
+            nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .patch(
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:Higrometer:Higro2000/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin1-Higro.json'
                     )
                 )
                 .reply(204);
@@ -271,7 +281,6 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         it('should send two context elements, one for each entity', function(done) {
             iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
                 should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
         });
