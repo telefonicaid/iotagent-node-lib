@@ -317,3 +317,6 @@ overrides.
 | IOTA_FALLBACK_PATH               | `fallbackPath`                  |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | `defaultExpressionLanguage`     |
 | IOTA_EXPLICIT_ATTRS              | `explicitAttrs`                 |
+
+Note:
+-   If you need to pass more than one JSON-LD context, you can define the IOTA_JSON_LD_CONTEXT environment variable as a semicolon separated list of contexts (e.g. `'http://context1.json-ld;http://context2.json-ld'`)
