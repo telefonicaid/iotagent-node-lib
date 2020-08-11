@@ -65,7 +65,7 @@ describe('NGSI-LD - JSON-LD @context parsing from environment variable', functio
 
     describe('When the context is provided as a semicolon separated list of contexts', function() {
         beforeEach(function() {
-            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld;http://context2.json-ld';
+            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld,http://context2.json-ld';
             iotAgentConfig.contextBroker.jsonLdContext = 'http://whateverContext.json-ld';
         });
 
