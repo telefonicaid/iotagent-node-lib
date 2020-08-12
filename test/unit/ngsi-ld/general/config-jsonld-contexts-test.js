@@ -80,6 +80,24 @@ describe('NGSI-LD - JSON-LD @context parsing from environment variable', functio
         });
     });
 
+    describe('When the context is provided as a semicolon separated list of contexts with extra whitespace', function() {
+        beforeEach(function() {
+            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld , http://context2.json-ld,   http://context3.json-ld';
+            iotAgentConfig.contextBroker.jsonLdContext = 'http://whateverContext.json-ld';
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_JSON_LD_CONTEXT;
+        });
+
+        it('should load the configuration as a list of contexts and remove the extra whitespace', function(done) {
+            config.setConfig(iotAgentConfig);
+            config.getConfig().contextBroker
+                .jsonLdContext.should.containDeep(['http://context1.json-ld','http://context2.json-ld','http://context3.json-ld']);
+            done();
+        });
+    });
+
     describe('When the context is provided as a string value', function() {
         beforeEach(function() {
             process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld';
