@@ -1,3 +1,4 @@
+Fix: Do not intercept error about DEVICE_GROUP_NOT_FOUND in checkApiKeyAndResource (#889)
 Fix: Do not intercept error about DEVICE_NOT_FOUND in findOrCreate device (#889)
 Overall update of dev package dependencies
 Add. expressionLanguage to save/update device and group
