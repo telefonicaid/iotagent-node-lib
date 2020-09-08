@@ -31,7 +31,7 @@ const async = require('async');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'DEBUG',
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
