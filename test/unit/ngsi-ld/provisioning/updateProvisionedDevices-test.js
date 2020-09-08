@@ -31,7 +31,7 @@ const async = require('async');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -163,6 +163,11 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 .post('/ngsi-ld/v1/entities/TheFirstLight/attrs?type=TheLightType', {
                     '@context': 'http://context.json-ld'
                 })
+                .reply(204);
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
