@@ -336,7 +336,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function() {
         it('should return the empty value', function(done) {
             request(options, function(error, response, body) {
                 const entities = body;
-                entities[0].dimming.value.should.equal('');
+                entities.dimming.value.should.equal('');
                 done();
             });
         });
