@@ -165,6 +165,11 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 })
                 .reply(204);
 
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartGondor')
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
+                .reply(204);
+
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
             // this function should use the new API. This is just a temporary solution which implies deleting the
             // registration and creating a new one.

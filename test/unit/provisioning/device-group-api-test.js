@@ -884,7 +884,7 @@ describe('Device Group Configuration API', function() {
         });
         it('should return all the configured device groups from the database', function(done) {
             request(optionsGet, function(error, response, body) {
-                body.service.should.equal('TestService');
+                body.services[0].service.should.equal('TestService');
                 done();
             });
         });
