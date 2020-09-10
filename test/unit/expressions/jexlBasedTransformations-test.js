@@ -121,12 +121,12 @@ const iotAgentConfig = {
     throttling: 'PT5S'
 };
 
-describe('Javascript Expression Language (JEXL) based transformations plugin ', function() {
-    beforeEach(function(done) {
+describe('Javascript Expression Language (JEXL) based transformations plugin ', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -135,13 +135,13 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for attributes with expressions', function() {
+    describe('When an update comes for attributes with expressions', function () {
         const values = [
             {
                 name: 'p',
@@ -150,7 +150,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -168,8 +168,8 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 );
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -177,7 +177,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
         });
     });
 
-    describe('When an update comes for expressions with syntax errors', function() {
+    describe('When an update comes for expressions with syntax errors', function () {
         const values = [
             {
                 name: 'p',
@@ -186,7 +186,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -204,8 +204,8 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 );
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'LightError', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'LightError', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('INVALID_EXPRESSION');
                 error.code.should.equal(400);
@@ -214,7 +214,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
         });
     });
 
-    describe('When there are expression attributes that are just calculated (not sent by the device)', function() {
+    describe('When there are expression attributes that are just calculated (not sent by the device)', function () {
         const values = [
             {
                 name: 'p',
@@ -228,7 +228,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -246,8 +246,8 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 );
         });
 
-        it('should calculate them and add them to the payload', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should calculate them and add them to the payload', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -255,7 +255,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
         });
     });
 
-    describe('When an expression with multiple variables with numbers arrive', function() {
+    describe('When an expression with multiple variables with numbers arrive', function () {
         const values = [
             {
                 name: 'p',
@@ -269,7 +269,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -287,8 +287,8 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 );
         });
 
-        it('should calculate it and add it to the payload', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should calculate it and add it to the payload', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -296,7 +296,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
         });
     });
 
-    describe('When a measure arrives and there is not enough information to calculate an expression', function() {
+    describe('When a measure arrives and there is not enough information to calculate an expression', function () {
         const values = [
             {
                 name: 'p',
@@ -305,7 +305,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -323,8 +323,8 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 );
         });
 
-        it('should not calculate the expression', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should not calculate the expression', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

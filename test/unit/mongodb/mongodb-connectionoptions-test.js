@@ -52,21 +52,21 @@ const iotAgentConfig = {
 };
 let oldConfig;
 
-describe('dbConn.configureDb', function() {
+describe('dbConn.configureDb', function () {
     let stub;
 
-    beforeEach(function() {
+    beforeEach(function () {
         oldConfig = config.getConfig();
     });
 
-    afterEach(function() {
+    afterEach(function () {
         config.setConfig(oldConfig);
         if (stub) {
             stub.restore();
         }
     });
 
-    describe('When set mongodb options, it should call mongoose.createCOnnection by using below params', function() {
+    describe('When set mongodb options, it should call mongoose.createCOnnection by using below params', function () {
         const tests = [
             {
                 mongodb: {
@@ -306,24 +306,24 @@ describe('dbConn.configureDb', function() {
                 }
             }
         ];
-        tests.forEach(function(params) {
+        tests.forEach(function (params) {
             it(
                 'mongodb options = ' +
                     JSON.stringify(params.mongodb) +
                     ', ' +
                     'expected = ' +
                     JSON.stringify(params.expected),
-                function(done) {
+                function (done) {
                     const cfg = Object.assign({}, iotAgentConfig, {
                         mongodb: params.mongodb
                     });
-                    stub = sinon.stub(mongoose, 'createConnection').callsFake(function(url, options, fn) {
+                    stub = sinon.stub(mongoose, 'createConnection').callsFake(function (url, options, fn) {
                         url.should.be.equal(params.expected.url);
                         options.should.be.eql(params.expected.options);
                         done();
                     });
                     config.setConfig(cfg);
-                    dbConn.configureDb(function(error) {
+                    dbConn.configureDb(function (error) {
                         if (error) {
                             should.fail();
                         }
@@ -333,7 +333,7 @@ describe('dbConn.configureDb', function() {
         });
     });
 
-    describe('When no mongodb options or "host" is empty, it should returns an error callback', function() {
+    describe('When no mongodb options or "host" is empty, it should returns an error callback', function () {
         const tests = [
             {
                 mongodb: undefined
@@ -347,16 +347,16 @@ describe('dbConn.configureDb', function() {
                 }
             }
         ];
-        tests.forEach(function(params) {
-            it('mongodb options = ' + JSON.stringify(params.mongodb), function(done) {
+        tests.forEach(function (params) {
+            it('mongodb options = ' + JSON.stringify(params.mongodb), function (done) {
                 const cfg = Object.assign({}, iotAgentConfig, {
                     mongodb: params.mongodb
                 });
-                stub = sinon.stub(mongoose, 'createConnection').callsFake(function(url, options, fn) {
+                stub = sinon.stub(mongoose, 'createConnection').callsFake(function (url, options, fn) {
                     should.fail();
                 });
                 config.setConfig(cfg);
-                dbConn.configureDb(function(error) {
+                dbConn.configureDb(function (error) {
                     if (!error) {
                         should.fail();
                     }

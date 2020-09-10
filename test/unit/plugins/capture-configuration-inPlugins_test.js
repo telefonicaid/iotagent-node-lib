@@ -103,70 +103,70 @@ const optionsCreation = {
     }
 };
 
-describe('Data Mapping Plugins: configuration provision', function() {
-    beforeEach(function(done) {
+describe('Data Mapping Plugins: configuration provision', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function(error) {
+        iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a configuration provision request arrives to a IoTA with configuration middleware', function() {
-        it('should execute the configuration provisioning middlewares', function(done) {
+    describe('When a configuration provision request arrives to a IoTA with configuration middleware', function () {
+        it('should execute the configuration provisioning middlewares', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
             });
         });
 
-        it('should still execute the configuration handlers', function(done) {
+        it('should still execute the configuration handlers', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 callback(null, newConfiguration);
             });
 
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a configuration middleware returns an error', function() {
-        it('should not execute the configuration handlers', function(done) {
+    describe('When a configuration middleware returns an error', function () {
+        it('should not execute the configuration handlers', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 callback(new Error('This will prevent the handler from being executed'));
             });
 
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });

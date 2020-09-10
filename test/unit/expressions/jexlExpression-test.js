@@ -24,7 +24,7 @@
 const should = require('should');
 const expressionParser = require('../../../lib/plugins/jexlParser');
 
-describe('Jexl expression interpreter', function() {
+describe('Jexl expression interpreter', function () {
     const scope = {
         value: 6,
         other: 3,
@@ -42,9 +42,9 @@ describe('Jexl expression interpreter', function() {
         }
     };
 
-    describe('When a expression with a single value is parsed', function() {
-        it('should return that value', function(done) {
-            expressionParser.parse('5 * value', scope, function(error, result) {
+    describe('When a expression with a single value is parsed', function () {
+        it('should return that value', function (done) {
+            expressionParser.parse('5 * value', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(30);
                 done();
@@ -63,9 +63,9 @@ describe('Jexl expression interpreter', function() {
     ];
 
     function arithmeticUseCase(arithmeticExpr) {
-        describe('When an expression with the arithmetic operation [' + arithmeticExpr[0] + '] is parsed', function() {
-            it('should be interpreted appropriately', function(done) {
-                expressionParser.parse(arithmeticExpr[0], scope, function(error, result) {
+        describe('When an expression with the arithmetic operation [' + arithmeticExpr[0] + '] is parsed', function () {
+            it('should be interpreted appropriately', function (done) {
+                expressionParser.parse(arithmeticExpr[0], scope, function (error, result) {
                     should.not.exist(error);
                     result.should.approximately(arithmeticExpr[1], 0.000001);
                     done();
@@ -78,9 +78,9 @@ describe('Jexl expression interpreter', function() {
         arithmeticUseCase(arithmetic[i]);
     }
 
-    describe('When an expression with two strings is concatenated', function() {
-        it('should return the concatenation of both strings', function(done) {
-            expressionParser.parse('"Pruebas" + "DeStrings"', scope, function(error, result) {
+    describe('When an expression with two strings is concatenated', function () {
+        it('should return the concatenation of both strings', function (done) {
+            expressionParser.parse('"Pruebas" + "DeStrings"', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('PruebasDeStrings');
                 done();
@@ -88,12 +88,12 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When string transformation functions are executed', function() {
-        it('should return the appropriate piece of the string', function(done) {
+    describe('When string transformation functions are executed', function () {
+        it('should return the appropriate piece of the string', function (done) {
             expressionParser.parse(
                 'theString|substr(theString|indexOf(",") + 1, theString|length)|trim',
                 scope,
-                function(error, result) {
+                function (error, result) {
                     should.not.exist(error);
                     result.should.equal('-19.4');
                     done();
@@ -102,9 +102,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression contains variables with numbers', function() {
-        it('should return the appropriate result', function(done) {
-            expressionParser.parse('number + number2 + number3inside', scope, function(error, result) {
+    describe('When an expression contains variables with numbers', function () {
+        it('should return the appropriate result', function (done) {
+            expressionParser.parse('number + number2 + number3inside', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(500);
                 done();
@@ -112,9 +112,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression contains variables with float numbers', function() {
-        it('should return the appropriate result', function(done) {
-            expressionParser.parse('floatNumber * 2', scope, function(error, result) {
+    describe('When an expression contains variables with float numbers', function () {
+        it('should return the appropriate result', function (done) {
+            expressionParser.parse('floatNumber * 2', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(2.4);
                 done();
@@ -122,9 +122,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression contains variables with float numbers and strings', function() {
-        it('should return the appropriate result', function(done) {
-            expressionParser.parse('floatNumber +"echo"', scope, function(error, result) {
+    describe('When an expression contains variables with float numbers and strings', function () {
+        it('should return the appropriate result', function (done) {
+            expressionParser.parse('floatNumber +"echo"', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('1.2echo');
                 done();
@@ -132,9 +132,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression contains multiple parenthesis', function() {
-        it('should return the appropriate result', function(done) {
-            expressionParser.parse('((number) * (number2))', scope, function(error, result) {
+    describe('When an expression contains multiple parenthesis', function () {
+        it('should return the appropriate result', function (done) {
+            expressionParser.parse('((number) * (number2))', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(22475);
                 done();
@@ -142,9 +142,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When trim() function is executed', function() {
-        it('should return the appropriate piece of the string', function(done) {
-            expressionParser.parse('spaces|trim', scope, function(error, result) {
+    describe('When trim() function is executed', function () {
+        it('should return the appropriate piece of the string', function (done) {
+            expressionParser.parse('spaces|trim', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('5 a b c d 5');
                 done();
@@ -152,9 +152,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression with strings containing spaces is concatenated', function() {
-        it('should honour the whitespaces', function(done) {
-            expressionParser.parse('"Pruebas " + "De Strings"', scope, function(error, result) {
+    describe('When an expression with strings containing spaces is concatenated', function () {
+        it('should honour the whitespaces', function (done) {
+            expressionParser.parse('"Pruebas " + "De Strings"', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('Pruebas De Strings');
                 done();
@@ -162,9 +162,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression with strings with single quotation marks is parsed', function() {
-        it('should accept the strings', function(done) {
-            expressionParser.parse("'Pruebas ' + 'De Strings'", scope, function(error, result) {
+    describe('When an expression with strings with single quotation marks is parsed', function () {
+        it('should accept the strings', function (done) {
+            expressionParser.parse("'Pruebas ' + 'De Strings'", scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('Pruebas De Strings');
                 done();
@@ -172,9 +172,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When a string is concatenated with a number', function() {
-        it('should result in a string concatenation', function(done) {
-            expressionParser.parse('"number " + 5', scope, function(error, result) {
+    describe('When a string is concatenated with a number', function () {
+        it('should result in a string concatenation', function (done) {
+            expressionParser.parse('"number " + 5', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('number 5');
                 done();
@@ -182,10 +182,10 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression with a parse error is parsed', function() {
-        it('should raise an INVALID_EXPRESSION error', function(done) {
+    describe('When an expression with a parse error is parsed', function () {
+        it('should raise an INVALID_EXPRESSION error', function (done) {
             /* eslint-disable-next-line  no-unused-vars */
-            expressionParser.parse('"numb+sd ññ ((', scope, function(error, result) {
+            expressionParser.parse('"numb+sd ññ ((', scope, function (error, result) {
                 should.exist(error);
                 error.name.should.equal('INVALID_EXPRESSION');
                 done();
@@ -193,9 +193,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an string function is used with an expression', function() {
-        it('should work on the expression value', function(done) {
-            expressionParser.parse('(24 * big)|indexOf("80")', scope, function(error, result) {
+    describe('When an string function is used with an expression', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('(24 * big)|indexOf("80")', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(1);
                 done();
@@ -203,9 +203,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an ternary operator is used with an expression', function() {
-        it('should work on the expression value', function(done) {
-            expressionParser.parse('value == 6? true : false', scope, function(error, result) {
+    describe('When an ternary operator is used with an expression', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('value == 6? true : false', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(true);
                 done();
@@ -213,9 +213,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an logic operator is used with an expression', function() {
-        it('should work on the expression value', function(done) {
-            expressionParser.parse('value == 6 && spaces|indexOf("a")>0', scope, function(error, result) {
+    describe('When an logic operator is used with an expression', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('value == 6 && spaces|indexOf("a")>0', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(true);
                 done();
@@ -223,9 +223,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When a function is applied to an array', function() {
-        it('should work on the expression value', function(done) {
-            expressionParser.parse('array[1]+1', scope, function(error, result) {
+    describe('When a function is applied to an array', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('array[1]+1', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(3);
                 done();
@@ -233,9 +233,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When a function is applied to an object', function() {
-        it('should work on the expression value', function(done) {
-            expressionParser.parse('object.name', scope, function(error, result) {
+    describe('When a function is applied to an object', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('object.name', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal('John');
                 done();
@@ -243,9 +243,9 @@ describe('Jexl expression interpreter', function() {
         });
     });
 
-    describe('When an expression aims at creating an object', function() {
-        it('it should work', function(done) {
-            expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function(error, result) {
+    describe('When an expression aims at creating an object', function () {
+        it('it should work', function (done) {
+            expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.deepEqual({ type: 'Point', coordinates: [6, 3] });
                 done();

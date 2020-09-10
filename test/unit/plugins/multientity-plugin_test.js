@@ -98,12 +98,12 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('NGSI-v1 - Multi-entity plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Multi-entity plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
@@ -112,13 +112,13 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for a multientity measurement', function() {
+    describe('When an update comes for a multientity measurement', function () {
         const values = [
             {
                 name: 'p',
@@ -132,7 +132,7 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -150,8 +150,8 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
                 );
         });
 
-        it('should send two context elements, one for each entity', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+        it('should send two context elements, one for each entity', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -159,7 +159,7 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity defined with an expression', function() {
+    describe('When an update comes for a multientity defined with an expression', function () {
         const values = [
             {
                 name: 'p',
@@ -178,7 +178,7 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -196,8 +196,8 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
                 );
         });
 
-        it('should send the update value to the resulting value of the expression', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function(error) {
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -205,7 +205,7 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement without type for one entity', function() {
+    describe('When an update comes for a multientity measurement without type for one entity', function () {
         const values = [
             {
                 name: 'p',
@@ -219,7 +219,7 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -237,8 +237,8 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
                 );
         });
 
-        it('should use the device type as a default value', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function(error) {
+        it('should use the device type as a default value', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

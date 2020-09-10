@@ -115,21 +115,21 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Query device information in the Context Broker', function() {
+describe('Query device information in the Context Broker', function () {
     const attributes = ['state', 'dimming'];
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the user requests information about a registered device', function() {
-        beforeEach(function() {
+    describe('When the user requests information about a registered device', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -142,8 +142,8 @@ describe('Query device information in the Context Broker', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
-        it('should return the information about the desired attributes', function(done) {
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+        it('should return the information about the desired attributes', function (done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -151,8 +151,8 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe("When the user requests information about a device that it's not in the CB", function() {
-        beforeEach(function() {
+    describe("When the user requests information about a device that it's not in the CB", function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -165,8 +165,8 @@ describe('Query device information in the Context Broker', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext2Error.json'));
         });
 
-        it('should return a DEVICE_NOT_FOUND_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+        it('should return a DEVICE_NOT_FOUND_ERROR', function (done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function (error) {
                 should.exist(error);
                 error.name.should.equal('DEVICE_NOT_FOUND');
                 done();
@@ -174,8 +174,8 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe('When the user requests information and there are multiple responses, one of them a failure', function() {
-        beforeEach(function() {
+    describe('When the user requests information and there are multiple responses, one of them a failure', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -188,8 +188,8 @@ describe('Query device information in the Context Broker', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext3Error.json'));
         });
 
-        it('should return a ATTRIBUTE_NOT_FOUND_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+        it('should return a ATTRIBUTE_NOT_FOUND_ERROR', function (done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function (error) {
                 should.exist(error);
                 error.name.should.equal('ATTRIBUTE_NOT_FOUND');
                 done();
@@ -197,8 +197,8 @@ describe('Query device information in the Context Broker', function() {
         });
     });
 
-    describe('When the user requests information and there is an unknown errorCode in the response', function() {
-        beforeEach(function() {
+    describe('When the user requests information and there is an unknown errorCode in the response', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -214,8 +214,8 @@ describe('Query device information in the Context Broker', function() {
                 );
         });
 
-        it('should return a ENTITY_GENERIC_ERROR', function(done) {
-            iotAgentLib.query('light3', 'Light', '', attributes, function(error) {
+        it('should return a ENTITY_GENERIC_ERROR', function (done) {
+            iotAgentLib.query('light3', 'Light', '', attributes, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 should.exist(error.details.code);

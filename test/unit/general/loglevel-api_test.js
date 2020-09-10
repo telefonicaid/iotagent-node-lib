@@ -66,12 +66,12 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Log level API', function() {
-    beforeEach(function(done) {
+describe('Log level API', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 done();
@@ -79,13 +79,13 @@ describe('Log level API', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a new valid log level request comes to the API', function() {
+    describe('When a new valid log level request comes to the API', function () {
         const options = {
             uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
             method: 'PUT',
@@ -98,8 +98,8 @@ describe('Log level API', function() {
             }
         };
 
-        it('the real log level should be changed', function(done) {
-            request(options, function(error, response, body) {
+        it('the real log level should be changed', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -108,7 +108,7 @@ describe('Log level API', function() {
         });
     });
 
-    describe('When the current log level is requested', function() {
+    describe('When the current log level is requested', function () {
         const options = {
             uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
             method: 'GET',
@@ -118,8 +118,8 @@ describe('Log level API', function() {
             }
         };
 
-        it('should return a 200 OK', function(done) {
-            request(options, function(error, response, body) {
+        it('should return a 200 OK', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -127,8 +127,8 @@ describe('Log level API', function() {
             });
         });
 
-        it('should return the current log level', function(done) {
-            request(options, function(error, response, body) {
+        it('should return the current log level', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
 
                 should.exist(parsedBody.level);
@@ -139,7 +139,7 @@ describe('Log level API', function() {
         });
     });
 
-    describe('When a new log level request comes to the API with an invalid level', function() {
+    describe('When a new log level request comes to the API with an invalid level', function () {
         const options = {
             uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
             method: 'PUT',
@@ -152,8 +152,8 @@ describe('Log level API', function() {
             }
         };
 
-        it('should return a 400 error indicating the log level is not valid', function(done) {
-            request(options, function(error, response, body) {
+        it('should return a 400 error indicating the log level is not valid', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
@@ -167,7 +167,7 @@ describe('Log level API', function() {
         });
     });
 
-    describe('When a new log level request comes to the API without a log level', function() {
+    describe('When a new log level request comes to the API without a log level', function () {
         const options = {
             uri: 'http://localhost:' + iotAgentConfig.server.port + '/admin/log',
             method: 'PUT',
@@ -177,8 +177,8 @@ describe('Log level API', function() {
             }
         };
 
-        it('should return a 400 error indicating the log level is missing', function(done) {
-            request(options, function(error, response, body) {
+        it('should return a 400 error indicating the log level is missing', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);

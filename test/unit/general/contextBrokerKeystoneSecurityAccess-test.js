@@ -87,7 +87,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('NGSI-v1 - Secured access to the Context Broker with Keystone', function() {
+describe('NGSI-v1 - Secured access to the Context Broker with Keystone', function () {
     const values = [
         {
             name: 'state',
@@ -101,17 +101,17 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
         nock.cleanAll();
     });
 
-    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             keystoneMock = nock('http://128.16.109.11:5000')
@@ -136,23 +136,23 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should ask Keystone for a token based on the trust token', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should ask Keystone for a token based on the trust token', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 keystoneMock.done();
                 done();
             });
         });
-        it('should send the generated token in the x-auth header', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should send the generated token in the x-auth header', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
     });
-    describe('When a measure is sent to the Context Broker and the access is forbidden', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker and the access is forbidden', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             keystoneMock = nock('http://128.16.109.11:5000')
@@ -177,16 +177,16 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('ACCESS_FORBIDDEN');
                 done();
             });
         });
     });
-    describe('When a measure is sent and the trust is rejected asking for the token', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent and the trust is rejected asking for the token', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             keystoneMock = nock('http://128.16.109.11:5000')
@@ -212,8 +212,8 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('AUTHENTICATION_ERROR');
                 done();
@@ -221,10 +221,10 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
         });
     });
 
-    describe('When the user requests information about a device in a protected CB', function() {
+    describe('When the user requests information about a device in a protected CB', function () {
         const attributes = ['state', 'dimming'];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             keystoneMock = nock('http://128.16.109.11:5000')
@@ -249,8 +249,8 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send the Auth Token along with the information query', function(done) {
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+        it('should send the Auth Token along with the information query', function (done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -258,8 +258,8 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
         });
     });
 
-    describe('When subscriptions are used on a protected Context Broker', function() {
-        beforeEach(function(done) {
+    describe('When subscriptions are used on a protected Context Broker', function () {
+        beforeEach(function (done) {
             const optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -274,7 +274,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
 
             nock.cleanAll();
 
-            iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.activate(iotAgentConfig, function () {
                 keystoneMock = nock('http://128.16.109.11:5000')
                     .post(
                         '/v3/auth/tokens',
@@ -329,17 +329,17 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                         )
                     );
 
-                iotAgentLib.clearAll(function() {
-                    request(optionsProvision, function(error, result, body) {
+                iotAgentLib.clearAll(function () {
+                    request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });
             });
         });
 
-        it('subscribe requests use auth header', function(done) {
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
-                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
+        it('subscribe requests use auth header', function (done) {
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
                     contextBrokerMock.done();
@@ -349,7 +349,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
             });
         });
 
-        it('unsubscribe requests use auth header', function(done) {
+        it('unsubscribe requests use auth header', function (done) {
             keystoneMock
                 .post(
                     '/v3/auth/tokens',
@@ -370,9 +370,9 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                     utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
                 );
 
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
-                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
-                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();
                         done();
                     });

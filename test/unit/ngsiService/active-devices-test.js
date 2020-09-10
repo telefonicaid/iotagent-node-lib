@@ -116,7 +116,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('NGSI-v1 - Active attributes test', function() {
+describe('NGSI-v1 - Active attributes test', function () {
     const values = [
         {
             name: 'state',
@@ -130,16 +130,16 @@ describe('NGSI-v1 - Active attributes test', function() {
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device', function() {
-        beforeEach(function(done) {
+    describe('When the IoT Agent receives new information from a device', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -154,8 +154,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -163,8 +163,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function() {
-        beforeEach(function(done) {
+    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -180,14 +180,14 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentConfig.appendMode = false;
 
             done();
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -195,10 +195,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information and the timestamp flag is on', function() {
+    describe('When the IoT Agent receives new information and the timestamp flag is on', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
@@ -231,15 +231,15 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             timekeeper.reset();
 
             done();
         });
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should add the timestamp to the entity and all the attributes', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -247,10 +247,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information, the timestamp flag is onand timezone is defined', function() {
+    describe('When the IoT Agent receives new information, the timestamp flag is onand timezone is defined', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
@@ -284,7 +284,7 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             delete iotAgentConfig.types.Light.timezone;
             timekeeper.reset();
@@ -292,8 +292,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             done();
         });
 
-        it('should add the timestamp to the entity and all the attributes', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should add the timestamp to the entity and all the attributes', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -301,10 +301,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
@@ -337,15 +337,15 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             timekeeper.reset();
 
             done();
         });
 
-        it('should not override the received instant and should not add metadatas for this request', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should not override the received instant and should not add metadatas for this request', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -353,10 +353,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             modifiedValues = [
                 {
                     name: 'state',
@@ -376,13 +376,13 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             done();
         });
 
-        it('should fail with a 400 BAD_TIMESTAMP error', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should fail with a 400 BAD_TIMESTAMP error', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.exist(error);
                 error.code.should.equal(400);
                 error.name.should.equal('BAD_TIMESTAMP');
@@ -391,10 +391,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format without milis', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format without milis', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const time = new Date(1666477342000); // 2022-10-22T22:22:22Z
 
             modifiedValues = [
@@ -430,15 +430,15 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             delete iotAgentConfig.types.Light.timezone;
             timekeeper.reset();
             done();
         });
 
-        it('should not fail', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should not fail', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -446,10 +446,10 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function() {
+    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function () {
         let modifiedValues;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
 
             modifiedValues = [
@@ -483,7 +483,7 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             delete iotAgentConfig.timestamp;
             delete iotAgentConfig.types.Light.timezone;
             timekeeper.reset();
@@ -491,8 +491,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             done();
         });
 
-        it('should not override the received instant and should not add metadatas for this request', function(done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function(error) {
+        it('should not override the received instant and should not add metadatas for this request', function (done) {
+            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -500,15 +500,15 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function() {
-        beforeEach(function(done) {
+    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should fail with a 500 TYPE_NOT_FOUND error', function(done) {
-            iotAgentLib.update('light1', 'BrokenLight', '', values, function(error) {
+        it('should fail with a 500 TYPE_NOT_FOUND error', function (done) {
+            iotAgentLib.update('light1', 'BrokenLight', '', values, function (error) {
                 should.exist(error);
                 error.code.should.equal(500);
                 error.name.should.equal('TYPE_NOT_FOUND');
@@ -517,8 +517,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the Context Broker returns an HTTP error code updating an entity', function() {
-        beforeEach(function(done) {
+    describe('When the Context Broker returns an HTTP error code updating an entity', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -533,8 +533,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return ENTITY_GENERIC_ERROR an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.details.code.should.equal('413');
@@ -546,8 +546,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the Context Broker returns an application error code updating an entity', function() {
-        beforeEach(function(done) {
+    describe('When the Context Broker returns an application error code updating an entity', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -562,8 +562,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return ENTITY_GENERIC_ERROR an error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
@@ -572,8 +572,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When there is a transport error connecting to the Context Broker', function() {
-        beforeEach(function(done) {
+    describe('When there is a transport error connecting to the Context Broker', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -588,8 +588,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return a ENTITY_GENERIC_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return a ENTITY_GENERIC_ERROR error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
@@ -601,8 +601,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent recieves information for a type with a configured Context Broker', function() {
-        beforeEach(function(done) {
+    describe('When the IoT Agent recieves information for a type with a configured Context Broker', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:3024')
@@ -617,8 +617,8 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should use the Context Broker defined by the type', function(done) {
-            iotAgentLib.update('humSensor', 'Humidity', '', values, function(error) {
+        it('should use the Context Broker defined by the type', function (done) {
+            iotAgentLib.update('humSensor', 'Humidity', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -626,7 +626,7 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When an IoT Agent receives information for a type with static attributes', function() {
+    describe('When an IoT Agent receives information for a type with static attributes', function () {
         const newValues = [
             {
                 name: 'moving',
@@ -635,7 +635,7 @@ describe('NGSI-v1 - Active attributes test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -649,8 +649,8 @@ describe('NGSI-v1 - Active attributes test', function() {
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
-        it('should decorate the entity with the static attributes', function(done) {
-            iotAgentLib.update('motion1', 'Motion', '', newValues, function(error) {
+        it('should decorate the entity with the static attributes', function (done) {
+            iotAgentLib.update('motion1', 'Motion', '', newValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -658,8 +658,8 @@ describe('NGSI-v1 - Active attributes test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function() {
-        beforeEach(function(done) {
+    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
+        beforeEach(function (done) {
             process.env.IOTA_CB_HOST = 'cbhost';
 
             nock.cleanAll();
@@ -676,15 +676,15 @@ describe('NGSI-v1 - Active attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             process.env.IOTA_CB_HOST = '';
             done();
         });

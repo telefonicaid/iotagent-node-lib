@@ -63,8 +63,8 @@ const device = {
     subservice: 'gardens'
 };
 
-describe('NGSI-v1 - Update attribute functionalities', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Update attribute functionalities', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -90,10 +90,10 @@ describe('NGSI-v1 - Update attribute functionalities', function() {
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
-            iotAgentLib.deactivate(function() {
-                mongoUtils.cleanDbs(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
@@ -103,7 +103,7 @@ describe('NGSI-v1 - Update attribute functionalities', function() {
         });
     });
 
-    describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
+    describe('When a attribute update arrives to the IoT Agent as Context Provider', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
@@ -130,8 +130,8 @@ describe('NGSI-v1 - Update attribute functionalities', function() {
             }
         };
 
-        beforeEach(function(done) {
-            iotAgentLib.register(device, function(error) {
+        beforeEach(function (done) {
+            iotAgentLib.register(device, function (error) {
                 if (error) {
                     done('Device registration failed');
                 }
@@ -139,10 +139,10 @@ describe('NGSI-v1 - Update attribute functionalities', function() {
             });
         });
 
-        it('should call the client handler with correct values, even if commands are not defined', function(done) {
+        it('should call the client handler with correct values, even if commands are not defined', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function (id, type, service, subservice, attributes, callback) {
                 id.should.equal('Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);
@@ -158,7 +158,7 @@ describe('NGSI-v1 - Update attribute functionalities', function() {
                 });
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();

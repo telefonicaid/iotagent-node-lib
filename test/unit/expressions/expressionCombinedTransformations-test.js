@@ -119,12 +119,12 @@ const iotAgentConfigLegacy = {
     throttling: 'PT5S'
 };
 
-describe('Combine Jexl and legacy expressions (default JEXL)', function() {
-    beforeEach(function(done) {
+describe('Combine Jexl and legacy expressions (default JEXL)', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfigJexl, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfigJexl, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -133,13 +133,13 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for type with expression "legacy"', function() {
+    describe('When an update comes for type with expression "legacy"', function () {
         const values = [
             {
                 name: 'p',
@@ -148,7 +148,7 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -166,8 +166,8 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
                 );
         });
 
-        it('should apply the legacy expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function(error) {
+        it('should apply the legacy expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -175,7 +175,7 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
         });
     });
 
-    describe('When an update comes for type with expression "JEXL" - default', function() {
+    describe('When an update comes for type with expression "JEXL" - default', function () {
         const values = [
             {
                 name: 'p',
@@ -184,7 +184,7 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -202,8 +202,8 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
                 );
         });
 
-        it('should apply the default (JEXL) expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationJexl', '', values, function(error) {
+        it('should apply the default (JEXL) expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationJexl', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -212,12 +212,12 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function() {
     });
 });
 
-describe('Combine Jexl and legacy expressions (default Legacy)', function() {
-    beforeEach(function(done) {
+describe('Combine Jexl and legacy expressions (default Legacy)', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfigLegacy, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfigLegacy, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -226,13 +226,13 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for type with expression "legacy" - default', function() {
+    describe('When an update comes for type with expression "legacy" - default', function () {
         const values = [
             {
                 name: 'p',
@@ -241,7 +241,7 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -259,8 +259,8 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
                 );
         });
 
-        it('should apply the legacy expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function(error) {
+        it('should apply the legacy expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -268,7 +268,7 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
         });
     });
 
-    describe('When an update comes for type with expression "JEXL"', function() {
+    describe('When an update comes for type with expression "JEXL"', function () {
         const values = [
             {
                 name: 'p',
@@ -277,7 +277,7 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -295,8 +295,8 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function() {
                 );
         });
 
-        it('should apply the default (JEXL) expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationJexl', '', values, function(error) {
+        it('should apply the default (JEXL) expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationJexl', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

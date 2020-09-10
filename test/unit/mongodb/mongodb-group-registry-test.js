@@ -175,11 +175,11 @@ const optionsGet = {
 };
 let iotAgentDb;
 
-describe('MongoDB Group Registry test', function() {
-    beforeEach(function(done) {
-        mongoUtils.cleanDbs(function() {
-            iotAgentLib.activate(iotAgentConfig, function() {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function(err, db) {
+describe('MongoDB Group Registry test', function () {
+    beforeEach(function (done) {
+        mongoUtils.cleanDbs(function () {
+            iotAgentLib.activate(iotAgentConfig, function () {
+                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
@@ -187,21 +187,21 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.deactivate(function() {
-            iotAgentDb.close(function(error) {
+    afterEach(function (done) {
+        iotAgentLib.deactivate(function () {
+            iotAgentDb.close(function (error) {
                 mongoUtils.cleanDbs(done);
             });
         });
     });
-    describe('When a new device group creation request arrives', function() {
-        it('should store it in the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
+    describe('When a new device group creation request arrives', function () {
+        it('should store it in the DB', function (done) {
+            request(optionsCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         should.exist(docs.length);
@@ -220,13 +220,13 @@ describe('MongoDB Group Registry test', function() {
                     });
             });
         });
-        it('should store the service information from the headers into the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
+        it('should store the service information from the headers into the DB', function (done) {
+            request(optionsCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs[0].service);
                         should.exist(docs[0].subservice);
@@ -238,10 +238,10 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
-        it('should return a DUPLICATE_GROUP error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsCreation, function(error, response, body) {
+    describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function () {
+        it('should return a DUPLICATE_GROUP error', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                request(optionsCreation, function (error, response, body) {
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
@@ -250,18 +250,18 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device group removal request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device group removal request arrives', function () {
+        beforeEach(function (done) {
             request(optionsCreation, done);
         });
 
-        it('should remove it from the database', function(done) {
-            request(optionsDelete, function(error, response, body) {
+        it('should remove it from the database', function (done) {
+            request(optionsDelete, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         should.exist(docs.length);
@@ -271,26 +271,26 @@ describe('MongoDB Group Registry test', function() {
             });
         });
 
-        it('should return a 204 OK statusCode', function(done) {
-            request(optionsDelete, function(error, response, body) {
+        it('should return a 204 OK statusCode', function (done) {
+            request(optionsDelete, function (error, response, body) {
                 response.statusCode.should.equal(204);
                 done();
             });
         });
     });
 
-    describe('When a device group update request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device group update request arrives', function () {
+        beforeEach(function (done) {
             request(optionsCreation, done);
         });
 
-        it('should update the values in the database', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should update the values in the database', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         should.exist(docs[0].cbHost);
@@ -303,10 +303,10 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a multiple device group creation arrives', function() {
+    describe('When a multiple device group creation arrives', function () {
         const optionsMultipleCreation = _.clone(optionsCreation);
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             optionsMultipleCreation.json = utils.readExampleFile(
                 './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json'
             );
@@ -314,13 +314,13 @@ describe('MongoDB Group Registry test', function() {
             done();
         });
 
-        it('should create the values in the database', function(done) {
-            request(optionsMultipleCreation, function(error, response, body) {
+        it('should create the values in the database', function (done) {
+            request(optionsMultipleCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         docs.length.should.equal(2);
@@ -330,8 +330,8 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device group listing request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device group listing request arrives', function () {
+        beforeEach(function (done) {
             const optionsCreation1 = _.clone(optionsCreation);
             const optionsCreation2 = _.clone(optionsCreation);
             const optionsCreation3 = _.clone(optionsCreation);
@@ -355,15 +355,15 @@ describe('MongoDB Group Registry test', function() {
             );
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsList, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsList, function (error, response, body) {
                 body.count.should.equal(3);
                 done();
             });
         });
     });
 
-    describe('When a device group listing arrives with a limit', function() {
+    describe('When a device group listing arrives with a limit', function () {
         const optionsConstrained = {
             url: 'http://localhost:4041/iot/services',
             method: 'GET',
@@ -378,7 +378,7 @@ describe('MongoDB Group Registry test', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             const optionsCreationList = [];
             const creationFns = [];
 
@@ -393,21 +393,21 @@ describe('MongoDB Group Registry test', function() {
             async.series(creationFns, done);
         });
 
-        it('should return the appropriate count of services', function(done) {
-            request(optionsConstrained, function(error, response, body) {
+        it('should return the appropriate count of services', function (done) {
+            request(optionsConstrained, function (error, response, body) {
                 body.count.should.equal(10);
                 done();
             });
         });
     });
 
-    describe('When a device info request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device info request arrives', function () {
+        beforeEach(function (done) {
             async.series([async.apply(request, optionsCreation)], done);
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGet, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(1);
@@ -420,8 +420,8 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device info request arrives and multiple groups have been created', function() {
-        beforeEach(function(done) {
+    describe('When a device info request arrives and multiple groups have been created', function () {
+        beforeEach(function (done) {
             const optionsCreationList = [];
             const creationFns = [];
 
@@ -436,8 +436,8 @@ describe('MongoDB Group Registry test', function() {
             async.series(creationFns, done);
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGet, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(10);

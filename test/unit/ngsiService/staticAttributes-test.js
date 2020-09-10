@@ -81,7 +81,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('NGSI-v1 - Static attributes test', function() {
+describe('NGSI-v1 - Static attributes test', function () {
     const values = [
         {
             name: 'state',
@@ -95,16 +95,16 @@ describe('NGSI-v1 - Static attributes test', function() {
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When information from a device with multiple static attributes and metadata is sent', function() {
-        beforeEach(function(done) {
+    describe('When information from a device with multiple static attributes and metadata is sent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -113,7 +113,7 @@ describe('NGSI-v1 - Static attributes test', function() {
                 .post('/v1/updateContext')
                 .times(4)
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'))
-                .post('/v1/updateContext', function(body) {
+                .post('/v1/updateContext', function (body) {
                     let metadatas = 0;
 
                     for (let i = 0; i < body.contextElements[0].attributes.length; i++) {
@@ -128,7 +128,7 @@ describe('NGSI-v1 - Static attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send a single TimeInstant per attribute', function(done) {
+        it('should send a single TimeInstant per attribute', function (done) {
             async.series(
                 [
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
@@ -137,7 +137,7 @@ describe('NGSI-v1 - Static attributes test', function() {
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values)
                 ],
-                function(error, results) {
+                function (error, results) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();

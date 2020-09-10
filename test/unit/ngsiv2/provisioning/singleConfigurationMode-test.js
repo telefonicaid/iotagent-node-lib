@@ -67,22 +67,22 @@ const deviceCreation = {
     }
 };
 
-describe('NGSI-v2 - Provisioning API: Single service mode', function() {
-    beforeEach(function(done) {
+describe('NGSI-v2 - Provisioning API: Single service mode', function () {
+    beforeEach(function (done) {
         nock.cleanAll();
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         iotAgentLib.setProvisioningHandler();
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a new configuration arrives to an already configured subservice', function() {
+    describe('When a new configuration arrives to an already configured subservice', function () {
         const groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
@@ -93,12 +93,12 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             request(groupCreation, done);
         });
 
-        it('should raise a DUPLICATE_GROUP error', function(done) {
-            request(groupCreationDuplicated, function(error, response, body) {
+        it('should raise a DUPLICATE_GROUP error', function (done) {
+            request(groupCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -107,7 +107,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that already exists in the configuration', function() {
+    describe('When a device is provisioned with an ID that already exists in the configuration', function () {
         const deviceCreationDuplicated = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -118,7 +118,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
@@ -136,15 +136,15 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            request(groupCreation, function(error) {
-                request(deviceCreation, function(error, response, body) {
+            request(groupCreation, function (error) {
+                request(deviceCreation, function (error, response, body) {
                     done();
                 });
             });
         });
 
-        it('should raise a DUPLICATE_DEVICE_ID error', function(done) {
-            request(deviceCreationDuplicated, function(error, response, body) {
+        it('should raise a DUPLICATE_DEVICE_ID error', function (done) {
+            request(deviceCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -153,7 +153,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
+    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function () {
         const alternativeDeviceCreation = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -173,7 +173,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -206,24 +206,24 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            request(groupCreation, function(error) {
-                request(deviceCreation, function(error, response, body) {
-                    request(alternativeGroupCreation, function(error, response, body) {
+            request(groupCreation, function (error) {
+                request(deviceCreation, function (error, response, body) {
+                    request(alternativeGroupCreation, function (error, response, body) {
                         done();
                     });
                 });
             });
         });
 
-        it('should return a 201 OK', function(done) {
-            request(alternativeDeviceCreation, function(error, response, body) {
+        it('should return a 201 OK', function (done) {
+            request(alternativeDeviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
     });
-    describe('When a device is provisioned without a type and with a default configuration type', function() {
+    describe('When a device is provisioned without a type and with a default configuration type', function () {
         const getDevice = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'GET',
@@ -234,7 +234,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
         };
         let oldType;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
@@ -257,13 +257,13 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             request(groupCreation, done);
         });
 
-        afterEach(function() {
+        afterEach(function () {
             deviceCreation.json.devices[0].entity_type = oldType;
         });
 
-        it('should be provisioned with the default type', function(done) {
-            request(deviceCreation, function(error, response, body) {
-                request(getDevice, function(error, response, body) {
+        it('should be provisioned with the default type', function (done) {
+            request(deviceCreation, function (error, response, body) {
+                request(getDevice, function (error, response, body) {
                     const parsedBody = JSON.parse(body);
 
                     parsedBody.entity_type.should.equal('SensorMachine');
@@ -273,8 +273,8 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned for a configuration', function() {
-        beforeEach(function(done) {
+    describe('When a device is provisioned for a configuration', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
@@ -302,16 +302,16 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function() {
             request(groupCreation, done);
         });
 
-        it('should not raise any error', function(done) {
-            request(deviceCreation, function(error, response, body) {
+        it('should not raise any error', function (done) {
+            request(deviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
 
-        it('should send the mixed data to the Context Broker', function(done) {
-            request(deviceCreation, function(error, response, body) {
+        it('should send the mixed data to the Context Broker', function (done) {
+            request(deviceCreation, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });

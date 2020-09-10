@@ -49,7 +49,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-v2 - Device provisioning API: Update provisioned devices', function() {
+describe('NGSI-v2 - Device provisioning API: Update provisioned devices', function () {
     const provisioning1Options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -87,9 +87,9 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionExplicitAttrs.json')
     };
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         nock.cleanAll();
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
             );
@@ -157,13 +157,13 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a request to update a provision device arrives', function() {
+    describe('When a request to update a provision device arrives', function () {
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -174,7 +174,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateProvisionDevice.json')
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -214,16 +214,16 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .reply(201, null, { Location: '/v2/registrations/4419a7f52546658441165849' });
         });
 
-        it('should return a 200 OK and no errors', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should return a 200 OK and no errors', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
 
-        it('should have updated the data when asking for the particular device', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should have updated the data when asking for the particular device', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -233,7 +233,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function(error, response, body) {
+                request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
                     const parsedBody = JSON.parse(body);
@@ -244,8 +244,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
 
-        it('should not modify the attributes not present in the update request', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should not modify the attributes not present in the update request', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -255,7 +255,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function(error, response, body) {
+                request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
                     const parsedBody = JSON.parse(body);
@@ -266,7 +266,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
     });
-    describe('When an update request arrives with a new Device ID', function() {
+    describe('When an update request arrives with a new Device ID', function () {
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -279,15 +279,15 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             )
         };
 
-        it('should raise a 400 error', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should raise a 400 error', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
             });
         });
     });
-    describe('When a wrong update request payload arrives', function() {
+    describe('When a wrong update request payload arrives', function () {
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
@@ -300,8 +300,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             )
         };
 
-        it('should raise a 400 error', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should raise a 400 error', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
@@ -309,7 +309,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-    describe('When a device is provisioned without attributes and new ones are added through an update', function() {
+    describe('When a device is provisioned without attributes and new ones are added through an update', function () {
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'PUT',
@@ -328,7 +328,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -354,16 +354,16 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
-        it('should not raise any error', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should not raise any error', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
-        it('should provision the attributes appropriately', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                request(optionsGetDevice, function(error, response, body) {
+        it('should provision the attributes appropriately', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
@@ -375,8 +375,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 });
             });
         });
-        it('should create the initial values for the attributes in the Context Broker', function(done) {
-            request(optionsUpdate, function(error, response, body) {
+        it('should create the initial values for the attributes in the Context Broker', function (done) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -384,7 +384,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
     });
 
-    describe('When a device is updated to add static attributes', function() {
+    describe('When a device is updated to add static attributes', function () {
         /* jshint camelcase: false */
 
         const optionsUpdate = {
@@ -405,7 +405,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -431,9 +431,9 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
-        it('should provision the attributes appropriately', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                request(optionsGetDevice, function(error, response, body) {
+        it('should provision the attributes appropriately', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
@@ -446,7 +446,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
     });
-    describe('When a device is updated to update explicitAttrs', function() {
+    describe('When a device is updated to update explicitAttrs', function () {
         /* jshint camelcase: false */
 
         const optionsUpdate = {
@@ -469,7 +469,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -484,9 +484,9 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning4Options)], done);
         });
 
-        it('should provision the explicitAttrs attribute appropriately', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                request(optionsGetDevice, function(error, response, body) {
+        it('should provision the explicitAttrs attribute appropriately', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 

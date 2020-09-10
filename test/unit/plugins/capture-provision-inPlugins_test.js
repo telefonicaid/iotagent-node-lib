@@ -62,7 +62,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Data Mapping Plugins: device provision', function() {
+describe('Data Mapping Plugins: device provision', function () {
     const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -73,7 +73,7 @@ describe('Data Mapping Plugins: device provision', function() {
         }
     };
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -104,19 +104,19 @@ describe('Data Mapping Plugins: device provision', function() {
                 utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
             );
 
-        iotAgentLib.activate(iotAgentConfig, function(error) {
+        iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a provision request arrives to a IoTA with provisioning middleware', function() {
-        it('should execute the translation middlewares', function(done) {
+    describe('When a provision request arrives to a IoTA with provisioning middleware', function () {
+        it('should execute the translation middlewares', function (done) {
             let executed = false;
 
             function testMiddleware(device, callback) {
@@ -126,27 +126,27 @@ describe('Data Mapping Plugins: device provision', function() {
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 executed.should.equal(true);
                 done();
             });
         });
 
-        it('should continue with the registration process', function(done) {
+        it('should continue with the registration process', function (done) {
             function testMiddleware(device, callback) {
                 callback(null, device);
             }
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
         });
 
-        it('should execute the device provisioning handlers', function(done) {
+        it('should execute the device provisioning handlers', function (done) {
             let executed = false;
 
             function testMiddleware(device, callback) {
@@ -161,28 +161,28 @@ describe('Data Mapping Plugins: device provision', function() {
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
             iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 executed.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a provisioning middleware returns an error', function() {
-        it('should not continue with the registration process', function(done) {
+    describe('When a provisioning middleware returns an error', function () {
+        it('should not continue with the registration process', function (done) {
             function testMiddleware(device, callback) {
                 callback(new Error('This provisioning should not progress'));
             }
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.equal(contextBrokerMock.isDone(), false);
                 done();
             });
         });
 
-        it('should not execute the device provisioning handlers', function(done) {
+        it('should not execute the device provisioning handlers', function (done) {
             let executed = false;
 
             function testMiddleware(device, callback) {
@@ -197,7 +197,7 @@ describe('Data Mapping Plugins: device provision', function() {
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
             iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 executed.should.equal(false);
                 done();
             });

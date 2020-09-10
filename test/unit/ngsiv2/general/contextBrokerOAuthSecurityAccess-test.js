@@ -89,7 +89,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', function() {
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', function () {
     const values = [
         {
             name: 'state',
@@ -103,17 +103,17 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
         nock.cleanAll();
     });
 
-    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -137,23 +137,23 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should ask OAuth2 provider for a token based on the trust token', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should ask OAuth2 provider for a token based on the trust token', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 oauth2Mock.done();
                 done();
             });
         });
-        it('should send the generated token in the auth header', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should send the generated token in the auth header', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
     });
-    describe('When a measure is sent to the Context Broker and the access is forbidden', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker and the access is forbidden', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -177,16 +177,16 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('ACCESS_FORBIDDEN');
                 done();
             });
         });
     });
-    describe('When a measure is sent and the trust is rejected asking for the token', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent and the trust is rejected asking for the token', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -212,8 +212,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('AUTHENTICATION_ERROR');
                 done();
@@ -221,10 +221,10 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
         });
     });
 
-    describe('When the user requests information about a device in a protected CB', function() {
+    describe('When the user requests information about a device in a protected CB', function () {
         const attributes = ['state', 'dimming'];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -247,16 +247,16 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send the Auth Token along with the information query', function(done) {
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+        it('should send the Auth Token along with the information query', function (done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
     });
-    describe('When subscriptions are used on a protected Context Broker', function() {
-        beforeEach(function(done) {
+    describe('When subscriptions are used on a protected Context Broker', function () {
+        beforeEach(function (done) {
             const optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -271,7 +271,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
 
             nock.cleanAll();
 
-            iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.activate(iotAgentConfig, function () {
                 oauth2Mock = nock('http://192.168.1.1:3000')
                     .post(
                         '/auth/realms/default/protocol/openid-connect/token',
@@ -310,17 +310,17 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                     .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
-                iotAgentLib.clearAll(function() {
-                    request(optionsProvision, function(error, result, body) {
+                iotAgentLib.clearAll(function () {
+                    request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });
             });
         });
 
-        it('subscribe requests use auth header', function(done) {
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
-                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
+        it('subscribe requests use auth header', function (done) {
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
                     contextBrokerMock.done();
@@ -330,7 +330,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
             });
         });
 
-        it('unsubscribe requests use auth header', function(done) {
+        it('unsubscribe requests use auth header', function (done) {
             oauth2Mock
                 .post(
                     '/auth/realms/default/protocol/openid-connect/token',
@@ -340,9 +340,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
 
             contextBrokerMock.delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8').reply(204);
 
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function(error, device) {
-                iotAgentLib.subscribe(device, ['dimming'], null, function(error) {
-                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function(error) {
+            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();
                         done();
                     });
@@ -352,7 +352,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
     });
 });
 
-describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function() {
+describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)', function () {
     const values = [
         {
             name: 'state',
@@ -366,17 +366,17 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
         nock.cleanAll();
     });
 
-    describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -405,15 +405,15 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should ask OAuth2 provider for a token based on the trust token', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should ask OAuth2 provider for a token based on the trust token', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 oauth2Mock.done();
                 done();
             });
         });
-        it('should send the generated token in the auth header', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should send the generated token in the auth header', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -421,10 +421,10 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-    describe('When the user requests information about a device in a protected CB', function() {
+    describe('When the user requests information about a device in a protected CB', function () {
         const attributes = ['state', 'dimming'];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -451,8 +451,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send the Auth Token along with the information query', function(done) {
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error) {
+        it('should send the Auth Token along with the information query', function (done) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -460,8 +460,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-    describe('When a measure is sent and the refresh token is not valid', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent and the refresh token is not valid', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -477,8 +477,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('AUTHENTICATION_ERROR');
                 done();
@@ -486,8 +486,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-    describe('When a measure is sent to the Context Broker and the client credentials are invalid', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker and the client credentials are invalid', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -506,8 +506,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a AUTHENTICATION_ERROR error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a AUTHENTICATION_ERROR error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('AUTHENTICATION_ERROR');
                 done();
@@ -515,8 +515,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
         });
     });
 
-    describe('When a measure is sent to the Context Broker and the access is unauthorized', function() {
-        beforeEach(function(done) {
+    describe('When a measure is sent to the Context Broker and the access is unauthorized', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             oauth2Mock = nock('http://192.168.1.1:3000')
@@ -544,8 +544,8 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('it should return a ACCESS_FORBIDDEN error to the caller', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('it should return a ACCESS_FORBIDDEN error to the caller', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('ACCESS_FORBIDDEN');
                 done();
@@ -557,7 +557,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
 describe(
     'NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
         'configured through group provisioning',
-    function() {
+    function () {
         const groupCreation = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
@@ -576,19 +576,19 @@ describe(
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             logger.setLevel('FATAL');
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
             nock.cleanAll();
         });
 
-        describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
+        describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
             let oauth2Mock2;
             let contextBrokerMock2;
-            beforeEach(function(done) {
+            beforeEach(function (done) {
                 nock.cleanAll();
                 oauth2Mock = nock('http://192.168.1.1:3000')
                     .post(
@@ -645,8 +645,8 @@ describe(
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
-                iotAgentLib.activate(iotAgentConfig, function() {
-                    request(groupCreation, function(error, response, body) {
+                iotAgentLib.activate(iotAgentConfig, function () {
+                    request(groupCreation, function (error, response, body) {
                         done();
                     });
                 });
@@ -654,8 +654,8 @@ describe(
             it(
                 'should ask OAuth2 provider for a token based on the' +
                     'trust token and send the generated token in the auth header',
-                function(done) {
-                    iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+                function (done) {
+                    iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                         should.not.exist(error);
                         oauth2Mock.done();
                         contextBrokerMock.done();
@@ -664,8 +664,8 @@ describe(
                 }
             );
 
-            it('should use the updated trust token in the following requests', function(done) {
-                iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+            it('should use the updated trust token in the following requests', function (done) {
+                iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
                     oauth2Mock2.done();
                     contextBrokerMock2.done();
@@ -674,7 +674,7 @@ describe(
             });
         });
 
-        describe('When a device is provisioned for a configuration contains an OAuth2 trust token', function() {
+        describe('When a device is provisioned for a configuration contains an OAuth2 trust token', function () {
             const values = [
                 {
                     name: 'status',
@@ -693,7 +693,7 @@ describe(
             };
             let contextBrokerMock2;
             let contextBrokerMock3;
-            beforeEach(function(done) {
+            beforeEach(function (done) {
                 const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
                 timekeeper.freeze(time);
                 nock.cleanAll();
@@ -772,19 +772,19 @@ describe(
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
-                iotAgentLib.activate(iotAgentConfig, function() {
+                iotAgentLib.activate(iotAgentConfig, function () {
                     done();
                 });
             });
 
-            afterEach(function(done) {
+            afterEach(function (done) {
                 timekeeper.reset();
 
                 done();
             });
 
-            it('should not raise any error', function(done) {
-                request(deviceCreation, function(error, response, body) {
+            it('should not raise any error', function (done) {
+                request(deviceCreation, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(201);
                     contextBrokerMock.done();
@@ -793,8 +793,8 @@ describe(
                 });
             });
 
-            it('should send the mixed data to the Context Broker', function(done) {
-                iotAgentLib.update('Light1', 'SensorMachine', '', values, function(error) {
+            it('should send the mixed data to the Context Broker', function (done) {
+                iotAgentLib.update('Light1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock3.done();
                     done();
@@ -807,7 +807,7 @@ describe(
 describe(
     'NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (FIWARE Keyrock IDM)' +
         'configured through group provisioning. Permanent token',
-    function() {
+    function () {
         const groupCreation = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
@@ -826,18 +826,18 @@ describe(
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             logger.setLevel('FATAL');
             iotAgentConfig.authentication.permanentToken = true;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
             nock.cleanAll();
         });
 
-        describe('When a measure is sent to the Context Broker via an Update Context operation', function() {
-            beforeEach(function(done) {
+        describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
+            beforeEach(function (done) {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://unexistentHost:1026')
@@ -854,22 +854,22 @@ describe(
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
-                iotAgentLib.activate(iotAgentConfig, function() {
-                    request(groupCreation, function(error, response, body) {
+                iotAgentLib.activate(iotAgentConfig, function () {
+                    request(groupCreation, function (error, response, body) {
                         done();
                     });
                 });
             });
-            it('should send the permanent token in the auth header', function(done) {
-                iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+            it('should send the permanent token in the auth header', function (done) {
+                iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
                 });
             });
 
-            it('should use the permanent trust token in the following requests', function(done) {
-                iotAgentLib.update('machine1', 'SensorMachine', '', values, function(error) {
+            it('should use the permanent trust token in the following requests', function (done) {
+                iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();

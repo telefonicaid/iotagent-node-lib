@@ -117,23 +117,23 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Data Mapping Plugins: translation', function() {
-    beforeEach(function(done) {
+describe('Data Mapping Plugins: translation', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a new update translation middleware is added to the IoT Agent', function() {
-        beforeEach(function() {
+    describe('When a new update translation middleware is added to the IoT Agent', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -146,7 +146,7 @@ describe('Data Mapping Plugins: translation', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
         });
 
-        it('should execute the translation middlewares', function(done) {
+        it('should execute the translation middlewares', function (done) {
             const values = [
                 {
                     name: 'state',
@@ -170,14 +170,14 @@ describe('Data Mapping Plugins: translation', function() {
 
             iotAgentLib.addUpdateMiddleware(testMiddleware);
 
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 executed.should.equal(true);
                 done();
             });
         });
 
-        it('should translate the appropriate attributes', function(done) {
+        it('should translate the appropriate attributes', function (done) {
             const values = [
                 {
                     name: 'state',
@@ -198,7 +198,7 @@ describe('Data Mapping Plugins: translation', function() {
 
             iotAgentLib.addUpdateMiddleware(testMiddleware);
 
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -206,10 +206,10 @@ describe('Data Mapping Plugins: translation', function() {
         });
     });
 
-    describe('When a new query translation middleware is added to the IoT Agent', function() {
+    describe('When a new query translation middleware is added to the IoT Agent', function () {
         const attributes = ['state', 'dimming'];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -222,7 +222,7 @@ describe('Data Mapping Plugins: translation', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/queryContext1Success.json'));
         });
 
-        it('should call the middleware', function(done) {
+        it('should call the middleware', function (done) {
             let called = false;
 
             function testMiddleware(entity, typeInformation, callback) {
@@ -236,13 +236,13 @@ describe('Data Mapping Plugins: translation', function() {
 
             iotAgentLib.addQueryMiddleware(testMiddleware);
 
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error, result) {
                 should.not.exist(error);
                 called.should.equal(true);
                 done();
             });
         });
-        it('should call the middleware', function(done) {
+        it('should call the middleware', function (done) {
             function testMiddleware(entity, typeInformation, callback) {
                 entity.contextResponses[0].contextElement.attributes[1].value =
                     entity.contextResponses[0].contextElement.attributes[1].value + '%';
@@ -252,7 +252,7 @@ describe('Data Mapping Plugins: translation', function() {
 
             iotAgentLib.addQueryMiddleware(testMiddleware);
 
-            iotAgentLib.query('light1', 'Light', '', attributes, function(error, result) {
+            iotAgentLib.query('light1', 'Light', '', attributes, function (error, result) {
                 should.not.exist(error);
                 result.contextResponses[0].contextElement.attributes[1].value.should.equal('23%');
                 done();

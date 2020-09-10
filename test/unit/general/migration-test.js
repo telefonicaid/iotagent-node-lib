@@ -36,13 +36,13 @@ const configurationCollection = utils.readExampleFile('./test/unit/examples/mong
 let originDb;
 let targetDb;
 
-describe('MongoDB migration', function() {
-    beforeEach(function(done) {
+describe('MongoDB migration', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        mongo.connect('mongodb://localhost:27017/iotOrigin', { useNewUrlParser: true }, function(err, client) {
+        mongo.connect('mongodb://localhost:27017/iotOrigin', { useNewUrlParser: true }, function (err, client) {
             originDb = client;
-            mongo.connect('mongodb://localhost:27017/iotTarget', { useNewUrlParser: true }, function(err, client) {
+            mongo.connect('mongodb://localhost:27017/iotTarget', { useNewUrlParser: true }, function (err, client) {
                 targetDb = client;
                 async.series(
                     [
@@ -55,11 +55,11 @@ describe('MongoDB migration', function() {
         });
     });
 
-    afterEach(function(done) {
-        mongoUtils.cleanDb('localhost', 'iotTarget', function(error) {
-            mongoUtils.cleanDb('localhost', 'iotOrigin', function(error) {
-                originDb.close(function(error) {
-                    targetDb.close(function(error) {
+    afterEach(function (done) {
+        mongoUtils.cleanDb('localhost', 'iotTarget', function (error) {
+            mongoUtils.cleanDb('localhost', 'iotOrigin', function (error) {
+                originDb.close(function (error) {
+                    targetDb.close(function (error) {
                         done();
                     });
                 });
@@ -67,47 +67,47 @@ describe('MongoDB migration', function() {
         });
     });
 
-    describe('When the full migration command is executed for two databases', function() {
+    describe('When the full migration command is executed for two databases', function () {
         const config = {
             host: 'localhost',
             port: '27017'
         };
 
-        it('should migrate all the services', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+        it('should migrate all the services', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function () {
                 targetDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(3);
                         done();
                     });
             });
         });
-        it('should migrate all the devices', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+        it('should migrate all the devices', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(4);
                         done();
                     });
             });
         });
-        it('should migrate all the fields for each device', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+        it('should migrate all the fields for each device', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function () {
                 targetDb
                     .db()
                     .collection('groups')
                     .find({
                         service: 'dumb_mordor'
                     })
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(1);
                         should.exist(docs[0].apikey);
@@ -121,15 +121,15 @@ describe('MongoDB migration', function() {
                     });
             });
         });
-        it('should migrate all the fields for each service', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function() {
+        it('should migrate all the fields for each service', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', null, null, function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({
                         id: 'gk20'
                     })
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(1);
                         should.exist(docs[0].id);
@@ -152,32 +152,32 @@ describe('MongoDB migration', function() {
         });
     });
 
-    describe('When a service migration command is executed', function() {
+    describe('When a service migration command is executed', function () {
         const config = {
             host: 'localhost',
             port: '27017'
         };
 
-        it("should migrate just the service's  configurations", function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
+        it("should migrate just the service's  configurations", function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function () {
                 targetDb
                     .db()
                     .collection('groups')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(1);
                         done();
                     });
             });
         });
-        it("should migrate just the service's devices", function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function() {
+        it("should migrate just the service's devices", function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', null, function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(3);
                         done();
@@ -186,19 +186,19 @@ describe('MongoDB migration', function() {
         });
     });
 
-    describe('When a device has an empty string in its name', function() {
+    describe('When a device has an empty string in its name', function () {
         const config = {
             host: 'localhost',
             port: '27017'
         };
 
-        it('should set the name as undefined', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', 'dumb_mordor', null, function() {
+        it('should set the name as undefined', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'dumb_mordor', null, function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         docs.length.should.equal(1);
                         should.exist(docs[0].name);
                         docs[0].name.should.equal(docs[0].type + ':' + docs[0].id);
@@ -208,19 +208,19 @@ describe('MongoDB migration', function() {
         });
     });
 
-    describe('When a subservice migration command is executed', function() {
+    describe('When a subservice migration command is executed', function () {
         const config = {
             host: 'localhost',
             port: '27017'
         };
 
-        it("should migrate just the subservice's devices", function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
+        it("should migrate just the subservice's devices", function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(1);
                         done();
@@ -229,7 +229,7 @@ describe('MongoDB migration', function() {
         });
     });
 
-    describe('When a subservice migration configuration has a protocol translation table', function() {
+    describe('When a subservice migration configuration has a protocol translation table', function () {
         const config = {
             host: 'localhost',
             port: '27017',
@@ -238,13 +238,13 @@ describe('MongoDB migration', function() {
             }
         };
 
-        it('should change the protocol to the translated one', function(done) {
-            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function() {
+        it('should change the protocol to the translated one', function (done) {
+            migration.migrate(config, 'iotOrigin', 'iotTarget', 'smart_gondor', '/gardens', function () {
                 targetDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         docs.length.should.equal(1);
                         docs[0].protocol.should.equal('NODE-Ultralight');

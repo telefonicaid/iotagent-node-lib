@@ -22,7 +22,7 @@ function initEcho(callback) {
     echoServer.server.listen(echoServer.app.get('port'), echoServer.app.get('host'), callback);
 }
 
-initEcho(function(error) {
+initEcho(function (error) {
     if (error) {
         console.log('Could not initialize echo server: %s', error);
     } else {

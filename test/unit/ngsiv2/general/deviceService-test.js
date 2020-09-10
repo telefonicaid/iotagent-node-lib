@@ -167,24 +167,22 @@ let contextBrokerMock;
 let iotamMock;
 
 /* jshint camelcase: false */
-describe('NGSI-v2 - Device Service: utils', function() {
-    beforeEach(function(done) {
+describe('NGSI-v2 - Device Service: utils', function () {
+    beforeEach(function (done) {
         nock.cleanAll();
         logger.setLevel('FATAL');
-        iotamMock = nock('http://localhost:8082')
-            .post('/protocols')
-            .reply(200, {});
+        iotamMock = nock('http://localhost:8082').post('/protocols').reply(200, {});
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         async.series([iotAgentLib.clearAll, iotAgentLib.deactivate], done);
     });
 
-    describe('When an existing device tries to be retrieved with retrieveOrCreate()', function() {
-        beforeEach(function(done) {
+    describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
+        beforeEach(function (done) {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
@@ -194,7 +192,7 @@ describe('NGSI-v2 - Device Service: utils', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function(
+            async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function (
                 error,
                 results
             ) {
@@ -202,8 +200,8 @@ describe('NGSI-v2 - Device Service: utils', function() {
             });
         });
 
-        it('should return the existing device', function(done) {
-            iotAgentLib.retrieveDevice('Light1', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function(error, device) {
+        it('should return the existing device', function (done) {
+            iotAgentLib.retrieveDevice('Light1', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function (error, device) {
                 should.not.exist(error);
                 should.exist(device);
 
@@ -213,8 +211,8 @@ describe('NGSI-v2 - Device Service: utils', function() {
         });
     });
 
-    describe('When an unexisting device tries to be retrieved for an existing APIKey', function() {
-        beforeEach(function(done) {
+    describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
+        beforeEach(function (done) {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
@@ -224,13 +222,13 @@ describe('NGSI-v2 - Device Service: utils', function() {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([request.bind(request, groupCreation)], function(error, results) {
+            async.series([request.bind(request, groupCreation)], function (error, results) {
                 done();
             });
         });
 
-        it('should register the device and return it', function(done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function(
+        it('should register the device and return it', function (done) {
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function (
                 error,
                 device
             ) {
@@ -245,9 +243,9 @@ describe('NGSI-v2 - Device Service: utils', function() {
         });
     });
 
-    describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function() {
-        it('should raise an error', function(done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092', function(
+    describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function () {
+        it('should raise an error', function (done) {
+            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092', function (
                 error,
                 device
             ) {

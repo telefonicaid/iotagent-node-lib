@@ -60,12 +60,12 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-v2 - Event plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-v2 - Event plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.addEvents.query);
                 done();
@@ -73,12 +73,12 @@ describe('NGSI-v2 - Event plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with an event to the plugin', function() {
+    describe('When an update comes with an event to the plugin', function () {
         const values = [
             {
                 name: 'state',
@@ -92,13 +92,13 @@ describe('NGSI-v2 - Event plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs', function(body) {
+                .post('/v2/entities/light1/attrs', function (body) {
                     const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
 
                     return body.activation.value.match(dateRegex);
@@ -107,8 +107,8 @@ describe('NGSI-v2 - Event plugin', function() {
                 .reply(204);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

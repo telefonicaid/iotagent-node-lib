@@ -82,7 +82,7 @@ const commands = {
 };
 
 function handleError(message) {
-    return function(error) {
+    return function (error) {
         if (error) {
             console.log('\n\\033[31mERROR:\\033[0m %s', error.message);
         } else {
@@ -94,7 +94,7 @@ function handleError(message) {
 }
 
 function listDevices() {
-    iotAgentLib.listDevices(config.service, config.subservice, function(error, devices) {
+    iotAgentLib.listDevices(config.service, config.subservice, function (error, devices) {
         if (error) {
             console.log('\n\\033[31mERROR:\\033[0m %s', error.message);
         } else {
@@ -208,9 +208,9 @@ function unregisterDevice(command) {
 }
 
 function updateDeviceValue(command) {
-    iotAgentLib.getDevice(command[0], function(error, device) {
+    iotAgentLib.getDevice(command[0], function (error, device) {
         if (device) {
-            extractAttributes(command[2], function(error, attributes) {
+            extractAttributes(command[2], function (error, attributes) {
                 iotAgentLib.update(
                     device.name,
                     device.type,

@@ -47,13 +47,13 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('NGSI-v1 - Device provisioning API: List provisioned devices', function() {
+describe('NGSI-v1 - Device provisioning API: List provisioned devices', function () {
     let provisioning1Options;
     let provisioning2Options;
     let provisioning3Options;
     let provisioning4Options;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         provisioning1Options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
@@ -84,7 +84,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionFullDevice.json')
         };
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/NGSI9/registerContext')
                 .reply(
@@ -140,18 +140,18 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                     async.apply(request, provisioning2Options),
                     async.apply(request, provisioning4Options)
                 ],
-                function(error, results) {
+                function (error, results) {
                     done();
                 }
             );
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a request for the list of provisioned devices arrive', function() {
+    describe('When a request for the list of provisioned devices arrive', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
@@ -161,8 +161,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             method: 'GET'
         };
 
-        it('should return all the provisioned devices', function(done) {
-            request(options, function(error, response, body) {
+        it('should return all the provisioned devices', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 should.exist(parsedBody.devices);
@@ -173,10 +173,10 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
 
-        it('should return all the appropriate field names', function(done) {
+        it('should return all the appropriate field names', function (done) {
             /* jshint camelcase:false */
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
 
                 should.exist(parsedBody.devices[0].attributes);
@@ -198,8 +198,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
 
-        it('should return all the plugin attributes', function(done) {
-            request(options, function(error, response, body) {
+        it('should return all the plugin attributes', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
 
                 should.exist(parsedBody.devices[2].attributes[0].entity_name);
@@ -214,7 +214,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-    describe('When a request for the information about a specific device arrives', function() {
+    describe('When a request for the information about a specific device arrives', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
@@ -224,8 +224,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             method: 'GET'
         };
 
-        it('should return all the information on that particular device', function(done) {
-            request(options, function(error, response, body) {
+        it('should return all the information on that particular device', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -236,8 +236,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
 
-        it('should return the appropriate attribute fields', function(done) {
-            request(options, function(error, response, body) {
+        it('should return the appropriate attribute fields', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 const parsedBody = JSON.parse(body);
@@ -249,7 +249,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-    describe('When a request for a device with plugin attributes arrives', function() {
+    describe('When a request for a device with plugin attributes arrives', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
             headers: {
@@ -259,8 +259,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             method: 'GET'
         };
 
-        it('should return the appropriate attribute fields', function(done) {
-            request(options, function(error, response, body) {
+        it('should return the appropriate attribute fields', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 const parsedBody = JSON.parse(body);
@@ -276,7 +276,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
     });
-    describe('When a request for an unexistent device arrives', function() {
+    describe('When a request for an unexistent device arrives', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
@@ -286,8 +286,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             method: 'GET'
         };
 
-        it('should return a 404 error', function(done) {
-            request(options, function(error, response, body) {
+        it('should return a 404 error', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
                 done();
@@ -295,7 +295,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         });
     });
 
-    describe('When a request for listing all the devices with a limit of 3 arrives', function() {
+    describe('When a request for listing all the devices with a limit of 3 arrives', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
             headers: {
@@ -324,7 +324,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             request(provisioningDeviceOptions, callback);
         }
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -347,15 +347,15 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                     utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
                 );
 
-            iotAgentLib.clearAll(function() {
-                async.times(10, createDeviceRequest, function(error, results) {
+            iotAgentLib.clearAll(function () {
+                async.times(10, createDeviceRequest, function (error, results) {
                     done();
                 });
             });
         });
 
-        it('should return just 3 devices', function(done) {
-            request(options, function(error, response, body) {
+        it('should return just 3 devices', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 parsedBody.devices.length.should.equal(3);
@@ -363,8 +363,8 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             });
         });
 
-        it('should return a count with the complete number of devices', function(done) {
-            request(options, function(error, response, body) {
+        it('should return a count with the complete number of devices', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 parsedBody.count.should.equal(10);
@@ -373,7 +373,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         });
     });
 
-    describe('When a request for listing all the devices with a offset of 3 arrives', function() {
+    describe('When a request for listing all the devices with a offset of 3 arrives', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
             headers: {
@@ -397,12 +397,12 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             provisioningDeviceOptions.json.devices[0].device_id =
                 provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            request(provisioningDeviceOptions, function(error, response, body) {
+            request(provisioningDeviceOptions, function (error, response, body) {
                 callback();
             });
         }
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -417,15 +417,15 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                     )
                 );
 
-            iotAgentLib.clearAll(function() {
-                async.timesSeries(10, createDeviceRequest, function(error, results) {
+            iotAgentLib.clearAll(function () {
+                async.timesSeries(10, createDeviceRequest, function (error, results) {
                     done();
                 });
             });
         });
 
-        it('should skip the first 3 devices', function(done) {
-            request(options, function(error, response, body) {
+        it('should skip the first 3 devices', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
                 should.not.exist(error);
 
@@ -438,7 +438,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         });
     });
 
-    describe('When a listing request arrives and there are devices in other service and servicepath', function() {
+    describe('When a listing request arrives and there are devices in other service and servicepath', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
@@ -448,7 +448,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             method: 'GET'
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             provisioning3Options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -470,13 +470,13 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                     )
                 );
 
-            request(provisioning3Options, function(error) {
+            request(provisioning3Options, function (error) {
                 done();
             });
         });
 
-        it('should return just the ones in the selected service', function(done) {
-            request(options, function(error, response, body) {
+        it('should return just the ones in the selected service', function (done) {
+            request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
                 should.not.exist(error);
                 response.statusCode.should.equal(200);

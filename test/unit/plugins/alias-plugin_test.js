@@ -66,12 +66,12 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Attribute alias plugin', function() {
-    beforeEach(function(done) {
+describe('Attribute alias plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 done();
@@ -79,12 +79,12 @@ describe('Attribute alias plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes for attributes with aliases', function() {
+    describe('When an update comes for attributes with aliases', function () {
         const values = [
             {
                 name: 't',
@@ -98,7 +98,7 @@ describe('Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -114,15 +114,15 @@ describe('Attribute alias plugin', function() {
                 );
         });
 
-        it('should rename the attributes as expected by the mappings', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should rename the attributes as expected by the mappings', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
     });
-    describe('When an update comes for attributes with aliases and a different type', function() {
+    describe('When an update comes for attributes with aliases and a different type', function () {
         const values = [
             {
                 name: 'l',
@@ -131,7 +131,7 @@ describe('Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -147,8 +147,8 @@ describe('Attribute alias plugin', function() {
                 );
         });
 
-        it('should rename the attributes as expected by the mappings', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should rename the attributes as expected by the mappings', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

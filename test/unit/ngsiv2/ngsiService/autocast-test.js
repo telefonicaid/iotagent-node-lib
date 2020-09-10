@@ -82,16 +82,16 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-v2 - JSON native types autocast test', function() {
-    beforeEach(function() {
+describe('NGSI-v2 - JSON native types autocast test', function () {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Number type and Integer value', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Number type and Integer value', function () {
         const values = [
             {
                 name: 'pressure',
@@ -100,7 +100,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -116,8 +116,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -125,7 +125,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Number type and Float value', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Number type and Float value', function () {
         const values = [
             {
                 name: 'temperature',
@@ -134,7 +134,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -150,8 +150,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -159,7 +159,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and True value', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and True value', function () {
         const values = [
             {
                 name: 'status',
@@ -168,7 +168,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -184,8 +184,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -193,7 +193,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and False value', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Boolean type and False value', function () {
         const values = [
             {
                 name: 'status',
@@ -202,7 +202,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -218,8 +218,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -227,7 +227,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with None type', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with None type', function () {
         const values = [
             {
                 name: 'keep_alive',
@@ -236,7 +236,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -252,8 +252,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -261,7 +261,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Array type', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Array type', function () {
         const values = [
             {
                 name: 'tags',
@@ -270,7 +270,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -286,8 +286,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -295,7 +295,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device. Observation with Object type', function() {
+    describe('When the IoT Agent receives new information from a device. Observation with Object type', function () {
         const values = [
             {
                 name: 'configuration',
@@ -304,7 +304,7 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             }
         ];
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -320,8 +320,8 @@ describe('NGSI-v2 - JSON native types autocast test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

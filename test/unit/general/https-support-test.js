@@ -119,9 +119,9 @@ const device1 = {
 let contextBrokerMock;
 let iotamMock;
 
-describe('NGSI-v1 - HTTPS support tests IOTAM', function() {
-    describe('When the IoT Agents is started with https "iotManager" config', function() {
-        beforeEach(function(done) {
+describe('NGSI-v1 - HTTPS support tests IOTAM', function () {
+    describe('When the IoT Agents is started with https "iotManager" config', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotamMock = nock('https://mockediotam.com:9876')
@@ -134,15 +134,15 @@ describe('NGSI-v1 - HTTPS support tests IOTAM', function() {
             groupRegistryMemory.create(groupCreation, done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             nock.cleanAll();
-            groupRegistryMemory.clear(function() {
+            groupRegistryMemory.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should register without errors to the IoT Manager', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should register without errors to the IoT Manager', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -151,9 +151,9 @@ describe('NGSI-v1 - HTTPS support tests IOTAM', function() {
     });
 });
 
-describe('NGSI-v1 - HTTPS support tests', function() {
-    describe('When subscription is sent to HTTPS context broker', function() {
-        beforeEach(function(done) {
+describe('NGSI-v1 - HTTPS support tests', function () {
+    describe('When subscription is sent to HTTPS context broker', function () {
+        beforeEach(function (done) {
             const optionsProvision = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
@@ -170,7 +170,7 @@ describe('NGSI-v1 - HTTPS support tests', function() {
 
             nock.cleanAll();
 
-            iotAgentLib.activate(iotAgentConfig, function() {
+            iotAgentLib.activate(iotAgentConfig, function () {
                 contextBrokerMock = nock('https://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .matchHeader('fiware-servicepath', '/gardens')
@@ -203,25 +203,25 @@ describe('NGSI-v1 - HTTPS support tests', function() {
                         )
                     );
 
-                iotAgentLib.clearAll(function() {
-                    request(optionsProvision, function(error, result, body) {
+                iotAgentLib.clearAll(function () {
+                    request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });
             });
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             nock.cleanAll();
             iotAgentLib.setNotificationHandler();
-            iotAgentLib.clearAll(function() {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should send the appropriate request to the Context Broker', function(done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function(error, device) {
-                iotAgentLib.subscribe(device, ['attr_name'], null, function(error) {
+        it('should send the appropriate request to the Context Broker', function (done) {
+            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     should.not.exist(error);
 
                     contextBrokerMock.done();
@@ -232,8 +232,8 @@ describe('NGSI-v1 - HTTPS support tests', function() {
         });
     });
 
-    describe('When a new device is connected to the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new device is connected to the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotAgentConfig.iotManager = {};
@@ -261,22 +261,22 @@ describe('NGSI-v1 - HTTPS support tests', function() {
                     utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
                 );
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should register as ContextProvider using HTTPS', function(done) {
-            iotAgentLib.register(device1, function(error) {
+        it('should register as ContextProvider using HTTPS', function (done) {
+            iotAgentLib.register(device1, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             nock.cleanAll();
-            iotAgentLib.clearAll(function() {
+            iotAgentLib.clearAll(function () {
                 // We need to remove the registrationId so that the library does not consider next operatios as updates.
                 delete device1.registrationId;
                 iotAgentLib.deactivate(done);

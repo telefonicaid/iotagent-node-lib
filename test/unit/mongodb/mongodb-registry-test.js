@@ -185,34 +185,34 @@ const device3 = {
 };
 let iotAgentDb;
 
-describe('MongoDB Device Registry', function() {
-    beforeEach(function(done) {
+describe('MongoDB Device Registry', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        mongoUtils.cleanDbs(function() {
-            mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function(err, db) {
+        mongoUtils.cleanDbs(function () {
+            mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
                 iotAgentDb = db;
                 done();
             });
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         delete device1.registrationId;
-        iotAgentLib.deactivate(function(error) {
+        iotAgentLib.deactivate(function (error) {
             iotAgentDb
                 .db()
                 .collection('devices')
-                .deleteOne(function(error) {
-                    iotAgentDb.close(function(error) {
+                .deleteOne(function (error) {
+                    iotAgentDb.close(function (error) {
                         mongoUtils.cleanDbs(done);
                     });
                 });
         });
     });
 
-    describe('When a new device is connected to the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new device is connected to the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -236,20 +236,20 @@ describe('MongoDB Device Registry', function() {
                     utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
                 );
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
             });
         });
 
-        it('should be registered in mongodb with all its attributes', function(done) {
-            iotAgentLib.register(device1, function(error) {
+        it('should be registered in mongodb with all its attributes', function (done) {
+            iotAgentLib.register(device1, function (error) {
                 should.not.exist(error);
 
                 iotAgentDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         should.exist(docs.length);
@@ -281,8 +281,8 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When a device with the same Device ID tries to register to the IOT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a device with the same Device ID tries to register to the IOT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -327,14 +327,14 @@ describe('MongoDB Device Registry', function() {
                     utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
                 );
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
             });
         });
 
-        it('should be rejected with a DUPLICATE_DEVICE_ID', function(done) {
-            iotAgentLib.register(device1, function(error) {
-                iotAgentLib.register(device1, function(error) {
+        it('should be rejected with a DUPLICATE_DEVICE_ID', function (done) {
+            iotAgentLib.register(device1, function (error) {
+                iotAgentLib.register(device1, function (error) {
                     should.exist(error);
                     error.name.should.equal('DUPLICATE_DEVICE_ID');
                     done();
@@ -343,8 +343,8 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When a device with the same Device ID but different service tries to be registered', function() {
-        beforeEach(function(done) {
+    describe('When a device with the same Device ID but different service tries to be registered', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -385,14 +385,14 @@ describe('MongoDB Device Registry', function() {
                     utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
                 );
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
             });
         });
 
-        it('should accept both devices', function(done) {
-            iotAgentLib.register(device1, function(error) {
-                iotAgentLib.register(device3, function(error) {
+        it('should accept both devices', function (done) {
+            iotAgentLib.register(device1, function (error) {
+                iotAgentLib.register(device3, function (error) {
                     should.not.exist(error);
                     done();
                 });
@@ -400,8 +400,8 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When a device is removed from the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a device is removed from the IoT Agent', function () {
+        beforeEach(function (done) {
             const expectedPayload3 = utils.readExampleFile(
                 './test/unit/examples/contextAvailabilityRequests/unregisterDevice3.json'
             );
@@ -448,7 +448,7 @@ describe('MongoDB Device Registry', function() {
                     )
                 );
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
                     [async.apply(iotAgentLib.register, device1), async.apply(iotAgentLib.register, device2)],
                     done
@@ -456,13 +456,13 @@ describe('MongoDB Device Registry', function() {
             });
         });
 
-        it('should be removed from MongoDB', function(done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
+        it('should be removed from MongoDB', function (done) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
                 iotAgentDb
                     .db()
                     .collection('devices')
                     .find({})
-                    .toArray(function(err, docs) {
+                    .toArray(function (err, docs) {
                         should.not.exist(err);
                         should.exist(docs);
                         should.exist(docs.length);
@@ -473,8 +473,8 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When the registry is queried for a device using an arbitrary attribute', function() {
-        beforeEach(function(done) {
+    describe('When the registry is queried for a device using an arbitrary attribute', function () {
+        beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
@@ -504,17 +504,17 @@ describe('MongoDB Device Registry', function() {
                 });
             }
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.map(devices, iotAgentLib.register, function(error, results) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                async.map(devices, iotAgentLib.register, function (error, results) {
                     done();
                 });
             });
         });
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.clearRegistry(done);
         });
-        it('should return the appropriate device', function(done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function(
+        it('should return the appropriate device', function (done) {
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function (
                 error,
                 devices
             ) {
@@ -527,8 +527,8 @@ describe('MongoDB Device Registry', function() {
         });
     });
 
-    describe('When the list of devices is retrieved', function() {
-        beforeEach(function(done) {
+    describe('When the list of devices is retrieved', function () {
+        beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v1/updateContext')
                 .times(10)
@@ -558,25 +558,25 @@ describe('MongoDB Device Registry', function() {
                 });
             }
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
-                async.map(devices, iotAgentLib.register, function(error, results) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                async.map(devices, iotAgentLib.register, function (error, results) {
                     done();
                 });
             });
         });
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.clearRegistry(done);
         });
-        it('should return the limited number of devices', function(done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function(error, result) {
+        it('should return the limited number of devices', function (done) {
+            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.devices);
                 result.devices.length.should.equal(3);
                 done();
             });
         });
-        it('should return the total number of devices', function(done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function(error, result) {
+        it('should return the total number of devices', function (done) {
+            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.count);
                 result.count.should.equal(10);

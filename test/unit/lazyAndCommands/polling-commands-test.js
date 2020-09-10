@@ -119,8 +119,8 @@ const device3 = {
     polling: true
 };
 
-describe('NGSI-v1 - Polling commands', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Polling commands', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -149,11 +149,11 @@ describe('NGSI-v1 - Polling commands', function() {
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         delete device3.registrationId;
-        iotAgentLib.clearAll(function() {
-            iotAgentLib.deactivate(function() {
-                mongoUtils.cleanDbs(function() {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
@@ -163,7 +163,7 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a command update arrives to the IoT Agent for a device with polling', function() {
+    describe('When a command update arrives to the IoT Agent for a device with polling', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
@@ -190,7 +190,7 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -205,15 +205,15 @@ describe('NGSI-v1 - Polling commands', function() {
                     )
                 );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should not call the client handler', function(done) {
+        it('should not call the client handler', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 handlerCalled = true;
                 callback(null, {
                     id,
@@ -228,30 +228,30 @@ describe('NGSI-v1 - Polling commands', function() {
                 });
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(false);
                 done();
             });
         });
-        it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 statusAttributeMock.done();
                 done();
             });
         });
-        it('should store the commands in the queue', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should store the commands in the queue', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -263,7 +263,7 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a command arrives with multiple values in the value field', function() {
+    describe('When a command arrives with multiple values in the value field', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
@@ -293,7 +293,7 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -308,17 +308,17 @@ describe('NGSI-v1 - Polling commands', function() {
                     )
                 );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should return a 200 OK both in HTTP and in the status code', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should return a 200 OK both in HTTP and in the status code', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 response.statusCode.should.equal(200);
@@ -328,7 +328,7 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a polling command expires', function() {
+    describe('When a polling command expires', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
@@ -355,7 +355,7 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -384,19 +384,19 @@ describe('NGSI-v1 - Polling commands', function() {
                     )
                 );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should remove it from the queue', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should remove it from the queue', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                setTimeout(function() {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                setTimeout(function () {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -405,14 +405,14 @@ describe('NGSI-v1 - Polling commands', function() {
             });
         });
 
-        it('should mark it as ERROR in the Context Broker', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should mark it as ERROR in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                setTimeout(function() {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                setTimeout(function () {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

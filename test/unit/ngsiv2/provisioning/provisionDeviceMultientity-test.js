@@ -48,23 +48,23 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
-    beforeEach(function(done) {
+describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
+    beforeEach(function (done) {
         nock.cleanAll();
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         iotAgentLib.setProvisioningHandler();
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
-        beforeEach(function() {
+    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -102,12 +102,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
             }
         };
 
-        it('should add the device to the devices list', function(done) {
-            request(options, function(error, response, body) {
+        it('should add the device to the devices list', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
-                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
                     results.devices.length.should.equal(1);
                     done();
                 });

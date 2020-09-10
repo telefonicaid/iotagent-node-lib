@@ -194,12 +194,12 @@ const iotAgentConfig = {
     throttling: 'PT5S'
 };
 
-describe('Java expression language (JEXL) based transformations plugin', function() {
-    beforeEach(function(done) {
+describe('Java expression language (JEXL) based transformations plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -208,13 +208,13 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for expressions with syntax errors', function() {
+    describe('When an update comes for expressions with syntax errors', function () {
         // Case: Update for an attribute with bad expression
         const values = [
             {
@@ -224,8 +224,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'LightError', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'LightError', '', values, function (error) {
                 should.exist(error);
                 error.name.should.equal('INVALID_EXPRESSION');
                 error.code.should.equal(400);
@@ -234,7 +234,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When there are expression attributes that are just calculated (not sent by the device)', function() {
+    describe('When there are expression attributes that are just calculated (not sent by the device)', function () {
         // Case: Expression which results is sent as a new attribute
         const values = [
             {
@@ -249,7 +249,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -265,8 +265,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should calculate them and add them to the payload', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should calculate them and add them to the payload', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -274,7 +274,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an expression with multiple variables with numbers arrive', function() {
+    describe('When an expression with multiple variables with numbers arrive', function () {
         // Case: Update for integer and string attributes with expression
 
         const values = [
@@ -290,7 +290,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -306,8 +306,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should calculate it and add it to the payload', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should calculate it and add it to the payload', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -315,7 +315,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and type integer', function() {
+    describe('When an update comes for attributes without expressions and type integer', function () {
         // Case: Update for an integer attribute without expression
         const values = [
             {
@@ -325,7 +325,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -341,8 +341,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -350,7 +350,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and type integer', function() {
+    describe('When an update comes for attributes with numeric expressions and type integer', function () {
         // Case: Update for an integer attribute with arithmetic expression
         const values = [
             {
@@ -360,7 +360,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -376,8 +376,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -385,7 +385,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expression and type integer', function() {
+    describe('When an update comes for attributes with string expression and type integer', function () {
         // Case: Update for an integer attribute with string expression
         const values = [
             {
@@ -395,7 +395,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -411,8 +411,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -420,7 +420,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and type float', function() {
+    describe('When an update comes for attributes without expressions and type float', function () {
         // Case: Update for a Float attribute without expressions
 
         const values = [
@@ -431,7 +431,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -447,8 +447,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -456,7 +456,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and type float', function() {
+    describe('When an update comes for attributes with numeric expressions and type float', function () {
         // Case: Update for a Float attribute with arithmetic expression
 
         const values = [
@@ -467,7 +467,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -483,8 +483,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -492,7 +492,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expressions and type float', function() {
+    describe('When an update comes for attributes with string expressions and type float', function () {
         // Case: Update for a Float attribute with string expression
 
         const values = [
@@ -503,7 +503,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -519,8 +519,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -528,7 +528,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and NULL type', function() {
+    describe('When an update comes for attributes without expressions and NULL type', function () {
         // Case: Update for a Null attribute without expression
 
         const values = [
@@ -539,7 +539,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -555,8 +555,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -564,7 +564,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and NULL type', function() {
+    describe('When an update comes for attributes with numeric expressions and NULL type', function () {
         // Case: Update for a Null attribute with arithmetic expression
 
         const values = [
@@ -575,7 +575,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -591,8 +591,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -600,7 +600,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expressions and NULL type', function() {
+    describe('When an update comes for attributes with string expressions and NULL type', function () {
         // Case: Update for a Null attribute with string expression
 
         const values = [
@@ -611,7 +611,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -627,8 +627,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -636,7 +636,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and Boolean type', function() {
+    describe('When an update comes for attributes without expressions and Boolean type', function () {
         // Case: Update for a Boolean attribute without expression
 
         const values = [
@@ -647,7 +647,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -663,8 +663,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -672,7 +672,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and Boolean type', function() {
+    describe('When an update comes for attributes with numeric expressions and Boolean type', function () {
         // Case: Update for a Boolean attribute with arithmetic expression
 
         const values = [
@@ -683,7 +683,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -699,8 +699,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -708,7 +708,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expressions and Boolean type', function() {
+    describe('When an update comes for attributes with string expressions and Boolean type', function () {
         // Case: Update for a Boolean attribute with string expression
         const values = [
             {
@@ -718,7 +718,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -734,8 +734,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -743,7 +743,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and Object type', function() {
+    describe('When an update comes for attributes without expressions and Object type', function () {
         // Case: Update for a JSON document attribute without expression
         const values = [
             {
@@ -753,7 +753,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -769,8 +769,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -778,7 +778,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes without expressions and Object type', function() {
+    describe('When an update comes for attributes without expressions and Object type', function () {
         // Case: Update for a JSON array attribute without expression
 
         const values = [
@@ -789,7 +789,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -805,8 +805,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -814,7 +814,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When there are expressions including other attributes and they are not updated', function() {
+    describe('When there are expressions including other attributes and they are not updated', function () {
         const values = [
             {
                 name: 'x',
@@ -823,7 +823,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -839,8 +839,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -848,7 +848,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When there are expressions including other attributes and they are updated', function() {
+    describe('When there are expressions including other attributes and they are updated', function () {
         const values = [
             {
                 name: 'p',
@@ -857,7 +857,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -873,8 +873,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -882,7 +882,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When there are expressions including other attributes and they are updated (overriding situation)', function() {
+    describe('When there are expressions including other attributes and they are updated (overriding situation)', function () {
         const values = [
             {
                 name: 'x',
@@ -896,7 +896,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -912,8 +912,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should apply the expression before sending the values', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should apply the expression before sending the values', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
