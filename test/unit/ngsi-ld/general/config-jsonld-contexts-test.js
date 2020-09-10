@@ -26,119 +26,146 @@
 'use strict';
 
 let config = require('../../../../lib/commonConfig'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'ld',
-            jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                attributes: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S',
-    };
-
+  iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+      host: '192.168.1.1',
+      port: '1026',
+      ngsiVersion: 'ld',
+      // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
+      jsonLdContext: 'http://context.json-ld'
+    },
+    server: {
+      port: 4041
+    },
+    types: {
+      Light: {
+        commands: [],
+        type: 'Light',
+        lazy: [
+          {
+            name: 'temperature',
+            type: 'centigrades'
+          }
+        ],
+        attributes: [
+          {
+            name: 'pressure',
+            type: 'Hgmm'
+          }
+        ]
+      }
+    },
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    throttling: 'PT5S'
+  };
 
 describe('NGSI-LD - JSON-LD @context parsing from environment variable', function() {
-
-    describe('When the context is provided as a semicolon separated list of contexts', function() {
-        beforeEach(function() {
-            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld,http://context2.json-ld';
-            iotAgentConfig.contextBroker.jsonLdContext = 'http://whateverContext.json-ld';
-        });
-
-        afterEach(function() {
-            delete process.env.IOTA_JSON_LD_CONTEXT;
-        });
-
-        it('should load the configuration as a list of contexts', function(done) {
-            config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker.jsonLdContext.should.containDeep(['http://context1.json-ld','http://context2.json-ld']);
-            done();
-        });
+  describe('When the context is provided as a semicolon separated list of contexts', function() {
+    beforeEach(function() {
+      process.env.IOTA_JSON_LD_CONTEXT =
+        'http://context1.json-ld,http://context2.json-ld';
+      iotAgentConfig.contextBroker.jsonLdContext =
+        'http://whateverContext.json-ld';
     });
 
-    describe('When the context is provided as a semicolon separated list of contexts with extra whitespace', function() {
-        beforeEach(function() {
-            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld , http://context2.json-ld,   http://context3.json-ld';
-            iotAgentConfig.contextBroker.jsonLdContext = 'http://whateverContext.json-ld';
-        });
-
-        afterEach(function() {
-            delete process.env.IOTA_JSON_LD_CONTEXT;
-        });
-
-        it('should load the configuration as a list of contexts and remove the extra whitespace', function(done) {
-            config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker
-                .jsonLdContext.should.containDeep(['http://context1.json-ld','http://context2.json-ld','http://context3.json-ld']);
-            done();
-        });
+    afterEach(function() {
+      delete process.env.IOTA_JSON_LD_CONTEXT;
     });
 
-    describe('When the context is provided as a string value', function() {
-        beforeEach(function() {
-            process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld';
-            iotAgentConfig.contextBroker.jsonLdContext = 'http://whateverContext.json-ld';
-        });
-
-        afterEach(function() {
-            delete process.env.IOTA_JSON_LD_CONTEXT;
-        });
-
-        it('should load the configuration as a single entry list', function(done) {
-            config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker.jsonLdContext.should.containDeep(['http://context1.json-ld']);
-            done();
-        });
+    it('should load the configuration as a list of contexts', function(done) {
+      config.setConfig(iotAgentConfig);
+      config
+        .getConfig()
+        .contextBroker.jsonLdContext.should.containDeep([
+          'http://context1.json-ld',
+          'http://context2.json-ld'
+        ]);
+      done();
     });
+  });
+
+  describe('When the context is provided as a semicolon separated list of contexts with extra whitespace', function() {
+    beforeEach(function() {
+      process.env.IOTA_JSON_LD_CONTEXT =
+        'http://context1.json-ld , http://context2.json-ld,   http://context3.json-ld';
+      iotAgentConfig.contextBroker.jsonLdContext =
+        'http://whateverContext.json-ld';
+    });
+
+    afterEach(function() {
+      delete process.env.IOTA_JSON_LD_CONTEXT;
+    });
+
+    it('should load the configuration as a list of contexts and remove the extra whitespace', function(done) {
+      config.setConfig(iotAgentConfig);
+      config
+        .getConfig()
+        .contextBroker.jsonLdContext.should.containDeep([
+          'http://context1.json-ld',
+          'http://context2.json-ld',
+          'http://context3.json-ld'
+        ]);
+      done();
+    });
+  });
+
+  describe('When the context is provided as a string value', function() {
+    beforeEach(function() {
+      process.env.IOTA_JSON_LD_CONTEXT = 'http://context1.json-ld';
+      iotAgentConfig.contextBroker.jsonLdContext =
+        'http://whateverContext.json-ld';
+    });
+
+    afterEach(function() {
+      delete process.env.IOTA_JSON_LD_CONTEXT;
+    });
+
+    it('should load the configuration as a single entry list', function(done) {
+      config.setConfig(iotAgentConfig);
+      config
+        .getConfig()
+        .contextBroker.jsonLdContext.should.containDeep([
+          'http://context1.json-ld'
+        ]);
+      done();
+    });
+  });
 });
 
 describe('NGSI-LD - JSON-LD @context parsing from global configuration', function() {
-
-    describe('When the context is provided as a list of contexts', function() {
-        beforeEach(function() {
-            iotAgentConfig.contextBroker.jsonLdContext = ['http://context1.json-ld','http://context2.json-ld'] ;
-        });
-
-        it('should load the configuration as a list of contexts', function(done) {
-            config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker.jsonLdContext.should.containDeep(['http://context1.json-ld','http://context2.json-ld']);
-            done();
-        });
+  describe('When the context is provided as a list of contexts', function() {
+    beforeEach(function() {
+      iotAgentConfig.contextBroker.jsonLdContext = [
+        'http://context1.json-ld',
+        'http://context2.json-ld'
+      ];
     });
 
-    describe('When the context is provided as a string value', function() {
-        beforeEach(function() {
-            iotAgentConfig.contextBroker.jsonLdContext = 'http://context1.json-ld';
-        });
-
-        it('should load the configuration as a string', function(done) {
-            config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker.jsonLdContext.should.equal('http://context1.json-ld');
-            done();
-        });
+    it('should load the configuration as a list of contexts', function(done) {
+      config.setConfig(iotAgentConfig);
+      config
+        .getConfig()
+        .contextBroker.jsonLdContext.should.containDeep([
+          'http://context1.json-ld',
+          'http://context2.json-ld'
+        ]);
+      done();
     });
+  });
+
+  describe('When the context is provided as a string value', function() {
+    beforeEach(function() {
+      iotAgentConfig.contextBroker.jsonLdContext = 'http://context1.json-ld';
+    });
+
+    it('should load the configuration as a string', function(done) {
+      config.setConfig(iotAgentConfig);
+      config
+        .getConfig()
+        .contextBroker.jsonLdContext.should.equal('http://context1.json-ld');
+      done();
+    });
+  });
 });
