@@ -539,7 +539,7 @@ describe('NGSI-LD - Active attributes test', function() {
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
                 )
-                .reply(207, {"notUpdated": "someEntities"});
+                .reply(207, {'notUpdated': 'someEntities'});
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

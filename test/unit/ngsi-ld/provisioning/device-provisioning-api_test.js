@@ -623,7 +623,8 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 response.body.name.should.equal('ENTITY_GENERIC_ERROR');
-                response.body.message.should.equal('Error accesing entity data for device: MicroLight1 of type: MicroLights');
+                response.body.message.should.equal('Error accesing entity data for device:' + 
+                    ' MicroLight1 of type: MicroLights');
                 response.statusCode.should.equal(200);
 
                 done();
@@ -674,7 +675,8 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             const options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
+                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/' + 
+                    'provisionMinimumDevice.json'),
                 headers: {
                     'fiware-service': 'smartGondor',
                     'fiware-servicepath': '/gardens'
