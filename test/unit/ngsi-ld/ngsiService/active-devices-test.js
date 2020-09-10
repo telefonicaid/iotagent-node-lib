@@ -529,6 +529,59 @@ describe('NGSI-LD - Active attributes test', function() {
         });
     });
 
+    describe('When the Context Broker returns an unrecognized status code updating an entity', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .reply(207, {"notUpdated": "someEntities"});
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should return an error message in the response body', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.exist(error);
+                should.exist(error.name);
+                error.code.should.equal(207);
+                error.details.notUpdated.should.equal('someEntities');
+                error.message.should.equal('Error accesing entity data for device: light1 of type: Light');
+                error.name.should.equal('ENTITY_GENERIC_ERROR');
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the Context Broker returns a 200 status code (NGSI-LD v1.2.1) updating an entity', function() {
+        beforeEach(function(done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
+                )
+                .reply(200);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should be considered as a successful update of the entity', function(done) {
+            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When the Context Broker returns an HTTP error code updating an entity', function() {
         beforeEach(function(done) {
             nock.cleanAll();
