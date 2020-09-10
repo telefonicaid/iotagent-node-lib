@@ -35,7 +35,7 @@
     "lint:md": "remark  -f '*.md' 'doc/*.md'",
     "lint:text": "textlint '*.md' 'doc/*.md'",
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/**/*.js' '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
-    "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
+    "prettier:text": "prettier 'README.md' 'doc/*.md' 'doc/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
     "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",

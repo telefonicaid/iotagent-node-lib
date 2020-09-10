@@ -71,7 +71,7 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require('iotagent-node-lib');
+const iotagentLib = require("iotagent-node-lib");
 ```
 
 Information about how to configure the Library can be found at the corresponding section of the
@@ -307,7 +307,7 @@ array that can be directly imported into other Command-Line tools, using the fol
 -   Require the `iotagent-node-lib` command-line module in your command-line tool:
 
 ```javascript
-var iotaCommands = require('iotagent-node-lib').commandLine;
+var iotaCommands = require("iotagent-node-lib").commandLine;
 ```
 
 -   Initialize the command-line utils (the initialization function takes two arguments, that will be explained in detail
@@ -326,7 +326,7 @@ commands = commands.concat(commands, iotaCommands.commands);
 -   Execute the command-line interpreter as usual:
 
 ```javascript
-clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
+clUtils.initialize(commandLine.commands, "IoT Agent tester> ");
 ```
 
 The command-line module makes use of two configuration objects. Both can be shown and edited in the command-line using
