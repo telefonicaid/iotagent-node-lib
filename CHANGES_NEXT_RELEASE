@@ -1,3 +1,4 @@
+Fix: log device group error detail when group not found
 FIX: fix and use fillService to fix logs in provision
 Fix some ngsi service log levels
 Fix: Listing service groups returns only a single service group (#894)
