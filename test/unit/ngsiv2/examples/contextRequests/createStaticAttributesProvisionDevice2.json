@@ -1,0 +1,16 @@
+{
+  "id": "FirstMicroLight",
+  "type": "MicroLights",
+  "attr_name": {
+    "type": "string",
+    "value": " "    
+  },
+    "hardcodedAttr": {
+    "type": "hardcodedType",
+    "value": "hardcodedValue"
+  },
+    "bootstrapServer": {
+    "type": "Address",
+    "value": "127.0.0.1"
+  }
+}
