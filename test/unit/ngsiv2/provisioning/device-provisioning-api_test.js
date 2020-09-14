@@ -483,9 +483,9 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
                         cbroker: 'http://192.168.1.1:1026',
                         explicitAttrs: true,
                         static_attributes: [{
-                            "name": "bootstrapServer",
-                            "type": "Address",
-                            "value": "127.0.0.1"
+                            'name': 'bootstrapServer',
+                            'type': 'Address',
+                            'value': '127.0.0.1'
                         }]
                     }
                 ]
@@ -527,7 +527,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionStaticAttrsDevice.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests'+
+                                        '/provisionStaticAttrsDevice.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -585,7 +586,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionStaticAttrsDevice2.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests'+
+                                        '/provisionStaticAttrsDevice2.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -604,9 +606,9 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
                         cbroker: 'http://192.168.1.1:1026',
                         explicitAttrs: true,
                         static_attributes: [{
-                            "name": "bootstrapServer",
-                            "type": "Address",
-                            "value": "127.0.0.1"
+                            'name': 'bootstrapServer',
+                            'type': 'Address',
+                            'value': '127.0.0.1'
                         }]
                     }
                 ]
@@ -649,7 +651,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
         var options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionStaticAttrsDevice3.json'),
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests'+
+                                        '/provisionStaticAttrsDevice3.json'),
             headers: {
                 'fiware-service': 'smartGondor',
                 'fiware-servicepath': '/gardens'
@@ -668,9 +671,9 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function() {
                         cbroker: 'http://192.168.1.1:1026',
                         explicitAttrs: true,
                         static_attributes: [{
-                            "name": "bootstrapServer",
-                            "type": "Address",
-                            "value": "127.0.0.1"
+                            'name': 'bootstrapServer',
+                            'type': 'Address',
+                            'value': '127.0.0.1'
                         }]
                     }
                 ]
