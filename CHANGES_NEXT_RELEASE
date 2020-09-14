@@ -1,1 +1,1 @@
-
+Fix: Static attributes from service not applied if device has static attributes (#757)
