@@ -1,9 +1,1 @@
-Add. expressionLanguage to save/update device and group
-Fix: multientity when more than 2 attribute with same name and object_id  (#877)
-Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
-Add mongodb additional options (`ssl` and `extraArgs`) to be able to connect "MongoDB as a Cloud Service" (#859)
-Add support for JEXL as expression language (#801, #687)
-Fix: log always writing the same correlator id and transaction id (iota-json #426, iota-ul #326)
-Add template to allow `metadata` to be set via the Device API  (#870)
-Fix: correct jexl support for concatenation of float numbers and strings (#868)
-Added feature: selectively ignore some of the measures (iotagent-json#416, iotagent-ul#372)
+Fix: Static attributes from service not applied if device has static attributes (#757)
