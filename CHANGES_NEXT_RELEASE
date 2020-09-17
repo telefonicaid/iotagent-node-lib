@@ -7,3 +7,4 @@ Add basic NGSI-LD support as experimental feature (#842)
     - Lazy Attributes
     - Commands
 Fix: Static attributes from service not applied if device has static attributes (#757)
+Move Docker secret support inside the Node Application - remove Entrypoint (#885)
