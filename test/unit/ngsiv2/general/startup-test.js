@@ -292,4 +292,59 @@ describe('NGSI-v2 - Startup tests', function() {
             });
         });
     });
+
+
+    describe('When the IoT Agent is started with Keystone', function() {
+        beforeEach(function() {
+            process.env.IOTA_AUTH_ENABLED = 'true';
+            process.env.IOTA_AUTH_USER = '1111';
+            process.env.IOTA_AUTH_PASSWORD = 'xxxx';
+            
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_AUTH_ENABLED;
+            delete process.env.IOTA_AUTH_USER;
+            delete process.env.IOTA_AUTH_PASSWORD;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameters', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().authentication.user.should.equal('1111');
+                config.getConfig().authentication.password.should.equal('xxxx');
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is started with Keyrock', function() {
+        beforeEach(function() {
+            process.env.IOTA_AUTH_ENABLED = 'true';
+            process.env.IOTA_AUTH_CLIENT_ID = '1111';
+            process.env.IOTA_AUTH_CLIENT_SECRET = 'xxxx';
+            
+        });
+
+        afterEach(function() {
+            delete process.env.IOTA_AUTH_ENABLED;
+            delete process.env.IOTA_AUTH_CLIENT_ID;
+            delete process.env.IOTA_AUTH_CLIENT_SECRET;
+        });
+
+        afterEach(function(done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameters', function(done) {
+            iotAgentLib.activate(iotAgentConfig, function(error) {
+                config.getConfig().authentication.clientId.should.equal('1111');
+                config.getConfig().authentication.clientSecret.should.equal('xxxx');
+                done();
+            });
+        });
+    });
 });
