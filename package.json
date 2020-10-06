@@ -43,7 +43,6 @@
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
   "dependencies": {
-    "@cloudreach/docker-secrets": "~1.0.3",
     "async": "2.6.2",
     "body-parser": "~1.19.0",
     "command-shell-lib": "1.0.0",
