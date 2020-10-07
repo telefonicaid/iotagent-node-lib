@@ -29,7 +29,7 @@ assigned type, its configuration values can be extracted from those of the type.
 The IoT Agents provide two means to define those service groups:
 
 -   Static **Type Configuration**: configuring the `ngsi.types` attribute within the `config.js` file.
--   Dynamic **Configuration API**: making use of the API URLs in the configuration URI, `/iot/services`. Please, note
+-   Dynamic **Configuration API**: making use of the API URLs in the configuration URI, `/iot/services` or `/iot/configGroups`. Please, note
     that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name
     of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
@@ -97,20 +97,48 @@ correspondence between the API resource fields and the same fields in the databa
 
 The following actions are available under the service group endpoint:
 
-##### POST /iot/services
+##### POST /iot/services or POST /iot/configGroups
 
 Creates a set of service groups for the given service and service path. The service and subservice information will
 taken from the headers, overwritting any preexisting values.
 
 Body params:
 
--   `services`: list of service groups to create. Each one adheres to the service group Model.
+-   `services`: list of service groups to create. Each one adheres to the service group Model (when `/iot/services` route is used)
+-   `configGroups`: list of service groups to create. Each one adheres to the service group Model (when `/iot/configGroups` is used)
+
 
 E.g.:
 
 ```json
 {
     "services": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        }
+    ]
+}
+```
+OR
+
+```json
+{
+    "configGroups": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
@@ -140,9 +168,9 @@ Returns:
 -   400 WRONG_SYNTAX if the body doesn't comply with the schema.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### GET /iot/services
+##### GET /iot/services or GET /iot/configGroups
 
-Retrieves service groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
+Retrieves service/configuration groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
 subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns:
@@ -151,10 +179,10 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### PUT /iot/services
+##### PUT /iot/services or PUT /iot/configGroups
 
 Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
-Takes a service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
+Takes a service/configuration group body as the payload. The body does not have to be complete: for incomplete bodies, just the
 existing attributes will be updated
 
 E.g.:
@@ -172,7 +200,7 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### DELETE /iot/services
+##### DELETE /iot/services or DELETE /iot/configGroups
 
 Removes a service group configuration from the DB, specified by the `resource` and `apikey` query parameters.
 

@@ -1,5 +1,6 @@
 Add: include `description` field in group schema
 Add: include from in log context (#918)
+Add: /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
 Fix: Update internal attributes in Group update (#917)
 Fix: Static attributes from service not applied if device has static attributes (#757)
 Move Docker secret support inside the Node Application - remove Entrypoint (#885)
