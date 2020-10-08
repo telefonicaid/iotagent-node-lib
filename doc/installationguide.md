@@ -238,7 +238,11 @@ used for the same purpose. For instance:
 
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker.
     This flag is overwritten by `explicitAttrs` flag in group or device provision.
--   **relaxTemplateValidation**: if this flag is activated, `objectIds` for incoming devices are not validated and may include characters such as semi-colons.
+-   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not validated,
+    and may exceptionally include characters (such as semi-colons) which are
+    [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the NGSI
+    specification.  When provisioning devices, it is necessary that the developer provides valid  `objectId`-`name` mappings
+    whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
 ### Configuration using environment variables
 
