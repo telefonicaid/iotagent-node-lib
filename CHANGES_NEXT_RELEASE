@@ -1,3 +1,4 @@
+Add: include findTypeSilently for groups
 Add: include `description` field in group schema
 Add: include from in log context (#918)
 Fix: Update internal attributes in Group update (#917)
