@@ -152,6 +152,10 @@
             "description": "Value of the command (currently ignored)",
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
+          },
+          "retain": {
+              "description": "Retain message",
+              "type": "boolean"
           }
         }
       }
