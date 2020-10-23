@@ -153,12 +153,23 @@
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
           },
-          "retain": {
-              "description": "Retain message",
-              "type": "boolean"
+          "mqtt": {
+              "description": "Mqtt properties",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                  "retain": {
+                      "description": "MQTT Retain message",
+                      "type": "boolean",
+                  },
+                  "qos": {
+                      "description": "MQTT QoS level",
+                      "type": "string",
+                      "pattern": "^([0-2])$"
+                  }
+              }
           }
         }
-      }
     },
     "static_attributes": {
       "description": "Free form array of data to be appended to the target entity",
