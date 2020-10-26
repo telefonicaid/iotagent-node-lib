@@ -160,7 +160,7 @@
               "properties": {
                   "retain": {
                       "description": "MQTT Retain message",
-                      "type": "boolean",
+                      "type": "boolean"
                   },
                   "qos": {
                       "description": "MQTT QoS level",
