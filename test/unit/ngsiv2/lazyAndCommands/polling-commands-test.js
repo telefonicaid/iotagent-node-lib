@@ -25,6 +25,7 @@
 'use strict';
 
 var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
+    deviceRegistryMongoDB = require('../../../../lib/services/devices/deviceRegistryMongoDB'),
     utils = require('../../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
@@ -151,6 +152,7 @@ describe('NGSI-v2 - Polling commands', function() {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
+                    deviceRegistryMongoDB.clearCache();
                     done();
                 });
             });
