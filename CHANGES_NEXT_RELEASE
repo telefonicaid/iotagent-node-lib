@@ -1,6 +1,9 @@
 Replace jshint with eslint
 Add prettier code formatting
 Add husky and lint-staged
+Add: extends commands definition to add mqtt options (qos, retain)
+Add: include findTypeSilently for groups to log some false errors as debug instead of alarm 
+Add: include `description` field in group schema
 Add: include from in log context (#918)
 Fix: Update internal attributes in Group update (#917)
 Fix: Static attributes from service not applied if device has static attributes (#757)
