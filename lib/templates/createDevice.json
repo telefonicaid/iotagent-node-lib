@@ -168,6 +168,22 @@
                   "description": "Value of the command (currently ignored)",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)*$"
+                },
+                "mqtt": {
+                  "description": "Mqtt properties",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                      "retain": {
+                          "description": "MQTT Retain message",
+                          "type": "boolean"
+                      },
+                      "qos": {
+                          "description": "MQTT QoS level",
+                          "type": "string",
+                          "pattern": "^([0-2])$"
+                      }
+                  }
                 }
               }
             }
