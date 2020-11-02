@@ -22,8 +22,7 @@
  */
 'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB'),
+var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),   
     utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
@@ -149,6 +148,7 @@ describe('NGSI-v1 - Polling commands', function() {
     });
 
     afterEach(function(done) {
+        const deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB');
         delete(device3.registrationId);
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {

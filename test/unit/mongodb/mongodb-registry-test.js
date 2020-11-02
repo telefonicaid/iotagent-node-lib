@@ -23,7 +23,6 @@
 'use strict';
 
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB'),
     utils = require('../../tools/utils'),
     should = require('should'),
     logger = require('logops'),
@@ -203,6 +202,7 @@ describe('MongoDB Device Registry', function() {
         iotAgentLib.deactivate(function(error) {
             iotAgentDb.db().collection('devices').deleteOne(function(error) {
                 iotAgentDb.close(function(error) {
+                    const deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB');
                     deviceRegistryMongoDB.clearCache();
                     mongoUtils.cleanDbs(done);
                 });

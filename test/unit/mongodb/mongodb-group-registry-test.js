@@ -28,7 +28,6 @@
 
 var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
     _ = require('underscore'),
-    groupRegistryMongoDB = require('../../../lib/services/groups/groupRegistryMongoDB'),
     utils = require('../../tools/utils'),
     async = require('async'),
     request = require('request'),
@@ -194,6 +193,7 @@ describe('MongoDB Group Registry test', function() {
     afterEach(function(done) {
         iotAgentLib.deactivate(function() {
             iotAgentDb.close(function(error) {
+                const groupRegistryMongoDB = require('../../../lib/services/groups/groupRegistryMongoDB');
                 groupRegistryMongoDB.clearCache();
                 mongoUtils.cleanDbs(done);
             });
