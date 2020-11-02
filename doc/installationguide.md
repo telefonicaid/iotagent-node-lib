@@ -135,8 +135,9 @@ used for the same purpose. For instance:
 
 -   **deviceRegistry.cache**: Whether to use a memory cache in front of Mongo-DB when using the `mongodb`
     **deviceRegistry** option to reduce I/O. This memory cache will hold and serve a set of recently requested groups
-    and devices (up to a given maximum time to live) and return the cached response so long as the value is still within
-    Time to Live `TTL`. When enabled the default values are 1000 devices, 100 groups and retain values for 10 seconds.
+    and devices (up to a given maximum time-to-live) and return the cached response so long as the value is still within
+    `TTL`. When enabled the default values are to hold up to 1000 devices and 100 groups in memory and retain values for
+    up to 10 seconds.
 
 ```javascript
 {
