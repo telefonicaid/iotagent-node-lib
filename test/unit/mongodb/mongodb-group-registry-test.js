@@ -193,8 +193,6 @@ describe('MongoDB Group Registry test', function() {
     afterEach(function(done) {
         iotAgentLib.deactivate(function() {
             iotAgentDb.close(function(error) {
-                const groupRegistryMongoDB = require('../../../lib/services/groups/groupRegistryMongoDB');
-                groupRegistryMongoDB.clearCache();
                 mongoUtils.cleanDbs(done);
             });
         });

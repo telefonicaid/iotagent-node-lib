@@ -202,8 +202,6 @@ describe('MongoDB Device Registry', function() {
         iotAgentLib.deactivate(function(error) {
             iotAgentDb.db().collection('devices').deleteOne(function(error) {
                 iotAgentDb.close(function(error) {
-                    const deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB');
-                    deviceRegistryMongoDB.clearCache();
                     mongoUtils.cleanDbs(done);
                 });
             });

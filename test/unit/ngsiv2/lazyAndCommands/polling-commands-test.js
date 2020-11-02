@@ -99,7 +99,14 @@ var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
             }
         },
         deviceRegistry: {
-            type: 'mongodb'
+            type: 'mongodb',
+            cache: {
+                enabled: true,
+                deviceSize: 1000,
+                deviceTTL: 10,
+                groupSize: 100,
+                groupTTL: 10
+            }
         },
 
         mongodb: {
@@ -148,11 +155,9 @@ describe('NGSI-v2 - Polling commands', function() {
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {
                 mongoUtils.cleanDbs(function() {
-                    const deviceRegistryMongoDB = require('../../../../lib/services/devices/deviceRegistryMongoDB');
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
-                    deviceRegistryMongoDB.clearCache();
                     done();
                 });
             });

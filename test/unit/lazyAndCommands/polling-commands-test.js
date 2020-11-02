@@ -148,7 +148,6 @@ describe('NGSI-v1 - Polling commands', function() {
     });
 
     afterEach(function(done) {
-        const deviceRegistryMongoDB = require('../../../lib/services/devices/deviceRegistryMongoDB');
         delete(device3.registrationId);
         iotAgentLib.clearAll(function() {
             iotAgentLib.deactivate(function() {
@@ -156,7 +155,6 @@ describe('NGSI-v1 - Polling commands', function() {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
-                    deviceRegistryMongoDB.clearCache();
                     done();
                 });
             });
