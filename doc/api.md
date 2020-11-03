@@ -90,8 +90,9 @@ correspondence between the API resource fields and the same fields in the databa
 | `attributes`          | `attributes`         | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                            |
 | `static_attributes`   | `staticAttributes`   | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                                                                                                                               |
 | `internal_attributes` | `internalAttributes` | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
-| `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.                                                                                        |
-| `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is false.                                                                                                                                         |
+| `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, `legacy` is used as default value.                                                                                      |
+| `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is `false`.                                                                                                                                       |
+| `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`.
 
 ### Service Group Endpoint
 
@@ -224,7 +225,12 @@ the API resource fields and the same fields in the database model.
 | `internal_attributes` | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration                                                                                                                                                                                         | LWM2M mappings from object URIs to attributes |
 | `static_attributes`   | `staticAttributes`   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                                                                                                                                    | `[ { "name": "attr_name", "type": "Text" } ]` |
 | `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.                                                                                        |
+<<<<<<< HEAD
 | `explicitAttrs`       | `explicitAttrs`      | Boolean value to support selective ignore of measures for device so that IOTA doesn’t progress. If not specified default is false.                                                                                                                                        | `true/false`                                  |
+=======
+| `explicitAttrs`       | `explicitAttrs`      | Boolean value to support selective ignore of measures for device so that IOTA doesn’t progress. If not specified default is `false`.                                                                                                                                      | `true/false`                                  |
+| `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD**payloads. The default is `v2`.                                                                                                                                                      | `v2/ld`                                       |
+>>>>>>> d272d82... Add mixed mode
 
 #### Attribute lists
 
