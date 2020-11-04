@@ -227,7 +227,7 @@ used for the same purpose. For instance:
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
 -   **timestamp**: if this flag is activated:
-    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information. 
+    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information.
         This flag is overwritten by `timestamp` flag in group or device
     -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
@@ -255,6 +255,11 @@ used for the same purpose. For instance:
     Note that for backwards compatibility with NGSI v2, the `fiware-servicepath` header is already used as alternative if the `NGSILD-Path` header is not supplied. Note that NGSILD-Path has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker.
     This flag is overwritten by `explicitAttrs` flag in group or device provision.
+-   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not validated,
+    and may exceptionally include characters (such as semi-colons) which are
+    [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the NGSI
+    specification.  When provisioning devices, it is necessary that the developer provides valid  `objectId`-`name` mappings
+    whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
 ### Configuration using environment variables
 
@@ -264,7 +269,7 @@ with container-based technologies, like Docker, Heroku, etc...
 The following table shows the accepted environment variables, as well as the configuration parameter the variable
 overrides.
 
-| Environment variable      | Configuration attribute         |
+| Environment variable             | Configuration attribute         |
 | :------------------------------- | :------------------------------ |
 | IOTA_CB_URL                      | `contextBroker.url`             |
 | IOTA_CB_HOST                     | `contextBroker.host`            |
@@ -317,6 +322,8 @@ overrides.
 | IOTA_FALLBACK_PATH               | `fallbackPath`                  |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | `defaultExpressionLanguage`     |
 | IOTA_EXPLICIT_ATTRS              | `explicitAttrs`                 |
+| IOTA_RELAX_TEMPLATE_VALIDATION   | `relaxTemplateValidation`       |
 
 Note:
 -   If you need to pass more than one JSON-LD context, you can define the IOTA_JSON_LD_CONTEXT environment variable as a comma separated list of contexts (e.g. `'http://context1.json-ld,http://context2.json-ld'`)
+

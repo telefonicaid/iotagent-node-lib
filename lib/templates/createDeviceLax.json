@@ -36,14 +36,6 @@
             "description": "Transport protocol used by the platform to communicate with the device",
             "type": "string"
           },
-          "expressionLanguage": {
-            "description": "Expression language used to apply expressions for this device",
-            "type": "boolean"
-          },
-          "explicitAttrs": {
-            "description": "Flag about only provisioned attributes will be processed to Context Broker",
-            "type": "boolean"
-          },
           "lazy": {
             "description": "list of lazy attributes of the devices",
             "type": "array",
@@ -55,8 +47,7 @@
               "properties": {
                 "object_id": {
                   "description": "ID of the attribute in the device",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
+                  "type": "string"
                 },
                 "name": {
                   "description": "Name of the attribute in the target entity",
@@ -82,8 +73,7 @@
               "properties": {
                 "object_id": {
                   "description": "ID of the attribute in the device",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
+                  "type": "string"
                 },
                 "name": {
                   "description": "Name of the attribute in the target entity",
@@ -97,7 +87,8 @@
                 },
                 "expression": {
                   "description": "Optional expression for measurement transformation",
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "^([^<>;'=]+)+$"
                 },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",
@@ -118,8 +109,7 @@
                     "properties": {
                       "object_id": {
                         "description": "ID of the attribute in the device",
-                        "type": "string",
-                        "pattern": "^([^<>();'=\"]+)+$"
+                        "type": "string"                      
                       },
                       "type": {
                         "description": "Type of the attribute in the target entity",
@@ -132,10 +122,6 @@
                       }
                     }
                   }
-                },
-                "metadata": {
-                  "description": "Attribute Metadata",
-                  "type": "object"
                 }
               }
             }
@@ -151,8 +137,7 @@
               "properties": {
                 "object_id": {
                   "description": "ID of the attribute in the device",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
+                  "type": "string"
                 },
                 "name": {
                   "description": "Name of the attribute in the target entity",
@@ -168,22 +153,6 @@
                   "description": "Value of the command (currently ignored)",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)*$"
-                },
-                "mqtt": {
-                  "description": "Mqtt properties",
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                      "retain": {
-                          "description": "MQTT Retain message",
-                          "type": "boolean"
-                      },
-                      "qos": {
-                          "description": "MQTT QoS level",
-                          "type": "string",
-                          "pattern": "^([0-2])$"
-                      }
-                  }
                 }
               }
             }
