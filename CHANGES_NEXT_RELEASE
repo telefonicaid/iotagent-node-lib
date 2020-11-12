@@ -1,3 +1,4 @@
+Fix: add missed expressionLanguage to deviceProvisioningServer
 Fix: bad type in check expressionLanguage at device provision
 Add: enable use group commands in device and register it in iotagent-manager
 Add: extends commands definition to add mqtt options (qos, retain)
