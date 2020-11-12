@@ -1,3 +1,4 @@
+Fix: bad type in check expressionLanguage at device provision
 Add: enable use group commands in device and register it in iotagent-manager
 Add: extends commands definition to add mqtt options (qos, retain)
 Add: include findTypeSilently for groups to log some false errors as debug instead of alarm 
