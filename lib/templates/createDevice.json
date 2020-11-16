@@ -38,7 +38,7 @@
           },
           "expressionLanguage": {
             "description": "Expression language used to apply expressions for this device",
-            "type": "boolean"
+            "type": "string"
           },
           "explicitAttrs": {
             "description": "Flag about only provisioned attributes will be processed to Context Broker",
