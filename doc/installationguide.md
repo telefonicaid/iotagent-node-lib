@@ -29,6 +29,7 @@ These are the parameters that can be configured in the global section:
     ngsiVersion: 'v2'
 }
 ```
+
 -   If you want to use NGSI-LD (experimental):
 
 ```javascript
@@ -40,8 +41,9 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
-Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information allowing the computer to
-interpret the rest of the data with more clarity and depth. Read the [JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more informtaion.
+Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information
+allowing the computer to interpret the rest of the data with more clarity and depth. Read the
+[JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more informtaion.
 
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
@@ -142,7 +144,7 @@ used for the same purpose. For instance:
 
 ```javascript
 {
-    type: 'mongodb';
+    type: "mongodb";
 }
 ```
 
@@ -165,6 +167,7 @@ used for the same purpose. For instance:
   retryTime: 5
 }
 ```
+
 ```javascript
 {
   host: 'mongodb-0,mongodb-1,mongodb-2',
@@ -227,8 +230,8 @@ used for the same purpose. For instance:
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
 -   **timestamp**: if this flag is activated:
-    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device information.
-        This flag is overwritten by `timestamp` flag in group or device
+    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from
+        device information. This flag is overwritten by `timestamp` flag in group or device
     -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
@@ -246,20 +249,25 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
--   **defaultExpressionLanguage**: the default expression language used to
-    compute expressions, possible values are: `legacy` or `jexl`. When not set or
-    wrongly set, `legacy` is used as default value.
--   **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an alternative mechanism for supplying the `NGSILD-Tenant` header. Note that NGSILD-Tenant has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change.
-    Note that for backwards compatibility with NGSI v2, the `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
--   **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative mechanism for suppling the `NGSILD-Path` header.
-    Note that for backwards compatibility with NGSI v2, the `fiware-servicepath` header is already used as alternative if the `NGSILD-Path` header is not supplied. Note that NGSILD-Path has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been confirmed), take into account it could change
--   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker.
-    This flag is overwritten by `explicitAttrs` flag in group or device provision.
--   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not validated,
-    and may exceptionally include characters (such as semi-colons) which are
-    [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the NGSI
-    specification.  When provisioning devices, it is necessary that the developer provides valid  `objectId`-`name` mappings
-    whenever relaxed mode is used, to prevent the consumption of forbidden characters.
+-   **defaultExpressionLanguage**: the default expression language used to compute expressions, possible values are:
+    `legacy` or `jexl`. When not set or wrongly set, `legacy` is used as default value.
+-   **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an
+    alternative mechanism for supplying the `NGSILD-Tenant` header. Note that NGSILD-Tenant has not yet been included in
+    the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been
+    confirmed), take into account it could change. Note that for backwards compatibility with NGSI v2, the
+    `fiware-service` header is already used as alternative if the `NGSILD-Tenant` header is not supplied.
+-   **fallbackPath** - For Linked Data Context Brokers which do not support a service path, this provides an alternative
+    mechanism for suppling the `NGSILD-Path` header. Note that for backwards compatibility with NGSI v2, the
+    `fiware-servicepath` header is already used as alternative if the `NGSILD-Path` header is not supplied. Note that
+    NGSILD-Path has not yet been included in the NGSI-LD standard (it has been proposed for the next update of the
+    standard, but the final decision has yet been confirmed), take into account it could change
+-   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
+    flag is overwritten by `explicitAttrs` flag in group or device provision.
+-   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
+    validated, and may exceptionally include characters (such as semi-colons) which are
+    [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the
+    NGSI specification. When provisioning devices, it is necessary that the developer provides valid `objectId`-`name`
+    mappings whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
 ### Configuration using environment variables
 
@@ -309,7 +317,7 @@ overrides.
 | IOTA_MONGO_AUTH_SOURCE           | `mongodb.authSource`            |
 | IOTA_MONGO_RETRIES               | `mongodb.retries`               |
 | IOTA_MONGO_RETRY_TIME            | `mongodb.retryTime`             |
-| IOTA_MONGO_SSL                   | `mongodb.ssl      `             |
+| IOTA_MONGO_SSL                   | `mongodb.ssl`                   |
 | IOTA_MONGO_EXTRAARGS             | `mongodb.extraArgs`             |
 | IOTA_SINGLE_MODE                 | `singleConfigurationMode`       |
 | IOTA_APPEND_MODE                 | `appendMode`                    |
@@ -325,5 +333,6 @@ overrides.
 | IOTA_RELAX_TEMPLATE_VALIDATION   | `relaxTemplateValidation`       |
 
 Note:
--   If you need to pass more than one JSON-LD context, you can define the IOTA_JSON_LD_CONTEXT environment variable as a comma separated list of contexts (e.g. `'http://context1.json-ld,http://context2.json-ld'`)
 
+-   If you need to pass more than one JSON-LD context, you can define the IOTA_JSON_LD_CONTEXT environment variable as a
+    comma separated list of contexts (e.g. `'http://context1.json-ld,http://context2.json-ld'`)

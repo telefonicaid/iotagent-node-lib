@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
@@ -88,13 +90,13 @@ const device2 = {
     subservice: 'gardens'
 };
 
-describe('NGSI-LD - IoT Agent Device Registration', function() {
-    beforeEach(function() {
+describe('NGSI-LD - IoT Agent Device Registration', function () {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             // We need to remove the registrationId so that the library does not consider next operatios as updates.
             delete device1.registrationId;
             delete device2.registrationId;
@@ -102,8 +104,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a new device is connected to the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new device is connected to the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -122,13 +124,13 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should register as ContextProvider of its lazy attributes', function(done) {
-            iotAgentLib.register(device1, function(error) {
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.register(device1, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -136,8 +138,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns a NGSI error while registering a device', function() {
-        beforeEach(function(done) {
+    describe('When the Context Broker returns a NGSI error while registering a device', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             const nockBody = utils.readExampleFile(
@@ -148,13 +150,13 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(404);
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should register as ContextProvider of its lazy attributes', function(done) {
-            iotAgentLib.register(device1, function(error) {
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.register(device1, function (error) {
                 should.exist(error);
                 error.name.should.equal('BAD_REQUEST');
                 contextBrokerMock.done();
@@ -163,8 +165,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns an HTTP transport error while registering a device', function() {
-        beforeEach(function(done) {
+    describe('When the Context Broker returns an HTTP transport error while registering a device', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
@@ -174,14 +176,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(500);
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
         it('should not register the device in the internal registry');
-        it('should return a REGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.register(device1, function(error) {
+        it('should return a REGISTRATION_ERROR error to the caller', function (done) {
+            iotAgentLib.register(device1, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('REGISTRATION_ERROR');
@@ -191,8 +193,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a device is requested to the library using its ID', function() {
-        beforeEach(function(done) {
+    describe('When a device is requested to the library using its ID', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             const nockBody = utils.readExampleFile(
@@ -211,14 +213,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should return all the device\'s information', function(done) {
-            iotAgentLib.register(device1, function(error) {
-                iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function(error, data) {
+        it("should return all the device's information", function (done) {
+            iotAgentLib.register(device1, function (error) {
+                iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function (error, data) {
                     should.not.exist(error);
                     should.exist(data);
                     data.type.should.equal('Light');
@@ -229,8 +231,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When an unexistent device is requested to the library using its ID', function() {
-        beforeEach(function(done) {
+    describe('When an unexistent device is requested to the library using its ID', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             const nockBody = utils.readExampleFile(
@@ -241,14 +243,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 iotAgentLib.clearAll(done);
             });
         });
 
-        it('should return a ENTITY_NOT_FOUND error', function(done) {
-            iotAgentLib.register(device1, function(error) {
-                iotAgentLib.getDevice('lightUnexistent', 'smartGondor', 'gardens', function(error, data) {
+        it('should return a ENTITY_NOT_FOUND error', function (done) {
+            iotAgentLib.register(device1, function (error) {
+                iotAgentLib.getDevice('lightUnexistent', 'smartGondor', 'gardens', function (error, data) {
                     should.exist(error);
                     should.not.exist(data);
                     error.code.should.equal(404);
@@ -259,8 +261,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When a device is removed from the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a device is removed from the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -284,7 +286,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
                 .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
                 .reply(204, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
                     [
                         async.apply(iotAgentLib.clearAll),
@@ -296,8 +298,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
             });
         });
 
-        it('should update the devices information in Context Broker', function(done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
+        it('should update the devices information in Context Broker', function (done) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -305,8 +307,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
     });
 
-    describe('When the Context Broker returns an error while unregistering a device', function() {
-        beforeEach(function(done) {
+    describe('When the Context Broker returns an error while unregistering a device', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
@@ -328,7 +330,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
 
             contextBrokerMock.delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d').reply(500);
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
                     [
                         async.apply(iotAgentLib.clearAll),
@@ -341,8 +343,8 @@ describe('NGSI-LD - IoT Agent Device Registration', function() {
         });
 
         it('should not remove the device from the internal registry');
-        it('should return a UNREGISTRATION_ERROR error to the caller', function(done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function(error) {
+        it('should return a UNREGISTRATION_ERROR error to the caller', function (done) {
+            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('UNREGISTRATION_ERROR');

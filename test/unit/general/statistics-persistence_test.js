@@ -20,92 +20,98 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var statsService = require('../../../lib/services/stats/statsRegistry'),
-    commonConfig = require('../../../lib/commonConfig'),
-    iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    async = require('async'),
-    mongoUtils = require('../mongodb/mongoDBUtils'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        stats: {
-            interval: 50,
-            persistence: true
-        },
-        mongodb: {
-            host: 'localhost',
-            port: '27017',
-            db: 'iotagent'
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+/* eslint-disable no-unused-vars */
+
+const statsService = require('../../../lib/services/stats/statsRegistry');
+const commonConfig = require('../../../lib/commonConfig');
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const async = require('async');
+const mongoUtils = require('../mongodb/mongoDBUtils');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    iotAgentDb,
-    oldConfig;
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    stats: {
+        interval: 50,
+        persistence: true
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+let iotAgentDb;
+let oldConfig;
 
-describe('Statistics persistence service', function() {
-
+describe('Statistics persistence service', function () {
     function insertDummy(n, callback) {
-        iotAgentDb.collection('tests').insertOne({test: 'test'}, function() {
+        iotAgentDb.collection('tests').insertOne({ test: 'test' }, function () {
             callback();
         });
     }
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         oldConfig = commonConfig.getConfig();
 
-        iotAgentLib.activate(iotAgentConfig, function(error) {
-            statsService.globalLoad({}, function() {
+        iotAgentLib.activate(iotAgentConfig, function (error) {
+            statsService.globalLoad({}, function () {
                 iotAgentDb = require('../../../lib/model/dbConn').db;
 
-                async.times(10, insertDummy, function() {
+                async.times(10, insertDummy, function () {
                     done();
                 });
             });
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.deactivate(function(error) {
+    afterEach(function (done) {
+        iotAgentLib.deactivate(function (error) {
             commonConfig.setConfig(oldConfig);
-            statsService.globalLoad({}, function() {
+            statsService.globalLoad({}, function () {
                 mongoUtils.cleanDbs(done);
             });
         });
     });
 
-    describe('When a periodic persitence action is set', function() {
-        beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 10
-            }, function() {
-                statsService.add('stat1', 5, done);
-            });
+    describe('When a periodic persitence action is set', function () {
+        beforeEach(function (done) {
+            statsService.globalLoad(
+                {
+                    stat1: 10
+                },
+                function () {
+                    statsService.add('stat1', 5, done);
+                }
+            );
         });
 
-        it('should store all the records in the database', function(done) {
-            statsService.addTimerAction(statsService.mongodbPersistence, function() {
-                setTimeout(function() {
-                    statsService.clearTimers(function() {
-                        iotAgentDb.collection('kpis').find({}).toArray(function(err, docs) {
-                            should.not.exist(err);
-                            should.exist(docs);
-                            docs.length.should.be.above(2);
-                            done();
-                        });
+        it('should store all the records in the database', function (done) {
+            statsService.addTimerAction(statsService.mongodbPersistence, function () {
+                setTimeout(function () {
+                    statsService.clearTimers(function () {
+                        iotAgentDb
+                            .collection('kpis')
+                            .find({})
+                            .toArray(function (err, docs) {
+                                should.not.exist(err);
+                                should.exist(docs);
+                                docs.length.should.be.above(2);
+                                done();
+                            });
                     });
                 }, 200);
             });

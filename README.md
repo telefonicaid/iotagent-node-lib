@@ -9,22 +9,19 @@
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
-This project aims to provide a Node.js module to enable IoT Agent developers to
-build custom agents for their devices that can easily connect to NGSI Context
-Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion)).
+This project aims to provide a Node.js module to enable IoT Agent developers to build custom agents for their devices
+that can easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion)).
 
-An IoT Agent is a component that lets groups of devices send their data to and
-be managed from a FIWARE NGSI Context Broker using their own native protocols.
-IoT Agents should also be able to deal with security aspects of the FIWARE
-platform (authentication and authorization of the channel) and provide other
-common services to the device programmer.
+An IoT Agent is a component that lets groups of devices send their data to and be managed from a FIWARE NGSI Context
+Broker using their own native protocols. IoT Agents should also be able to deal with security aspects of the FIWARE
+platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
-This project is part of [FIWARE](https://www.fiware.org/). For more information
-check the FIWARE Catalogue entry for the
+This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/docs/roadmap.md) |
-|---|---|---|
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+
 
 ## Index
 
@@ -59,7 +56,6 @@ functionality provided by the IoT Agent node lin (e.g. for contecting to a conex
 its device communications using a common vocabulary regardless of the payload, syntax or transport protocol used by the
 device itself.
 
-
 ## Install
 
 The **IoT Agent node library** is not a standalone product and should be added as a dependency to `package.json` of the
@@ -78,43 +74,39 @@ In order to use the library within your own IoT Agent, you must first you requir
 const iotagentLib = require("iotagent-node-lib");
 ```
 
-Information about how to configure the Library can be found at the corresponding
-section of the
+Information about how to configure the Library can be found at the corresponding section of the
 [Installation & Administration Guide](doc/installationguide.md).
 
 ## Usage
 
-This library has no packaging or build processes. The [Getting Started](doc/getting-started.md) is a good place to start. 
-Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
+This library has no packaging or build processes. The [Getting Started](doc/getting-started.md) is a good place to
+start. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
 
--  Details of the architecture of an IoT Agent be found [here](doc/architecture.md).
--  Further Advanced topics can be found [here](doc/advanced-topics.md).
--  The following features are listed as [deprecated](doc/deprecated.md).
+-   Details of the architecture of an IoT Agent be found [here](doc/architecture.md).
+-   Further Advanced topics can be found [here](doc/advanced-topics.md).
+-   The following features are listed as [deprecated](doc/deprecated.md).
 
 ## API
 
 The **IoT Agent node library** offers a simple REST API which provides common functionality to access, provision and
-decommission devices.
-[API](doc/api.md).
+decommission devices. [API](doc/api.md).
 
 ## Testing
-
 
 Contributions to development can be found [here](doc/development.md) - additional contributions are welcome.
 
 ### Agent Console
 
-A command-line client to experiment with the library is packed with it. The
-command-line client can be started using the following command:
+A command-line client to experiment with the library is packed with it. The command-line client can be started using the
+following command:
 
 ```console
 bin/agentConsole.js
 ```
 
-The client offers an API similar to the one offered by the library: it can start
-and stop an IoT agent, register and unregister devices, send measures mimicking
-the device and receive updates of the device data. Take into account that, by
-default, the console uses the same `config.js` file than the IoT Agent.
+The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, register and
+unregister devices, send measures mimicking the device and receive updates of the device data. Take into account that,
+by default, the console uses the same `config.js` file than the IoT Agent.
 
 The command-line client creates a console that offers the following options:
 
@@ -172,24 +164,20 @@ listdevices
 
 #### Command-line testing
 
-The library also offers a Context Broker and IoT Agent client that can be used
-to:
+The library also offers a Context Broker and IoT Agent client that can be used to:
 
--   Simulate operations to the Context Broker used by the IoT Agent, triggering
-    Context Provider forwardings for lazy attributes and checking the
-    appropriate values for active ones.
--   Simulate operations to the Device Provisioning API and Configuration API of
-    the IoT Agent.
+-   Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy
+    attributes and checking the appropriate values for active ones.
+-   Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
 
-The tester can be started with the following command, from the root folder of
-the project:
+The tester can be started with the following command, from the root folder of the project:
 
 ```console
 bin/iotAgentTester.js
 ```
 
-From the command-line, the `help` command can be used to show a description of
-the currently supported features. These are the following:
+From the command-line, the `help` command can be used to show a description of the currently supported features. These
+are the following:
 
 ```text
 stressInit
@@ -304,30 +292,26 @@ migrate <targetDb> <service> <subservice>
 	subservices, use the "*" value.
 ```
 
-The agent session stores transient configuration data about the target Context
-Broker and the target IoT Agent. This configuration is independent, and can be
-checked with the `showConfigCb` and `showConfigIot` commands, respectively.
-Their values can be changed with the `configCb` and `configIot` commands
-respectively. The new configurations will be deleted upon startup.
+The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This
+configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively.
+Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be
+deleted upon startup.
 
 #### Creating specialized testers
 
 The command-line testing tools make use of the
-[command-node Node.js library](https://github.com/telefonicaid/command-shell-lib)
-for command-line utils. In order to help creating testing tools for IoTAgents of
-specific protocols, all the commands of the library tester are offered as a
-array that can be directly imported into other Command-Line tools, using the
-following steps:
+[command-node Node.js library](https://github.com/telefonicaid/command-shell-lib) for command-line utils. In order to
+help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a
+array that can be directly imported into other Command-Line tools, using the following steps:
 
--   Require the `iotagent-node-lib` command-line module in your command-line
-    tool:
+-   Require the `iotagent-node-lib` command-line module in your command-line tool:
 
 ```javascript
-  var iotaCommands = require('iotagent-node-lib').commandLine;
+var iotaCommands = require("iotagent-node-lib").commandLine;
 ```
 
--   Initialize the command-line utils (the initialization function takes two
-    arguments, that will be explained in detail below:
+-   Initialize the command-line utils (the initialization function takes two arguments, that will be explained in detail
+    below:
 
 ```javascript
 iotaCommands.init(configCb, configIot);
@@ -342,56 +326,47 @@ commands = commands.concat(commands, iotaCommands.commands);
 -   Execute the command-line interpreter as usual:
 
 ```javascript
-clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
+clUtils.initialize(commandLine.commands, "IoT Agent tester> ");
 ```
 
-The command-line module makes use of two configuration objects. Both can be
-shown and edited in the command-line using the provided commands, but a default
-value must be present.
+The command-line module makes use of two configuration objects. Both can be shown and edited in the command-line using
+the provided commands, but a default value must be present.
 
-The Context Broker configuration object holds all the information about the
-Context Broker where the IoT Agent to be tested is connected. It MUST contain
-the following attributes:
+The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be
+tested is connected. It MUST contain the following attributes:
 
 -   **host**: host where the Context Broker instance is located.
 -   **port**: port where the Context Broker instance is listening.
 -   **service**: service that will be used in all the NGSI operations.
 -   **subservice**: service that will be used in all the NGSI operations.
 
-The IoT Agent configuration object holds information about the IoT Agent that is
-being tested. It MUST contain the following attributes:
+The IoT Agent configuration object holds information about the IoT Agent that is being tested. It MUST contain the
+following attributes:
 
 -   **host**: host where the IoT Agent instance is located.
 -   **port**: port where the IoT Agent instance is listening.
--   **service**: service that will be used to group devices and device
-    information.
--   **subservice**: subservice that will be used to group devices and device
-    information.
+-   **service**: service that will be used to group devices and device information.
+-   **subservice**: subservice that will be used to group devices and device information.
 
 ---
 
 ## Licence
 
-The IoT Agent Node Library is licensed under [Affero General Public License (GPL)
-version 3](./LICENSE).
+The IoT Agent Node Library is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
 © 2019 Telefonica Investigación y Desarrollo, S.A.U
 
-
-
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
-There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL 
-(or AGPL) licenses are mostly related with the fact that different people assign different 
-interpretations on the meaning of the term “derivate work” used in these licenses. Due to this,
-some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
-(even without _modifying_ it).
+There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL (or AGPL) licenses are mostly
+related with the fact that different people assign different interpretations on the meaning of the term “derivate work”
+used in these licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL
+licenses (even without _modifying_ it).
 
 For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license  
 wish to make a clarifying public statement as follows:
 
-> Please note that software derived as a result of modifying the source code of this
-> software in order to fix a bug or incorporate enhancements is considered a derivative 
-> work of the product. Software that merely uses or aggregates (i.e. links to) an otherwise 
-> unmodified version of existing software is not considered a derivative work, and therefore
-> it does not need to be released as under the same license, or even released as open source.
+> Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
+> incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.
+> links to) an otherwise unmodified version of existing software is not considered a derivative work, and therefore it
+> does not need to be released as under the same license, or even released as open source.

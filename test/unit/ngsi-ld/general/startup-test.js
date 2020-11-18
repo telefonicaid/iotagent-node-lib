@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
@@ -58,9 +60,9 @@ const iotAgentConfig = {
 };
 let iotamMock;
 
-describe('NGSI-LD - Startup tests', function() {
-    describe('When the IoT Agent is started with environment variables', function() {
-        beforeEach(function() {
+describe('NGSI-LD - Startup tests', function () {
+    describe('When the IoT Agent is started with environment variables', function () {
+        beforeEach(function () {
             process.env.IOTA_CB_HOST = 'cbhost';
             process.env.IOTA_CB_PORT = '1111';
             process.env.IOTA_CB_NGSI_VERSION = 'v2';
@@ -91,7 +93,7 @@ describe('NGSI-LD - Startup tests', function() {
                 );
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_CB_HOST;
             delete process.env.IOTA_CB_PORT;
             delete process.env.IOTA_CB_NGSI_VERSION;
@@ -113,12 +115,12 @@ describe('NGSI-LD - Startup tests', function() {
             delete process.env.IOTA_DEFAULT_RESOURCE;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should load the correct configuration parameters', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should load the correct configuration parameters', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().contextBroker.ngsiVersion.should.equal('v2');
                 config.getConfig().server.host.should.equal('localhost');

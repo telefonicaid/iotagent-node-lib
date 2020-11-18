@@ -21,7 +21,7 @@
  * please contact with::[contacto@tid.es]
  */
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const request = require('request');
@@ -186,9 +186,9 @@ const optionsDelete = {
 };
 let iotamMock;
 
-describe('NGSI-LD - IoT Manager autoregistration', function() {
-    describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
-        beforeEach(function() {
+describe('NGSI-LD - IoT Manager autoregistration', function () {
+    describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
@@ -196,12 +196,12 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should register itself to the provided IoT Manager URL', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should register itself to the provided IoT Manager URL', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -209,8 +209,8 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When the IoT Agents is started with "iotManager" config with missing attributes', function() {
-        beforeEach(function() {
+    describe('When the IoT Agents is started with "iotManager" config with missing attributes', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             delete iotAgentConfig.providerUrl;
@@ -220,12 +220,12 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
-        afterEach(function() {
+        afterEach(function () {
             iotAgentConfig.providerUrl = 'http://smartGondor.com';
         });
 
-        it('should fail with a MISSING_CONFIG_PARAMS error', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should fail with a MISSING_CONFIG_PARAMS error', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 should.exist(error);
                 error.name.should.equal('MISSING_CONFIG_PARAMS');
                 done();
@@ -233,8 +233,8 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When the IoT Agents is started with "iotManager" config and multiple services', function() {
-        beforeEach(function(done) {
+    describe('When the IoT Agents is started with "iotManager" config and multiple services', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
@@ -247,14 +247,14 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
             groupRegistryMemory.create(groupCreation, done);
         });
 
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should send all the service information to the IoT Manager in the registration', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should send all the service information to the IoT Manager in the registration', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -262,8 +262,8 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a new service is created in the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new service is created in the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
@@ -277,19 +277,19 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
                 )
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
             });
         });
 
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreation, function(error, result, body) {
+        it('should update the registration in the IoT Manager', function (done) {
+            request(optionsCreation, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -297,8 +297,8 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a service is removed from the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a service is removed from the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
@@ -312,19 +312,19 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
                 .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            groupRegistryMemory.create(groupCreation, function() {
+            groupRegistryMemory.create(groupCreation, function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
         });
 
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsDelete, function(error, result, body) {
+        it('should update the registration in the IoT Manager', function (done) {
+            request(optionsDelete, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -332,8 +332,8 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
         });
     });
 
-    describe('When a new service with static attributes is created in the IoT Agent', function() {
-        beforeEach(function(done) {
+    describe('When a new service with static attributes is created in the IoT Agent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
@@ -347,19 +347,19 @@ describe('NGSI-LD - IoT Manager autoregistration', function() {
                 )
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
             });
         });
 
-        afterEach(function(done) {
-            groupRegistryMemory.clear(function() {
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
 
-        it('should update the registration in the IoT Manager', function(done) {
-            request(optionsCreationStatic, function(error, result, body) {
+        it('should update the registration in the IoT Manager', function (done) {
+            request(optionsCreationStatic, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();

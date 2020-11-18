@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const async = require('async');
 const should = require('should');
@@ -81,7 +83,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Static attributes test', function() {
+describe('NGSI-LD - Static attributes test', function () {
     const values = [
         {
             name: 'state',
@@ -95,16 +97,16 @@ describe('NGSI-LD - Static attributes test', function() {
         }
     ];
 
-    beforeEach(function() {
+    beforeEach(function () {
         logger.setLevel('FATAL');
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When information from a device with multiple static attributes and metadata is sent', function() {
-        beforeEach(function(done) {
+    describe('When information from a device with multiple static attributes and metadata is sent', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -112,7 +114,7 @@ describe('NGSI-LD - Static attributes test', function() {
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .times(4)
                 .reply(204)
-                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function (body) {
                     // Since the TimeInstant plugin is in use,
                     // Each property should contain observedAt
                     // metadata.
@@ -129,7 +131,7 @@ describe('NGSI-LD - Static attributes test', function() {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should send a single observedAt per attribute', function(done) {
+        it('should send a single observedAt per attribute', function (done) {
             async.series(
                 [
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
@@ -138,7 +140,7 @@ describe('NGSI-LD - Static attributes test', function() {
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values),
                     async.apply(iotAgentLib.update, 'light1', 'Light', '', values)
                 ],
-                function(error, results) {
+                function (error, results) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();

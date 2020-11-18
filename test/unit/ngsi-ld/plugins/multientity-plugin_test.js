@@ -221,11 +221,11 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Multi-entity plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Multi-entity plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
@@ -234,13 +234,13 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for a multientity measurement', function() {
+    describe('When an update comes for a multientity measurement', function () {
         const values = [
             {
                 name: 'p',
@@ -254,7 +254,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -268,8 +268,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should send two context elements, one for each entity', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+        it('should send two context elements, one for each entity', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -277,7 +277,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement with same attribute name', function() {
+    describe('When an update comes for a multientity measurement with same attribute name', function () {
         const values = [
             {
                 name: 'h',
@@ -286,7 +286,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -300,8 +300,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should send context elements', function(done) {
-            iotAgentLib.update('ws5', 'WeatherStation5', '', values, function(error) {
+        it('should send context elements', function (done) {
+            iotAgentLib.update('ws5', 'WeatherStation5', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -309,7 +309,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity multi measurement with same attribute name', function() {
+    describe('When an update comes for a multientity multi measurement with same attribute name', function () {
         const values = [
             {
                 name: 'h',
@@ -323,7 +323,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -337,8 +337,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should send context elements', function(done) {
-            iotAgentLib.update('ws6', 'WeatherStation6', '', values, function(error) {
+        it('should send context elements', function (done) {
+            iotAgentLib.update('ws6', 'WeatherStation6', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -347,7 +347,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
     });
 
     /* jshint maxlen: 200 */
-    describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function() {
+    describe('When an update comes for a multientity multi measurement with metadata and the same attribute name', function () {
         const values = [
             {
                 name: 'h',
@@ -361,7 +361,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -375,8 +375,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should send context elements', function(done) {
-            iotAgentLib.update('ws7', 'WeatherStation7', '', values, function(error) {
+        it('should send context elements', function (done) {
+            iotAgentLib.update('ws7', 'WeatherStation7', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -384,7 +384,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity defined with an expression', function() {
+    describe('When an update comes for a multientity defined with an expression', function () {
         const values = [
             {
                 name: 'p',
@@ -403,7 +403,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
@@ -417,8 +417,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should send the update value to the resulting value of the expression', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function(error) {
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -426,7 +426,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
         });
     });
 
-    describe('When an update comes for a multientity measurement without type for one entity', function() {
+    describe('When an update comes for a multientity measurement without type for one entity', function () {
         const values = [
             {
                 name: 'p',
@@ -440,7 +440,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -454,8 +454,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 .reply(204);
         });
 
-        it('should use the device type as a default value', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function(error) {
+        it('should use the device type as a default value', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -466,7 +466,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
     describe(
         'When an update comes for a multientity measurement and there are attributes with' +
             ' the same name but different alias and mapped to different CB entities',
-        function() {
+        function () {
             const values = [
                 {
                     name: 'cont1',
@@ -475,7 +475,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 }
             ];
 
-            beforeEach(function() {
+            beforeEach(function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -489,8 +489,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                     .reply(204);
             });
 
-            it('should update only the appropriate CB entity', function(done) {
-                iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
+            it('should update only the appropriate CB entity', function (done) {
+                iotAgentLib.update('Sensor', 'Sensor001', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
@@ -502,7 +502,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
     describe(
         'When an update comes for a multientity multi measurement and there are attributes with' +
             ' the same name but different alias and mapped to different CB entities',
-        function() {
+        function () {
             const values = [
                 {
                     name: 'cont1',
@@ -526,7 +526,7 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                 }
             ];
 
-            beforeEach(function() {
+            beforeEach(function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -540,8 +540,8 @@ describe('NGSI-LD - Multi-entity plugin', function() {
                     .reply(204);
             });
 
-            it('should update only the appropriate CB entity', function(done) {
-                iotAgentLib.update('Sensor', 'Sensor001', '', values, function(error) {
+            it('should update only the appropriate CB entity', function (done) {
+                iotAgentLib.update('Sensor', 'Sensor001', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
@@ -551,13 +551,13 @@ describe('NGSI-LD - Multi-entity plugin', function() {
     );
 });
 
-describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         iotAgentConfig.timestamp = true;
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
@@ -567,13 +567,13 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function() {
+    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function () {
         const values = [
             {
                 name: 'p',
@@ -600,14 +600,14 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
         });
 
-        it('should send two context elements, one for each entity', function(done) {
+        it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin1.json'
@@ -628,17 +628,17 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                 })
                 .reply(204);
 
-            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
 
-        it('should send two context elements, one for each entity', function(done) {
+        it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/', function(body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin2.json'
@@ -660,14 +660,14 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                 })
                 .reply(204);
 
-            iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function(error) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', singleValue, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
 
-        it('should propagate user provider timestamp to mapped entities', function(done) {
+        it('should propagate user provider timestamp to mapped entities', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
@@ -693,7 +693,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                 }
             ];
 
-            iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function(error) {
+            iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -702,15 +702,15 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
     });
 });
 
-describe('NGSI-LD - Multi-entity plugin is executed for a command update for a regular entity ', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Multi-entity plugin is executed for a command update for a regular entity ', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         iotAgentConfig.timestamp = true;
         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
         timekeeper.freeze(time);
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
@@ -720,20 +720,20 @@ describe('NGSI-LD - Multi-entity plugin is executed for a command update for a r
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         timekeeper.reset();
-        iotAgentLib.clearAll(function() {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    it('Should send the update to the context broker', function(done) {
+    it('Should send the update to the context broker', function (done) {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .post(
                 '/ngsi-ld/v1/entityOperations/upsert/',
                 utils.readExampleFile(
-                    './test/unit/ngsi-ld/examples' + '/contextRequests/updateContextMultientityTimestampPlugin4.json'
+                    './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )
             )
             .reply(204);
@@ -751,7 +751,7 @@ describe('NGSI-LD - Multi-entity plugin is executed for a command update for a r
             }
         ];
 
-        iotAgentLib.update('sensorCommand', 'SensorCommand', '', commands, function(error) {
+        iotAgentLib.update('sensorCommand', 'SensorCommand', '', commands, function (error) {
             should.not.exist(error);
             contextBrokerMock.done();
             done();

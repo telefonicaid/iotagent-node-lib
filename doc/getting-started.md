@@ -10,23 +10,23 @@ custom settings may also be required dependent upon the actual IoT Agent used.
 
 ```javascript
 config = {
-    logLevel: 'DEBUG',
+    logLevel: "DEBUG",
     contextBroker: {
-        host: 'orion',
-        port: '1026'
+        host: "orion",
+        port: "1026",
     },
     server: {
         port: 4041,
-        host: '0.0.0.0'
+        host: "0.0.0.0",
     },
     deviceRegistry: {
-        type: 'memory'
+        type: "memory",
     },
-    service: 'openiot',
-    subservice: '/',
-    providerUrl: 'http://iot-agent:4041',
-    deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing'
+    service: "openiot",
+    subservice: "/",
+    providerUrl: "http://iot-agent:4041",
+    deviceRegistrationDuration: "P1M",
+    defaultType: "Thing",
 };
 ```
 

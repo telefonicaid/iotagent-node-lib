@@ -20,70 +20,68 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-
-    should = require('should'),
-    nock = require('nock'),
-    contextBrokerMock,
-    request = require('request'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        service: 'smartGondor',
-        singleConfigurationMode: true,
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const nock = require('nock');
+let contextBrokerMock;
+const request = require('request');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    groupCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+    server: {
+        port: 4041,
+        baseRoot: '/'
     },
-    deviceCreation = {
-        url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-        method: 'POST',
-        json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    };
+    types: {},
+    service: 'smartGondor',
+    singleConfigurationMode: true,
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const groupCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const deviceCreation = {
+    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+    method: 'POST',
+    json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
 
-describe('NGSI-v1 - Provisioning API: Single service mode', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Provisioning API: Single service mode', function () {
+    beforeEach(function (done) {
         nock.cleanAll();
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         iotAgentLib.setProvisioningHandler();
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a new configuration arrives to an already configured subservice', function() {
-        var groupCreationDuplicated = {
+    describe('When a new configuration arrives to an already configured subservice', function () {
+        const groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/services',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
@@ -93,12 +91,12 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             request(groupCreation, done);
         });
 
-        it('should raise a DUPLICATE_GROUP error', function(done) {
-            request(groupCreationDuplicated, function(error, response, body) {
+        it('should raise a DUPLICATE_GROUP error', function (done) {
+            request(groupCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -107,8 +105,8 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that already exists in the configuration', function() {
-        var deviceCreationDuplicated = {
+    describe('When a device is provisioned with an ID that already exists in the configuration', function () {
+        const deviceCreationDuplicated = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
@@ -118,32 +116,38 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
-            request(groupCreation, function(error) {
-                request(deviceCreation, function(error, response, body) {
+            request(groupCreation, function (error) {
+                request(deviceCreation, function (error, response, body) {
                     done();
                 });
             });
         });
 
-        it('should raise a DUPLICATE_DEVICE_ID error', function(done) {
-            request(deviceCreationDuplicated, function(error, response, body) {
+        it('should raise a DUPLICATE_DEVICE_ID error', function (done) {
+            request(deviceCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -152,117 +156,133 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function() {
-        var alternativeDeviceCreation = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
-                headers: {
-                    'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            },
-            alternativeGroupCreation = {
-                url: 'http://localhost:4041/iot/services',
-                method: 'POST',
-                json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
-                headers: {
-                    'fiware-service': 'AlternateService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            };
+    describe('When a device is provisioned with an ID that exists globally but not in the configuration', function () {
+        const alternativeDeviceCreation = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
+            headers: {
+                'fiware-service': 'AlternateService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+        const alternativeGroupCreation = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+            headers: {
+                'fiware-service': 'AlternateService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'AlternateService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'AlternateService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
-            request(groupCreation, function(error) {
-                request(deviceCreation, function(error, response, body) {
-                    request(alternativeGroupCreation, function(error, response, body) {
+            request(groupCreation, function (error) {
+                request(deviceCreation, function (error, response, body) {
+                    request(alternativeGroupCreation, function (error, response, body) {
                         done();
                     });
                 });
             });
         });
 
-        it('should return a 201 OK', function(done) {
-            request(alternativeDeviceCreation, function(error, response, body) {
+        it('should return a 201 OK', function (done) {
+            request(alternativeDeviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
     });
-    describe('When a device is provisioned without a type and with a default configuration type', function() {
-        var getDevice = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
-                method: 'GET',
-                headers: {
-                    'fiware-service': 'TestService',
-                    'fiware-servicepath': '/testingPath'
-                }
-            },
-            oldType;
+    describe('When a device is provisioned without a type and with a default configuration type', function () {
+        const getDevice = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'TestService',
+                'fiware-servicepath': '/testingPath'
+            }
+        };
+        let oldType;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             oldType = deviceCreation.json.devices[0].entity_type;
             delete deviceCreation.json.devices[0].entity_type;
             request(groupCreation, done);
         });
 
-        afterEach(function() {
+        afterEach(function () {
             deviceCreation.json.devices[0].entity_type = oldType;
         });
 
-        it('should be provisioned with the default type', function(done) {
-            request(deviceCreation, function(error, response, body) {
-                request(getDevice, function(error, response, body) {
-                    var parsedBody;
-
-                    parsedBody = JSON.parse(body);
+        it('should be provisioned with the default type', function (done) {
+            request(deviceCreation, function (error, response, body) {
+                request(getDevice, function (error, response, body) {
+                    const parsedBody = JSON.parse(body);
 
                     parsedBody.entity_type.should.equal('SensorMachine');
 
@@ -271,43 +291,56 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function() {
             });
         });
     });
-    describe('When a device is provisioned for a configuration', function() {
-        beforeEach(function(done) {
+    describe('When a device is provisioned for a configuration', function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext', utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'));
+                .post(
+                    '/NGSI9/registerContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityRequests/registerProvisionedDeviceWithGroup.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
+                    )
+                );
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile(
+                        './test/unit/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
+                    )
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                );
 
             request(groupCreation, done);
         });
 
-        it('should not raise any error', function(done) {
-            request(deviceCreation, function(error, response, body) {
+        it('should not raise any error', function (done) {
+            request(deviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
 
-        it('should send the mixed data to the Context Broker', function(done) {
-            request(deviceCreation, function(error, response, body) {
+        it('should send the mixed data to the Context Broker', function (done) {
+            request(deviceCreation, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
         });
-
     });
 });
