@@ -22,221 +22,226 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-/*jshint camelcase:false */
+/* eslint-disable no-unused-vars */
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    _ = require('underscore'),
-    utils = require('../../tools/utils'),
-    async = require('async'),
-    request = require('request'),
-    should = require('should'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            name: 'testAgent',
-            port: 4041,
-            baseRoot: '/'
-        },
-        types: {},
-        deviceRegistry: {
-            type: 'mongodb'
-        },
-        mongodb: {
-            host: 'localhost',
-            port: '27017',
-            db: 'iotagent'
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const _ = require('underscore');
+const utils = require('../../tools/utils');
+const async = require('async');
+const request = require('request');
+const should = require('should');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    mongo = require('mongodb').MongoClient,
-    mongoUtils = require('./mongoDBUtils'),
-    optionsCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: {
-            services: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'Light',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ],
-                    internal_attributes: [
-                        {
-                            customField: 'customValue'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+    server: {
+        name: 'testAgent',
+        port: 4041,
+        baseRoot: '/'
     },
-    optionsDelete = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
+    types: {},
+    deviceRegistry: {
+        type: 'mongodb'
     },
-    optionsList = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/*'
-        }
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
     },
-    optionsUpdate = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'PUT',
-        json: {
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-            trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-            cbHost: 'http://anotherUnexistentHost:1026',
-            commands: [
-                {
-                    name: 'wheel1',
-                    type: 'Wheel'
-                }
-            ],
-            lazy: [
-                {
-                    name: 'luminescence',
-                    type: 'Lumens'
-                }
-            ],
-            attributes: [
-                {
-                    name: 'status',
-                    type: 'Boolean'
-                }
-            ],
-            static_attributes: [
-                {
-                    name: 'bootstrapServer',
-                    type: 'Address',
-                    value: '127.0.0.1'
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const mongo = require('mongodb').MongoClient;
+const mongoUtils = require('./mongoDBUtils');
+const optionsCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: {
+        services: [
+            {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'Light',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://unexistentHost:1026',
+                commands: [
+                    {
+                        name: 'wheel1',
+                        type: 'Wheel'
+                    }
+                ],
+                lazy: [
+                    {
+                        name: 'luminescence',
+                        type: 'Lumens'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ],
+                internal_attributes: [
+                    {
+                        customField: 'customValue'
+                    }
+                ]
+            }
+        ]
     },
-    optionsGet = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'GET',
-        json: {},
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const optionsDelete = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'DELETE',
+    json: {},
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
     },
-    iotAgentDb;
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
+const optionsList = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'GET',
+    json: {},
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/*'
+    }
+};
+const optionsUpdate = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'PUT',
+    json: {
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+        cbHost: 'http://anotherUnexistentHost:1026',
+        commands: [
+            {
+                name: 'wheel1',
+                type: 'Wheel'
+            }
+        ],
+        lazy: [
+            {
+                name: 'luminescence',
+                type: 'Lumens'
+            }
+        ],
+        attributes: [
+            {
+                name: 'status',
+                type: 'Boolean'
+            }
+        ],
+        static_attributes: [
+            {
+                name: 'bootstrapServer',
+                type: 'Address',
+                value: '127.0.0.1'
+            }
+        ]
+    },
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    },
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
+const optionsGet = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'GET',
+    json: {},
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+let iotAgentDb;
 
-describe('MongoDB Group Registry test', function() {
-
-    beforeEach(function(done) {
-        mongoUtils.cleanDbs(function() {
-            iotAgentLib.activate(iotAgentConfig, function() {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function(err, db) {
+describe('MongoDB Group Registry test', function () {
+    beforeEach(function (done) {
+        mongoUtils.cleanDbs(function () {
+            iotAgentLib.activate(iotAgentConfig, function () {
+                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
             });
-
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.deactivate(function() {
-            iotAgentDb.close(function(error) {
+    afterEach(function (done) {
+        iotAgentLib.deactivate(function () {
+            iotAgentDb.close(function (error) {
                 mongoUtils.cleanDbs(done);
             });
         });
     });
-    describe('When a new device group creation request arrives', function() {
-        it('should store it in the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(1);
-                    should.exist(docs[0].type);
-                    should.exist(docs[0].internalAttributes);
-                    should.exist(docs[0].attributes);
-                    should.exist(docs[0].apikey);
-                    docs[0].type.should.equal('Light');
-                    docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
-                    docs[0].internalAttributes.length.should.equal(1);
-                    docs[0].internalAttributes[0].customField.should.equal('customValue');
-                    docs[0].attributes.length.should.equal(1);
-                    docs[0].attributes[0].name.should.equal('status');
-                    done();
-                });
+    describe('When a new device group creation request arrives', function () {
+        it('should store it in the DB', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function (err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(1);
+                        should.exist(docs[0].type);
+                        should.exist(docs[0].internalAttributes);
+                        should.exist(docs[0].attributes);
+                        should.exist(docs[0].apikey);
+                        docs[0].type.should.equal('Light');
+                        docs[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                        docs[0].internalAttributes.length.should.equal(1);
+                        docs[0].internalAttributes[0].customField.should.equal('customValue');
+                        docs[0].attributes.length.should.equal(1);
+                        docs[0].attributes[0].name.should.equal('status');
+                        done();
+                    });
             });
         });
-        it('should store the service information from the headers into the DB', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs[0].service);
-                    should.exist(docs[0].subservice);
-                    docs[0].service.should.equal('TestService');
-                    docs[0].subservice.should.equal('/testingPath');
-                    done();
-                });
+        it('should store the service information from the headers into the DB', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function (err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs[0].service);
+                        should.exist(docs[0].subservice);
+                        docs[0].service.should.equal('TestService');
+                        docs[0].subservice.should.equal('/testingPath');
+                        done();
+                    });
             });
         });
     });
 
-    describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function() {
-        it('should return a DUPLICATE_GROUP error', function(done) {
-            request(optionsCreation, function(error, response, body) {
-                request(optionsCreation, function(error, response, body) {
+    describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function () {
+        it('should return a DUPLICATE_GROUP error', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                request(optionsCreation, function (error, response, body) {
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
@@ -245,79 +250,91 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device group removal request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device group removal request arrives', function () {
+        beforeEach(function (done) {
             request(optionsCreation, done);
         });
 
-        it('should remove it from the database', function(done) {
-            request(optionsDelete, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs.length);
-                    docs.length.should.equal(0);
-                    done();
-                });
+        it('should remove it from the database', function (done) {
+            request(optionsDelete, function (error, response, body) {
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function (err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs.length);
+                        docs.length.should.equal(0);
+                        done();
+                    });
             });
         });
 
-        it('should return a 204 OK statusCode', function(done) {
-            request(optionsDelete, function(error, response, body) {
+        it('should return a 204 OK statusCode', function (done) {
+            request(optionsDelete, function (error, response, body) {
                 response.statusCode.should.equal(204);
                 done();
             });
         });
     });
 
-    describe('When a device group update request arrives', function() {
-        beforeEach(function(done) {
+    describe('When a device group update request arrives', function () {
+        beforeEach(function (done) {
             request(optionsCreation, done);
         });
 
-        it('should update the values in the database', function(done) {
-            request(optionsUpdate, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    should.exist(docs[0].cbHost);
-                    docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
-                    should.exist(docs[0].staticAttributes);
-                    docs[0].staticAttributes.length.should.equal(1);
-                    done();
-                });
+        it('should update the values in the database', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function (err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        should.exist(docs[0].cbHost);
+                        docs[0].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                        should.exist(docs[0].staticAttributes);
+                        docs[0].staticAttributes.length.should.equal(1);
+                        done();
+                    });
             });
         });
     });
 
-    describe('When a multiple device group creation arrives', function() {
-        var optionsMultipleCreation = _.clone(optionsCreation);
+    describe('When a multiple device group creation arrives', function () {
+        const optionsMultipleCreation = _.clone(optionsCreation);
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             optionsMultipleCreation.json = utils.readExampleFile(
-                './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json');
+                './test/unit/examples/groupProvisioningRequests/multipleGroupsCreation.json'
+            );
 
             done();
         });
 
-        it('should create the values in the database', function(done) {
-            request(optionsMultipleCreation, function(error, response, body) {
-                iotAgentDb.db().collection('groups').find({}).toArray(function(err, docs) {
-                    should.not.exist(err);
-                    should.exist(docs);
-                    docs.length.should.equal(2);
-                    done();
-                });
+        it('should create the values in the database', function (done) {
+            request(optionsMultipleCreation, function (error, response, body) {
+                iotAgentDb
+                    .db()
+                    .collection('groups')
+                    .find({})
+                    .toArray(function (err, docs) {
+                        should.not.exist(err);
+                        should.exist(docs);
+                        docs.length.should.equal(2);
+                        done();
+                    });
             });
         });
     });
 
-    describe('When a device group listing request arrives', function() {
-        beforeEach(function(done) {
-            var optionsCreation1 = _.clone(optionsCreation),
-                optionsCreation2 = _.clone(optionsCreation),
-                optionsCreation3 = _.clone(optionsCreation);
-
+    describe('When a device group listing request arrives', function () {
+        beforeEach(function (done) {
+            const optionsCreation1 = _.clone(optionsCreation);
+            const optionsCreation2 = _.clone(optionsCreation);
+            const optionsCreation3 = _.clone(optionsCreation);
 
             optionsCreation2.json = { services: [] };
             optionsCreation3.json = { services: [] };
@@ -328,23 +345,26 @@ describe('MongoDB Group Registry test', function() {
             optionsCreation2.json.services[0].apikey = 'qwertyuiop';
             optionsCreation3.json.services[0].apikey = 'lkjhgfds';
 
-            async.series([
-                async.apply(request, optionsCreation1),
-                async.apply(request, optionsCreation2),
-                async.apply(request, optionsCreation3)
-            ], done);
+            async.series(
+                [
+                    async.apply(request, optionsCreation1),
+                    async.apply(request, optionsCreation2),
+                    async.apply(request, optionsCreation3)
+                ],
+                done
+            );
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsList, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsList, function (error, response, body) {
                 body.count.should.equal(3);
                 done();
             });
         });
     });
 
-    describe('When a device group listing arrives with a limit', function() {
-        var optionsConstrained = {
+    describe('When a device group listing arrives with a limit', function () {
+        const optionsConstrained = {
             url: 'http://localhost:4041/iot/services',
             method: 'GET',
             qs: {
@@ -358,11 +378,11 @@ describe('MongoDB Group Registry test', function() {
             }
         };
 
-        beforeEach(function(done) {
-            var optionsCreationList = [],
-                creationFns = [];
+        beforeEach(function (done) {
+            const optionsCreationList = [];
+            const creationFns = [];
 
-            for (var i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 optionsCreationList[i] = _.clone(optionsCreation);
                 optionsCreationList[i].json = { services: [] };
                 optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
@@ -373,23 +393,21 @@ describe('MongoDB Group Registry test', function() {
             async.series(creationFns, done);
         });
 
-        it('should return the appropriate count of services', function(done) {
-            request(optionsConstrained, function(error, response, body) {
+        it('should return the appropriate count of services', function (done) {
+            request(optionsConstrained, function (error, response, body) {
                 body.count.should.equal(10);
                 done();
             });
         });
     });
 
-    describe('When a device info request arrives', function() {
-        beforeEach(function(done) {
-            async.series([
-                async.apply(request, optionsCreation)
-            ], done);
+    describe('When a device info request arrives', function () {
+        beforeEach(function (done) {
+            async.series([async.apply(request, optionsCreation)], done);
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGet, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(1);
@@ -402,12 +420,12 @@ describe('MongoDB Group Registry test', function() {
         });
     });
 
-    describe('When a device info request arrives and multiple groups have been created', function() {
-        beforeEach(function(done) {
-            var optionsCreationList = [],
-                creationFns = [];
+    describe('When a device info request arrives and multiple groups have been created', function () {
+        beforeEach(function (done) {
+            const optionsCreationList = [];
+            const creationFns = [];
 
-            for (var i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 optionsCreationList[i] = _.clone(optionsCreation);
                 optionsCreationList[i].json = { services: [] };
                 optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
@@ -418,8 +436,8 @@ describe('MongoDB Group Registry test', function() {
             async.series(creationFns, done);
         });
 
-        it('should return all the configured device groups from the database', function(done) {
-            request(optionsGet, function(error, response, body) {
+        it('should return all the configured device groups from the database', function (done) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(10);

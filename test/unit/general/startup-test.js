@@ -20,56 +20,58 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    nock = require('nock'),
-    utils = require('../../tools/utils'),
-    config = require('../../../lib/commonConfig'),
-    _ = require('underscore'),
-    iotAgentConfig = {
-        logLevel: 'ERROR',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                attributes: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
+
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const nock = require('nock');
+const utils = require('../../tools/utils');
+const config = require('../../../lib/commonConfig');
+const _ = require('underscore');
+const iotAgentConfig = {
+    logLevel: 'ERROR',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    iotAgentConfigNoUrl = _.clone(iotAgentConfig),
-    iotAgentConfigNoTypes = _.clone(iotAgentConfig),
-    iotamMock;
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const iotAgentConfigNoUrl = _.clone(iotAgentConfig);
+const iotAgentConfigNoTypes = _.clone(iotAgentConfig);
+let iotamMock;
 
-describe('NGSI-v1 - Startup tests', function() {
-    describe('When the IoT Agent is started without a "providerUrl" config parameter', function() {
-        beforeEach(function() {
+describe('NGSI-v1 - Startup tests', function () {
+    describe('When the IoT Agent is started without a "providerUrl" config parameter', function () {
+        beforeEach(function () {
             delete iotAgentConfigNoUrl.providerUrl;
         });
 
-        it('should not start and raise a MISSING_CONFIG_PARAMS error', function(done) {
-            iotAgentLib.activate(iotAgentConfigNoUrl, function(error) {
+        it('should not start and raise a MISSING_CONFIG_PARAMS error', function (done) {
+            iotAgentLib.activate(iotAgentConfigNoUrl, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('MISSING_CONFIG_PARAMS');
@@ -77,13 +79,13 @@ describe('NGSI-v1 - Startup tests', function() {
             });
         });
     });
-    describe('When the IoT Agent is started without a "types" attribute', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started without a "types" attribute', function () {
+        beforeEach(function () {
             delete iotAgentConfigNoTypes.types;
         });
 
-        it('should not start and raise a MISSING_CONFIG_PARAMS error', function(done) {
-            iotAgentLib.activate(iotAgentConfigNoTypes, function(error) {
+        it('should not start and raise a MISSING_CONFIG_PARAMS error', function (done) {
+            iotAgentLib.activate(iotAgentConfigNoTypes, function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('MISSING_CONFIG_PARAMS');
@@ -91,8 +93,8 @@ describe('NGSI-v1 - Startup tests', function() {
             });
         });
     });
-    describe('When the IoT Agent is started with environment variables', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started with environment variables', function () {
+        beforeEach(function () {
             process.env.IOTA_CB_HOST = 'cbhost';
             process.env.IOTA_CB_PORT = '1111';
             process.env.IOTA_NORTH_HOST = 'localhost';
@@ -119,7 +121,7 @@ describe('NGSI-v1 - Startup tests', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_CB_HOST;
             delete process.env.IOTA_CB_PORT;
             delete process.env.IOTA_NORTH_HOST;
@@ -140,12 +142,12 @@ describe('NGSI-v1 - Startup tests', function() {
             delete process.env.IOTA_DEFAULT_RESOURCE;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should not start and raise a MISSING_CONFIG_PARAMS error', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should not start and raise a MISSING_CONFIG_PARAMS error', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().server.host.should.equal('localhost');
                 config.getConfig().server.port.should.equal('2222');
@@ -167,8 +169,8 @@ describe('NGSI-v1 - Startup tests', function() {
         });
     });
 
-    describe('When the IoT Agent is started with mongodb params', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started with mongodb params', function () {
+        beforeEach(function () {
             process.env.IOTA_MONGO_HOST = 'mongohost';
             process.env.IOTA_MONGO_PORT = '5555';
             process.env.IOTA_MONGO_DB = 'themongodb';
@@ -186,7 +188,7 @@ describe('NGSI-v1 - Startup tests', function() {
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_MONGO_HOST;
             delete process.env.IOTA_MONGO_PORT;
             delete process.env.IOTA_MONGO_DB;
@@ -200,11 +202,11 @@ describe('NGSI-v1 - Startup tests', function() {
             delete process.env.IOTA_MONGO_EXTRAARGS;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        ['true', 'True', 'TRUE'].forEach(function(t) {
+        ['true', 'True', 'TRUE'].forEach(function (t) {
             it('should load ssl=ture with ssl=' + t, function (done) {
                 process.env.IOTA_MONGO_SSL = t;
 
@@ -225,7 +227,7 @@ describe('NGSI-v1 - Startup tests', function() {
             });
         });
 
-        ['false', 'False', 'FALSE', 'invalid'].forEach(function(t) {
+        ['false', 'False', 'FALSE', 'invalid'].forEach(function (t) {
             it('should load ssl=false with ssl=' + t, function (done) {
                 process.env.IOTA_MONGO_SSL = t;
 
@@ -246,7 +248,7 @@ describe('NGSI-v1 - Startup tests', function() {
             });
         });
 
-        ['', 'undefined'].forEach(function(t) {
+        ['', 'undefined'].forEach(function (t) {
             it('should load no ssl parameter with ssl=' + t, function (done) {
                 if (t !== 'undefined') {
                     process.env.IOTA_MONGO_SSL = t;
@@ -270,11 +272,14 @@ describe('NGSI-v1 - Startup tests', function() {
         });
 
         [
-            {in: '{"a": "b"}', expect: {a: 'b'}},
-            {in: '{"a": "b", "c": "d"}', expect: {a: 'b', c: 'd'}},
-            {in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}', expect: {a: 'b', c: [1, 2], d: -5, e: {f: 'g'}}},
-            {in: '{}', expect: {}}
-        ].forEach(function(param) {
+            { in: '{"a": "b"}', expect: { a: 'b' } },
+            { in: '{"a": "b", "c": "d"}', expect: { a: 'b', c: 'd' } },
+            {
+                in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}',
+                expect: { a: 'b', c: [1, 2], d: -5, e: { f: 'g' } }
+            },
+            { in: '{}', expect: {} }
+        ].forEach(function (param) {
             it('should load estraArgs with param=' + param.in, function (done) {
                 process.env.IOTA_MONGO_EXTRAARGS = param.in;
 
@@ -295,7 +300,7 @@ describe('NGSI-v1 - Startup tests', function() {
             });
         });
 
-        ['', 'str', '[]'].forEach(function(param) {
+        ['', 'str', '[]'].forEach(function (param) {
             it('should not load estraArgs with param=' + param, function (done) {
                 process.env.IOTA_MONGO_EXTRAARGS = param;
 
