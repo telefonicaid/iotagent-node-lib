@@ -21,6 +21,8 @@
  * please contact with::[contacto@tid.es]
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
 const should = require('should');

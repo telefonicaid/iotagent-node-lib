@@ -23,6 +23,8 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
