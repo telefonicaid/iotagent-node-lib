@@ -138,7 +138,7 @@ The library provides some plugins out of the box, in the `dataPlugins` collectio
 use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
 
 ```javascript
-var iotaLib = require('iotagent-node-lib');
+var iotaLib = require("iotagent-node-lib");
 
 iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
 iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);

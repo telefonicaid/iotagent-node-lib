@@ -32,14 +32,14 @@ function parseUl(data, device) {
 function manageULRequest(req, res, next) {
     var values;
 
-    iotAgentLib.getDevice(req.query.i, function(error, device) {
+    iotAgentLib.getDevice(req.query.i, function (error, device) {
         if (error) {
             res.status(404).send({
                 message: "Couldn't find the device: " + JSON.stringify(error)
             });
         } else {
             values = parseUl(req.query.d, device);
-            iotAgentLib.update(device.name, device.type, '', values, device, function(error) {
+            iotAgentLib.update(device.name, device.type, '', values, device, function (error) {
                 if (error) {
                     res.status(500).send({
                         message: 'Error updating the device'
@@ -99,7 +99,7 @@ function queryContextHandler(id, type, attributes, callback) {
         }
     };
 
-    request(options, function(error, response, body) {
+    request(options, function (error, response, body) {
         if (error) {
             callback(error);
         } else {
@@ -131,7 +131,7 @@ function updateContextHandler(id, type, attributes, callback) {
         }
     };
 
-    request(options, function(error, response, body) {
+    request(options, function (error, response, body) {
         if (error) {
             callback(error);
         } else {
@@ -157,7 +157,7 @@ function configurationHandler(configuration, callback) {
     callback(null, configuration);
 }
 
-iotAgentLib.activate(config, function(error) {
+iotAgentLib.activate(config, function (error) {
     if (error) {
         console.log('There was an error activating the IOTA');
         process.exit(1);
@@ -167,7 +167,7 @@ iotAgentLib.activate(config, function(error) {
         iotAgentLib.setConfigurationHandler(configurationHandler);
         iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-        initSouthbound(function(error) {
+        initSouthbound(function (error) {
             if (error) {
                 console.log('Could not initialize South bound API due to the following error: %s', error);
             } else {

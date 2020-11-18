@@ -20,40 +20,40 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var MongoClient = require('mongodb').MongoClient,
-    async = require('async');
+/* eslint-disable no-unused-vars */
+
+const MongoClient = require('mongodb').MongoClient;
+const async = require('async');
 
 function cleanDb(host, name, callback) {
-    var url = 'mongodb://' + host + ':27017/' + name;
+    const url = 'mongodb://' + host + ':27017/' + name;
 
-    MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
         if (db && db.db()) {
-            db.db().dropDatabase( function (err, result) {
+            db.db().dropDatabase(function (err, result) {
                 db.close();
                 callback();
             });
-            
         }
     });
 }
 
 function cleanDbs(callback) {
-    async.series([
-        async.apply(cleanDb, 'localhost', 'iotagent')
-    ], callback);
+    async.series([async.apply(cleanDb, 'localhost', 'iotagent')], callback);
 }
 
 function populate(host, dbName, entityList, collectionName, callback) {
-    var url = 'mongodb://' + host + ':27017/' + dbName;
+    const url = 'mongodb://' + host + ':27017/' + dbName;
 
-    MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
         if (db) {
-            db.db().collection(collectionName).insertMany(entityList, function(err, r) {
-                db.close();
-                callback(err);
-            });
+            db.db()
+                .collection(collectionName)
+                .insertMany(entityList, function (err, r) {
+                    db.close();
+                    callback(err);
+                });
         } else {
             callback();
         }

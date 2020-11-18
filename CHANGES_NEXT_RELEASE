@@ -1,0 +1,7 @@
+Update codebase to use ES6
+-  Remove JSHint and jshint overrides
+-  Add esLint using standard tamia presets
+-  Replace var with let/const
+-  Fix or disable eslint errors
+Add prettier code formatting
+Add husky and lint-staged

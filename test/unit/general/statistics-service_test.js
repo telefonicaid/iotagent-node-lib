@@ -20,60 +20,62 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var statsService = require('../../../lib/services/stats/statsRegistry'),
-    should = require('should'),
-    commonConfig = require('../../../lib/commonConfig'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041,
-            baseRoot: '/'
-        },
-        stats: {
-            interval: 100
-        },
-        types: {},
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
+const statsService = require('../../../lib/services/stats/statsRegistry');
+const should = require('should');
+const commonConfig = require('../../../lib/commonConfig');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    oldConfig;
+    server: {
+        port: 4041,
+        baseRoot: '/'
+    },
+    stats: {
+        interval: 100
+    },
+    types: {},
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+let oldConfig;
 
-describe('Statistics service', function() {
-    beforeEach(function(done) {
+describe('Statistics service', function () {
+    beforeEach(function (done) {
         oldConfig = commonConfig.getConfig();
         commonConfig.setConfig(iotAgentConfig);
 
-        statsService.globalLoad({}, function() {
+        statsService.globalLoad({}, function () {
             statsService.clearTimers(done);
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         commonConfig.setConfig(oldConfig);
         statsService.globalLoad({}, done);
     });
 
-    describe('When a new statistic is updated with add()', function() {
-        var statName = 'fakeStat',
-            statValue = 2;
+    describe('When a new statistic is updated with add()', function () {
+        const statName = 'fakeStat';
+        const statValue = 2;
 
-        beforeEach(function(done) {
-            statsService.globalLoad({
-                fakeStat: 30
-            }, done);
+        beforeEach(function (done) {
+            statsService.globalLoad(
+                {
+                    fakeStat: 30
+                },
+                done
+            );
         });
 
-        it('should appear the modified value in the getCurrent() statistics', function(done) {
-            statsService.add(statName, statValue, function() {
-                statsService.getCurrent(statName, function(error, value) {
+        it('should appear the modified value in the getCurrent() statistics', function (done) {
+            statsService.add(statName, statValue, function () {
+                statsService.getCurrent(statName, function (error, value) {
                     should.not.exist(error);
                     should.exist(value);
                     value.should.equal(statValue);
@@ -81,9 +83,9 @@ describe('Statistics service', function() {
                 });
             });
         });
-        it('should add the value to the global values', function(done) {
-            statsService.add(statName, statValue, function() {
-                statsService.getGlobal(statName, function(error, value) {
+        it('should add the value to the global values', function (done) {
+            statsService.add(statName, statValue, function () {
+                statsService.getGlobal(statName, function (error, value) {
                     should.not.exist(error);
                     should.exist(value);
                     value.should.equal(30 + statValue);
@@ -92,16 +94,19 @@ describe('Statistics service', function() {
             });
         });
     });
-    describe('When the global statistics are requested', function() {
-        beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 82,
-                stat2: 38789
-            }, done);
+    describe('When the global statistics are requested', function () {
+        beforeEach(function (done) {
+            statsService.globalLoad(
+                {
+                    stat1: 82,
+                    stat2: 38789
+                },
+                done
+            );
         });
 
-        it('should return all the statistics that were created', function(done) {
-            statsService.getAllGlobal(function(error, stats) {
+        it('should return all the statistics that were created', function (done) {
+            statsService.getAllGlobal(function (error, stats) {
                 should.not.exist(error);
                 should.exist(stats);
                 should.exist(stats.stat1);
@@ -113,18 +118,18 @@ describe('Statistics service', function() {
             });
         });
     });
-    describe('When the current statistics are reset', function() {
-        beforeEach(function(done) {
-            statsService.add('statA', 42, function() {
+    describe('When the current statistics are reset', function () {
+        beforeEach(function (done) {
+            statsService.add('statA', 42, function () {
                 statsService.add('statB', 52, done);
             });
         });
 
-        it('should return a value of zero for any of the individual statistics', function(done) {
-            statsService.resetCurrent(function(error) {
+        it('should return a value of zero for any of the individual statistics', function (done) {
+            statsService.resetCurrent(function (error) {
                 should.not.exist(error);
 
-                statsService.getAllCurrent(function(error, data) {
+                statsService.getAllCurrent(function (error, data) {
                     should.exist(data);
                     should.exist(data.statA);
                     should.exist(data.statB);
@@ -135,17 +140,20 @@ describe('Statistics service', function() {
             });
         });
     });
-    describe('When a new periodic stats action is set', function() {
-        var valueCurrent = 0,
-            valueGlobal = 0,
-            times = 0;
+    describe('When a new periodic stats action is set', function () {
+        let valueCurrent = 0;
+        let valueGlobal = 0;
+        let times = 0;
 
-        beforeEach(function(done) {
-            statsService.globalLoad({
-                stat1: 10
-            }, function() {
-                statsService.add('stat1', 5, done);
-            });
+        beforeEach(function (done) {
+            statsService.globalLoad(
+                {
+                    stat1: 10
+                },
+                function () {
+                    statsService.add('stat1', 5, done);
+                }
+            );
         });
 
         function mockedAction(current, global, callback) {
@@ -155,10 +163,10 @@ describe('Statistics service', function() {
             callback();
         }
 
-        it('should be triggered with the periodicity stated in the config.stats.interval parameter', function(done) {
-            statsService.addTimerAction(mockedAction, function() {
-                setTimeout(function() {
-                    statsService.clearTimers(function() {
+        it('should be triggered with the periodicity stated in the config.stats.interval parameter', function (done) {
+            statsService.addTimerAction(mockedAction, function () {
+                setTimeout(function () {
+                    statsService.clearTimers(function () {
                         valueCurrent.should.equal(5);
                         valueGlobal.should.equal(15);
                         times.should.equal(4);
