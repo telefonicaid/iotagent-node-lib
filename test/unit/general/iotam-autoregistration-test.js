@@ -177,63 +177,64 @@ const optionsDelete = {
     headers: {
         'fiware-service': 'theService',
         'fiware-servicepath': 'theSubService'
+    }
+};
+const optionsCreationStatic = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: {
+        services: [
+            {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'SensorMachine',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://unexistentHost:1026',
+                commands: [
+                    {
+                        name: 'wheel1',
+                        type: 'Wheel'
+                    }
+                ],
+                static_attributes: [
+                    {
+                        name: 'position',
+                        type: 'location',
+                        values: '123,12'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ]
+            }
+        ]
     },
-    optionsCreationStatic = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: {
-            services: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'SensorMachine',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    static_attributes: [
-                        {
-                            name: 'position',
-                            type: 'location',
-                            values: '123,12'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService'
-        }
+    headers: {
+        'fiware-service': 'theService',
+        'fiware-servicepath': 'theSubService'
+    }
+};
+const optionsDelete = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'DELETE',
+    json: {},
+    headers: {
+        'fiware-service': 'theService',
+        'fiware-servicepath': 'theSubService'
     },
-    optionsDelete = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'DELETE',
-        json: {},
-        headers: {
-            'fiware-service': 'theService',
-            'fiware-servicepath': 'theSubService'
-        },
-        qs: {
-            resource: '/deviceTest',
-            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
-        }
-    },
-    iotamMock;
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
+let iotamMock;
 
-describe('IoT Manager autoregistration', function() {
-    describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function() {
-        beforeEach(function() {
+describe('IoT Manager autoregistration', function () {
+    describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             iotamMock = nock('http://mockediotam.com:9876')
