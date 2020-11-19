@@ -16,8 +16,8 @@
 
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
 information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
-language can be configured for provisioned attributes as explained in the Device Provisioning API section in the
-main README.md.
+language can be configured for provisioned attributes as explained in the Device Provisioning API section in the main
+README.md.
 
 ## Measurement transformation
 
@@ -69,10 +69,10 @@ Expression Language (see definition [below](#language-description)). In order fo
 evaluated, all the expression patterns must be evaluatable (there must be a value in the measurement for all the
 variables of all the expression patterns).
 
-Note that you need to include in the provision operation all the attributes required as inputs for the expressions.
-In this example, they are `level`, `latitude` and `longitude`. Otherwise the device sending the measures will get
-`{"name":"ATTRIBUTE_NOT_FOUND","message":"Some of the attributes does not exist"}` when it sends some of these
-and the expression will not be calculated.
+Note that you need to include in the provision operation all the attributes required as inputs for the expressions. In
+this example, they are `level`, `latitude` and `longitude`. Otherwise the device sending the measures will get
+`{"name":"ATTRIBUTE_NOT_FOUND","message":"Some of the attributes does not exist"}` when it sends some of these and the
+expression will not be calculated.
 
 The exact same syntax works for Configuration and Device provisioning.
 
@@ -316,11 +316,10 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 
 ## JEXL Based Transformations
 
-As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl).
-To use JEXL, you will need to either configure it as default
-language using the `defaultExpressionLanguage` field to `jexl`
-(see [configuration documentation](installationguide.md)) or configuring
-the usage of JEXL as expression language for a given device:
+As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl). To use JEXL, you will
+need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
+[configuration documentation](installationguide.md)) or configuring the usage of JEXL as expression language for a given
+device:
 
 ```
 {
@@ -352,31 +351,27 @@ In the following we provide examples of using JEXL to apply transformations.
 
 ### Quick comparison to default language
 
-* JEXL supports the following types: Boolean, String, Number, Object, Array.
-* JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
-* JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
-* JEXL additionally supports the following operations:
-  Divide and floor `//`, Modulus `%`, Logical AND `&&` and 
-  Logical OR `||`. Negation operator is `!`
-* JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
+-   JEXL supports the following types: Boolean, String, Number, Object, Array.
+-   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
+-   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
+-   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
+    Logical OR `||`. Negation operator is `!`
+-   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
 
-
-For more details, check JEXL language details
-[here](https://github.com/TomFrost/jexl#all-the-details).
+For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
 
 ### Examples of expressions
 
-The following table shows expressions and their expected outcomes taking into
-account the following measures at southbound interface:
- 
-* `value` with value 6 (number)
-* `name` with value `"DevId629"` (string)
-* `object` with value `{name: "John", surname: "Doe"}` (JSON object)
-* `array` with value `[1, 3]` (JSON Array)
+The following table shows expressions and their expected outcomes taking into account the following measures at
+southbound interface:
 
+-   `value` with value 6 (number)
+-   `name` with value `"DevId629"` (string)
+-   `object` with value `{name: "John", surname: "Doe"}` (JSON object)
+-   `array` with value `[1, 3]` (JSON Array)
 
 | Expression                  | Expected outcome        |
-|:--------------------------- |:----------------------- |
+| :-------------------------- | :---------------------- |
 | `5 * value`                 | `30`                    |
 | `(6 + value) * 3`           | `36`                    |
 | `value / 12 + 1`            | `1.5`                   |
@@ -387,20 +382,19 @@ account the following measures at southbound interface:
 
 Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
-| Expression                  | Expected outcome        |
-|:--------------------------- |:----------------------- |
-| <code>" a "&vert;trim</code>  | `a`                     |
-| <code>name&vert;length</code> | `8`                     |
-| <code>name&vert;indexOf("e")</code>| `1`                     |
-| <code>name&vert;substring(0,name&vert;indexOf("e")+1)</code>| `"De"`       |
+| Expression                                                   | Expected outcome |
+| :----------------------------------------------------------- | :--------------- |
+| <code>" a "&vert;trim</code>                                 | `a`              |
+| <code>name&vert;length</code>                                | `8`              |
+| <code>name&vert;indexOf("e")</code>                          | `1`              |
+| <code>name&vert;substring(0,name&vert;indexOf("e")+1)</code> | `"De"`           |
 
-The following are some expressions not supported by the legacy expression
-language:
+The following are some expressions not supported by the legacy expression language:
 
-| Expression                          | Expected outcome        |
-|:----------------------------------- |:----------------------- |
-| `value == 6? true : false`          | `true`                  |
-| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                  |
-| `array[1]+1`                        | `3`                     |
-| `object.name`                       | `"John"`                |
-| `{type:"Point",coordinates: [value,value]}`| `{type:"Point",coordinates: [6,6]}` |
+| Expression                                          | Expected outcome                    |
+| :-------------------------------------------------- | :---------------------------------- |
+| `value == 6? true : false`                          | `true`                              |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              |
+| `array[1]+1`                                        | `3`                                 |
+| `object.name`                                       | `"John"`                            |
+| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` |

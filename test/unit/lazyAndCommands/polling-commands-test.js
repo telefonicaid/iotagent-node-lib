@@ -20,107 +20,107 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    mongoUtils = require('../mongodb/mongoDBUtils'),
-    request = require('request'),
-    contextBrokerMock,
-    statusAttributeMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'Termometer': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ]
-            },
-            'Motion': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'moving',
-                        type: 'Boolean'
-                    }
-                ],
-                staticAttributes: [
-                    {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
-                ],
-                active: []
-            },
-            'Robot': {
-                commands: [
-                    {
-                        name: 'position',
-                        type: 'Array'
-                    }
-                ],
-                lazy: [],
-                staticAttributes: [],
-                active: []
-            }
-        },
-        deviceRegistry: {
-            type: 'mongodb'
-        },
+/* eslint-disable no-unused-vars */
 
-        mongodb: {
-            host: 'localhost',
-            port: '27017',
-            db: 'iotagent'
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        pollingExpiration: 200,
-        pollingDaemonFrequency: 20
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const mongoUtils = require('../mongodb/mongoDBUtils');
+const request = require('request');
+let contextBrokerMock;
+let statusAttributeMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    device3 = {
-        id: 'r2d2',
-        type: 'Robot',
-        service: 'smartGondor',
-        subservice: 'gardens',
-        polling: true
-    };
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        },
+        Termometer: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: []
+        },
+        Motion: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'moving',
+                    type: 'Boolean'
+                }
+            ],
+            staticAttributes: [
+                {
+                    name: 'location',
+                    type: 'Vector',
+                    value: '(123,523)'
+                }
+            ],
+            active: []
+        },
+        Robot: {
+            commands: [
+                {
+                    name: 'position',
+                    type: 'Array'
+                }
+            ],
+            lazy: [],
+            staticAttributes: [],
+            active: []
+        }
+    },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
 
-describe('NGSI-v1 - Polling commands', function() {
-    beforeEach(function(done) {
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    pollingExpiration: 200,
+    pollingDaemonFrequency: 20
+};
+const device3 = {
+    id: 'r2d2',
+    type: 'Robot',
+    service: 'smartGondor',
+    subservice: 'gardens',
+    polling: true
+};
+
+describe('NGSI-v1 - Polling commands', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -128,30 +128,32 @@ describe('NGSI-v1 - Polling commands', function() {
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/NGSI9/registerContext',
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityRequests/registerIoTAgentCommands.json'))
-            .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+            .post(
+                '/NGSI9/registerContext',
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgentCommands.json')
+            )
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json')
+            );
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
-            .reply(200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
-
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+            );
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
-        delete(device3.registrationId);
-        iotAgentLib.clearAll(function() {
-            iotAgentLib.deactivate(function() {
-                mongoUtils.cleanDbs(function() {
+    afterEach(function (done) {
+        delete device3.registrationId;
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
@@ -161,8 +163,8 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a command update arrives to the IoT Agent for a device with polling', function() {
-        var options = {
+    describe('When a command update arrives to the IoT Agent for a device with polling', function () {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             json: {
@@ -188,29 +190,34 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
-                .reply(200,
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'
+                    )
+                );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should not call the client handler', function(done) {
-            var handlerCalled = false;
+        it('should not call the client handler', function (done) {
+            let handlerCalled = false;
 
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 handlerCalled = true;
                 callback(null, {
-                    id: id,
-                    type: type,
+                    id,
+                    type,
                     attributes: [
                         {
                             name: 'position',
@@ -221,30 +228,30 @@ describe('NGSI-v1 - Polling commands', function() {
                 });
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(false);
                 done();
             });
         });
-        it('should create the attribute with the "_status" prefix in the Context Broker', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 statusAttributeMock.done();
                 done();
             });
         });
-        it('should store the commands in the queue', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should store the commands in the queue', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -256,8 +263,8 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a command arrives with multiple values in the value field', function() {
-        var options = {
+    describe('When a command arrives with multiple values in the value field', function () {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             json: {
@@ -286,27 +293,32 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
-                .reply(200,
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'
+                    )
+                );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should return a 200 OK both in HTTP and in the status code', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should return a 200 OK both in HTTP and in the status code', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 response.statusCode.should.equal(200);
@@ -316,8 +328,8 @@ describe('NGSI-v1 - Polling commands', function() {
         });
     });
 
-    describe('When a polling command expires', function() {
-        var options = {
+    describe('When a polling command expires', function () {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             json: {
@@ -343,38 +355,48 @@ describe('NGSI-v1 - Polling commands', function() {
             }
         };
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json'))
-                .reply(200,
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandStatus.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'
+                    )
+                );
 
             statusAttributeMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandExpired.json'))
-                .reply(200,
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCommandExpired.json')
+                )
+                .reply(
+                    200,
                     utils.readExampleFile(
-                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'));
+                        './test/unit/examples/contextResponses/updateContextCommandStatusSuccess.json'
+                    )
+                );
 
-            iotAgentLib.register(device3, function(error) {
+            iotAgentLib.register(device3, function (error) {
                 done();
             });
         });
 
-        it('should remove it from the queue', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should remove it from the queue', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                setTimeout(function() {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                setTimeout(function () {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -383,14 +405,14 @@ describe('NGSI-v1 - Polling commands', function() {
             });
         });
 
-        it('should mark it as ERROR in the Context Broker', function(done) {
-            iotAgentLib.setCommandHandler(function(id, type, service, subservice, attributes, callback) {
+        it('should mark it as ERROR in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);
             });
 
-            request(options, function(error, response, body) {
-                setTimeout(function() {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function(error, listCommands) {
+            request(options, function (error, response, body) {
+                setTimeout(function () {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

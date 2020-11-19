@@ -21,109 +21,106 @@
  * please contact with::daniel.moranjimenez@telefonica.com
  */
 
-'use strict';
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        },
+        BrokenLight: {
+            commands: [],
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        },
+        Termometer: {
+            type: 'Termometer',
+            commands: [],
+            lazy: [
+                {
+                    name: 'temp',
+                    type: 'kelvin'
+                }
+            ],
+            active: []
+        },
+        Humidity: {
+            type: 'Humidity',
+            cbHost: 'http://192.168.1.1:3024',
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        },
+        Motion: {
+            type: 'Motion',
+            commands: [],
+            lazy: [],
+            staticAttributes: [
+                {
+                    name: 'location',
+                    type: 'Vector',
+                    value: '(123,523)'
+                }
+            ],
+            active: [
+                {
+                    name: 'humidity',
+                    type: 'percentage'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'BrokenLight': {
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            },
-            'Termometer': {
-                type: 'Termometer',
-                commands: [],
-                lazy: [
-                    {
-                        name: 'temp',
-                        type: 'kelvin'
-                    }
-                ],
-                active: [
-                ]
-            },
-            'Humidity': {
-                type: 'Humidity',
-                cbHost: 'http://192.168.1.1:3024',
-                commands: [],
-                lazy: [],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            },
-            'Motion': {
-                type: 'Motion',
-                commands: [],
-                lazy: [],
-                staticAttributes: [
-                    {
-                        'name': 'location',
-                        'type': 'Vector',
-                        'value': '(123,523)'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'humidity',
-                        type: 'percentage'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
-    };
-
-describe('NGSI-v1 - Timestamp compression plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Timestamp compression plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.query);
                 done();
@@ -131,13 +128,13 @@ describe('NGSI-v1 - Timestamp compression plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
-        var values = [
+    describe('When an update comes with a timestamp through the plugin', function () {
+        const values = [
             {
                 name: 'state',
                 type: 'Boolean',
@@ -150,20 +147,26 @@ describe('NGSI-v1 - Timestamp compression plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextCompressTimestamp1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCompressTimestamp1Success.json'
+                    )
+                );
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -171,8 +174,8 @@ describe('NGSI-v1 - Timestamp compression plugin', function() {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadatas', function() {
-        var values = [
+    describe('When an update comes with a timestamp through the plugin with metadatas', function () {
+        const values = [
             {
                 name: 'state',
                 type: 'Boolean',
@@ -192,20 +195,26 @@ describe('NGSI-v1 - Timestamp compression plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextCompressTimestamp2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextCompressTimestamp2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextCompressTimestamp2Success.json'
+                    )
+                );
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -213,26 +222,29 @@ describe('NGSI-v1 - Timestamp compression plugin', function() {
         });
     });
 
-    describe('When a query comes for a timestamp through the plugin', function() {
-        var values = [
-            'state',
-            'The Target Value'
-        ];
+    describe('When a query comes for a timestamp through the plugin', function () {
+        const values = ['state', 'The Target Value'];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/queryContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/queryContextCompressTimestamp1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'));
+                .post(
+                    '/v1/queryContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/queryContextCompressTimestamp1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/queryContextCompressTimestamp1Success.json'
+                    )
+                );
         });
 
-        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
-            iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
+        it('should return an entity with all its timestamps without separators (basic format)', function (done) {
+            iotAgentLib.query('light1', 'Light', '', values, function (error, response) {
                 should.not.exist(error);
                 should.exist(response);
                 should.exist(response.contextResponses);

@@ -41,9 +41,9 @@ npm test
 
 ### Coding guidelines
 
-jshint
+ESLint
 
-Uses provided .jshintrc flag file. To check source code style, type
+Uses the provided `.eslintrc.json` flag file. To check source code style, type
 
 ```bash
 npm run lint
@@ -97,9 +97,37 @@ npm run lint:md
 
 ### Documentation Spell-checking
 
-Checks the markdown documentation for spelling and grammar errors, dead links & etc.
+Uses the provided `.textlintrc` flag file. To check the markdown documentation for spelling and grammar errors, dead
+links & etc.
 
 ```bash
 # Use git-bash on Windows
 npm run lint:text
+```
+
+### Clean
+
+Removes `node_modules` and `coverage` folders, and `package-lock.json` file so that a fresh copy of the project is
+restored.
+
+```bash
+# Use git-bash on Windows
+npm run clean
+```
+
+### Prettify Code
+
+Runs the [prettier](https://prettier.io) code formatter to ensure consistent code style (whitespacing, parameter
+placement and breakup of long lines etc.) within the codebase.
+
+```bash
+# Use git-bash on Windows
+npm run prettier
+```
+
+To ensure consistent Markdown formatting run the following:
+
+```bash
+# Use git-bash on Windows
+npm run prettier:text
 ```

@@ -118,11 +118,11 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Timestamp compression plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Timestamp compression plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.updateNgsi2);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.queryNgsi2);
                 done();
@@ -130,12 +130,12 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
+    describe('When an update comes with a timestamp through the plugin', function () {
         const values = [
             {
                 name: 'state',
@@ -149,7 +149,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -163,8 +163,8 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                 .reply(204);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -172,7 +172,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadata.', function() {
+    describe('When an update comes with a timestamp through the plugin with metadata.', function () {
         const values = [
             {
                 name: 'state',
@@ -192,7 +192,7 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -206,8 +206,8 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                 .reply(204);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -215,10 +215,10 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
         });
     });
 
-    describe('When a query comes for a timestamp through the plugin', function() {
+    describe('When a query comes for a timestamp through the plugin', function () {
         const values = ['state', 'TheTargetValue'];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -232,8 +232,8 @@ describe('NGSI-LD - Timestamp compression plugin', function() {
                 );
         });
 
-        it('should return an entity with all its timestamps without separators (basic format)', function(done) {
-            iotAgentLib.query('light1', 'Light', '', values, function(error, response) {
+        it('should return an entity with all its timestamps without separators (basic format)', function (done) {
+            iotAgentLib.query('light1', 'Light', '', values, function (error, response) {
                 should.not.exist(error);
                 should.exist(response);
                 should.exist(response.TheTargetValue);

@@ -62,24 +62,24 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Timestamp processing plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Timestamp processing plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function() {
+    describe('When an update comes with a timestamp through the plugin', function () {
         const values = [
             {
                 name: 'state',
@@ -93,7 +93,7 @@ describe('NGSI-LD - Timestamp processing plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -107,8 +107,8 @@ describe('NGSI-LD - Timestamp processing plugin', function() {
                 .reply(204);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

@@ -23,7 +23,7 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
-/* jshint camelcase: false */
+/* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
@@ -110,12 +110,12 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Attribute alias plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Attribute alias plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 done();
@@ -123,12 +123,12 @@ describe('NGSI-LD - Attribute alias plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes for attributes with aliases', function() {
+    describe('When an update comes for attributes with aliases', function () {
         const values = [
             {
                 name: 't',
@@ -142,7 +142,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -154,18 +154,15 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
-    describe('When an update comes for attributes with aliases and a different type', function() {
+    describe('When an update comes for attributes with aliases and a different type', function () {
         const values = [
             {
                 name: 'l',
@@ -174,7 +171,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -186,18 +183,15 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
-    describe('When an update comes for attributes with aliases and integer type', function() {
+    describe('When an update comes for attributes with aliases and integer type', function () {
         const values = [
             {
                 name: 'ut',
@@ -206,7 +200,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -218,8 +212,8 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the mappings', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should rename the attributes as expected by the mappings', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -227,7 +221,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
         });
     });
 
-    describe('When an update comes for attributes with aliases and integer type.', function() {
+    describe('When an update comes for attributes with aliases and integer type.', function () {
         const values = [
             {
                 name: 'ut',
@@ -236,7 +230,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -248,19 +242,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and float type', function() {
+    describe('When an update comes for attributes with aliases and float type', function () {
         const values = [
             {
                 name: 'ap',
@@ -269,7 +260,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -281,19 +272,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and boolean type', function() {
+    describe('When an update comes for attributes with aliases and boolean type', function () {
         const values = [
             {
                 name: 's',
@@ -302,7 +290,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -314,19 +302,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and None type', function() {
+    describe('When an update comes for attributes with aliases and None type', function () {
         const values = [
             {
                 name: 'al',
@@ -335,7 +320,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -347,19 +332,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and Array type', function() {
+    describe('When an update comes for attributes with aliases and Array type', function () {
         const values = [
             {
                 name: 'ta',
@@ -368,7 +350,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -380,19 +362,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and Object type', function() {
+    describe('When an update comes for attributes with aliases and Object type', function () {
         const values = [
             {
                 name: 'c',
@@ -401,7 +380,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -413,19 +392,16 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
-    describe('When an update comes for attributes with aliases and Object type, but value is String', function() {
+    describe('When an update comes for attributes with aliases and Object type, but value is String', function () {
         const values = [
             {
                 name: 'c',
@@ -434,7 +410,7 @@ describe('NGSI-LD - Attribute alias plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -446,15 +422,12 @@ describe('NGSI-LD - Attribute alias plugin', function() {
                 .reply(204);
         });
 
-        it(
-            'should rename the attributes as expected by the alias mappings' + 'and cast values to JSON native types',
-            function(done) {
-                iotAgentLib.update('light1', 'Light', '', values, function(error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            }
-        );
+        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 });

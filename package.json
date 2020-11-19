@@ -1,7 +1,8 @@
 {
   "name": "iotagent-node-lib",
+  "license": "AGPL-3.0-only",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "2.13.0-next",
+  "version": "2.14.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
   "keywords": [
     "fiware",
@@ -30,11 +31,13 @@
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
-    "lint": "jshint lib/ --config .jshintrc && jshint test/ --config test/.jshintrc",
+    "lint": "eslint lib/ bin/ test/ --cache --fix",
     "lint:md": "remark  -f '*.md' 'doc/*.md'",
     "lint:text": "textlint '*.md' 'doc/*.md'",
-    "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
-    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "prettier": "prettier --config .prettierrc.json --write '**/**/**/**/*.js' '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
+    "prettier:text": "prettier 'README.md' 'doc/*.md' 'doc/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
+    "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 5000 --ui bdd --exit",
+    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' --reporter spec --timeout 5000 --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "test:watch": "npm run test -- -w ./lib",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -60,21 +63,40 @@
   },
   "devDependencies": {
     "coveralls": "~3.1.0",
-    "jshint": "~2.11.1",
+    "eslint": "~7.5.0",
+    "eslint-config-tamia": "~7.2.5",
+    "eslint-plugin-prettier": "~3.1.4",
+    "husky": "~4.2.5",
+    "lint-staged": "~10.2.11",
+    "prettier": "~2.0.5",
     "mocha": "8.0.1",
     "nock": "13.0.3",
     "nyc": "~15.1.0",
     "remark-cli": "~8.0.1",
     "remark-preset-lint-recommended": "~4.0.1",
+    "should": "13.2.3",
+    "sinon": "~9.0.2",
     "textlint": "~11.7.6",
-    "textlint-filter-rule-comments": "~1.2.2",
     "textlint-rule-common-misspellings": "~1.0.1",
     "textlint-rule-no-dead-link": "~4.7.0",
     "textlint-rule-terminology": "~2.1.4",
     "textlint-rule-write-good": "~1.6.2",
-    "should": "13.2.3",
-    "sinon": "~9.0.2",
     "timekeeper": "2.2.0",
     "watch": "~1.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.md": [
+      "prettier --parser markdown --tab-width 4 --print-width 120 --write --prose-wrap always",
+      "git add"
+    ],
+    "*.js": [
+      "prettier --config .prettierrc.json --write",
+      "git add"
+    ]
   }
 }

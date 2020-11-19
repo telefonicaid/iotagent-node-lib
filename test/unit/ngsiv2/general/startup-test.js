@@ -22,48 +22,49 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-'use strict';
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    nock = require('nock'),
-    utils = require('../../../tools/utils'),
-    config = require('../../../../lib/commonConfig'),
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                attributes: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        providerUrl: 'http://smartGondor.com'
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-expressions */
+
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const nock = require('nock');
+const utils = require('../../../tools/utils');
+const config = require('../../../../lib/commonConfig');
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    iotamMock;
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    providerUrl: 'http://smartGondor.com'
+};
+let iotamMock;
 
-describe('NGSI-v2 - Startup tests', function() {
-
-    describe('When the IoT Agent is started with environment variables', function() {
-        beforeEach(function() {
+describe('NGSI-v2 - Startup tests', function () {
+    describe('When the IoT Agent is started with environment variables', function () {
+        beforeEach(function () {
             process.env.IOTA_CB_HOST = 'cbhost';
             process.env.IOTA_CB_PORT = '1111';
             process.env.IOTA_CB_NGSI_VERSION = 'v2';
@@ -88,11 +89,13 @@ describe('NGSI-v2 - Startup tests', function() {
 
             iotamMock = nock('http://iotamhost:4444')
                 .post('/iotampath')
-                .reply(200,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json')
+                );
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_CB_HOST;
             delete process.env.IOTA_CB_PORT;
             delete process.env.IOTA_CB_NGSI_VERSION;
@@ -114,12 +117,12 @@ describe('NGSI-v2 - Startup tests', function() {
             delete process.env.IOTA_DEFAULT_RESOURCE;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should load the correct configuration parameters', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should load the correct configuration parameters', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().contextBroker.ngsiVersion.should.equal('v2');
                 config.getConfig().server.host.should.equal('localhost');
@@ -142,8 +145,8 @@ describe('NGSI-v2 - Startup tests', function() {
         });
     });
 
-    describe('When the IoT Agent is started with mongodb params', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started with mongodb params', function () {
+        beforeEach(function () {
             process.env.IOTA_MONGO_HOST = 'mongohost';
             process.env.IOTA_MONGO_PORT = '5555';
             process.env.IOTA_MONGO_DB = 'themongodb';
@@ -158,11 +161,13 @@ describe('NGSI-v2 - Startup tests', function() {
 
             iotamMock = nock('http://iotamhost:4444')
                 .post('/iotampath')
-                .reply(200,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json'));
+                .reply(
+                    200,
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/iotamResponses/registrationSuccess.json')
+                );
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_MONGO_HOST;
             delete process.env.IOTA_MONGO_PORT;
             delete process.env.IOTA_MONGO_DB;
@@ -176,11 +181,11 @@ describe('NGSI-v2 - Startup tests', function() {
             delete process.env.IOTA_MONGO_EXTRAARGS;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        ['true', 'True', 'TRUE'].forEach(function(t) {
+        ['true', 'True', 'TRUE'].forEach(function (t) {
             it('should load ssl=ture with ssl=' + t, function (done) {
                 process.env.IOTA_MONGO_SSL = t;
 
@@ -194,6 +199,7 @@ describe('NGSI-v2 - Startup tests', function() {
                     config.getConfig().mongodb.authSource.should.equal('customAuthSource');
                     config.getConfig().mongodb.retries.should.equal('10');
                     config.getConfig().mongodb.retryTime.should.equal('5');
+                    /* eslint-disable-next-line  no-unused-expressions */
                     config.getConfig().mongodb.ssl.should.be.true;
                     should.not.exist(config.getConfig().mongodb.extraArgs);
                     done();
@@ -201,7 +207,7 @@ describe('NGSI-v2 - Startup tests', function() {
             });
         });
 
-        ['false', 'False', 'FALSE', 'invalid'].forEach(function(t) {
+        ['false', 'False', 'FALSE', 'invalid'].forEach(function (t) {
             it('should load ssl=false with ssl=' + t, function (done) {
                 process.env.IOTA_MONGO_SSL = t;
 
@@ -222,7 +228,7 @@ describe('NGSI-v2 - Startup tests', function() {
             });
         });
 
-        ['', 'undefined'].forEach(function(t) {
+        ['', 'undefined'].forEach(function (t) {
             it('should load no ssl parameter with ssl=' + t, function (done) {
                 if (t !== 'undefined') {
                     process.env.IOTA_MONGO_SSL = t;
@@ -246,11 +252,14 @@ describe('NGSI-v2 - Startup tests', function() {
         });
 
         [
-            {in: '{"a": "b"}', expect: {a: 'b'}},
-            {in: '{"a": "b", "c": "d"}', expect: {a: 'b', c: 'd'}},
-            {in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}', expect: {a: 'b', c: [1, 2], d: -5, e: {f: 'g'}}},
-            {in: '{}', expect: {}}
-        ].forEach(function(param) {
+            { in: '{"a": "b"}', expect: { a: 'b' } },
+            { in: '{"a": "b", "c": "d"}', expect: { a: 'b', c: 'd' } },
+            {
+                in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}',
+                expect: { a: 'b', c: [1, 2], d: -5, e: { f: 'g' } }
+            },
+            { in: '{}', expect: {} }
+        ].forEach(function (param) {
             it('should load estraArgs with param=' + param.in, function (done) {
                 process.env.IOTA_MONGO_EXTRAARGS = param.in;
 
@@ -271,7 +280,7 @@ describe('NGSI-v2 - Startup tests', function() {
             });
         });
 
-        ['', 'str', '[]'].forEach(function(param) {
+        ['', 'str', '[]'].forEach(function (param) {
             it('should not load estraArgs with param=' + param, function (done) {
                 process.env.IOTA_MONGO_EXTRAARGS = param;
 
@@ -293,27 +302,25 @@ describe('NGSI-v2 - Startup tests', function() {
         });
     });
 
-
-    describe('When the IoT Agent is started with Keystone', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started with Keystone', function () {
+        beforeEach(function () {
             process.env.IOTA_AUTH_ENABLED = 'true';
             process.env.IOTA_AUTH_USER = '1111';
             process.env.IOTA_AUTH_PASSWORD = 'xxxx';
-            
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_AUTH_ENABLED;
             delete process.env.IOTA_AUTH_USER;
             delete process.env.IOTA_AUTH_PASSWORD;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should load the correct configuration parameters', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should load the correct configuration parameters', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().authentication.user.should.equal('1111');
                 config.getConfig().authentication.password.should.equal('xxxx');
                 done();
@@ -321,26 +328,25 @@ describe('NGSI-v2 - Startup tests', function() {
         });
     });
 
-    describe('When the IoT Agent is started with Keyrock', function() {
-        beforeEach(function() {
+    describe('When the IoT Agent is started with Keyrock', function () {
+        beforeEach(function () {
             process.env.IOTA_AUTH_ENABLED = 'true';
             process.env.IOTA_AUTH_CLIENT_ID = '1111';
             process.env.IOTA_AUTH_CLIENT_SECRET = 'xxxx';
-            
         });
 
-        afterEach(function() {
+        afterEach(function () {
             delete process.env.IOTA_AUTH_ENABLED;
             delete process.env.IOTA_AUTH_CLIENT_ID;
             delete process.env.IOTA_AUTH_CLIENT_SECRET;
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             iotAgentLib.deactivate(done);
         });
 
-        it('should load the correct configuration parameters', function(done) {
-            iotAgentLib.activate(iotAgentConfig, function(error) {
+        it('should load the correct configuration parameters', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().authentication.clientId.should.equal('1111');
                 config.getConfig().authentication.clientSecret.should.equal('xxxx');
                 done();

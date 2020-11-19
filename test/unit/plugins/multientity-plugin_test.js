@@ -20,93 +20,90 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-/* jshint camelcase: false */
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        WeatherStation: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_name: 'Higro2000',
+                    entity_type: 'Higrometer'
+                }
+            ]
+        },
+        WeatherStation2: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_name: 'Higro2000'
+                }
+            ]
+        },
+        WeatherStation3: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_name: 'Station Number ${@sn * 10}'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'WeatherStation': {
-                commands: [],
-                type: 'WeatherStation',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    },
-                    {
-                        object_id: 'h',
-                        name: 'humidity',
-                        type: 'Percentage',
-                        entity_name: 'Higro2000',
-                        entity_type: 'Higrometer'
-                    }
-                ]
-            },
-            'WeatherStation2': {
-                commands: [],
-                type: 'WeatherStation',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    },
-                    {
-                        object_id: 'h',
-                        name: 'humidity',
-                        type: 'Percentage',
-                        entity_name: 'Higro2000',
-                    }
-                ]
-            },
-            'WeatherStation3': {
-                commands: [],
-                type: 'WeatherStation',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    },
-                    {
-                        object_id: 'h',
-                        name: 'humidity',
-                        type: 'Percentage',
-                        entity_name: 'Station Number ${@sn * 10}',
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M'
-    };
-
-describe('NGSI-v1 - Multi-entity plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-v1 - Multi-entity plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
@@ -115,14 +112,14 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for a multientity measurement', function() {
-        var values = [
+    describe('When an update comes for a multientity measurement', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'centigrades',
@@ -135,20 +132,26 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultientityPlugin1.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin1Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultientityPlugin1.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin1Success.json'
+                    )
+                );
         });
 
-        it('should send two context elements, one for each entity', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation', '', values, function(error) {
+        it('should send two context elements, one for each entity', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -156,11 +159,8 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-
-
-
-    describe('When an update comes for a multientity defined with an expression', function() {
-        var values = [
+    describe('When an update comes for a multientity defined with an expression', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'centigrades',
@@ -178,20 +178,26 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultiEntityPlugin3.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultiEntityPlugin3.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin3Success.json'
+                    )
+                );
         });
 
-        it('should send the update value to the resulting value of the expression', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function(error) {
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation3', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -199,9 +205,8 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
         });
     });
 
-
-    describe('When an update comes for a multientity measurement without type for one entity', function() {
-        var values = [
+    describe('When an update comes for a multientity measurement without type for one entity', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'centigrades',
@@ -214,20 +219,26 @@ describe('NGSI-v1 - Multi-entity plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v1/updateContext', utils.readExampleFile(
-                    './test/unit/examples/contextRequests/updateContextMultientityPlugin2.json'))
-                .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextResponses/updateContextMultientityPlugin2Success.json'));
+                .post(
+                    '/v1/updateContext',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextMultientityPlugin2.json')
+                )
+                .reply(
+                    200,
+                    utils.readExampleFile(
+                        './test/unit/examples/contextResponses/updateContextMultientityPlugin2Success.json'
+                    )
+                );
         });
 
-        it('should use the device type as a default value', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function(error) {
+        it('should use the device type as a default value', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStation2', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

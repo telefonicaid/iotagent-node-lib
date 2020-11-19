@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const logger = require('logops');
@@ -63,8 +65,8 @@ const device = {
     subservice: 'gardens'
 };
 
-describe('NGSI-LD - Update attribute functionalities', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Update attribute functionalities', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -82,10 +84,10 @@ describe('NGSI-LD - Update attribute functionalities', function() {
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
-            iotAgentLib.deactivate(function() {
-                mongoUtils.cleanDbs(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
@@ -95,12 +97,14 @@ describe('NGSI-LD - Update attribute functionalities', function() {
         });
     });
 
-    describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
+    describe('When a attribute update arrives to the IoT Agent as Context Provider', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + 
-            '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:somelight/attrs/pressure',
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:somelight/attrs/pressure',
             method: 'PATCH',
-            json:  {
+            json: {
                 type: 'Hgmm',
                 value: 200
             },
@@ -110,8 +114,8 @@ describe('NGSI-LD - Update attribute functionalities', function() {
             }
         };
 
-        beforeEach(function(done) {
-            iotAgentLib.register(device, function(error) {
+        beforeEach(function (done) {
+            iotAgentLib.register(device, function (error) {
                 if (error) {
                     done('Device registration failed');
                 }
@@ -119,10 +123,10 @@ describe('NGSI-LD - Update attribute functionalities', function() {
             });
         });
 
-        it('should call the client handler with correct values, even if commands are not defined', function(done) {
+        it('should call the client handler with correct values, even if commands are not defined', function (done) {
             let handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function (id, type, service, subservice, attributes, callback) {
                 id.should.equal('urn:ngsi-ld:Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);
@@ -138,7 +142,7 @@ describe('NGSI-LD - Update attribute functionalities', function() {
                 });
             });
 
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();

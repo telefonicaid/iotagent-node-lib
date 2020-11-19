@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
@@ -132,8 +134,8 @@ const unknownDevice = {
     active: []
 };
 
-describe('NGSI-LD - IoT Agent Device Update Registration', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - IoT Agent Device Update Registration', function () {
+    beforeEach(function (done) {
         delete device1.registrationId;
         logger.setLevel('FATAL');
 
@@ -152,22 +154,22 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
             .post('/ngsi-ld/v1/entityOperations/upsert/')
             .reply(204);
 
-        iotAgentLib.activate(iotAgentConfig, function(error) {
-            iotAgentLib.register(device1, function(error) {
+        iotAgentLib.activate(iotAgentConfig, function (error) {
+            iotAgentLib.register(device1, function (error) {
                 done();
             });
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
-        iotAgentLib.clearAll(function() {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a device is preregistered and its registration information updated', function() {
-        beforeEach(function() {
+    describe('When a device is preregistered and its registration information updated', function () {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
@@ -183,22 +185,22 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
                 .post(
                     '/ngsi-ld/v1/csourceRegistrations/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/updateIoTAgent1.json'
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateIoTAgent1.json'
                     )
                 )
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
         });
 
-        it('should register as ContextProvider of its lazy attributes', function(done) {
-            iotAgentLib.updateRegister(deviceUpdated, function(error) {
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.updateRegister(deviceUpdated, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
-        it('should store the new values in the registry', function(done) {
-            iotAgentLib.updateRegister(deviceUpdated, function(error, data) {
-                iotAgentLib.getDevice(deviceUpdated.id, 'smartGondor', 'gardens', function(error, deviceResult) {
+        it('should store the new values in the registry', function (done) {
+            iotAgentLib.updateRegister(deviceUpdated, function (error, data) {
+                iotAgentLib.getDevice(deviceUpdated.id, 'smartGondor', 'gardens', function (error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);
@@ -210,8 +212,8 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
         });
     });
 
-    describe('When a device is preregistered and it is updated with new commands', function() {
-        beforeEach(function() {
+    describe('When a device is preregistered and it is updated with new commands', function () {
+        beforeEach(function () {
             delete deviceCommandUpdated.registrationId;
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -226,22 +228,25 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
                 .post(
                     '/ngsi-ld/v1/csourceRegistrations/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/updateCommands1.json'
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/updateCommands1.json'
                     )
                 )
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
         });
 
-        it('should register as ContextProvider of its commands and create the additional attributes', function(done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, function(error) {
+        it('should register as ContextProvider of its commands and create the additional attributes', function (done) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
-        it('should store the new values in the registry', function(done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, function(error, data) {
-                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartGondor', 'gardens', function(error, deviceResult) {
+        it('should store the new values in the registry', function (done) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, function (error, data) {
+                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartGondor', 'gardens', function (
+                    error,
+                    deviceResult
+                ) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);
@@ -253,32 +258,32 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function() {
         });
     });
 
-    describe('When a update action is executed in a non registered device', function() {
-        it('should return a DEVICE_NOT_FOUND error', function(done) {
-            iotAgentLib.updateRegister(unknownDevice, function(error) {
+    describe('When a update action is executed in a non registered device', function () {
+        it('should return a DEVICE_NOT_FOUND error', function (done) {
+            iotAgentLib.updateRegister(unknownDevice, function (error) {
                 should.exist(error);
                 error.name.should.equal('DEVICE_NOT_FOUND');
                 done();
             });
         });
     });
-    describe('When a device register is updated in the Context Broker and the request fail to connect', function() {
-        beforeEach(function() {
+    describe('When a device register is updated in the Context Broker and the request fail to connect', function () {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .reply(400);
         });
 
-        it('should return a REGISTRATION_ERROR error in the update action', function(done) {
-            iotAgentLib.updateRegister(deviceUpdated, function(error) {
+        it('should return a REGISTRATION_ERROR error in the update action', function (done) {
+            iotAgentLib.updateRegister(deviceUpdated, function (error) {
                 should.exist(error);
                 //error.name.should.equal('UNREGISTRATION_ERROR');
                 done();
             });
         });
     });
-    describe('When a device register is updated in the Context Broker and the registration is not found', function() {
+    describe('When a device register is updated in the Context Broker and the registration is not found', function () {
         it('should create the registration anew');
     });
 });

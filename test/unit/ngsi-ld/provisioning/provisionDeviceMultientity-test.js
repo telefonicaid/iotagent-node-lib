@@ -23,6 +23,8 @@
  * Modified by: Jason Fox - FIWARE Foundation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 
@@ -48,23 +50,23 @@ const iotAgentConfig = {
     providerUrl: 'http://smartGondor.com'
 };
 
-describe('NGSI-LD - Device provisioning API: Provision devices', function() {
-    beforeEach(function(done) {
+describe('NGSI-LD - Device provisioning API: Provision devices', function () {
+    beforeEach(function (done) {
         nock.cleanAll();
 
-        iotAgentLib.activate(iotAgentConfig, function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(done);
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         iotAgentLib.setProvisioningHandler();
         iotAgentLib.deactivate(done);
     });
 
-    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function() {
-        beforeEach(function() {
+    describe('When a device provisioning request with all the required data arrives to the IoT Agent', function () {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -72,7 +74,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
                 .post(
                     '/ngsi-ld/v1/csourceRegistrations/',
                     utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples' + '/contextAvailabilityRequests/registerProvisionedDevice.json'
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
                     )
                 )
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
@@ -92,7 +94,7 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             json: utils.readExampleFile(
-                './test/unit/examples/' + 'deviceProvisioningRequests/provisionNewDeviceMultientity.json'
+                './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMultientity.json'
             ),
             headers: {
                 'fiware-service': 'smartGondor',
@@ -100,12 +102,12 @@ describe('NGSI-LD - Device provisioning API: Provision devices', function() {
             }
         };
 
-        it('should add the device to the devices list', function(done) {
-            request(options, function(error, response, body) {
+        it('should add the device to the devices list', function (done) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
-                iotAgentLib.listDevices('smartGondor', '/gardens', function(error, results) {
+                iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
                     results.devices.length.should.equal(1);
                     done();
                 });

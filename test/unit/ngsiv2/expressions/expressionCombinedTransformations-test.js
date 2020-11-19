@@ -22,112 +22,111 @@
  *
  * Developed by: Federico M. Facca - Martel Innovate
  */
-'use strict';
 
 /* jshint camelcase: false */
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    utils = require('../../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfigJexl = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041
-        },
-        defaultExpressionLanguage: 'jexl',
-        types: {
-            'WeatherStationLegacy': {
-                commands: [],
-                type: 'WeatherStation',
-                expressionLanguage: 'legacy',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Number',
-                        expression: '${@pressure * 20}'
-                    }
-                ]
-            },
-            'WeatherStationJexl': {
-                commands: [],
-                type: 'WeatherStation',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Number',
-                        expression: 'pressure * 20'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfigJexl = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
     },
-    iotAgentConfigLegacy = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
+    server: {
+        port: 4041
+    },
+    defaultExpressionLanguage: 'jexl',
+    types: {
+        WeatherStationLegacy: {
+            commands: [],
+            type: 'WeatherStation',
+            expressionLanguage: 'legacy',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: '${@pressure * 20}'
+                }
+            ]
         },
-        server: {
-            port: 4041
+        WeatherStationJexl: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: 'pressure * 20'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    throttling: 'PT5S'
+};
+const iotAgentConfigLegacy = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        WeatherStationLegacy: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: '${@pressure * 20}'
+                }
+            ]
         },
-        types: {
-            'WeatherStationLegacy': {
-                commands: [],
-                type: 'WeatherStation',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Number',
-                        expression: '${@pressure * 20}'
-                    }
-                ]
-            },
-            'WeatherStationJexl': {
-                commands: [],
-                type: 'WeatherStation',
-                expressionLanguage: 'jexl',
-                lazy: [],
-                active: [
-                    {
-                        object_id: 'p',
-                        name: 'pressure',
-                        type: 'Number',
-                        expression: 'pressure * 20'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
-    };
+        WeatherStationJexl: {
+            commands: [],
+            type: 'WeatherStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: 'pressure * 20'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M',
+    throttling: 'PT5S'
+};
 
-describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', function() {
-    beforeEach(function(done) {
+describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfigJexl, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfigJexl, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -136,35 +135,39 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for type with expression "legacy"', function() {
-        var values = [
+    describe('When an update comes for type with expression "legacy"', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'Number',
                 value: 52
             }
         ];
-    
-        beforeEach(function() {
+
+        beforeEach(function () {
             nock.cleanAll();
-    
+
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/ws1/attrs', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'))
-                .query({type: 'WeatherStation'})
+                .post(
+                    '/v2/entities/ws1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
-    
-        it('should apply the legacy expression before sending the values', function(done) {
-            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function(error) {
+
+        it('should apply the legacy expression before sending the values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationLegacy', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -172,44 +175,47 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
         });
     });
 
-    describe('When an update comes for type with expression "JEXL" - default', function() {
-        var values = [
+    describe('When an update comes for type with expression "JEXL" - default', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'Number',
                 value: 52
             }
         ];
-    
-        beforeEach(function() {
+
+        beforeEach(function () {
             nock.cleanAll();
-    
+
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/ws2/attrs', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'))
-                .query({type: 'WeatherStation'})
+                .post(
+                    '/v2/entities/ws2/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
-    
-        it('should apply the default (JEXL) expression before sending the values', function(done) {
-            iotAgentLib.update('ws2', 'WeatherStationJexl', '', values, function(error) {
-              should.not.exist(error);
-              contextBrokerMock.done();
-              done();
+
+        it('should apply the default (JEXL) expression before sending the values', function (done) {
+            iotAgentLib.update('ws2', 'WeatherStationJexl', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
         });
     });
-    
 });
 
-describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', function() {
-    beforeEach(function(done) {
+describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfigLegacy, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfigLegacy, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
@@ -218,35 +224,39 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When an update comes for type with expression "legacy" - default', function() {
-        var values = [
+    describe('When an update comes for type with expression "legacy" - default', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'Number',
                 value: 52
             }
         ];
-    
-        beforeEach(function() {
+
+        beforeEach(function () {
             nock.cleanAll();
-    
+
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/ws3/attrs', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'))
-                .query({type: 'WeatherStation'})
+                .post(
+                    '/v2/entities/ws3/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
-    
-        it('should apply the legacy expression before sending the values', function(done) {
-            iotAgentLib.update('ws3', 'WeatherStationLegacy', '', values, function(error) {
+
+        it('should apply the legacy expression before sending the values', function (done) {
+            iotAgentLib.update('ws3', 'WeatherStationLegacy', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -254,34 +264,37 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
         });
     });
 
-    describe('When an update comes for type with expression "JEXL"', function() {
-        var values = [
+    describe('When an update comes for type with expression "JEXL"', function () {
+        const values = [
             {
                 name: 'p',
                 type: 'Number',
                 value: 52
             }
         ];
-    
-        beforeEach(function() {
+
+        beforeEach(function () {
             nock.cleanAll();
-    
+
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/ws4/attrs', utils.readExampleFile(
-                    './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'))
-                .query({type: 'WeatherStation'})
+                .post(
+                    '/v2/entities/ws4/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
-    
-        it('should apply the default (JEXL) expression before sending the values', function(done) {
-            iotAgentLib.update('ws4', 'WeatherStationJexl', '', values, function(error) {
-              should.not.exist(error);
-              contextBrokerMock.done();
-              done();
+
+        it('should apply the default (JEXL) expression before sending the values', function (done) {
+            iotAgentLib.update('ws4', 'WeatherStationJexl', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
         });
     });
-    
 });

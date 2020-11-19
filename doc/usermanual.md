@@ -25,7 +25,7 @@ More values will be added in the future to the library. The applications using t
 Registry just by using the following function:
 
 ```javascript
-iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
+iotagentLib.statsRegistry.add("statName", statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
@@ -80,7 +80,7 @@ In order to use the library, add the following dependency to your package.json f
 In order to use this library, first you must require it:
 
 ```javascript
-var iotagentLib = require('iotagent-node-lib');
+var iotagentLib = require("iotagent-node-lib");
 ```
 
 The library supports four groups of features, one for each direction of the communication: client-to-server and
@@ -265,16 +265,16 @@ Once all the updates have taken place, the callback must be invoked with the upd
 
 ```javascript
 callback(null, {
-    type: 'TheType',
+    type: "TheType",
     isPattern: false,
-    id: 'EntityID',
+    id: "EntityID",
     attributes: [
         {
-            name: 'lumniscence',
-            type: 'Lumens',
-            value: '432'
-        }
-    ]
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432",
+        },
+    ],
 });
 ```
 
@@ -303,16 +303,16 @@ The callback must be invoked with the updated Context Element, using the informa
 
 ```javascript
 callback(null, {
-    type: 'TheType',
+    type: "TheType",
     isPattern: false,
-    id: 'EntityID',
+    id: "EntityID",
     attributes: [
         {
-            name: 'lumniscence',
-            type: 'Lumens',
-            value: '432'
-        }
-    ]
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432",
+        },
+    ],
 });
 ```
 
