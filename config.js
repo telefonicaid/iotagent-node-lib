@@ -44,7 +44,7 @@ var config = {
         type: 'memory'
     },
     types: {
-        'Light': {
+        Light: {
             url: '/',
             apikey: '',
             type: 'Light',

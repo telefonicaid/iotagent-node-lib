@@ -21,9 +21,7 @@
  * please contact with::[daniel.moranjimenez@telefonica.com]
  */
 
-'use strict';
-
-var fs = require('fs');
+const fs = require('fs');
 
 function readExampleFile(name, raw) {
     let text = null;

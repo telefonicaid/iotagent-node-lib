@@ -39,8 +39,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
@@ -66,8 +65,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
@@ -81,7 +79,8 @@
           },
           "expression": {
             "description": "Optional expression for measurement transformation",
-            "type": "string"
+            "type": "string",
+            "pattern": "^([^<>;'=]+)+$"
           },
           "entity_name": {
             "description": "Optional entity name for multientity updates",
@@ -102,8 +101,7 @@
               "properties": {
                 "object_id": {
                   "description": "ID of the attribute in the device",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
+                  "type": "string"
                 },
                 "type": {
                   "description": "Type of the attribute in the target entity",
@@ -116,10 +114,6 @@
                 }
               }
             }
-          },
-          "metadata": {
-              "description": "Attribute Metadata",
-              "type": "object"
           }
         }
       }
@@ -135,8 +129,7 @@
         "properties": {
           "object_id": {
             "description": "ID of the attribute in the device",
-            "type": "string",
-            "pattern": "^([^<>();'=\"]+)+$"
+            "type": "string"
           },
           "name": {
             "description": "Name of the attribute in the target entity",
@@ -152,22 +145,6 @@
             "description": "Value of the command (currently ignored)",
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
-          },
-          "mqtt": {
-              "description": "Mqtt properties",
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                  "retain": {
-                      "description": "MQTT Retain message",
-                      "type": "boolean"
-                  },
-                  "qos": {
-                      "description": "MQTT QoS level",
-                      "type": "string",
-                      "pattern": "^([0-2])$"
-                  }
-              }
           }
         }
       }
@@ -175,10 +152,6 @@
     "static_attributes": {
       "description": "Free form array of data to be appended to the target entity",
       "type": "array"
-    },
-    "explicitAttrs": {
-      "description": "Flag to decide update of active attributes only",
-      "type": "Boolean"
     }
   }
 }
