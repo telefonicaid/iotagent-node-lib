@@ -1,3 +1,4 @@
+Use null instead of ' ' as default attribute value in entity provisioned (#938)
 Update codebase to use ES6
 -  Remove JSHint and jshint overrides
 -  Add esLint using standard tamia presets

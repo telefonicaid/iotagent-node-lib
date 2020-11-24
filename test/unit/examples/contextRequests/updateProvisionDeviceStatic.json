@@ -8,7 +8,7 @@
         {
           "name": "newAttribute",
           "type": "Integer",
-          "value": " "
+          "value": null
         },
         {
           "name": "cellID",
