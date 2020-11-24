@@ -3,6 +3,6 @@
   "type": "MicroLights",
   "attr_name": {
     "type": "string",
-    "value": " "    
+    "value": null
   }
 }

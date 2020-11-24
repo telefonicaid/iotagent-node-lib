@@ -6,12 +6,12 @@
         "attributes": [{
                 "name": "state",
                 "type": "Boolean",
-                "value": " "
+                "value": null
             },
             {
                 "name": "dimming",
                 "type": "Percentage",
-                "value": " "
+                "value": null
             }
         ]
     }],
