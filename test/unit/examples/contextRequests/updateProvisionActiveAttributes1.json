@@ -8,7 +8,7 @@
         {
           "name": "temperature",
           "type": "centigrades",
-          "value": null
+          "value": " "
         }
       ]
     }

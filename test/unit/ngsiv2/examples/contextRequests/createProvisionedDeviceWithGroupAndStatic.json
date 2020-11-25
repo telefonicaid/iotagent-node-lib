@@ -3,11 +3,11 @@
   "type": "TheLightType",
   "attr_name": {
     "type": "string",
-    "value": null
+    "value": " "    
   },
   "status": {
     "type": "Boolean",
-    "value": null
+    "value": " "        
   },
   "hardcodedAttr": {
     "type": "hardcodedType",
