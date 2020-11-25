@@ -1,7 +1,7 @@
 {
   "temperature": {
     "type": "centigrades",
-    "value": null
+    "value": " "
   },
   "move_status": {
     "type": "commandStatus",

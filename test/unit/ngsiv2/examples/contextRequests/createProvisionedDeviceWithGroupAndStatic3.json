@@ -3,10 +3,10 @@
   "type": "Light",
   "state": {
     "type": "Boolean",
-    "value": null
+    "value": " "
   },
   "dimming": {
     "type": "Percentage",
-    "value": null
+    "value": " "
   }
 }
