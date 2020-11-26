@@ -1,0 +1,11 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws1",
+        "pressure": {
+            "type": "Property",
+            "value": 1040
+        },
+        "type": "WeatherStation"
+    }
+]

@@ -97,7 +97,8 @@ npm run lint:md
 
 ### Documentation Spell-checking
 
-Uses the provided `.textlintrc` flag file. To check the markdown documentation for spelling and grammar errors, dead links & etc.
+Uses the provided `.textlintrc` flag file. To check the markdown documentation for spelling and grammar errors, dead
+links & etc.
 
 ```bash
 # Use git-bash on Windows

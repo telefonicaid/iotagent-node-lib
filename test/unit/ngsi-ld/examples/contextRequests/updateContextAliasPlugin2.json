@@ -1,0 +1,12 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "luminance": {
+            "type": "Property",
+            "unitCode": "CAL",
+            "value": 9
+        },
+        "type": "Light"
+    }
+]

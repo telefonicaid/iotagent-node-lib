@@ -1,0 +1,14 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "configuration": {
+            "type": "Property",
+            "value": {
+                "@type": "Object",
+                "@value": "string_value"
+            }
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "type": "Light"
+    }
+]
