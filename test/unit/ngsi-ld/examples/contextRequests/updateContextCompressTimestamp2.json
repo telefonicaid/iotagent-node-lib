@@ -1,0 +1,19 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "TheTargetValue": {
+            "type": "Property",
+            "value": {
+                "@type": "DateTime",
+                "@value": "2007-11-03T13:18:05.000Z"
+            }
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "state": {
+            "observedAt": "2007-11-03T13:18:05.000Z",
+            "type": "Property",
+            "value": true
+        },
+        "type": "Light"
+    }
+]

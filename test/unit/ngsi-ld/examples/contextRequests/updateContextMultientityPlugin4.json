@@ -1,0 +1,19 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws5",
+        "type": "WeatherStation"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "pressure": {
+            "type": "Property",
+            "value": {
+                "@type": "Hgmm",
+                "@value": "16"
+            }
+        },
+        "type": "Higrometer"
+    }
+]

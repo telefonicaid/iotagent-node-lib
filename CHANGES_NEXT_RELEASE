@@ -1,4 +1,12 @@
 Use null instead of ' ' as default attribute value in entity provisioned (#938)
+Add basic NGSI-LD support as experimental feature (#842)
+- Active measures
+- GeoJSON and DateTime, unitCode and observedAt NGSI-LD support
+    -  The NGSI v2 `TimeInstant` element has been mapped onto the NGSI-LD `observedAt` property
+    -  The NGSI v2 `metadata.unitCode` attribute has been mapped onto the NGSI-LD `unitCode` property
+- Multi-measures
+- Lazy Attributes
+- Commands
 Update codebase to use ES6
 -  Remove JSHint and jshint overrides
 -  Add esLint using standard tamia presets
