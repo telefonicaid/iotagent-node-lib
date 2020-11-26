@@ -6,7 +6,7 @@
                   {
                     "name": "TimeInstant",
                     "type": "ISO8601",
-                    "value": " "
+                    "value": null
                   }
                 ],
                 "id": "eii01201ttt",
