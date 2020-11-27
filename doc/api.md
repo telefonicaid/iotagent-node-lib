@@ -30,7 +30,7 @@ The IoT Agents provide two means to define those service groups:
 
 -   Static **Type Configuration**: configuring the `ngsi.types` attribute within the `config.js` file.
 -   Dynamic **Configuration API**: making use of the API URLs in the configuration URI, `/iot/services`. Please, note
-    that the configuration API manage servers under an URL that requires the `server.name` parameter to be set (the name
+    that the configuration API manage servers under a URL that requires the `server.name` parameter to be set (the name
     of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
 
 Both approaches provide the same configuration information for the types and end up in the same configuration
