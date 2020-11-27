@@ -1,4 +1,4 @@
-FROM centos:7.7.1908
+FROM centos:7.9.2009
 
 COPY aclfile /root/
 COPY startMosquitto.sh /bin
