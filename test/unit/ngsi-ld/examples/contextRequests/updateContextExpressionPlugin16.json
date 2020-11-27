@@ -1,0 +1,14 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "alive": {
+            "type": "Property",
+            "value": {
+                "@type": "None",
+                "@value": null
+            }
+        },
+        "id": "urn:ngsi-ld:WeatherStation:ws1",
+        "type": "WeatherStation"
+    }
+]

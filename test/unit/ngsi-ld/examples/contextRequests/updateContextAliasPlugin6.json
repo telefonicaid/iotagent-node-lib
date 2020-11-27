@@ -1,0 +1,14 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "keep_alive": {
+            "type": "Property",
+            "value": {
+                "@type": "None",
+                "@value": null
+            }
+        },
+        "type": "Light"
+    }
+]

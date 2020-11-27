@@ -1,0 +1,18 @@
+{
+  "type": "ContextSourceRegistration",
+  "information": [
+    {
+      "entities": [
+        {
+          "type": "RobotPre",
+          "id": "urn:ngsi-ld:RobotPre:TestRobotPre"
+        }
+      ],
+      "properties": [
+        "moving"
+      ]
+    }
+  ],
+  "endpoint": "http://smartGondor.com",
+  "@context": "http://context.json-ld"
+}

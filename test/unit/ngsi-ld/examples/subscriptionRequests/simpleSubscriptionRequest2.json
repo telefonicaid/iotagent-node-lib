@@ -1,0 +1,18 @@
+{
+    "entities": [
+        {
+            "id": "light1",
+            "type": "Light"
+        }
+    ],
+    "notification": {
+        "attributes": [],
+        "http": {
+            "url": "http://smartGondor.com/notify"
+        }
+    },
+    "type": "Subscription",
+    "watchedAttributes": [
+        "dimming"
+    ]
+}

@@ -1,0 +1,48 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Sensor:Sensor",
+        "type": "Sensor"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WM:SO1",
+        "type": "WM",
+        "vol": {
+            "type": "Property",
+            "value": 38
+        }
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WM:SO2",
+        "type": "WM",
+        "vol": {
+            "type": "Property",
+            "value": 39
+        }
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WM:SO3",
+        "type": "WM",
+        "vol": {
+            "type": "Property",
+            "value": 40
+        }
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WM:SO4",
+        "type": "WM"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WM:SO5",
+        "type": "WM",
+        "vol": {
+            "type": "Property",
+            "value": 42
+        }
+    }
+]

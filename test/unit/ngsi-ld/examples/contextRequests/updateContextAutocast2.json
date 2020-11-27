@@ -1,0 +1,11 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "temperature": {
+            "type": "Property",
+            "value": 14.4
+        },
+        "type": "Light"
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "attr_name": {
+            "type": "Property",
+            "value": " "
+        },
+        "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
+        "type": "MicroLights"
+    }
+]

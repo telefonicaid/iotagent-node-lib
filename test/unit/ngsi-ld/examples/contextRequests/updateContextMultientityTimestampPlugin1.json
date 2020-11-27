@@ -1,0 +1,27 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws4",
+        "type": "WeatherStation",
+        "pressure": {
+            "type": "Property",
+            "value": {
+                "@type": "Hgmm",
+                "@value": "52"
+            },
+            "observedAt": "2016-05-30T16:25:22.304Z"
+        }
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "type": "Higrometer",
+        "humidity": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": "12"
+            }
+        }
+    }
+]

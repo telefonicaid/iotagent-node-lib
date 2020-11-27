@@ -1,0 +1,21 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "id": "urn:ngsi-ld:Robot:r2d2",
+    "type": "Robot",
+    "position_status": {
+      "type": "Property",
+      "value": {
+        "@type": "commandStatus",
+        "@value": "UNKNOWN"
+      }
+    },
+    "position_info": {
+      "type": "Property",
+      "value": {
+        "@type": "commandResult",
+        "@value": " "
+      }
+    }
+  }
+]
