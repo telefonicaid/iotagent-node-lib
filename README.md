@@ -2,10 +2,10 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/telefonicaid/iotagent-node-lib.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
+[![Support badge](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
-[![CI](https://github.com/telefonicaid/iotagent-json/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-json/actions?query=workflow%3ACI)
+[![CI](https://github.com/telefonicaid/iotagent-node-lib/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-node-lib/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
