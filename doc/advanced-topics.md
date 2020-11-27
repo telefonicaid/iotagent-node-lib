@@ -83,6 +83,50 @@ e.g.:
    }
 ```
 
+#### NGSI-LD data and metadata considerations
+
+When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
+following:
+
+-   `Property`, `Relationship`, `Geoproperty`
+-   Native JSON types (e.g. `String`, `Boolean`, `Float` , `Integer` `Number`)
+-   Temporal Properties (e.g. `Datetime`, `Date` , `Time`)
+-   GeoJSON types (e.g `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`)
+
+Most NGSI-LD attributes are sent to the Context Broker as _properties_. If a GeoJSON type or native JSON type is
+defined, the data will be converted to the appropriate type. Temporal properties should always be expressed in UTC,
+using ISO 8601. This ISO 8601 conversion is applied automatically for the `observedAt` _property-of-a-property_ metadata
+where present.
+
+Data for any attribute defined as a _relationship_ must be a valid URN.
+
+Note that when the `unitCode` metadata attribute is supplied in the provisioning data under NGSI-LD, the standard
+`unitCode` _property-of-a-property_ `String` attribute is created.
+
+Other unrecognised `type` attributes will be passed as NGSI-LD data using the following JSON-LD format:
+
+```json
+    "<property_name>": {
+       "type" : "Property",
+       "value": {
+          "@type":  "<property_type>",
+          "@value":  { string or object}
+      }
+    }
+```
+
+`null` values will be passed in the following format:
+
+```json
+     "<property_name>": {
+       "type" : "Property",
+       "value": {
+          "@type":  "Intangible",
+          "@value":  null
+      }
+    }
+```
+
 ### Data mapping plugins
 
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations
@@ -166,8 +210,9 @@ events in the IoT Agent with the configured type name will be marked as events. 
 
 ##### Timestamp Processing Plugin (timestampProcess)
 
-This plugin processes the entity attributes looking for a TimeInstant attribute. If one is found, the plugin add a
-TimeInstant attribute as metadata for every other attribute in the same request.
+This plugin processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI-v1/NGSIv2,
+the plugin adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the
+Standard `observedAt` property-of-a-property is used instead.
 
 ##### Expression Translation plugin (expressionTransformation)
 

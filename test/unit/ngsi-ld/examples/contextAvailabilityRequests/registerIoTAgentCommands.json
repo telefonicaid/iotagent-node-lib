@@ -1,0 +1,18 @@
+{
+    "@context": "http://context.json-ld",
+    "endpoint": "http://smartGondor.com",
+    "information": [
+        {
+            "entities": [
+                {
+                    "id": "urn:ngsi-ld:Robot:r2d2",
+                    "type": "Robot"
+                }
+            ],
+            "properties": [
+                "position"
+            ]
+        }
+    ],
+    "type": "ContextSourceRegistration"
+}

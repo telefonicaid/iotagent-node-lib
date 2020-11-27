@@ -1,0 +1,17 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
+        "location": {
+            "type": "GeoProperty",
+            "value": {
+                "coordinates": [
+                    0,
+                    0
+                ],
+                "type": "Point"
+            }
+        },
+        "type": "TheLightType"
+    }
+]

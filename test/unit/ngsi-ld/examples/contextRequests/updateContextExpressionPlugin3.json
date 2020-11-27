@@ -1,0 +1,11 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "consumption": {
+            "type": "Property",
+            "value": 0.44
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "type": "Light"
+    }
+]

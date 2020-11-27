@@ -1,0 +1,7 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:sensor:eii01201aaa",
+        "type": "sensor"
+    }
+]

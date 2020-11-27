@@ -31,6 +31,7 @@ function readExampleFile(name, raw) {
         /* eslint-disable no-console */
         console.error(JSON.stringify(e));
     }
+
     return raw ? text : JSON.parse(text);
 }
 

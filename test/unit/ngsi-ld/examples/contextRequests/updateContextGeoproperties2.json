@@ -1,0 +1,23 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "location": {
+            "type": "GeoProperty",
+            "value": {
+                "coordinates": [
+                    [
+                        23,
+                        12.5
+                    ],
+                    [
+                        22,
+                        12.5
+                    ]
+                ],
+                "type": "LineString"
+            }
+        },
+        "type": "Light"
+    }
+]

@@ -1,0 +1,4 @@
+{
+    "description": "The incoming request is invalid in this context.",
+    "error": "BadRequest"
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "dimming": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": "87"
+            }
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "state": {
+            "type": "Property",
+            "value": true
+        },
+        "type": "Light"
+    }
+]

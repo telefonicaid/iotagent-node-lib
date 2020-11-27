@@ -2,10 +2,10 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/telefonicaid/iotagent-node-lib.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
+[![Support badge](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
-[![Build badge](https://img.shields.io/travis/telefonicaid/iotagent-node-lib.svg)](https://travis-ci.org/telefonicaid/iotagent-node-lib/)
+[![CI](https://github.com/telefonicaid/iotagent-node-lib/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-node-lib/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
 
@@ -363,7 +363,7 @@ related with the fact that different people assign different interpretations on 
 used in these licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL
 licenses (even without _modifying_ it).
 
-For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license  
+For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license
 wish to make a clarifying public statement as follows:
 
 > Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
