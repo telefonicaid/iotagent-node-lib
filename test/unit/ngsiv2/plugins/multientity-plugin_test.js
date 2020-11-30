@@ -367,10 +367,10 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 value: '16'
             }
         ];
-    
+
         beforeEach(function () {
             nock.cleanAll();
-    
+
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -420,7 +420,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 )
                 .reply(204);
         });
-    
+
         it('should send context elements', function (done) {
             iotAgentLib.update('ws6', 'WeatherStation6', '', values, function (error) {
                 should.not.exist(error);
