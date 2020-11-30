@@ -314,6 +314,98 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 -   update (of type "Boolean"): false -> ${@update * 20} -> ${ 0 \* 20 } -> $ { 0 } -> $ { "0"} -> False
 -   update (of type "Boolean"): true -> ${trim(@updated)} -> ${trim("true")} -> $ { "true" } -> $ { "true"} -> True
 
+
+To allow support for expressions in combination with multi entity plugin, where
+the same attribute is generated for different entities out of different
+incoming attribute values (i.e. `object_id`), we introduced support for
+`object_id` in the expression context.
+
+For example, the following device:
+
+```
+WeatherStation: {
+    commands: [],
+    type: 'WeatherStation',
+    lazy: [],
+    active: [
+        {
+            object_id: 'v1',
+            name: 'vol',
+            expression : '${@v1*100}',
+            type: 'Number',
+            entity_name: 'WeatherStation1'
+        },
+        {
+            object_id: 'v2',
+            name: 'vol',
+            expression : '${@v2*100}',
+            type: 'Number',
+            entity_name: 'WeatherStation2'
+        },
+        {
+            object_id: 'v',
+            name: 'vol',
+            expression : '${@v*100}',
+            type: 'Number'
+        }
+    ]
+}
+```
+
+When receiving the following payloads:
+
+```
+{
+    name: 'v',
+    type: 'Number',
+    value: 0
+},
+{
+    name: 'v1',
+    type: 'Number',
+    value: 1
+},
+{
+    name: 'v2',
+    type: 'Number',
+    value: 2
+}
+```
+
+Will now generate the following NGSI v2 payload:
+
+```
+{
+  "actionType": "append",
+  "entities": [
+      {
+          "id": "ws9",
+          "type": "WeatherStation",
+          "vol": {
+              "type": "Number",
+              "value": 0
+          }
+      },
+      {
+          "vol": {
+              "type": "Number",
+              "value": 100
+          },
+          "type": "WeatherStation",
+          "id": "WeatherStation1"
+      },
+      {
+          "vol": {
+              "type": "Number",
+              "value": 200
+          },
+          "type": "WeatherStation",
+          "id": "WeatherStation2"
+      }
+  ]
+}
+```
+
 ## JEXL Based Transformations
 
 As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl). To use JEXL, you will
