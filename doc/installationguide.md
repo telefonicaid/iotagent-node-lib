@@ -41,6 +41,10 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
+Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information
+allowing the computer to interpret the rest of the data with more clarity and depth. Read the
+[JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more information.
+
 -   If you want to support a "mixed" mode with both **NGSI-v2** and **NGSI-LD** (experimental):
 
 ```javascript
@@ -52,9 +56,9 @@ These are the parameters that can be configured in the global section:
 }
 ```
 
-Where `http://context.json-ld` is the location of the NGSI-LD `@context` element which provides additional information
-allowing the computer to interpret the rest of the data with more clarity and depth. Read the
-[JSON-LD specification](https://w3c.github.io/json-ld-syntax/#the-context) for more informtaion.
+Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also be switched
+to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the provisioning API.
+The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group setting.
 
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
