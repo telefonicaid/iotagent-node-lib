@@ -92,7 +92,7 @@ correspondence between the API resource fields and the same fields in the databa
 | `internal_attributes` | `internalAttributes` | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
 | `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, `legacy` is used as default value.                                                                                      |
 | `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is `false`.                                                                                                                                       |
-| `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`.
+| `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v1`, `v2` or `ld`. The default is `v2`.
 
 ### Service Group Endpoint
 
