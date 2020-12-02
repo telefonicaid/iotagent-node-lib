@@ -1,3 +1,4 @@
+Add env var and config for default entity_name conjunction (#944)
 Add basic NGSI-LD support as experimental feature (#842)
 - Active measures
 - GeoJSON and DateTime, unitCode and observedAt NGSI-LD support
