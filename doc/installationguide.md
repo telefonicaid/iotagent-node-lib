@@ -278,8 +278,9 @@ used for the same purpose. For instance:
     standard, but the final decision has yet been confirmed), take into account it could change
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
     flag is overwritten by `explicitAttrs` flag in group or device provision.
--   **defaultEntityNameConjunction**: the default conjunction string used to compose a default entity_name when is not 
-    provided at device provisioning time. This value is overwritten by `defaultEntityNameConjunction` in group provision.
+-   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not 
+    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`. 
+    Default value is `:`. This value is overwritten by `defaultEntityNameConjunction` in group provision.
 -   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
     validated, and may exceptionally include characters (such as semi-colons) which are
     [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the
