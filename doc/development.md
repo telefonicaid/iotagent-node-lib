@@ -88,7 +88,7 @@ npm run clean
 
 ### Documentation Markdown validation
 
-Checks the markdown documentation for consistency
+Checks the Markdown documentation for consistency
 
 ```bash
 # Use git-bash on Windows
@@ -97,7 +97,7 @@ npm run lint:md
 
 ### Documentation Spell-checking
 
-Uses the provided `.textlintrc` flag file. To check the markdown documentation for spelling and grammar errors, dead
+Uses the provided `.textlintrc` flag file. To check the Markdown documentation for spelling and grammar errors, dead
 links & etc.
 
 ```bash
