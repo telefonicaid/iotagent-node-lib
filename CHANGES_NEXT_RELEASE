@@ -13,3 +13,8 @@ Update codebase to use ES6
 -  Fix or disable eslint errors
 Add prettier code formatting
 Add husky and lint-staged
+fix #941: combine multi entity and expressions with duplicate att name (ngsiv2),
+    by enabling expression over object_id (which are not duplicated in a attribute
+    mapping contrary to name)
+fix bug in legacy and jexl expression that was not converting "0" to 0
+fix support for mapping different attributes to the same entity_name (ngsiv2)
