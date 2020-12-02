@@ -348,7 +348,7 @@ overrides.
 | IOTA_FALLBACK_PATH               | `fallbackPath`                  |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | `defaultExpressionLanguage`     |
 | IOTA_EXPLICIT_ATTRS              | `explicitAttrs`                 |
-| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `efaultEntityNameConjunction` |
+| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction` |
 | IOTA_RELAX_TEMPLATE_VALIDATION   | `relaxTemplateValidation`       |
 
 Note:
