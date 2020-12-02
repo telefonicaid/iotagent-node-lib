@@ -1,3 +1,4 @@
+Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
 Add basic NGSI-LD support as experimental feature (#842)
 - Active measures
 - GeoJSON and DateTime, unitCode and observedAt NGSI-LD support
