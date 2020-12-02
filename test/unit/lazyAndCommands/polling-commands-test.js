@@ -122,9 +122,7 @@ const device3 = {
 describe('NGSI-v1 - Polling commands', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
-
         nock.cleanAll();
-
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
