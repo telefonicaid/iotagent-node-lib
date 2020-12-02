@@ -278,6 +278,8 @@ used for the same purpose. For instance:
     standard, but the final decision has yet been confirmed), take into account it could change
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
     flag is overwritten by `explicitAttrs` flag in group or device provision.
+-   **defaultEntityNameConjunction**: the default conjunction string used to compose a default entity_name when is not 
+    provided at device provisioning time. This value is overwritten by `defaultEntityNameConjunction` in group provision.
 -   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
     validated, and may exceptionally include characters (such as semi-colons) which are
     [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the
@@ -345,6 +347,7 @@ overrides.
 | IOTA_FALLBACK_PATH               | `fallbackPath`                  |
 | IOTA_DEFAULT_EXPRESSION_LANGUAGE | `defaultExpressionLanguage`     |
 | IOTA_EXPLICIT_ATTRS              | `explicitAttrs`                 |
+| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `efaultEntityNameConjunction` |
 | IOTA_RELAX_TEMPLATE_VALIDATION   | `relaxTemplateValidation`       |
 
 Note:
