@@ -84,7 +84,9 @@ describe('NGSI-v1 - Provisioning API: Single service mode', function () {
         const groupCreationDuplicated = {
             url: 'http://localhost:4041/iot/configGroups',
             method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateConfigGroup.json'),
+            json: utils.readExampleFile(
+                './test/unit/examples/groupProvisioningRequests/provisionDuplicateConfigGroup.json'
+            ),
             headers: {
                 'fiware-service': 'TestService',
                 'fiware-servicepath': '/testingPath'

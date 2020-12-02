@@ -153,11 +153,11 @@ const groupCreation = {
     }
 };
 const configGroupCreation = {
-   url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/configGroups',
-   method: 'POST',
-   json: {
-       configGroups: [
-           {
+    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/configGroups',
+    method: 'POST',
+    json: {
+        configGroups: [
+            {
                 resource: '',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                 entity_type: 'TheLightType',
@@ -172,7 +172,7 @@ const configGroupCreation = {
                     }
                 ],
                 static_attributes: []
-           }
+            }
         ]
     },
     headers: {
