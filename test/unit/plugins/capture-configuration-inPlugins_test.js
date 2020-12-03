@@ -15,162 +15,158 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
  */
 
-'use strict';
+/* eslint-disable no-unused-vars */
 
-/* jshint camelcase: false */
-
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    logger = require('logops'),
-    request = require('request'),
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const logger = require('logops');
+const request = require('request');
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const optionsCreation = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'POST',
+    json: {
+        services: [
+            {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'SensorMachine',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://unexistentHost:1026',
+                commands: [
                     {
-                        name: 'temperature',
-                        type: 'centigrades'
+                        name: 'wheel1',
+                        type: 'Wheel'
                     }
                 ],
-                active: [
+                lazy: [
                     {
-                        name: 'pressure',
-                        type: 'Hgmm'
+                        name: 'luminescence',
+                        type: 'Lumens'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ],
+                static_attributes: [
+                    {
+                        name: 'bootstrapServer',
+                        type: 'Address',
+                        value: '127.0.0.1'
                     }
                 ]
             }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+        ]
     },
-    optionsCreation = {
-        url: 'http://localhost:4041/iot/services',
-        method: 'POST',
-        json: {
-            services: [
-                {
-                    resource: '/deviceTest',
-                    apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                    entity_type: 'SensorMachine',
-                    trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                    cbHost: 'http://unexistentHost:1026',
-                    commands: [
-                        {
-                            name: 'wheel1',
-                            type: 'Wheel'
-                        }
-                    ],
-                    lazy: [
-                        {
-                            name: 'luminescence',
-                            type: 'Lumens'
-                        }
-                    ],
-                    attributes: [
-                        {
-                            name: 'status',
-                            type: 'Boolean'
-                        }
-                    ],
-                    static_attributes: [
-                        {
-                            name: 'bootstrapServer',
-                            type: 'Address',
-                            value: '127.0.0.1'
-                        }
-                    ]
-                }
-            ]
-        },
-        headers: {
-            'fiware-service': 'TestService',
-            'fiware-servicepath': '/testingPath'
-        }
-    };
+    headers: {
+        'fiware-service': 'TestService',
+        'fiware-servicepath': '/testingPath'
+    }
+};
 
-describe('Data Mapping Plugins: configuration provision', function() {
-    beforeEach(function(done) {
+describe('Data Mapping Plugins: configuration provision', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function(error) {
+        iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.clearAll(done);
         });
     });
 
-
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a configuration provision request arrives to a IoTA with configuration middleware', function() {
-        it('should execute the configuration provisioning middlewares', function(done) {
-            var handlerCalled = false;
+    describe('When a configuration provision request arrives to a IoTA with configuration middleware', function () {
+        it('should execute the configuration provisioning middlewares', function (done) {
+            let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
             });
         });
 
-        it('should still execute the configuration handlers', function(done) {
-            var handlerCalled = false;
+        it('should still execute the configuration handlers', function (done) {
+            let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 callback(null, newConfiguration);
             });
 
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a configuration middleware returns an error', function() {
-        it('should not execute the configuration handlers', function(done) {
-            var handlerCalled = false;
+    describe('When a configuration middleware returns an error', function () {
+        it('should not execute the configuration handlers', function (done) {
+            let handlerCalled = false;
 
-            iotAgentLib.addConfigurationProvisionMiddleware(function(newConfiguration, callback) {
+            iotAgentLib.addConfigurationProvisionMiddleware(function (newConfiguration, callback) {
                 callback(new Error('This will prevent the handler from being executed'));
             });
 
-            iotAgentLib.setConfigurationHandler(function(newConfiguration, callback) {
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
                 handlerCalled = true;
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function(error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });

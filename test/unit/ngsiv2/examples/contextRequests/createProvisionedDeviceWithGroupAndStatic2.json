@@ -1,0 +1,36 @@
+{
+  "id": "TheFirstLight",
+  "type": "SensorMachine",
+  "attr_name": {
+    "type": "string",
+    "value": " "
+  },
+  "status": {
+    "type": "Boolean",
+    "value": " "
+  },
+  "hardcodedAttr": {
+    "type": "hardcodedType",
+    "value": "hardcodedValue"
+  },
+  "bootstrapServer": {
+    "type": "Address",
+    "value": "127.0.0.1"
+  },
+  "commandAttr_status": {
+    "type": "commandStatus",
+    "value": "UNKNOWN"
+  },
+  "commandAttr_info": {
+    "type": "commandResult",
+    "value": " "
+  },
+  "wheel1_status": {
+    "type": "commandStatus",
+    "value": "UNKNOWN"
+  },
+  "wheel1_info": {
+    "type": "commandResult",
+    "value": " "
+  }
+}

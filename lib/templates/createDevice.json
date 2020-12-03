@@ -36,6 +36,18 @@
             "description": "Transport protocol used by the platform to communicate with the device",
             "type": "string"
           },
+          "expressionLanguage": {
+            "description": "Expression language used to apply expressions for this device",
+            "type": "string"
+          },
+          "explicitAttrs": {
+            "description": "Flag about only provisioned attributes will be processed to Context Broker",
+            "type": "boolean"
+          },
+          "ngsiVersion": {
+            "description": "NGSI Interface for this device",
+            "type": "string"
+          },
           "lazy": {
             "description": "list of lazy attributes of the devices",
             "type": "array",
@@ -89,8 +101,7 @@
                 },
                 "expression": {
                   "description": "Optional expression for measurement transformation",
-                  "type": "string",
-                  "pattern": "^([^<>;'=]+)+$"
+                  "type": "string"
                 },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",
@@ -125,6 +136,10 @@
                       }
                     }
                   }
+                },
+                "metadata": {
+                  "description": "Attribute Metadata",
+                  "type": "object"
                 }
               }
             }
@@ -157,6 +172,22 @@
                   "description": "Value of the command (currently ignored)",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)*$"
+                },
+                "mqtt": {
+                  "description": "Mqtt properties",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                      "retain": {
+                          "description": "MQTT Retain message",
+                          "type": "boolean"
+                      },
+                      "qos": {
+                          "description": "MQTT QoS level",
+                          "type": "string",
+                          "pattern": "^([0-2])$"
+                      }
+                  }
                 }
               }
             }

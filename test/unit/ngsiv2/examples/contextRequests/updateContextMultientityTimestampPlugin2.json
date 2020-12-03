@@ -1,5 +1,5 @@
 {
-  "actionType": "APPEND",
+  "actionType": "append",
   "entities": [
     {
       "id": "ws4",
@@ -15,7 +15,8 @@
               "TimeInstant": {
                   "type": "DateTime",
                   "value": "2018-06-13T13:28:34.611Z"
-              }
+              },
+              "unitCode":{"type": "Text", "value" :"Hgmm"}
           }
       },
       "TimeInstant": {

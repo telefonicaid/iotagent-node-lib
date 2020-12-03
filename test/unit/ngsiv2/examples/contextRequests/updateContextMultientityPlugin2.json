@@ -1,5 +1,5 @@
 {
-  "actionType": "APPEND",
+  "actionType": "append",
   "entities": [
     {
       "id": "ws4",
@@ -19,4 +19,3 @@
     }
   ]
 }
-

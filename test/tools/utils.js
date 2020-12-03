@@ -15,24 +15,24 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-orion-pep.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[daniel.moranjimenez@telefonica.com]
  */
 
-'use strict';
-
-var fs = require('fs');
+const fs = require('fs');
 
 function readExampleFile(name, raw) {
-    var text = fs.readFileSync(name, 'UTF8');
-
-    if (raw) {
-        return text;
-    } else {
-        return JSON.parse(text);
+    let text = null;
+    try {
+        text = fs.readFileSync(name, 'UTF8');
+    } catch (e) {
+        /* eslint-disable no-console */
+        console.error(JSON.stringify(e));
     }
+
+    return raw ? text : JSON.parse(text);
 }
 
 exports.readExampleFile = readExampleFile;

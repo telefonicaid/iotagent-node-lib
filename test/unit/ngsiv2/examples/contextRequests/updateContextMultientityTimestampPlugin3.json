@@ -1,5 +1,5 @@
 {
-  "actionType": "APPEND",
+  "actionType": "append",
   "entities": [
     {
       "id": "ws5",
@@ -10,16 +10,17 @@
       }
     },
     {
-      "id": "Higro2001",
+      "id": "Higro2000",
       "type": "Higrometer",
-      "presure": {
-          "type": "Hgmm",
+      "humidity": {
+          "type": "Percentage",
           "value": "16",
           "metadata": {
               "TimeInstant": {
                   "type": "DateTime",
                   "value": "2018-06-13T13:28:34.611Z"
-              }
+              },
+              "unitCode":{"type": "Text", "value" :"Hgmm"}
           }
       },
       "TimeInstant": {

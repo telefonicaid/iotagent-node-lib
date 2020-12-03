@@ -2,6 +2,7 @@
 /node_modules/
 /.idea/
 /coverage/
+/.nyc_output/
 /site
 /report/
 /.c9revisions/
@@ -12,4 +13,5 @@
 .project
 .metadata
 npm-debug.log
+.eslintcache
 

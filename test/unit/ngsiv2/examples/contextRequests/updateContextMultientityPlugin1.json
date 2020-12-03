@@ -1,5 +1,5 @@
 {
-  "actionType": "APPEND",
+  "actionType": "append",
   "entities": [
     {
       "id": "ws4",
@@ -12,7 +12,13 @@
     {
       "humidity": {
         "type": "Percentage",
-        "value": "12"
+        "value": "12",
+        "metadata": {
+          "unitCode": {
+            "type": "Text",
+            "value": "Hgmm"
+          }
+        }
       },
       "type": "Higrometer",
       "id": "Higro2000"

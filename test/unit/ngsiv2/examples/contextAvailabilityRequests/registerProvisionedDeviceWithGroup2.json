@@ -1,0 +1,19 @@
+{
+  "dataProvided": {
+    "entities": [{
+      "type": "SensorMachine",
+      "id": "TheFirstLight"
+    }],
+    "attrs": [
+      "luminance",
+      "luminescence",
+      "commandAttr",
+      "wheel1"
+    ]
+  },
+  "provider": {
+    "http": {
+      "url": "http://smartGondor.com"
+    }
+  }
+}

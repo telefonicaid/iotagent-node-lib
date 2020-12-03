@@ -1,0 +1,22 @@
+{
+  "subject": {
+    "entities": [
+      {
+        "id": "light1",
+        "type": "Light"
+      }
+    ],
+    "condition": {
+      "attrs": [
+        "dimming"
+      ]
+    }
+  },
+  "notification": {
+    "http": {
+      "url": "http://smartGondor.com/notify"
+    },
+    "attrs": [],
+    "attrsFormat": "normalized"
+  }
+}

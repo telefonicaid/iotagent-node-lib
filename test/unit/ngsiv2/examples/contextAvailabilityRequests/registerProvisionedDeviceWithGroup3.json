@@ -1,0 +1,16 @@
+{
+  "dataProvided": {
+    "entities": [{
+      "type": "Light",
+      "id": "light1"
+    }],
+    "attrs": [
+      "temperature"
+    ]
+  },
+  "provider": {
+    "http": {
+      "url": "http://smartGondor.com"
+    }
+  }
+}

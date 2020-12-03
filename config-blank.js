@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
@@ -33,8 +33,7 @@ var config = {
     deviceRegistry: {
         type: 'memory'
     },
-    types: {
-    },
+    types: {},
     service: 'tester',
     subservice: '/test',
     providerUrl: 'http://192.168.56.1:4041',

@@ -1,0 +1,25 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "humidity12": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": "12"
+            }
+        },
+        "id": "urn:ngsi-ld:WeatherStation:ws1",
+        "pressure25": {
+            "type": "Property",
+            "value": 52
+        },
+        "type": "WeatherStation",
+        "weather": {
+            "type": "Property",
+            "value": {
+                "@type": "Summary",
+                "@value": "Humidity 6 and pressure 1040"
+            }
+        }
+    }
+]

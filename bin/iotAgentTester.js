@@ -17,28 +17,27 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var commandLine = require('../lib/command/commandLine'),
-    clUtils = require('command-shell-lib'),
-    configCb = {
-        host: 'localhost',
-        port: 1026,
-        service: 'tester',
-        subservice: '/test'
-    },
-    configIot = {
-        host: 'localhost',
-        port: 4041,
-        name: 'default',
-        service: 'tester',
-        subservice: '/test'
-    };
+const commandLine = require('../lib/command/commandLine');
+const clUtils = require('command-shell-lib');
+const configCb = {
+    host: 'localhost',
+    port: 1026,
+    service: 'tester',
+    subservice: '/test'
+};
+const configIot = {
+    host: 'localhost',
+    port: 4041,
+    name: 'default',
+    service: 'tester',
+    subservice: '/test'
+};
 
 commandLine.init(configCb, configIot);
 

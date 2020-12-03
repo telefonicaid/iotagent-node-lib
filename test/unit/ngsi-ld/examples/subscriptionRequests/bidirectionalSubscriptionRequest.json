@@ -1,0 +1,20 @@
+{
+    "entities": [
+        {
+            "id": "TheFirstLight",
+            "type": "TheLightType"
+        }
+    ],
+    "notification": {
+        "attributes": [
+            "location"
+        ],
+        "http": {
+            "url": "http://smartGondor.com/notify"
+        }
+    },
+    "type": "Subscription",
+    "watchedAttributes": [
+        "location"
+    ]
+}

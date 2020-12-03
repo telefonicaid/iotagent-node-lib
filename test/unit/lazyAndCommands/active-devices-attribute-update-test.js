@@ -15,57 +15,56 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[contacto@tid.es]
  */
-'use strict';
 
-var iotAgentLib = require('../../../lib/fiware-iotagent-lib'),
-    utils = require('../../tools/utils'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    mongoUtils = require('../mongodb/mongoDBUtils'),
-    request = require('request'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        logLevel: 'FATAL',
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                // commands are not defined
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
+/* eslint-disable no-unused-vars */
+
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+const mongoUtils = require('../mongodb/mongoDBUtils');
+const request = require('request');
+let contextBrokerMock;
+const iotAgentConfig = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026'
     },
-    device = {
-        id: 'somelight',
-        type: 'Light',
-        service: 'smartGondor',
-        subservice: 'gardens'
-    };
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            // commands are not defined
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+const device = {
+    id: 'somelight',
+    type: 'Light',
+    service: 'smartGondor',
+    subservice: 'gardens'
+};
 
-describe('Update attribute functionalities', function() {
-
-    beforeEach(function(done) {
+describe('NGSI-v1 - Update attribute functionalities', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         nock.cleanAll();
@@ -74,23 +73,27 @@ describe('Update attribute functionalities', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/NGSI9/registerContext')
-            .reply(200, utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json')
+            );
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
-            .reply(200, utils.readExampleFile(
-                './test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json'));
+            .reply(
+                200,
+                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+            );
 
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
-            iotAgentLib.deactivate(function() {
-                mongoUtils.cleanDbs(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
                     nock.cleanAll();
                     iotAgentLib.setDataUpdateHandler();
                     iotAgentLib.setCommandHandler();
@@ -100,8 +103,8 @@ describe('Update attribute functionalities', function() {
         });
     });
 
-    describe('When a attribute update arrives to the IoT Agent as Context Provider', function() {
-        var options = {
+    describe('When a attribute update arrives to the IoT Agent as Context Provider', function () {
+        const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v1/updateContext',
             method: 'POST',
             json: {
@@ -127,8 +130,8 @@ describe('Update attribute functionalities', function() {
             }
         };
 
-        beforeEach(function(done) {
-            iotAgentLib.register(device, function(error) {
+        beforeEach(function (done) {
+            iotAgentLib.register(device, function (error) {
                 if (error) {
                     done('Device registration failed');
                 }
@@ -136,10 +139,10 @@ describe('Update attribute functionalities', function() {
             });
         });
 
-        it('should call the client handler with correct values, even if commands are not defined', function(done) {
-            var handlerCalled = false;
+        it('should call the client handler with correct values, even if commands are not defined', function (done) {
+            let handlerCalled = false;
 
-            iotAgentLib.setDataUpdateHandler(function(id, type, service, subservice, attributes, callback) {
+            iotAgentLib.setDataUpdateHandler(function (id, type, service, subservice, attributes, callback) {
                 id.should.equal('Light:somelight');
                 type.should.equal('Light');
                 should.exist(attributes);
@@ -149,14 +152,13 @@ describe('Update attribute functionalities', function() {
                 handlerCalled = true;
 
                 callback(null, {
-                    id: id,
-                    type: type,
-                    attributes: attributes
+                    id,
+                    type,
+                    attributes
                 });
             });
 
-
-            request(options, function(error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();

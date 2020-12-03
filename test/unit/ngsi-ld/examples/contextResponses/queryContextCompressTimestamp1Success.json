@@ -1,0 +1,12 @@
+{
+    "TheTargetValue": {
+        "type": "DateTime",
+        "value": "+002007-11-03T13:18:05"
+    },
+    "id": "light1",
+    "state": {
+        "type": "Boolean",
+        "value": "true"
+    },
+    "type": "Light"
+}

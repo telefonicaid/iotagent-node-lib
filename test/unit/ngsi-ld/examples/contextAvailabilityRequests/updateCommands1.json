@@ -1,0 +1,18 @@
+{
+    "type":"ContextSourceRegistration",
+    "information":[
+        {
+            "entities":[
+                {
+                    "type":"Light",
+                    "id":"urn:ngsi-ld:Light:light1"
+                }
+            ],
+            "properties":[
+                "move"
+            ]
+        }
+    ],
+    "endpoint":"http://smartGondor.com",
+    "@context": "http://context.json-ld"
+}

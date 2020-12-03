@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with fiware-iotagent-lib.
- * If not, seehttp://www.gnu.org/licenses/.
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::daniel.moranjimenez@telefonica.com
@@ -23,53 +23,49 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
-'use strict';
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const should = require('should');
+const logger = require('logops');
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    server: {
+        port: 4041
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartGondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartGondor.com'
+};
 
-var iotAgentLib = require('../../../../lib/fiware-iotagent-lib'),
-    should = require('should'),
-    logger = require('logops'),
-    nock = require('nock'),
-    contextBrokerMock,
-    iotAgentConfig = {
-        contextBroker: {
-            host: '192.168.1.1',
-            port: '1026',
-            ngsiVersion: 'v2'
-        },
-        server: {
-            port: 4041
-        },
-        types: {
-            'Light': {
-                commands: [],
-                type: 'Light',
-                lazy: [
-                    {
-                        name: 'temperature',
-                        type: 'centigrades'
-                    }
-                ],
-                active: [
-                    {
-                        name: 'pressure',
-                        type: 'Hgmm'
-                    }
-                ]
-            }
-        },
-        service: 'smartGondor',
-        subservice: 'gardens',
-        providerUrl: 'http://smartGondor.com',
-        deviceRegistrationDuration: 'P1M',
-        throttling: 'PT5S'
-    };
-
-describe('Event plugin', function() {
-    beforeEach(function(done) {
+describe('NGSI-v2 - Event plugin', function () {
+    beforeEach(function (done) {
         logger.setLevel('FATAL');
 
-        iotAgentLib.activate(iotAgentConfig, function() {
-            iotAgentLib.clearAll(function() {
+        iotAgentLib.activate(iotAgentConfig, function () {
+            iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.addEvents.query);
                 done();
@@ -77,13 +73,13 @@ describe('Event plugin', function() {
         });
     });
 
-    afterEach(function(done) {
-        iotAgentLib.clearAll(function() {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with an event to the plugin', function() {
-        var values = [
+    describe('When an update comes with an event to the plugin', function () {
+        const values = [
             {
                 name: 'state',
                 type: 'Boolean',
@@ -96,22 +92,23 @@ describe('Event plugin', function() {
             }
         ];
 
-        beforeEach(function() {
+        beforeEach(function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs', function(body) {
-                    var dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
+                .post('/v2/entities/light1/attrs', function (body) {
+                    const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
 
                     return body.activation.value.match(dateRegex);
                 })
+                .query({ type: 'Light' })
                 .reply(204);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function(done) {
-            iotAgentLib.update('light1', 'Light', '', values, function(error) {
+        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

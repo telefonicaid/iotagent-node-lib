@@ -1,0 +1,21 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Motion:motion1",
+        "location": {
+            "type": "GeoProperty",
+            "value": {
+                "coordinates": [
+                    153,
+                    523
+                ],
+                "type": "Point"
+            }
+        },
+        "moving": {
+            "type": "Property",
+            "value": true
+        },
+        "type": "Motion"
+    }
+]

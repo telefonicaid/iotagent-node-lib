@@ -1,0 +1,21 @@
+{
+    "@context": "http://context.json-ld",
+    "endpoint": "http://smartGondor.com",
+    "information": [
+        {
+            "entities": [
+                {
+                    "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
+                    "type": "TheLightType"
+                }
+            ],
+            "properties": [
+                "luminance",
+                "luminescence",
+                "commandAttr",
+                "wheel1"
+            ]
+        }
+    ],
+    "type": "ContextSourceRegistration"
+}

@@ -1,0 +1,20 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:WeatherStation:ws5",
+        "type": "WeatherStation"
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "type": "Higrometer",
+        "humidity": {
+            "type": "Property",
+            "value": {
+                "@type": "Percentage",
+                "@value": "16"
+            },
+            "observedAt": "2018-06-13T13:28:34.611Z"
+        }
+    }
+]
