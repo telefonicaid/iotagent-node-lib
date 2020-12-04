@@ -44,6 +44,10 @@
             "description": "Flag about only provisioned attributes will be processed to Context Broker",
             "type": "boolean"
           },
+          "ngsiVersion": {
+            "description": "NGSI Interface for this device",
+            "type": "string"
+          },
           "lazy": {
             "description": "list of lazy attributes of the devices",
             "type": "array",
