@@ -269,7 +269,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
         });
     });
 
-    //This test will be removed if at the end /iot/services API (now Deprecated) is removed
+    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new Group provisioning request arrives with bidirectional attributes', function () {
         const provisionGroup = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
@@ -378,7 +378,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
         });
     });
 
-    //This test will be removed if at the end /iot/services API (now Deprecated) is removed
+    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a notification arrives for a bidirectional attribute in a Configuration Group', function () {
         const provisionGroup = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
