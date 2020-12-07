@@ -30,7 +30,7 @@ const logger = require('logops');
 const mongo = require('mongodb').MongoClient;
 const nock = require('nock');
 const async = require('async');
-const mongoUtils = require('./mongoDBUtils');
+const mongoUtils = require('../../tools/mongoDBUtils');
 let contextBrokerMock;
 const iotAgentConfig = {
     contextBroker: {

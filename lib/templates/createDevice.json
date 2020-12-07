@@ -48,6 +48,10 @@
             "description": "NGSI Interface for this device",
             "type": "string"
           },
+          "dontCache": {
+            "description": "Flag to whether to cache the details of this device in memory",
+            "type": "boolean"
+          },
           "lazy": {
             "description": "list of lazy attributes of the devices",
             "type": "array",

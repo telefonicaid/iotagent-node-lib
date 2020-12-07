@@ -18,40 +18,36 @@
  * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::daniel.moranjimenez@telefonica.com
+ * please contact with::[contacto@tid.es]
  */
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+/* eslint-disable no-unused-vars */
 
-const Group = new Schema({
-    url: String,
-    resource: String,
-    apikey: String,
-    type: String,
-    service: String,
-    subservice: String,
-    description: String,
-    trust: String,
-    cbHost: String,
-    timezone: String,
-    timestamp: Boolean,
-    commands: Array,
-    staticAttributes: Array,
-    lazy: Array,
-    attributes: Array,
-    internalAttributes: Array,
-    autoprovision: Boolean,
-    expressionLanguage: String,
-    explicitAttrs: Boolean,
-    ngsiVersion: String,
-    dontCache: Boolean
-});
+const Redis = require('ioredis');
+const async = require('async');
 
-function load(db) {
-    Group.index({ apikey: 1, resource: 1 }, { unique: true });
-    module.exports.model = db.model('Group', Group);
-    module.exports.internalSchema = Group;
+function cleanDb(host, port, db, callback) {
+    const redis = new Redis({
+        port,
+        host,
+        db
+    });
+
+    redis.flushdb(function (err, succeeded) {
+        callback(err);
+    });
 }
 
-module.exports.load = load;
+function cleanDbs(host, port, callback) {
+    const redis = new Redis({
+        port,
+        host
+    });
+
+    redis.flushall(function (err, succeeded) {
+        callback(err);
+    });
+}
+
+exports.cleanDb = cleanDb;
+exports.cleanDbs = cleanDbs;

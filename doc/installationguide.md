@@ -56,9 +56,10 @@ allowing the computer to interpret the rest of the data with more clarity and de
 }
 ```
 
-Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also be switched
-to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the provisioning API.
-The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group setting.
+Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
+be switched to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the
+provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
+overriding the group setting.
 
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
@@ -163,25 +164,6 @@ used for the same purpose. For instance:
 }
 ```
 
--   **deviceRegistry.cache**: Whether to use a memory cache in front of Mongo-DB when using the `mongodb`
-    **deviceRegistry** option to reduce I/O. This memory cache will hold and serve a set of recently requested groups
-    and devices (up to a given maximum time-to-live) and return the cached response so long as the value is still within
-    `TTL`. When enabled the default values are to hold up to 1000 devices and 100 groups in memory and retain values for
-    up to 10 seconds.
-
-```javascript
-{
-    type: 'mongodb';
-    cache: {
-        enabled: true,
-        deviceSize: 1000,
-        deviceTTL: 10,
-        groupSize: 100,
-        groupTTL: 10
-    }
-}
-```
-
 -   **mongodb**: configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a
     list of comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional
     property `replicaSet` should contain the Replica Set name. If the database requires authentication, username
@@ -219,6 +201,40 @@ used for the same purpose. For instance:
   },
   retries: 5,
   retryTime: 5
+}
+```
+
+-   **memCache**: Whether to use a memory cache in front of Mongo-DB when using the `mongodb` **deviceRegistry** option
+    to reduce I/O. This memory cache will hold and serve a set of recently requested groups and devices (up to a given
+    maximum time-to-live) and return the cached response so long as the value is still within `TTL`. When enabled the
+    default values are to hold up to 200 devices and 160 groups in memory and retain values for up to 60 seconds.
+
+```javascript
+{
+    enabled: true,
+    deviceMax: 200,
+    deviceTTL: 60,
+    groupMax: 50,
+    groupTTL: 60
+}
+```
+
+-   **redis**: Whether to use a redis cache in front of Mongo-DB when using the `mongodb` **deviceRegistry** option to
+    reduce I/O. This redis cache will hold and serve a set of recently requested groups and devices (up to a given
+    maximum time-to-live) and return the cached response so long as the value is still within `TTL`. When enabled the
+    default values are to retain values for up to 600 seconds. Separate settings are available for devices and service
+    groups.
+
+```javascript
+{
+    deviceHost: "localhost",
+    devicePort: 6379,
+    deviceDB: 1,
+    deviceTTL: 600,
+    groupHost: "localhost",
+    groupPort: 6379,
+    groupDB: 0,
+    groupTTL: 600
 }
 ```
 
@@ -333,11 +349,20 @@ overrides.
 | IOTA_AUTH_TOKEN_PATH             | `authentication.tokenPath`      |
 | IOTA_AUTH_PERMANENT_TOKEN        | `authentication.permanentToken` |
 | IOTA_REGISTRY_TYPE               | `deviceRegistry.type`           |
-| IOTA_REGISTRY_CACHE_ENABLED      | `deviceRegistry.cache.enabled`    |
-| IOTA_REGISTRY_CACHE_DEVICE_SIZE  | `deviceRegistry.cache.deviceSize` |
-| IOTA_REGISTRY_CACHE_DEVICE_TTL   | `deviceRegistry.cache.deviceTTL`  |
-| IOTA_REGISTRY_CACHE_GROUP_SIZE   | `deviceRegistry.cache.groupSize`  |
-| IOTA_REGISTRY_CACHE_GROUP_TTL    | `deviceRegistry.cache.groupTTL`   |
+| IOTA_MEMCACHE_ENABLED            | `memCache.enabled`              |
+| IOTA_MEMCACHE_DEVICE_MAX         | `memCache.deviceMax`            |
+| IOTA_MEMCACHE_DEVICE_TTL         | `memCache.deviceTTL`            |
+| IOTA_MEMCACHE_GROUP_MAX          | `memCache.groupMax`             |
+| IOTA_MEMCACHE_GROUP_TTL          | `memCache.groupTTL`             |
+| IOTA_REDIS_ENABLED               | `redis.enabled`                 |
+| IOTA_REDIS_DEVICE_HOST           | `redis.deviceHost`              |
+| IOTA_REDIS_DEVICE_PORT           | `redis.devicePort`              |
+| IOTA_REDIS_DEVICE_DB             | `redis.deviceDB`                |
+| IOTA_REDIS_DEVICE_TTL            | `redis.deviceTTL`               |
+| IOTA_REDIS_GROUP_HOST            | `redis.groupHost`               |
+| IOTA_REDIS_GROUP_PORT            | `redis.groupPort`               |
+| IOTA_REDIS_GROUP_DB              | `redis.groupDB`                 |
+| IOTA_REDIS_GROUP_TTL             | `redis.groupTTL`                |
 | IOTA_LOG_LEVEL                   | `logLevel`                      |
 | IOTA_TIMESTAMP                   | `timestamp`                     |
 | IOTA_IOTAM_URL                   | `iotManager.url`                |

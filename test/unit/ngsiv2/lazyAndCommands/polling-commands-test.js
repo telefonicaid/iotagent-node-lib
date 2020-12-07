@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const mongoUtils = require('../../mongodb/mongoDBUtils');
+const mongoUtils = require('../../../tools/mongoDBUtils');
 const request = require('request');
 let contextBrokerMock;
 let statusAttributeMock;
@@ -99,14 +99,7 @@ const iotAgentConfig = {
         }
     },
     deviceRegistry: {
-        type: 'mongodb',
-        cache: {
-            enabled: true,
-            deviceSize: 1000,
-            deviceTTL: 10,
-            groupSize: 100,
-            groupTTL: 10
-        }
+        type: 'mongodb'
     },
 
     mongodb: {
