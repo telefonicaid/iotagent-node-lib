@@ -152,8 +152,6 @@ describe('NGSI-v2 - Startup tests', function () {
             process.env.IOTA_MEMCACHE_DEVICE_TTL = 99;
             process.env.IOTA_MEMCACHE_GROUP_MAX = 90;
             process.env.IOTA_MEMCACHE_GROUP_TTL = 9;
-
-            iotAgentConfig.logLevel = 'DEBUG';
         });
 
         afterEach(function () {
