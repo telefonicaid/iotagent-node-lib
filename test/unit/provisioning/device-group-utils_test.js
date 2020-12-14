@@ -21,6 +21,7 @@
  * please contact with::[contacto@tid.es]
  */
 
+// FIXME: parallel tests in device-configGroup-utils_test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');

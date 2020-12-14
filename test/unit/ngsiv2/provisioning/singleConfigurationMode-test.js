@@ -23,6 +23,7 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
+// FIXME: parallel tests in singleGroupConfigurationMode-test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
