@@ -1,0 +1,11 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "active_power": {
+            "type": "Property",
+            "value": 0.45
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "type": "Light"
+    }
+]

@@ -1,0 +1,19 @@
+{
+    "@context": "http://context.json-ld",
+    "dataProvided": {
+        "attrs": [
+            "luminance"
+        ],
+        "entities": [
+            {
+                "id": "urn:ngsi-ld:TheLightType:ANewLightName",
+                "type": "TheLightType"
+            }
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
+        }
+    }
+}

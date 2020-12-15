@@ -1,0 +1,28 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "move_info": {
+            "type": "Property",
+            "value": {
+                "@type": "commandResult",
+                "@value": " "
+            }
+        },
+        "move_status": {
+            "type": "Property",
+            "value": {
+                "@type": "commandStatus",
+                "@value": "UNKNOWN"
+            }
+        },
+        "temperature": {
+            "type": "Property",
+            "value": {
+                "@type": "centigrades",
+                "@value": " "
+            }
+        },
+        "type": "Light"
+    }
+]

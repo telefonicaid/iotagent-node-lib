@@ -1,0 +1,17 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "dimming": {
+            "observedAt": "2015-08-05T07:35:01.468Z",
+            "type": "Property",
+            "value": 87
+        },
+        "id": "urn:ngsi-ld:Light:light1",
+        "state": {
+            "observedAt": "2015-08-05T07:35:01.468Z",
+            "type": "Property",
+            "value": true
+        },
+        "type": "Light"
+    }
+]

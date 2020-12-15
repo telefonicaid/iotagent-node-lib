@@ -1,0 +1,4 @@
+{
+    "description": "payload size: 1500000, max size supported: 1048576",
+    "error": "RequestEntityTooLarge"
+}

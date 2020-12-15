@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "data": {
+      "description": "Content of the notification. List of entities with modified attributes.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "required": true
+          },
+          "additionalProperties":{
+            "type": "object",
+            "properties": {
+              "type":{
+                "type": "string",
+                "required": true
+              },
+              "value":{
+                "type": "string",
+                "required": true
+              }
+            }                
+          }
+        }
+      },
+      "required": true
+    },
+    "subscriptionId": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:light1",
+        "pressure": {
+            "type": "Property",
+            "unitCode": "Hgmm",
+            "value": 20071103
+        },
+        "temperature": {
+            "type": "Property",
+            "unitCode": "CEL",
+            "value": 52
+        },
+        "type": "Light"
+    }
+]

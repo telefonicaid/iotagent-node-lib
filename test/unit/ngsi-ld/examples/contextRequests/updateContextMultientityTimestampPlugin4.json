@@ -1,0 +1,23 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "PING_info": {
+            "observedAt": "2015-08-05T07:35:01.468Z",
+            "type": "Property",
+            "value": {
+                "@type": "commandResult",
+                "@value": "1234567890"
+            }
+        },
+        "PING_status": {
+            "observedAt": "2015-08-05T07:35:01.468Z",
+            "type": "Property",
+            "value": {
+                "@type": "commandStatus",
+                "@value": "OK"
+            }
+        },
+        "id": "urn:ngsi-ld:SensorCommand:sensorCommand",
+        "type": "SensorCommand"
+    }
+]
