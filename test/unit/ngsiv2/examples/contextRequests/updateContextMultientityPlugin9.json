@@ -1,0 +1,25 @@
+{
+  "actionType": "append",
+  "entities": [
+    {
+      "id": "ws8",
+      "type": "WeatherStation",
+      "sn":{
+        "type": "Number",
+        "value": "5"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Percentage",
+        "value": "12"
+      },
+      "pressure": {
+        "type": "Hgmm",
+        "value": "52"
+      },
+      "type": "WeatherStation",
+      "id": "Station Number 50"
+    }
+  ]
+}

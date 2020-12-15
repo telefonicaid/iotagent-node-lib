@@ -25,6 +25,18 @@ npm run
 
 The following sections show the available options in detail.
 
+### Environment requirements
+
+A [MongoDB](https://www.mongodb.com/) 3.2+ instance is required to run tests.
+You can deploy one by using the commodity `docker-compose-dev.yml`:
+
+```
+docker-compose -f docker-compose-dev.yml up -d
+```
+
+To run docker compose you will need [docker](https://docs.docker.com/get-docker/)
+and [docker-compose](https://docs.docker.com/compose/install/).
+
 ### Testing
 
 [Mocha](https://mochajs.org/) Test Runner + [Should.js](https://shouldjs.github.io/) Assertion Library.
@@ -38,6 +50,19 @@ To run tests, type
 ```bash
 npm test
 ```
+
+### Debug Test
+
+To debug the code while running run tests, type
+
+```bash
+npm run test:debug
+```
+
+In the console the link to the debugger will be provided. You can connect
+to it via Chrome, for example, by opening the following url: ```chrome://inspect```.
+
+Additional debug clients are listed on [node.js](https://nodejs.org/en/docs/guides/debugging-getting-started/).
 
 ### Coding guidelines
 

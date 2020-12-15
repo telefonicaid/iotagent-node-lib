@@ -15,3 +15,6 @@ Update codebase to use ES6
 -  Fix or disable eslint errors
 Add prettier code formatting
 Add husky and lint-staged
+Fix: combine multi-entity and expressions with duplicate attribute name, by enabling expression over object_id (which are not duplicated in a attribute mapping contrary to name) (#941)
+Fix: bug in legacy and JEXL expression that was not converting "0" to 0
+Fix: support for mapping different attributes to the same entity_name
