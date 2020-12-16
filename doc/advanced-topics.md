@@ -127,6 +127,58 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
     }
 ```
 
+
+### NGSI-LD Linked Data support
+
+`static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for example a temperature gauge placed within a building.
+The **Device** data model literally represents the IoT device itself, but the `temperature` attribute also needs to be shared with the **Building** entity
+
+A `link` between them can be provisioned as shown:
+
+e.g.:
+
+```json
+{
+     "entity_type": "Device",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+..etc
+     "attributes": [
+        {"object_id": "l", "name": "temperature", "type":"Float",
+          "metadata":{
+              "unitCode":{"type": "Text", "value" :"CEL"}
+          }
+        }
+     ],
+     "static_attributes": [
+        {
+          "name": "controlledAsset",
+          "type": "Relationship",
+          "value": "urn:ngsi-ld:Building:001",
+          "link": {
+             "attributes": ["temperature"],
+             "name": "providedBy",
+             "type": "Building"
+          }
+        }
+     ]
+  }
+```
+
+Whenever a `temperature` measure is received **Device** is updated,  and entity `urn:ngsi-ld:Building:001` is also updated as shown:
+
+```json
+"temperature": {
+    "type": "Property",
+    "value": 87,
+    "unitCode": "CEL",
+    "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Lamp:lamp1"
+    }
+}
+```
+
 ### Data mapping plugins
 
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations

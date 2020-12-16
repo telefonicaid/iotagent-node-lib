@@ -1,0 +1,40 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "luminosity": {
+      "type": "Property",
+      "value": 87,
+      "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Lamp:lamp1"
+      }
+    },
+    "controlledAsset": {
+      "type": "Relationship",
+      "object": "urn:ngsi-ld:Building:001"
+    },
+    "controlledProperty": {
+      "type": "Property",
+      "value": "StaticValue",
+      "includes": {
+        "type": "Property",
+        "value": "bell"
+      }
+    },
+    "id": "urn:ngsi-ld:Lamp:lamp1",
+    "type": "Lamp"
+  },
+  {
+    "@context": "http://context.json-ld",
+    "id": "urn:ngsi-ld:Building:001",
+    "type": "Building",
+    "luminosity": {
+      "type": "Property",
+      "value": 87,
+      "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Lamp:lamp1"
+      }
+    }
+  }
+]
