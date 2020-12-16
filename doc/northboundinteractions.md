@@ -285,8 +285,7 @@ This is an **NGSI-LD** response to `/ngsi-ld/v1/entities/<entity>`
 ```
 
 In this case, the response to the QueryContext is a list of responses, one for each requested entity, indicating whether
-the information has been retrieved successfully (in the `statusCode` field) and the requested Context information in the
-`ContextElement` attribute.
+the information has been retrieved successfully (in the HTTP Status code) and the requested Context information in the body of the response.
 
 Application level errors can be specified for each entity in this payload.
 
@@ -765,18 +764,15 @@ Scenario 3 begins with the request for a command from the User to the Context Br
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch",
-                    "type": "command",
-                    "value": "54, 12"
-                }
-            ]
+            "switch": {
+                "type": "command",
+                "value": "54, 12"
+            }
         }
     ],
     "updateAction": "update"
@@ -799,18 +795,14 @@ Content-type: application/json; charset=utf-8
 Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 {
-  "contextElements" : [
+  "entities" : [
     {
       "type" : "device",
-      "isPattern" : "false",
       "id" : "Dev0001",
-      "attributes" : [
-        {
-          "name" : "switch",
-          "type" : "command",
-          "value" : "54, 12"
-        }
-      ]
+      "switch" : {
+        "type" : "command",
+        "value" : "54, 12"
+      }
     }
   ],
   "updateAction" : "update"
@@ -821,28 +813,17 @@ The IoT Agent detects the selected attribute is a command, and replies to the Co
 (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch",
-                        "type": "command",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
@@ -851,28 +832,17 @@ the requested information or command execution.
 The Context Broker, forwards the same response to the user, thus replying the original request (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch",
-                        "type": "command",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
@@ -886,23 +856,19 @@ Context Broker, with an updateContext (P1):
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch_info",
-                    "type": "command_info",
-                    "value": "Switched successfully!"
-                },
-                {
-                    "name": "switch_status",
-                    "type": "command_status",
-                    "value": "OK"
-                }
-            ]
+            "switch_info": {
+                "type": "command_info",
+                "value": "Switched successfully!"
+            },
+            "switch_status": {
+                "type": "command_status",
+                "value": "OK"
+            }
         }
     ],
     "actionType": "update"
@@ -915,33 +881,20 @@ IoT Agent (usually, those attributes has the same name as the command, with an a
 The Context Broker replies to the IoT Agent with a R1 payload (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": ""
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": ""
+        },
+        "switch_status":  {
+            "type": "command_status",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 This operation stores the retrieved values locally in the Context Broker, so it can be retrieved with standard NGSI
@@ -972,33 +925,22 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 The Context Broker replies with all the desired data, in R2 format (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": "Switched successfully!"
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": "OK"
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": "Switched successfully!"
+        },
+        "switch_status": {
+            "type": "command_status",
+            "value": "OK"
         }
-    ]
-}
+    }
+]
+
 ```
 
 ### Scenario 3: commands (error)
@@ -1010,23 +952,19 @@ error information can be updated with the same mechanism used for result reporti
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch_info",
-                    "type": "command_info",
-                    "value": "The switch could not be switched due to the following error: switch blocked"
-                },
-                {
-                    "name": "switch_status",
-                    "type": "command_status",
-                    "value": "ERROR"
-                }
-            ]
+            "switch_info":{
+                "type": "command_info",
+                "value": "The switch could not be switched due to the following error: switch blocked"
+            },
+            "switch_status":{
+                "type": "command_status",
+                "value": "ERROR"
+            }
         }
     ],
     "actionType": "update"
@@ -1036,33 +974,20 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 In this case, the Context Broker reply with the following response (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": ""
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": ""
+        },
+        "switch_status": {
+            "type": "command_status",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 The User will acknowledge the error the next time he queries the Context Broker for information about the command.
