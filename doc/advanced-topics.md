@@ -170,11 +170,11 @@ Whenever a `temperature` measure is received **Device** is updated,  and entity 
 ```json
 "temperature": {
     "type": "Property",
-    "value": 87,
+    "value": 27.6,
     "unitCode": "CEL",
     "providedBy": {
         "type": "Relationship",
-        "object": "urn:ngsi-ld:Lamp:lamp1"
+        "object": "urn:ngsi-ld:Device:thermometer1"
     }
 }
 ```
