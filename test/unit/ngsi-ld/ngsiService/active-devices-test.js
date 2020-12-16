@@ -175,7 +175,9 @@ describe('NGSI-LD - Linked Data Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/',
-                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextStaticLinkedAttributes.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextStaticLinkedAttributes.json'
+                    )
                 )
 
                 .reply(204);
