@@ -4,7 +4,7 @@
 -   [Requirements](#requirements)
 -   [Theory](#theory)
     -   [Overview](#overview-1)
-    -   [Data interaction payloads (NGSIv10)](#data-interaction-payloads-ngsiv10)
+    -   [Data interaction payloads](#data-interaction-payloads)
     -   [Scenario 1: active attributes](#scenario-1-active-attributes)
     -   [Scenario 2: lazy attributes](#scenario-2-lazy-attributes)
     -   [Scenario 3: commands](#scenario-3-commands)
@@ -156,7 +156,7 @@ As it can be seen in the example, the payload is a JSON Object with the followin
     array, so a single update context batch operation can be used to update multiple devices
 
 -   An `actionType` indicating the type of update: if this attribute has the value `"append"` the appropriate entity and
-    attributes will be created if the don't exist; if the value is `"update", an error will be thrown if the target
+    attributes will be created if the don't exist; if the value is `"update"`, an error will be thrown if the target
     resources don't exist.
 
 The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `/ngsi-ld/v1/entities/<entity>/attrs/`).
@@ -164,7 +164,7 @@ The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `
 ```json
 {
      "temperature":  {
-          "type": "Property"
+          "type": "Property",
           "value": "23"
       },
       "pressure" :{
@@ -428,23 +428,22 @@ In order to retrieve a token from the Keystone Identity Manager, the following r
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{
-	"auth": {
-		"identity": {
-			"methods": [
-				"password"
-			],
-			"password": {
-				"user": {
-					"domain": {
-						"name": "workshop"
-					},
-					"name": "adminiota2ngsi",
-					"password": "<password-for-user>"
-				}
-			}
-		}
-	}
-
+  "auth": {
+    "identity": {
+      "methods": [
+        "password"
+      ],
+      "password": {
+        "user": {
+          "domain": {
+            "name": "workshop"
+          },
+          "name": "adminiota2ngsi",
+          "password": "<password-for-user>"
+        }
+      }
+    }
+  }
 }' "http://<platform-ip>:5001/v3/auth/tokens"
 ```
 
@@ -696,7 +695,7 @@ If the requested data is available in the IoT Agent, it will answer with a R2 re
     {
         "id": "urn:ngsi-ld:Device:WeatherStation001",
         "type": "Device",
-        "batterLevel": {
+        "batteryLevel": {
             "type": "Float",
             "value": 23.8,
             "metadata": {
@@ -780,7 +779,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             ]
         }
     ],
-    "updateAction": "UPDATE"
+    "updateAction": "update"
 } ' "https://<platform-ip>:10027/v2/op/update"
 ```
 
@@ -814,7 +813,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
       ]
     }
   ],
-  "updateAction" : "UPDATE"
+  "updateAction" : "update"
 }
 ```
 
