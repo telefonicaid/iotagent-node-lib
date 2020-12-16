@@ -740,8 +740,28 @@ register its commands for each device, with a request like the following:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
-  -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '
-' "https://<platform-ip>:10027/v2/registrations"
+  -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
+    "contextRegistrations": [
+        {
+            "entities": [
+                {
+                    "type": "device",
+                    "isPattern": "false",
+                    "id": "Dev0001"
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "switch",
+                    "type": "command",
+                    "isDomain": "false"
+                }
+            ],
+            "providingApplication": "http://<target-host>:1026/v1"
+        }
+    ],
+    "duration": "P1M"
+}' "https://<platform-ip>:10027/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
