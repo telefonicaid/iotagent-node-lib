@@ -6,7 +6,7 @@
           {
             "name": "temperature",
             "type": "centigrades",
-            "value": " "
+            "value": null
           },
           {
             "name": "move_status",
