@@ -160,7 +160,7 @@ describe('NGSI-LD - Linked Data Active attributes test', function () {
     ];
 
     beforeEach(function () {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
     });
 
     afterEach(function (done) {
