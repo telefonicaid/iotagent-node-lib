@@ -342,7 +342,7 @@ describe('NGSI-v2 - Polling commands', function () {
                 .post(
                     '/v2/entities/Robot:r2d2/attrs?type=Robot',
                     utils.readExampleFile(
-                        './test/unit//ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
                     )
                 )
                 .reply(204);

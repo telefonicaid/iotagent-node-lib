@@ -8,7 +8,7 @@
         {
           "name": "TimeInstant",
           "type": "ISO8601",
-          "value": " "
+          "value": null
         }
       ]
     }

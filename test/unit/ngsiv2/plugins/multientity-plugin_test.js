@@ -104,6 +104,25 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStation4: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm',
+                    entity_name: 'Station Number ${@sn * 10}'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_name: 'Station Number ${@sn * 10}'
+                }
+            ]
+        },
         WeatherStation5: {
             commands: [],
             type: 'WeatherStation',
@@ -165,6 +184,61 @@ const iotAgentConfig = {
                     type: 'Hgmm',
                     entity_name: 'Higro2000',
                     entity_type: 'Higrometer'
+                }
+            ]
+        },
+        WeatherStation8: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    expression : '${@v1*100}',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    expression : '${@v2*100}',
+                    type: 'Number',
+                    entity_name: 'WeatherStation2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    expression : '${@v*100}',
+                    type: 'Number'
+                }
+            ]
+        },
+        WeatherStation8Jexl: {
+            commands: [],
+            type: 'WeatherStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    expression : 'v1 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    expression : 'v2 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    expression : 'v * 100',
+                    type: 'Number'
                 }
             ]
         },
@@ -234,6 +308,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             iotAgentLib.clearAll(function () {
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
                 iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
                 done();
             });
@@ -430,6 +505,136 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should send the update value to the resulting value of the expression', function (done) {
             iotAgentLib.update('ws4', 'WeatherStation3', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity defined with an expression (multi values)', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            },
+            {
+                name: 'sn',
+                type: 'Number',
+                value: '5'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin9.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws8', 'WeatherStation4', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    
+
+    describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute)', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws9', 'WeatherStation8', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute) - JEXL', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws9', 'WeatherStation8Jexl', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

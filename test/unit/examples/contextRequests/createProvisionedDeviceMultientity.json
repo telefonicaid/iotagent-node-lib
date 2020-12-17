@@ -8,7 +8,7 @@
         {
           "name": "attr_name",
           "type": "string",
-          "value": " "
+          "value": null
         },
         {
           "name": "hardcodedAttr",
