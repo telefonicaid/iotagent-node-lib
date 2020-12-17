@@ -25,7 +25,12 @@
           "values": "123,12"
         }
       ],
-      "commands":[{"name":"wheel1","type":"Wheel"}]
+      "commands": [
+        {
+            "name": "wheel1",
+            "type": "Wheel"
+        }
+      ]
     }
   ]
 }

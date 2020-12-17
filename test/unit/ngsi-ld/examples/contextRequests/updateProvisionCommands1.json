@@ -20,7 +20,7 @@
             "type": "Property",
             "value": {
                 "@type": "centigrades",
-                "@value": " "
+                "@value": null
             }
         },
         "type": "Light"

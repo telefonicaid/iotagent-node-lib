@@ -1,0 +1,29 @@
+{
+  "actionType": "append",
+  "entities": [
+      {
+          "id": "ws9",
+          "type": "WeatherStation",
+          "vol": {
+              "type": "Number",
+              "value": 0
+          }
+      },
+      {
+          "vol": {
+              "type": "Number",
+              "value": 100
+          },
+          "type": "WeatherStation",
+          "id": "WeatherStation1"
+      },
+      {
+          "vol": {
+              "type": "Number",
+              "value": 200
+          },
+          "type": "WeatherStation",
+          "id": "WeatherStation2"
+      }
+  ]
+}

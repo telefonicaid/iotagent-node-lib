@@ -6,7 +6,7 @@
           {
             "name": "location",
             "type": "geo:point",
-            "value": " "
+            "value": null
           }
         ],
         "id": "TheFirstLight",
