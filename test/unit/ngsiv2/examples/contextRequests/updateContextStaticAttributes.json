@@ -4,7 +4,10 @@
         "type": "boolean"
     },
     "location":{
-        "value": "153,523",
-        "type": "geo:point"
+        "value":{
+            "type":"Point",
+            "coordinates":[153,523]
+        },
+        "type": "geo:json"
     }
 }

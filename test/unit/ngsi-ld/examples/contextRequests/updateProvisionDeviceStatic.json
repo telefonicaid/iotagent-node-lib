@@ -7,16 +7,13 @@
         },
         "id": "urn:ngsi-ld:MicroLights:SecondMicroLight",
         "location": {
-            "type": "Property",
+            "type": "GeoProperty",
             "value": {
-                "@type": "geo:json",
-                "@value": {
-                    "coordinates": [
-                        -3.164485591715449,
-                        40.62785133667262
-                    ],
-                    "type": "Point"
-                }
+                "coordinates": [
+                    -3.164485591715449,
+                    40.62785133667262
+                ],
+                "type": "Point"
             }
         },
         "newAttribute": {

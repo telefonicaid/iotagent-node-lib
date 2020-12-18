@@ -1,0 +1,25 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "longitude": {
+            "type": "Property",
+            "value": 0.44
+        },
+        "latitude": {
+            "type": "Property",
+            "value": 10
+        },
+        "location": {
+            "type": "GeoProperty",
+            "value": {
+                "type": "Point",
+                "coordinates": [
+                    0.44,
+                    10
+                ]
+            }
+        },
+        "id": "urn:ngsi-ld:WeatherStation:ws1",
+        "type": "WeatherStation"
+    }
+]

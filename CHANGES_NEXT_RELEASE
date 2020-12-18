@@ -20,3 +20,4 @@ Fix: Add support for lazy and internal_attributes in service notifications to Ma
 Fix: combine multi-entity and expressions with duplicate attribute name, by enabling expression over object_id (which are not duplicated in a attribute mapping contrary to name) (#941)
 Fix: bug in legacy and JEXL expression that was not converting "0" to 0
 Fix: support for mapping different attributes to the same entity_name
+Fix: Ensure GeoJSON is correctly encoded in NGSI-v2 requests (#961)
