@@ -13,9 +13,9 @@ longer. In particular:
 A list of deprecated features and the version in which they were deprecated follows:
 
 -   Support to NGSI v1.
--   Support to Node.js v4 in iotagent-node-lib 2.8.1.
--   Support to Node.js v6 in iotagent-node-lib 2.9.0.
--   Support to Node.js v8 in iotagent-node-lib 2.12.0.
+-   Support to Node.js v4 in iotagent-node-lib 2.8.1 (finally removed in 2.9.0)
+-   Support to Node.js v6 in iotagent-node-lib 2.9.0 (finally removed in 2.10.0)
+-   Support to Node.js v8 in iotagent-node-lib 2.12.0 (finally removed in 2.13.0)
 -   Support to Node.js v10 in iotagent-node-lib 2.15.0.
 
 The use of Node.js v12 is highly recommended.
