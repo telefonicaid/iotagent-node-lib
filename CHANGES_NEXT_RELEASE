@@ -1,3 +1,4 @@
+Add apikey to device update
 Use null instead of ' ' as default attribute value in entity provisioned (#938)
 Add: defaultEntityNameConjunction config (env var IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION) and configuration group API field for default entity_name conjunction (#944)
 Add basic NGSI-LD support as experimental feature (#842)
