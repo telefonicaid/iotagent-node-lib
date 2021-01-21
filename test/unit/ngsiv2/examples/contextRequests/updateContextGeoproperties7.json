@@ -1,0 +1,15 @@
+[
+    {
+        "location": {
+            "type": "GeoProperty",
+            "value": {
+                "coordinates": [
+                    23,
+                    12.5
+                ],
+                "type": "Point"
+            }
+        },
+        "type": "Light"
+    }
+]

@@ -4,7 +4,7 @@
 -   [Requirements](#requirements)
 -   [Theory](#theory)
     -   [Overview](#overview-1)
-    -   [Data interaction payloads (NGSIv10)](#data-interaction-payloads-ngsiv10)
+    -   [Data interaction payloads](#data-interaction-payloads)
     -   [Scenario 1: active attributes](#scenario-1-active-attributes)
     -   [Scenario 2: lazy attributes](#scenario-2-lazy-attributes)
     -   [Scenario 3: commands](#scenario-3-commands)
@@ -92,20 +92,31 @@ here. Inside the scope of the IoTAgents documentation, a "synchronous scenario" 
 > waiting for the response until all the interaction scenario ends, receiving the results through the same socket that
 > initiated the request
 
-### Data interaction payloads (NGSIv10)
+### Data interaction payloads
 
-There are only two kinds of possible data interactions between the IoTAgents and the Context Broker: the queryContext
-and updateContext interactions described in NGSIv10. Lots of examples can be found in the
+There are only two kinds of possible data interactions between the IoTAgents and the Context Broker: query context and
+update context. Lots of examples can be found in the
 [FIWARE Orion Context Broker manual](https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv1/index.html#ngsi10-standard-operations)
 but this section shows some examples of each one of them.
 
 There are six different payloads that may appear in this interactions:
 
--   P1 - UpdateContext (request) - The payload of a request to POST /v1/updateContext
--   R1 - UpdateContext (response) - Always the answer to a successful POST /v1/updateContext
--   P2 - QueryContext (request) - he payload of a request to POST /v1/queryContext
--   R2 - QueryContext (response) - Always the answer to a successful POST /v1/queryContext
--   E1 - Error - Always the response to a request (both queryContext or updateContext)
+-   P1 - UpdateContext (request from Context Broker)
+    -   **NGSI-v2** The payload of a request to POST `/v2/op/update`
+    -   **NGSI-LD** The payload of a request to PATCH `/ngsi-ld/v1/entities/<entity>/attrs/<attr>`
+-   R1 - UpdateContext (response from IoT Agent)
+    -   **NGSI-v2** The answer to a successful POST `/v2/op/update`
+    -   **NGSI-LD** The answer to a successful POST `/ngsi-ld/v1/entities/<entity>/attrs/<attr>`
+-   P2 - QueryContext (request from Context Broker)
+    -   **NGSI-v2** The payload of a request to POST `/v2/op/query`
+    -   **NGSI-v2** The payload of a request to GET `/ngsi-ld/v1/entities/<entity>`
+-   R2 - QueryContext (response from IoT Agent)
+    -   **NGSI-v2** The answer to a successful POST `/v2/op/query`
+    -   **NGSI-LD** The answer to a successful GET `/ngsi-ld/v1/entities/<entity>`
+-   E1 - Error (response from IoT Agent)
+    -   **NGSI-v2** Always the response to a request (both `/v2/op/update` or `/v2/op/query`)
+    -   **NGSI-LD** Always the response to a request (both `/ngsi-ld/v1/entities/<entity>/attrs/<attr>` or
+        `/ngsi-ld/v1/entities/<entity>`)
 
 All the interactions have been labeled with a two letter acronym for its use in the subsequent explanations.
 
@@ -116,94 +127,103 @@ documentation for more details.
 
 #### P1 - UpdateContext (request)
 
-This payload is associated to an update operation (POST /v1/updateContext).
-
-```json
-{
-    "contextElements": [
-        {
-            "type": "Room",
-            "isPattern": "false",
-            "id": "Room1",
-            "attributes": [
-                {
-                    "name": "temperature",
-                    "type": "float",
-                    "value": "23"
-                },
-                {
-                    "name": "pressure",
-                    "type": "integer",
-                    "value": "720"
-                }
-            ]
-        }
-    ],
-    "updateAction": "APPEND"
-}
-```
-
-As it can be seen in the example, the payload is a JSON Object with the following attributes:
-
--   A `contextElements` attribute that contains the data that will be updated in the target entity in the `attributes`
-    attribute, along with the information needed to identify the target entity `id` and `type` attributes. This
-    attribute is an array, so a single updateContext operation can be used to update.
-
--   An `updateAction` indicating the type of update: if this attribute has the value "APPEND" the appropriate entity and
-    attributes will be created if the don't exist; if the value is "UPDATE", an error will be thrown if the target
-    resources don't exist.
-
-#### R1 - UpdateContext (response)
-
-```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "type": "float",
-                        "value": ""
-                    },
-                    {
-                        "name": "pressure",
-                        "type": "integer",
-                        "value": ""
-                    }
-                ],
-                "id": "Room1",
-                "isPattern": "false",
-                "type": "Room"
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
-        }
-    ]
-}
-```
-
-As the example shows, the response to an updateContext is basically an empty copy of the request payload, along with an
-`statusCode` attribute indicating if the operation has succeeded (or a possible error).
-
-Application level errors can be specified for each entity in this payload.
-
-#### P2 - QueryContext (request)
-
-This payload is associate to a query operation (POST /v1/queryContext).
+This **NGSI-v2** payload is associated to an update operation (POST `/v2/op/update`).
 
 ```json
 {
     "entities": [
         {
-            "type": "Room",
-            "isPattern": "false",
-            "id": "Room1"
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001",
+            "temperature": {
+                "type": "float",
+                "value": "23"
+            },
+            "pressure": {
+                "type": "integer",
+                "value": "720"
+            }
         }
     ],
-    "attributes": ["temperature"]
+    "actionType": "update"
+}
+```
+
+As it can be seen in the example, the payload is a JSON Object with the following attributes:
+
+-   A `entities` attribute that contains the data that will be updated in the target entity in its attributes, along
+    with the information needed to identify the target entity `id` and `type` attributes. The `entities` attribute is an
+    array, so a single update context batch operation can be used to update multiple devices
+
+-   An `actionType` indicating the type of update: if this attribute has the value `"append"` the appropriate entity and
+    attributes will be created if the don't exist; if the value is `"update"`, an error will be thrown if the target
+    resources don't exist.
+
+The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `/ngsi-ld/v1/entities/<entity>/attrs/`).
+
+```json
+{
+     "temperature":  {
+          "type": "Property",
+          "value": "23"
+      },
+      "pressure" :{
+          "type": "Property",
+          "value": "720"
+      }
+}
+
+```
+
+#### R1 - UpdateContext (response)
+
+This is a **NGSI-v2** response
+
+```json
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "temperature": {
+            "type": "float",
+            "value": 23,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "CEL" }
+            }
+        },
+        "pressure": {
+            "type": "integer",
+            "value": 720,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "BAR" }
+            }
+        }
+    }
+]
+```
+
+As the example shows, the response to an updateContext is basically a copy of the entites from the request payload. The
+associated HTTP statusCode indicates if the operation has succeeded (or a possible error).
+
+Application level errors can be specified for each entity in this payload.
+
+The equivalent is a **NGSI-LD** response is just an HTTP Code.
+
+#### P2 - QueryContext (request)
+
+This **NGSI-v2** payload is associate to a query operation (POST `/v2/op/query`).
+
+```json
+{
+    "entities": [
+        {
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001"
+        }
+    ],
+    "attrs": ["temperature", "pressure"]
 }
 ```
 
@@ -212,47 +232,71 @@ The payload specifies the following information:
 -   The list of target entities whose information is going to be retrieved.
 -   The list of attributes of those entities that will be retrieved.
 
+The equivalant **NGSI-LD** operation is a GET request to `/ngsi-ld/v1/entities/<entity>`, it takes no payload.
+
 #### R2 - QueryContext (response)
+
+This is an **NGSI-v2** response to query context.
+
+```json
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "temperature": {
+            "type": "Float",
+            "value": 23.8,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "CEL" }
+            }
+        },
+        "pressure": {
+            "type": "Float",
+            "value": 720,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "BAR" }
+            }
+        }
+    }
+]
+```
+
+This is an **NGSI-LD** response to `/ngsi-ld/v1/entities/<entity>`
 
 ```json
 {
-    "contextResponses": [
-        {
-            "contextElement": {
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "type": "float",
-                        "value": "23"
-                    }
-                ],
-                "id": "Room1",
-                "isPattern": "false",
-                "type": "Room"
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
-        }
-    ]
+    "id": "urn:ngsi-ld:Device:WeatherStation001",
+    "type": "Device",
+    "temperature": {
+        "type": "Property",
+        "value": 23.8,
+        "observedAt": "2020-12-16T14:25:52.287Z",
+        "unitCode": "CEL"
+    },
+    "pressure": {
+        "type": "Property",
+        "value": 720,
+        "observedAt": "2020-12-16T14:25:52.287Z",
+        "unitCode": "CEL"
+    }
 }
 ```
 
 In this case, the response to the QueryContext is a list of responses, one for each requested entity, indicating whether
-the information has been retrieved successfully (in the `statusCode` field) and the requested Context information in the
-`ContextElement` attribute.
+the information has been retrieved successfully (in the HTTP Status code) and the requested Context information in the body of the response.
 
 Application level errors can be specified for each entity in this payload.
 
 #### E1 - Error
 
+This is an **NGSI-v2** error response.
+
 ```json
 {
-    "errorCode": {
-        "code": "404",
-        "reasonPhrase": "No context element registrations found"
-    }
+    "error": "DEVICE_NOT_FOUND",
+    "description": "No device was found with id: urn-ngsi:Motion:001"
 }
 ```
 
@@ -383,23 +427,22 @@ In order to retrieve a token from the Keystone Identity Manager, the following r
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{
-	"auth": {
-		"identity": {
-			"methods": [
-				"password"
-			],
-			"password": {
-				"user": {
-					"domain": {
-						"name": "workshop"
-					},
-					"name": "adminiota2ngsi",
-					"password": "<password-for-user>"
-				}
-			}
-		}
-	}
-
+  "auth": {
+    "identity": {
+      "methods": [
+        "password"
+      ],
+      "password": {
+        "user": {
+          "domain": {
+            "name": "workshop"
+          },
+          "name": "adminiota2ngsi",
+          "password": "<password-for-user>"
+        }
+      }
+    }
+  }
 }' "http://<platform-ip>:5001/v3/auth/tokens"
 ```
 
@@ -439,49 +482,49 @@ sent to the Context Broker. This request has the following format (P1):
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
     -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <Token>" -d '{
-    "contextElements": [
+    "entities": [
         {
-            "type": "device",
-            "isPattern": "false",
-            "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "temperature",
-                    "type": "number",
-                    "value": "54"
-                }
-            ]
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001",
+            "temperature":  {
+                "type": "float",
+                "value": "23"
+            },
+            "pressure" :{
+                "type": "integer",
+                "value": "720"
+            }
         }
     ],
-    "updateAction": "APPEND"
-} ' "https://<platform-ip>:10027/v1/updateContext"
+    "actionType": "update"
+} ' "https://<platform-ip>:10027/v2/op/update"
 ```
 
 If the request is correct, the Context Broker will reply with the following R1 response (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "type": "number",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "temperature": {
+            "type": "float",
+            "value": 23,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "CEL" }
+            }
+        },
+        "pressure": {
+            "type": "integer",
+            "value": 720,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "BAR" }
             }
         }
-    ]
-}
+    }
+]
 ```
 
 This will confirm that the attribute `temperature` has been stored locally in the Context Broker, and that its value can
@@ -495,42 +538,39 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "entities": [
         {
-            "isPattern": "false",
-            "id": "Dev0001",
-            "type": "device"
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001"
         }
     ],
-    "attributes": [
-        "temperature"
-    ]
-}' "https://<platform-ip>:10027/v1/queryContext"
+    "attrs": ["temperature","pressure"]
+}' "https://<platform-ip>:10027/v2/op/query"
 ```
 
 The Context Broker will reply with the updated data values in R2 format (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "type": "number",
-                        "value": "54"
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "temperature": {
+            "type": "Float",
+            "value": 23.8,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "CEL" }
+            }
+        },
+        "pressure": {
+            "type": "Float",
+            "value": 720,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "BAR" }
             }
         }
-    ]
-}
+    }
+]
 ```
 
 ### Scenario 1: active attributes (error)
@@ -540,27 +580,8 @@ replay with a payload like the following:
 
 ```bash
 {
-  "contextResponses": [
-    {
-      "contextElement": {
-        "type": "device",
-        "isPattern": "false",
-        "id": "Dev0001",
-        "attributes": [
-          {
-            "name": "UnexistentAttribute",
-            "type": "number",
-            "value": ""
-          }
-        ]
-      },
-      "statusCode": {
-        "code": "472",
-        "reasonPhrase": "request parameter is invalid/not allowed",
-        "details": "action: UPDATE - entity: [Dev0001, device] - offending attribute: UnexistentAttribute"
-      }
-    }
-  ]
+    "error": "NotFound",
+    "description": "The entity does not have such an attribute"
 }
 ```
 
@@ -568,16 +589,14 @@ It is worth mentioning that the Context Broker will reply with a 200 OK status c
 refer to transport protocol level errors, while the status codes inside of a payload give information about the
 application level protocol.
 
-The example shows an error updating an unexistent attribute (due to the use of UPDATE instead of APPEND).
+The example shows an error updating an non-existent attribute (due to the use of UPDATE instead of APPEND).
 
 The following error payload is also valid in standard NGSI:
 
 ```json
 {
-    "errorCode": {
-        "code": "404",
-        "reasonPhrase": "No context element found"
-    }
+    "error": "NotFound",
+    "description": "The requested entity has not been found. Check type and id"
 }
 ```
 
@@ -592,28 +611,24 @@ register its lazy attributes for each device, with a request like the following:
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
   -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
-    "contextRegistrations": [
-        {
-            "entities": [
-                {
-                    "type": "device",
-                    "isPattern": "false",
-                    "id": "Dev0001"
-                }
-            ],
-            "attributes": [
-                {
-                    "name": "config-value",
-                    "type": "parameter",
-                    "isDomain": "false"
-                }
-            ],
-            "providingApplication": "http://<target-host>:1026"
+    "dataProvided": {
+        "entities": [
+            {
+                "type": "Device",
+                "id": "Device:WeatherStation1"
+            }
+        ],
+        "attrs": [
+            "batteryLevel"
+        ]
+    },
+    "provider": {
+        "http": {
+            "url": "http://smartGondor.com"
         }
-    ],
-    "duration": "P1M"
+    }
 }
-' "https://<platform-ip>:10027/v1/registry/registerContext"
+' "https://<platform-ip>:10027/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -634,18 +649,16 @@ request from the User to the Context Broker (P2):
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
-  -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
+  -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>"
+  -d '{
     "entities": [
         {
-            "isPattern": "false",
-            "id": "Dev0001",
-            "type": "device"
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001"
         }
     ],
-    "attributes": [
-    	"config-value"
-    ]
-}' "https://<platform-ip>:10027/v1/queryContext"
+    "attrs": ["batteryLevel"]
+}' "https://<platform-ip>:10027/v2/op/query"
 ```
 
 The Context Broker receives this request and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -653,7 +666,7 @@ redirects the exact same request to the IoT Agent. The following excerpt shows t
 redirection data:
 
 ```bash
-POST /v1/queryContext HTTP/1.1
+POST /v2/op/query HTTP/1.1
 Host: <target-host>:1026
 fiware-service: workshop
 Fiware-ServicePath: /iota2ngsi
@@ -664,72 +677,53 @@ Content-type: application/json; charset=utf-8
 Fiware-Correlator: f77eea0a-8ebe-11e6-bab7-fa163e78b904
 
 {
-  "entities" : [
-    {
-      "type" : "device",
-      "isPattern" : "false",
-      "id" : "Dev0001"
-    }
-  ],
-  "attributes" : [
-    "config-value"
-  ]
+    "entities": [
+        {
+            "type": "Device",
+            "id": "urn:ngsi-ld:Device:WeatherStation001"
+        }
+    ],
+    "attrs": ["batteryLevel"]
 }
 ```
 
 If the requested data is available in the IoT Agent, it will answer with a R2 response (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "config-value",
-                        "type": "number",
-                        "value": "94"
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "batteryLevel": {
+            "type": "Float",
+            "value": 23.8,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "C62" }
             }
         }
-    ]
-}
+    }
+]
 ```
 
 Once the Context Broker has IoTAgent answer, it will forward it to the user in the same socket the user used for its
 original request (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "config-value",
-                        "type": "number",
-                        "value": "94"
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
+[
+    {
+        "id": "urn:ngsi-ld:Device:WeatherStation001",
+        "type": "Device",
+        "batterLevel": {
+            "type": "Float",
+            "value": 23.8,
+            "metadata": {
+                "TimeInstant": { "type": "DateTime", "value": "2020-12-16T14:25:52.287Z" },
+                "unitCode": { "type": "Text", "value": "C62" }
             }
         }
-    ]
-}
+    }
+]
 ```
 
 ### Scenario 2: lazy attributes (error)
@@ -767,8 +761,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "duration": "P1M"
-}
-' "https://<platform-ip>:10027/v1/registry/registerContext"
+}' "https://<platform-ip>:10027/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -791,22 +784,19 @@ Scenario 3 begins with the request for a command from the User to the Context Br
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch",
-                    "type": "command",
-                    "value": "54, 12"
-                }
-            ]
+            "switch": {
+                "type": "command",
+                "value": "54, 12"
+            }
         }
     ],
-    "updateAction": "UPDATE"
-} ' "https://<platform-ip>:10027/v1/updateContext"
+    "updateAction": "update"
+} ' "https://<platform-ip>:10027/v2/op/update"
 ```
 
 The Context Broker receives this command and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -814,7 +804,7 @@ redirects the exact same request to the IoT Agent. The following excerpt shows t
 redirection data:
 
 ```bash
-POST /v1/updateContext HTTP/1.1
+POST /v2/op/update HTTP/1.1
 Host: <target-host>:1026
 fiware-service: workshop
 Fiware-ServicePath: /iota2ngsi
@@ -825,21 +815,17 @@ Content-type: application/json; charset=utf-8
 Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 {
-  "contextElements" : [
+  "entities" : [
     {
       "type" : "device",
-      "isPattern" : "false",
       "id" : "Dev0001",
-      "attributes" : [
-        {
-          "name" : "switch",
-          "type" : "command",
-          "value" : "54, 12"
-        }
-      ]
+      "switch" : {
+        "type" : "command",
+        "value" : "54, 12"
+      }
     }
   ],
-  "updateAction" : "UPDATE"
+  "updateAction" : "update"
 }
 ```
 
@@ -847,28 +833,17 @@ The IoT Agent detects the selected attribute is a command, and replies to the Co
 (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch",
-                        "type": "command",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
@@ -877,28 +852,17 @@ the requested information or command execution.
 The Context Broker, forwards the same response to the user, thus replying the original request (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch",
-                        "type": "command",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
@@ -912,27 +876,23 @@ Context Broker, with an updateContext (P1):
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch_info",
-                    "type": "command_info",
-                    "value": "Switched successfully!"
-                },
-                {
-                    "name": "switch_status",
-                    "type": "command_status",
-                    "value": "OK"
-                }
-            ]
+            "switch_info": {
+                "type": "command_info",
+                "value": "Switched successfully!"
+            },
+            "switch_status": {
+                "type": "command_status",
+                "value": "OK"
+            }
         }
     ],
-    "updateAction": "APPEND"
-} ' "https://<platform-ip>:10027/v1/updateContext"
+    "actionType": "update"
+} ' "https://<platform-ip>:10027/v2/op/update"
 ```
 
 This update does not modify the original command attribute, but two auxiliary attributes, that are not provided by the
@@ -941,33 +901,20 @@ IoT Agent (usually, those attributes has the same name as the command, with an a
 The Context Broker replies to the IoT Agent with a R1 payload (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": ""
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": ""
+        },
+        "switch_status":  {
+            "type": "command_status",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 This operation stores the retrieved values locally in the Context Broker, so it can be retrieved with standard NGSI
@@ -992,39 +939,28 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     	"switch_info",
     	"switch_status"
     ]
-}' "https://<platform-ip>:10027/v1/queryContext"
+}' "https://<platform-ip>:10027/v2/op/query"
 ```
 
 The Context Broker replies with all the desired data, in R2 format (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": "Switched successfully!"
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": "OK"
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": "Switched successfully!"
+        },
+        "switch_status": {
+            "type": "command_status",
+            "value": "OK"
         }
-    ]
-}
+    }
+]
+
 ```
 
 ### Scenario 3: commands (error)
@@ -1036,59 +972,42 @@ error information can be updated with the same mechanism used for result reporti
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
-    "contextElements": [
+    "entities": [
         {
             "type": "device",
             "isPattern": "false",
             "id": "Dev0001",
-            "attributes": [
-                {
-                    "name": "switch_info",
-                    "type": "command_info",
-                    "value": "The switch could not be switched due to the following error: switch blocked"
-                },
-                {
-                    "name": "switch_status",
-                    "type": "command_status",
-                    "value": "ERROR"
-                }
-            ]
+            "switch_info":{
+                "type": "command_info",
+                "value": "The switch could not be switched due to the following error: switch blocked"
+            },
+            "switch_status":{
+                "type": "command_status",
+                "value": "ERROR"
+            }
         }
     ],
-    "updateAction": "APPEND"
-} ' "https://<platform-ip>:10027/v1/updateContext"
+    "actionType": "update"
+} ' "https://<platform-ip>:10027/v2/op/update"
 ```
 
 In this case, the Context Broker reply with the following response (200 OK):
 
 ```json
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "type": "device",
-                "isPattern": "false",
-                "id": "Dev0001",
-                "attributes": [
-                    {
-                        "name": "switch_info",
-                        "type": "command_info",
-                        "value": ""
-                    },
-                    {
-                        "name": "switch_status",
-                        "type": "command_status",
-                        "value": ""
-                    }
-                ]
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch_info": {
+            "type": "command_info",
+            "value": ""
+        },
+        "switch_status": {
+            "type": "command_status",
+            "value": ""
         }
-    ]
-}
+    }
+]
 ```
 
 The User will acknowledge the error the next time he queries the Context Broker for information about the command.
