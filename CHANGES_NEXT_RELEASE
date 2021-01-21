@@ -1,3 +1,4 @@
+Add: return apikey in GET device if device was provisioned with explicit apikey (#977)
 Add: allow update device `apikey` using Update (put) API (#978)
 Fix: use null instead of ' ' as default attribute value in entity provisioned (#938)
 Add: defaultEntityNameConjunction config (env var IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION) and configuration group API field for default entity_name conjunction (#944)
