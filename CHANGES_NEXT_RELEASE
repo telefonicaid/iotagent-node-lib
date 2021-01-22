@@ -1,7 +1,9 @@
 Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
-Use null instead of ' ' as default attribute value in entity provisioned (#938)
+Add: return apikey in GET device if device was provisioned with explicit apikey (#977)
+Add: allow update device `apikey` using Update (put) API (#978)
+Fix: use null instead of ' ' as default attribute value in entity provisioned (#938)
 Add: defaultEntityNameConjunction config (env var IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION) and configuration group API field for default entity_name conjunction (#944)
-Add basic NGSI-LD support as experimental feature (#842)
+Add: basic NGSI-LD support as experimental feature (#842)
 - Active measures
 - GeoJSON and DateTime, unitCode and observedAt NGSI-LD support
     -  The NGSI v2 `TimeInstant` element has been mapped onto the NGSI-LD `observedAt` property
@@ -15,9 +17,10 @@ Update codebase to use ES6
 -  Add esLint using standard tamia presets
 -  Replace var with let/const
 -  Fix or disable eslint errors
-Add prettier code formatting
-Add husky and lint-staged
+Add: prettier code formatting
+Add: husky and lint-staged
 Fix: Add support for lazy and internal_attributes in service notifications to Manager (#768)
 Fix: combine multi-entity and expressions with duplicate attribute name, by enabling expression over object_id (which are not duplicated in a attribute mapping contrary to name) (#941)
 Fix: bug in legacy and JEXL expression that was not converting "0" to 0
 Fix: support for mapping different attributes to the same entity_name
+Fix: Ensure GeoJSON is correctly encoded in NGSI-v2 requests (#961)

@@ -2,7 +2,13 @@
   "id": "TheFirstLight",
   "type": "TheLightType",
   "location": {
-    "type": "geo:point",
-    "value": "0, 0"    
+    "type": "geo:json",
+    "value": {
+        "coordinates": [
+            0,
+            0
+        ],
+        "type": "Point"
+    }   
   }
 }

@@ -1,0 +1,20 @@
+{
+    "longitude": {
+        "type": "Number",
+        "value": 0.44
+    },
+    "latitude": {
+        "type": "Number",
+        "value": 10
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                0.44,
+                10
+            ]
+        }
+    }
+}
