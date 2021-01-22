@@ -30,18 +30,20 @@ const async = require('async');
 const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
 const request = require('request');
 const groupCreation = {
-    url: 'http://localhost:4041/iot/services',
+    url: 'http://localhost:4041/iot/configGroups',
     method: 'POST',
-    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
+    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullConfigGroup.json'),
     headers: {
         'fiware-service': 'TestService',
         'fiware-servicepath': '/testingPath'
     }
 };
 const alternateGroupCreation = {
-    url: 'http://localhost:4041/iot/services',
+    url: 'http://localhost:4041/iot/configGroups',
     method: 'POST',
-    json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
+    json: utils.readExampleFile(
+        './test/unit/examples/groupProvisioningRequests/provisionFullConfigGroupAlternate.json'
+    ),
     headers: {
         'fiware-service': 'TestService',
         'fiware-servicepath': '/testingPath'
