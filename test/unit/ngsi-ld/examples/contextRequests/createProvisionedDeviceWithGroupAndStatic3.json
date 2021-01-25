@@ -5,7 +5,10 @@
     "type": "Light",
     "state": {
       "type": "Property",
-      "value": false
+      "value": {
+          "@type": "Intangible",
+          "@value": null
+      }
     },
     "dimming": {
       "type": "Property",
