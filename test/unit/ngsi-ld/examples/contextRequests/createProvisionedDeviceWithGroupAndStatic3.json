@@ -10,7 +10,7 @@
     "dimming": {
       "type": "Property",
       "value": {
-        "@type": "Percentage",
+        "@type": "Intangible",
         "@value": null
       }
     }
