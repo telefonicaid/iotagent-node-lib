@@ -4,7 +4,7 @@
         "alive": {
             "type": "Property",
             "value": {
-                "@type": "None",
+                "@type": "Intangible",
                 "@value": null
             }
         },

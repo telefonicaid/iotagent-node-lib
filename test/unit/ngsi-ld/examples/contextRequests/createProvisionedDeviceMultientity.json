@@ -3,7 +3,10 @@
         "@context": "http://context.json-ld",
         "attr_name": {
             "type": "Property",
-            "value": null
+            "value":  {
+                "@type": "Intangible",
+                "@value": null
+            }
         },
         "commandAttr_info": {
             "type": "Property",
