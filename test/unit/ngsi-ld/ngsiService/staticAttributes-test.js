@@ -111,10 +111,10 @@ describe('NGSI-LD - Static attributes test', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .times(4)
                 .reply(204)
-                .post('/ngsi-ld/v1/entityOperations/upsert/', function (body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     // Since the TimeInstant plugin is in use,
                     // Each property should contain observedAt
                     // metadata.

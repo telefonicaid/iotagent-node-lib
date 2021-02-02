@@ -253,7 +253,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
@@ -292,7 +292,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
@@ -325,7 +325,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
@@ -358,7 +358,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
@@ -391,7 +391,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin18.json'
                     )
@@ -425,7 +425,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
@@ -459,7 +459,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
@@ -493,7 +493,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin19.json'
                     )
@@ -527,7 +527,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
@@ -561,7 +561,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin16.json'
                     )
@@ -595,7 +595,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin17.json'
                     )
@@ -629,7 +629,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
@@ -663,7 +663,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin10.json'
                     )
@@ -696,7 +696,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
@@ -729,7 +729,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
@@ -763,7 +763,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
@@ -795,7 +795,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin12.json'
                     )
@@ -827,7 +827,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
@@ -864,7 +864,7 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin14.json'
                     )

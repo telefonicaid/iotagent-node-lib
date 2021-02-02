@@ -86,7 +86,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties1.json'
                         )
@@ -121,7 +121,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties1.json'
                     )
@@ -161,7 +161,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties2.json'
                         )
@@ -199,7 +199,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties2.json'
                         )
@@ -234,7 +234,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties3.json'
                     )
@@ -275,7 +275,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties4.json'
                         )
@@ -313,7 +313,7 @@ describe('NGSI-LD - Geo-JSON types autocast test', function () {
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContextGeoproperties4.json'
                         )

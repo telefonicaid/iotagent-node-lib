@@ -81,6 +81,11 @@ describe('NGSI-LD - Update attribute functionalities', function () {
             .post('/ngsi-ld/v1/entityOperations/upsert/')
             .reply(204);
 
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartGondor')
+            .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
+            .reply(204);
+
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
