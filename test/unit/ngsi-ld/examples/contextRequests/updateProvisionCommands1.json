@@ -19,7 +19,7 @@
         "temperature": {
             "type": "Property",
             "value": {
-                "@type": "centigrades",
+                "@type": "Intangible",
                 "@value": null
             }
         },

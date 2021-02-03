@@ -1,4 +1,5 @@
 Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
+Fix: ensure registrationId is updated when defice with commands is updated 
 Add: return apikey in GET device if device was provisioned with explicit apikey (#977)
 Add: allow update device `apikey` using Update (put) API (#978)
 Fix: use null instead of ' ' as default attribute value in entity provisioned (#938)

@@ -5,11 +5,17 @@
     "type": "SensorMachine",
     "attr_name": {
       "type": "Property",
-      "value": null
+      "value": {
+            "@type": "Intangible",
+            "@value": null
+          }
     },
     "status": {
       "type": "Property",
-      "value": false
+      "value": {
+            "@type": "Intangible",
+            "@value": null
+        }
     },
     "hardcodedAttr": {
       "type": "Property",
