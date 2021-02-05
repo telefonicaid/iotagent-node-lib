@@ -183,7 +183,7 @@ describe('NGSI-LD - Command functionalities', function () {
             });
         });
 
-        it('should call the client handler', function (done) {
+        it('should call the client handler once', function (done) {
             let handlerCalled = 0;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
