@@ -53,7 +53,7 @@ The defined `type` of any GeoJSON attribute can be any set to any of the standar
 values. If the latitude and longitude are received as separate measures, the
 [expression language](expressionLanguage.md) can be used to concatenate them.
 
-````json
+```json
 {
     "entity_type": "GPS",
     "resource":    "/iot/d",
@@ -67,7 +67,7 @@ values. If the latitude and longitude are received as separate measures, the
         }
     ]
 }
-```json
+```
 
 
 For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input
