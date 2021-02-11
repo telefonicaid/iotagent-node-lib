@@ -12,6 +12,7 @@ Add: basic NGSI-LD support as experimental feature (#842)
 - Lazy Attributes
 - Commands
 - Mixed mode (based in ngsiVersion field in the provisioning API)
+- Support to linked data entities to enable the traversal of the nodes of the knowledge graph
 Update codebase to use ES6
 -  Remove JSHint and jshint overrides
 -  Add esLint using standard tamia presets
