@@ -128,7 +128,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
                 .reply(204);
@@ -166,7 +166,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
                 .reply(403, {});
@@ -200,7 +200,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
                 .reply(204);
@@ -393,7 +393,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
                 .reply(204);
@@ -530,7 +530,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext1.json')
                 )
                 .reply(401, 'Auth-token not found in request header');
@@ -616,7 +616,7 @@ describe(
                     .matchHeader('fiware-service', 'TestService')
                     .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
@@ -627,7 +627,7 @@ describe(
                     .matchHeader('fiware-service', 'TestService')
                     .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )
@@ -756,7 +756,7 @@ describe(
                     .matchHeader('fiware-service', 'TestService')
                     .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext5.json')
                     )
                     .reply(204);
@@ -834,7 +834,7 @@ describe(
                     .matchHeader('fiware-service', 'TestService')
                     .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/contextRequests/updateContext3WithStatic.json'
                         )

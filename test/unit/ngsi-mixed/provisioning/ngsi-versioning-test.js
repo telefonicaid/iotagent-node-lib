@@ -233,7 +233,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('NGSILD-Tenant', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .reply(204);
             request(optionsCreationLD, function (error, response, body) {
                 done();

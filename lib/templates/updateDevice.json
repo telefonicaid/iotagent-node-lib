@@ -16,6 +16,11 @@
       "description": "Type of the target entity",
       "type": "string"
     },
+    "apikey": {
+          "description": "apikey",
+          "type": "string",
+          "required": false
+    },
     "timezone": {
       "description": "Time zone where the device is located",
       "type": "string"

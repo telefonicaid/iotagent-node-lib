@@ -190,15 +190,15 @@ describe('NGSI-v2 - Command functionalities', function () {
             });
         });
 
-        it('should call the client handler', function (done) {
-            let handlerCalled = false;
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 id.should.equal(device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
                 attributes[0].value.should.equal('[28, -104, 23]');
-                handlerCalled = true;
+                handlerCalled++;
                 callback(null, {
                     id,
                     type,
@@ -214,7 +214,7 @@ describe('NGSI-v2 - Command functionalities', function () {
 
             request(options, function (error, response, body) {
                 should.not.exist(error);
-                handlerCalled.should.equal(true);
+                handlerCalled.should.equal(1);
                 done();
             });
         });
