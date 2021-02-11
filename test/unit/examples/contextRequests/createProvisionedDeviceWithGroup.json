@@ -8,12 +8,12 @@
         {
           "name": "attr_name",
           "type": "string",
-          "value": " "
+          "value": null
         },
         {
           "name": "status",
           "type": "Boolean",
-          "value": " "
+          "value": null
         },
         {
           "name": "hardcodedAttr",

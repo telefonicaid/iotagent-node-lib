@@ -109,6 +109,8 @@ const device3 = {
     service: 'smartGondor'
 };
 
+
+
 describe('NGSI-LD - Command functionalities', function () {
     beforeEach(function (done) {
         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
@@ -181,15 +183,15 @@ describe('NGSI-LD - Command functionalities', function () {
             });
         });
 
-        it('should call the client handler', function (done) {
-            let handlerCalled = false;
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
                 id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
                 JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
-                handlerCalled = true;
+                handlerCalled++;
                 callback(null, {
                     id,
                     type,
@@ -205,7 +207,7 @@ describe('NGSI-LD - Command functionalities', function () {
 
             request(options, function (error, response, body) {
                 should.not.exist(error);
-                handlerCalled.should.equal(true);
+                handlerCalled.should.equal(1);
                 done();
             });
         });
@@ -257,7 +259,7 @@ describe('NGSI-LD - Command functionalities', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandFinish.json'
                     )
@@ -282,7 +284,7 @@ describe('NGSI-LD - Command functionalities', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextCommandError.json')
                 )
                 .reply(204);

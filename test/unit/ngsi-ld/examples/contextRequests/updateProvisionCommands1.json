@@ -19,8 +19,8 @@
         "temperature": {
             "type": "Property",
             "value": {
-                "@type": "centigrades",
-                "@value": " "
+                "@type": "Intangible",
+                "@value": null
             }
         },
         "type": "Light"

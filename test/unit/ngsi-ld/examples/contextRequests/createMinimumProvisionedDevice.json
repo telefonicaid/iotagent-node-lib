@@ -3,7 +3,10 @@
         "@context": "http://context.json-ld",
         "attr_name": {
             "type": "Property",
-            "value": " "
+            "value":  {
+                "@type": "Intangible",
+                "@value": null
+            }
         },
         "id": "urn:ngsi-ld:MicroLights:FirstMicroLight",
         "type": "MicroLights"

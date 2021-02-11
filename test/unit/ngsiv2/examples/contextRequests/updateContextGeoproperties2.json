@@ -1,0 +1,18 @@
+{
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "coordinates": [
+                [
+                    23,
+                    12.5
+                ],
+                [
+                    22,
+                    12.5
+                ]
+            ],
+            "type": "LineString"
+        }
+    }
+}

@@ -17,7 +17,18 @@
           "type": "Boolean"
         }
       ],
-      "commands":[{"name":"wheel1","type":"Wheel"}]
+      "commands": [
+          {
+              "name": "wheel1",
+              "type": "Wheel"
+          }
+      ],
+      "lazy": [
+          {
+              "name": "luminescence",
+              "type": "Lumens"
+          }
+      ]
     }
   ]
 }

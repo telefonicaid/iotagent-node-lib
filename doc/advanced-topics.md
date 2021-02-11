@@ -46,6 +46,64 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
 
+### GeoJSON support
+
+The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
+`geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
+values. If the latitude and longitude are received as separate measures, the
+[expression language](expressionLanguage.md) can be used to concatenate them.
+
+```json
+{
+    "entity_type": "GPS",
+    "resource":    "/iot/d",
+    "protocol":    "PDI-IoTA-JSON",
+..etc
+    "attributes": [
+        {
+            "name": "location",
+            "type": "geo:json",
+            "expression": "${@lng}, ${@lat}"
+        }
+    ]
+}
+```
+
+
+For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input
+formats are accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of
+the following formats:
+
+-  a comma delimited string
+
+```json
+{
+  "name": "location",
+  "value": "23, 12.5"
+}
+````
+
+-   an array of numbers
+
+```json
+{
+    "name": "location",
+    "value": [23, 12.5]
+}
+```
+
+-   an fully formatted GeoJSON object
+
+```json
+{
+    "name": "location",
+    "value": {
+        "type": "Point",
+        "coordinates": [23, 12.5]
+    }
+}
+```
+
 ### Metadata support
 
 Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
