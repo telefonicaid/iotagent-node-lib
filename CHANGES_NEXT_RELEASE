@@ -1,3 +1,4 @@
+Fix: update type and name of device (#770)
 Fix: ensure registrationId is updated when defice with commands is updated 
 Add: return apikey in GET device if device was provisioned with explicit apikey (#977)
 Add: allow update device `apikey` using Update (put) API (#978)

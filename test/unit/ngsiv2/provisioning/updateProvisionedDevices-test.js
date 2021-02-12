@@ -178,7 +178,10 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities/TheFirstLight/attrs?type=TheLightType', {})
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateProvisionDevice.json')
+                )
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
