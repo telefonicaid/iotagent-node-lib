@@ -42,4 +42,4 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Node.js v4  | 2.8.1                                                 | December 19th, 2018                 |
 | Support to Node.js v6  | 2.9.0                                                 | May 22nd, 2019                      |
 | Support to Node.js v8  | 2.12.0                                                | April 7th, 2020                    |
-| Support to Node.js v10 | 2.15.0   | February 18th 2021                |
+| Support to Node.js v10 | 2.15.0   | February 18th, 2021                |
