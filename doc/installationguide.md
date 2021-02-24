@@ -241,7 +241,7 @@ used for the same purpose. For instance:
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
 -   **timestamp**: if this flag is activated:
-    -   For NGSIv1/NGSIv2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from
+    -   For NGSI-v2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from
         device information. This flag is overwritten by `timestamp` flag in group or device
     -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
