@@ -220,15 +220,13 @@ describe('MongoDB Device Registry', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
+                    )
                 )
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -284,30 +282,26 @@ describe('MongoDB Device Registry', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
+                    )
                 )
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
+                    )
                 )
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -332,28 +326,24 @@ describe('MongoDB Device Registry', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(
                     '/v2/registrations',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
+                    )
                 )
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post(
                     '/v2/registrations',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
+                    )
                 )
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -375,27 +365,17 @@ describe('MongoDB Device Registry', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
-                .reply(
-                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                );
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            contextBrokerMock
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
-                .reply(204);
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(

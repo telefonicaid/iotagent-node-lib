@@ -167,9 +167,9 @@ describe('Secured access to the Context Broker with Keystone', function () {
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
-                .reply(403, {'name': 'ACCESS_FORBIDDEN'});
-                    //utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
-                //}
+                .reply(403, { name: 'ACCESS_FORBIDDEN' });
+            //utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
+            //}
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -235,8 +235,8 @@ describe('Secured access to the Context Broker with Keystone', function () {
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .get('/v2/entities/light1/attrs')
-                .query({ attrs: 'state,dimming' ,type: 'Light' })
-                .reply(200, {state: 'good', dimming: '23'});
+                .query({ attrs: 'state,dimming', type: 'Light' })
+                .reply(200, { state: 'good', dimming: '23' });
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -287,16 +287,11 @@ describe('Secured access to the Context Broker with Keystone', function () {
                     .reply(204);
 
                 contextBrokerMock
-                    .post(
-                        '/v2/registrations'
-                    )
-                    .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
-                    );
+                    .post('/v2/registrations')
+                    .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
                 contextBrokerMock
-                    .post(
-                        '/v2/subscriptions'
-                    )
+                    .post('/v2/subscriptions')
                     .matchHeader('X-Auth-Token', '12345679ABCDEF')
                     .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
