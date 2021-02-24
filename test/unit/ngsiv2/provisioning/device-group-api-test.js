@@ -403,7 +403,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             });
         });
     });
-    xdescribe('When a device group removal request arrives with device=true option', function () {
+    describe('When a device group removal request arrives with device=true option', function () {
         let contextBrokerMock;
 
         beforeEach(function (done) {
@@ -421,12 +421,11 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
-                .reply(200);
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'TestService')
@@ -889,7 +888,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
     });
 
-    xdescribe('When a new device from a created group arrives to the IoT Agent and sends a measure', function () {
+    describe('When a new device from a created group arrives to the IoT Agent and sends a measure', function () {
         let contextBrokerMock;
         const values = [
             {
@@ -906,11 +905,11 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 .matchHeader('fiware-service', 'TestService')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
-                    '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json')
+                    '/v2/entities/machine1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
-                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
-
+                .query({ type: 'SensorMachine' })
+                .reply(204, {});
             async.series([async.apply(request, optionsCreation)], done);
         });
 
