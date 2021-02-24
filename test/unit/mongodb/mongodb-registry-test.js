@@ -219,22 +219,16 @@ describe('MongoDB Device Registry', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    '/v2/registrations',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
                 )
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -289,43 +283,31 @@ describe('MongoDB Device Registry', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    '/v2/registrations',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
                 )
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    '/v2/registrations',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
                 )
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -349,41 +331,29 @@ describe('MongoDB Device Registry', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    '/v2/registrations',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
                 )
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
+                    '/v2/registrations',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json')
                 )
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -402,51 +372,30 @@ describe('MongoDB Device Registry', function () {
 
     describe('When a device is removed from the IoT Agent', function () {
         beforeEach(function (done) {
-            const expectedPayload3 = utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityRequests/unregisterDevice3.json'
-            );
-
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/NGSI9/registerContext')
+                .post('/v2/registrations')
                 .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'
-                    )
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
+                .reply(204);
+
+            contextBrokerMock
+                .post('/v2/registrations')
                 .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
+                    201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' }
                 );
 
             contextBrokerMock
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'
-                    )
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
-
-            contextBrokerMock
-                .post('/NGSI9/registerContext', expectedPayload3)
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'
-                    )
-                );
+                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
@@ -476,14 +425,11 @@ describe('MongoDB Device Registry', function () {
     describe('When the registry is queried for a device using an arbitrary attribute', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
@@ -530,14 +476,11 @@ describe('MongoDB Device Registry', function () {
     describe('When the list of devices is retrieved', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
