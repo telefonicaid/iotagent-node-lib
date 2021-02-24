@@ -494,26 +494,13 @@ Postman-Token: 993ac66b-72da-9e96-ab46-779677a5896a
 2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
 
 ```text
-POST /v1/queryContext HTTP/1.1
+POST /v2/entities/<entity-id>/attrs?<attribute-name> HTTP/1.1
 Host: localhost:1026
 Content-Type: application/json
 Accept: application/json
 Fiware-Service: howtoserv
 Fiware-ServicePath: /test
 Cache-Control: no-cache
-Postman-Token: 1dc568a1-5588-059c-fa9b-ff217a7d7aa2
-
-{
-    "entities": [
-        {
-            "isPattern": "true",
-            "id": ".*",
-            "type": "BasicULSensor"
-        }
-    ],
-    "attributes" : [
-    	"l"]
-}
 ```
 
 3. Check the received request in the nc console is the expected one.

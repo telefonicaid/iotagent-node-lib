@@ -320,7 +320,7 @@ events in the IoT Agent with the configured type name will be marked as events. 
 
 ##### Timestamp Processing Plugin (timestampProcess)
 
-This plugin processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI-v1/NGSIv2,
+This plugin processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSIv2,
 the plugin adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the
 Standard `observedAt` property-of-a-property is used instead.
 

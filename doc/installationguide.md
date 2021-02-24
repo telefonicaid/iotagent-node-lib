@@ -230,10 +230,6 @@ used for the same purpose. For instance:
 -   **providerUrl**: URL to send in the Context Provider registration requests. Should represent the external IP of the
     deployed IoT Agent (the IP where the Context Broker will redirect the NGSI requests). E.g.:
     'http://192.168.56.1:4041'.
--   **deviceRegistrationDuration**: duration of the registrations as Context Providers and the subscriptions done by
-    bidirectional plugin, in [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) standard format. E.g.: 'P1M'. Only used
-    if agent is configured in NGSI v1 mode. In NGSI v2 mode the setting is ignored (registrations and subscriptions are
-    non-expirable and the IOTA manages its removal explicitely).
 -   **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled
     automatically by each IoTA).
 -   **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with
@@ -278,8 +274,8 @@ used for the same purpose. For instance:
     standard, but the final decision has yet been confirmed), take into account it could change
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
     flag is overwritten by `explicitAttrs` flag in group or device provision.
--   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not 
-    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`. 
+-   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not
+    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`.
     Default value is `:`. This value is overwritten by `defaultEntityNameConjunction` in group provision.
 -   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
     validated, and may exceptionally include characters (such as semi-colons) which are
