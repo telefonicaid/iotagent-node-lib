@@ -11,6 +11,7 @@
   "provider": {
     "http": {
       "url": "http://smartGondor.com"
-    }
+    },
+    "supportedForwardingMode": "query"
   }
 }
