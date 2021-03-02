@@ -16,7 +16,7 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to Node.js v4 in iotagent-node-lib 2.8.1 (finally removed in 2.9.0)
 -   Support to Node.js v6 in iotagent-node-lib 2.9.0 (finally removed in 2.10.0)
 -   Support to Node.js v8 in iotagent-node-lib 2.12.0 (finally removed in 2.13.0)
--   Support to Node.js v10 in iotagent-node-lib 2.15.0.
+-   Support to Node.js v10 in iotagent-node-lib 2.15.0 (finally removed in 2.16.0)
 
 The use of Node.js v12 is highly recommended.
 
@@ -42,4 +42,4 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Node.js v4  | 2.8.1                                                 | December 19th, 2018                 |
 | Support to Node.js v6  | 2.9.0                                                 | May 22nd, 2019                      |
 | Support to Node.js v8  | 2.12.0                                                | April 7th, 2020                    |
-| Support to Node.js v10 | Not defined but it will completed before May 2021     | Not yet defined               |
+| Support to Node.js v10 | 2.15.0   | February 18th, 2021                |

@@ -55,6 +55,7 @@ jobs:
     strategy:
       matrix:
         node-version:
+          # FIXME: node v10 has been deprecated, but we are going to keep its regression for a while
           - 10.x
           - 12.x
           - 14.x
