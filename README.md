@@ -8,6 +8,7 @@
 [![CI](https://github.com/telefonicaid/iotagent-node-lib/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-node-lib/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4671/badge)](https://bestpractices.coreinfrastructure.org/projects/4671)
 
 This project aims to provide a Node.js module to enable IoT Agent developers to build custom agents for their devices
 that can easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion)).
