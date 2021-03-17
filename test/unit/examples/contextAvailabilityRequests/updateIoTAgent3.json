@@ -12,6 +12,10 @@
         {
           "name": "luminance",
           "type": "lumens"
+        },
+        {
+          "name": "commandAttr",
+          "type": "commandType"
         }
       ],
       "providingApplication": "http://smartGondor.com"
