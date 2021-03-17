@@ -1,4 +1,5 @@
-- Fix: PUT /iot/devices/:deviceId operation to implement proper update of entity_name and entity_type (#770)
 - Add: expose getConfigurationSilently to enable retrieve a configuration without raise a mongo alarm.
 - Add: db uri and options in mongo connection log INFO trace
 - Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
+- Update MongoDB to use lean() for faster retrieval
+- Fix: PUT /iot/devices/:deviceId operation to implement proper update of entity_name and entity_type (#770)
