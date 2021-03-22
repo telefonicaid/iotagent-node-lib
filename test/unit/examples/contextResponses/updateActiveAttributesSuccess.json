@@ -2,10 +2,36 @@
   "contextResponses": [
     {
       "contextElement": {
-        "attributes": [],
-        "id": "TheFirstLight",
         "isPattern": "false",
-        "type": "TheLightType"
+        "type": "TheLightType",
+        "id": "ANewLightName",
+        "attributes": [
+          {
+            "name": "attr_name",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "hardcodedAttr",
+            "type": "hardcodedType",
+            "value": ""
+          },
+          {
+            "name": "commandAttr_status",
+            "type": "commandStatus",
+            "value": ""
+          },
+          {
+            "name": "commandAttr_info",
+            "type": "commandResult",
+            "value": ""
+          },
+          {
+            "name": "TimeInstant",
+            "type": "ISO8601",
+            "value": ""
+          }
+        ]
       },
       "statusCode": {
         "code": "200",
