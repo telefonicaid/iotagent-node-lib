@@ -1,5 +1,5 @@
 - Add: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
-- Add: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm.
+- Add: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
 - Add: db uri and options in mongo connection log INFO trace
 - Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
 - Update MongoDB to use lean() for faster retrieval
