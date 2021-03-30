@@ -1,3 +1,4 @@
+- Fix: group command is not provisioned in device when entity_type is different (#1011)
 - Add: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
 - Add: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
 - Add: db uri and options in mongo connection log INFO trace
