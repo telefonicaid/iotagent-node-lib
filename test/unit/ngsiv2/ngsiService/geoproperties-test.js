@@ -65,6 +65,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
         iotAgentLib.deactivate(done);
     });
 
+    // FIXME: #1012
     // describe(
     //     'When the IoT Agent receives new geo-information from a device.' +
     //         'Location with geo:json type and String value',
