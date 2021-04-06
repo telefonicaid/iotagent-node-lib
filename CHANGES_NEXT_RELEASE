@@ -1,1 +1,1 @@
-- Hotfix: avoid automatic conversion from geo:xxxx ('xxxx' diferent from 'json') to geo:json (reverts the work done in PR  #854)
+
