@@ -1,1 +1,8 @@
 - Hotfix: avoid automatic conversion from geo:xxxx ('xxxx' diferent from 'json') to geo:json (reverts the work done in PR  #854)
+- Add: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
+- Add: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
+- Add: db uri and options in mongo connection log INFO trace
+- Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
+- Update MongoDB to use lean() for faster retrieval
+- Fix: PUT /iot/devices/:deviceId operation to implement proper update of entity_name and entity_type (#770)
+- Fix: auto-provision functionality not working as expected when configured at device/group level in NGSIv1 API (#1003)

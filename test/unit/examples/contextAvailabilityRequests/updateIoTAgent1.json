@@ -5,7 +5,7 @@
                 {
                     "type": "Light",
                     "isPattern": "false",
-                    "id": "light1"
+                    "id": "Light:light1"
                 }
             ],
             "attributes": [
