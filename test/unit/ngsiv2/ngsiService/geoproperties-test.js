@@ -65,361 +65,362 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
         iotAgentLib.deactivate(done);
     });
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with geo:json type and String value',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'geo:json',
-                    value: '23,12.5'
-                }
-            ];
+    // FIXME: #1012
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with geo:json type and String value',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'geo:json',
+    //                 value: '23,12.5'
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with geo:json type and GeoJSON object value',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'geo:json',
-                    value: {
-                        type: 'Point',
-                        coordinates: [23, 12.5]
-                    }
-                }
-            ];
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with geo:json type and GeoJSON object value',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'geo:json',
+    //                 value: {
+    //                     type: 'Point',
+    //                     coordinates: [23, 12.5]
+    //                 }
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe('When the IoT Agent receives new geo-information from a device. Location with Point type and Array value', function () {
-        const values = [
-            {
-                name: 'location',
-                type: 'Point',
-                value: [23, 12.5]
-            }
-        ];
+    // describe('When the IoT Agent receives new geo-information from a device. Location with Point type and Array value', function () {
+    //     const values = [
+    //         {
+    //             name: 'location',
+    //             type: 'Point',
+    //             value: [23, 12.5]
+    //         }
+    //     ];
 
-        beforeEach(function (done) {
-            nock.cleanAll();
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/v2/entities/light1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
-                    )
-                )
-                .query({ type: 'Light' })
-                .reply(204);
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartGondor')
+    //             .post(
+    //                 '/v2/entities/light1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
+    //                 )
+    //             )
+    //             .query({ type: 'Light' })
+    //             .reply(204);
 
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
 
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with LineString type and Array value',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'LineString',
-                    value: [
-                        [23, 12.5],
-                        [22, 12.5]
-                    ]
-                }
-            ];
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with LineString type and Array value',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'LineString',
+    //                 value: [
+    //                     [23, 12.5],
+    //                     [22, 12.5]
+    //                 ]
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with LineString type and Array of Strings',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'LineString',
-                    value: ['23,12.5', '22,12.5']
-                }
-            ];
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with LineString type and Array of Strings',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'LineString',
+    //                 value: ['23,12.5', '22,12.5']
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe('When the IoT Agent receives new geo-information from a device. Location with None type', function () {
-        const values = [
-            {
-                name: 'location',
-                type: 'None',
-                value: 'null'
-            }
-        ];
+    // describe('When the IoT Agent receives new geo-information from a device. Location with None type', function () {
+    //     const values = [
+    //         {
+    //             name: 'location',
+    //             type: 'None',
+    //             value: 'null'
+    //         }
+    //     ];
 
-        beforeEach(function (done) {
-            nock.cleanAll();
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .post(
-                    '/v2/entities/light1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties3.json'
-                    )
-                )
-                .query({ type: 'Light' })
-                .reply(204);
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartGondor')
+    //             .post(
+    //                 '/v2/entities/light1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties3.json'
+    //                 )
+    //             )
+    //             .query({ type: 'Light' })
+    //             .reply(204);
 
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
 
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with Polygon type - Array of coordinates',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'Polygon',
-                    value: [
-                        [23, 12.5],
-                        [22, 13.5],
-                        [22, 13.5]
-                    ]
-                }
-            ];
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with Polygon type - Array of coordinates',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'Polygon',
+    //                 value: [
+    //                     [23, 12.5],
+    //                     [22, 13.5],
+    //                     [22, 13.5]
+    //                 ]
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe(
-        'When the IoT Agent receives new geo-information from a device.' +
-            'Location with Polygon type - list of coordinates',
-        function () {
-            const values = [
-                {
-                    name: 'location',
-                    type: 'Polygon',
-                    value: '23,12.5,22,13.5,22,13.5'
-                }
-            ];
+    // describe(
+    //     'When the IoT Agent receives new geo-information from a device.' +
+    //         'Location with Polygon type - list of coordinates',
+    //     function () {
+    //         const values = [
+    //             {
+    //                 name: 'location',
+    //                 type: 'Polygon',
+    //                 value: '23,12.5,22,13.5,22,13.5'
+    //             }
+    //         ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+    //         beforeEach(function (done) {
+    //             nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
-                    .post(
-                        '/v2/entities/light1/attrs',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'
-                        )
-                    )
-                    .query({ type: 'Light' })
-                    .reply(204);
+    //             contextBrokerMock = nock('http://192.168.1.1:1026')
+    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .post(
+    //                     '/v2/entities/light1/attrs',
+    //                     utils.readExampleFile(
+    //                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'
+    //                     )
+    //                 )
+    //                 .query({ type: 'Light' })
+    //                 .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
-            });
-        }
-    );
+    //         it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             });
+    //         });
+    //     }
+    // );
 
-    describe('When the IoT Agent receives new geo-information from a device. Location with a missing latitude', function () {
-        const values = [
-            {
-                name: 'location',
-                type: 'Point',
-                value: '23,12.5,22,13.5,22'
-            }
-        ];
+    // describe('When the IoT Agent receives new geo-information from a device. Location with a missing latitude', function () {
+    //     const values = [
+    //         {
+    //             name: 'location',
+    //             type: 'Point',
+    //             value: '23,12.5,22,13.5,22'
+    //         }
+    //     ];
 
-        beforeEach(function (done) {
-            nock.cleanAll();
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
 
-        it('should throw a BadGeocoordinates Error', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.exist(error);
-                done();
-            });
-        });
-    });
+    //     it('should throw a BadGeocoordinates Error', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.exist(error);
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe('When the IoT Agent receives new geo-information from a device. Location invalid coordinates', function () {
-        const values = [
-            {
-                name: 'location',
-                type: 'Point',
-                value: '2016-04-30Z'
-            }
-        ];
+    // describe('When the IoT Agent receives new geo-information from a device. Location invalid coordinates', function () {
+    //     const values = [
+    //         {
+    //             name: 'location',
+    //             type: 'Point',
+    //             value: '2016-04-30Z'
+    //         }
+    //     ];
 
-        beforeEach(function (done) {
-            nock.cleanAll();
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
 
-        it('should throw a BadGeocoordinates Error', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.exist(error);
-                done();
-            });
-        });
-    });
+    //     it('should throw a BadGeocoordinates Error', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.exist(error);
+    //             done();
+    //         });
+    //     });
+    // });
 });
