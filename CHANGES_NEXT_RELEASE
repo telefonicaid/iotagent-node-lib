@@ -1,6 +1,6 @@
 - Add: add getTypeSilently for device group and use in device registration to avoid false mongo alarm
 - Fix: group command is not provisioned in device when entity_type is different (#1011)
-- Hotfix: avoid automatic conversion from geo:xxxx ('xxxx' diferent from 'json') to geo:json (reverts the work done in PR  #854)
+- Hotfix: avoid automatic conversion from geo:xxxx ('xxxx' diferent from 'json') to geo:json (reverts some of the work done in PR  #854)
 - Add: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
 - Add: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
 - Add: db uri and options in mongo connection log INFO trace

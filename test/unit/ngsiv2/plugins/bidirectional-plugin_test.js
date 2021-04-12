@@ -33,6 +33,7 @@ const nock = require('nock');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {
+    autocastGeoJSON: ['geo:point'],
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -61,7 +62,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
     };
 
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {

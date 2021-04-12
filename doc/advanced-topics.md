@@ -48,8 +48,8 @@ Agent.
 
 ### GeoJSON support
 
-The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
-`geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
+The defined `type` of any GeoJSON attribute can be any set to any of the standard **NGSI-v2** GeoJSON types - (e.g.
+`geo:json`, `geo:point`). **NGSI-LD** formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
 values. If the latitude and longitude are received as separate measures, the
 [expression language](expressionLanguage.md) can be used to concatenate them.
 
@@ -69,7 +69,6 @@ values. If the latitude and longitude are received as separate measures, the
 }
 ```
 
-
 For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input
 formats are accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of
 the following formats:
@@ -81,7 +80,7 @@ the following formats:
   "name": "location",
   "value": "23, 12.5"
 }
-````
+```
 
 -   an array of numbers
 
@@ -101,6 +100,18 @@ the following formats:
         "type": "Point",
         "coordinates": [23, 12.5]
     }
+}
+```
+
+Because GeoJSON types (e.g. `Point`, `LineString` etc.) are native types in **NGSI-LD**, automatic GeoJSON conversion is switched on for NGSI-LD by default.
+
+With **NGSI-v2**, for backwards compatibility reasons, automatic GeoJSON conversion for types other than `geo:json` is turned off by default.
+Add the `config.autocastGeoJSON` configuration to enable GeoJSON conversion
+and supply a comma delimited list of additional types to convert.
+
+```json
+{
+  "autocastGeoJSON" : "Point,LineString,Polygon"
 }
 ```
 
@@ -151,7 +162,7 @@ following:
 -   Temporal Properties (e.g. `Datetime`, `Date` , `Time`)
 -   GeoJSON types (e.g `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`)
 
-Most NGSI-LD attributes are sent to the Context Broker as _properties_. If a GeoJSON type or native JSON type is
+Most **NGSI-LD** attributes are sent to the Context Broker as _properties_. If a GeoJSON type or native JSON type is
 defined, the data will be converted to the appropriate type. Temporal properties should always be expressed in UTC,
 using ISO 8601. This ISO 8601 conversion is applied automatically for the `observedAt` _property-of-a-property_ metadata
 where present.

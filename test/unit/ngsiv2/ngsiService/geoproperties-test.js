@@ -24,38 +24,66 @@
  */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
- // FIXME: #1012
-//const utils = require('../../../tools/utils');
-//const should = require('should');
+const utils = require('../../../tools/utils');
+const should = require('should');
 const logger = require('logops');
-//const nock = require('nock');
-//let contextBrokerMock;
-//const iotAgentConfig = {
-//    autocast: true,
-//    contextBroker: {
-//        host: '192.168.1.1',
-//        port: '1026',
-//        ngsiVersion: 'v2'
-//    },
-//    server: {
-//    port: 4041
-//    },
-//    types: {
-//        Light: {
-//            commands: [],
-//            type: 'Light',
-//            active: [
-//                {
-//                    name: 'location',
-//                    type: 'geo:json'
-//                }
-//            ]
-//        }
-//    },
-//    service: 'smartGondor',
-//    subservice: 'gardens',
-//    providerUrl: 'http://smartGondor.com'
-//};
+const nock = require('nock');
+let contextBrokerMock;
+const iotAgentConfig = {
+   autocast: true,
+   autocastGeoJSON: ['Point', 'Polygon', 'LineString'],
+   contextBroker: {
+       host: '192.168.1.1',
+       port: '1026',
+       ngsiVersion: 'v2'
+   },
+   server: {
+   port: 4041
+   },
+   types: {
+       Light: {
+           commands: [],
+           type: 'Light',
+           active: [
+               {
+                   name: 'location',
+                   type: 'geo:json'
+               }
+           ]
+       }
+   },
+   service: 'smartGondor',
+   subservice: 'gardens',
+   providerUrl: 'http://smartGondor.com'
+};
+
+// No autoCast
+const iotAgentConfig2 = {
+   autocast: true,
+   contextBroker: {
+       host: '192.168.1.1',
+       port: '1026',
+       ngsiVersion: 'v2'
+   },
+   server: {
+   port: 4041
+   },
+   types: {
+       Light: {
+           commands: [],
+           type: 'Light',
+           active: [
+               {
+                   name: 'location',
+                   type: 'geo:json'
+               }
+           ]
+       }
+   },
+   service: 'smartGondor',
+   subservice: 'gardens',
+   providerUrl: 'http://smartGondor.com'
+};
 
 describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     beforeEach(function () {
@@ -96,6 +124,46 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
             });
 
             it('should change the value of the corresponding attribute in the context broker', function (done) {
+                iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        }
+    );
+
+
+    describe(
+        'When the IoT Agent receives new geo-information from a device.' +
+            'Location with Point type and String value and Point is not autocast',
+        function () {
+            const values = [
+                {
+                    name: 'location',
+                    type: 'Point',
+                    value: '23,12.5'
+                }
+            ];
+
+            beforeEach(function (done) {
+                nock.cleanAll();
+
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartGondor')
+                    .post(
+                        '/v2/entities/light1/attrs',
+                        utils.readExampleFile(
+                            './test/unit/ngsiv2/examples/contextRequests/updateContextGeopropertiesAsString.json'
+                        )
+                    )
+                    .query({ type: 'Light' })
+                    .reply(204);
+
+                iotAgentLib.activate(iotAgentConfig2, done);
+            });
+
+            it('should not change the value of the corresponding attribute in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
