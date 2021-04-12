@@ -46,7 +46,7 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
 
-### GeoJSON support (this only applies for NGSI-LD, not for NGSIv1 and NGSIv2)
+### GeoJSON support
 
 The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
 `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
@@ -69,17 +69,19 @@ values. If the latitude and longitude are received as separate measures, the
 }
 ```
 
-For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
-accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following formats:
 
--   a comma delimited string
+For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input
+formats are accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of
+the following formats:
+
+-  a comma delimited string
 
 ```json
 {
-    "name": "location",
-    "value": "23, 12.5"
+  "name": "location",
+  "value": "23, 12.5"
 }
-```
+````
 
 -   an array of numbers
 
@@ -183,12 +185,11 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
     }
 ```
 
+
 ### NGSI-LD Linked Data support
 
-`static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that
-active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for
-example a temperature gauge placed within a building. The **Device** data model literally represents the IoT device
-itself, but the `temperature` attribute also needs to be shared with the **Building** entity
+`static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for example a temperature gauge placed within a building.
+The **Device** data model literally represents the IoT device itself, but the `temperature` attribute also needs to be shared with the **Building** entity
 
 A `link` between them can be provisioned as shown:
 
@@ -222,8 +223,7 @@ e.g.:
   }
 ```
 
-Whenever a `temperature` measure is received **Device** is updated, and entity `urn:ngsi-ld:Building:001` is also
-updated as shown:
+Whenever a `temperature` measure is received **Device** is updated,  and entity `urn:ngsi-ld:Building:001` is also updated as shown:
 
 ```json
 "temperature": {
@@ -292,7 +292,7 @@ The library provides some plugins out of the box, in the `dataPlugins` collectio
 use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
 
 ```javascript
-var iotaLib = require('iotagent-node-lib');
+var iotaLib = require("iotagent-node-lib");
 
 iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
 iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
