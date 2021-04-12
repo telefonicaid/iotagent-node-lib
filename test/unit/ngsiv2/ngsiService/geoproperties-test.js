@@ -24,37 +24,38 @@
  */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const utils = require('../../../tools/utils');
-const should = require('should');
+ // FIXME: #1012
+//const utils = require('../../../tools/utils');
+//const should = require('should');
 const logger = require('logops');
-const nock = require('nock');
-let contextBrokerMock;
-const iotAgentConfig = {
-    autocast: true,
-    contextBroker: {
-        host: '192.168.1.1',
-        port: '1026',
-        ngsiVersion: 'v2'
-    },
-    server: {
-        port: 4041
-    },
-    types: {
-        Light: {
-            commands: [],
-            type: 'Light',
-            active: [
-                {
-                    name: 'location',
-                    type: 'geo:json'
-                }
-            ]
-        }
-    },
-    service: 'smartGondor',
-    subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
-};
+//const nock = require('nock');
+//let contextBrokerMock;
+//const iotAgentConfig = {
+//    autocast: true,
+//    contextBroker: {
+//        host: '192.168.1.1',
+//        port: '1026',
+//        ngsiVersion: 'v2'
+//    },
+//    server: {
+//    port: 4041
+//    },
+//    types: {
+//        Light: {
+//            commands: [],
+//            type: 'Light',
+//            active: [
+//                {
+//                    name: 'location',
+//                    type: 'geo:json'
+//                }
+//            ]
+//        }
+//    },
+//    service: 'smartGondor',
+//    subservice: 'gardens',
+//    providerUrl: 'http://smartGondor.com'
+//};
 
 describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     beforeEach(function () {
