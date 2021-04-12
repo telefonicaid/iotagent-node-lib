@@ -3,7 +3,7 @@
         "entities": [
             {
                 "type": "Light",
-                "id": "light1"
+                "id": "Light:light1"
             }
         ],
         "attrs": [

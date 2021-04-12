@@ -1,0 +1,26 @@
+{
+  "contextRegistrations": [
+    {
+      "entities": [
+        {
+          "type": "TheLightType",
+          "isPattern": "false",
+          "id": "ANewLightName"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "luminance",
+          "type": "lumens"
+        },
+        {
+          "name": "commandAttr",
+          "type": "commandType"
+        }
+      ],
+      "providingApplication": "http://smartGondor.com"
+    }
+  ],
+  "duration": "P1M",
+  "registrationId": "6319a7f5254b05844116584d"
+}
