@@ -1,18 +1,21 @@
 {
-    "entities": [
-        {
-            "id": "FirstMicroLight",
-            "type": "MicroLights"
-        }
-    ],
-    "notification": {
-        "attributes": [],
-        "http": {
-            "url": "http://smartGondor.com/notify"
-        }
+  "@context": "http://context.json-ld",
+  "type": "Subscription",
+  "entities": [
+    {
+      "id": "FirstMicroLight",
+      "type": "MicroLights"
+    }
+  ],
+  "watchedAttributes": [
+    "attr_name"
+  ],
+  "notification": {
+    "endpoint": {
+      "uri": "http://smartGondor.com/notify",
+      "accept": "application/json"
     },
-    "type": "Subscription",
-    "watchedAttributes": [
-        "attr_name"
-    ]
+    "attributes": [],
+    "format": "normalized"
+  }
 }

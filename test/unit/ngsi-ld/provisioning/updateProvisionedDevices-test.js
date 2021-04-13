@@ -162,14 +162,14 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
         beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entities/TheFirstLight/attrs?type=TheLightType', {
+                .post('/ngsi-ld/v1/entityOperations/upsert/', {
                     '@context': 'http://context.json-ld'
                 })
                 .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
