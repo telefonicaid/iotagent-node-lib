@@ -74,5 +74,5 @@ MongoDB at a second caching level.
 ## Bypassing cache
 
 In some cases consistent provisioning data is more vital than throughput. When creating or updating a provisioned device
-or service group adding a `dontCache` attribute with the value `true` will ensure that the data is never placed into a
+or service group adding a `cache` attribute with the value `true` will ensure that the data can be cached, otherwise it is never placed into a
 cache and therefore always consistently received from the Mongo-DB instance.

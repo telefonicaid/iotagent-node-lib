@@ -94,7 +94,7 @@ correspondence between the API resource fields and the same fields in the databa
 | `explicitAttrs`       | `explicitAttrs`      | optional boolean value, to support selective ignore of measures so that IOTA doesn’t progress. If not specified default is `false`.                                                                                                                                       |
 | `defaultEntityNameConjunction` | `defaultEntityNameConjunction` | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                             |
 | `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
-| `dontCache`           | `dontCache`          | optional boolean value to support selective caching of service group configurations when running with s`mongodb` and either the memCache or Redis cache has been enabled. The default is `false`. When not running with a cache, this field is ignored.                   |
+| `cache`           | `cache`          | optional boolean value to support selective caching of service group configurations when running with s`mongodb` and either the memCache or Redis cache has been enabled. The default is `false`. When not running with a cache, this field is ignored.                   |
 
 ### Service Group Endpoint
 
@@ -229,7 +229,7 @@ the API resource fields and the same fields in the database model.
 | `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.                                                                                        |
 | `explicitAttrs`       | `explicitAttrs`      | Boolean value to support selective ignore of measures for device so that IOTA doesn’t progress. If not specified default is `false`.                                                                                                                                      | `true/false`                                  |
 | `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              | `v2/ld`                                       |
-| `dontCache`           | `dontCache`          | optional Boolean value to support selective caching of device configurations when running with `mongodb` and either the memCache or Redis cache has been enabled. The default is `false`.                                                                                 | `true/false`                                  |
+| `cache`           | `cache`          | optional Boolean value to support selective caching of device configurations when running with `mongodb` and either the memCache or Redis cache has been enabled. The default is `false`.                                                                                 | `true/false`                                  |
 
 #### Attribute lists
 

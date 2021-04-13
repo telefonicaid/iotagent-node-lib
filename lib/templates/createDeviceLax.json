@@ -48,7 +48,7 @@
             "description": "NGSI Interface for this device",
             "type": "string"
           },
-          "dontCache": {
+          "cache": {
             "description": "Flag to whether to cache the details of this device in memory",
             "type": "boolean"
           },

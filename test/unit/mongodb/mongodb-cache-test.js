@@ -128,11 +128,12 @@ const iotAgentConfig = {
     pollingDaemonFrequency: 20
 };
 const device3 = {
-    id: 'r2d2',
+    id: 'cachedDevice',
     type: 'Robot',
     service: 'smartGondor',
     subservice: 'gardens',
-    polling: true
+    polling: true,
+    cache: true
 };
 
 describe('Mongo-DB Redis cache ', function () {
@@ -180,7 +181,7 @@ describe('Mongo-DB Redis cache ', function () {
                 actionType: 'update',
                 entities: [
                     {
-                        id: 'Robot:r2d2',
+                        id: 'Robot:cachedDevice',
                         type: 'Robot',
                         position: {
                             type: 'Array',
@@ -200,7 +201,7 @@ describe('Mongo-DB Redis cache ', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -251,7 +252,7 @@ describe('Mongo-DB Redis cache ', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -271,7 +272,7 @@ describe('Mongo-DB Redis cache ', function () {
                 actionType: 'update',
                 entities: [
                     {
-                        id: 'Robot:r2d2',
+                        id: 'Robot:cachedDevice',
                         type: 'Robot',
                         position: {
                             type: 'Array',
@@ -294,7 +295,7 @@ describe('Mongo-DB Redis cache ', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -327,7 +328,7 @@ describe('Mongo-DB Redis cache ', function () {
                 actionType: 'update',
                 entities: [
                     {
-                        id: 'Robot:r2d2',
+                        id: 'Robot:cachedDevice',
                         type: 'Robot',
                         position: {
                             type: 'Array',
@@ -347,7 +348,7 @@ describe('Mongo-DB Redis cache ', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -356,7 +357,7 @@ describe('Mongo-DB Redis cache ', function () {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                    '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile(
                         './test/unit//ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
                     )
@@ -375,7 +376,7 @@ describe('Mongo-DB Redis cache ', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -391,7 +392,7 @@ describe('Mongo-DB Redis cache ', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });
