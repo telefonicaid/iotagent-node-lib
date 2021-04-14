@@ -122,7 +122,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON Point in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -162,7 +162,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig2, done);
             });
 
-            it('should not change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a String in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -204,7 +204,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON Point in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -240,7 +240,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
+        it('should change the value of the corresponding attribute as a GeoJSON Point in the context broker', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -282,7 +282,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON LineString in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -322,7 +322,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON LineString in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -358,7 +358,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
+        it('should change the value of the corresponding attribute as a None type in the context broker', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -401,7 +401,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON Polygon in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
@@ -441,7 +441,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
+            it('should change the value of the corresponding attribute as a GeoJSON Polygon in the context broker', function (done) {
                 iotAgentLib.update('light1', 'Light', '', values, function (error) {
                     should.not.exist(error);
                     contextBrokerMock.done();
