@@ -77,6 +77,11 @@
             "type": "string",
             "pattern": "^([^<>();'=\"]+)+$"
           },
+          "autocastGeoJSON": {
+            "required": false,
+            "description": "Whether to autocast this value as a GeoJSON type",
+            "type": "boolean"
+          },
           "expression": {
             "description": "Optional expression for measurement transformation",
             "type": "string",
