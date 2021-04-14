@@ -34,7 +34,6 @@ const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
-    autocastGeoJSON: ['geo:point'],
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',

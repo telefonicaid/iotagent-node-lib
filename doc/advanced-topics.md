@@ -106,12 +106,21 @@ the following formats:
 Because GeoJSON types (e.g. `Point`, `LineString` etc.) are native types in **NGSI-LD**, automatic GeoJSON conversion is switched on for NGSI-LD by default.
 
 With **NGSI-v2**, for backwards compatibility reasons, automatic GeoJSON conversion for types other than `geo:json` is turned off by default.
-Add the `config.autocastGeoJSON` configuration to enable GeoJSON conversion
-and supply a comma delimited list of additional types to convert.
+Add the `autocastGeoJSON` configuration to the attribute to enable GeoJSON conversion. Each GeoJSON attribute can be provisioned as shown:
 
 ```json
 {
-  "autocastGeoJSON" : "Point,LineString,Polygon"
+    "entity_type": "GPS",
+    "resource":    "/iot/d",
+    "protocol":    "PDI-IoTA-JSON",
+..etc
+    "attributes": [
+        {
+            "name": "observationSpace",
+            "type": "Polygon",
+            "autocastGeoJSON" : "true"
+        }
+    ]
 }
 ```
 
@@ -313,7 +322,7 @@ iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
 
 This plugins change all the timestamp attributes found in the entity, and all the timestamp metadata found in any
 attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
-calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
+calendar timestamp (e.g.: `+002007-11-03T13:18`). The middleware expects to receive the basic format in updates and return
 it in queries (and viceversa, receive the extended one in queries and return it in updates).
 
 ##### Attribute Alias plugin (attributeAlias)

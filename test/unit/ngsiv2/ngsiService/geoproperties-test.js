@@ -200,8 +200,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                     )
                     .query({ type: 'Light' })
                     .reply(204);
-
-                iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Point';
+                iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
@@ -237,8 +236,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 )
                 .query({ type: 'Light' })
                 .reply(204);
-
-            iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Point';
+            iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
@@ -280,7 +278,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                     .query({ type: 'Light' })
                     .reply(204);
 
-                iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'LineString';
+                iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
@@ -356,8 +354,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                 )
                 .query({ type: 'Light' })
                 .reply(204);
-
-            iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Point';
+            iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
@@ -400,7 +397,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                     .query({ type: 'Light' })
                     .reply(204);
 
-                iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Polygon';
+                iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
@@ -439,8 +436,8 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
                     )
                     .query({ type: 'Light' })
                     .reply(204);
-
-                iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Polygon';
+            iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
+                iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
 
@@ -464,8 +461,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
         ];
 
         beforeEach(function (done) {
-            nock.cleanAll();
-            iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Point';
+            iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
@@ -488,7 +484,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            iotAgentConfig.types.Light.active[0].autocastGeoJSON = 'Point';
+            iotAgentConfig.types.Light.active[0].autocastGeoJSON = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 

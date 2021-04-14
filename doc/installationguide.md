@@ -342,7 +342,6 @@ overrides.
 | IOTA_POLLING_EXPIRATION          | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ         | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST                    | `autocast`                      |
-| IOTA_AUTOCAST_GEOJSON            | `autocastGeoJSON`               |
 | IOTA_MULTI_CORE                  | `multiCore`                     |
 | IOTA_JSON_LD_CONTEXT             | `jsonLdContext`                 |
 | IOTA_FALLBACK_TENANT             | `fallbackTenant`                |

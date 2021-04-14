@@ -33,7 +33,6 @@ const nock = require('nock');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {
-    autocastGeoJSON: ['geo:point'],
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
