@@ -99,7 +99,7 @@
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
                 },
-                "autocastGeoJSON": {
+                "autocast": {
                   "required": false,
                   "description": "Whether to autocast this value as a GeoJSON type",
                   "type": "boolean"

@@ -106,7 +106,7 @@ the following formats:
 Because GeoJSON types (e.g. `Point`, `LineString` etc.) are native types in **NGSI-LD**, automatic GeoJSON conversion is switched on for NGSI-LD by default.
 
 With **NGSI-v2**, for backwards compatibility reasons, automatic GeoJSON conversion for types other than `geo:json` is turned off by default.
-Add the `autocastGeoJSON` configuration to the attribute to enable GeoJSON conversion. Each GeoJSON attribute can be provisioned as shown:
+Add the `autocast` configuration to the attribute to enable GeoJSON conversion. Each GeoJSON attribute can be provisioned as shown:
 
 ```json
 {
@@ -118,7 +118,7 @@ Add the `autocastGeoJSON` configuration to the attribute to enable GeoJSON conve
         {
             "name": "observationSpace",
             "type": "Polygon",
-            "autocastGeoJSON" : "true"
+            "autocast" : "true"
         }
     ]
 }
