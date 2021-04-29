@@ -58,7 +58,7 @@ const iotAgentConfig = {
             ]
         }
     },
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     iotManager: {
         host: 'mockediotam.com',
         port: 9876,
@@ -70,7 +70,7 @@ const iotAgentConfig = {
     defaultResource: '/iot/d'
 };
 const groupCreation = {
-    service: 'theService',
+    service: 'theservice',
     subservice: 'theSubService',
     resource: '/deviceTest',
     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -129,7 +129,7 @@ const optionsCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     }
 };
@@ -167,7 +167,7 @@ const optionsCreationStatic = {
         ]
     },
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     }
 };
@@ -176,7 +176,7 @@ const optionsDelete = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     },
     qs: {
@@ -221,7 +221,7 @@ describe('NGSI-LD - IoT Manager autoregistration', function () {
         });
 
         afterEach(function () {
-            iotAgentConfig.providerUrl = 'http://smartGondor.com';
+            iotAgentConfig.providerUrl = 'http://smartgondor.com';
         });
 
         it('should fail with a MISSING_CONFIG_PARAMS error', function (done) {

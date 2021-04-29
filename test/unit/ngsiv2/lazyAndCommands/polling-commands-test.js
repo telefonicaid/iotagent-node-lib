@@ -107,16 +107,16 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     pollingExpiration: 200,
     pollingDaemonFrequency: 20
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     polling: true
 };
@@ -128,13 +128,13 @@ describe('NGSI-v2 - Polling commands', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/entities?options=upsert')
             .reply(204);
@@ -174,14 +174,14 @@ describe('NGSI-v2 - Polling commands', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Robot:r2d2/attrs?type=Robot',
@@ -235,7 +235,7 @@ describe('NGSI-v2 - Polling commands', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -268,14 +268,14 @@ describe('NGSI-v2 - Polling commands', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Robot:r2d2/attrs?type=Robot',
@@ -321,14 +321,14 @@ describe('NGSI-v2 - Polling commands', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Robot:r2d2/attrs?type=Robot',
@@ -337,7 +337,7 @@ describe('NGSI-v2 - Polling commands', function () {
                 .reply(204);
 
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Robot:r2d2/attrs?type=Robot',
@@ -359,7 +359,7 @@ describe('NGSI-v2 - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -375,7 +375,7 @@ describe('NGSI-v2 - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

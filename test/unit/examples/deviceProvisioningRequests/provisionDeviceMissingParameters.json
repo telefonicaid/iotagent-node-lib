@@ -2,7 +2,7 @@
   "devices": [
     {
       "protocol": "GENERIC_PROTO",
-      "service" : "smartGondor",
+      "service" : "smartgondor",
       "entity_name": "TheFirstLight",
       "attributes": [],
       "commands": [

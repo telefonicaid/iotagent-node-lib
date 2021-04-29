@@ -40,9 +40,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 
@@ -66,7 +66,7 @@ describe('NGSI-v1 - Device provisioning API: Provision devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -82,7 +82,7 @@ describe('NGSI-v1 - Device provisioning API: Provision devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v1/updateContext',
@@ -103,7 +103,7 @@ describe('NGSI-v1 - Device provisioning API: Provision devices', function () {
                 './test/unit/examples/deviceProvisioningRequests/provisionNewDeviceMultientity.json'
             ),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -113,7 +113,7 @@ describe('NGSI-v1 - Device provisioning API: Provision devices', function () {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
-                iotAgentLib.listDevices('smartGondor', '/gardens', function (error, results) {
+                iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     results.devices.length.should.equal(1);
                     done();
                 });

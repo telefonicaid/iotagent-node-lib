@@ -1,7 +1,7 @@
 {
   "protocol": "GENERIC_PROTOCOL",
   "description": "A generic protocol",
-  "iotagent": "http://smartGondor.com/iot",
+  "iotagent": "http://smartgondor.com/iot",
   "resource": "/iot/d",
   "services": [
     {
@@ -10,7 +10,7 @@
       "cbHost":"http://unexistentHost:1026",
       "entity_type": "SensorMachine",
       "resource": "/deviceTest",
-      "service": "theService",
+      "service": "theservice",
       "service_path": "theSubService",
       "attributes": [
         {

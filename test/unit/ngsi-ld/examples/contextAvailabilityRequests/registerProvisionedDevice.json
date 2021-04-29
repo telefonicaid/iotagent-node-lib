@@ -1,6 +1,6 @@
 {
     "@context": "http://context.json-ld",
-    "endpoint": "http://smartGondor.com",
+    "endpoint": "http://smartgondor.com",
     "information": [
         {
             "entities": [
