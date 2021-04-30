@@ -187,9 +187,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     throttling: 'PT5S'
 };
@@ -253,7 +253,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -294,7 +294,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -329,7 +329,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -364,7 +364,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -399,7 +399,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -435,7 +435,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -471,7 +471,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -507,7 +507,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -543,7 +543,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -579,7 +579,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -615,7 +615,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -651,7 +651,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -687,7 +687,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -722,7 +722,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/ws1/attrs',
@@ -757,7 +757,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -793,7 +793,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -827,7 +827,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -861,7 +861,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',
@@ -900,7 +900,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/light1/attrs',

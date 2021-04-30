@@ -56,9 +56,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-LD - Event plugin', function () {
@@ -97,7 +97,7 @@ describe('NGSI-LD - Event plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
                     return body[0].activation.value['@value'].match(dateRegex);

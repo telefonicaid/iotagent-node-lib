@@ -12,7 +12,7 @@
   ],
   "notification": {
     "endpoint": {
-      "uri": "http://smartGondor.com/notify",
+      "uri": "http://smartgondor.com/notify",
       "accept": "application/json"
     },
     "attributes": [],

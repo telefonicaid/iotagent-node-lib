@@ -99,14 +99,14 @@ const iotAgentConfig = {
             active: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 
@@ -118,7 +118,7 @@ describe('NGSI-v2 - Command functionalities', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
                 '/v2/registrations',
@@ -129,7 +129,7 @@ describe('NGSI-v2 - Command functionalities', function () {
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/entities?options=upsert')
             .reply(204);
@@ -179,7 +179,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -242,7 +242,7 @@ describe('NGSI-v2 - Command functionalities', function () {
             let serviceAndSubservice = false;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
-                serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
+                serviceAndSubservice = service === 'smartgondor' && subservice === 'gardens';
                 callback(null, {
                     id,
                     type,
@@ -265,7 +265,7 @@ describe('NGSI-v2 - Command functionalities', function () {
     describe('When an update arrives from the south bound for a registered command', function () {
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/r2d2/attrs?type=Robot',
@@ -289,7 +289,7 @@ describe('NGSI-v2 - Command functionalities', function () {
     describe('When an error command arrives from the south bound for a registered command', function () {
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/r2d2/attrs?type=Robot',
