@@ -8,7 +8,7 @@
         {
           "name": "pressure",
           "type": "Hgmm",
-          "value": "1040"
+          "value": 1040
         }
       ]
     }
