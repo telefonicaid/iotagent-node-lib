@@ -158,7 +158,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin1.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin1b.json')
                 )
                 .reply(
                     200,
@@ -236,7 +236,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin2.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin2b.json')
                 )
                 .reply(
                     200,
@@ -313,7 +313,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3b.json')
                 )
                 .reply(
                     200,
