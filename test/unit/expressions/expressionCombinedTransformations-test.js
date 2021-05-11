@@ -192,7 +192,7 @@ describe('Combine Jexl and legacy expressions (default JEXL)', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3b.json')
                 )
                 .reply(
                     200,
@@ -285,7 +285,7 @@ describe('Combine Jexl and legacy expressions (default Legacy)', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3b.json')
                 )
                 .reply(
                     200,
