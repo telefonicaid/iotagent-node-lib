@@ -385,40 +385,41 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expression and type integer', function () {
-        // Case: Update for an integer attribute with string expression
-        const values = [
-            {
-                name: 'e',
-                type: 'Number',
-                value: 52
-            }
-        ];
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with string expression and type integer', function () {
+    //     // Case: Update for an integer attribute with string expression
+    //     const values = [
+    //         {
+    //             name: 'e',
+    //             type: 'Number',
+    //             value: 52
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
     describe('When an update comes for attributes without expressions and type float', function () {
         // Case: Update for a Float attribute without expressions
@@ -492,41 +493,42 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with string expressions and type float', function () {
-        // Case: Update for a Float attribute with string expression
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with string expressions and type float', function () {
+    //     // Case: Update for a Float attribute with string expression
 
-        const values = [
-            {
-                name: 'e',
-                type: 'Number',
-                value: 0.44
-            }
-        ];
+    //     const values = [
+    //         {
+    //             name: 'e',
+    //             type: 'Number',
+    //             value: 0.44
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
     describe('When an update comes for attributes without expressions and NULL type', function () {
         // Case: Update for a Null attribute without expression
@@ -564,77 +566,79 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and NULL type', function () {
-        // Case: Update for a Null attribute with arithmetic expression
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with numeric expressions and NULL type', function () {
+    //     // Case: Update for a Null attribute with arithmetic expression
 
-        const values = [
-            {
-                name: 'a',
-                type: 'None',
-                value: null
-            }
-        ];
+    //     const values = [
+    //         {
+    //             name: 'a',
+    //             type: 'None',
+    //             value: null
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe('When an update comes for attributes with string expressions and NULL type', function () {
-        // Case: Update for a Null attribute with string expression
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with string expressions and NULL type', function () {
+    //     // Case: Update for a Null attribute with string expression
 
-        const values = [
-            {
-                name: 'a',
-                type: 'None',
-                value: null
-            }
-        ];
+    //     const values = [
+    //         {
+    //             name: 'a',
+    //             type: 'None',
+    //             value: null
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
     describe('When an update comes for attributes without expressions and Boolean type', function () {
         // Case: Update for a Boolean attribute without expression
@@ -672,76 +676,78 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When an update comes for attributes with numeric expressions and Boolean type', function () {
-        // Case: Update for a Boolean attribute with arithmetic expression
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with numeric expressions and Boolean type', function () {
+    //     // Case: Update for a Boolean attribute with arithmetic expression
 
-        const values = [
-            {
-                name: 'u',
-                type: 'Boolean',
-                value: true
-            }
-        ];
+    //     const values = [
+    //         {
+    //             name: 'u',
+    //             type: 'Boolean',
+    //             value: true
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin10.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin10.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
-    describe('When an update comes for attributes with string expressions and Boolean type', function () {
-        // Case: Update for a Boolean attribute with string expression
-        const values = [
-            {
-                name: 'u',
-                type: 'Boolean',
-                value: true
-            }
-        ];
+    // Deleted test by Issue #1034
+    // describe('When an update comes for attributes with string expressions and Boolean type', function () {
+    //     // Case: Update for a Boolean attribute with string expression
+    //     const values = [
+    //         {
+    //             name: 'u',
+    //             type: 'Boolean',
+    //             value: true
+    //         }
+    //     ];
 
-        beforeEach(function () {
-            nock.cleanAll();
+    //     beforeEach(function () {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities/ws1/attrs',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+    //                 )
+    //             )
+    //             .query({ type: 'WeatherStation' })
+    //             .reply(204);
+    //     });
 
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should apply the expression before sending the values', function (done) {
+    //         iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
     describe('When an update comes for attributes without expressions and Object type', function () {
         // Case: Update for a JSON document attribute without expression
