@@ -1,4 +1,4 @@
-- Fix: Do not transform attribute value using attribute type after apply expression plugin JEXL (#1034)
+- Fix: Do not transform attribute value using attribute type after apply expression plugin JEXL (#1036)
 - Fix: check access to data in fillService facility
 - Fix: use expressionLanguage defined in group is not defined at device level (#1027)
 - Fix: ensure service of groups, device and commands is stored in mongo in lowercase (#1023)
