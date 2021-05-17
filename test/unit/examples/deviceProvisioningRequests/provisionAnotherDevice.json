@@ -3,7 +3,7 @@
     {
       "device_id": "Light2",
       "protocol": "GENERIC_PROTO",
-      "service" : "smartGondor",
+      "service" : "smartgondor",
       "service_path": "gardens",
       "entity_name": "TheSecondLight",
       "entity_type": "TheLightType",

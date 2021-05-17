@@ -43,9 +43,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const optionsCreation = {
@@ -88,7 +88,7 @@ const optionsCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -97,7 +97,7 @@ const optionsDeviceCreation = {
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -106,7 +106,7 @@ const optionsDelete = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -119,7 +119,7 @@ const optionsDeleteDevice = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -161,7 +161,7 @@ const optionsUpdate = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -174,7 +174,7 @@ const optionsList = {
     method: 'GET',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/*'
     }
 };
@@ -183,7 +183,7 @@ const optionsGet = {
     method: 'GET',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -247,7 +247,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             request(optionsCreation, function (error, response, body) {
                 request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
-                    body.services[0].service.should.equal('TestService');
+                    body.services[0].service.should.equal('testservice');
                     body.services[0].subservice.should.equal('/testingPath');
                     done();
                 });
@@ -288,7 +288,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -328,7 +328,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         afterEach(function () {
-            optionsCreation.headers['fiware-service'] = 'TestService';
+            optionsCreation.headers['fiware-service'] = 'testservice';
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
@@ -410,25 +410,25 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -447,7 +447,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             const options = {
                 url: 'http://localhost:4041/iot/devices/Light1',
                 headers: {
-                    'fiware-service': 'TestService',
+                    'fiware-service': 'testservice',
                     'fiware-servicepath': '/testingPath'
                 },
                 method: 'GET'
@@ -498,7 +498,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         afterEach(function (done) {
-            optionsDeleteDifferentService.headers['fiware-service'] = 'TestService';
+            optionsDeleteDifferentService.headers['fiware-service'] = 'testservice';
             done();
         });
 
@@ -679,7 +679,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 should.exist(callback);
                 newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
                 newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
-                newConfiguration.service.should.equal('TestService');
+                newConfiguration.service.should.equal('testservice');
                 newConfiguration.subservice.should.equal('/testingPath');
                 newConfiguration.resource.should.equal('/deviceTest');
                 newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
@@ -701,7 +701,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         afterEach(function () {
-            optionsUpdate.headers['fiware-service'] = 'TestService';
+            optionsUpdate.headers['fiware-service'] = 'testservice';
         });
 
         it('should return a 200 OK', function (done) {
@@ -789,7 +789,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -800,7 +800,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 explicitAttrs: false
             },
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             },
             qs: {
@@ -882,7 +882,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
         it('should return all the configured device groups from the database', function (done) {
             request(optionsGet, function (error, response, body) {
-                body.services[0].service.should.equal('TestService');
+                body.services[0].service.should.equal('testservice');
                 done();
             });
         });
@@ -902,7 +902,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
                     '/v2/entities/machine1/attrs',
@@ -943,7 +943,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             },
             json: {},
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/*'
             }
         };

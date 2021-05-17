@@ -66,7 +66,7 @@ const iotAgentConfig = {
                     type: 'Vector'
                 }
             ],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens',
             internalAttributes: {
                 customAttribute: 'customValue'
@@ -81,7 +81,7 @@ const iotAgentConfig = {
                 }
             ],
             attributes: [],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         }
     },
@@ -93,15 +93,15 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     endpoint: 'http://testEndpoint.com',
     transport: 'HTTP',
@@ -139,7 +139,7 @@ const device1 = {
 const device2 = {
     id: 'term2',
     type: 'Termometer',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     resource: '/',
     apikey: 'dsf8yy789iyushu786',
@@ -216,7 +216,7 @@ describe('MongoDB Device Registry', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
@@ -278,7 +278,7 @@ describe('MongoDB Device Registry', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
@@ -291,7 +291,7 @@ describe('MongoDB Device Registry', function () {
             contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
@@ -386,7 +386,7 @@ describe('MongoDB Device Registry', function () {
         });
 
         it('should be removed from MongoDB', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
                 iotAgentDb
                     .db()
                     .collection('devices')
@@ -407,7 +407,7 @@ describe('MongoDB Device Registry', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/entities?options=upsert')
                 .times(10)
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .reply(204);
 
@@ -418,7 +418,7 @@ describe('MongoDB Device Registry', function () {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
-                    service: 'smartGondor',
+                    service: 'smartgondor',
                     subservice: 'gardens',
                     active: [
                         {
@@ -440,7 +440,7 @@ describe('MongoDB Device Registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function (done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function (
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartgondor', 'gardens', function (
                 error,
                 devices
             ) {
@@ -458,7 +458,7 @@ describe('MongoDB Device Registry', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/entities?options=upsert')
                 .times(10)
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .reply(204);
 
@@ -469,7 +469,7 @@ describe('MongoDB Device Registry', function () {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
-                    service: 'smartGondor',
+                    service: 'smartgondor',
                     subservice: 'gardens',
                     active: [
                         {
@@ -491,7 +491,7 @@ describe('MongoDB Device Registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the limited number of devices', function (done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
+            iotAgentLib.listDevices('smartgondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.devices);
                 result.devices.length.should.equal(3);
@@ -499,7 +499,7 @@ describe('MongoDB Device Registry', function () {
             });
         });
         it('should return the total number of devices', function (done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
+            iotAgentLib.listDevices('smartgondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.count);
                 result.count.should.equal(10);

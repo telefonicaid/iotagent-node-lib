@@ -43,9 +43,9 @@ const iotAgentConfig = {
     deviceRegistry: {
         type: 'memory'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 let contextBrokerMock;
@@ -64,7 +64,7 @@ describe('In memory device registry', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/entities?options=upsert')
                 .times(10)
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .reply(204);
 
@@ -75,7 +75,7 @@ describe('In memory device registry', function () {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
-                    service: 'smartGondor',
+                    service: 'smartgondor',
                     subservice: 'gardens',
                     active: [
                         {
@@ -95,7 +95,7 @@ describe('In memory device registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function (done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function (
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartgondor', 'gardens', function (
                 error,
                 devices
             ) {
@@ -122,7 +122,7 @@ describe('In memory device registry', function () {
                     id: 'id' + i,
                     type: 'Light' + (i % 2),
                     internalId: 'internal' + i,
-                    service: 'smartGondor' + (i % 3),
+                    service: 'smartgondor' + (i % 3),
                     subservice: 'gardens',
                     active: [
                         {
@@ -165,7 +165,7 @@ describe('In memory device registry', function () {
                     id: 'id' + i,
                     type: 'Light',
                     internalId: 'internal' + i,
-                    service: 'smartGondor' + (i % 3),
+                    service: 'smartgondor' + (i % 3),
                     subservice: 'gardens',
                     active: [
                         {
@@ -185,7 +185,7 @@ describe('In memory device registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return all the matching devices in  that service', function (done) {
-            iotAgentLib.getDevicesByAttribute('type', 'Light', 'smartGondor0', 'gardens', function (error, devices) {
+            iotAgentLib.getDevicesByAttribute('type', 'Light', 'smartgondor0', 'gardens', function (error, devices) {
                 should.not.exist(error);
                 should.exist(devices);
                 devices.length.should.equal(4);

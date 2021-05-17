@@ -49,9 +49,9 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const mongo = require('mongodb').MongoClient;
@@ -77,7 +77,7 @@ const optionsCreationDefault = {
         ]
     },
     headers: {
-        'fiware-service': 'smartGondor',
+        'fiware-service': 'smartgondor',
         'fiware-servicepath': 'gardens'
     }
 };
@@ -103,7 +103,7 @@ const optionsCreationV2 = {
         ]
     },
     headers: {
-        'fiware-service': 'smartGondor',
+        'fiware-service': 'smartgondor',
         'fiware-servicepath': 'gardens'
     }
 };
@@ -130,7 +130,7 @@ const optionsCreationLD = {
         ]
     },
     headers: {
-        'fiware-service': 'smartGondor',
+        'fiware-service': 'smartgondor',
         'fiware-servicepath': 'gardens'
     }
 };
@@ -149,7 +149,7 @@ const deviceCreationV2 = {
         ]
     },
     headers: {
-        'fiware-service': 'smartGondor',
+        'fiware-service': 'smartgondor',
         'fiware-servicepath': 'gardens'
     }
 };
@@ -188,7 +188,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
         beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/v2/entities/light1/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
@@ -210,7 +210,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
         beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/v2/entities/light1/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
@@ -232,7 +232,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
         beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('NGSILD-Tenant', 'smartGondor')
+                .matchHeader('NGSILD-Tenant', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .reply(204);
             request(optionsCreationLD, function (error, response, body) {
@@ -253,7 +253,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);

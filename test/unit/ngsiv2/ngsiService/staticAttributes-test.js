@@ -77,9 +77,9 @@ const iotAgentConfig = {
         }
     },
     timestamp: true,
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Static attributes test', function () {
@@ -109,7 +109,7 @@ describe('NGSI-v2 - Static attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })

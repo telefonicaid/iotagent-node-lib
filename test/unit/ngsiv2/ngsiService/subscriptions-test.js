@@ -42,9 +42,9 @@ const iotAgentConfig = {
         port: 4041
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Subscription tests', function () {
@@ -54,7 +54,7 @@ describe('NGSI-v2 - Subscription tests', function () {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -63,7 +63,7 @@ describe('NGSI-v2 - Subscription tests', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -74,7 +74,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -102,7 +102,7 @@ describe('NGSI-v2 - Subscription tests', function () {
 
     describe('When a client invokes the subscribe() function for device', function () {
         it('should send the appropriate request to the Context Broker', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     should.not.exist(error);
 
@@ -113,9 +113,9 @@ describe('NGSI-v2 - Subscription tests', function () {
             });
         });
         it('should store the subscription ID in the Device Registry', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
-                    iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+                    iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                         should.not.exist(error);
                         should.exist(device);
                         should.exist(device.subscriptions);
@@ -131,7 +131,7 @@ describe('NGSI-v2 - Subscription tests', function () {
     describe('When a client invokes the unsubscribe() function for an entity', function () {
         beforeEach(function (done) {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
@@ -139,10 +139,10 @@ describe('NGSI-v2 - Subscription tests', function () {
             done();
         });
         it('should delete the subscription from the CB', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
-                        iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+                        iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                             contextBrokerMock.done();
                             done();
                         });
@@ -151,10 +151,10 @@ describe('NGSI-v2 - Subscription tests', function () {
             });
         });
         it('should remove the id from the subscriptions array', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
-                        iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+                        iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                             should.not.exist(error);
                             should.exist(device);
                             should.exist(device.subscriptions);
@@ -169,7 +169,7 @@ describe('NGSI-v2 - Subscription tests', function () {
     describe('When a client removes a device from the registry', function () {
         beforeEach(function (done) {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
@@ -178,9 +178,9 @@ describe('NGSI-v2 - Subscription tests', function () {
         });
 
         it('should delete the subscription from the CB', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
-                    iotAgentLib.unregister(device.id, 'smartGondor', '/gardens', function (error) {
+                    iotAgentLib.unregister(device.id, 'smartgondor', '/gardens', function (error) {
                         contextBrokerMock.done();
                         done();
                     });
@@ -190,7 +190,7 @@ describe('NGSI-v2 - Subscription tests', function () {
     });
     describe('When a new notification comes to the IoTAgent', function () {
         beforeEach(function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     done();
                 });
@@ -203,7 +203,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 }
             };
@@ -229,7 +229,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 }
             };
@@ -271,7 +271,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/simpleNotification.json'),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 }
             };
@@ -309,7 +309,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/ngsiv2/examples/subscriptionRequests/errorNotification.json'),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 }
             };
