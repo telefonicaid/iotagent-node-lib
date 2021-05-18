@@ -34,7 +34,8 @@ const iotAgentConfig = {
     logLevel: 'ERROR',
     contextBroker: {
         host: '192.168.1.1',
-        port: '1026'
+        port: '1026',
+        ngsiVersion: 'v2'
     },
     server: {
         port: 4041
@@ -64,7 +65,7 @@ const iotAgentConfigNoUrl = _.clone(iotAgentConfig);
 const iotAgentConfigNoTypes = _.clone(iotAgentConfig);
 let iotamMock;
 
-describe('NGSI-v1 - Startup tests', function () {
+describe('Startup tests', function () {
     describe('When the IoT Agent is started without a "providerUrl" config parameter', function () {
         beforeEach(function () {
             delete iotAgentConfigNoUrl.providerUrl;

@@ -34,7 +34,8 @@ const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
-        port: '1026'
+        port: '1026',
+        ngsiVersion: 'v2'
     },
     server: {
         port: 4041,

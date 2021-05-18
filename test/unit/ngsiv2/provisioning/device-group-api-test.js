@@ -23,19 +23,20 @@
 
 /* eslint-disable no-unused-vars */
 
-const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
 const async = require('async');
 const nock = require('nock');
-const utils = require('../../tools/utils');
-const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
+const utils = require('../../../tools/utils');
+const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
 const request = require('request');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
-        port: '1026'
+        port: '1026',
+        ngsiVersion: 'v2'
     },
     server: {
         name: 'testAgent',
@@ -188,7 +189,7 @@ const optionsGet = {
     }
 };
 
-describe('Device Group Configuration API', function () {
+describe('NGSI-v2 - Device Group Configuration API', function () {
     beforeEach(function (done) {
         iotAgentLib.activate(iotAgentConfig, function () {
             groupRegistryMemory.clear(done);
@@ -412,58 +413,26 @@ describe('Device Group Configuration API', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post(
-                    '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createProvisionedDevice.json')
-                )
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
-                    )
-                )
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityRequests/unregisterProvisionedDevice.json'
-                    )
-                )
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'
-                    )
-                );
+                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post(
-                    '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/createProvisionedDevice.json')
-                )
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series(
                 [
@@ -937,11 +906,11 @@ describe('Device Group Configuration API', function () {
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
-                    '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContext3WithStatic.json')
+                    '/v2/entities/machine1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
-                .reply(200, utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
-
+                .query({ type: 'SensorMachine' })
+                .reply(204, {});
             async.series([async.apply(request, optionsCreation)], done);
         });
 

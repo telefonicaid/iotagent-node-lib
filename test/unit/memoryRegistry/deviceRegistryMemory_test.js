@@ -32,7 +32,8 @@ const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
-        port: '1026'
+        port: '1026',
+        ngsiVersion: 'v2'
     },
     server: {
         name: 'testAgent',
@@ -62,14 +63,11 @@ describe('In memory device registry', function () {
     describe('When a the registry is queried for a device using an arbitrary attribute', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
@@ -114,12 +112,9 @@ describe('In memory device registry', function () {
     describe('When a the registry is queried for devices in multiple services', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
@@ -160,12 +155,9 @@ describe('In memory device registry', function () {
     describe('When a the registry is queried for devices in a particular service', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
