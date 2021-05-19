@@ -1,4 +1,4 @@
-- Fix: check expression context before apply it in entity_name
+- Fix: check expression context before apply it in entity_name (#1040)
 - Fix: Do not transform attribute value using attribute type after apply expression plugin JEXL (#1036)
 - Fix: check entityId is valid after apply expression in multientity plugin (#1039)
 - Fix: check access to data in fillService facility
