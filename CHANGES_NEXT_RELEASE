@@ -1,3 +1,4 @@
+- Upgrade mongodb (3.2.3 -> 3.6.8) and mongoose (5.7.5 -> 5.7.7) deps
 - Fix: check expression context before apply it in entity_name (#1040)
 - Fix: Do not transform attribute value using attribute type after apply expression plugin JEXL (#1036)
 - Fix: check entityId is valid after apply expression in multientity plugin (#1039)
