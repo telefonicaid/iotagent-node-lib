@@ -1,4 +1,5 @@
 - Fix: use explicitAttrs defined in group is not defined at device level (#1045, #1016)
+- Add: prevent to update an entity with an empty payload
 - Fix: check expression context before apply it in entity_name (#1040)
 - Fix: Do not transform attribute value using attribute type after apply expression plugin JEXL (#1036)
 - Fix: check entityId is valid after apply expression in multientity plugin (#1039)
