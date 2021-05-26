@@ -1,3 +1,4 @@
+- Update: underscore dep from 1.9.1 to 1.12.1 due to security vulnerability
 - Fix: use explicitAttrs defined in group is not defined at device level (#1045, #1016)
 - Add: prevent to update an entity with an empty payload
 - Upgrade mongodb (3.2.3 -> 3.6.8) and mongoose (5.7.5 -> 5.7.7) deps
