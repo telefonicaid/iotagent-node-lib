@@ -314,11 +314,9 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 -   update (of type "Boolean"): false -> ${@update * 20} -> ${ 0 \* 20 } -> $ { 0 } -> $ { "0"} -> False
 -   update (of type "Boolean"): true -> ${trim(@updated)} -> ${trim("true")} -> $ { "true" } -> $ { "true"} -> True
 
-
-To allow support for expressions in combination with multi entity plugin, where
-the same attribute is generated for different entities out of different
-incoming attribute values (i.e. `object_id`), we introduced support for
-`object_id` in the expression context.
+To allow support for expressions in combination with multi entity plugin, where the same attribute is generated for
+different entities out of different incoming attribute values (i.e. `object_id`), we introduced support for `object_id`
+in the expression context.
 
 For example, the following device:
 
@@ -490,3 +488,29 @@ The following are some expressions not supported by the legacy expression langua
 | `array[1]+1`                                        | `3`                                 |
 | `object.name`                                       | `"John"`                            |
 | `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` |
+
+### Available functions
+
+-   'indexOf': (val, char) => String(val).indexOf(char));
+-   'length': (val) => String(val).length);
+-   'trim': (val) => String(val).trim());
+-   'substr': (val, int1, int2) => String(val).substr(int1, int2));
+-   'sumaarray': (arr) => arr.reduce((i, v) => i + v));
+-   'lengtharray': (arr) => arr.length);
+-   'typeof': (val) => typeof val);
+-   'isarray': (arr) => Array.isArray(arr));
+-   'isnan': (val) => isNaN(val));
+-   'parseint': (val) => parseInt(val));
+-   'parsefloat': (val) => parseFloat(val));
+-   'toisodate': (val) => new Date(val).toISOString());
+-   'tostring': (val) => val.toString());
+-   'urlencode': (val) => encodeURI(val));
+-   'urldecode': (val) => decodeURI(val));
+-   'replacestr': (str, from, to) => str.replace(from, to));
+-   'replaceregexp': (str, reg, to) => str.replace(new RegExp(reg), to));
+-   'replaceallstr': (str, from, to) => str.replaceAll(from, to));
+-   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg), to));
+-   'split': (str, ch) => str.split(ch));
+-   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc, curr, i, arr) => (acc ? acc : val <= curr ? (acc =
+    i) : (acc = null)), null)]
