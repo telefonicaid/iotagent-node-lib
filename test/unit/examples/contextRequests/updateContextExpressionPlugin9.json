@@ -1,0 +1,27 @@
+{
+  "contextElements": [
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "ws1",
+      "attributes": [
+        {
+          "name": "pressure25",
+          "type": "Hgmm",
+          "value": "52"
+        },
+        {
+          "name": "humidity12",
+          "type": "Percentage",
+          "value": "12"
+        },
+        {
+          "name": "weather",
+          "type": "Summary",
+          "value": "Humidity 6 and pressure 1040"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}
