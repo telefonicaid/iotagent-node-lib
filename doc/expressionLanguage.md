@@ -514,3 +514,4 @@ The following are some expressions not supported by the legacy expression langua
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
 -   'thmapper': (val, values, choices) => choices[values.reduce((acc, curr, i, arr) => (acc ? acc : val <= curr ? (acc =
     i) : (acc = null)), null)]
+-   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i
