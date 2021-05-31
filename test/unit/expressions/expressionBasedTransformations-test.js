@@ -271,7 +271,7 @@ describe('NGSI-v1 - Expression-based transformations plugin', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin5.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin9.json')
                 )
                 .reply(
                     200,

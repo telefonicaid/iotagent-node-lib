@@ -2,5 +2,9 @@
   "updated": {
     "value": true,
     "type": "Boolean"
+  },
+  "consumption_x":{
+      "type":"Number",
+      "value":null
   }
 }

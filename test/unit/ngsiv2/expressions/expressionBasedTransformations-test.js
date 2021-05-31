@@ -255,7 +255,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin16.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -296,7 +296,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin17.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -331,7 +331,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin18.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -366,7 +366,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin19.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -401,7 +401,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin20.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -437,7 +437,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin21.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -473,7 +473,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin22.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -509,7 +509,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin23.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -545,7 +545,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -581,7 +581,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -617,7 +617,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -653,7 +653,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin25.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -724,7 +724,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin25.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -759,7 +759,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin26.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -795,7 +795,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin27.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -829,7 +829,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
                 .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin28.json'
                     )
                 )
                 .query({ type: 'Light' })
