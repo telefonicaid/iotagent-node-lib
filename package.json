@@ -53,13 +53,13 @@
     "logops": "2.1.0",
     "moment": "~2.24.0",
     "moment-timezone": "~0.5.25",
-    "mongodb": "3.2.3",
-    "mongoose": "5.7.5",
+    "mongodb": "3.6.8",
+    "mongoose": "5.7.7",
     "mu2": "~0.5.20",
     "query-string": "6.5.0",
     "request": "2.88.0",
     "revalidator": "~0.3.1",
-    "underscore": "~1.9.1",
+    "underscore": "~1.12.1",
     "uuid": "~3.3.2"
   },
   "devDependencies": {
