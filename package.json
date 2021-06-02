@@ -59,7 +59,7 @@
     "query-string": "6.5.0",
     "request": "2.88.0",
     "revalidator": "~0.3.1",
-    "underscore": "~1.9.1",
+    "underscore": "~1.12.1",
     "uuid": "~3.3.2"
   },
   "devDependencies": {

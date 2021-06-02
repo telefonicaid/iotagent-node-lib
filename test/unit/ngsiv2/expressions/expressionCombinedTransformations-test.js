@@ -159,7 +159,7 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
                 .post(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -193,7 +193,7 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
                 .post(
                     '/v2/entities/ws2/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -248,7 +248,7 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
                 .post(
                     '/v2/entities/ws3/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -282,7 +282,7 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
                 .post(
                     '/v2/entities/ws4/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
