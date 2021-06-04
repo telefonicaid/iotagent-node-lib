@@ -509,9 +509,8 @@ The following are some expressions not supported by the legacy expression langua
 -   'replacestr': (str, from, to) => str.replace(from, to));
 -   'replaceregexp': (str, reg, to) => str.replace(new RegExp(reg), to));
 -   'replaceallstr': (str, from, to) => str.replaceAll(from, to));
--   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg), to));
+-   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
 -   'split': (str, ch) => str.split(ch));
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc, curr, i, arr) => (acc ? acc : val <= curr ? (acc =
-    i) : (acc = null)), null)]
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)],
 -   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i
