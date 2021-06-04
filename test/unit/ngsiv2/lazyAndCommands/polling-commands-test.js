@@ -229,22 +229,22 @@ describe('NGSI-v2 - Polling commands', function () {
                 done();
             });
         });
-        // it('should store the commands in the queue', function (done) {
-        //     iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
-        //         callback(null);
-        //     });
+        it('should store the commands in the queue', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null);
+            });
 
-        //     request(options, function (error, response, body) {
-        //         iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
-        //             should.not.exist(error);
-        //             listCommands.count.should.equal(1);
-        //             listCommands.commands[0].name.should.equal('position');
-        //             listCommands.commands[0].type.should.equal('Array');
-        //             listCommands.commands[0].value.should.equal('[28, -104, 23]');
-        //             done();
-        //         });
-        //     });
-        // });
+            request(options, function (error, response, body) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    should.not.exist(error);
+                    listCommands.count.should.equal(1);
+                    listCommands.commands[0].name.should.equal('position');
+                    listCommands.commands[0].type.should.equal('Array');
+                    listCommands.commands[0].value.should.equal('[28, -104, 23]');
+                    done();
+                });
+            });
+        });
     });
 
     describe('When a command arrives with multiple values in the value field', function () {
