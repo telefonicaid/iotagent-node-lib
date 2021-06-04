@@ -123,7 +123,7 @@ const device3 = {
 
 describe('NGSI-v2 - Polling commands', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         nock.cleanAll();
 
