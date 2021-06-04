@@ -111,11 +111,11 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs')
+                .patch('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
                 .times(4)
                 .reply(204)
-                .post('/v2/entities/light1/attrs', function (body) {
+                .patch('/v2/entities/light1/attrs', function (body) {
                     let metadatas = 0;
                     for (const i in body) {
                         if (body[i].metadata) {

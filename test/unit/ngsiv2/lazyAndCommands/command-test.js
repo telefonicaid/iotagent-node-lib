@@ -267,7 +267,7 @@ describe('NGSI-v2 - Command functionalities', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/r2d2/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandFinish.json')
                 )
@@ -291,7 +291,7 @@ describe('NGSI-v2 - Command functionalities', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/r2d2/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandError.json')
                 )
