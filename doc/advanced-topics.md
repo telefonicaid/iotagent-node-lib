@@ -422,7 +422,7 @@ how the value is then progressed to the device are protocol-specific.
 
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
 creates a new device and a new entity according to the group config. Defining the parameter `autoprovision` to `false` 
-when provisioning the device or the group, the IoTA to reject the measure at the southbound, allowing only to persist the 
+when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
 data to devices that are already provisioned. 
 
 #### Explicitly defined attributes (explicitAttrs)
@@ -430,7 +430,8 @@ data to devices that are already provisioned. 
 If the parameter is not defined in the device or group provision, this parameter is stored in the Context Broker by adding 
 a new attribute to the entity with the same name of the parameter. By adding the parameter `explicitAttrs` with `true` value
 to device or group provision, the IoTAgent rejects the parameters received from the measure that are not defined or in the 
-device or group provision, persisting only the one defined in the provision.
+device or group provision, persisting only the one defined in the provision. If `explicitAttrs` is provided both at device 
+and group level, the device level takes precedence
 
 #### Configuring operation to persist the data in Context Broker (appendMode)
 
