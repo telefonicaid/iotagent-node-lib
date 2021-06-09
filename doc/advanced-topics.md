@@ -70,7 +70,7 @@ values. If the latitude and longitude are received as separate measures, the
 ```
 
 For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
-accepted. Provided the `type` is oned correctly, the `value` may be defined using any of the following formats:
+accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following formats:
 
 -   a comma delimited string
 
