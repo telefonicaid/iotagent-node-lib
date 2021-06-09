@@ -1,5 +1,25 @@
 ## Advanced Topics
 
+* [Secured access to the Context Broker](#secured-access-to-the-context-broker)
+* [GeoJSON support this only applies for NGSI LD, not for NGSIv1 and NGSIv2](#geojson-support-this-only-applies-for-ngsi-ld-not-for-ngsiv1-and-ngsiv2)
+* [Metadata support](#metadata-support)
+    * [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
+* [Data mapping plugins](#data-mapping-plugins)
+    * [Development](#development)
+    * [Provided plugins](#provided-plugins)
+        * [Timestamp Compression plugin compressTimestamp](#timestamp-compression-plugin-compresstimestamp)
+        * [Attribute Alias plugin attributeAlias](#attribute-alias-plugin-attributealias)
+        * [Event plugin addEvents](#event-plugin-addevents)
+        * [Timestamp Processing Plugin timestampProcess](#timestamp-processing-plugin-timestampprocess)
+        * [Expression Translation plugin expressionTransformation](#expression-translation-plugin-expressiontransformation)
+        * [Multientity plugin multiEntity](#multientity-plugin-multientity)
+        * [Bidirectionality plugin bidirectional](#bidirectionality-plugin-bidirectional)
+    * [Autoprovision configuration autoprovision](#autoprovision-configuration-autoprovision)
+    * [Explicitly defined attributes explicitAttrs](#explicitly-defined-attributes-explicitattrs)
+    * [Configuring operation to persist the data in Context Broker appendMode](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+* [Old IoTAgent data migration](#old-iotagent-data-migration)
+
+
 ### Secured access to the Context Broker
 
 For access to instances of the Context Broker secured with a
@@ -423,7 +443,8 @@ how the value is then progressed to the device are protocol-specific.
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
 creates a new device and a new entity according to the group config. Defining the parameter `autoprovision` to `false` 
 when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
-data to devices that are already provisioned. 
+data to devices that are already provisioned. It makes no sense to use this parameter in device provisioning since it is 
+intended to avoid provisioning devices (and for it to be effective, it would have to be provisional)
 
 #### Explicitly defined attributes (explicitAttrs)
 
