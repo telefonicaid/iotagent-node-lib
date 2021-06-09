@@ -1,4 +1,4 @@
-- Fix: check isNaN value in jexl extractContext to avoid misbehaviours
+- Fix: check isNaN value in jexl extractContext to avoid misbehaviours (#1066)
 - Fix: apply NGSIv2 timestamp properly to array of entities
 - Fix: Simplify contextAvailable for JEXL perser allowing null and undefined substitutions (#1053)
 - Update: add more functions to JEXL transformations (#1052)
