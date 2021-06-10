@@ -4,19 +4,23 @@
 * [GeoJSON support this only applies for NGSI LD, not for NGSIv1 and NGSIv2](#geojson-support-this-only-applies-for-ngsi-ld-not-for-ngsiv1-and-ngsiv2)
 * [Metadata support](#metadata-support)
     * [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
+* [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
+* [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+* [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+* [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
 * [Data mapping plugins](#data-mapping-plugins)
     * [Development](#development)
     * [Provided plugins](#provided-plugins)
-        * [Timestamp Compression plugin compressTimestamp](#timestamp-compression-plugin-compresstimestamp)
-        * [Attribute Alias plugin attributeAlias](#attribute-alias-plugin-attributealias)
-        * [Event plugin addEvents](#event-plugin-addevents)
-        * [Timestamp Processing Plugin timestampProcess](#timestamp-processing-plugin-timestampprocess)
-        * [Expression Translation plugin expressionTransformation](#expression-translation-plugin-expressiontransformation)
-        * [Multientity plugin multiEntity](#multientity-plugin-multientity)
-        * [Bidirectionality plugin bidirectional](#bidirectionality-plugin-bidirectional)
-    * [Autoprovision configuration autoprovision](#autoprovision-configuration-autoprovision)
-    * [Explicitly defined attributes explicitAttrs](#explicitly-defined-attributes-explicitattrs)
-    * [Configuring operation to persist the data in Context Broker appendMode](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+        * [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
+        * [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
+        * [Event plugin (addEvents)](#event-plugin-addevents)
+        * [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
+        * [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
+        * [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
+        * [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
+    * [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+    * [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+    * [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
 * [Old IoTAgent data migration](#old-iotagent-data-migration)
 
 
@@ -257,6 +261,29 @@ updated as shown:
 }
 ```
 
+### Autoprovision configuration (autoprovision)
+
+By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
+creates a new device and a new entity according to the group config. Defining the parameter `autoprovision` to `false` 
+when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
+data to devices that are already provisioned. It makes no sense to use this parameter in device provisioning since it is 
+intended to avoid provisioning devices (and for it to be effective, it would have to be provisional)
+
+### Explicitly defined attributes (explicitAttrs)
+
+If the parameter is not defined in the device or group provision, this parameter is stored in the Context Broker by adding 
+a new attribute to the entity with the same name of the parameter. By adding the parameter `explicitAttrs` with `true` value
+to device or group provision, the IoTAgent rejects the parameters received from the measure that are not defined or in the 
+device or group provision, persisting only the one defined in the provision. If `explicitAttrs` is provided both at device 
+and group level, the device level takes precedence
+
+### Configuring operation to persist the data in Context Broker (appendMode)
+
+This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the `IOTA_APPEND_MODE`
+environment variable (more info [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). 
+If this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the 
+default UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
 ### Data mapping plugins
 
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations
@@ -437,29 +464,6 @@ subscription payload.
 For each attribute in the `reverse` array, an expression must be defined to calculate its value based on the
 notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
 how the value is then progressed to the device are protocol-specific.
-
-#### Autoprovision configuration (autoprovision)
-
-By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
-creates a new device and a new entity according to the group config. Defining the parameter `autoprovision` to `false` 
-when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
-data to devices that are already provisioned. It makes no sense to use this parameter in device provisioning since it is 
-intended to avoid provisioning devices (and for it to be effective, it would have to be provisional)
-
-#### Explicitly defined attributes (explicitAttrs)
-
-If the parameter is not defined in the device or group provision, this parameter is stored in the Context Broker by adding 
-a new attribute to the entity with the same name of the parameter. By adding the parameter `explicitAttrs` with `true` value
-to device or group provision, the IoTAgent rejects the parameters received from the measure that are not defined or in the 
-device or group provision, persisting only the one defined in the provision. If `explicitAttrs` is provided both at device 
-and group level, the device level takes precedence
-
-#### Configuring operation to persist the data in Context Broker (appendMode)
-
-This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the `IOTA_APPEND_MODE`
-environment variable (more info [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). 
-If this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the 
-default UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
 ### Old IoTAgent data migration
 
