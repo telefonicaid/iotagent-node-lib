@@ -1,7 +1,7 @@
 ## Advanced Topics
 
 * [Secured access to the Context Broker](#secured-access-to-the-context-broker)
-* [GeoJSON support this only applies for NGSI LD, not for NGSIv1 and NGSIv2](#geojson-support-this-only-applies-for-ngsi-ld-not-for-ngsiv1-and-ngsiv2)
+* [GeoJSON support this only applies for NGSI-LD, not for NGSI-v1 and NGSI-v2](#geojson-support-this-only-applies-for-ngsi-ld-not-for-ngsi-v1-and-ngsi-v2)
 * [Metadata support](#metadata-support)
     * [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
 * [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
@@ -70,7 +70,7 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
 
-### GeoJSON support (this only applies for NGSI-LD, not for NGSIv1 and NGSIv2)
+### GeoJSON support (this only applies for NGSI-LD, not for NGSI-v1 and NGSI-v2)
 
 The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
 `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
