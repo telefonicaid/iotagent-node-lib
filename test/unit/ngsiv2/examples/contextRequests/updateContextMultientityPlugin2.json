@@ -1,5 +1,5 @@
 {
-  "actionType": "append",
+  "actionType": "update",
   "entities": [
     {
       "id": "ws4",

@@ -127,7 +127,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
@@ -167,7 +167,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
@@ -203,7 +203,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
@@ -394,7 +394,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
@@ -534,7 +534,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
@@ -622,7 +622,7 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
-                    .post(
+                    .patch(
                         '/v2/entities/machine1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
@@ -635,7 +635,7 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
-                    .post(
+                    .patch(
                         '/v2/entities/machine1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
@@ -764,7 +764,7 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
-                    .post(
+                    .patch(
                         '/v2/entities/Light1/attrs',
                         utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext4.json')
                     )
@@ -844,7 +844,7 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
-                    .post(
+                    .patch(
                         '/v2/entities/machine1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
