@@ -271,10 +271,10 @@ intended to avoid provisioning devices (and for it to be effective, it would hav
 
 ### Explicitly defined attributes (explicitAttrs)
 
-If the parameter is not defined in the device or group provision, this parameter is stored in the Context Broker by adding 
-a new attribute to the entity with the same name of the parameter. By adding the parameter `explicitAttrs` with `true` value
-to device or group provision, the IoTAgent rejects the parameters received from the measure that are not defined or in the 
-device or group provision, persisting only the one defined in the provision. If `explicitAttrs` is provided both at device 
+If a given measure is not defined in the mappings of the device or group provision, the measure is stored in the Context Broker by adding 
+a new attribute to the entity with the same name of the measure. By adding the field `explicitAttrs` with `true` value
+to device or group provision, the IoTAgent rejects the measures that are not defined in the 
+mappings of device or group provision, persisting only the one defined in the mappings of the provision. If `explicitAttrs` is provided both at device 
 and group level, the device level takes precedence.
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
