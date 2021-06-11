@@ -252,7 +252,7 @@ Some transformation plugins also allow the use of the following optional attribu
     be defined as expressions, using the [Expression Language definition](expressionLanguage.md).
 -   **entity_type**: configures the type of an alternative entity.
 -   **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
-    in the [Data Mapping Plugins section](#data-mapping-plugins) for details.
+    in the [Data Mapping Plugins section](advanced-topics.md#bidirectionality-plugin-bidirectional) for details.
 
 See the transformation plugins Section for more details.
 
