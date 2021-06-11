@@ -1,3 +1,4 @@
+- Fix: use autoprovision defined in group is not defined at device level, removing the relationship with appendMode (#1003)"
 - Fix: apply NGSIv2 timestamp properly to array of entities
 - Fix: Simplify contextAvailable for JEXL perser allowing null and undefined substitutions (#1053)
 - Update: add more functions to JEXL transformations (#1052)
