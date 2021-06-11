@@ -104,13 +104,12 @@ E.g.: if a device with the following provisioning information is provisioned in 
 {
    "name":"location",
    "type":"geo:point",
-   "expression": "${latitude}, ${longitude}"
+   "expression": "${@latitude}, ${@longitude}"
 },
 {
    "name":"fillingLevel",
    "type":"Number",
    "expression": "${@level / 100}",
-   "cast": "Number"
 },
 ```
 
