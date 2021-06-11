@@ -264,9 +264,9 @@ updated as shown:
 ### Autoprovision configuration (autoprovision)
 
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
-creates a new device and a new entity according to the group config. Defining the parameter `autoprovision` to `false` 
+creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false` 
 when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
-data to devices that are already provisioned. It makes no sense to use this parameter in device provisioning since it is 
+data to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is 
 intended to avoid provisioning devices (and for it to be effective, it would have to be provisional).
 
 ### Explicitly defined attributes (explicitAttrs)
