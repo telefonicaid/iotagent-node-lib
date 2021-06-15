@@ -432,14 +432,14 @@ When a device is provisioned with bidirectional attributes, the IoTAgent subscri
 change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
 provisioning payload to the notification, and calls the underlying notification handler with the transformed entity.
 
-The following `attributes` section shows an example of the plugin configuration:
+The following `attributes` section shows an example of the plugin configuration (using IOTA_AUTOCAST=false to avoid translation from geo:point to geo:json)
 
 ```json
       "attributes": [
         {
           "name":"location",
           "type":"geo:point",
-          "expression": "${latitude}, ${longitude}",
+          "expression": "${@latitude}, ${@longitude}",
           "reverse": [
             {
               "object_id":"longitude",
