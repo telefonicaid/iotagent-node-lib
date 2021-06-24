@@ -98,7 +98,7 @@ describe('NGSI-v2 - Event plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/light1/attrs', function (body) {
+                .patch('/v2/entities/light1/attrs', function (body) {
                     const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
 
                     return body.activation.value.match(dateRegex);

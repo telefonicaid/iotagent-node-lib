@@ -255,7 +255,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
@@ -296,7 +296,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
@@ -331,7 +331,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
@@ -366,7 +366,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
@@ -402,7 +402,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
@@ -438,7 +438,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
@@ -474,7 +474,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
@@ -510,7 +510,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
@@ -545,7 +545,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
@@ -581,7 +581,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
@@ -615,7 +615,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
@@ -649,7 +649,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
@@ -688,7 +688,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
