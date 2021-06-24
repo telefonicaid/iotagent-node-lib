@@ -189,7 +189,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post('/v2/entities/light1/attrs')
+                .patch('/v2/entities/light1/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
 
@@ -211,7 +211,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post('/v2/entities/light1/attrs')
+                .patch('/v2/entities/light1/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
 
@@ -259,7 +259,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities/light2/attrs')
+                .patch('/v2/entities/light2/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
             request(optionsCreationLD, function (error, response, body) {

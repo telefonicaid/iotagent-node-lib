@@ -156,7 +156,7 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
@@ -190,7 +190,7 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws2/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
@@ -245,7 +245,7 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws3/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
@@ -279,7 +279,7 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws4/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin15.json'
