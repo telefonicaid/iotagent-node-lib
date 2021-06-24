@@ -110,7 +110,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
@@ -150,7 +150,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeopropertiesAsString.json'
@@ -192,7 +192,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
@@ -228,7 +228,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties1.json'
@@ -269,7 +269,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
@@ -309,7 +309,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties2.json'
@@ -346,7 +346,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartGondor')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties3.json'
@@ -388,7 +388,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'
@@ -428,7 +428,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartGondor')
-                    .post(
+                    .patch(
                         '/v2/entities/light1/attrs',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextGeoproperties4.json'

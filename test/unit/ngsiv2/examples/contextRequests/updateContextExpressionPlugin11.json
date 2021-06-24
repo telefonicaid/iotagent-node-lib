@@ -2,5 +2,9 @@
   "consumption": {
     "value": 52,
     "type": "Number"
+  },
+  "consumption_x":{
+    "type":"Number",
+    "value":null
   }
 }

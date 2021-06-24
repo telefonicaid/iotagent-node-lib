@@ -41,9 +41,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 
@@ -52,7 +52,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -61,7 +61,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
@@ -70,7 +70,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDeviceActiveAtts.json')
@@ -79,7 +79,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
     beforeEach(function (done) {
         iotAgentLib.activate(iotAgentConfig, function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -95,7 +95,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -104,7 +104,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -120,7 +120,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -129,7 +129,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
                 .reply(
@@ -140,7 +140,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -170,7 +170,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'DELETE'
@@ -189,7 +189,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -208,7 +208,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -227,7 +227,7 @@ describe('NGSI-v1 - Device provisioning API: Remove provisioned devices', functi
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light3',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'DELETE'

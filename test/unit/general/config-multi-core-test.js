@@ -52,7 +52,7 @@ const iotAgentConfig = {
             ]
         }
     },
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     throttling: 'PT5S'
 };

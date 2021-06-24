@@ -95,15 +95,15 @@ const iotAgentConfig = {
             active: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 
@@ -114,7 +114,7 @@ describe('NGSI-v1 - Command functionalities', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
                 '/NGSI9/registerContext',
@@ -126,7 +126,7 @@ describe('NGSI-v1 - Command functionalities', function () {
             );
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
             .reply(
@@ -182,14 +182,14 @@ describe('NGSI-v1 - Command functionalities', function () {
                 updateAction: 'UPDATE'
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -260,7 +260,7 @@ describe('NGSI-v1 - Command functionalities', function () {
             let serviceAndSubservice = false;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
-                serviceAndSubservice = service === 'smartGondor' && subservice === 'gardens';
+                serviceAndSubservice = service === 'smartgondor' && subservice === 'gardens';
                 callback(null, {
                     id,
                     type,
@@ -283,7 +283,7 @@ describe('NGSI-v1 - Command functionalities', function () {
     describe('When an update arrives from the south bound for a registered command', function () {
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -312,7 +312,7 @@ describe('NGSI-v1 - Command functionalities', function () {
     describe('When an error command arrives from the south bound for a registered command', function () {
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',

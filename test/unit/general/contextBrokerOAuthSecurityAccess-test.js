@@ -52,7 +52,7 @@ const iotAgentConfig = {
     },
     types: {
         Light: {
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'electricity',
             trust: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3',
             type: 'Light',
@@ -82,9 +82,9 @@ const iotAgentConfig = {
             active: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 
@@ -123,7 +123,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                 .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
@@ -162,7 +162,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                 .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
@@ -197,7 +197,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                 );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
@@ -232,7 +232,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                 .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
@@ -262,7 +262,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                     './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'
                 ),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': 'electricity'
                 }
             };
@@ -281,7 +281,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                 contextBrokerMock = nock('http://192.168.1.1:1026');
 
                 contextBrokerMock
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'electricity')
                     .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                     .post(
@@ -331,7 +331,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
         });
 
         it('subscribe requests use auth header', function (done) {
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
@@ -361,7 +361,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with OAuth2 provider', 
                     utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
                 );
 
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();
@@ -412,7 +412,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
@@ -459,7 +459,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
@@ -551,7 +551,7 @@ describe('Secured access to the Context Broker with OAuth2 provider (FIWARE Keyr
                 );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
@@ -582,7 +582,7 @@ describe(
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -638,7 +638,7 @@ describe(
                     );
 
                 contextBrokerMock = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                     .post(
@@ -651,7 +651,7 @@ describe(
                     );
 
                 contextBrokerMock2 = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
                     .post(
@@ -705,7 +705,7 @@ describe(
                 method: 'POST',
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice2.json'),
                 headers: {
-                    'fiware-service': 'TestService',
+                    'fiware-service': 'testservice',
                     'fiware-servicepath': '/testingPath'
                 }
             };
@@ -753,7 +753,7 @@ describe(
                     );
 
                 contextBrokerMock = nock('http://unexistenthost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer asd752e377680acd1349a3ed59db855a1db07ere')
                     .post(
@@ -770,7 +770,7 @@ describe(
                     );
 
                 contextBrokerMock2 = nock('http://unexistenthost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
                     .post(
@@ -787,7 +787,7 @@ describe(
                     );
 
                 contextBrokerMock3 = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
                     .post(
@@ -835,7 +835,7 @@ describe(
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -863,7 +863,7 @@ describe(
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'TestService')
+                    .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
                     .post(
