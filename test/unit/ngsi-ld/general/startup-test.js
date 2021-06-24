@@ -56,7 +56,7 @@ const iotAgentConfig = {
             ]
         }
     },
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 let iotamMock;
 

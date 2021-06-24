@@ -114,9 +114,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     throttling: 'PT5S'
 };
@@ -154,11 +154,11 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin1.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin6.json')
                 )
                 .reply(
                     200,
@@ -190,7 +190,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -232,11 +232,11 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin2.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin7.json')
                 )
                 .reply(
                     200,
@@ -273,7 +273,7 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -309,11 +309,11 @@ describe('Javascript Expression Language (JEXL) based transformations plugin ', 
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin3.json')
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateContextExpressionPlugin8.json')
                 )
                 .reply(
                     200,

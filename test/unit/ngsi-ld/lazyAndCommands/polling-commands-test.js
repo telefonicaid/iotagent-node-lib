@@ -108,16 +108,16 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     pollingExpiration: 200,
     pollingDaemonFrequency: 20
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     polling: true
 };
@@ -129,7 +129,7 @@ describe('NGSI-LD - Polling commands', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .post('/ngsi-ld/v1/csourceRegistrations/')
             .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
@@ -162,14 +162,14 @@ describe('NGSI-LD - Polling commands', function () {
                 value: [28, -104, 23]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/',
                     utils.readExampleFile(
@@ -224,7 +224,7 @@ describe('NGSI-LD - Polling commands', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -251,14 +251,14 @@ describe('NGSI-LD - Polling commands', function () {
                 }
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
 
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/',
@@ -306,14 +306,14 @@ describe('NGSI-LD - Polling commands', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
 
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/',
@@ -324,7 +324,7 @@ describe('NGSI-LD - Polling commands', function () {
                 .reply(204);
 
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
 
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/',
@@ -346,7 +346,7 @@ describe('NGSI-LD - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -362,7 +362,7 @@ describe('NGSI-LD - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

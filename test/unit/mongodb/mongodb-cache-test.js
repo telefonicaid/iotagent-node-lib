@@ -121,16 +121,16 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     pollingExpiration: 200,
     pollingDaemonFrequency: 20
 };
 const device3 = {
     id: 'cachedDevice',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     polling: true,
     cache: true
@@ -143,13 +143,13 @@ describe('Mongo-DB Redis cache ', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/entities?options=upsert')
             .reply(204);
@@ -191,16 +191,16 @@ describe('Mongo-DB Redis cache ', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
@@ -252,7 +252,7 @@ describe('Mongo-DB Redis cache ', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -285,16 +285,16 @@ describe('Mongo-DB Redis cache ', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
@@ -338,25 +338,25 @@ describe('Mongo-DB Redis cache ', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
 
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/Robot:cachedDevice/attrs?type=Robot',
                     utils.readExampleFile(
                         './test/unit//ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
@@ -376,7 +376,7 @@ describe('Mongo-DB Redis cache ', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -392,7 +392,7 @@ describe('Mongo-DB Redis cache ', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'cachedDevice', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'cachedDevice', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

@@ -6,7 +6,7 @@
       "id": "FirstMicroLight"
     }
   ],
-  "reference": "http://smartGondor.com/notify",
+  "reference": "http://smartgondor.com/notify",
   "duration": "P1M",
   "notifyConditions": [
     {

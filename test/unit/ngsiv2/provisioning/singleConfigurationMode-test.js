@@ -43,17 +43,17 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     singleConfigurationMode: true,
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 const groupCreation = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -62,7 +62,7 @@ const deviceCreation = {
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -88,7 +88,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionDuplicateGroup.json'),
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -113,7 +113,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDuplicatedDev.json'),
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -122,7 +122,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -131,7 +131,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -177,7 +177,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -186,7 +186,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -228,7 +228,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'GET',
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/testingPath'
             }
         };
@@ -238,7 +238,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -247,7 +247,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -277,7 +277,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         beforeEach(function (done) {
             nock.cleanAll();
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
                     '/v2/registrations',
@@ -289,7 +289,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
                     '/v2/entities?options=upsert',

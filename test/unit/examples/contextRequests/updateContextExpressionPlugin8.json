@@ -1,0 +1,22 @@
+{
+  "contextElements": [
+    {
+      "type": "WeatherStation",
+      "isPattern": "false",
+      "id": "ws1",
+      "attributes": [
+        {
+          "name": "pressure",
+          "type": "Hgmm",
+          "value": 1040
+        },
+        {
+            "name":"weather",
+            "type":"Summary",
+            "value":"Humidity NaN and pressure 1040"
+        }
+      ]
+    }
+  ],
+  "updateAction": "UPDATE"
+}

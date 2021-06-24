@@ -57,7 +57,7 @@ const iotAgentConfig = {
             ]
         }
     },
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const iotAgentConfigNoUrl = _.clone(iotAgentConfig);

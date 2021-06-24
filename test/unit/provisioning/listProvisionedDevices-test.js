@@ -41,9 +41,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 
@@ -58,7 +58,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -68,7 +68,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
@@ -78,7 +78,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             method: 'POST',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionFullDevice.json')
@@ -155,7 +155,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -218,7 +218,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -253,7 +253,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/LightFull',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -280,7 +280,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light84',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -299,7 +299,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?limit=3',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -312,7 +312,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 },
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -328,7 +328,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
                 .times(10)
@@ -377,7 +377,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices?offset=3',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'
@@ -388,7 +388,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                 method: 'POST',
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 },
                 json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -406,7 +406,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/NGSI9/registerContext')
                 .times(10)
@@ -442,7 +442,7 @@ describe('NGSI-v1 - Device provisioning API: List provisioned devices', function
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'GET'

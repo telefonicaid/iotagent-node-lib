@@ -104,9 +104,9 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     pollingExpiration: 200,
     pollingDaemonFrequency: 20
@@ -114,7 +114,7 @@ const iotAgentConfig = {
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     polling: true
 };
@@ -124,7 +124,7 @@ describe('NGSI-v1 - Polling commands', function () {
         logger.setLevel('FATAL');
         nock.cleanAll();
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
                 '/NGSI9/registerContext',
@@ -136,7 +136,7 @@ describe('NGSI-v1 - Polling commands', function () {
             );
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v1/updateContext')
             .reply(
@@ -183,14 +183,14 @@ describe('NGSI-v1 - Polling commands', function () {
                 updateAction: 'UPDATE'
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -249,7 +249,7 @@ describe('NGSI-v1 - Polling commands', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
@@ -286,14 +286,14 @@ describe('NGSI-v1 - Polling commands', function () {
                 updateAction: 'UPDATE'
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -348,14 +348,14 @@ describe('NGSI-v1 - Polling commands', function () {
                 updateAction: 'UPDATE'
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
 
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -369,7 +369,7 @@ describe('NGSI-v1 - Polling commands', function () {
                 );
 
             statusAttributeMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v1/updateContext',
@@ -394,7 +394,7 @@ describe('NGSI-v1 - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
                         listCommands.count.should.equal(0);
                         done();
@@ -410,7 +410,7 @@ describe('NGSI-v1 - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 setTimeout(function () {
-                    iotAgentLib.commandQueue('smartGondor', 'gardens', 'r2d2', function (error, listCommands) {
+                    iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
                         done();
                     });

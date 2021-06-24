@@ -24,7 +24,7 @@
  */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
- // FIXME: #1012
+// FIXME: #1012
 //const utils = require('../../../tools/utils');
 //const should = require('should');
 const logger = require('logops');
@@ -52,9 +52,9 @@ const logger = require('logops');
 //            ]
 //        }
 //    },
-//    service: 'smartGondor',
+//    service: 'smartgondor',
 //    subservice: 'gardens',
-//    providerUrl: 'http://smartGondor.com'
+//    providerUrl: 'http://smartgondor.com'
 //};
 
 describe('NGSI-v2 - Geo-JSON types autocast test', function () {
@@ -83,7 +83,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(
@@ -125,7 +125,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(
@@ -161,7 +161,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //         nock.cleanAll();
 
     //         contextBrokerMock = nock('http://192.168.1.1:1026')
-    //             .matchHeader('fiware-service', 'smartGondor')
+    //             .matchHeader('fiware-service', 'smartgondor')
     //             .post(
     //                 '/v2/entities/light1/attrs',
     //                 utils.readExampleFile(
@@ -202,7 +202,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(
@@ -241,7 +241,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(
@@ -277,7 +277,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //         nock.cleanAll();
 
     //         contextBrokerMock = nock('http://192.168.1.1:1026')
-    //             .matchHeader('fiware-service', 'smartGondor')
+    //             .matchHeader('fiware-service', 'smartgondor')
     //             .post(
     //                 '/v2/entities/light1/attrs',
     //                 utils.readExampleFile(
@@ -319,7 +319,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(
@@ -358,7 +358,7 @@ describe('NGSI-v2 - Geo-JSON types autocast test', function () {
     //             nock.cleanAll();
 
     //             contextBrokerMock = nock('http://192.168.1.1:1026')
-    //                 .matchHeader('fiware-service', 'smartGondor')
+    //                 .matchHeader('fiware-service', 'smartgondor')
     //                 .post(
     //                     '/v2/entities/light1/attrs',
     //                     utils.readExampleFile(

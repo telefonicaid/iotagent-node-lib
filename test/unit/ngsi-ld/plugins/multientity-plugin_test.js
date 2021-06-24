@@ -216,9 +216,9 @@ const iotAgentConfig = {
             lazy: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-LD - Multi-entity plugin', function () {
@@ -258,7 +258,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -290,7 +290,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -327,7 +327,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -365,7 +365,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -406,7 +406,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
         beforeEach(function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
 
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
@@ -444,7 +444,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -479,7 +479,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
@@ -530,7 +530,7 @@ describe('NGSI-LD - Multi-entity plugin', function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
@@ -606,7 +606,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
 
         it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
@@ -637,7 +637,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
 
         it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
@@ -669,7 +669,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
 
         it('should propagate user provider timestamp to mapped entities', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -729,7 +729,7 @@ describe('NGSI-LD - Multi-entity plugin is executed for a command update for a r
 
     it('Should send the update to the context broker', function (done) {
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .post(
                 '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                 utils.readExampleFile(

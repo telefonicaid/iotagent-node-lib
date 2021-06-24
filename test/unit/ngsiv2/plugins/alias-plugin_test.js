@@ -104,9 +104,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Attribute alias plugin', function () {
@@ -145,9 +145,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin1.json')
                 )
@@ -176,9 +176,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin2.json')
                 )
@@ -207,9 +207,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
@@ -239,9 +239,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
@@ -271,9 +271,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin4.json')
                 )
@@ -303,9 +303,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin5.json')
                 )
@@ -335,9 +335,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin6.json')
                 )
@@ -367,9 +367,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin7.json')
                 )
@@ -399,9 +399,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin8.json')
                 )
@@ -431,9 +431,9 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin9.json')
                 )

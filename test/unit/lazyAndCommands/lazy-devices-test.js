@@ -105,27 +105,27 @@ const iotAgentConfig = {
             }
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 const device2 = {
     id: 'motion1',
     type: 'Motion',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 const device3 = {
     id: 'TestRobotPre',
     type: 'RobotPre',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     internalAttributes: {
         lwm2mResourceMapping: {
@@ -177,7 +177,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 updateAction: 'APPEND'
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -186,7 +186,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -200,7 +200,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -250,7 +250,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 attributes: ['dimming']
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -273,7 +273,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -287,7 +287,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -333,7 +333,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 attributes: ['dimming']
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -342,7 +342,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -356,7 +356,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -402,7 +402,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 ]
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -425,7 +425,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -439,7 +439,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -485,7 +485,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 attributes: []
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -508,7 +508,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -522,7 +522,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -568,7 +568,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 attributes: ['moving', 'location']
             },
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -590,7 +590,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -604,7 +604,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -643,7 +643,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             body: 'This is a body in text format',
             headers: {
                 'Content-Type': 'text/plain',
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             }
         };
@@ -665,7 +665,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -679,7 +679,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -752,7 +752,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/NGSI9/registerContext',
@@ -766,7 +766,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v1/updateContext')
                 .reply(
@@ -819,7 +819,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                     updateAction: 'APPEND'
                 },
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': 'gardens'
                 }
             };
@@ -828,7 +828,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post(
                         '/NGSI9/registerContext',
@@ -842,7 +842,7 @@ describe('NGSI-v1 - IoT Agent Lazy Devices', function () {
                     );
 
                 contextBrokerMock
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post('/v1/updateContext')
                     .reply(

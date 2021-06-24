@@ -45,9 +45,9 @@ const iotAgentConfig = {
         persistence: true
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 let oldConfig;
