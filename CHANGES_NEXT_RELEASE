@@ -1,0 +1,1 @@
+- Rename provided jexl function `sumaarray` to `addreduce` (#1073)
