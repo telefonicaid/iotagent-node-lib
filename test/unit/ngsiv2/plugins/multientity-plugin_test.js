@@ -195,21 +195,21 @@ const iotAgentConfig = {
                 {
                     object_id: 'v1',
                     name: 'vol',
-                    expression : '${@v1*100}',
+                    expression: '${@v1*100}',
                     type: 'Number',
                     entity_name: 'WeatherStation1'
                 },
                 {
                     object_id: 'v2',
                     name: 'vol',
-                    expression : '${@v2*100}',
+                    expression: '${@v2*100}',
                     type: 'Number',
                     entity_name: 'WeatherStation2'
                 },
                 {
                     object_id: 'v',
                     name: 'vol',
-                    expression : '${@v*100}',
+                    expression: '${@v*100}',
                     type: 'Number'
                 }
             ]
@@ -223,21 +223,21 @@ const iotAgentConfig = {
                 {
                     object_id: 'v1',
                     name: 'vol',
-                    expression : 'v1 * 100',
+                    expression: 'v1 * 100',
                     type: 'Number',
                     entity_name: 'WeatherStation1'
                 },
                 {
                     object_id: 'v2',
                     name: 'vol',
-                    expression : 'v2 * 100',
+                    expression: 'v2 * 100',
                     type: 'Number',
                     entity_name: 'WeatherStation2'
                 },
                 {
                     object_id: 'v',
                     name: 'vol',
-                    expression : 'v * 100',
+                    expression: 'v * 100',
                     type: 'Number'
                 }
             ]
@@ -295,9 +295,9 @@ const iotAgentConfig = {
             lazy: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
@@ -339,7 +339,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -372,7 +372,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -410,7 +410,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -449,7 +449,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -492,7 +492,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -535,7 +535,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -554,7 +554,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             });
         });
     });
-    
 
     describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute)', function () {
         const values = [
@@ -579,7 +578,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -622,7 +621,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -660,7 +659,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -696,7 +695,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post(
                         '/v2/op/update',
@@ -748,7 +747,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 nock.cleanAll();
 
                 contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post(
                         '/v2/op/update',
@@ -825,7 +824,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
         it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/op/update', function (body) {
                     const expectedBody = utils.readExampleFile(
@@ -863,7 +862,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
         it('should send two context elements, one for each entity', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/op/update', function (body) {
                     const expectedBody = utils.readExampleFile(
@@ -901,7 +900,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
         it('should propagate user provider timestamp to mapped entities', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/op/update',
@@ -961,7 +960,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
 
     it('Should send the update to the context broker', function (done) {
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
                 '/v2/op/update',

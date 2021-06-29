@@ -42,9 +42,9 @@ const iotAgentConfig = {
         port: 4041
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Bidirectional data plugin', function () {
@@ -55,7 +55,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
         ),
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         }
     };
@@ -84,7 +84,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
     describe('When a new provisioning request arrives to the IoTA with bidirectionality', function () {
         beforeEach(function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -95,7 +95,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -118,14 +118,14 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'DELETE',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -136,7 +136,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -145,7 +145,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
                 .reply(204);
@@ -170,7 +170,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalNotification.json'
             ),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -178,7 +178,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -189,7 +189,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -276,7 +276,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -287,14 +287,14 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
             ),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -305,7 +305,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -385,7 +385,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             method: 'POST',
             json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/bidirectionalGroup.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -396,7 +396,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 './test/unit/ngsiv2/examples/subscriptionRequests/bidirectionalNotification.json'
             ),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -407,14 +407,14 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 './test/unit/examples/deviceProvisioningRequests/provisionDeviceBidirectionalGroup.json'
             ),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -425,7 +425,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
@@ -574,7 +574,7 @@ describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environmen
             './test/unit/examples/deviceProvisioningRequests/provisionBidirectionalDevice.json'
         ),
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         }
     };
@@ -604,7 +604,7 @@ describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environmen
     describe('When a new provisioning request arrives to the IoTA with bidirectionality', function () {
         beforeEach(function () {
             contextBrokerMock = nock('http://cbhost:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/subscriptions',
@@ -615,7 +615,7 @@ describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environmen
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',

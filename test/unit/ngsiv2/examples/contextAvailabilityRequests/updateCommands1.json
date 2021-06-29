@@ -3,7 +3,7 @@
         "entities": [
             {
                 "type": "Light",
-                "id": "light1"
+                "id": "Light:light1"
             }
         ],
         "attrs": [
@@ -12,7 +12,7 @@
     },
     "provider": {
         "http": {
-            "url": "http://smartGondor.com"
+            "url": "http://smartgondor.com"
         }
     }
 }

@@ -8,7 +8,7 @@
         {
           "name": "pressure25",
           "type": "Hgmm",
-          "value": "52"
+          "value": null
         },
         {
           "name": "humidity12",

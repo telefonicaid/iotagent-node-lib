@@ -6,7 +6,7 @@
             "id": "term2"
         }
     ],
-    "reference": "http://smartGondor.com/notification",
+    "reference": "http://smartgondor.com/notification",
     "duration": "P1M",
     "notifyConditions": [
         {

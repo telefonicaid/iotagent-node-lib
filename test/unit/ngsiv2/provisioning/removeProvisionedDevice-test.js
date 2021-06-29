@@ -44,9 +44,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', function () {
@@ -54,7 +54,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -63,7 +63,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
@@ -72,7 +72,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionDeviceActiveAtts.json')
@@ -84,7 +84,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody)
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -93,7 +93,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -102,7 +102,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice2.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody2)
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -111,13 +111,13 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(204);
@@ -126,7 +126,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -153,7 +153,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'DELETE'
@@ -172,7 +172,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -191,7 +191,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -224,7 +224,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light3',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             method: 'DELETE'

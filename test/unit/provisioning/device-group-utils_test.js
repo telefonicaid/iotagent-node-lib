@@ -35,7 +35,7 @@ const groupCreation = {
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroup.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -44,7 +44,7 @@ const alternateGroupCreation = {
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/groupProvisioningRequests/provisionFullGroupAlternate.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -69,13 +69,13 @@ const iotAgentConfig = {
             ],
             active: [],
             apikey: '1234567890asdfghjkl',
-            service: 'TestService',
+            service: 'testservice',
             subservice: '/testingPath'
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     defaultKey: 'default1234'
 };
@@ -99,7 +99,7 @@ describe('Device Group utils', function () {
             );
         });
         it('should return the API Key of the group', function (done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'AnotherMachine', function (error, apiKey) {
+            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'AnotherMachine', function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('754KL23Y9090DSFL123HSFL12380KL23Y2');
                 done();
@@ -119,7 +119,7 @@ describe('Device Group utils', function () {
             iotAgentConfig.singleConfigurationMode = false;
         });
         it('should return the API Key of the related subservice', function (done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', null, function (error, apiKey) {
+            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', null, function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                 done();
@@ -132,7 +132,7 @@ describe('Device Group utils', function () {
         });
 
         it('should return the API Key of the related type', function (done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'Termometer', function (error, apiKey) {
+            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'Termometer', function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('1234567890asdfghjkl');
                 done();
@@ -145,7 +145,7 @@ describe('Device Group utils', function () {
         });
 
         it('should return the default API Key', function (done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'WeatherMachine', function (error, apiKey) {
+            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'WeatherMachine', function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('default1234');
                 done();
@@ -163,7 +163,7 @@ describe('Device Group utils', function () {
         });
 
         it('should raise an error', function (done) {
-            iotAgentLib.getEffectiveApiKey('TestService', '/testingPath', 'WeatherMachine', function (error, apiKey) {
+            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'WeatherMachine', function (error, apiKey) {
                 should.exist(error);
                 error.name.should.equal('GROUP_NOT_FOUND');
                 done();

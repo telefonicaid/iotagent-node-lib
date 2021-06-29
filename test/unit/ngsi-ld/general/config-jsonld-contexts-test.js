@@ -57,7 +57,7 @@ const iotAgentConfig = {
             ]
         }
     },
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     throttling: 'PT5S'
 };
@@ -118,7 +118,7 @@ describe('NGSI-LD - JSON-LD @context parsing from environment variable', functio
 
         it('should load the configuration as a single entry list', function (done) {
             config.setConfig(iotAgentConfig);
-            config.getConfig().contextBroker.jsonLdContext.should.containDeep(['http://context1.json-ld']);
+            config.getConfig().contextBroker.jsonLdContext.should.equal('http://context1.json-ld');
             done();
         });
     });

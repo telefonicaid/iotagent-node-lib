@@ -1,5 +1,29 @@
 ## Advanced Topics
 
+* [Secured access to the Context Broker](#secured-access-to-the-context-broker)
+* [GeoJSON support this only applies for NGSI-LD, not for NGSI-v1 and NGSI-v2](#geojson-support-this-only-applies-for-ngsi-ld-not-for-ngsi-v1-and-ngsi-v2)
+* [Metadata support](#metadata-support)
+    * [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
+* [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
+* [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+* [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+* [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+* [Data mapping plugins](#data-mapping-plugins)
+    * [Development](#development)
+    * [Provided plugins](#provided-plugins)
+        * [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
+        * [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
+        * [Event plugin (addEvents)](#event-plugin-addevents)
+        * [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
+        * [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
+        * [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
+        * [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
+    * [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+    * [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+    * [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+* [Old IoTAgent data migration](#old-iotagent-data-migration)
+
+
 ### Secured access to the Context Broker
 
 For access to instances of the Context Broker secured with a
@@ -46,14 +70,14 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
 
-### GeoJSON support
+### GeoJSON support (this only applies for NGSI-LD, not for NGSI-v1 and NGSI-v2)
 
 The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
 `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
 values. If the latitude and longitude are received as separate measures, the
 [expression language](expressionLanguage.md) can be used to concatenate them.
 
-````json
+```json
 {
     "entity_type": "GPS",
     "resource":    "/iot/d",
@@ -67,21 +91,19 @@ values. If the latitude and longitude are received as separate measures, the
         }
     ]
 }
-```json
+```
 
+For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
+accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following formats:
 
-For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input
-formats are accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of
-the following formats:
-
--  a comma delimited string
+-   a comma delimited string
 
 ```json
 {
-  "name": "location",
-  "value": "23, 12.5"
+    "name": "location",
+    "value": "23, 12.5"
 }
-````
+```
 
 -   an array of numbers
 
@@ -185,6 +207,83 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
     }
 ```
 
+### NGSI-LD Linked Data support
+
+`static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that
+active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for
+example a temperature gauge placed within a building. The **Device** data model literally represents the IoT device
+itself, but the `temperature` attribute also needs to be shared with the **Building** entity
+
+A `link` between them can be provisioned as shown:
+
+e.g.:
+
+```json
+{
+     "entity_type": "Device",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+..etc
+     "attributes": [
+        {"object_id": "l", "name": "temperature", "type":"Float",
+          "metadata":{
+              "unitCode":{"type": "Text", "value" :"CEL"}
+          }
+        }
+     ],
+     "static_attributes": [
+        {
+          "name": "controlledAsset",
+          "type": "Relationship",
+          "value": "urn:ngsi-ld:Building:001",
+          "link": {
+             "attributes": ["temperature"],
+             "name": "providedBy",
+             "type": "Building"
+          }
+        }
+     ]
+  }
+```
+
+Whenever a `temperature` measure is received **Device** is updated, and entity `urn:ngsi-ld:Building:001` is also
+updated as shown:
+
+```json
+"temperature": {
+    "type": "Property",
+    "value": 27.6,
+    "unitCode": "CEL",
+    "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Device:thermometer1"
+    }
+}
+```
+
+### Autoprovision configuration (autoprovision)
+
+By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
+creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false` 
+when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
+data to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is 
+intended to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+
+### Explicitly defined attributes (explicitAttrs)
+
+If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is stored 
+in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure element. By adding the
+field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the measure elements that are not defined 
+in the mappings of device or group provision, persisting only the one defined in the mappings of the provision. If `explicitAttrs`
+is provided both at device and group level, the device level takes precedence.
+
+### Configuring operation to persist the data in Context Broker (appendMode)
+
+This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the `IOTA_APPEND_MODE`
+environment variable (more info [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). 
+If this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the 
+default UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
 ### Data mapping plugins
 
 The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations
@@ -240,7 +339,7 @@ The library provides some plugins out of the box, in the `dataPlugins` collectio
 use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
 
 ```javascript
-var iotaLib = require("iotagent-node-lib");
+var iotaLib = require('iotagent-node-lib');
 
 iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
 iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
@@ -333,14 +432,14 @@ When a device is provisioned with bidirectional attributes, the IoTAgent subscri
 change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
 provisioning payload to the notification, and calls the underlying notification handler with the transformed entity.
 
-The following `attributes` section shows an example of the plugin configuration:
+The following `attributes` section shows an example of the plugin configuration (using IOTA_AUTOCAST=false to avoid translation from geo:point to geo:json)
 
 ```json
       "attributes": [
         {
           "name":"location",
           "type":"geo:point",
-          "expression": "${latitude}, ${longitude}",
+          "expression": "${@latitude}, ${@longitude}",
           "reverse": [
             {
               "object_id":"longitude",

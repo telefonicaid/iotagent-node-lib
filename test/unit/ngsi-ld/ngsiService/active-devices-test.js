@@ -121,6 +121,11 @@ const iotAgentConfig = {
             lazy: [],
             staticAttributes: [
                 {
+                    name: 'controlledAsset',
+                    type: 'Relationship',
+                    value: 'urn:ngsi-ld:Building:001'
+                },
+                {
                     name: 'controlledProperty',
                     type: 'Property',
                     value: 'StaticValue',
@@ -140,10 +145,62 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
+
+describe('NGSI-LD - Linked Data Active attributes test', function () {
+    const values = [
+        {
+            name: 'luminosity',
+            type: 'Number',
+            value: 87
+        }
+    ];
+
+    beforeEach(function () {
+        logger.setLevel('FATAL');
+    });
+
+    afterEach(function (done) {
+        iotAgentLib.deactivate(done);
+    });
+
+    describe('When the IoT Agent receives new information from a device with an active link', function () {
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextStaticLinkedAttributes.json'
+                    )
+                )
+
+                .reply(204);
+
+            const deepClonedObject = JSON.parse(JSON.stringify(iotAgentConfig));
+            deepClonedObject.types.Lamp.staticAttributes[0].link = {
+                attributes: ['luminosity'],
+                name: 'providedBy',
+                type: 'Building'
+            };
+
+            iotAgentLib.activate(deepClonedObject, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker and the linked entity', function (done) {
+            iotAgentLib.update('lamp1', 'Lamp', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+});
 
 describe('NGSI-LD - Active attributes test', function () {
     const values = [
@@ -172,7 +229,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -216,7 +273,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContextTimestamp.json')
@@ -306,7 +363,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -361,7 +418,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -417,7 +474,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -471,7 +528,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -525,7 +582,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -554,7 +611,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -578,7 +635,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -610,7 +667,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -639,7 +696,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext.json')
@@ -671,7 +728,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:3024')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext2.json')
@@ -703,7 +760,7 @@ describe('NGSI-LD - Active attributes test', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
@@ -740,7 +797,7 @@ describe('NGSI-LD - Active attributes test', function () {
 
             /* jshint maxlen: 200 */
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post(
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(

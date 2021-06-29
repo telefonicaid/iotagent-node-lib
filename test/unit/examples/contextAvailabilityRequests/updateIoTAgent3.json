@@ -12,9 +12,13 @@
         {
           "name": "luminance",
           "type": "lumens"
+        },
+        {
+          "name": "commandAttr",
+          "type": "commandType"
         }
       ],
-      "providingApplication": "http://smartGondor.com"
+      "providingApplication": "http://smartgondor.com"
     }
   ],
   "duration": "P1M",

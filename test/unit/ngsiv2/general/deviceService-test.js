@@ -122,9 +122,9 @@ const iotAgentConfig = {
         protocol: 'MQTT_UL',
         description: 'MQTT Ultralight 2.0 IoT Agent (Node.js version)'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 const groupCreation = {
     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
@@ -150,7 +150,7 @@ const groupCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -187,7 +187,7 @@ const deviceCreation = {
     method: 'POST',
     json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json'),
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -216,7 +216,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://unexistenthost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -277,7 +277,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://unexistenthost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);

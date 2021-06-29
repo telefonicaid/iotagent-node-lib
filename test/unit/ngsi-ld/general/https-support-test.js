@@ -58,7 +58,7 @@ const iotAgentConfig = {
                     type: 'Hgmm'
                 }
             ],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         },
         Termometer: {
@@ -70,13 +70,13 @@ const iotAgentConfig = {
                 }
             ],
             active: [],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     iotManager: {
         url: 'https://mockediotam.com:9876',
         path: '/protocols',
@@ -87,7 +87,7 @@ const iotAgentConfig = {
     defaultResource: '/iot/d'
 };
 const groupCreation = {
-    service: 'theService',
+    service: 'theservice',
     subservice: 'theSubService',
     resource: '/deviceTest',
     apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -115,7 +115,7 @@ const groupCreation = {
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 let contextBrokerMock;
@@ -164,7 +164,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
                     './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice.json'
                 ),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': '/gardens'
                 }
             };
@@ -173,7 +173,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
 
             iotAgentLib.activate(iotAgentConfig, function () {
                 contextBrokerMock = nock('https://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
 
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/',
@@ -184,7 +184,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
                     .reply(204);
 
                 contextBrokerMock = nock('https://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
 
                     .post(
                         '/ngsi-ld/v1/subscriptions/',
@@ -211,7 +211,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
         });
 
         it('should send the appropriate request to the Context Broker', function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'smartGondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     should.not.exist(error);
 
@@ -231,12 +231,12 @@ describe('NGSI-LD - HTTPS support tests', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('https://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
             contextBrokerMock = nock('https://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 

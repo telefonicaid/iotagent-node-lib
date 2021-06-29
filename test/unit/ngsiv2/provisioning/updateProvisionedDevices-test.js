@@ -44,9 +44,9 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Device provisioning API: Update provisioned devices', function () {
@@ -54,7 +54,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDevice.json')
@@ -63,7 +63,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAnotherDevice.json')
@@ -72,7 +72,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice2.json')
@@ -81,7 +81,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
         headers: {
-            'fiware-service': 'smartGondor',
+            'fiware-service': 'smartgondor',
             'fiware-servicepath': '/gardens'
         },
         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionExplicitAttrs.json')
@@ -94,7 +94,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerProvisionedDevice.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody)
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -103,7 +103,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -113,7 +113,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             );
             nockBody2.expires = /.+/i;
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody2)
                 .reply(201, null, { Location: '/v2/registrations/6719a7f5254b058441165849' });
@@ -122,7 +122,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -131,7 +131,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // this function should use the new API. This is just a temporary solution which implies deleting the
             // registration and creating a new one.
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/registrations/6719a7f5254b058441165849')
                 .reply(204);
@@ -141,7 +141,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             );
             nockBody3.expires = /.+/i;
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations', nockBody3)
                 .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
@@ -168,7 +168,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateProvisionDevice.json')
@@ -176,9 +176,12 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities/TheFirstLight/attrs?type=TheLightType', {})
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/examples/contextRequests/updateProvisionDevice.json')
+                )
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -186,13 +189,13 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // registration and creating a new one.
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/registrations',
@@ -203,7 +206,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/registrations',
@@ -227,7 +230,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -249,7 +252,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
-                        'fiware-service': 'smartGondor',
+                        'fiware-service': 'smartgondor',
                         'fiware-servicepath': '/gardens'
                     },
                     method: 'GET'
@@ -260,7 +263,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
                     const parsedBody = JSON.parse(body);
                     parsedBody.entity_type.should.equal('TheLightType');
-                    parsedBody.service.should.equal('smartGondor');
+                    parsedBody.service.should.equal('smartgondor');
                     done();
                 });
             });
@@ -271,7 +274,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
@@ -292,7 +295,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
@@ -314,7 +317,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateMinimumDevice.json')
@@ -323,7 +326,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'GET',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -335,13 +338,13 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/SecondMicroLight/attrs?type=MicroLights',
@@ -391,7 +394,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/updateDeviceStatic.json')
@@ -400,7 +403,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/MicroLight2',
             method: 'GET',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -412,13 +415,13 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/SecondMicroLight/attrs?type=MicroLights',
@@ -453,7 +456,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/xxx014',
             method: 'PUT',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
             json: utils.readExampleFile(
@@ -464,7 +467,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/xxx014',
             method: 'GET',
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -476,7 +479,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .reply(204);

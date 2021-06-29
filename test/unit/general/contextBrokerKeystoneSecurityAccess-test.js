@@ -51,7 +51,7 @@ const iotAgentConfig = {
     },
     types: {
         Light: {
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'electricity',
             trust: 'BBBB987654321',
             type: 'Light',
@@ -81,9 +81,9 @@ const iotAgentConfig = {
             active: []
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 
@@ -124,7 +124,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                 });
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post(
@@ -165,7 +165,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                 });
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post(
@@ -200,7 +200,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                 );
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post(
@@ -237,7 +237,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                 });
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
                 .post(
@@ -267,7 +267,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                     './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice3.json'
                 ),
                 headers: {
-                    'fiware-service': 'smartGondor',
+                    'fiware-service': 'smartgondor',
                     'fiware-servicepath': 'electricity'
                 }
             };
@@ -288,7 +288,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                 contextBrokerMock = nock('http://192.168.1.1:1026');
 
                 contextBrokerMock
-                    .matchHeader('fiware-service', 'smartGondor')
+                    .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'electricity')
                     .matchHeader('X-Auth-Token', '12345679ABCDEF')
                     .post(
@@ -338,7 +338,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
         });
 
         it('subscribe requests use auth header', function (done) {
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
@@ -370,7 +370,7 @@ describe('NGSI-v1 - Secured access to the Context Broker with Keystone', functio
                     utils.readExampleFile('./test/unit/examples/subscriptionResponses/simpleSubscriptionSuccess.json')
                 );
 
-            iotAgentLib.getDevice('Light1', 'smartGondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();

@@ -3,7 +3,7 @@
     {
       "device_id": "LightFull",
       "protocol": "GENERIC_PROTO",
-      "service" : "smartGondor",
+      "service" : "smartgondor",
       "service_path": "gardens",
       "entity_name": "TheFullLight",
       "entity_type": "TheLightType",
