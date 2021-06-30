@@ -176,7 +176,7 @@ const configGroupCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -252,7 +252,7 @@ describe('NGSI-v1 - Device Service: utils', function () {
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
                 .reply(
@@ -263,7 +263,7 @@ describe('NGSI-v1 - Device Service: utils', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
                 .reply(
@@ -337,7 +337,7 @@ describe('NGSI-v1 - Device Service: utils', function () {
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://unexistentHost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/NGSI9/registerContext')
                 .reply(
@@ -348,7 +348,7 @@ describe('NGSI-v1 - Device Service: utils', function () {
                 );
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v1/updateContext')
                 .reply(

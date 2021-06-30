@@ -51,9 +51,9 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const mongo = require('mongodb').MongoClient;
@@ -96,7 +96,7 @@ const optionsCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -105,7 +105,7 @@ const optionsDelete = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -118,7 +118,7 @@ const optionsList = {
     method: 'GET',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/*'
     }
 };
@@ -156,7 +156,7 @@ const optionsUpdate = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -169,7 +169,7 @@ const optionsGet = {
     method: 'GET',
     json: {},
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -230,7 +230,7 @@ describe('MongoDB Group Registry test', function () {
                         should.not.exist(err);
                         should.exist(docs[0].service);
                         should.exist(docs[0].subservice);
-                        docs[0].service.should.equal('TestService');
+                        docs[0].service.should.equal('testservice');
                         docs[0].subservice.should.equal('/testingPath');
                         done();
                     });
@@ -373,7 +373,7 @@ describe('MongoDB Group Registry test', function () {
             },
             json: {},
             headers: {
-                'fiware-service': 'TestService',
+                'fiware-service': 'testservice',
                 'fiware-servicepath': '/*'
             }
         };
@@ -414,7 +414,7 @@ describe('MongoDB Group Registry test', function () {
                 should.exist(body.configGroups);
                 should.exist(body.configGroups.length);
                 body.configGroups.length.should.equal(1);
-                body.configGroups[0].service.should.equal('TestService');
+                body.configGroups[0].service.should.equal('testservice');
                 done();
             });
         });

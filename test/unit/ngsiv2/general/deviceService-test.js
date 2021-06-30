@@ -178,7 +178,7 @@ const configGroupCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'TestService',
+        'fiware-service': 'testservice',
         'fiware-servicepath': '/testingPath'
     }
 };
@@ -246,7 +246,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://unexistenthost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
@@ -309,7 +309,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://unexistenthost:1026')
-                .matchHeader('fiware-service', 'TestService')
+                .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);

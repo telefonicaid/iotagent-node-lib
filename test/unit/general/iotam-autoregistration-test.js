@@ -165,7 +165,7 @@ const configGroupCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     }
 };
@@ -241,7 +241,7 @@ const configGroupCreationStatic = {
         ]
     },
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     }
 };
@@ -263,7 +263,7 @@ const configGroupDelete = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'theService',
+        'fiware-service': 'theservice',
         'fiware-servicepath': 'theSubService'
     },
     qs: {
