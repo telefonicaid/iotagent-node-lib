@@ -100,21 +100,21 @@ correspondence between the API resource fields and the same fields in the databa
 
 The following actions are available under the service group endpoint:
 
-##### POST /iot/services or POST /iot/configGroups
+##### POST /iot/configGroups or POST /iot/services
 
 Creates a set of service groups for the given service and service path. The service and subservice information will
 taken from the headers, overwritting any preexisting values.
 
 Body params:
 
--   `services`: list of service groups to create. Each one adheres to the service group Model (when `/iot/services` route is used).
 -   `configGroups`: list of service groups to create. Each one adheres to the service group Model (when `/iot/configGroups` route is used).
+-   `services`: list of service groups to create. Each one adheres to the service group Model (when `/iot/services` route is used).
 
 E.g.:
 
 ```json
 {
-    "services": [
+    "configGroups": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
@@ -140,7 +140,7 @@ OR
  
 ```json
 {
-    "configGroups": [
+    "services": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
@@ -170,9 +170,9 @@ Returns:
 -   400 WRONG_SYNTAX if the body doesn't comply with the schema.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### GET /iot/services or GET /iot/configGroups
+##### GET /iot/configGroups or GET /iot/services
 
-Retrieves service/configuration groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
+Retrieves configuration groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
 subservices for the service are returned. The specific subservice parameters are returned in any other case.
 
 Returns:
@@ -181,7 +181,7 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### PUT /iot/services or PUT /iot/configGroups
+##### PUT /iot/configGroups or PUT /iot/services
 
 Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
 Takes a service/configuration group body as the payload. The body does not have to be complete: for incomplete bodies, just the
@@ -202,7 +202,7 @@ Returns:
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-##### DELETE /iot/services or DELETE /iot/configGroups
+##### DELETE /iot/configGroups or DELETE /iot/services
 
 Removes a service group configuration from the DB, specified by the `resource` and `apikey` query parameters.
 
