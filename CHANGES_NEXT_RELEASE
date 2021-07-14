@@ -1,0 +1,1 @@
+- Fix: Try to search for a device group service in base of apikey and type (#1076)
