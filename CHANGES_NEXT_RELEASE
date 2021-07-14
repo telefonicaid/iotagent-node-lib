@@ -1,1 +1,2 @@
 - Fix: try to search for a device group service in base of not only by apikey but also type (#1076)
+- Rename provided jexl function `sumaarray` to `addreduce` (#1073)

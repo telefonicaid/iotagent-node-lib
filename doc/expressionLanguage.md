@@ -494,7 +494,7 @@ The following are some expressions not supported by the legacy expression langua
 -   'length': (val) => String(val).length);
 -   'trim': (val) => String(val).trim());
 -   'substr': (val, int1, int2) => String(val).substr(int1, int2));
--   'sumaarray': (arr) => arr.reduce((i, v) => i + v));
+-   'addreduce': (arr) => arr.reduce((i, v) => i + v));
 -   'lengtharray': (arr) => arr.length);
 -   'typeof': (val) => typeof val);
 -   'isarray': (arr) => Array.isArray(arr));
