@@ -23,11 +23,11 @@
 
 /* eslint-disable no-unused-vars */
 
-const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
-const utils = require('../../tools/utils');
+const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
 const should = require('should');
 const async = require('async');
-const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
+const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
 const request = require('request');
 const groupCreation = {
     url: 'http://localhost:4041/iot/services',

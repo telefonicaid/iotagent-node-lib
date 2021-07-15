@@ -180,7 +180,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/examples/contextRequests/updateProvisionDevice.json')
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateProvisionDevice.json')
                 )
                 .reply(204);
 
