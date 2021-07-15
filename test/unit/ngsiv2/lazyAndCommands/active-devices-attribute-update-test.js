@@ -29,7 +29,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const mongoUtils = require('../../mongodb/mongoDBUtils');
+const mongoUtils = require('../../../tools/mongoDBUtils');
 const request = require('request');
 let contextBrokerMock;
 const iotAgentConfig = {

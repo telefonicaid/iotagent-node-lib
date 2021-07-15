@@ -56,9 +56,10 @@ allowing the computer to interpret the rest of the data with more clarity and de
 }
 ```
 
-Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also be switched
-to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the provisioning API.
-The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group setting.
+Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
+be switched to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the
+provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
+overriding the group setting.
 
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
@@ -203,6 +204,21 @@ used for the same purpose. For instance:
 }
 ```
 
+-   **memCache**: Whether to use a memory cache in front of Mongo-DB when using the `mongodb` **deviceRegistry** option
+    to reduce I/O. This memory cache will hold and serve a set of recently requested groups and devices (up to a given
+    maximum time-to-live) and return the cached response so long as the value is still within `TTL`. When enabled the
+    default values are to hold up to 200 devices and 160 groups in memory and retain values for up to 60 seconds.
+
+```javascript
+{
+    enabled: true,
+    deviceMax: 200,
+    deviceTTL: 60,
+    groupMax: 50,
+    groupTTL: 60
+}
+```
+
 -   **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section
     is present, the IoTA will try to register to a IoTAM in the `host`, `port` and `path` indicated, with the
     information configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described
@@ -278,8 +294,8 @@ used for the same purpose. For instance:
     standard, but the final decision has yet been confirmed), take into account it could change
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
     flag is overwritten by `explicitAttrs` flag in group or device provision.
--   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not 
-    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`. 
+-   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not
+    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`.
     Default value is `:`. This value is overwritten by `defaultEntityNameConjunction` in group provision.
 -   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
     validated, and may exceptionally include characters (such as semi-colons) which are
@@ -317,6 +333,11 @@ overrides.
 | IOTA_AUTH_TOKEN_PATH             | `authentication.tokenPath`      |
 | IOTA_AUTH_PERMANENT_TOKEN        | `authentication.permanentToken` |
 | IOTA_REGISTRY_TYPE               | `deviceRegistry.type`           |
+| IOTA_MEMCACHE_ENABLED            | `memCache.enabled`              |
+| IOTA_MEMCACHE_DEVICE_MAX         | `memCache.deviceMax`            |
+| IOTA_MEMCACHE_DEVICE_TTL         | `memCache.deviceTTL`            |
+| IOTA_MEMCACHE_GROUP_MAX          | `memCache.groupMax`             |
+| IOTA_MEMCACHE_GROUP_TTL          | `memCache.groupTTL`             |
 | IOTA_LOG_LEVEL                   | `logLevel`                      |
 | IOTA_TIMESTAMP                   | `timestamp`                     |
 | IOTA_IOTAM_URL                   | `iotManager.url`                |

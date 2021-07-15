@@ -28,7 +28,7 @@ const commonConfig = require('../../../lib/commonConfig');
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const async = require('async');
-const mongoUtils = require('../mongodb/mongoDBUtils');
+const mongoUtils = require('../../tools/mongoDBUtils');
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
