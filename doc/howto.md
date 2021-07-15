@@ -315,8 +315,8 @@ var iotAgentLib = require("iotagent-node-lib"),
 #### QueryContext implementation
 
 The main step to complete in order to implement the Lazy attributes mechanism in the IoT Agent is to provide handlers
-for the context provisioning requests. At this point, we should provide two handlers: the `updateContext` and the
-`queryContext` handlers. To do so, we must first define the handlers themselves:
+for the context provisioning requests. At this point, we should provide two handlers: the `/v2/op/update` and the
+`/v2/op/query` handlers. To do so, we must first define the handlers themselves:
 
 ```javascript
 function queryContextHandler(id, type, service, subservice, attributes, callback) {
@@ -338,7 +338,7 @@ function queryContextHandler(id, type, service, subservice, attributes, callback
 }
 ```
 
-The `queryContext` handler is called whenever a `queryContext` request arrives at the North port of the IoT Agent. It is
+The queryContext handler is called whenever a `/v2/op/query` request arrives at the North port of the IoT Agent. It is
 invoked once for each entity requested, passing the entity ID and Type as the parameters, as well as a list of the
 attributes that are requested. In our case, the handler uses this parameters to compose a request to the device. Once
 the results of the device are returned, the values are returned to the caller, in the NGSI attribute format.
@@ -395,7 +395,7 @@ function updateContextHandler(id, type, service, subservice, attributes, callbac
 }
 ```
 
-The updateContext handler deals with the modification requests that arrive at the North Port of the IoT Agent. It is
+The updateContext handler deals with the modification requests that arrive at the North Port of the IoT Agent via `/v2/op/update`. It is
 invoked once for each entity requested (note that a single request can contain multiple entity updates), with the same
 parameters used in the queryContext handler. The only difference is the value of the attributes array, now containing a
 list of attribute objects, each containing name, type and value. The handler must also make use of the callback to
@@ -491,35 +491,31 @@ Postman-Token: 993ac66b-72da-9e96-ab46-779677a5896a
 }
 ```
 
-2. Execute a queryContext or updateContext against one of the entity attributes (use a NGSI client of curl command).
+2. Execute a `/v2/op/query` or `/v2/op/update` against one of the entity attributes (use a NGSI client of curl command).
 
 ```text
-POST /v1/queryContext HTTP/1.1
+POST /v2/op/query HTTP/1.1
 Host: localhost:1026
 Content-Type: application/json
 Accept: application/json
 Fiware-Service: howtoserv
 Fiware-ServicePath: /test
 Cache-Control: no-cache
-Postman-Token: 1dc568a1-5588-059c-fa9b-ff217a7d7aa2
 
 {
-    "entities": [
-        {
-            "isPattern": "true",
-            "id": ".*",
-            "type": "BasicULSensor"
-        }
-    ],
-    "attributes" : [
-    	"l"]
+  entities: [
+    {
+      id: 'Light:light1'
+    }
+  ],
+  attrs: ['dimming']
 }
 ```
 
 3. Check the received request in the nc console is the expected one.
 
 4. (In case you use netcat). Answer the request with an appropriate HTTP response and check the result of the
-   `queryContext` or `updateContext` request is the expected one. An example of HTTP response, for a query to the `t`
+   `/v2/op/query` or `/v2/op/update` request is the expected one. An example of HTTP response, for a query to the `t`
    and `l` attributes would be:
 
 ```text

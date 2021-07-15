@@ -25,7 +25,6 @@ config = {
     service: "openiot",
     subservice: "/",
     providerUrl: "http://iot-agent:4041",
-    deviceRegistrationDuration: "P1M",
     defaultType: "Thing",
 };
 ```

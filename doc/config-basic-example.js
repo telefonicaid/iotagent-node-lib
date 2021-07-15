@@ -14,7 +14,6 @@ var config = {
     service: 'howtoService',
     subservice: '/howto',
     providerUrl: 'http://localhost:4041',
-    deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing'
 };
 
