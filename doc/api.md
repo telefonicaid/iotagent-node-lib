@@ -203,6 +203,21 @@ outgoing requests).
 Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, e.g.
 `service_path` vs. `servicePath`).
 
+### Relationship between service groups and devices
+
+Devices may be associated to exisiting service groups (or not) based in `apiKey` matching or `type` matching (in the case `apiKey`
+matching fails). For instance, let's consider a situation in which a service group has been provisioned with `type=X`/`apiKey=111`
+and no other service group has been provisioned.
+
+* IoT Agent receives an anonymous measure with `apiKey=111`. The matching `apiKey` means the entity inherits from service group.
+  Device entity has `type=X` and `apiKey=111`
+* IoT Agent receives a provisioning request for an explicit device of `type=Y`/`apiKey=111`. The matching `apiKey` means the entity
+  inherits from service group but type is overridden. Device entity has `type=Y` and  `apiKey=111`
+* IoT Agent receives a provisioning request for an explicit device of `type=X`/`apiKey=222`. The matching `type` means the entity
+  inherits from service group but `apiKey` is overridden. Device entity has `type=X` and `apiKey=222`.
+* IoT Agent receives a provisioning request for  an explicit device of `type=Y`/`apiKey=222`. No matching. Device entity has `type=Y`
+  and `apiKey=222` and no service group.
+
 ### Device model
 
 The table below shows the information held in the Device resource. The table also contains the correspondence between
