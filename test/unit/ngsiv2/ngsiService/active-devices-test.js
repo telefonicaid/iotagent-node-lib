@@ -716,4 +716,37 @@ describe('NGSI-v2 - Active attributes test', function () {
             });
         });
     });
+
+    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
+        beforeEach(function (done) {
+            process.env.IOTA_CB_HOST = 'cbhost';
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://cbhost:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+        afterEach(function (done) {
+            process.env.IOTA_CB_HOST = '';
+            done();
+        });
+    });
 });
