@@ -28,8 +28,9 @@
 
 For access to instances of the Context Broker secured with a
 [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
-tokens is provided. A Trust token is a long-term token that can be issued by any user to give another user permissions
-to impersonate him with a given role in a given project. Such impersonation itself is in turn based on a short-term
+tokens is provided. A trust token is a way of Keystone to allow an user delegates a role to another user for a subservice.
+It is a long-term token that can be issued by any user to give another user permissions
+to impersonate him with a given role in a given project (subservice). Such impersonation itself is in turn based on a short-term
 access token.
 
 For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully
@@ -69,6 +70,11 @@ curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
 
 Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
 Agent.
+
+Complete info on Keystone trust tokens could be found at:
+
+- https://docs.openstack.org/keystone/stein/user/trusts.html
+- https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts
 
 ### GeoJSON support NGSI-LD only
 
