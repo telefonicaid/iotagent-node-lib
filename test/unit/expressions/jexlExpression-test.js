@@ -243,6 +243,33 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When a JSON parse transformation is applied', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse', scope, function (
+                error,
+                result
+            ) {
+                console.log('error:' + error);
+                console.log('result:' + result);
+                should.not.exist(error);
+                result.should.eql(scope.object);
+                done();
+            });
+        });
+    });
+
+    describe('When a JSON stringify transformation is applied', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('{name: "John",surname: "Doe"}|jsonstringify', scope, function (error, result) {
+                console.log('error:' + error);
+                console.log('result:' + result);
+                should.not.exist(error);
+                result.should.equal(JSON.stringify(scope.object));
+                done();
+            });
+        });
+    });
+
     describe('When an expression aims at creating an object', function () {
         it('it should work', function (done) {
             expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function (error, result) {
