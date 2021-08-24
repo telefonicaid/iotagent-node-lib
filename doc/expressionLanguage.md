@@ -487,6 +487,8 @@ The following are some expressions not supported by the legacy expression langua
 
 ### Available functions
 
+-   'jsonparse': (str) => JSON.parse(str));
+-   'jsonstringify': (obj) => JSON.stringify(obj));
 -   'indexOf': (val, char) => String(val).indexOf(char));
 -   'length': (val) => String(val).length);
 -   'trim': (val) => String(val).trim());
@@ -508,5 +510,5 @@ The following are some expressions not supported by the legacy expression langua
 -   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
 -   'split': (str, ch) => str.split(ch));
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)],
--   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
+-   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i);
