@@ -488,7 +488,8 @@ The following are some expressions not supported by the legacy expression langua
 ### Available functions
 
 -   'jsonparse': (str) => JSON.parse(str));
--   'jsonstringify': (obj) => JSON.stringify(obj));-   'indexOf': (val, char) => String(val).indexOf(char));
+-   'jsonstringify': (obj) => JSON.stringify(obj));
+-   'indexOf': (val, char) => String(val).indexOf(char));
 -   'length': (val) => String(val).length);
 -   'trim': (val) => String(val).trim());
 -   'substr': (val, int1, int2) => String(val).substr(int1, int2));
