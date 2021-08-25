@@ -23,7 +23,6 @@
 
 const should = require('should');
 const expressionParser = require('../../../lib/plugins/jexlParser');
-const baseTranformsMap = require('../../../lib/jexlTranformsMap.js').map;
 
 describe('Jexl expression interpreter', function () {
     const scope = {
