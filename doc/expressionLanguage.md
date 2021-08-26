@@ -497,11 +497,12 @@ The following are some expressions not supported by the legacy expression langua
 ### Available functions
 
 There are several predefined JEXL transformations avaliable to be used at any JEXL expression. The definition of those
-transformations and their javascript inmpementation can be found at jexlTransformsMap.js. The library module also
-exports a method '''iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)''' to be used by specific
-IoTAgent implementations in order to incorporate extra transformations to this set. It is important to remark that the
-lib jexlTransformsMap cannot be overwritten by the API additions. The idea behind this is to be able to incorporate new
-trasformations from the IoTAgent configuration file in a fast and tactic way.
+transformations and their javascript inmpementation can be found at jexlTransformsMap.js.
+
+The library module also exports a method `iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)` to be
+used by specific IoTAgent implementations in order to incorporate extra transformations to this set. It is important to
+remark that the lib jexlTransformsMap cannot be overwritten by the API additions. The idea behind this is to be able to
+incorporate new trasformations from the IoTAgent configuration file in a fast and tactic way.
 
 Current common transformation set:
 
