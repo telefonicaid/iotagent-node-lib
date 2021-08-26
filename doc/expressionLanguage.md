@@ -1,26 +1,25 @@
 # Measurement Transformation Expression Language
 
--   [Measurement Transformation Expression Language](#measurement-transformation-expression-language)
-    -   [Overview](#overview)
-    -   [Measurement transformation](#measurement-transformation)
-        -   [Expression definition](#expression-definition)
-        -   [Variable values](#variable-values)
-        -   [Expression execution](#expression-execution)
-    -   [Language description](#language-description)
-        -   [Types](#types)
-        -   [Values](#values)
-            -   [Variables](#variables)
-            -   [Constants](#constants)
-        -   [Allowed operations](#allowed-operations)
-            -   [Number operations](#number-operations)
-            -   [String operations](#string-operations)
-            -   [Other available operators](#other-available-operators)
-    -   [Examples of expressions](#examples-of-expressions)
-    -   [NGSI v2 support](#ngsi-v2-support)
-    -   [JEXL Based Transformations](#jexl-based-transformations)
-        -   [Quick comparison to default language](#quick-comparison-to-default-language)
-        -   [Examples of expressions](#examples-of-expressions-1)
-        -   [Available functions](#available-functions)
+-   [Overview](#overview)
+-   [Measurement transformation](#measurement-transformation)
+    -   [Expression definition](#expression-definition)
+    -   [Variable values](#variable-values)
+    -   [Expression execution](#expression-execution)
+-   [Language description](#language-description)
+    -   [Types](#types)
+    -   [Values](#values)
+        -   [Variables](#variables)
+        -   [Constants](#constants)
+    -   [Allowed operations](#allowed-operations)
+        -   [Number operations](#number-operations)
+        -   [String operations](#string-operations)
+        -   [Other available operators](#other-available-operators)
+-   [Examples of expressions](#examples-of-expressions)
+-   [NGSI v2 support](#ngsi-v2-support)
+-   [JEXL Based Transformations](#jexl-based-transformations)
+    -   [Quick comparison to default language](#quick-comparison-to-default-language)
+    -   [Examples of expressions](#examples-of-expressions-1)
+    -   [Available functions](#available-functions)
 
 ## Overview
 
@@ -497,7 +496,7 @@ The following are some expressions not supported by the legacy expression langua
 ### Available functions
 
 There are several predefined JEXL transformations avaliable to be used at any JEXL expression. The definition of those
-transformations and their javascript inmpementation can be found at jexlTransformsMap.js.
+transformations and their javascript inmplementation can be found at jexlTransformsMap.js.
 
 The library module also exports a method `iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)` to be
 used by specific IoTAgent implementations in order to incorporate extra transformations to this set. It is important to
