@@ -749,4 +749,37 @@ describe('NGSI-v2 - Active attributes test', function () {
             done();
         });
     });
+
+    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function () {
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+
+            iotAgentConfig.appendMode = true;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function (done) {
+            iotAgentConfig.appendMode = false;
+
+            done();
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });
