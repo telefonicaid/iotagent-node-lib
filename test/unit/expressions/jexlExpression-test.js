@@ -243,6 +243,86 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When an transformstion map is provided', function () {
+        const niceMap = {
+            method1: (val) => val,
+            method2: (val) => val
+        };
+
+        const wrongMap = {
+            wrongTransformation1: 'not a function',
+            wrongTransformation2: 666,
+            rightTransformation: (val) => val
+        };
+
+        const noMap = "I'm not what you expect";
+
+        it('it should detect when it is not a map', function (done) {
+            let [error, message, resultMap] = expressionParser.checkTransformationMap(noMap);
+            should.exist(error);
+            message.should.equal('No trasformations were added to JEXL Parser');
+            resultMap.should.eql({});
+            done();
+        });
+
+        it('it should be empty {}', function (done) {
+            let [error, message, resultMap] = expressionParser.checkTransformationMap({});
+            should.not.exist(error);
+            message.should.equal('No trasformations were added to JEXL Parser');
+            resultMap.should.eql({});
+            done();
+        });
+
+        it('it should be empty null', function (done) {
+            let [error, message, resultMap] = expressionParser.checkTransformationMap(null);
+            should.not.exist(error);
+            message.should.equal('No trasformations were added to JEXL Parser');
+            resultMap.should.eql({});
+            done();
+        });
+
+        it('it should detect wrong transformations (not a funtion)', function (done) {
+            let [error, message, resultMap] = expressionParser.checkTransformationMap(wrongMap);
+            should.not.exist(error);
+            message.should.equal('wrongTransformation1,wrongTransformation2 must be a function');
+            should.not.exist(resultMap.wrongTransformation1);
+            should.not.exist(resultMap.wrongTransformation2);
+            should.exist(resultMap.rightTransformation);
+            done();
+        });
+
+        it('it should be correct (map of funtions)', function (done) {
+            let [error, message, resultMap] = expressionParser.checkTransformationMap(niceMap);
+            should.not.exist(error);
+            message.should.equal('Trasformations can be added to JEXL parser');
+            resultMap.should.eql(niceMap);
+            done();
+        });
+    });
+
+    describe('When a JSON parse transformation is applied', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse', scope, function (
+                error,
+                result
+            ) {
+                should.not.exist(error);
+                result.should.eql(scope.object);
+                done();
+            });
+        });
+    });
+
+    describe('When a JSON stringify transformation is applied', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('{name: "John",surname: "Doe"}|jsonstringify', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal(JSON.stringify(scope.object));
+                done();
+            });
+        });
+    });
+
     describe('When an expression aims at creating an object', function () {
         it('it should work', function (done) {
             expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function (error, result) {

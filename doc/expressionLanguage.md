@@ -8,9 +8,18 @@
 -   [Language description](#language-description)
     -   [Types](#types)
     -   [Values](#values)
+        -   [Variables](#variables)
+        -   [Constants](#constants)
     -   [Allowed operations](#allowed-operations)
+        -   [Number operations](#number-operations)
+        -   [String operations](#string-operations)
+        -   [Other available operators](#other-available-operators)
 -   [Examples of expressions](#examples-of-expressions)
 -   [NGSI v2 support](#ngsi-v2-support)
+-   [JEXL Based Transformations](#jexl-based-transformations)
+    -   [Quick comparison to default language](#quick-comparison-to-default-language)
+    -   [Examples of expressions](#examples-of-expressions-1)
+    -   [Available functions](#available-functions)
 
 ## Overview
 
@@ -250,11 +259,10 @@ The following table shows expressions and their expected outcomes for a measure 
 As it is explained in previous sections, expressions can have two return types: String or Number, being the former one
 the default. Whenever an expression is executed without error, its result will be cast to the configured type.
 
-
-NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (string, number, boolean,
-object, array and null). Therefore, the result of an expression must be cast to the appropriate type (the type used to
-define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of the
-value that is being sent.
+NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (string, number, boolean, object,
+array and null). Therefore, the result of an expression must be cast to the appropriate type (the type used to define
+the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of the value that
+is being sent.
 
 Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address
 this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the
@@ -487,6 +495,18 @@ The following are some expressions not supported by the legacy expression langua
 
 ### Available functions
 
+There are several predefined JEXL transformations available to be used at any JEXL expression. The definition of those
+transformations and their JavaScript inmplementation can be found at jexlTransformsMap.js.
+
+The library module also exports a method `iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)` to be
+used by specific IoTAgent implementations in order to incorporate extra transformations to this set. It is important to
+remark that the lib jexlTransformsMap cannot be overwritten by the API additions. The idea behind this is to be able to
+incorporate new trasformations from the IoTAgent configuration file in a fast and tactic way.
+
+Current common transformation set:
+
+-   'jsonparse': (str) => JSON.parse(str));
+-   'jsonstringify': (obj) => JSON.stringify(obj));
 -   'indexOf': (val, char) => String(val).indexOf(char));
 -   'length': (val) => String(val).length);
 -   'trim': (val) => String(val).trim());
@@ -508,5 +528,5 @@ The following are some expressions not supported by the legacy expression langua
 -   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
 -   'split': (str, ch) => str.split(ch));
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)],
--   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
+-   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i);
