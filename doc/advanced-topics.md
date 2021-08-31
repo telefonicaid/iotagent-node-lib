@@ -73,8 +73,8 @@ Agent.
 
 Complete info on Keystone trust tokens could be found at:
 
-- https://docs.openstack.org/keystone/stein/user/trusts
-- https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts
+- [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
+- [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
 ### GeoJSON support NGSI-LD only
 
