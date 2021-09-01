@@ -1085,7 +1085,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
 
             request(options, function (error, response, body) {
                 const parsedBody = JSON.parse(body);
-                parsedBody.error.should.equal('UnsupportedContentType');
+                parsedBody.error.should.equal('UNSUPPORTED_CONTENT_TYPE');
                 parsedBody.description.should.equal('Unsupported content type in the context request: text/plain');
                 done();
             });
