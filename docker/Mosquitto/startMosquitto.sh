@@ -10,7 +10,10 @@ if [ "${CONGIF_FROM_ENV}" = true ] ; then
     echo 'listener 1883' >> /etc/mosquitto/mosquitto.conf
     echo 'protocol mqtt' >> /etc/mosquitto/mosquitto.conf
     mv /root/aclfile /etc/mosquitto/aclfile
-    mosquitto_passwd -b /etc/mosquitto/pwfile iota ${IOTA_PASS}
+    if ! [ -z "${IOTA_PASS}" ] ; then
+      # Only if IOTA_PASS is set and not empty MQTT user/pass authentication is used
+      mosquitto_passwd -b /etc/mosquitto/pwfile iota ${IOTA_PASS}
+    fi
 fi
 
 /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
