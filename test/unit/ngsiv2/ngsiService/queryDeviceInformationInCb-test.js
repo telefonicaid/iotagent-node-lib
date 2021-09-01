@@ -171,7 +171,7 @@ describe('Query device information in the Context Broker', function () {
         });
     });
 
-    xdescribe('When the user requests information and there is an unknown errorCode in the response', function () {
+    describe('When the user requests information and there is an unknown errorCode in the response', function () {
         beforeEach(function () {
             nock.cleanAll();
 
@@ -187,13 +187,14 @@ describe('Query device information in the Context Broker', function () {
 
         it('should return a ENTITY_GENERIC_ERROR', function (done) {
             iotAgentLib.query('light3', 'Light', '', attributes, function (error) {
+                console.error(error);
                 should.exist(error);
                 should.exist(error.name);
-                should.exist(error.details.code);
-                should.exist(error.details.reasonPhrase);
+                should.exist(error.code);
+                should.exist(error.details.description);
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
-                error.details.code.should.equal('516');
-                error.details.reasonPhrase.should.equal('A new and unknown error');
+                error.code.should.equal(503);
+                error.details.description.should.equal('The context broker is current down for maintenence');
                 done();
             });
         });
