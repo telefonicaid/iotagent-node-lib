@@ -1,1 +1,2 @@
 - Export fillDomains function to iotagent-node-lib available functions
+- Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
