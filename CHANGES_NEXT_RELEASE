@@ -1,1 +1,1 @@
-- Keep internalAttributes stored in device mongo collection when update it (#1092)
+- Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
