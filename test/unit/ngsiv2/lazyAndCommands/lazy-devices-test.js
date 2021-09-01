@@ -1010,4 +1010,85 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             });
         });
     });
+
+    describe('When a context query arrives to the IoT Agent with a payload that is not JSON', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
+            method: 'POST',
+            body: 'This is a body in text format',
+            headers: {
+                'Content-Type': 'text/plain',
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+        const sensorData = [
+            {
+                id: 'Light:light1',
+                type: 'Light',
+                attributes: [
+                    {
+                        name: 'dimming',
+                        type: 'Percentage',
+                        value: '19'
+                    }
+                ]
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/registrations',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert')
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should fail with a 400 error', function (done) {
+            let handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function (id, type, service, subservice, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                handlerCalled.should.equal(false);
+                done();
+            });
+        });
+
+        it('should return an NGSI compliant payload', function (done) {
+            let handlerCalled = false;
+
+            iotAgentLib.setDataQueryHandler(function (id, type, service, subservice, attributes, callback) {
+                handlerCalled = true;
+                callback(null, sensorData);
+            });
+
+            request(options, function (error, response, body) {
+                const parsedBody = JSON.parse(body);
+                parsedBody.error.should.equal('UnsupportedContentType');
+                parsedBody.description.should.equal('Unsupported content type in the context request: text/plain');
+                done();
+            });
+        });
+    });
 });
