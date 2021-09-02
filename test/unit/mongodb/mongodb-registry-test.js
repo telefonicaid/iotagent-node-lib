@@ -185,7 +185,7 @@ const device3 = {
 };
 let iotAgentDb;
 
-describe('MongoDB Device Registry', function () {
+describe('NGSI-v2 - MongoDB Device Registry', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
 

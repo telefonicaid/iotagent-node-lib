@@ -118,7 +118,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Data Mapping Plugins: translation', function () {
+describe('NGSI-v2 - Data Mapping Plugins: translation', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
 

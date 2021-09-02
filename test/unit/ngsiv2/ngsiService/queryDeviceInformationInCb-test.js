@@ -115,7 +115,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Query device information in the Context Broker', function () {
+describe('NGSI-v2 - Query device information in the Context Broker', function () {
     const attributes = ['state', 'dimming'];
 
     beforeEach(function (done) {

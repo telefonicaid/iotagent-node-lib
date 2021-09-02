@@ -50,7 +50,7 @@ const iotAgentConfig = {
 };
 let contextBrokerMock;
 
-describe('In memory device registry', function () {
+describe('NGSI-v2 - In memory device registry', function () {
     beforeEach(function (done) {
         iotAgentLib.activate(iotAgentConfig, done);
     });
