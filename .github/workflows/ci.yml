@@ -96,7 +96,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     strategy:
       matrix:
-        repo: ['telefonicaid/iotagent-ul', 'telefonicaid/sigfox-iotagent', 'telefonicaid/iotagent-json', 'telefonicaid/lightweightm2m-iotagent']
+        repo: ['telefonicaid/iotagent-ul', 'telefonicaid/sigfox-iotagent', 'telefonicaid/iotagent-json', 'telefonicaid/lightweightm2m-iotagent', 'telefonicaid/iotagent-manager']
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
