@@ -1,25 +1,26 @@
 # Measurement Transformation Expression Language
 
--   [Overview](#overview)
--   [Measurement transformation](#measurement-transformation)
-    -   [Expression definition](#expression-definition)
-    -   [Variable values](#variable-values)
-    -   [Expression execution](#expression-execution)
--   [Language description](#language-description)
-    -   [Types](#types)
-    -   [Values](#values)
-        -   [Variables](#variables)
-        -   [Constants](#constants)
-    -   [Allowed operations](#allowed-operations)
-        -   [Number operations](#number-operations)
-        -   [String operations](#string-operations)
-        -   [Other available operators](#other-available-operators)
--   [Examples of expressions](#examples-of-expressions)
--   [NGSI v2 support](#ngsi-v2-support)
--   [JEXL Based Transformations](#jexl-based-transformations)
-    -   [Quick comparison to default language](#quick-comparison-to-default-language)
-    -   [Examples of expressions](#examples-of-expressions-1)
-    -   [Available functions](#available-functions)
+-   [Measurement Transformation Expression Language](#measurement-transformation-expression-language)
+    -   [Overview](#overview)
+    -   [Measurement transformation](#measurement-transformation)
+        -   [Expression definition](#expression-definition)
+        -   [Variable values](#variable-values)
+        -   [Expression execution](#expression-execution)
+    -   [Language description](#language-description)
+        -   [Types](#types)
+        -   [Values](#values)
+            -   [Variables](#variables)
+            -   [Constants](#constants)
+        -   [Allowed operations](#allowed-operations)
+            -   [Number operations](#number-operations)
+            -   [String operations](#string-operations)
+            -   [Other available operators](#other-available-operators)
+    -   [Examples of expressions](#examples-of-expressions)
+    -   [NGSI v2 support](#ngsi-v2-support)
+    -   [JEXL Based Transformations](#jexl-based-transformations)
+        -   [Quick comparison to default language](#quick-comparison-to-default-language)
+        -   [Examples of expressions](#examples-of-expressions-1)
+        -   [Available functions](#available-functions)
 
 ## Overview
 
@@ -519,6 +520,7 @@ Current common transformation set:
 -   'parseint': (val) => parseInt(val));
 -   'parsefloat': (val) => parseFloat(val));
 -   'toisodate': (val) => new Date(val).toISOString());
+-   'timeoffset':(isostr)=>new Date(isostr).getTimezoneOffset();
 -   'tostring': (val) => val.toString());
 -   'urlencode': (val) => encodeURI(val));
 -   'urldecode': (val) => decodeURI(val));
@@ -528,5 +530,7 @@ Current common transformation set:
 -   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
 -   'split': (str, ch) => str.split(ch));
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
--   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i);
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) =>
+    (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
+-   'bitwisemask': (i,mask,op,shf) => (op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask:
+    op==="^"?parseInt(i)^mask:i))>>shf;
