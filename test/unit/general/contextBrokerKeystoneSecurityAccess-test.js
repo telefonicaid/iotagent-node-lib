@@ -168,8 +168,6 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .patch('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
                 .reply(403, { name: 'ACCESS_FORBIDDEN' });
-            //utils.readExampleFile('./test/unit/examples/contextResponses/updateContext1Success.json'));
-            //}
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
