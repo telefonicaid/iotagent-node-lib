@@ -706,4 +706,38 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             });
         });
     });
+
+    describe('When a measure arrives and there is not enough information to calculate an expression', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/ws1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
+                .reply(204);
+        });
+
+        it('should not calculate the expression', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });

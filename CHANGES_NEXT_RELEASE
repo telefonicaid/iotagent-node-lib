@@ -1,3 +1,4 @@
+- Remove: NGSI-v1 implementation (#966)
 - FIx: export fillDomains function to iotagent-node-lib available functions (needed to fix logs in iotagent-json#587 and iotagent-ul#508)
 - Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
 - Add: new JEXL get TimeZone Offset (valid for summer winter schedulles) and binary shifting for bitwise operator
