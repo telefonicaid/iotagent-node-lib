@@ -1,0 +1,22 @@
+{
+  "pressure": {
+    "type": "Number",
+    "value": 1040
+  },
+  "consumption": {
+    "type": "Number",
+    "value": null
+  },
+  "weather": {
+    "type": "Summary",
+    "value": "Humidity NaN and pressure 1040"
+  },
+  "alive": {
+    "type": "None",
+    "value": null
+  },
+  "updated": {
+    "type": "Boolean",
+    "value": null
+  }
+}

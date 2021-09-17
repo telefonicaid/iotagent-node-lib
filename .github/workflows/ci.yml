@@ -6,6 +6,7 @@ name: CI
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 jobs:
   lint-markdown:
     name: Lint Markdown
@@ -98,3 +99,18 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  dispatch:
+    needs: unit-test
+    if: ${{ github.ref == 'refs/heads/master'  && github.event_name == 'push' }}
+    strategy:
+      matrix:
+        repo: ['telefonicaid/iotagent-ul', 'telefonicaid/sigfox-iotagent', 'telefonicaid/iotagent-json', 'telefonicaid/lightweightm2m-iotagent', 'telefonicaid/iotagent-manager']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: ${{ matrix.repo }}
+          event-type: lib-update

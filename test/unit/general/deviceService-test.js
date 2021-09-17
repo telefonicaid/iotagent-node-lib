@@ -165,10 +165,10 @@ let contextBrokerMock;
 let iotamMock;
 
 /* jshint camelcase: false */
-describe('NGSI-v1 - Device Service: utils', function () {
+describe('NGSI-v2 - Device Service: utils', function () {
     beforeEach(function (done) {
         nock.cleanAll();
-        logger.setLevel('FATAL');
+        logger.setLevel('ERROR');
         iotamMock = nock('http://localhost:8082').post('/protocols').reply(200, {});
 
         iotAgentLib.activate(iotAgentConfig, done);
@@ -184,22 +184,14 @@ describe('NGSI-v1 - Device Service: utils', function () {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function (
                 error,
@@ -225,22 +217,14 @@ describe('NGSI-v1 - Device Service: utils', function () {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([request.bind(request, groupCreation)], function (error, results) {
                 done();
