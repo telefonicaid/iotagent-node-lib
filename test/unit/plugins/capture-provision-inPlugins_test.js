@@ -62,7 +62,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
-describe('Data Mapping Plugins: device provision', function () {
+describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
     const options = {
         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
         method: 'POST',
@@ -82,27 +82,16 @@ describe('Data Mapping Plugins: device provision', function () {
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post(
-                '/NGSI9/registerContext',
-                utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerProvisionedDevice.json')
+                '/v2/registrations',
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent5.json')
             )
-            .reply(
-                200,
-                utils.readExampleFile(
-                    './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                )
-            );
+            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post(
-                '/v1/updateContext',
-                utils.readExampleFile('./test/unit/examples/contextRequests/createProvisionedDevice.json')
-            )
-            .reply(
-                200,
-                utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-            );
+            .post('/v2/entities?options=upsert')
+            .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.clearAll(done);

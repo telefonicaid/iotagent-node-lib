@@ -519,6 +519,7 @@ Current common transformation set:
 -   'parseint': (val) => parseInt(val));
 -   'parsefloat': (val) => parseFloat(val));
 -   'toisodate': (val) => new Date(val).toISOString());
+-   'timeoffset':(isostr)=>new Date(isostr).getTimezoneOffset();
 -   'tostring': (val) => val.toString());
 -   'urlencode': (val) => encodeURI(val));
 -   'urldecode': (val) => decodeURI(val));
@@ -528,5 +529,7 @@ Current common transformation set:
 -   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
 -   'split': (str, ch) => str.split(ch));
 -   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) => (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
--   'bitwisemask': (i,mask,op) => op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i);
+-   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) =>
+    (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
+-   'bitwisemask': (i,mask,op,shf) => (op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask:
+    op==="^"?parseInt(i)^mask:i))>>shf;
