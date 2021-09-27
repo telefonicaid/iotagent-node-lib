@@ -1,18 +1,21 @@
 {
-    "entities": [
-        {
-            "id": "light1",
-            "type": "Light"
-        }
-    ],
-    "notification": {
-        "attributes": [],
-        "http": {
-            "url": "http://smartGondor.com/notify"
-        }
+  "@context": "http://context.json-ld",
+  "type": "Subscription",
+  "entities": [
+    {
+      "id": "light1",
+      "type": "Light"
+    }
+  ],
+  "watchedAttributes": [
+    "dimming"
+  ],
+  "notification": {
+    "endpoint": {
+      "uri": "http://smartgondor.com/notify",
+      "accept": "application/json"
     },
-    "type": "Subscription",
-    "watchedAttributes": [
-        "dimming"
-    ]
+    "attributes": [],
+    "format": "normalized"
+  }
 }

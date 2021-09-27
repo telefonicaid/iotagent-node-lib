@@ -55,7 +55,7 @@ const iotAgentConfig = {
                     type: 'Hgmm'
                 }
             ],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         },
         Termometer: {
@@ -67,25 +67,25 @@ const iotAgentConfig = {
                 }
             ],
             active: [],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 const deviceUpdated = {
     id: 'light1',
     type: 'Light',
-    name: 'light1',
-    service: 'smartGondor',
+    name: 'Light:light1',
+    service: 'smartgondor',
     subservice: 'gardens',
     internalId: 'newInternalId',
     lazy: [
@@ -104,8 +104,8 @@ const deviceUpdated = {
 const deviceCommandUpdated = {
     id: 'light1',
     type: 'Light',
-    name: 'light1',
-    service: 'smartGondor',
+    name: 'Light:light1',
+    service: 'smartgondor',
     subservice: 'gardens',
     internalId: 'newInternalId',
     commands: [
@@ -141,7 +141,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
@@ -150,7 +150,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         // device provisioning functionality. Appropriate verification is done in tests under
         // provisioning folder
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/entities?options=upsert')
             .reply(204);
@@ -172,7 +172,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
     describe('When a device is preregistered and its registration information updated', function () {
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Light:light1/attrs?type=Light',
@@ -186,13 +186,13 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             // this function should use the new API. This is just a temporary solution which implies deleting the
             // registration and creating a new one.
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
@@ -204,15 +204,15 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should register as ContextProvider of its lazy attributes', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, function (error) {
+            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
         it('should store the new values in the registry', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, function (error, data) {
-                iotAgentLib.getDevice(deviceUpdated.id, 'smartGondor', 'gardens', function (error, deviceResult) {
+            iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
+                iotAgentLib.getDevice(deviceUpdated.id, 'smartgondor', 'gardens', function (error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);
@@ -228,7 +228,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         beforeEach(function () {
             delete deviceCommandUpdated.registrationId;
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/entities/Light:light1/attrs?type=Light',
@@ -241,13 +241,13 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             // registration and creating a new one.
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .delete('/v2/registrations/6319a7f5254b05844116584d')
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
                     '/v2/registrations',
@@ -259,15 +259,15 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should register as ContextProvider of its commands and create the additional attributes', function (done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, function (error) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
             });
         });
         it('should store the new values in the registry', function (done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, function (error, data) {
-                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartGondor', 'gardens', function (
+            iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
+                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartgondor', 'gardens', function (
                     error,
                     deviceResult
                 ) {
@@ -284,7 +284,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
 
     describe('When a update action is executed in a non registered device', function () {
         it('should return a DEVICE_NOT_FOUND error', function (done) {
-            iotAgentLib.updateRegister(unknownDevice, function (error) {
+            iotAgentLib.updateRegister(unknownDevice, false, function (error) {
                 should.exist(error);
                 error.name.should.equal('DEVICE_NOT_FOUND');
                 done();
@@ -299,14 +299,14 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(500, {});
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities/Light:light1/attrs?type=Light')
                 .reply(204);
         });
 
         it('should return a REGISTRATION_ERROR error in the update action', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, function (error) {
+            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
                 should.exist(error);
                 error.name.should.equal('UNREGISTRATION_ERROR');
                 done();

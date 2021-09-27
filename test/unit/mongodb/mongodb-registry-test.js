@@ -66,7 +66,7 @@ const iotAgentConfig = {
                     type: 'Vector'
                 }
             ],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens',
             internalAttributes: {
                 customAttribute: 'customValue'
@@ -81,7 +81,7 @@ const iotAgentConfig = {
                 }
             ],
             attributes: [],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         }
     },
@@ -93,15 +93,15 @@ const iotAgentConfig = {
         port: '27017',
         db: 'iotagent'
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     endpoint: 'http://testEndpoint.com',
     transport: 'HTTP',
@@ -139,7 +139,7 @@ const device1 = {
 const device2 = {
     id: 'term2',
     type: 'Termometer',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
     resource: '/',
     apikey: 'dsf8yy789iyushu786',
@@ -185,7 +185,7 @@ const device3 = {
 };
 let iotAgentDb;
 
-describe('MongoDB Device Registry', function () {
+describe('NGSI-v2 - MongoDB Device Registry', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
 
@@ -216,25 +216,17 @@ describe('MongoDB Device Registry', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
-                )
-                .reply(
-                    200,
+                    '/v2/registrations',
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
                     )
-                );
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -286,46 +278,30 @@ describe('MongoDB Device Registry', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
-                )
-                .reply(
-                    200,
+                    '/v2/registrations',
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
                     )
-                );
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
-                )
-                .reply(
-                    200,
+                    '/v2/registrations',
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
                     )
-                );
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -349,41 +325,25 @@ describe('MongoDB Device Registry', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
-                )
-                .reply(
-                    200,
+                    '/v2/registrations',
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
                     )
-                );
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post(
-                    '/NGSI9/registerContext',
-                    utils.readExampleFile('./test/unit/examples/contextAvailabilityRequests/registerIoTAgent3.json')
-                )
-                .reply(
-                    200,
+                    '/v2/registrations',
                     utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerIoTAgent1Success.json'
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent3.json'
                     )
-                );
+                )
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 done();
@@ -402,51 +362,20 @@ describe('MongoDB Device Registry', function () {
 
     describe('When a device is removed from the IoT Agent', function () {
         beforeEach(function (done) {
-            const expectedPayload3 = utils.readExampleFile(
-                './test/unit/examples/contextAvailabilityRequests/unregisterDevice3.json'
-            );
-
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice1Success.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerNewDevice2Success.json'
-                    )
-                );
+            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            contextBrokerMock
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
-
-            contextBrokerMock
-                .post('/NGSI9/registerContext', expectedPayload3)
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/unregisterDevice1Success.json'
-                    )
-                );
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
@@ -457,7 +386,7 @@ describe('MongoDB Device Registry', function () {
         });
 
         it('should be removed from MongoDB', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
                 iotAgentDb
                     .db()
                     .collection('devices')
@@ -476,14 +405,11 @@ describe('MongoDB Device Registry', function () {
     describe('When the registry is queried for a device using an arbitrary attribute', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
@@ -492,7 +418,7 @@ describe('MongoDB Device Registry', function () {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
-                    service: 'smartGondor',
+                    service: 'smartgondor',
                     subservice: 'gardens',
                     active: [
                         {
@@ -514,7 +440,7 @@ describe('MongoDB Device Registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function (done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartGondor', 'gardens', function (
+            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartgondor', 'gardens', function (
                 error,
                 devices
             ) {
@@ -530,14 +456,11 @@ describe('MongoDB Device Registry', function () {
     describe('When the list of devices is retrieved', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v1/updateContext')
+                .post('/v2/entities?options=upsert')
                 .times(10)
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .reply(204);
 
             const devices = [];
 
@@ -546,7 +469,7 @@ describe('MongoDB Device Registry', function () {
                     id: 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
-                    service: 'smartGondor',
+                    service: 'smartgondor',
                     subservice: 'gardens',
                     active: [
                         {
@@ -568,7 +491,7 @@ describe('MongoDB Device Registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the limited number of devices', function (done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
+            iotAgentLib.listDevices('smartgondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.devices);
                 result.devices.length.should.equal(3);
@@ -576,7 +499,7 @@ describe('MongoDB Device Registry', function () {
             });
         });
         it('should return the total number of devices', function (done) {
-            iotAgentLib.listDevices('smartGondor', 'gardens', 3, 2, function (error, result) {
+            iotAgentLib.listDevices('smartgondor', 'gardens', 3, 2, function (error, result) {
                 should.not.exist(error);
                 should.exist(result.count);
                 result.count.should.equal(10);

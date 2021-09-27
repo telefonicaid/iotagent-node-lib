@@ -186,9 +186,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 
 describe('NGSI-v2 - Expression-based transformations plugin', function () {
@@ -250,12 +250,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin16.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -291,12 +291,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin17.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -326,12 +326,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin18.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -361,12 +361,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin19.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -396,12 +396,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin20.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -432,12 +432,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin21.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -468,12 +468,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin22.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -504,12 +504,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin23.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -540,12 +540,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -576,12 +576,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -612,12 +612,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin24.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -648,12 +648,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin25.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -684,9 +684,9 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin10.json'
@@ -719,12 +719,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin25.json'
                     )
                 )
                 .query({ type: 'WeatherStation' })
@@ -754,12 +754,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin26.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -790,12 +790,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin27.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -824,12 +824,12 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin28.json'
                     )
                 )
                 .query({ type: 'Light' })
@@ -858,9 +858,9 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
@@ -897,9 +897,9 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
@@ -911,6 +911,39 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When a measure arrives and there is not enough information to calculate an expression', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/ws1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
+                .reply(204);
+        });
+
+        it('should not calculate the expression', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

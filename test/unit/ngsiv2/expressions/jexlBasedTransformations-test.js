@@ -187,9 +187,9 @@ const iotAgentConfig = {
             ]
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com',
+    providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
     throttling: 'PT5S'
 };
@@ -253,9 +253,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
@@ -294,9 +294,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
@@ -329,9 +329,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
@@ -364,9 +364,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
@@ -378,41 +378,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with string expression and type integer', function () {
-        // Case: Update for an integer attribute with string expression
-        const values = [
-            {
-                name: 'e',
-                type: 'Number',
-                value: 52
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -435,9 +400,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
@@ -471,9 +436,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/ws1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
@@ -485,42 +450,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with string expressions and type float', function () {
-        // Case: Update for a Float attribute with string expression
-
-        const values = [
-            {
-                name: 'e',
-                type: 'Number',
-                value: 0.44
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -543,9 +472,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
@@ -557,78 +486,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with numeric expressions and NULL type', function () {
-        // Case: Update for a Null attribute with arithmetic expression
-
-        const values = [
-            {
-                name: 'a',
-                type: 'None',
-                value: null
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with string expressions and NULL type', function () {
-        // Case: Update for a Null attribute with string expression
-
-        const values = [
-            {
-                name: 'a',
-                type: 'None',
-                value: null
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -651,9 +508,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
@@ -665,77 +522,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with numeric expressions and Boolean type', function () {
-        // Case: Update for a Boolean attribute with arithmetic expression
-
-        const values = [
-            {
-                name: 'u',
-                type: 'Boolean',
-                value: true
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin10.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an update comes for attributes with string expressions and Boolean type', function () {
-        // Case: Update for a Boolean attribute with string expression
-        const values = [
-            {
-                name: 'u',
-                type: 'Boolean',
-                value: true
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities/ws1/attrs',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
-                    )
-                )
-                .query({ type: 'WeatherStation' })
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('ws1', 'WeatherStationMultiple', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -757,9 +543,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
@@ -793,9 +579,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
@@ -827,9 +613,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
@@ -861,9 +647,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
@@ -900,9 +686,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
@@ -914,6 +700,40 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a measure arrives and there is not enough information to calculate an expression', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/ws1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
+                .reply(204);
+        });
+
+        it('should not calculate the expression', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

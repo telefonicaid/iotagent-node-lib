@@ -13,6 +13,6 @@
       ]
     }
   ],
-  "endpoint": "http://smartGondor.com",
+  "endpoint": "http://smartgondor.com",
   "@context": "http://context.json-ld"
 }

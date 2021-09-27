@@ -1,6 +1,73 @@
 # Contribution Guidelines
 
-==================
+## Ground rules & expectations
+
+Before we get started, here are a few things we expect from you (and that you should expect from others):
+
+-   Be kind and thoughtful in your conversations around this project. We all come from different backgrounds and
+    projects, which means we likely have different perspectives on "how open source is done." Try to listen to others
+    rather than convince them that your way is correct.
+-   Please ensure that your contribution passes all tests. If there are test failures, you will need to address them
+    before we can merge your contribution.
+-   When adding content, please consider if it is widely valuable. Please don't add references or links to things you or
+    your employer have created as others will do so if they appreciate it.
+-   When reporting a vulnerability on the software, please, put in contact with IoT Agent Node Lib repository
+    maintainers in order to discuss it in a private way.
+
+## How to contribute
+
+If you'd like to contribute, start by searching through the
+[issues](https://github.com/telefonicaid/iotagent-node-lib/issues) and
+[pull requests](https://github.com/telefonicaid/iotagent-node-lib/pulls) to see whether someone else has raised a
+similar idea or question.
+
+If you don't see your idea listed, and you think it fits into the goals of this guide, do one of the following:
+
+-   **If your contribution is minor,** such as a typo fix, open a pull request.
+-   **If your contribution is major,** such as a new guide, start by opening an issue first. That way, other people can
+    weigh in on the discussion before you do any work.
+
+### Pull Request protocol
+
+As explained in ([FIWARE Contribution Requirements](https://fiware-requirements.readthedocs.io/en/latest)) contributions
+are done using a pull request (PR). The detailed "protocol" used in such PR is described below:
+
+-   Direct commits to master branch (even single-line modifications) are not allowed. Every modification has to come as
+    a PR
+-   In case the PR is implementing/fixing a numbered issue, the issue number has to be referenced in the body of the PR
+    at creation time
+-   Anybody is welcome to provide comments to the PR (either direct comments or using the review feature offered by
+    Github)
+-   Use _code line comments_ instead of _general comments_, for traceability reasons (see comments lifecycle below)
+-   Comments lifecycle
+    -   Comment is created, initiating a _comment thread_
+    -   New comments can be added as responses to the original one, starting a discussion
+    -   After discussion, the comment thread ends in one of the following ways:
+        -   `Fixed in <commit hash>` in case the discussion involves a fix in the PR branch (which commit hash is
+            included as reference)
+        -   `NTC`, if finally nothing needs to be done (NTC = Nothing To Change)
+-   PR can be merged when the following conditions are met:
+    -   All comment threads are closed
+    -   All the participants in the discussion have provided a `LGTM` general comment (LGTM = Looks good to me)
+-   Self-merging is not allowed (except in rare and justified circumstances)
+
+Some additional remarks to take into account when contributing with new PRs:
+
+-   PR must include not only code contributions, but their corresponding pieces of documentation (new or modifications
+    to existing one) and tests
+-   PR modifications must pass full regression based on existing test (unit, functional, memory, e2e) in addition to
+    whichever new test added due to the new functionality
+-   PR should be of an appropriated size that makes review achievable. Too large PRs could be closed with a "please,
+    redo the work in smaller pieces" without any further discussing
+
+## Community
+
+Discussions about the Open Source Guides take place on this repository's
+[Issues](https://github.com/telefonicaid/iotagent-node-lib/issues) and
+[Pull Requests](https://github.com/telefonicaid/iotagent-node-lib/pulls) sections. Anybody is welcome to join these
+conversations.
+
+Wherever possible, do not take these conversations to private channels, including contacting the maintainers directly.
 
 ## Overview
 

@@ -57,7 +57,7 @@ const iotAgentConfig = {
                     type: 'Hgmm'
                 }
             ],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         },
         Termometer: {
@@ -69,24 +69,24 @@ const iotAgentConfig = {
                 }
             ],
             active: [],
-            service: 'smartGondor',
+            service: 'smartgondor',
             subservice: 'gardens'
         }
     },
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartGondor.com'
+    providerUrl: 'http://smartgondor.com'
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 const device2 = {
     id: 'term2',
     type: 'Termometer',
-    service: 'smartGondor',
+    service: 'smartgondor',
     subservice: 'gardens'
 };
 
@@ -112,7 +112,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
@@ -120,7 +120,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
@@ -146,7 +146,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(404);
 
@@ -172,7 +172,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(500);
 
@@ -201,7 +201,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
@@ -209,7 +209,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/')
                 .reply(204);
 
@@ -220,7 +220,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
 
         it("should return all the device's information", function (done) {
             iotAgentLib.register(device1, function (error) {
-                iotAgentLib.getDevice('light1', 'smartGondor', 'gardens', function (error, data) {
+                iotAgentLib.getDevice('light1', 'smartgondor', 'gardens', function (error, data) {
                     should.not.exist(error);
                     should.exist(data);
                     data.type.should.equal('Light');
@@ -239,7 +239,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
@@ -250,7 +250,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
 
         it('should return a ENTITY_NOT_FOUND error', function (done) {
             iotAgentLib.register(device1, function (error) {
-                iotAgentLib.getDevice('lightUnexistent', 'smartGondor', 'gardens', function (error, data) {
+                iotAgentLib.getDevice('lightUnexistent', 'smartgondor', 'gardens', function (error, data) {
                     should.exist(error);
                     should.not.exist(data);
                     error.code.should.equal(404);
@@ -299,7 +299,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
         });
 
         it('should update the devices information in Context Broker', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -344,7 +344,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
 
         it('should not remove the device from the internal registry');
         it('should return a UNREGISTRATION_ERROR error to the caller', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartGondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('UNREGISTRATION_ERROR');

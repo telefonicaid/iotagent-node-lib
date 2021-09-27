@@ -8,6 +8,7 @@
 [![CI](https://github.com/telefonicaid/iotagent-node-lib/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-node-lib/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-node-lib.svg)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4671/badge)](https://bestpractices.coreinfrastructure.org/projects/4671)
 
 This project aims to provide a Node.js module to enable IoT Agent developers to build custom agents for their devices
 that can easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion)).
@@ -71,7 +72,7 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require("iotagent-node-lib");
+const iotagentLib = require('iotagent-node-lib');
 ```
 
 Information about how to configure the Library can be found at the corresponding section of the
@@ -307,7 +308,7 @@ array that can be directly imported into other Command-Line tools, using the fol
 -   Require the `iotagent-node-lib` command-line module in your command-line tool:
 
 ```javascript
-var iotaCommands = require("iotagent-node-lib").commandLine;
+var iotaCommands = require('iotagent-node-lib').commandLine;
 ```
 
 -   Initialize the command-line utils (the initialization function takes two arguments, that will be explained in detail
@@ -326,7 +327,7 @@ commands = commands.concat(commands, iotaCommands.commands);
 -   Execute the command-line interpreter as usual:
 
 ```javascript
-clUtils.initialize(commandLine.commands, "IoT Agent tester> ");
+clUtils.initialize(commandLine.commands, 'IoT Agent tester> ');
 ```
 
 The command-line module makes use of two configuration objects. Both can be shown and edited in the command-line using
@@ -363,8 +364,8 @@ related with the fact that different people assign different interpretations on 
 used in these licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL
 licenses (even without _modifying_ it).
 
-For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license
-wish to make a clarifying public statement as follows:
+For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license wish to make a clarifying
+public statement as follows:
 
 > Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
 > incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.

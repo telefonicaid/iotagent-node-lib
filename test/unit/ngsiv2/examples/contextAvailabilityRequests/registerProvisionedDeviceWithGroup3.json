@@ -10,7 +10,7 @@
   },
   "provider": {
     "http": {
-      "url": "http://smartGondor.com"
+      "url": "http://smartgondor.com"
     },
     "supportedForwardingMode": "query"
   }
