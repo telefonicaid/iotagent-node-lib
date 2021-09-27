@@ -175,7 +175,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Light:light1/attrs?type=Light',
+                    '/v2/entities/Light:light1/attrs?options=upsert&type=Light',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateProvisionActiveAttributes1.json'
                     )
@@ -231,7 +231,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Light:light1/attrs?type=Light',
+                    '/v2/entities/Light:light1/attrs?options=upsert&type=Light',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateProvisionCommands1.json')
                 )
                 .reply(204);
@@ -301,7 +301,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/Light:light1/attrs?type=Light')
+                .post('/v2/entities/Light:light1/attrs?options=upsert&type=Light')
                 .reply(204);
         });
 
