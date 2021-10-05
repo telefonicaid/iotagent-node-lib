@@ -1,4 +1,4 @@
-- Fix: Include attribute metadata in attribute device info for API requests (#1113)
+- Fix: Include attribute metadata in attribute device info for API requests (#1115)
 - Fix: set status code response from CB for EntityGenericError is raised (#1109)
 - Remove: NGSI-v1 implementation (#966)
 - FIx: export fillDomains function to iotagent-node-lib available functions (needed to fix logs in iotagent-json#587 and iotagent-ul#508)
