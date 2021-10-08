@@ -1,26 +1,25 @@
 # Measurement Transformation Expression Language
 
--   [Measurement Transformation Expression Language](#measurement-transformation-expression-language)
-    -   [Overview](#overview)
-    -   [Measurement transformation](#measurement-transformation)
-        -   [Expression definition](#expression-definition)
-        -   [Variable values](#variable-values)
-        -   [Expression execution](#expression-execution)
-    -   [Language description](#language-description)
-        -   [Types](#types)
-        -   [Values](#values)
-            -   [Variables](#variables)
-            -   [Constants](#constants)
-        -   [Allowed operations](#allowed-operations)
-            -   [Number operations](#number-operations)
-            -   [String operations](#string-operations)
-            -   [Other available operators](#other-available-operators)
-    -   [Examples of expressions](#examples-of-expressions)
-    -   [NGSI v2 support](#ngsi-v2-support)
-    -   [JEXL Based Transformations](#jexl-based-transformations)
-        -   [Quick comparison to default language](#quick-comparison-to-default-language)
-        -   [Examples of expressions](#examples-of-expressions-1)
-        -   [Available functions](#available-functions)
+-   [Overview](#overview)
+-   [Measurement transformation](#measurement-transformation)
+    -   [Expression definition](#expression-definition)
+    -   [Variable values](#variable-values)
+    -   [Expression execution](#expression-execution)
+-   [Language description](#language-description)
+    -   [Types](#types)
+    -   [Values](#values)
+        -   [Variables](#variables)
+        -   [Constants](#constants)
+    -   [Allowed operations](#allowed-operations)
+        -   [Number operations](#number-operations)
+        -   [String operations](#string-operations)
+        -   [Other available operators](#other-available-operators)
+-   [Examples of expressions](#examples-of-expressions)
+-   [NGSI v2 support](#ngsi-v2-support)
+-   [JEXL Based Transformations](#jexl-based-transformations)
+    -   [Quick comparison to default language](#quick-comparison-to-default-language)
+    -   [Examples of expressions](#examples-of-expressions-1)
+    -   [Available functions](#available-functions)
 
 ## Overview
 
@@ -533,4 +532,5 @@ Current common transformation set:
 -   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) =>
     (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
 -   'bitwisemask': (i,mask,op,shf) => (op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask:
-    op==="^"?parseInt(i)^mask:i))>>shf; 'slice': (arr, init, end)=>arr.slice(init,end);
+    op==="^"?parseInt(i)^mask:i))>>shf;
+-   'slice': (arr, init, end)=>arr.slice(init,end);
