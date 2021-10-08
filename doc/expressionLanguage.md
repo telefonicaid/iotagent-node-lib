@@ -532,4 +532,4 @@ Current common transformation set:
 -   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) =>
     (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
 -   'bitwisemask': (i,mask,op,shf) => (op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask:
-    op==="^"?parseInt(i)^mask:i))>>shf;
+    op==="^"?parseInt(i)^mask:i))>>shf; 'slice': (arr, init, end)=>arr.slice(init,end);
