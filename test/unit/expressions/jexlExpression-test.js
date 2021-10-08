@@ -203,6 +203,16 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When an slice function is used with an string', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('"AABBCC"|slice(2,4)', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('BB');
+                done();
+            });
+        });
+    });
+
     describe('When an ternary operator is used with an expression', function () {
         it('should work on the expression value', function (done) {
             expressionParser.parse('value == 6? true : false', scope, function (error, result) {
