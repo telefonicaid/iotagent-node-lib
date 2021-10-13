@@ -1,13 +1,6 @@
 [
     {
         "@context": "http://context.json-ld",
-        "alive": {
-            "type": "Property",
-            "value": {
-                "@type": "Intangible",
-                "@value": null
-            }
-        },
         "id": "urn:ngsi-ld:Light:light1",
         "type": "Light"
     }
