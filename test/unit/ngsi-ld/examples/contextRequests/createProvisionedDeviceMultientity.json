@@ -1,13 +1,6 @@
 [
     {
         "@context": "http://context.json-ld",
-        "attr_name": {
-            "type": "Property",
-            "value":  {
-                "@type": "Intangible",
-                "@value": null
-            }
-        },
         "commandAttr_info": {
             "type": "Property",
             "value": {

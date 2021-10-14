@@ -16,13 +16,6 @@
                 "type": "Point"
             }
         },
-        "newAttribute": {
-            "type": "Property",
-            "value": {
-                "@type": "Intangible",
-                "@value": null
-            }
-        },
         "serverURL": {
             "type": "Property",
             "value": {

@@ -16,13 +16,6 @@
                 "@value": "UNKNOWN"
             }
         },
-        "temperature": {
-            "type": "Property",
-            "value": {
-                "@type": "Intangible",
-                "@value": null
-            }
-        },
         "type": "Light"
     }
 ]

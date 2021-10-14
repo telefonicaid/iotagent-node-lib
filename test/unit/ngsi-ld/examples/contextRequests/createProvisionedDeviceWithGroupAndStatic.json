@@ -3,20 +3,6 @@
     "@context": "http://context.json-ld",
     "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
     "type": "TheLightType",
-    "attr_name": {
-      "type": "Property",
-      "value":  {
-          "@type": "Intangible",
-          "@value": null
-        }
-    },
-    "status": {
-      "type": "Property",
-      "value":  {
-            "@type": "Intangible",
-            "@value": null
-        }
-    },
     "hardcodedAttr": {
       "type": "Property",
       "value": {
