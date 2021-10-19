@@ -698,7 +698,7 @@ function request(options, callback)
 
 Make a direct HTTP request using the underlying request library (currently [got](https://github.com/sindresorhus/got)),
 this is useful when creating agents which use an HTTP transport for their southbound commands, and removes the need for
-the custom IoT Agent to import its own additonal request library
+the custom IoT Agent to import its own additional request library
 
 ###### Params
 
