@@ -27,7 +27,7 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+
 const nock = require('nock');
 const logger = require('logops');
 const utils = require('../../../tools/utils');
@@ -195,7 +195,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
                     .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
                 iotAgentLib.clearAll(function () {
-                    request(optionsProvision, function (error, result, body) {
+                    utils.request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });

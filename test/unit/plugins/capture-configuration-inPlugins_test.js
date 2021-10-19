@@ -24,9 +24,10 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
 const should = require('should');
 const logger = require('logops');
-const request = require('request');
+
 const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
@@ -127,7 +128,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
@@ -146,7 +147,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -166,7 +167,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });

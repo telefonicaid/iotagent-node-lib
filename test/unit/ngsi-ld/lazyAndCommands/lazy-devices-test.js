@@ -33,7 +33,7 @@ const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
@@ -212,7 +212,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 callback(null);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -285,7 +285,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -333,7 +333,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
         });
 
         it('should not give any error', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
@@ -341,7 +341,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
         });
 
         it('should return the empty value', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 const entities = body;
                 entities.dimming.value.should.equal('');
                 done();
@@ -404,7 +404,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -470,7 +470,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -536,7 +536,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();

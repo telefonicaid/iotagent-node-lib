@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
 let contextBrokerMock;
-const request = require('request');
+
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
@@ -94,11 +94,11 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         };
 
         beforeEach(function (done) {
-            request(groupCreation, done);
+            utils.request(groupCreation, done);
         });
 
         it('should raise a DUPLICATE_GROUP error', function (done) {
-            request(groupCreationDuplicated, function (error, response, body) {
+            utils.request(groupCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -136,15 +136,15 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            request(groupCreation, function (error) {
-                request(deviceCreation, function (error, response, body) {
+            utils.request(groupCreation, function (error) {
+                utils.request(deviceCreation, function (error, response, body) {
                     done();
                 });
             });
         });
 
         it('should raise a DUPLICATE_DEVICE_ID error', function (done) {
-            request(deviceCreationDuplicated, function (error, response, body) {
+            utils.request(deviceCreationDuplicated, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(409);
                 should.exist(body.name);
@@ -206,9 +206,9 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            request(groupCreation, function (error) {
-                request(deviceCreation, function (error, response, body) {
-                    request(alternativeGroupCreation, function (error, response, body) {
+            utils.request(groupCreation, function (error) {
+                utils.request(deviceCreation, function (error, response, body) {
+                    utils.request(alternativeGroupCreation, function (error, response, body) {
                         done();
                     });
                 });
@@ -216,7 +216,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         });
 
         it('should return a 201 OK', function (done) {
-            request(alternativeDeviceCreation, function (error, response, body) {
+            utils.request(alternativeDeviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
@@ -254,7 +254,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
 
             oldType = deviceCreation.json.devices[0].entity_type;
             delete deviceCreation.json.devices[0].entity_type;
-            request(groupCreation, done);
+            utils.request(groupCreation, done);
         });
 
         afterEach(function () {
@@ -262,11 +262,9 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         });
 
         it('should be provisioned with the default type', function (done) {
-            request(deviceCreation, function (error, response, body) {
-                request(getDevice, function (error, response, body) {
-                    const parsedBody = JSON.parse(body);
-
-                    parsedBody.entity_type.should.equal('SensorMachine');
+            utils.request(deviceCreation, function (error, response, body) {
+                utils.request(getDevice, function (error, response, body) {
+                    body.entity_type.should.equal('SensorMachine');
 
                     done();
                 });
@@ -299,11 +297,11 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
                 )
                 .reply(204);
 
-            request(groupCreation, done);
+            utils.request(groupCreation, done);
         });
 
         it('should not raise any error', function (done) {
-            request(deviceCreation, function (error, response, body) {
+            utils.request(deviceCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
@@ -311,7 +309,7 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         });
 
         it('should send the mixed data to the Context Broker', function (done) {
-            request(deviceCreation, function (error, response, body) {
+            utils.request(deviceCreation, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });

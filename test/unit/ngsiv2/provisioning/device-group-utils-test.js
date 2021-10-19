@@ -28,7 +28,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const async = require('async');
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
-const request = require('request');
+
 const groupCreation = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',
@@ -91,8 +91,8 @@ describe('Device Group utils', function () {
             async.series(
                 [
                     async.apply(iotAgentLib.activate, iotAgentConfig),
-                    async.apply(request, alternateGroupCreation),
-                    async.apply(request, groupCreation)
+                    async.apply(utils.request, alternateGroupCreation),
+                    async.apply(utils.request, groupCreation)
                 ],
                 done
             );
@@ -109,7 +109,7 @@ describe('Device Group utils', function () {
         beforeEach(function (done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function () {
-                request(groupCreation, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
                     done();
                 });
             });

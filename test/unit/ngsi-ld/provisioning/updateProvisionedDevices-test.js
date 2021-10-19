@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -134,8 +134,8 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(request, provisioning1Options),
-                    async.apply(request, provisioning2Options)
+                    async.apply(utils.request, provisioning1Options),
+                    async.apply(utils.request, provisioning2Options)
                 ],
                 done
             );
@@ -203,7 +203,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
         });
 
         it('should return a 204 OK and no errors', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -211,7 +211,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
         });
 
         it('should have updated the data when asking for the particular device', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -221,19 +221,17 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     /* jshint camelcase:false */
-
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.entity_name.should.equal('ANewLightName');
-                    parsedBody.timezone.should.equal('Europe/Madrid');
+                    body.entity_name.should.equal('ANewLightName');
+                    body.timezone.should.equal('Europe/Madrid');
                     done();
                 });
             });
         });
 
         it('should not modify the attributes not present in the update request', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -243,12 +241,11 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.entity_type.should.equal('TheLightType');
-                    parsedBody.service.should.equal('smartgondor');
+                    body.entity_type.should.equal('TheLightType');
+                    body.service.should.equal('smartgondor');
                     done();
                 });
             });
@@ -268,7 +265,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
         };
 
         it('should raise a 400 error', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
@@ -289,7 +286,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
         };
 
         it('should raise a 400 error', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
@@ -337,32 +334,30 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 )
                 .reply(204);
 
-            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
+            async.series([iotAgentLib.clearAll, async.apply(utils.request, provisioning3Options)], done);
         });
 
         it('should not raise any error', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
         it('should provision the attributes appropriately', function (done) {
-            request(optionsUpdate, function (error, response, body) {
-                request(optionsGetDevice, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
+                utils.request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    const parsedBody = JSON.parse(body);
-
-                    parsedBody.attributes.length.should.equal(1);
-                    parsedBody.attributes[0].name.should.equal('newAttribute');
+                    body.attributes.length.should.equal(1);
+                    body.attributes[0].name.should.equal('newAttribute');
                     done();
                 });
             });
         });
         it('should create the initial values for the attributes in the Context Broker', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -412,19 +407,17 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 )
                 .reply(204);
 
-            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
+            async.series([iotAgentLib.clearAll, async.apply(utils.request, provisioning3Options)], done);
         });
 
         it('should provision the attributes appropriately', function (done) {
-            request(optionsUpdate, function (error, response, body) {
-                request(optionsGetDevice, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
+                utils.request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    const parsedBody = JSON.parse(body);
-
-                    parsedBody.static_attributes.length.should.equal(3);
-                    parsedBody.static_attributes[0].name.should.equal('cellID');
+                    body.static_attributes.length.should.equal(3);
+                    body.static_attributes[0].name.should.equal('cellID');
                     done();
                 });
             });

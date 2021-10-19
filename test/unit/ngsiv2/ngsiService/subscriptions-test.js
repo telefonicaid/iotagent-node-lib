@@ -28,7 +28,7 @@
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
-const request = require('request');
+
 const nock = require('nock');
 let contextBrokerMock;
 const iotAgentConfig = {
@@ -85,7 +85,7 @@ describe('NGSI-v2 - Subscription tests', function () {
                 .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             iotAgentLib.clearAll(function () {
-                request(optionsProvision, function (error, result, body) {
+                utils.request(optionsProvision, function (error, result, body) {
                     done();
                 });
             });
@@ -216,7 +216,7 @@ describe('NGSI-v2 - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            request(notificationOptions, function (error, response, body) {
+            utils.request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(true);
 
@@ -257,7 +257,7 @@ describe('NGSI-v2 - Subscription tests', function () {
             iotAgentLib.addNotificationMiddleware(mockedMiddleware);
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            request(notificationOptions, function (error, response, body) {
+            utils.request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(true);
                 executedMiddlewares.should.equal(true);
@@ -294,7 +294,7 @@ describe('NGSI-v2 - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            request(notificationOptions, function (error, response, body) {
+            utils.request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 rightFields.should.equal(true);
 
@@ -322,7 +322,7 @@ describe('NGSI-v2 - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            request(notificationOptions, function (error, response, body) {
+            utils.request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(false);
 

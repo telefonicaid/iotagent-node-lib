@@ -26,7 +26,8 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+const utils = require('../../../tools/utils');
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -193,7 +194,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .query({ type: 'Device' })
                 .reply(204);
 
-            request(optionsCreationDefault, function (error, response, body) {
+            utils.request(optionsCreationDefault, function (error, response, body) {
                 done();
             });
         });
@@ -215,7 +216,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .query({ type: 'Device' })
                 .reply(204);
 
-            request(optionsCreationV2, function (error, response, body) {
+            utils.request(optionsCreationV2, function (error, response, body) {
                 done();
             });
         });
@@ -235,7 +236,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .matchHeader('NGSILD-Tenant', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .reply(204);
-            request(optionsCreationLD, function (error, response, body) {
+            utils.request(optionsCreationLD, function (error, response, body) {
                 done();
             });
         });
@@ -262,8 +263,8 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .patch('/v2/entities/light2/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
-            request(optionsCreationLD, function (error, response, body) {
-                request(deviceCreationV2, function (error, response, body) {
+            utils.request(optionsCreationLD, function (error, response, body) {
+                utils.request(deviceCreationV2, function (error, response, body) {
                     done();
                 });
             });

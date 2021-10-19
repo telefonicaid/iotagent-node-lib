@@ -27,7 +27,7 @@ const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+const request = utils.request;
 const logger = require('logops');
 const async = require('async');
 const iotAgentConfig = {
@@ -187,13 +187,11 @@ describe('NGSI-v2 - Device Service: utils', function () {
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/entities?options=upsert')
                 .reply(204);
-
 
             async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function (
                 error,
@@ -222,11 +220,10 @@ describe('NGSI-v2 - Device Service: utils', function () {
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                 .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert')
                 .reply(204);
 
             async.series([request.bind(request, groupCreation)], function (error, results) {

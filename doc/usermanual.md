@@ -25,7 +25,7 @@ More values will be added in the future to the library. The applications using t
 Registry just by using the following function:
 
 ```javascript
-iotagentLib.statsRegistry.add("statName", statIncrementalValue, callback);
+iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
@@ -80,7 +80,7 @@ In order to use the library, add the following dependency to your package.json f
 In order to use this library, first you must require it:
 
 ```javascript
-var iotagentLib = require("iotagent-node-lib");
+var iotagentLib = require('iotagent-node-lib');
 ```
 
 The library supports four groups of features, one for each direction of the communication: client-to-server and
@@ -265,16 +265,16 @@ Once all the updates have taken place, the callback must be invoked with the upd
 
 ```javascript
 callback(null, {
-    type: "TheType",
+    type: 'TheType',
     isPattern: false,
-    id: "EntityID",
+    id: 'EntityID',
     attributes: [
         {
-            name: "lumniscence",
-            type: "Lumens",
-            value: "432",
-        },
-    ],
+            name: 'lumniscence',
+            type: 'Lumens',
+            value: '432'
+        }
+    ]
 });
 ```
 
@@ -303,16 +303,16 @@ The callback must be invoked with the updated Context Element, using the informa
 
 ```javascript
 callback(null, {
-    type: "TheType",
+    type: 'TheType',
     isPattern: false,
-    id: "EntityID",
+    id: 'EntityID',
     attributes: [
         {
-            name: "lumniscence",
-            type: "Lumens",
-            value: "432",
-        },
-    ],
+            name: 'lumniscence',
+            type: 'Lumens',
+            value: '432'
+        }
+    ]
 });
 ```
 
@@ -685,6 +685,41 @@ unexpectedly dead, a new process is created automatically to keep always the max
     section).
 -   iotAgent: The IoT Agent Objects, used to start the agent.
 -   callback: The callback function.
+
+##### iotagentLib.request()
+
+###### Signature
+
+```javascript
+function request(options, callback)
+```
+
+###### Description
+
+Make a direct HTTP request using the underlying request library (currently [got](https://github.com/sindresorhus/got)),
+this is useful when creating agents which use an HTTP transport for their southbound commands, and removes the need for
+the custom IoT Agent to import its own additonal request library
+
+###### Params
+
+-   options: definition of the request (see
+    [got options](https://github.com/sindresorhus/got/blob/main/documentation/2-options.md) for more details). The
+    following attributes are currently exposed.
+    -   `method` - HTTP Method
+    -   `searchParams` - query string params
+    -   `qs` - alias for query string params
+    -   `headers`
+    -   `responseType` - either `text` or `json`. `json` is the default
+    -   `json` - a supplied JSON object as the request body
+    -   `body` - any ASCII text as the request body
+    -   `url` - the request URL
+    -   `uri` - alternative alias for the request URL.
+-   callback: The callback currently returns an `error` Object, the `response` and `body`. The `body` is parsed to a
+    JSON object if the `responseType` is JSON.
+
+###### Description
+
+Terminates the current transaction, if there is any, cleaning its context.
 
 #### Generic middlewares
 

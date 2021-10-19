@@ -26,11 +26,12 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -147,7 +148,7 @@ describe('NGSI-LD - Update attribute functionalities', function () {
                 });
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();

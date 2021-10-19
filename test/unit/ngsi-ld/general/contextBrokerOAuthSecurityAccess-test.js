@@ -30,7 +30,6 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 let oauth2Mock;
@@ -309,7 +308,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                     .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
                 iotAgentLib.clearAll(function () {
-                    request(optionsProvision, function (error, result, body) {
+                    utils.request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });
@@ -636,7 +635,7 @@ describe(
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function () {
-                    request(groupCreation, function (error, response, body) {
+                    utils.request(groupCreation, function (error, response, body) {
                         done();
                     });
                 });
@@ -774,7 +773,7 @@ describe(
             });
 
             it('should not raise any error', function (done) {
-                request(deviceCreation, function (error, response, body) {
+                utils.request(deviceCreation, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(201);
                     contextBrokerMock.done();
@@ -843,7 +842,7 @@ describe(
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
                 iotAgentLib.activate(iotAgentConfig, function () {
-                    request(groupCreation, function (error, response, body) {
+                    utils.request(groupCreation, function (error, response, body) {
                         done();
                     });
                 });

@@ -26,7 +26,7 @@
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const logger = require('logops');
-const request = require('request');
+const utils = require('../../tools/utils');
 const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
@@ -99,7 +99,7 @@ describe('Log level API', function () {
         };
 
         it('the real log level should be changed', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -119,7 +119,7 @@ describe('Log level API', function () {
         };
 
         it('should return a 200 OK', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -128,11 +128,9 @@ describe('Log level API', function () {
         });
 
         it('should return the current log level', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.level);
-                parsedBody.level.should.equal('FATAL');
+            utils.request(options, function (error, response, body) {
+                should.exist(body.level);
+                body.level.should.equal('FATAL');
 
                 done();
             });
@@ -153,14 +151,12 @@ describe('Log level API', function () {
         };
 
         it('should return a 400 error indicating the log level is not valid', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                const parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('invalid log level');
+                body.error.should.equal('invalid log level');
 
                 done();
             });
@@ -178,14 +174,12 @@ describe('Log level API', function () {
         };
 
         it('should return a 400 error indicating the log level is missing', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                const parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('log level missing');
+                body.error.should.equal('log level missing');
 
                 done();
             });

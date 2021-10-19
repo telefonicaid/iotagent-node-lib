@@ -28,7 +28,7 @@ const utils = require('../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     contextBroker: {
@@ -115,7 +115,7 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 executed.should.equal(true);
                 done();
@@ -129,7 +129,7 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -150,7 +150,7 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
             iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 executed.should.equal(true);
                 done();
             });
@@ -165,7 +165,7 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
 
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.equal(contextBrokerMock.isDone(), false);
                 done();
             });
@@ -186,7 +186,7 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
             iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
             iotAgentLib.setProvisioningHandler(provisioningHandler);
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 executed.should.equal(false);
                 done();
             });

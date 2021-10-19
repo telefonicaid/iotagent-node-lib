@@ -28,7 +28,6 @@ const utils = require('../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
 let contextBrokerMock;
 let keystoneMock;
 const iotAgentConfig = {
@@ -294,7 +293,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                     .reply(201, null, { Location: '/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
                 iotAgentLib.clearAll(function () {
-                    request(optionsProvision, function (error, result, body) {
+                    utils.request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });

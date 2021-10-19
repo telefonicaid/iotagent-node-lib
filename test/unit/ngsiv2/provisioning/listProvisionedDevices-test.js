@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -117,9 +117,9 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(request, provisioning1Options),
-                    async.apply(request, provisioning2Options),
-                    async.apply(request, provisioning4Options)
+                    async.apply(utils.request, provisioning1Options),
+                    async.apply(utils.request, provisioning2Options),
+                    async.apply(utils.request, provisioning4Options)
                 ],
                 function (error, results) {
                     done();
@@ -143,13 +143,12 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return all the provisioned devices', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
-                should.exist(parsedBody.devices);
+                should.exist(body.devices);
                 response.statusCode.should.equal(200);
-                parsedBody.devices.length.should.equal(3);
-                parsedBody.count.should.equal(3);
+                body.devices.length.should.equal(3);
+                body.count.should.equal(3);
                 done();
             });
         });
@@ -157,40 +156,36 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         it('should return all the appropriate field names', function (done) {
             /* jshint camelcase:false */
 
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
+                should.exist(body.devices[0].attributes);
+                body.devices[0].attributes.length.should.equal(1);
 
-                should.exist(parsedBody.devices[0].attributes);
-                parsedBody.devices[0].attributes.length.should.equal(1);
+                should.exist(body.devices[0].device_id);
+                body.devices[0].device_id.should.equal('Light1');
 
-                should.exist(parsedBody.devices[0].device_id);
-                parsedBody.devices[0].device_id.should.equal('Light1');
+                should.exist(body.devices[0].entity_name);
+                body.devices[0].entity_name.should.equal('TheFirstLight');
 
-                should.exist(parsedBody.devices[0].entity_name);
-                parsedBody.devices[0].entity_name.should.equal('TheFirstLight');
+                should.exist(body.devices[0].protocol);
+                body.devices[0].protocol.should.equal('GENERIC_PROTO');
 
-                should.exist(parsedBody.devices[0].protocol);
-                parsedBody.devices[0].protocol.should.equal('GENERIC_PROTO');
-
-                should.exist(parsedBody.devices[0].static_attributes);
-                parsedBody.devices[0].static_attributes.length.should.equal(1);
+                should.exist(body.devices[0].static_attributes);
+                body.devices[0].static_attributes.length.should.equal(1);
 
                 done();
             });
         });
 
         it('should return all the plugin attributes', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.devices[2].attributes[0].entity_name);
-                should.exist(parsedBody.devices[2].attributes[0].entity_type);
-                should.exist(parsedBody.devices[2].attributes[1].expression);
-                should.exist(parsedBody.devices[2].attributes[2].reverse);
-                parsedBody.devices[2].attributes[0].entity_name.should.equal('Higro2000');
-                parsedBody.devices[2].attributes[0].entity_type.should.equal('Higrometer');
-                parsedBody.devices[2].attributes[1].expression.should.equal('${@humidity * 20}');
-                parsedBody.devices[2].attributes[2].reverse.length.should.equal(2);
+            utils.request(options, function (error, response, body) {
+                should.exist(body.devices[2].attributes[0].entity_name);
+                should.exist(body.devices[2].attributes[0].entity_type);
+                should.exist(body.devices[2].attributes[1].expression);
+                should.exist(body.devices[2].attributes[2].reverse);
+                body.devices[2].attributes[0].entity_name.should.equal('Higro2000');
+                body.devices[2].attributes[0].entity_type.should.equal('Higrometer');
+                body.devices[2].attributes[1].expression.should.equal('${@humidity * 20}');
+                body.devices[2].attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
@@ -206,26 +201,24 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return all the information on that particular device', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                const parsedBody = JSON.parse(body);
-                parsedBody.entity_name.should.equal('TheFirstLight');
-                parsedBody.device_id.should.equal('Light1');
+                body.entity_name.should.equal('TheFirstLight');
+                body.device_id.should.equal('Light1');
                 done();
             });
         });
 
         it('should return the appropriate attribute fields', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
 
-                const parsedBody = JSON.parse(body);
-                should.exist(parsedBody.attributes[0].object_id);
-                parsedBody.attributes[0].object_id.should.equal('attr_name');
-                parsedBody.attributes[0].name.should.equal('attr_name');
-                parsedBody.attributes[0].type.should.equal('string');
+                should.exist(body.attributes[0].object_id);
+                body.attributes[0].object_id.should.equal('attr_name');
+                body.attributes[0].name.should.equal('attr_name');
+                body.attributes[0].type.should.equal('string');
                 done();
             });
         });
@@ -241,18 +234,17 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return the appropriate attribute fields', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
 
-                const parsedBody = JSON.parse(body);
-                should.exist(parsedBody.attributes[0].entity_name);
-                should.exist(parsedBody.attributes[0].entity_type);
-                should.exist(parsedBody.attributes[1].expression);
-                should.exist(parsedBody.attributes[2].reverse);
-                parsedBody.attributes[0].entity_name.should.equal('Higro2000');
-                parsedBody.attributes[0].entity_type.should.equal('Higrometer');
-                parsedBody.attributes[1].expression.should.equal('${@humidity * 20}');
-                parsedBody.attributes[2].reverse.length.should.equal(2);
+                should.exist(body.attributes[0].entity_name);
+                should.exist(body.attributes[0].entity_type);
+                should.exist(body.attributes[1].expression);
+                should.exist(body.attributes[2].reverse);
+                body.attributes[0].entity_name.should.equal('Higro2000');
+                body.attributes[0].entity_type.should.equal('Higrometer');
+                body.attributes[1].expression.should.equal('${@humidity * 20}');
+                body.attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
@@ -268,7 +260,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return a 404 error', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
                 done();
@@ -302,7 +294,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             provisioningDeviceOptions.json.devices[0].device_id =
                 provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            request(provisioningDeviceOptions, callback);
+            utils.request(provisioningDeviceOptions, callback);
         }
 
         beforeEach(function (done) {
@@ -328,19 +320,17 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should return just 3 devices', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
-                parsedBody.devices.length.should.equal(3);
+                body.devices.length.should.equal(3);
                 done();
             });
         });
 
         it('should return a count with the complete number of devices', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
-                parsedBody.count.should.equal(10);
+                body.count.should.equal(10);
                 done();
             });
         });
@@ -370,7 +360,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             provisioningDeviceOptions.json.devices[0].device_id =
                 provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            request(provisioningDeviceOptions, function (error, response, body) {
+            utils.request(provisioningDeviceOptions, function (error, response, body) {
                 callback();
             });
         }
@@ -393,12 +383,11 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should skip the first 3 devices', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
 
-                for (let i = 0; i < parsedBody.devices.length; i++) {
-                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(parsedBody.devices[i].id).should.equal(-1);
+                for (let i = 0; i < body.devices.length; i++) {
+                    ['Light1_0', 'Light1_1', 'Light1_2'].indexOf(body.devices[i].id).should.equal(-1);
                 }
 
                 done();
@@ -433,17 +422,16 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            request(provisioning3Options, function (error) {
+            utils.request(provisioning3Options, function (error) {
                 done();
             });
         });
 
         it('should return just the ones in the selected service', function (done) {
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-                parsedBody.devices.length.should.equal(3);
+                body.devices.length.should.equal(3);
                 done();
             });
         });

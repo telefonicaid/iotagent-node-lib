@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -134,9 +134,9 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(request, provisioning1Options),
-                    async.apply(request, provisioning2Options),
-                    async.apply(request, provisioning3Options)
+                    async.apply(utils.request, provisioning1Options),
+                    async.apply(utils.request, provisioning2Options),
+                    async.apply(utils.request, provisioning3Options)
                 ],
                 function (error, results) {
                     done();
@@ -160,7 +160,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         };
 
         it('should return a 200 OK and no errors', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -168,7 +168,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         });
 
         it('should remove the device from the provisioned devices list', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
                     headers: {
@@ -178,16 +178,15 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function (error, response, body) {
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.devices.length.should.equal(2);
+                utils.request(options, function (error, response, body) {
+                    body.devices.length.should.equal(2);
                     done();
                 });
             });
         });
 
         it('should return a 404 error when asking for the particular device', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -197,7 +196,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                     method: 'GET'
                 };
 
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(404);
                     done();
@@ -213,7 +212,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 callback(null, device);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -231,7 +230,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
         };
 
         it('should return a 200 OK and no errors', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();

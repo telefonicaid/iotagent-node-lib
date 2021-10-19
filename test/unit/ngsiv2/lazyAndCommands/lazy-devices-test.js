@@ -33,10 +33,11 @@ const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -219,7 +220,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -235,12 +236,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         id: 'Light:light1'
@@ -295,7 +295,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -307,12 +307,12 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
+
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         id: 'Light:light1'
@@ -350,7 +350,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should not give any error', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
@@ -358,7 +358,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return the empty value', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 const entities = body;
                 entities[0].dimming.value.should.equal('');
                 done();
@@ -370,12 +370,12 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
+
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         id: 'Light:light1'
@@ -429,7 +429,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -441,12 +441,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         id: 'Motion:motion1'
@@ -502,7 +501,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -567,7 +566,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                     callback(null);
                 });
 
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(204);
                     done();
@@ -580,12 +579,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         idPattern: '.*'
@@ -649,7 +647,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return error as idPattern is not supported', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.error.should.equal('BadRequest');
@@ -663,12 +661,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         idPattern: '.*',
@@ -733,7 +730,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return error as idPattern is not supported', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.error.should.equal('BadRequest');
@@ -747,12 +744,11 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/query',
             method: 'POST',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
             },
-            body: {
+            json: {
                 entities: [
                     {
                         id: 'Light:light1',
@@ -808,7 +804,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -867,7 +863,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -932,7 +928,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -1003,7 +999,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -1067,7 +1063,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -1083,10 +1079,9 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
-                parsedBody.error.should.equal('UNSUPPORTED_CONTENT_TYPE');
-                parsedBody.description.should.equal('Unsupported content type in the context request: text/plain');
+            utils.request(options, function (error, response, body) {
+                body.error.should.equal('UNSUPPORTED_CONTENT_TYPE');
+                body.description.should.equal('Unsupported content type in the context request: text/plain');
                 done();
             });
         });

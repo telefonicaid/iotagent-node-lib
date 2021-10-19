@@ -29,7 +29,7 @@ const async = require('async');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
-const request = require('request');
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -204,15 +204,15 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
     });
     describe('When a new device group creation request arrives', function () {
         it('should return a 200 OK', function (done) {
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
         it('should store it in the DB', function (done) {
-            request(optionsCreation, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     done();
@@ -220,8 +220,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             });
         });
         it('should store attributes in the DB', function (done) {
-            request(optionsCreation, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     should.exist(body.services[0].attributes);
                     body.services[0].attributes.length.should.equal(1);
@@ -244,8 +244,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             });
         });
         it('should store the service information from the headers into the DB', function (done) {
-            request(optionsCreation, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].service.should.equal('testservice');
                     body.services[0].subservice.should.equal('/testingPath');
@@ -265,7 +265,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 callback();
             });
 
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -293,15 +293,15 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             }
         };
         it('should return a 200 OK', function (done) {
-            request(optionsCreation1, function (error, response, body) {
+            utils.request(optionsCreation1, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
                 done();
             });
         });
         it('should store it in the DB', function (done) {
-            request(optionsCreation1, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsCreation1, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     body.services[0].explicitAttrs.should.equal(true);
@@ -312,8 +312,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
     });
     describe('When a new creation request arrives for a pair (resource, apiKey) already existant', function () {
         it('should return a 400 DUPLICATE_GROUP error', function (done) {
-            request(optionsCreation, function (error, response, body) {
-                request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
+                utils.request(optionsCreation, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
@@ -332,7 +332,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -350,7 +350,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -368,7 +368,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 WRONG_SYNTAX error', function (done) {
-            request(optionsCreation, function (error, response, body) {
+            utils.request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('WRONG_SYNTAX');
@@ -378,26 +378,26 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
     });
     describe('When a device group removal request arrives', function () {
         beforeEach(function (done) {
-            request(optionsCreation, done);
+            utils.request(optionsCreation, done);
         });
 
         it('should return a 204 OK', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
         it('should remove it from the database', function (done) {
-            request(optionsDelete, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(0);
                     done();
                 });
             });
         });
         it('should remove it from the configuration', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(iotAgentConfig.types.SensorMachine);
                 done();
             });
@@ -436,8 +436,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(request, optionsCreation),
-                    async.apply(request, optionsDeviceCreation)
+                    async.apply(utils.request, optionsCreation),
+                    async.apply(utils.request, optionsDeviceCreation)
                 ],
                 done
             );
@@ -460,9 +460,9 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
             async.series(
                 [
-                    async.apply(request, optionsDeleteDevice),
-                    async.apply(request, options),
-                    async.apply(request, options, test)
+                    async.apply(utils.request, optionsDeleteDevice),
+                    async.apply(utils.request, options),
+                    async.apply(utils.request, options, test)
                 ],
                 done
             );
@@ -478,7 +478,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 callback();
             });
 
-            request(optionsDeleteDevice, function (error, response, body) {
+            utils.request(optionsDeleteDevice, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -494,7 +494,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
         beforeEach(function (done) {
             optionsDeleteDifferentService.headers['fiware-service'] = 'unexistentService';
-            request(optionsCreation, done);
+            utils.request(optionsCreation, done);
         });
 
         afterEach(function (done) {
@@ -503,7 +503,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should return a 403 MISMATCHED_SERVICE error', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -517,7 +517,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
         beforeEach(function (done) {
             optionsDeleteDifferentService.headers['fiware-servicepath'] = '/unexistentSubservice';
-            request(optionsCreation, done);
+            utils.request(optionsCreation, done);
         });
 
         afterEach(function (done) {
@@ -526,7 +526,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should return a 403 MISMATCHED_SERVICE error', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -552,17 +552,17 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
             async.series(
                 [
-                    async.apply(request, optionsCreation1),
-                    async.apply(request, optionsCreation2),
-                    async.apply(request, optionsCreation3)
+                    async.apply(utils.request, optionsCreation1),
+                    async.apply(utils.request, optionsCreation2),
+                    async.apply(utils.request, optionsCreation3)
                 ],
                 done
             );
         });
 
         it('should remove just the selected group', function (done) {
-            request(optionsDelete, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(2);
 
                     for (let i = 0; i < body.services.length; i++) {
@@ -585,7 +585,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -607,7 +607,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsDelete, function (error, response, body) {
+            utils.request(optionsDelete, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -633,16 +633,16 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
             async.series(
                 [
-                    async.apply(request, optionsCreation1),
-                    async.apply(request, optionsCreation2),
-                    async.apply(request, optionsCreation3)
+                    async.apply(utils.request, optionsCreation1),
+                    async.apply(utils.request, optionsCreation2),
+                    async.apply(utils.request, optionsCreation3)
                 ],
                 done
             );
         });
 
         it('should return a 204 OK', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -650,8 +650,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should update the appropriate values in the database', function (done) {
-            request(optionsUpdate, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     let found = false;
                     body.count.should.equal(3);
 
@@ -687,7 +687,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 callback();
             });
 
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -697,7 +697,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
     describe('When a device group update request arrives declaring a different service', function () {
         beforeEach(function (done) {
             optionsUpdate.headers['fiware-service'] = 'UnexistentService';
-            request(optionsCreation, done);
+            utils.request(optionsCreation, done);
         });
 
         afterEach(function () {
@@ -705,7 +705,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should return a 200 OK', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -717,7 +717,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
     describe('When a device group update request arrives declaring a different subservice', function () {
         beforeEach(function (done) {
             optionsUpdate.headers['fiware-servicepath'] = '/UnexistentServicepath';
-            request(optionsCreation, done);
+            utils.request(optionsCreation, done);
         });
 
         afterEach(function () {
@@ -725,7 +725,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should return a 200 OK', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(403);
                 body.name.should.equal('MISMATCHED_SERVICE');
@@ -744,7 +744,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -763,7 +763,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
 
         it('should fail with a 400 MISSING_HEADERS Error', function (done) {
-            request(optionsUpdate, function (error, response, body) {
+            utils.request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -810,12 +810,12 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         };
 
         beforeEach(function (done) {
-            request(optionsCreation1, done);
+            utils.request(optionsCreation1, done);
         });
 
         it('should update value of explicitAttrs', function (done) {
-            request(optionsUpdate1, function (error, response, body) {
-                request(optionsList, function (error, response, body) {
+            utils.request(optionsUpdate1, function (error, response, body) {
+                utils.request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                     body.services[0].explicitAttrs.should.equal(false);
@@ -842,23 +842,23 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
             async.series(
                 [
-                    async.apply(request, optionsCreation1),
-                    async.apply(request, optionsCreation2),
-                    async.apply(request, optionsCreation3)
+                    async.apply(utils.request, optionsCreation1),
+                    async.apply(utils.request, optionsCreation2),
+                    async.apply(utils.request, optionsCreation3)
                 ],
                 done
             );
         });
 
         it('should return a 200 OK', function (done) {
-            request(optionsList, function (error, response, body) {
+            utils.request(optionsList, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
         it('should return all the configured device groups from the database', function (done) {
-            request(optionsList, function (error, response, body) {
+            utils.request(optionsList, function (error, response, body) {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.count.should.equal(3);
@@ -870,18 +870,18 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
 
     describe('When a device info request arrives', function () {
         beforeEach(function (done) {
-            async.series([async.apply(request, optionsCreation)], done);
+            async.series([async.apply(utils.request, optionsCreation)], done);
         });
 
         it('should return a 200 OK', function (done) {
-            request(optionsGet, function (error, response, body) {
+            utils.request(optionsGet, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
         it('should return all the configured device groups from the database', function (done) {
-            request(optionsGet, function (error, response, body) {
+            utils.request(optionsGet, function (error, response, body) {
                 body.services[0].service.should.equal('testservice');
                 done();
             });
@@ -910,7 +910,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 )
                 .query({ type: 'SensorMachine' })
                 .reply(204, {});
-            async.series([async.apply(request, optionsCreation)], done);
+            async.series([async.apply(utils.request, optionsCreation)], done);
         });
 
         afterEach(function (done) {
@@ -957,21 +957,21 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 optionsCreationList[i].json = { services: [] };
                 optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
                 optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
-                creationFns.push(async.apply(request, optionsCreationList[i]));
+                creationFns.push(async.apply(utils.request, optionsCreationList[i]));
             }
 
             async.series(creationFns, done);
         });
 
         it('should return a 200 OK', function (done) {
-            request(optConstrainedList, function (error, response, body) {
+            utils.request(optConstrainedList, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
         it('should use the limit parameter to constrain the number of entries', function (done) {
-            request(optConstrainedList, function (error, response, body) {
+            utils.request(optConstrainedList, function (error, response, body) {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.services.length.should.equal(3);
@@ -979,7 +979,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             });
         });
         it('should use return the total number of entities', function (done) {
-            request(optConstrainedList, function (error, response, body) {
+            utils.request(optConstrainedList, function (error, response, body) {
                 should.exist(body.count);
                 should.exist(body.services);
                 body.count.should.equal(10);

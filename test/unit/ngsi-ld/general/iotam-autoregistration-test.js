@@ -24,7 +24,7 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+
 const nock = require('nock');
 const utils = require('../../../tools/utils');
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
@@ -289,7 +289,7 @@ describe('NGSI-LD - IoT Manager autoregistration', function () {
         });
 
         it('should update the registration in the IoT Manager', function (done) {
-            request(optionsCreation, function (error, result, body) {
+            utils.request(optionsCreation, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -324,7 +324,7 @@ describe('NGSI-LD - IoT Manager autoregistration', function () {
         });
 
         it('should update the registration in the IoT Manager', function (done) {
-            request(optionsDelete, function (error, result, body) {
+            utils.request(optionsDelete, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();
@@ -359,7 +359,7 @@ describe('NGSI-LD - IoT Manager autoregistration', function () {
         });
 
         it('should update the registration in the IoT Manager', function (done) {
-            request(optionsCreationStatic, function (error, result, body) {
+            utils.request(optionsCreationStatic, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();

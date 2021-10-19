@@ -31,7 +31,7 @@ const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 let statusAttributeMock;
@@ -203,7 +203,7 @@ describe('NGSI-LD - Command functionalities', function () {
                 });
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(1);
                 done();
@@ -224,7 +224,7 @@ describe('NGSI-LD - Command functionalities', function () {
                 });
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 done();
             });
@@ -246,7 +246,7 @@ describe('NGSI-LD - Command functionalities', function () {
                 });
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 serviceReceived.should.equal(true);
                 done();
             });

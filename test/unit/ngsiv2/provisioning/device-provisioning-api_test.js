@@ -29,7 +29,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+
 const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
@@ -120,7 +120,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should add the device to the devices list', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
@@ -139,14 +139,14 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 callback(null, device);
             });
 
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
         });
 
         it('should store the device with the provided entity id, name and type', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     results.devices[0].id.should.equal('Light1');
@@ -157,7 +157,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
         });
         it('should store the device with the per device information', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     should.exist(results.devices[0].timezone);
@@ -188,7 +188,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         it('should store fill the device ID in case only the name is provided', function (done) {
             /* jshint camelcase:false */
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     results.devices[0].lazy[0].object_id.should.equal('luminance');
@@ -200,7 +200,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should store service and subservice info from the headers along with the device data', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     should.exist(results.devices[0].service);
@@ -213,7 +213,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should create the initial entity in the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     contextBrokerMock.done();
@@ -259,7 +259,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -303,7 +303,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -347,13 +347,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
         });
         it('should store the device with explicitAttrs:true device information', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     should.exist(results.devices[0].explicitAttrs);
                     results.devices[0].explicitAttrs.should.equal(true);
@@ -407,13 +407,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should send the appropriate requests to the Context Broker', function (done) {
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     contextBrokerMock.done();
                     done();
                 });
             });
             it('should store the device with explicitAttrs value provided in configuration', function (done) {
-                request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                         should.exist(results.devices[0].explicitAttrs);
                         results.devices[0].explicitAttrs.should.equal(false);
@@ -477,8 +477,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should store the device with explicitAttrs value provided in configuration', function (done) {
-                request(groupCreation, function (error, response, body) {
-                    request(options, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
+                    utils.request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].explicitAttrs);
                             results.devices[0].explicitAttrs.should.equal(true);
@@ -551,8 +551,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should store the device with static attributes provided in configuration', function (done) {
-                request(groupCreation, function (error, response, body) {
-                    request(options, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
+                    utils.request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
                             results.devices[0].staticAttributes[0].name.should.equal('bootstrapServer');
@@ -617,8 +617,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should store the device with static attributes provided in device', function (done) {
-                request(groupCreation, function (error, response, body) {
-                    request(options, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
+                    utils.request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
                             results.devices[0].staticAttributes[0].name.should.equal('bootstrapServer');
@@ -691,8 +691,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should store the device with static attributes provided in configuration as well as device', function (done) {
-                request(groupCreation, function (error, response, body) {
-                    request(options, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
+                    utils.request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
                             results.devices[0].staticAttributes.length.should.equal(2);
@@ -765,8 +765,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
 
             it('should store the device with static attributes provided in device', function (done) {
-                request(groupCreation, function (error, response, body) {
-                    request(options, function (error, response, body) {
+                utils.request(groupCreation, function (error, response, body) {
+                    utils.request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
                             results.devices[0].staticAttributes[0].value.should.equal('127.0.0.2');
@@ -814,7 +814,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -873,7 +873,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -908,14 +908,14 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
         });
 
         it('should add the device to the devices list', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
@@ -927,7 +927,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should store the device with the provided entity id, name and type', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                     results.devices[0].id.should.equal('MicroLight1');
@@ -967,7 +967,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate initial values to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -1002,7 +1002,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should send the appropriate initial values to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
@@ -1053,10 +1053,10 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should accept both creations', function (done) {
-            request(options1, function (error, response, body) {
+            utils.request(options1, function (error, response, body) {
                 response.statusCode.should.equal(201);
 
-                request(options2, function (error, response, body) {
+                utils.request(options2, function (error, response, body) {
                     response.statusCode.should.equal(201);
                     done();
                 });
@@ -1064,8 +1064,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should show the new device in each list', function (done) {
-            request(options1, function (error, response, body) {
-                request(options2, function (error, response, body) {
+            utils.request(options1, function (error, response, body) {
+                utils.request(options2, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                         results.devices.length.should.equal(1);
                         results.devices[0].id.should.equal('MicroLight1');
@@ -1114,7 +1114,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should return a valid return code', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(500);
 
@@ -1156,7 +1156,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should return a valid return code (three character number)', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(500);
 
@@ -1179,7 +1179,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should raise a MISSING_ATTRIBUTES error, indicating the missing attributes', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.exist(body);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_ATTRIBUTES');
@@ -1219,8 +1219,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should raise a DUPLICATE_ID error, indicating the ID was already in use', function (done) {
-            request(options, function (error, response, body) {
-                request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     should.exist(body);
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_DEVICE_ID');
@@ -1243,8 +1243,8 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should raise a WRONG_SYNTAX exception', function (done) {
-            request(options, function (error, response, body) {
-                request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
+                utils.request(options, function (error, response, body) {
                     should.exist(body);
                     response.statusCode.should.equal(400);
                     body.name.should.equal('WRONG_SYNTAX');
@@ -1276,7 +1276,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         });
 
         it('should listen to requests in the new root', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
@@ -1298,7 +1298,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should raise a MISSING_HEADERS error, indicating the missing attributes', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.exist(body);
                 response.statusCode.should.equal(400);
                 body.name.should.equal('MISSING_HEADERS');
@@ -1317,7 +1317,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should return a 404 error', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
                 done();

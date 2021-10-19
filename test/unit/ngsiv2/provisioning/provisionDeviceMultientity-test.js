@@ -29,7 +29,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -103,7 +103,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         };
 
         it('should add the device to the devices list', function (done) {
-            request(options, function (error, response, body) {
+            utils.request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(201);
 
