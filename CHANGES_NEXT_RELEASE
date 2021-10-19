@@ -7,4 +7,4 @@
 - Fix: accept the entry internal_attributes in a PUT /iot/devices/:deviceId (#1083)
 - Add: new JEXL transformation for Array.slice(init, end) in order to simplify binary-frame-string field extraction.
 - Fix: amend null processing for NGSI-LD (#1118)
-- Fix: remove request library (#1119)
+- Fix: replace request obsolete library by got (#858)
