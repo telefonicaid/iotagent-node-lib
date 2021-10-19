@@ -22,7 +22,6 @@
  */
 
 const fs = require('fs');
-//const request = require('../../lib/request-shim');
 const request = require('../../lib/fiware-iotagent-lib').request;
 
 function readExampleFile(name, raw) {

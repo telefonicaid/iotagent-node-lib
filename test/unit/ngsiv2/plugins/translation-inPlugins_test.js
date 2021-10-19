@@ -245,9 +245,7 @@ describe('NGSI-v2 - Data Mapping Plugins: translation', function () {
         });
         it('should call the middleware', function (done) {
             function testMiddleware(entity, typeInformation, callback) {
-                console.error(entity);
                 entity.dimming.value = entity.dimming.value + '%';
-
                 callback(null, entity, typeInformation);
             }
 
