@@ -717,10 +717,6 @@ the custom IoT Agent to import its own additional request library
 -   callback: The callback currently returns an `error` Object, the `response` and `body`. The `body` is parsed to a
     JSON object if the `responseType` is JSON.
 
-###### Description
-
-Terminates the current transaction, if there is any, cleaning its context.
-
 #### Generic middlewares
 
 This collection of utility middlewares is aimed to be used to north of the IoT Agent Library, as well as in other
