@@ -51,6 +51,14 @@ To run tests, type
 npm test
 ```
 
+There are additional targets starting with `test:` prefix to run specific test subsets isolatedly. For instance,
+the `test:expressions` target runs the subset of tests related with expression language feature:
+
+```bash
+npm run test:expressions
+```
+
+
 ### Debug Test
 
 To debug the code while running run tests, type
