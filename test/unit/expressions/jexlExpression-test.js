@@ -333,6 +333,17 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When a JSON with an NGSI operator is applied', function () {
+        it('should work on the expression value', function (done) {
+            const scope = { ina: 34, outa: 4 };
+            expressionParser.parse('{$inc:ina-outa}', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.eql({ $inc: 30 });
+                done();
+            });
+        });
+    });
+
     describe('When an expression aims at creating an object', function () {
         it('it should work', function (done) {
             expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function (error, result) {
