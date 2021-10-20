@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 
 const should = require('should');
 const iotAgentConfig = {
@@ -194,7 +195,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .query({ type: 'Device' })
                 .reply(204);
 
-            utils.request(optionsCreationDefault, function (error, response, body) {
+            request(optionsCreationDefault, function (error, response, body) {
                 done();
             });
         });
@@ -216,7 +217,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .query({ type: 'Device' })
                 .reply(204);
 
-            utils.request(optionsCreationV2, function (error, response, body) {
+            request(optionsCreationV2, function (error, response, body) {
                 done();
             });
         });
@@ -236,7 +237,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .matchHeader('NGSILD-Tenant', 'smartgondor')
                 .post('/ngsi-ld/v1/entityOperations/upsert/?options=update')
                 .reply(204);
-            utils.request(optionsCreationLD, function (error, response, body) {
+            request(optionsCreationLD, function (error, response, body) {
                 done();
             });
         });
@@ -263,8 +264,8 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .patch('/v2/entities/light2/attrs')
                 .query({ type: 'Device' })
                 .reply(204);
-            utils.request(optionsCreationLD, function (error, response, body) {
-                utils.request(deviceCreationV2, function (error, response, body) {
+            request(optionsCreationLD, function (error, response, body) {
+                request(deviceCreationV2, function (error, response, body) {
                     done();
                 });
             });

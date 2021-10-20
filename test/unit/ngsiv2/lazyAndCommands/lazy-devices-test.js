@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const async = require('async');
 const apply = async.apply;
 const should = require('should');
@@ -220,7 +221,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -295,7 +296,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -350,7 +351,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should not give any error', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
@@ -358,7 +359,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return the empty value', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 const entities = body;
                 entities[0].dimming.value.should.equal('');
                 done();
@@ -429,7 +430,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -501,7 +502,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -566,7 +567,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                     callback(null);
                 });
 
-                utils.request(options, function (error, response, body) {
+                request(options, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(204);
                     done();
@@ -647,7 +648,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return error as idPattern is not supported', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.error.should.equal('BadRequest');
@@ -730,7 +731,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
         });
 
         it('should return error as idPattern is not supported', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 body.error.should.equal('BadRequest');
@@ -804,7 +805,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -863,7 +864,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -928,7 +929,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -999,7 +1000,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData[0]);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.should.eql(expectedResponse);
                 done();
@@ -1063,7 +1064,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 handlerCalled.should.equal(false);
@@ -1079,7 +1080,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 callback(null, sensorData);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 body.error.should.equal('UNSUPPORTED_CONTENT_TYPE');
                 body.description.should.equal('Unsupported content type in the context request: text/plain');
                 done();

@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
@@ -212,7 +213,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 });
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(1);
                 done();
@@ -233,7 +234,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 });
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 done();
             });
@@ -256,7 +257,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 });
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 serviceAndSubservice.should.equal(true);
                 done();
             });

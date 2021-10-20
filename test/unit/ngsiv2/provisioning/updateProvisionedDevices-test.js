@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
@@ -149,8 +150,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(utils.request, provisioning1Options),
-                    async.apply(utils.request, provisioning2Options)
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options)
                 ],
                 done
             );
@@ -218,7 +219,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
 
         it('should return a 200 OK and no errors', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
@@ -226,7 +227,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
 
         it('should have updated the data when asking for the particular device', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -236,7 +237,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                utils.request(options, function (error, response, body) {
+                request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
                     body.entity_name.should.equal('ANewLightName');
@@ -247,7 +248,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         });
 
         it('should not modify the attributes not present in the update request', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 const options = {
                     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
                     headers: {
@@ -257,7 +258,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     method: 'GET'
                 };
 
-                utils.request(options, function (error, response, body) {
+                request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
                     body.entity_type.should.equal('TheLightType');
@@ -281,7 +282,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         };
 
         it('should raise a 400 error', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
@@ -302,7 +303,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
         };
 
         it('should raise a 400 error', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 done();
@@ -352,19 +353,19 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 )
                 .reply(204);
 
-            async.series([iotAgentLib.clearAll, async.apply(utils.request, provisioning3Options)], done);
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
         it('should not raise any error', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
         it('should provision the attributes appropriately', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
-                utils.request(optionsGetDevice, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
@@ -375,7 +376,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
         it('should create the initial values for the attributes in the Context Broker', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -427,12 +428,12 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 )
                 .reply(204);
 
-            async.series([iotAgentLib.clearAll, async.apply(utils.request, provisioning3Options)], done);
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning3Options)], done);
         });
 
         it('should provision the attributes appropriately', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
-                utils.request(optionsGetDevice, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
@@ -478,12 +479,12 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([iotAgentLib.clearAll, async.apply(utils.request, provisioning4Options)], done);
+            async.series([iotAgentLib.clearAll, async.apply(request, provisioning4Options)], done);
         });
 
         it('should provision the explicitAttrs attribute appropriately', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
-                utils.request(optionsGetDevice, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
+                request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 

@@ -25,6 +25,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const async = require('async');
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
@@ -91,8 +92,8 @@ describe('Device Group utils', function () {
             async.series(
                 [
                     async.apply(iotAgentLib.activate, iotAgentConfig),
-                    async.apply(utils.request, alternateGroupCreation),
-                    async.apply(utils.request, groupCreation)
+                    async.apply(request, alternateGroupCreation),
+                    async.apply(request, groupCreation)
                 ],
                 done
             );
@@ -109,7 +110,7 @@ describe('Device Group utils', function () {
         beforeEach(function (done) {
             iotAgentConfig.singleConfigurationMode = true;
             iotAgentLib.activate(iotAgentConfig, function () {
-                utils.request(groupCreation, function (error, response, body) {
+                request(groupCreation, function (error, response, body) {
                     done();
                 });
             });

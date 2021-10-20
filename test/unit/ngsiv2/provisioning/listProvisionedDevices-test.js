@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
@@ -117,9 +118,9 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             async.series(
                 [
                     iotAgentLib.clearAll,
-                    async.apply(utils.request, provisioning1Options),
-                    async.apply(utils.request, provisioning2Options),
-                    async.apply(utils.request, provisioning4Options)
+                    async.apply(request, provisioning1Options),
+                    async.apply(request, provisioning2Options),
+                    async.apply(request, provisioning4Options)
                 ],
                 function (error, results) {
                     done();
@@ -143,7 +144,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return all the provisioned devices', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 should.exist(body.devices);
                 response.statusCode.should.equal(200);
@@ -156,7 +157,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         it('should return all the appropriate field names', function (done) {
             /* jshint camelcase:false */
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.exist(body.devices[0].attributes);
                 body.devices[0].attributes.length.should.equal(1);
 
@@ -177,7 +178,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should return all the plugin attributes', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.exist(body.devices[2].attributes[0].entity_name);
                 should.exist(body.devices[2].attributes[0].entity_type);
                 should.exist(body.devices[2].attributes[1].expression);
@@ -201,7 +202,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return all the information on that particular device', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -212,7 +213,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should return the appropriate attribute fields', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 should.exist(body.attributes[0].object_id);
@@ -234,7 +235,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return the appropriate attribute fields', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 should.exist(body.attributes[0].entity_name);
@@ -260,7 +261,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         };
 
         it('should return a 404 error', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
                 done();
@@ -294,7 +295,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             provisioningDeviceOptions.json.devices[0].device_id =
                 provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            utils.request(provisioningDeviceOptions, callback);
+            request(provisioningDeviceOptions, callback);
         }
 
         beforeEach(function (done) {
@@ -320,7 +321,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should return just 3 devices', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.devices.length.should.equal(3);
                 done();
@@ -328,7 +329,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should return a count with the complete number of devices', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 body.count.should.equal(10);
                 done();
@@ -360,7 +361,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             provisioningDeviceOptions.json.devices[0].device_id =
                 provisioningDeviceOptions.json.devices[0].device_id + '_' + i;
 
-            utils.request(provisioningDeviceOptions, function (error, response, body) {
+            request(provisioningDeviceOptions, function (error, response, body) {
                 callback();
             });
         }
@@ -383,7 +384,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
         });
 
         it('should skip the first 3 devices', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 for (let i = 0; i < body.devices.length; i++) {
@@ -422,13 +423,13 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            utils.request(provisioning3Options, function (error) {
+            request(provisioning3Options, function (error) {
                 done();
             });
         });
 
         it('should return just the ones in the selected service', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 body.devices.length.should.equal(3);

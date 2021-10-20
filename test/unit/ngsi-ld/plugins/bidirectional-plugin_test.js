@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
@@ -104,7 +105,7 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -148,8 +149,8 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
         });
 
         it('should remove its subscriptions from the Context Broker', function (done) {
-            utils.request(options, function (error, response, body) {
-                utils.request(deleteRequest, function (error, response, body) {
+            request(options, function (error, response, body) {
+                request(deleteRequest, function (error, response, body) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
@@ -204,8 +205,8 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(options, function (error, response, body) {
-                utils.request(notificationOptions, function (error, response, body) {
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
                     executedHandler.should.equal(true);
                     contextBrokerMock.done();
                     done();
@@ -221,8 +222,8 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(options, function (error, response, body) {
-                utils.request(notificationOptions, function (error, response, body) {
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
                     response.statusCode.should.equal(200);
                     contextBrokerMock.done();
                     done();
@@ -253,8 +254,8 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(options, function (error, response, body) {
-                utils.request(notificationOptions, function (error, response, body) {
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
                     contextBrokerMock.done();
                     transformedHandler.should.equal(true);
                     done();
@@ -305,8 +306,8 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
                 .reply(204);
         });
         it('should subscribe to the modification of the combined attribute with all the variables', function (done) {
-            utils.request(provisionGroup, function (error, response, body) {
-                utils.request(provisionDevice, function (error, response, body) {
+            request(provisionGroup, function (error, response, body) {
+                request(provisionDevice, function (error, response, body) {
                     should.not.exist(error);
                     contextBrokerMock.done();
                     done();
@@ -395,9 +396,9 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(provisionGroup, function (error, response, body) {
-                utils.request(provisionDevice, function (error, response, body) {
-                    utils.request(notificationOptions, function (error, response, body) {
+            request(provisionGroup, function (error, response, body) {
+                request(provisionDevice, function (error, response, body) {
+                    request(notificationOptions, function (error, response, body) {
                         transformedHandler.should.equal(true);
                         done();
                     });
@@ -464,7 +465,7 @@ describe('NGSI-LD - Bidirectional data plugin and CB is defined using environmen
         });
 
         it('should subscribe to the modification of the combined attribute with all the variables', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

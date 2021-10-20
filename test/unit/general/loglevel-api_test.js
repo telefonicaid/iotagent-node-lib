@@ -27,6 +27,7 @@ const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const logger = require('logops');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
@@ -99,7 +100,7 @@ describe('Log level API', function () {
         };
 
         it('the real log level should be changed', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -119,7 +120,7 @@ describe('Log level API', function () {
         };
 
         it('should return a 200 OK', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
@@ -128,7 +129,7 @@ describe('Log level API', function () {
         });
 
         it('should return the current log level', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.exist(body.level);
                 body.level.should.equal('FATAL');
 
@@ -151,7 +152,7 @@ describe('Log level API', function () {
         };
 
         it('should return a 400 error indicating the log level is not valid', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
@@ -174,7 +175,7 @@ describe('Log level API', function () {
         };
 
         it('should return a 400 error indicating the log level is missing', function (done) {
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);

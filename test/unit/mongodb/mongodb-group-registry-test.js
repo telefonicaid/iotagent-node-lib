@@ -28,6 +28,7 @@
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const async = require('async');
 const should = require('should');
 const iotAgentConfig = {
@@ -195,7 +196,7 @@ describe('MongoDB Group Registry test', function () {
     });
     describe('When a new device group creation request arrives', function () {
         it('should store it in the DB', function (done) {
-            utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
@@ -220,7 +221,7 @@ describe('MongoDB Group Registry test', function () {
             });
         });
         it('should store the service information from the headers into the DB', function (done) {
-            utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
@@ -239,8 +240,8 @@ describe('MongoDB Group Registry test', function () {
 
     describe('When a new device group creation request arrives with an existant (apikey, resource) pair', function () {
         it('should return a DUPLICATE_GROUP error', function (done) {
-            utils.request(optionsCreation, function (error, response, body) {
-                utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
+                request(optionsCreation, function (error, response, body) {
                     response.statusCode.should.equal(409);
                     body.name.should.equal('DUPLICATE_GROUP');
                     done();
@@ -251,11 +252,11 @@ describe('MongoDB Group Registry test', function () {
 
     describe('When a device group removal request arrives', function () {
         beforeEach(function (done) {
-            utils.request(optionsCreation, done);
+            request(optionsCreation, done);
         });
 
         it('should remove it from the database', function (done) {
-            utils.request(optionsDelete, function (error, response, body) {
+            request(optionsDelete, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
@@ -271,7 +272,7 @@ describe('MongoDB Group Registry test', function () {
         });
 
         it('should return a 204 OK statusCode', function (done) {
-            utils.request(optionsDelete, function (error, response, body) {
+            request(optionsDelete, function (error, response, body) {
                 response.statusCode.should.equal(204);
                 done();
             });
@@ -280,11 +281,11 @@ describe('MongoDB Group Registry test', function () {
 
     describe('When a device group update request arrives', function () {
         beforeEach(function (done) {
-            utils.request(optionsCreation, done);
+            request(optionsCreation, done);
         });
 
         it('should update the values in the database', function (done) {
-            utils.request(optionsUpdate, function (error, response, body) {
+            request(optionsUpdate, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
@@ -314,7 +315,7 @@ describe('MongoDB Group Registry test', function () {
         });
 
         it('should create the values in the database', function (done) {
-            utils.request(optionsMultipleCreation, function (error, response, body) {
+            request(optionsMultipleCreation, function (error, response, body) {
                 iotAgentDb
                     .db()
                     .collection('groups')
@@ -346,16 +347,16 @@ describe('MongoDB Group Registry test', function () {
 
             async.series(
                 [
-                    async.apply(utils.request, optionsCreation1),
-                    async.apply(utils.request, optionsCreation2),
-                    async.apply(utils.request, optionsCreation3)
+                    async.apply(request, optionsCreation1),
+                    async.apply(request, optionsCreation2),
+                    async.apply(request, optionsCreation3)
                 ],
                 done
             );
         });
 
         it('should return all the configured device groups from the database', function (done) {
-            utils.request(optionsList, function (error, response, body) {
+            request(optionsList, function (error, response, body) {
                 body.count.should.equal(3);
                 done();
             });
@@ -386,14 +387,14 @@ describe('MongoDB Group Registry test', function () {
                 optionsCreationList[i].json = { services: [] };
                 optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
                 optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
-                creationFns.push(async.apply(utils.request, optionsCreationList[i]));
+                creationFns.push(async.apply(request, optionsCreationList[i]));
             }
 
             async.series(creationFns, done);
         });
 
         it('should return the appropriate count of services', function (done) {
-            utils.request(optionsConstrained, function (error, response, body) {
+            request(optionsConstrained, function (error, response, body) {
                 body.count.should.equal(10);
                 done();
             });
@@ -402,11 +403,11 @@ describe('MongoDB Group Registry test', function () {
 
     describe('When a device info request arrives', function () {
         beforeEach(function (done) {
-            async.series([async.apply(utils.request, optionsCreation)], done);
+            async.series([async.apply(request, optionsCreation)], done);
         });
 
         it('should return all the configured device groups from the database', function (done) {
-            utils.request(optionsGet, function (error, response, body) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(1);
@@ -429,14 +430,14 @@ describe('MongoDB Group Registry test', function () {
                 optionsCreationList[i].json = { services: [] };
                 optionsCreationList[i].json.services[0] = _.clone(optionsCreation.json.services[0]);
                 optionsCreationList[i].json.services[0].apikey = 'qwertyuiop' + i;
-                creationFns.push(async.apply(utils.request, optionsCreationList[i]));
+                creationFns.push(async.apply(request, optionsCreationList[i]));
             }
 
             async.series(creationFns, done);
         });
 
         it('should return all the configured device groups from the database', function (done) {
-            utils.request(optionsGet, function (error, response, body) {
+            request(optionsGet, function (error, response, body) {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(10);

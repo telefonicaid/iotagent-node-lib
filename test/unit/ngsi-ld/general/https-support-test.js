@@ -31,6 +31,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const nock = require('nock');
 const logger = require('logops');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
 const should = require('should');
 const iotAgentConfig = {
@@ -195,7 +196,7 @@ describe('NGSI-LD - HTTPS support tests', function () {
                     .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
                 iotAgentLib.clearAll(function () {
-                    utils.request(optionsProvision, function (error, result, body) {
+                    request(optionsProvision, function (error, result, body) {
                         done();
                     });
                 });

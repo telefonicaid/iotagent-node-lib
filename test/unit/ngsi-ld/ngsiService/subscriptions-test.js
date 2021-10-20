@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 
 const nock = require('nock');
@@ -84,7 +85,7 @@ describe('NGSI-LD - Subscription tests', function () {
                 .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
 
             iotAgentLib.clearAll(function () {
-                utils.request(optionsProvision, function (error, result, body) {
+                request(optionsProvision, function (error, result, body) {
                     done();
                 });
             });
@@ -216,7 +217,7 @@ describe('NGSI-LD - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(notificationOptions, function (error, response, body) {
+            request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(true);
 
@@ -259,7 +260,7 @@ describe('NGSI-LD - Subscription tests', function () {
             iotAgentLib.addNotificationMiddleware(mockedMiddleware);
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(notificationOptions, function (error, response, body) {
+            request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(true);
                 executedMiddlewares.should.equal(true);
@@ -298,7 +299,7 @@ describe('NGSI-LD - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(notificationOptions, function (error, response, body) {
+            request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 rightFields.should.equal(true);
 
@@ -327,7 +328,7 @@ describe('NGSI-LD - Subscription tests', function () {
 
             iotAgentLib.setNotificationHandler(mockedHandler);
 
-            utils.request(notificationOptions, function (error, response, body) {
+            request(notificationOptions, function (error, response, body) {
                 should.not.exist(error);
                 executedHandler.should.equal(false);
 

@@ -25,9 +25,9 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
-const request = utils.request;
 const logger = require('logops');
 const async = require('async');
 const iotAgentConfig = {

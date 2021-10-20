@@ -25,6 +25,7 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 
@@ -128,7 +129,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(true);
                 done();
@@ -147,7 +148,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });
@@ -167,7 +168,7 @@ describe('Data Mapping Plugins: configuration provision', function () {
                 callback(null, newConfiguration);
             });
 
-            utils.request(optionsCreation, function (error, response, body) {
+            request(optionsCreation, function (error, response, body) {
                 handlerCalled.should.equal(false);
                 done();
             });

@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
@@ -201,7 +202,7 @@ describe('NGSI-LD - Polling commands', function () {
                 });
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 handlerCalled.should.equal(false);
                 done();
@@ -212,7 +213,7 @@ describe('NGSI-LD - Polling commands', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
                 statusAttributeMock.done();
                 done();
@@ -223,7 +224,7 @@ describe('NGSI-LD - Polling commands', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
@@ -278,7 +279,7 @@ describe('NGSI-LD - Polling commands', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 should.not.exist(error);
 
                 response.statusCode.should.equal(204);
@@ -344,7 +345,7 @@ describe('NGSI-LD - Polling commands', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 setTimeout(function () {
                     iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         should.not.exist(error);
@@ -360,7 +361,7 @@ describe('NGSI-LD - Polling commands', function () {
                 callback(null);
             });
 
-            utils.request(options, function (error, response, body) {
+            request(options, function (error, response, body) {
                 setTimeout(function () {
                     iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
                         statusAttributeMock.done();
