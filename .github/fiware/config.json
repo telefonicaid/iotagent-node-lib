@@ -1,0 +1,19 @@
+{
+    "enabler": "FIWARE IoT Agent Node.js Library",
+    "chapter": "iotagents",
+    "academy": "iot-agents/idas",
+    "readthedocs": "iotagent-node-lib",
+    "helpdesk": "",
+    "coveralls": "https://coveralls.io/github/telefonicaid/iotagent-node-lib",
+    "github": ["telefonicaid/iotagent-node-lib"],
+    "dockerregistry": [],
+    "docker": [],
+    "email": "iot_support@tid.es",
+    "status": "full",
+    "compose": "",
+    "exclude": [""],
+    "stackexchange": [""],
+    "unit-test": "",
+    "smoke-test": "",
+    "dockerfile": ""
+}
