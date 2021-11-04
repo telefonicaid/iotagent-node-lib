@@ -8,3 +8,4 @@
 - Add: new JEXL transformation for Array.slice(init, end) in order to simplify binary-frame-string field extraction.
 - Fix: amend null processing for NGSI-LD (#1118)
 - Updated JEXL dependecy from 2.1.1 to 2.3.0 to allow the usage of NGSI operators ($inc, etc.)
+- Support of same entity_id and diferent entity_type in multientity plugin
