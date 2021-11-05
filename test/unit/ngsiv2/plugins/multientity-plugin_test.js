@@ -566,7 +566,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .post(
                     '/v2/op/update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin9.json'
                     )
                 )
                 .reply(204);
