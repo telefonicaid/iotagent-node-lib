@@ -363,24 +363,28 @@ const iotAgentConfig = {
         SharedIds3: {
             commands: [],
             type: 'ShareStation',
+            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
-                    object_id: 'v',
+                    object_id: 'fakev1',
+                    expression: 'v',
                     name: 'vol',
                     type: 'Number',
                     entity_name: 'WeatherStation1',
                     entity_type: 'Type1'
                 },
                 {
-                    object_id: 'v',
+                    object_id: 'fakev2',
+                    expression: 'v',
                     name: 'vol',
                     type: 'Number',
                     entity_name: 'WeatherStation1',
                     entity_type: 'Type2'
                 },
                 {
-                    object_id: 'v',
+                    object_id: 'fakev3',
+                    expression: 'v',
                     name: 'extravol',
                     type: 'Number',
                     entity_name: 'WeatherStation1',
