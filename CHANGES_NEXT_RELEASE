@@ -1,3 +1,4 @@
+- Fix: IOTA sends illegal entity type or entity id to CB (#1124)
 - Fix: Include attribute metadata in attribute device info for API requests (#1115)
 - Fix: set status code response from CB for EntityGenericError is raised (#1109)
 - Remove: NGSI-v1 implementation (#966)
