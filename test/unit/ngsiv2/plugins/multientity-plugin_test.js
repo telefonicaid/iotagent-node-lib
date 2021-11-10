@@ -293,6 +293,109 @@ const iotAgentConfig = {
             ],
             type: 'SensorCommand',
             lazy: []
+        },
+        SharedIds1: {
+            commands: [],
+            type: 'ShareStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'volt1',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'volt2',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v3',
+                    name: 'extravolt2',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
+        },
+        SharedIds2: {
+            commands: [],
+            type: 'ShareStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v3',
+                    name: 'extravol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
+        },
+        SharedIds3: {
+            commands: [],
+            type: 'ShareStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'fakev1',
+                    expression: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'fakev2',
+                    expression: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'fakev3',
+                    expression: 'v',
+                    name: 'extravol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -591,6 +694,135 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should send the update value to the resulting value of the expression', function (done) {
             iotAgentLib.update('ws9', 'WeatherStation8', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity with same entity_id and different entity_type with different attrs', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            },
+            {
+                name: 'v3',
+                type: 'Number',
+                value: 3
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin12.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with different attribute names and different object_id', function (done) {
+            iotAgentLib.update('sh1', 'SharedIds1', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity with same entity_id and different entity_type whit shared attrs', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            },
+            {
+                name: 'v3',
+                type: 'Number',
+                value: 3
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin13.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with same attribute names', function (done) {
+            iotAgentLib.update('sh2', 'SharedIds2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity with same entity_id and different entity_type whit shared attrs and shared object_id', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin14.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with same attribute names', function (done) {
+            iotAgentLib.update('sh3', 'SharedIds3', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
