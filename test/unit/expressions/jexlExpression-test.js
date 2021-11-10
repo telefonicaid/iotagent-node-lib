@@ -354,4 +354,21 @@ describe('Jexl expression interpreter', function () {
             });
         });
     });
+
+    describe('When an expression access to non existent property', function () {
+        it('it should return null', function (done) {
+            expressionParser.parse('object["nothing"]', scope, function (error, result) {
+                should.not.exist(error);
+                (result === null).should.be.true;
+                done();
+            });
+        });
+        it('it should return null', function (done) {
+            expressionParser.parse('object["nothing"]?object["nothing"]:null', scope, function (error, result) {
+                should.not.exist(error);
+                (result === null).should.be.true;
+                done();
+            });
+        });
+    });
 });
