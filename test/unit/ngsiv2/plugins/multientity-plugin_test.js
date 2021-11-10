@@ -294,6 +294,32 @@ const iotAgentConfig = {
             type: 'SensorCommand',
             lazy: []
         },
+        WrongStation: {
+            commands: [],
+            type: 'WrongStation',
+            expressionLanguage: 'jexl',     
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',     
+                   name: 'type',
+                    type: 'string',
+                    entity_name: 'WrongStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'id',
+                    type: 'string',
+                    entity_name: 'WrongStation1'      
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WrongStation1'
+                }
+            ]
+        },
         SharedIds1: {
             commands: [],
             type: 'ShareStation',
@@ -330,10 +356,12 @@ const iotAgentConfig = {
         SharedIds2: {
             commands: [],
             type: 'ShareStation',
+
             lazy: [],
             active: [
                 {
                     object_id: 'v1',
+
                     name: 'vol',
                     type: 'Number',
                     entity_name: 'WeatherStation1',
@@ -700,7 +728,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             });
         });
     });
-
     describe('When an update comes for a multientity with same entity_id and different entity_type with different attrs', function () {
         const values = [
             {
@@ -815,6 +842,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .post(
                     '/v2/op/update',
                     utils.readExampleFile(
+
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin14.json'
                     )
                 )
