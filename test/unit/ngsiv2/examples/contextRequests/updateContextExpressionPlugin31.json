@@ -1,0 +1,10 @@
+{
+  "undef": {
+    "type": "json",
+    "value": null
+  },
+  "nil": {
+    "type": "json",
+    "value": null
+  }
+}
