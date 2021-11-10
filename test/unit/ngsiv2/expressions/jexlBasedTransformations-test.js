@@ -156,6 +156,18 @@ const iotAgentConfig = {
                     name: 'nil',
                     type: 'json',
                     expression: 'u["no"]?u["no"]:null'
+                },
+                {
+                    object_id: 'f',
+                    name: 'falsy',
+                    type: 'Boolean',
+                    expression: 'u["no"]?u["no"]:false'
+                },
+                {
+                    object_id: 'z',
+                    name: 'zero',
+                    type: 'Number',
+                    expression: 'u["no"]?u["no"]:0'
                 }
             ]
         },
@@ -784,7 +796,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .reply(204);
         });
 
-        it('should not calculate the expression', function (done) {
+        it('should not calculate the expression and allow falsy values', function (done) {
             iotAgentLib.update('ws1', 'WeatherStationUndef', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
