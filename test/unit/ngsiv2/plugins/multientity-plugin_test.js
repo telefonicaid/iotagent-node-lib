@@ -901,6 +901,49 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
         });
     });
 
+    describe('When an update comes for a multientity whith a wrong mapping)', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression overwriting wrong id and type mapped attributes', function (done) {
+            iotAgentLib.update('ws11', 'WrongStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });   
+    
     describe('When an update comes for a multientity measurement without type for one entity', function () {
         const values = [
             {
