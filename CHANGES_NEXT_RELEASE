@@ -10,5 +10,4 @@
 - Updated JEXL dependecy from 2.1.1 to 2.3.0 to allow the usage of NGSI operators ($inc, etc.)
 - Support of same entity_id and diferent entity_type in multientity plugin (#1127)
 - Align the NGSI-v2 provisioning keywords Text and TextUnrestricted to map directly to NGSI-LD Property (#1131)
-- FIX JEXL undefined, null and falsy values support (#1132)
 
