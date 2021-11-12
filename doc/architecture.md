@@ -32,7 +32,7 @@ basis preprovisioning the devices). Device measures can have three different beh
 The following sequence diagram shows the different NGSI interactions an IoT Agent makes with the Context Broker,
 explained in the following subsections (using the example of a OMA Lightweight M2M device).
 
-![General ](./img/ngsiInteractions.png "NGSI Interactions")
+![General ](./img/ngsiInteractions.png 'NGSI Interactions')
 
 Be aware that the IoT Agents are only required to support NGSI10 operations `updateContext` and `queryContext` in their
 standard formats (currently in JSON format; XML deprecated) but will not answer to NGSI9 operations (or NGSI convenience
@@ -207,16 +207,16 @@ the concrete IoT Agent implementations will be to map between the native device 
 The following figure offers a graphical example of how a COAP IoT Agent work, ordered from the registration of the
 device to a command update to the device.
 
-![General ](./img/iotAgentLib.png "Architecture Overview")
+![General ](./img/iotAgentLib.png 'Architecture Overview')
 
 ### The `TimeInstant` element
 
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
 
--   With NGSI-v2, an attribute metadata named `TimeInstant` (per dynamic attribute mapped, which captures as an
-    ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
-    Standard `observedAt` property-of-a-property is used instead.
+-   With NGSI-v2, an attribute metadata named `TimeInstant` (per dynamic attribute mapped, which captures as an ISO8601
+    timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
+    `observedAt` property-of-a-property is used instead.
 
 -   For NGSI-v2 only, an additional attribute `TimeInstant` is added to the entity which captures as an ISO8601
     timestamp when the last measurement received from the device was observed.

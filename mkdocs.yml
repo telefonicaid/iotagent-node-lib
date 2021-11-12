@@ -18,10 +18,11 @@ pages:
     - 'Advanced Topics' : 'advanced-topics.md'
     - 'Library Functions': 'usermanual.md'
     - 'Measurement Transformation Expression Language': 'expressionLanguage.md'
+    - 'Caching Strategies': 'caching-strategy.md'
     - 'How to develop a new IoT Agent': 'howto.md'
     - 'North Port - NGSI Interactions': 'northboundinteractions.md'
     - 'Development Documentation': development.md
-  - 'Installation & Administration Manual': 
+  - 'Installation & Administration Manual':
     - 'Installation Guide': 'installationguide.md'
     - 'Operations (logs & alarms)': 'operations.md'
-    
+

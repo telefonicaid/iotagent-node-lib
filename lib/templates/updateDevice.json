@@ -192,6 +192,10 @@
     "ngsiVersion": {
         "description": "NGSI Interface for this device",
         "type": "string"
+    },
+    "cache": {
+      "description": "Flag to whether to cache the detals of this device in memory",
+      "type": "boolean"
     }
   }
 }
