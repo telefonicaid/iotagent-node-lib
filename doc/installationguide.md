@@ -56,9 +56,10 @@ allowing the computer to interpret the rest of the data with more clarity and de
 }
 ```
 
-Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also be switched
-to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the provisioning API.
-The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group setting.
+Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
+be switched to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the
+provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
+overriding the group setting.
 
 -   **server**: configuration used to create the Context Server (port where the IoT Agent will be listening as a Context
     Provider and base root to prefix all the paths). The `port` attribute is required. If no `baseRoot` attribute is
@@ -159,7 +160,7 @@ used for the same purpose. For instance:
 
 ```javascript
 {
-    type: "mongodb";
+    type: 'mongodb';
 }
 ```
 
@@ -241,8 +242,8 @@ used for the same purpose. For instance:
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
     the Overview). Default to false.
 -   **timestamp**: if this flag is activated:
-    -   For NGSI-v2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from
-        device information. This flag is overwritten by `timestamp` flag in group or device
+    -   For NGSI-v2, the IoT Agent will add a `TimeInstant` metadata attribute to all the attributes updated from device
+        information. This flag is overwritten by `timestamp` flag in group or device
     -   With NGSI-LD, the standard `observedAt` property-of-a-property is created instead.
 -   **defaultResource**: default string to use as resource for the registration of new Configurations (if no resource is
     provided).
@@ -275,8 +276,8 @@ used for the same purpose. For instance:
 -   **explicitAttrs**: if this flag is activated, only provisioned attributes will be processed to Context Broker. This
     flag is overwritten by `explicitAttrs` flag in group or device provision.
 -   **defaultEntityNameConjunction**: the default conjunction string used to compose a default `entity_name` when is not
-    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`.
-    Default value is `:`. This value is overwritten by `defaultEntityNameConjunction` in group provision.
+    provided at device provisioning time; in that case `entity_name` is composed by `type` + `:` + `device_id`. Default
+    value is `:`. This value is overwritten by `defaultEntityNameConjunction` in group provision.
 -   **relaxTemplateValidation**: if this flag is activated, `objectId` attributes for incoming devices are not
     validated, and may exceptionally include characters (such as semi-colons) which are
     [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the
@@ -291,61 +292,61 @@ with container-based technologies, like Docker, Heroku, etc...
 The following table shows the accepted environment variables, as well as the configuration parameter the variable
 overrides.
 
-| Environment variable             | Configuration attribute         |
-| :------------------------------- | :------------------------------ |
-| IOTA_CB_URL                      | `contextBroker.url`             |
-| IOTA_CB_HOST                     | `contextBroker.host`            |
-| IOTA_CB_PORT                     | `contextBroker.port`            |
-| IOTA_CB_NGSI_VERSION             | `contextBroker.ngsiVersion`     |
-| IOTA_NORTH_HOST                  | `server.host`                   |
-| IOTA_NORTH_PORT                  | `server.port`                   |
-| IOTA_PROVIDER_URL                | `providerUrl`                   |
-| IOTA_AUTH_ENABLED                | `authentication.enabled`        |
-| IOTA_AUTH_TYPE                   | `authentication.type`           |
-| IOTA_AUTH_HEADER                 | `authentication.header`         |
-| IOTA_AUTH_URL                    | `authentication.url`            |
-| IOTA_AUTH_HOST                   | `authentication.host`           |
-| IOTA_AUTH_PORT                   | `authentication.port`           |
-| IOTA_AUTH_USER                   | `authentication.user`           |
-| IOTA_AUTH_PASSWORD               | `authentication.password`       |
-| IOTA_AUTH_CLIENT_ID              | `authentication.clientId`       |
-| IOTA_AUTH_CLIENT_SECRET          | `authentication.clientSecret`   |
-| IOTA_AUTH_TOKEN_PATH             | `authentication.tokenPath`      |
-| IOTA_AUTH_PERMANENT_TOKEN        | `authentication.permanentToken` |
-| IOTA_REGISTRY_TYPE               | `deviceRegistry.type`           |
-| IOTA_LOG_LEVEL                   | `logLevel`                      |
-| IOTA_TIMESTAMP                   | `timestamp`                     |
-| IOTA_IOTAM_URL                   | `iotManager.url`                |
-| IOTA_IOTAM_HOST                  | `iotManager.host`               |
-| IOTA_IOTAM_PORT                  | `iotManager.port`               |
-| IOTA_IOTAM_PATH                  | `iotManager.path`               |
-| IOTA_IOTAM_AGENTPATH             | `iotManager.agentPath`          |
-| IOTA_IOTAM_PROTOCOL              | `iotManager.protocol`           |
-| IOTA_IOTAM_DESCRIPTION           | `iotManager.description`        |
-| IOTA_MONGO_HOST                  | `mongodb.host`                  |
-| IOTA_MONGO_PORT                  | `mongodb.port`                  |
-| IOTA_MONGO_DB                    | `mongodb.db`                    |
-| IOTA_MONGO_REPLICASET            | `mongodb.replicaSet`            |
-| IOTA_MONGO_USER                  | `mongodb.user`                  |
-| IOTA_MONGO_PASSWORD              | `mongodb.password`              |
-| IOTA_MONGO_AUTH_SOURCE           | `mongodb.authSource`            |
-| IOTA_MONGO_RETRIES               | `mongodb.retries`               |
-| IOTA_MONGO_RETRY_TIME            | `mongodb.retryTime`             |
-| IOTA_MONGO_SSL                   | `mongodb.ssl`                   |
-| IOTA_MONGO_EXTRAARGS             | `mongodb.extraArgs`             |
-| IOTA_SINGLE_MODE                 | `singleConfigurationMode`       |
-| IOTA_APPEND_MODE                 | `appendMode`                    |
-| IOTA_POLLING_EXPIRATION          | `pollingExpiration`             |
-| IOTA_POLLING_DAEMON_FREQ         | `pollingDaemonFrequency`        |
-| IOTA_AUTOCAST                    | `autocast`                      |
-| IOTA_MULTI_CORE                  | `multiCore`                     |
-| IOTA_JSON_LD_CONTEXT             | `jsonLdContext`                 |
-| IOTA_FALLBACK_TENANT             | `fallbackTenant`                |
-| IOTA_FALLBACK_PATH               | `fallbackPath`                  |
-| IOTA_DEFAULT_EXPRESSION_LANGUAGE | `defaultExpressionLanguage`     |
-| IOTA_EXPLICIT_ATTRS              | `explicitAttrs`                 |
-| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction` |
-| IOTA_RELAX_TEMPLATE_VALIDATION   | `relaxTemplateValidation`       |
+| Environment variable                 | Configuration attribute         |
+| :----------------------------------- | :------------------------------ |
+| IOTA_CB_URL                          | `contextBroker.url`             |
+| IOTA_CB_HOST                         | `contextBroker.host`            |
+| IOTA_CB_PORT                         | `contextBroker.port`            |
+| IOTA_CB_NGSI_VERSION                 | `contextBroker.ngsiVersion`     |
+| IOTA_NORTH_HOST                      | `server.host`                   |
+| IOTA_NORTH_PORT                      | `server.port`                   |
+| IOTA_PROVIDER_URL                    | `providerUrl`                   |
+| IOTA_AUTH_ENABLED                    | `authentication.enabled`        |
+| IOTA_AUTH_TYPE                       | `authentication.type`           |
+| IOTA_AUTH_HEADER                     | `authentication.header`         |
+| IOTA_AUTH_URL                        | `authentication.url`            |
+| IOTA_AUTH_HOST                       | `authentication.host`           |
+| IOTA_AUTH_PORT                       | `authentication.port`           |
+| IOTA_AUTH_USER                       | `authentication.user`           |
+| IOTA_AUTH_PASSWORD                   | `authentication.password`       |
+| IOTA_AUTH_CLIENT_ID                  | `authentication.clientId`       |
+| IOTA_AUTH_CLIENT_SECRET              | `authentication.clientSecret`   |
+| IOTA_AUTH_TOKEN_PATH                 | `authentication.tokenPath`      |
+| IOTA_AUTH_PERMANENT_TOKEN            | `authentication.permanentToken` |
+| IOTA_REGISTRY_TYPE                   | `deviceRegistry.type`           |
+| IOTA_LOG_LEVEL                       | `logLevel`                      |
+| IOTA_TIMESTAMP                       | `timestamp`                     |
+| IOTA_IOTAM_URL                       | `iotManager.url`                |
+| IOTA_IOTAM_HOST                      | `iotManager.host`               |
+| IOTA_IOTAM_PORT                      | `iotManager.port`               |
+| IOTA_IOTAM_PATH                      | `iotManager.path`               |
+| IOTA_IOTAM_AGENTPATH                 | `iotManager.agentPath`          |
+| IOTA_IOTAM_PROTOCOL                  | `iotManager.protocol`           |
+| IOTA_IOTAM_DESCRIPTION               | `iotManager.description`        |
+| IOTA_MONGO_HOST                      | `mongodb.host`                  |
+| IOTA_MONGO_PORT                      | `mongodb.port`                  |
+| IOTA_MONGO_DB                        | `mongodb.db`                    |
+| IOTA_MONGO_REPLICASET                | `mongodb.replicaSet`            |
+| IOTA_MONGO_USER                      | `mongodb.user`                  |
+| IOTA_MONGO_PASSWORD                  | `mongodb.password`              |
+| IOTA_MONGO_AUTH_SOURCE               | `mongodb.authSource`            |
+| IOTA_MONGO_RETRIES                   | `mongodb.retries`               |
+| IOTA_MONGO_RETRY_TIME                | `mongodb.retryTime`             |
+| IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
+| IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
+| IOTA_SINGLE_MODE                     | `singleConfigurationMode`       |
+| IOTA_APPEND_MODE                     | `appendMode`                    |
+| IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
+| IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
+| IOTA_AUTOCAST                        | `autocast`                      |
+| IOTA_MULTI_CORE                      | `multiCore`                     |
+| IOTA_JSON_LD_CONTEXT                 | `jsonLdContext`                 |
+| IOTA_FALLBACK_TENANT                 | `fallbackTenant`                |
+| IOTA_FALLBACK_PATH                   | `fallbackPath`                  |
+| IOTA_DEFAULT_EXPRESSION_LANGUAGE     | `defaultExpressionLanguage`     |
+| IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
+| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
+| IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
 
 Note:
 

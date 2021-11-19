@@ -97,6 +97,11 @@
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)+$"
                 },
+                "autocast": {
+                  "required": false,
+                  "description": "Whether to autocast this value as a GeoJSON type",
+                  "type": "boolean"
+                },
                 "expression": {
                   "description": "Optional expression for measurement transformation",
                   "type": "string",
@@ -121,7 +126,7 @@
                     "properties": {
                       "object_id": {
                         "description": "ID of the attribute in the device",
-                        "type": "string"                      
+                        "type": "string"
                       },
                       "type": {
                         "description": "Type of the attribute in the target entity",
