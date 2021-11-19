@@ -1,15 +1,2 @@
-- Fix: IOTA sends illegal entity type or entity id to CB (#1124)
-- Fix: Include attribute metadata in attribute device info for API requests (#1115)
-- Fix: set status code response from CB for EntityGenericError is raised (#1109)
-- Remove: NGSI-v1 implementation (#966)
-- FIx: export fillDomains function to iotagent-node-lib available functions (needed to fix logs in iotagent-json#587 and iotagent-ul#508)
-- Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
-- Add: new JEXL get TimeZone Offset (valid for summer winter schedulles) and binary shifting for bitwise operator
-- Fix: accept the entry internal_attributes in a PUT /iot/devices/:deviceId (#1083)
-- Add: new JEXL transformation for Array.slice(init, end) in order to simplify binary-frame-string field extraction.
-- Fix: amend null processing for NGSI-LD (#1118)
-- Updated JEXL dependecy from 2.1.1 to 2.3.0 to allow the usage of NGSI operators ($inc, etc.)
 - Fix: replace request obsolete library by got (#858)
-- Support of same entity_id and diferent entity_type in multientity plugin (#1127)
-- Align the NGSI-v2 provisioning keywords Text and TextUnrestricted to map directly to NGSI-LD Property (#1131)
-- FIX JEXL undefined, null and falsy values support (#1132)
+- ADD: support both WARN and WARNING log levels (#1146)

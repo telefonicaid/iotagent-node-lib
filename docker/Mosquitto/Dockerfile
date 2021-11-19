@@ -9,6 +9,7 @@ RUN yum update -y && yum install -y wget \
   && yum install -y epel-release \
   && yum update -y epel-release \
   && yum install -y mosquitto \
+  && cp /etc/mosquitto/mosquitto.conf /etc/mosquitto/mosquitto.conf.orig \
   && chmod 755 /bin/startMosquitto.sh \
   && mkdir /var/log/mosquitto \
   && chown mosquitto:mosquitto /var/log/mosquitto \
