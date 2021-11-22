@@ -326,7 +326,7 @@ in the expression context.
 For example, the following device:
 
 ```json
-WeatherStation: {
+"WeatherStation": {
     "commands": [],
     "type": "WeatherStation",
     "lazy": [],
