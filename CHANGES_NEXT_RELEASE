@@ -1,2 +1,3 @@
+- ADD: allow update polling devide field 
 - ADD: support for add and update device handler
 - ADD: support both WARN and WARNING log levels (#1146)
