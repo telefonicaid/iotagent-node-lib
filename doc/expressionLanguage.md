@@ -530,7 +530,7 @@ Current common transformation set:
 | length: (val)                    | `String(val).length);`                                                                         |
 | trim: (val)                      | `String(val).trim());`                                                                         |
 | substr: (val, int1, int2)        | `String(val).substr(int1, int2));`                                                             |
-| addreduce: (arr)                 | `arr.reduce((i, v) | i + v));`                                                                 |
+| addreduce: (arr)                 | <code>arr.reduce((i, v) &vert; i + v));                                                        |
 | lengtharray: (arr)               | `arr.length);`                                                                                 |
 | typeof: (val)                    | `typeof val);`                                                                                 |
 | isarray: (arr)                   | `Array.isArray(arr));`                                                                         |
