@@ -547,7 +547,7 @@ Current common transformation set:
 | replaceallstr: (str, from, to)   | `str.replaceAll(from, to));`                                                                   |
 | replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to));`                                                    |
 | split: (str, ch)                 | `str.split(ch));`                                                                              |
-| mapper: (val, values, choices)   | `choices[values.findIndex((target) | target == val)]);`                                        |
-| thmapper: (val, values, choices) | `choices[values.reduce((acc,curr,i,arr) | (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);` |
-| bitwisemask: (i,mask,op,shf)     | `(op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask: op==="^"?parseInt(i)^mask:i))>>shf;`   |
+| mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                        |
+| thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)]);</code> |
+| bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i))>>shf;</code> |
 | slice: (arr, init, end)          | `arr.slice(init,end);`                                                                         |
