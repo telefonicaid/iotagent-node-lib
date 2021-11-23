@@ -355,7 +355,7 @@ For example, the following device:
 }
 ```
 
-When receiving the attributes `v`, `v1` and `v2` in a payload:
+When receiving the attributes `v`, `v1` and `v2` in a payload from a message received in the southbound:
 
 ```json
 ({
