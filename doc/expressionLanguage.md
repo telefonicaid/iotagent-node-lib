@@ -358,7 +358,7 @@ For example, the following device:
 When receiving the attributes `v`, `v1` and `v2` in a payload from a message received in the southbound:
 
 ```json
-({
+{
     "name": "v",
     "type": "Number",
     "value": 0
@@ -372,7 +372,7 @@ When receiving the attributes `v`, `v1` and `v2` in a payload from a message rec
     "name": "v2",
     "type": "Number",
     "value": 2
-})
+}
 ```
 
 Will now generate the following NGSI v2 payload:
