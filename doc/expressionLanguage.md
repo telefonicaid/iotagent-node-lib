@@ -489,7 +489,7 @@ southbound interface:
 | `"Pruebas " + "De Strings"`                   | `"Pruebas De Strings"`                    | String              |
 | `name + "value is " +value`                   | `"DevId629 value is 6"`                   | String              |
 | `{coordinates: [value,value], type: 'Point'}` | `{"coordinates": [6,6], "type": "Point"}` | GeoJSON `Object`    |
-| `ts|toisodate`                                | `2021-11-18T14:20:14.901Z`                | ISO 8601 `DateTime` |
+| <code>ts&vert;toisodate</code>                | `2021-11-18T14:20:14.901Z`                | ISO 8601 `DateTime` |
 
 Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
