@@ -1,1 +1,3 @@
+- ADD: allow update polling devide field (iota-json#602)
+- ADD: support for add and update device handler (iota-json#602)
 - ADD: support both WARN and WARNING log levels (#1146)
