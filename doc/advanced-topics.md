@@ -1,7 +1,7 @@
 ## Advanced Topics
 
 -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
--   [GeoJSON support NGSI-LD only](#geojson-support-ngsi-ld-only)
+-   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
 -   [Metadata support](#metadata-support)
     -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
 -   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)

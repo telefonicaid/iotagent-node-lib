@@ -313,11 +313,11 @@ two possible types of expressions: Integer (arithmetic operations) or Strings.
 | `${@pressure * 20}`     | `1040`           | Integer |
 | `${trim(@pressure)}`    | `52`             | Integer |
 | `${@consumption * 20}`  | `8.8`            | Float   |
-| `${trim(@consumption)}` | `0.44`           | Integer |
+| `${trim(@consumption)}` | `0.44`           | Float   |
 | `${@pressure * 20}`     | `1040`           | Integer |
 | `${@active * 20}`       | `null`           | None    |
 | `${trim(@active)`       | `null`           | None    |
-| `${trim(@consumption)}` | `0.44`           | Integer |
+| `${trim(@consumption)}` | `0.44`           | Float   |
 
 To allow support for expressions in combination with multi entity plugin, where the same attribute is generated for
 different entities out of different incoming attribute values (i.e. `object_id`), we introduced support for `object_id`
@@ -358,7 +358,7 @@ For example, the following device:
 When receiving the attributes `v`, `v1` and `v2` in a payload from a message received in the southbound:
 
 ```json
-{
+({
     "name": "v",
     "type": "Number",
     "value": 0
@@ -372,7 +372,7 @@ When receiving the attributes `v`, `v1` and `v2` in a payload from a message rec
     "name": "v2",
     "type": "Number",
     "value": 2
-}
+})
 ```
 
 Will now generate the following NGSI v2 payload:
@@ -502,13 +502,13 @@ Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
 The following are some examples of **JEXL** expressions not supported by the **legacy** expression language:
 
-| Expression                                  | Expected outcome                    | Format  |
-| :------------------------------------------ | :---------------------------------- | ------- |
-| `value == 6? true : false`                  | `true`                              | Boolean |
-| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Integer |
-| `array[1]+1`                                | `3`                                 | Number  |
-| `object.name`                               | `"John"`                            | String  |
-| `{type:"Point",coordinates: [value,value]}` | `{type:"Point",coordinates: [6,6]}` | Object  |
+| Expression                                          | Expected outcome                    | Format  |
+| :-------------------------------------------------- | :---------------------------------- | ------- |
+| `value == 6? true : false`                          | `true`                              | Boolean |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Boolean |
+| `array[1]+1`                                        | `3`                                 | Number  |
+| `object.name`                                       | `"John"`                            | String  |
+| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` | Object  |
 
 ### Available functions
 
