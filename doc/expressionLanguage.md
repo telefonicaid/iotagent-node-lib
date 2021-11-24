@@ -505,7 +505,7 @@ The following are some examples of **JEXL** expressions not supported by the **l
 | Expression                                  | Expected outcome                    | Format  |
 | :------------------------------------------ | :---------------------------------- | ------- |
 | `value == 6? true : false`                  | `true`                              | Boolean |
-| `value == 6 && name&vert;indexOf("e")>0`    | `true`                              | Integer |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Integer |
 | `array[1]+1`                                | `3`                                 | Number  |
 | `object.name`                               | `"John"`                            | String  |
 | `{type:"Point",coordinates: [value,value]}` | `{type:"Point",coordinates: [6,6]}` | Object  |
