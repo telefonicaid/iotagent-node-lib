@@ -23,7 +23,7 @@
 
 ## Overview
 
-The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
+The IoT Agent Library provides an expression language for measurement transformation, that can be used to adapt the
 information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
 language can be configured for provisioned attributes as explained in the Device Provisioning API section in the main
 README.md.
@@ -89,7 +89,7 @@ The exact same syntax works for Configuration and Device provisioning.
 
 Attribute expressions can contain values taken from the value of other attributes. Those values have, by default, the
 String type. For most arithmetic operations (`*`, `/`, etc...) if a variable is involved, its value will be cast to
-Number, regardless of the original type. For, example, if a variable @humidity has the value `'50'` (a String value),
+Number, regardless of the original type. For, example, if a variable `@humidity` has the value `'50'` (a String value),
 the following expression:
 
 ```
@@ -101,13 +101,13 @@ this cast fails (because the value of the variable is not a number, e.g.: `'Fift
 
 ### Expression execution
 
-Whenever a new measurement arrives to the IoTAgent for a device with declared expressions, all of the expressions for
-the device will be checked for execution: for all the defined active attributes containing expressions, the IoTAgent
+Whenever a new measurement arrives to the IoT Agent for a device with declared expressions, all of the expressions for
+the device will be checked for execution: for all the defined active attributes containing expressions, the IoT Agent
 will check which ones contain expressions whose variables are present in the received measurement. For all of those
 whose variables are covered, their expressions will be executed with the received values, and their values updated in
 the Context Broker.
 
-E.g.: if a device with the following provisioning information is provisioned in the IoTAgent:
+E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
 
 ```json
 {
@@ -122,25 +122,25 @@ E.g.: if a device with the following provisioning information is provisioned in 
 },
 ```
 
-and a measurement with the following values arrive to the IoTAgent:
+and a measurement with the following values arrive to the IoT Agent:
 
 ```text
 latitude: 1.9
 level: 85.3
 ```
 
-The only expression rule that will be executed will be that of the 'fillingLevel' attribute. It will produce the value
-'0.853' that will be sent to the Context Broker.
+The only expression rule that will be executed will be that of the `fillingLevel` attribute. It will produce the value
+`0.853` that will be sent to the Context Broker.
 
 Note that expressions are only applied if the attribute name (as received by the IoT Agent in the southbound interface)
 matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following
 example:
 
 ```json
-  "consumption": {
+"consumption": {
    "type": "String",
    "value": "${trim(@spaces)}"
- }
+}
 ```
 
 -   Case 1: the following measure is received at the southbound interface:
@@ -154,8 +154,8 @@ directly used, so the following is sent to CB:
 
 ```json
 "consumption": {
- "type": "String",
- "value": "0.44"
+   "type": "String",
+   "value": "0.44"
 }
 ```
 
@@ -171,8 +171,8 @@ following to CB:
 
 ```json
 "consumption": {
- "type": "String",
- "value": "foobar"
+    "type": "String",
+    "value": "foobar"
 }
 ```
 
@@ -180,18 +180,18 @@ following to CB:
 
 ### Types
 
-The way the parse() function works (at expressionParser.js) is as follows:
+The way the `parse()` function works (at `expressionParser.js`) is as follows:
 
--   Expressions can have two return types: String or Number. This return type must be configured for each attribute that
-    is going to be converted. Default value type is String.
+-   Expressions can have two return types: `String` or `Number`. This return type must be configured for each attribute
+    that is going to be converted. Default value type is `String`.
 -   Whenever an expression is executed without error, its result will be cast to the configured type. If the conversion
     fails (e.g.: if the expression is null or a String and is cast to Number), the measurement update will fail, and an
     error will be reported to the device.
 
-However, the usage that the Expression Translation plugin does of that function is using always String type. That means
-that at the end, the result of the expression will be always cast to String. However, in NGSI v2 that String result
-could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a look at
-the [NGSI v2 support](#ngsiv2) for more information on this.
+However, the usage that the Expression Translation plugin does of that function is using always `String` type. That
+means that at the end, the result of the expression will be always cast to `String`. However, in NGSI v2 that `String`
+result could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a
+look at the [NGSI v2 support](#ngsiv2) for more information on this.
 
 ### Values
 
@@ -205,7 +205,7 @@ the expression language.
 
 The expression language allows for two kinds of constants:
 
--   Numbers (integer or real)
+-   Numbers (integer or float)
 -   Strings (marked with double quotes)
 
 Current allowed characters are:
@@ -241,28 +241,28 @@ Parenthesis can be used to define precedence in the operations. Whitespaces betw
 
 ## Examples of expressions
 
-The following table shows expressions and their expected outcomes for a measure with two attributes: "@value" with value
-6 and "@name" with value "DevId629".
+The following table shows expressions and their expected outcomes for a measure with two attributes: `@value` with value
+`6` and `@name` with value `DevId629`.
 
-| Expression                  | Expected outcome      |
-| :-------------------------- | :-------------------- |
-| '5 \* @value'               | 30                    |
-| '(6 + @value) \* 3'         | 36                    |
-| '@value / 12 + 1'           | 1.5                   |
-| '(5 + 2) \* (@value + 7)'   | 91                    |
-| '@value \* 5.2'             | 31.2                  |
-| '"Pruebas " + "De Strings"' | 'Pruebas De Strings'  |
-| '@name value is @value'     | 'DevId629 value is 6' |
+| Expression                  | Expected outcome      | Format |
+| :-------------------------- | :-------------------- | ------ |
+| `5 \* @value`               | `30`                  | Number |
+| `(6 + @value) \* 3`         | `36`                  | Number |
+| `@value / 12 + 1`           | `1.5`                 | Number |
+| `(5 + 2) \* (@value + 7)`   | `91`                  | Number |
+| `@value \* 5.2`             | `31.2`                | Number |
+| `"Pruebas " + "De Strings"` | `Pruebas De Strings`  | String |
+| `@name value is @value`     | `DevId629 value is 6` | String |
 
 ## NGSI v2 support
 
-As it is explained in previous sections, expressions can have two return types: String or Number, being the former one
-the default. Whenever an expression is executed without error, its result will be cast to the configured type.
+As it is explained in previous sections, expressions can have two return types: `String` or `Number`, being the former
+one the default. Whenever an expression is executed without error, its result will be cast to the configured type.
 
-NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (string, number, boolean, object,
-array and null). Therefore, the result of an expression must be cast to the appropriate type (the type used to define
-the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of the value that
-is being sent.
+NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (`string`, `number`, `boolean`,
+`object`, `array` and `null`). Therefore, the result of an expression must be cast to the appropriate type (the type
+used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of
+the value that is being sent.
 
 Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address
 this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the
@@ -272,13 +272,17 @@ following:
 2. The expression will be applied
 3. The output type will be cast again to the original attribute type.
 
--   If attribute type is "Number" and the value is an `Integer`, then the value is casted to integer (JSON number)
--   If attribute type is "Number" and the value is a `Float`, then the value is casted to float (JSON number)
--   If attribute type is "Boolean" then the value is cast to boolean (JSON boolean). In order to do this conversion,
+-   If attribute type is `Number` and the value is an `Integer`, then the value is casted to integer (JSON number)
+-   If attribute type is `Number` and the value is a `Float`, then the value is casted to float (JSON number)
+-   If attribute type is `Boolean` then the value is cast to boolean (JSON boolean). In order to do this conversion,
     only `true` or `1` are cast to true.
--   If attribute type is "None" then the value is cast to null (JSON null)
+-   If attribute type is `None` then the value is cast to `null` (JSON null)
 
-E.g.: if a device with the following provisioning information is provisioned in the IoTAgent:
+> **Note**. All the operations and castings described above are not performed using JELX, because the user has full
+> control on the final value of the attributes, so there is no need of adding a layer of autocast that would interfere
+> and makes things more complicated.
+
+E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
 
 ```json
 {
@@ -288,7 +292,7 @@ E.g.: if a device with the following provisioning information is provisioned in 
 }
 ```
 
-and a measurement with the following values arrive to the IoTAgent:
+and a measurement with the following values arrive to the IoT Agent:
 
 ```
 status: true
@@ -304,19 +308,20 @@ status: true
 More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the
 two possible types of expressions: Integer (arithmetic operations) or Strings.
 
--   pressure (of type "Number" and value's type "Integer"): 52 -> ${@pressure * 20} -> ${ 52 \* 20 } -> $ { 1040 } -> $
-    { "1040"} -> 1040
--   pressure (of type "Number" and value's type "Integer"): 52 -> ${trim(@pressure)} -> ${trim("52")} -> $ { "52" } -> $
-    { "52"} -> 52
--   consumption (of type "Number" and value's type "Float"): 0.44 -> ${@consumption * 20} -> ${ 0.44 \* 20 } ->
-    $ { 8.8 } -> $ { "8.8"} -> 8.8
--   consumption (of type "Number" and value's type "Float"): 0.44 -> ${trim(@consumption)} -> ${trim("0.44")} ->
-    $ { "0.44" } -> $ { "0.44"} -> 0.44
--   active (of type "None"): null -> ${@active * 20} -> ${ 0 \* 20 } -> $ { 0 } -> $ { "0"} -> null
--   active (of type "None"): null -> ${trim(@active)} -> ${trim("null")} -> $ { "null" } -> $ { "null"} -> null
--   update (of type "Boolean"): true -> ${@update * 20} -> ${ 1 \* 20 } -> $ { 20 } -> $ { "20"} -> False
--   update (of type "Boolean"): false -> ${@update * 20} -> ${ 0 \* 20 } -> $ { 0 } -> $ { "0"} -> False
--   update (of type "Boolean"): true -> ${trim(@updated)} -> ${trim("true")} -> $ { "true" } -> $ { "true"} -> True
+-   `pressure` with value 52 (integer)
+-   `consumption` with value 0.44 (float)
+-   `active` with value `null` (None type)
+
+| Expression              | Expected outcome | Format  |
+| :---------------------- | :--------------- | ------- |
+| `${@pressure * 20}`     | `1040`           | Integer |
+| `${trim(@pressure)}`    | `52`             | Integer |
+| `${@consumption * 20}`  | `8.8`            | Float   |
+| `${trim(@consumption)}` | `0.44`           | Float   |
+| `${@pressure * 20}`     | `1040`           | Integer |
+| `${@active * 20}`       | `null`           | None    |
+| `${trim(@active)`       | `null`           | None    |
+| `${trim(@consumption)}` | `0.44`           | Float   |
 
 To allow support for expressions in combination with multi entity plugin, where the same attribute is generated for
 different entities out of different incoming attribute values (i.e. `object_id`), we introduced support for `object_id`
@@ -324,120 +329,132 @@ in the expression context.
 
 For example, the following device:
 
-```
-WeatherStation: {
-    commands: [],
-    type: 'WeatherStation',
-    lazy: [],
-    active: [
+```json
+"WeatherStation": {
+    "commands": [],
+    "type": "WeatherStation",
+    "lazy": [],
+    "active": [
         {
-            object_id: 'v1',
-            name: 'vol',
-            expression : '${@v1*100}',
-            type: 'Number',
-            entity_name: 'WeatherStation1'
+            "object_id": "v1",
+            "name": "vol",
+            "expression" : "${@v1*100}",
+            "type": "Number",
+            "entity_name": "WeatherStation1"
         },
         {
-            object_id: 'v2',
-            name: 'vol',
-            expression : '${@v2*100}',
-            type: 'Number',
-            entity_name: 'WeatherStation2'
+            "object_id": "v2",
+            "name": "vol",
+            "expression" : "${@v2*100}",
+            "type": "Number",
+            "entity_name": "WeatherStation2"
         },
         {
-            object_id: 'v',
-            name: 'vol',
-            expression : '${@v*100}',
-            type: 'Number'
+            "object_id": "v",
+            "name": "vol",
+            "expression" : "${@v*100}",
+            "type": "Number"
         }
     ]
 }
 ```
 
-When receiving the following payloads:
+When receiving the attributes `v`, `v1` and `v2` in a payload from a message received in the southbound:
 
-```
-{
-    name: 'v',
-    type: 'Number',
-    value: 0
+```json
+({
+    "name": "v",
+    "type": "Number",
+    "value": 0
 },
 {
-    name: 'v1',
-    type: 'Number',
-    value: 1
+    "name": "v1",
+    "type": "Number",
+    "value": 1
 },
 {
-    name: 'v2',
-    type: 'Number',
-    value: 2
-}
+    "name": "v2",
+    "type": "Number",
+    "value": 2
+})
 ```
 
 Will now generate the following NGSI v2 payload:
 
-```
+```json
 {
-  "actionType": "append",
-  "entities": [
-      {
-          "id": "ws9",
-          "type": "WeatherStation",
-          "vol": {
-              "type": "Number",
-              "value": 0
-          }
-      },
-      {
-          "vol": {
-              "type": "Number",
-              "value": 100
-          },
-          "type": "WeatherStation",
-          "id": "WeatherStation1"
-      },
-      {
-          "vol": {
-              "type": "Number",
-              "value": 200
-          },
-          "type": "WeatherStation",
-          "id": "WeatherStation2"
-      }
-  ]
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws9",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            }
+        },
+        {
+            "vol": {
+                "type": "Number",
+                "value": 100
+            },
+            "type": "WeatherStation",
+            "id": "WeatherStation1"
+        },
+        {
+            "vol": {
+                "type": "Number",
+                "value": 200
+            },
+            "type": "WeatherStation",
+            "id": "WeatherStation2"
+        }
+    ]
 }
 ```
 
 ## JEXL Based Transformations
 
-As an alternative, the IoTAgent Library supports as well [JEXL](https://github.com/TomFrost/jexl). To use JEXL, you will
-need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
+As an alternative, the IoT Agent Library supports as well [JEXL](https://github.com/TomFrost/jexl). To use JEXL, you
+will need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
 [configuration documentation](installationguide.md)) or configuring the usage of JEXL as expression language for a given
 device:
 
-```
+```json
 {
-   "devices":[
-      {
-         "device_id":"45",
-         "protocol":"GENERIC_PROTO",
-         "entity_name":"WasteContainer:WC45",
-         "entity_type":"WasteContainer",
-         "expressionLanguage": "jexl",
-         "attributes":[
-            {
-               "name":"location",
-               "type":"geo:point",
-               "expression": "..."
-            },
-            {
-               "name":"fillingLevel",
-               "type":"Number",
-               "expression": "..."
-            }
-         ]
-      }
-   ]
+    "devices": [
+        {
+            "device_id": "45",
+            "protocol": "GENERIC_PROTO",
+            "entity_name": "WasteContainer:WC45",
+            "entity_type": "WasteContainer",
+            "expressionLanguage": "jexl",
+            "attributes": [
+                {
+                    "name": "location",
+                    "type": "geo:json",
+                    "expression": "{coordinates: [longitude,latitude], type: 'Point'}"
+                },
+                {
+                    "name": "fillingLevel",
+                    "type": "Number",
+                    "expression": "level / 100"
+                },
+                {
+                    "name": "level",
+                    "type": "Number"
+                },
+                {
+                    "name": "latitude",
+                    "type": "Number"
+                },
+                {
+                    "name": "longitude",
+                    "type": "Number"
+                }
+            ]
+        }
+    ]
 }
 ```
 
@@ -446,52 +463,58 @@ In the following we provide examples of using JEXL to apply transformations.
 ### Quick comparison to default language
 
 -   JEXL supports the following types: Boolean, String, Number, Object, Array.
+-   JEXL also supports the creation of GeoJSON Objects
 -   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
 -   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
 -   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
     Logical OR `||`. Negation operator is `!`
 -   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
+-   JEXL does not cast or convert automatically the types as Legacy Expression Language as described
+    [here](#ngsi-v2-support).
 
 For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
 
-### Examples of expressions
+### Examples of JEXL expressions
 
 The following table shows expressions and their expected outcomes taking into account the following measures at
 southbound interface:
 
 -   `value` with value 6 (number)
+-   `ts` with value 1637245214901 (unix timestamp)
 -   `name` with value `"DevId629"` (string)
 -   `object` with value `{name: "John", surname: "Doe"}` (JSON object)
 -   `array` with value `[1, 3]` (JSON Array)
 
-| Expression                  | Expected outcome        |
-| :-------------------------- | :---------------------- |
-| `5 * value`                 | `30`                    |
-| `(6 + value) * 3`           | `36`                    |
-| `value / 12 + 1`            | `1.5`                   |
-| `(5 + 2) * (value + 7)`     | `91`                    |
-| `value * 5.2`               | `31.2`                  |
-| `"Pruebas " + "De Strings"` | `"Pruebas De Strings"`  |
-| `name + "value is " +value` | `"DevId629 value is 6"` |
+| Expression                                    | Expected outcome                          | Format              |
+| :-------------------------------------------- | :---------------------------------------- | ------------------- |
+| `5 * value`                                   | `30`                                      | Integer             |
+| `(6 + value) * 3`                             | `36`                                      | Integer             |
+| `value / 12 + 1`                              | `1.5`                                     | Float               |
+| `(5 + 2) * (value + 7)`                       | `91`                                      | Integer             |
+| `value * 5.2`                                 | `31.2`                                    | Float               |
+| `"Pruebas " + "De Strings"`                   | `"Pruebas De Strings"`                    | String              |
+| `name + "value is " +value`                   | `"DevId629 value is 6"`                   | String              |
+| `{coordinates: [value,value], type: 'Point'}` | `{"coordinates": [6,6], "type": "Point"}` | GeoJSON `Object`    |
+| <code>ts&vert;toisodate</code>                | `2021-11-18T14:20:14.901Z`                | ISO 8601 `DateTime` |
 
 Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
 | Expression                                                   | Expected outcome |
 | :----------------------------------------------------------- | :--------------- |
-| <code>" a "&vert;trim</code>                                 | `a`              |
+| <code>" a "&vert; trim</code>                                | `a`              |
 | <code>name&vert;length</code>                                | `8`              |
 | <code>name&vert;indexOf("e")</code>                          | `1`              |
 | <code>name&vert;substring(0,name&vert;indexOf("e")+1)</code> | `"De"`           |
 
-The following are some expressions not supported by the legacy expression language:
+The following are some examples of **JEXL** expressions not supported by the **legacy** expression language:
 
-| Expression                                          | Expected outcome                    |
-| :-------------------------------------------------- | :---------------------------------- |
-| `value == 6? true : false`                          | `true`                              |
-| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              |
-| `array[1]+1`                                        | `3`                                 |
-| `object.name`                                       | `"John"`                            |
-| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` |
+| Expression                                          | Expected outcome                    | Format  |
+| :-------------------------------------------------- | :---------------------------------- | ------- |
+| `value == 6? true : false`                          | `true`                              | Boolean |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Boolean |
+| `array[1]+1`                                        | `3`                                 | Number  |
+| `object.name`                                       | `"John"`                            | String  |
+| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` | Object  |
 
 ### Available functions
 
@@ -499,38 +522,38 @@ There are several predefined JEXL transformations available to be used at any JE
 transformations and their JavaScript inmplementation can be found at jexlTransformsMap.js.
 
 The library module also exports a method `iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)` to be
-used by specific IoTAgent implementations in order to incorporate extra transformations to this set. It is important to
-remark that the lib jexlTransformsMap cannot be overwritten by the API additions. The idea behind this is to be able to
-incorporate new trasformations from the IoTAgent configuration file in a fast and tactic way.
+used by specific IoT Agent implementations in order to incorporate extra transformations to this set. It is important to
+remark that the lib `jexlTransformsMap` cannot be overwritten by the API additions. The idea behind this is to be able
+to incorporate new trasformations from the IoT Agent configuration file in a fast and tactical way.
 
 Current common transformation set:
 
--   'jsonparse': (str) => JSON.parse(str));
--   'jsonstringify': (obj) => JSON.stringify(obj));
--   'indexOf': (val, char) => String(val).indexOf(char));
--   'length': (val) => String(val).length);
--   'trim': (val) => String(val).trim());
--   'substr': (val, int1, int2) => String(val).substr(int1, int2));
--   'addreduce': (arr) => arr.reduce((i, v) => i + v));
--   'lengtharray': (arr) => arr.length);
--   'typeof': (val) => typeof val);
--   'isarray': (arr) => Array.isArray(arr));
--   'isnan': (val) => isNaN(val));
--   'parseint': (val) => parseInt(val));
--   'parsefloat': (val) => parseFloat(val));
--   'toisodate': (val) => new Date(val).toISOString());
--   'timeoffset':(isostr)=>new Date(isostr).getTimezoneOffset();
--   'tostring': (val) => val.toString());
--   'urlencode': (val) => encodeURI(val));
--   'urldecode': (val) => decodeURI(val));
--   'replacestr': (str, from, to) => str.replace(from, to));
--   'replaceregexp': (str, reg, to) => str.replace(new RegExp(reg), to));
--   'replaceallstr': (str, from, to) => str.replaceAll(from, to));
--   'replaceallregexp': (str, reg, to) => str.replaceAll(new RegExp(reg,"g"), to));
--   'split': (str, ch) => str.split(ch));
--   'mapper': (val, values, choices) => choices[values.findIndex((target) => target == val)]);
--   'thmapper': (val, values, choices) => choices[values.reduce((acc,curr,i,arr) =>
-    (acc==0)||acc?acc:val<=curr?acc=i:acc=null,null)]);
--   'bitwisemask': (i,mask,op,shf) => (op==="&"?parseInt(i)&mask: op==="|"?parseInt(i)|mask:
-    op==="^"?parseInt(i)^mask:i))>>shf;
--   'slice': (arr, init, end)=>arr.slice(init,end);
+| JEXL Transformation              | Equivalent JavaScript Function                                                                                          |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| jsonparse: (str)                 | `JSON.parse(str);`                                                                                                      |
+| jsonstringify: (obj)             | `JSON.stringify(obj);`                                                                                                  |
+| indexOf: (val, char)             | `String(val).indexOf(char);`                                                                                            |
+| length: (val)                    | `String(val).length;`                                                                                                   |
+| trim: (val)                      | `String(val).trim();`                                                                                                   |
+| substr: (val, int1, int2)        | `String(val).substr(int1, int2);`                                                                                       |
+| addreduce: (arr)                 | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                          |
+| lengtharray: (arr)               | `arr.length;`                                                                                                           |
+| typeof: (val)                    | `typeof val;`                                                                                                           |
+| isarray: (arr)                   | `Array.isArray(arr);`                                                                                                   |
+| isnan: (val)                     | `isNaN(val);`                                                                                                           |
+| parseint: (val)                  | `parseInt(val);`                                                                                                        |
+| parsefloat: (val)                | `parseFloat(val);`                                                                                                      |
+| toisodate: (val)                 | `new Date(val).toISOString();`                                                                                          |
+| timeoffset:(isostr)              | `new Date(isostr).getTimezoneOffset();`                                                                                 |
+| tostring: (val)                  | `val.toString();`                                                                                                       |
+| urlencode: (val)                 | `encodeURI(val);`                                                                                                       |
+| urldecode: (val)                 | `decodeURI(val);`                                                                                                       |
+| replacestr: (str, from, to)      | `str.replace(from, to);`                                                                                                |
+| replaceregexp: (str, reg, to)    | `str.replace(new RegExp(reg), to);`                                                                                     |
+| replaceallstr: (str, from, to)   | `str.replaceAll(from, to);`                                                                                             |
+| replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
+| split: (str, ch)                 | `str.split(ch);`                                                                                                        |
+| mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
+| thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
+| bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
+| slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                  |
