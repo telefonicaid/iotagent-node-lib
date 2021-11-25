@@ -278,6 +278,10 @@ following:
     only `true` or `1` are cast to true.
 -   If attribute type is `None` then the value is cast to `null` (JSON null)
 
+> **Note**. All the operations and castings described above are not performed using JELX, because the user has full 
+> control on the final value of the attributes, so there is no need of adding a layer of autocast that would interfere
+> and makes things more complicated.
+
 E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
 
 ```json
@@ -465,6 +469,7 @@ In the following we provide examples of using JEXL to apply transformations.
 -   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
     Logical OR `||`. Negation operator is `!`
 -   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
+-   JEXL does not cast or convert automatically the types as Legacy Expression Language as described [here](#ngsi-v2-support).
 
 For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
 
@@ -524,30 +529,30 @@ Current common transformation set:
 
 | JEXL Transformation              | Equivalent JavaScript Function                                                                                           |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| jsonparse: (str)                 | `JSON.parse(str));`                                                                                                      |
-| jsonstringify: (obj)             | `JSON.stringify(obj));`                                                                                                  |
-| indexOf: (val, char)             | `String(val).indexOf(char));`                                                                                            |
-| length: (val)                    | `String(val).length);`                                                                                                   |
-| trim: (val)                      | `String(val).trim());`                                                                                                   |
-| substr: (val, int1, int2)        | `String(val).substr(int1, int2));`                                                                                       |
+| jsonparse: (str)                 | `JSON.parse(str);`                                                                                                      |
+| jsonstringify: (obj)             | `JSON.stringify(obj);`                                                                                                  |
+| indexOf: (val, char)             | `String(val).indexOf(char);`                                                                                            |
+| length: (val)                    | `String(val).length;`                                                                                                   |
+| trim: (val)                      | `String(val).trim();`                                                                                                   |
+| substr: (val, int1, int2)        | `String(val).substr(int1, int2);`                                                                                       |
 | addreduce: (arr)                 | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                           |
-| lengtharray: (arr)               | `arr.length);`                                                                                                           |
-| typeof: (val)                    | `typeof val);`                                                                                                           |
-| isarray: (arr)                   | `Array.isArray(arr));`                                                                                                   |
-| isnan: (val)                     | `isNaN(val));`                                                                                                           |
-| parseint: (val)                  | `parseInt(val));`                                                                                                        |
-| parsefloat: (val)                | `parseFloat(val));`                                                                                                      |
-| toisodate: (val)                 | `new Date(val).toISOString());`                                                                                          |
+| lengtharray: (arr)               | `arr.length;`                                                                                                           |
+| typeof: (val)                    | `typeof val;`                                                                                                           |
+| isarray: (arr)                   | `Array.isArray(arr);`                                                                                                   |
+| isnan: (val)                     | `isNaN(val);`                                                                                                           |
+| parseint: (val)                  | `parseInt(val);`                                                                                                        |
+| parsefloat: (val)                | `parseFloat(val);`                                                                                                      |
+| toisodate: (val)                 | `new Date(val).toISOString();`                                                                                          |
 | timeoffset:(isostr)              | `new Date(isostr).getTimezoneOffset();`                                                                                  |
-| tostring: (val)                  | `val.toString());`                                                                                                       |
-| urlencode: (val)                 | `encodeURI(val));`                                                                                                       |
-| urldecode: (val)                 | `decodeURI(val));`                                                                                                       |
-| replacestr: (str, from, to)      | `str.replace(from, to));`                                                                                                |
-| replaceregexp: (str, reg, to)    | `str.replace(new RegExp(reg), to));`                                                                                     |
-| replaceallstr: (str, from, to)   | `str.replaceAll(from, to));`                                                                                             |
-| replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to));`                                                                              |
-| split: (str, ch)                 | `str.split(ch));`                                                                                                        |
+| tostring: (val)                  | `val.toString();`                                                                                                       |
+| urlencode: (val)                 | `encodeURI(val);`                                                                                                       |
+| urldecode: (val)                 | `decodeURI(val);`                                                                                                       |
+| replacestr: (str, from, to)      | `str.replace(from, to);`                                                                                                |
+| replaceregexp: (str, reg, to)    | `str.replace(new RegExp(reg), to);`                                                                                     |
+| replaceallstr: (str, from, to)   | `str.replaceAll(from, to);`                                                                                             |
+| replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
+| split: (str, ch)                 | `str.split(ch);`                                                                                                        |
 | mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                  |
-| thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)]);</code> |
-| bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i))>>shf;</code>        |
+| thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
+| bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
 | slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                   |
