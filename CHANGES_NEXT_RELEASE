@@ -1,3 +1,4 @@
+- FIX: try get group by type using current type if no type is provided (#1155)
 - ADD: allow update polling devide field (iota-json#602)
 - ADD: support for add and update device handler (iota-json#602)
 - ADD: support both WARN and WARNING log levels (#1146)
