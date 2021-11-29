@@ -1,11 +1,17 @@
 # Measurement Transformation Expression Language
 
 -   [Overview](#overview)
+-   [Comparison between expression languages](#comparison-between-expression-languages)
+-   [Configuring expression language used](#configuring-expression-language-used)
 -   [Measurement transformation](#measurement-transformation)
     -   [Expression definition](#expression-definition)
-    -   [Variable values](#variable-values)
     -   [Expression execution](#expression-execution)
--   [Language description](#language-description)
+    -   [object_id](#object_id)
+-   [JEXL Based Transformations](#jexl-based-transformations)
+    -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
+    -   [Available functions](#available-functions)
+-   [Legacy Expression Language Transformations](#legacy-expression-language-transformations)
+    -   [Expressions](#expressions)
     -   [Types](#types)
     -   [Values](#values)
         -   [Variables](#variables)
@@ -14,26 +20,97 @@
         -   [Number operations](#number-operations)
         -   [String operations](#string-operations)
         -   [Other available operators](#other-available-operators)
--   [Examples of expressions](#examples-of-expressions)
--   [NGSI v2 support](#ngsi-v2-support)
--   [JEXL Based Transformations](#jexl-based-transformations)
-    -   [Quick comparison to default language](#quick-comparison-to-default-language)
-    -   [Examples of expressions](#examples-of-expressions-1)
-    -   [Available functions](#available-functions)
+    -   [Examples of expressions](#examples-of-expressions)
+    -   [NGSI v2 support](#ngsi-v2-support)
 
 ## Overview
 
-The IoT Agent Library provides an expression language for measurement transformation, that can be used to adapt the
-information coming from the South Bound APIs to the information reported to the Context Broker. Expressions in this
-language can be configured for provisioned attributes as explained in the Device Provisioning API section in the main
-README.md.
+The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
+information coming from the South Bound APIs to the information reported to the Context Broker. This is really usefull
+when you need to adapt measure.
+
+There are available two differen expression languages `jexl` and `legacy`. The recomended language to use is `jexl`,
+which is newer and most powerfull.
+
+## Comparison between expression languages
+
+-   JEXL supports multiples types: Boolean, String, Number, Object, Array.
+-   JEXL also supports the creation of GeoJSON Objects
+-   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
+-   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
+-   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
+    Logical OR `||`. Negation operator is `!`
+-   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
+-   JEXL supports defining custo functions.
+
+For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
+
+## Configuring expression language used
+
+By default, in order to maintain backward compatibility, `legacy` language is applied. There are different levels to
+configure the expression language used:
+
+-   At global level.
+-   At service group level.
+-   At device level.
+
+**Setting the expression language at global level**
+
+It is possible to set the default language at global level by setting the
+[global configuration parameter](installationguide.md#global-configuration) `defaultExpressionLanguage` or the
+[environment variable](installationguide.md#configuration-using-environment-variables)
+`IOTA_DEFAULT_EXPRESSION_LANGUAGE`. This option configures the default expression language used to compute expressions,
+possible values are: `legacy` or `jexl`. When not set or wrongly set, `legacy` is used as default value.
+
+**Setting the expression language at service group level**
+
+It is possible to define the expression language at service group by adding the `expressionLanguage` parameter. It is
+optional and the possible values are: `legacy` or `jexl`. When not set or wrongly set, `legacy` is used as default. You
+can check the following example:
+
+```json
+{
+    "services": [
+        {
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "cbroker": "http://orion:1026",
+            "entity_type": "Thing",
+            "resource":    "/iot/d"
+            "expressionLanguage": "jexl",
+            "attributes": [...]
+        }
+    ]
+}
+```
+
+**Setting the expression language at device level**
+
+Expression language can be configured at device level by adding the `expressionLanguage` parameter to the device
+provisioning payload. It is optional and the possible values are: `legacy` or `jexl`. When not set or wrongly set,
+`legacy` is used as default. The following example shows how to provision a device using `jexl` language.
+
+```json
+{
+   "devices":[
+      {
+         "device_id":"45",
+         "protocol":"GENERIC_PROTO",
+         "entity_name":"WasteContainer:WC45",
+         "entity_type":"WasteContainer",
+         "expressionLanguage": "jexl",
+         "attributes":[...]
+      }
+   ]
+}
+```
 
 ## Measurement transformation
 
 ### Expression definition
 
 Expressions can be defined for Active attributes, either in the Device provisioning or in the Configuration
-provisioning. The following example shows a device provisioning payload with defined expressions:
+provisioning. The following example shows a device provisioning payload with defined expressions (using the
+[Legacy Expression Language](#legacy_expression_language_transformations)):
 
 ```json
 {
@@ -72,11 +149,9 @@ provisioning. The following example shows a device provisioning payload with def
 }
 ```
 
-The value of the `expression` attribute is a string that can contain any number of expression patterns. Each expression
-pattern is marked with the following secuence: `${<expression>}` where `<expression>` is a valid construction of the
-Expression Language (see definition [below](#language-description)). In order for the complete expression to be
-evaluated, all the expression patterns must be evaluatable (there must be a value in the measurement for all the
-variables of all the expression patterns).
+The value of the `expression` attribute is a string that can contain any number of expression patterns. In order to
+complete expression to be evaluated, all the expression patterns must be evaluatable (there must be a value in the
+measurement for all the variables of all the expression patterns).
 
 Note that you need to include in the provision operation all the attributes required as inputs for the expressions. In
 this example, they are `level`, `latitude` and `longitude`. Otherwise the device sending the measures will get
@@ -84,20 +159,6 @@ this example, they are `level`, `latitude` and `longitude`. Otherwise the device
 expression will not be calculated.
 
 The exact same syntax works for Configuration and Device provisioning.
-
-### Variable values
-
-Attribute expressions can contain values taken from the value of other attributes. Those values have, by default, the
-String type. For most arithmetic operations (`*`, `/`, etc...) if a variable is involved, its value will be cast to
-Number, regardless of the original type. For, example, if a variable `@humidity` has the value `'50'` (a String value),
-the following expression:
-
-```
-${@humidity * 10}
-```
-
-will give `500` as the result (i.e.: the value `'50'` is cast to number, to get `50`, that is then multiplied by 10). If
-this cast fails (because the value of the variable is not a number, e.g.: `'Fifty'`), the overall result will be `NaN`.
 
 ### Expression execution
 
@@ -176,152 +237,7 @@ following to CB:
 }
 ```
 
-## Language description
-
-### Types
-
-The way the `parse()` function works (at `expressionParser.js`) is as follows:
-
--   Expressions can have two return types: `String` or `Number`. This return type must be configured for each attribute
-    that is going to be converted. Default value type is `String`.
--   Whenever an expression is executed without error, its result will be cast to the configured type. If the conversion
-    fails (e.g.: if the expression is null or a String and is cast to Number), the measurement update will fail, and an
-    error will be reported to the device.
-
-However, the usage that the Expression Translation plugin does of that function is using always `String` type. That
-means that at the end, the result of the expression will be always cast to `String`. However, in NGSI v2 that `String`
-result could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a
-look at the [NGSI v2 support](#ngsiv2) for more information on this.
-
-### Values
-
-#### Variables
-
-All the information reported in the measurement received by the IoT Agent is available for the expression to use. For
-every attribute coming from the South Bound, a variable with the syntax `@<object_id>` will be created for its use in
-the expression language.
-
-#### Constants
-
-The expression language allows for two kinds of constants:
-
--   Numbers (integer or float)
--   Strings (marked with double quotes)
-
-Current allowed characters are:
-
--   All the alphanumerical characters
--   Whitespaces
-
-### Allowed operations
-
-The following operations are currently available, divided by attribute type
-
-#### Number operations
-
--   multiplication ('\*')
--   division ('/')
--   addition ('+')
--   subtraction ('-' binary)
--   negation ('-' unary)
--   power ('^')
-
-#### String operations
-
--   concatenation ('#'): returns the concatenation of the two values separated by `#`.
--   substring location (`indexOf(<variable>, <substring>)`): returns the index where the first occurrence of the
-    substring `<substring>` can be found in the string value of `<variable>`.
--   substring (`substr(<variable>, <start> <end>)`): returns a substring of the string variable passed as a parameter,
-    starting at posisiton `start` and ending at position `<end>`.
--   whitespace removal (`trim(<string>)`): removes all the spaces surrounding the string passed as a parameter.
-
-#### Other available operators
-
-Parenthesis can be used to define precedence in the operations. Whitespaces between tokens are generally ignored.
-
-## Examples of expressions
-
-The following table shows expressions and their expected outcomes for a measure with two attributes: `@value` with value
-`6` and `@name` with value `DevId629`.
-
-| Expression                  | Expected outcome      | Format |
-| :-------------------------- | :-------------------- | ------ |
-| `5 \* @value`               | `30`                  | Number |
-| `(6 + @value) \* 3`         | `36`                  | Number |
-| `@value / 12 + 1`           | `1.5`                 | Number |
-| `(5 + 2) \* (@value + 7)`   | `91`                  | Number |
-| `@value \* 5.2`             | `31.2`                | Number |
-| `"Pruebas " + "De Strings"` | `Pruebas De Strings`  | String |
-| `@name value is @value`     | `DevId629 value is 6` | String |
-
-## NGSI v2 support
-
-As it is explained in previous sections, expressions can have two return types: `String` or `Number`, being the former
-one the default. Whenever an expression is executed without error, its result will be cast to the configured type.
-
-NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (`string`, `number`, `boolean`,
-`object`, `array` and `null`). Therefore, the result of an expression must be cast to the appropriate type (the type
-used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of
-the value that is being sent.
-
-Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address
-this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the
-following:
-
-1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
-2. The expression will be applied
-3. The output type will be cast again to the original attribute type.
-
--   If attribute type is `Number` and the value is an `Integer`, then the value is casted to integer (JSON number)
--   If attribute type is `Number` and the value is a `Float`, then the value is casted to float (JSON number)
--   If attribute type is `Boolean` then the value is cast to boolean (JSON boolean). In order to do this conversion,
-    only `true` or `1` are cast to true.
--   If attribute type is `None` then the value is cast to `null` (JSON null)
-
-> **Note**. All the operations and castings described above are not performed using JELX, because the user has full 
-> control on the final value of the attributes, so there is no need of adding a layer of autocast that would interfere
-> and makes things more complicated.
-
-E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
-
-```json
-{
-    "name": "status",
-    "type": "Boolean",
-    "expression": "${@status *  20}"
-}
-```
-
-and a measurement with the following values arrive to the IoT Agent:
-
-```
-status: true
-```
-
-1. The expression `*` is a multiplication, so the expression type makes `status` to be casted to Number. The cast of
-   `true` to number is 1.
-2. Expression is evaluated, resulting in 20
-3. 20 is cast to `20` since Expression Plugin always use String as Expression type.
-4. The attribute type is `Boolean` so the result is casted to Boolean before sending it to CB. The cast of `20` to
-   boolean is false (only `true` or `1` are cast to true).
-
-More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the
-two possible types of expressions: Integer (arithmetic operations) or Strings.
-
--   `pressure` with value 52 (integer)
--   `consumption` with value 0.44 (float)
--   `active` with value `null` (None type)
-
-| Expression              | Expected outcome | Format  |
-| :---------------------- | :--------------- | ------- |
-| `${@pressure * 20}`     | `1040`           | Integer |
-| `${trim(@pressure)}`    | `52`             | Integer |
-| `${@consumption * 20}`  | `8.8`            | Float   |
-| `${trim(@consumption)}` | `0.44`           | Float   |
-| `${@pressure * 20}`     | `1040`           | Integer |
-| `${@active * 20}`       | `null`           | None    |
-| `${trim(@active)`       | `null`           | None    |
-| `${trim(@consumption)}` | `0.44`           | Float   |
+### object_id
 
 To allow support for expressions in combination with multi entity plugin, where the same attribute is generated for
 different entities out of different incoming attribute values (i.e. `object_id`), we introduced support for `object_id`
@@ -415,10 +331,10 @@ Will now generate the following NGSI v2 payload:
 
 ## JEXL Based Transformations
 
-As an alternative, the IoT Agent Library supports as well [JEXL](https://github.com/TomFrost/jexl). To use JEXL, you
-will need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
+The recomended expression language for the IoTAgent Library is [JEXL](https://github.com/TomFrost/jexl). To use JEXL,
+you will need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
 [configuration documentation](installationguide.md)) or configuring the usage of JEXL as expression language for a given
-device:
+given group or device (as shown above).
 
 ```json
 {
@@ -459,19 +375,6 @@ device:
 ```
 
 In the following we provide examples of using JEXL to apply transformations.
-
-### Quick comparison to default language
-
--   JEXL supports the following types: Boolean, String, Number, Object, Array.
--   JEXL also supports the creation of GeoJSON Objects
--   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
--   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
--   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
-    Logical OR `||`. Negation operator is `!`
--   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
--   JEXL does not cast or convert automatically the types as Legacy Expression Language as described [here](#ngsi-v2-support).
-
-For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
 
 ### Examples of JEXL expressions
 
@@ -527,15 +430,15 @@ to incorporate new trasformations from the IoT Agent configuration file in a fas
 
 Current common transformation set:
 
-| JEXL Transformation              | Equivalent JavaScript Function                                                                                           |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| JEXL Transformation              | Equivalent JavaScript Function                                                                                          |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | jsonparse: (str)                 | `JSON.parse(str);`                                                                                                      |
 | jsonstringify: (obj)             | `JSON.stringify(obj);`                                                                                                  |
 | indexOf: (val, char)             | `String(val).indexOf(char);`                                                                                            |
 | length: (val)                    | `String(val).length;`                                                                                                   |
 | trim: (val)                      | `String(val).trim();`                                                                                                   |
 | substr: (val, int1, int2)        | `String(val).substr(int1, int2);`                                                                                       |
-| addreduce: (arr)                 | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                           |
+| addreduce: (arr)                 | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                          |
 | lengtharray: (arr)               | `arr.length;`                                                                                                           |
 | typeof: (val)                    | `typeof val;`                                                                                                           |
 | isarray: (arr)                   | `Array.isArray(arr);`                                                                                                   |
@@ -543,7 +446,7 @@ Current common transformation set:
 | parseint: (val)                  | `parseInt(val);`                                                                                                        |
 | parsefloat: (val)                | `parseFloat(val);`                                                                                                      |
 | toisodate: (val)                 | `new Date(val).toISOString();`                                                                                          |
-| timeoffset:(isostr)              | `new Date(isostr).getTimezoneOffset();`                                                                                  |
+| timeoffset:(isostr)              | `new Date(isostr).getTimezoneOffset();`                                                                                 |
 | tostring: (val)                  | `val.toString();`                                                                                                       |
 | urlencode: (val)                 | `encodeURI(val);`                                                                                                       |
 | urldecode: (val)                 | `decodeURI(val);`                                                                                                       |
@@ -552,7 +455,173 @@ Current common transformation set:
 | replaceallstr: (str, from, to)   | `str.replaceAll(from, to);`                                                                                             |
 | replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
 | split: (str, ch)                 | `str.split(ch);`                                                                                                        |
-| mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                  |
+| mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
 | thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
 | bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
-| slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                   |
+| slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                  |
+
+## Legacy Expression Language Transformations
+
+FIXME This is the default... Due to backward non breaking... We encourage you not to use this language...
+
+### Expressions
+
+Each expression pattern is marked with the following secuence: `${<expression>}` where `<expression>` is a construction
+with a valid syntax.
+
+### Types
+
+The way the `parse()` function works (at `expressionParser.js`) is as follows:
+
+-   Expressions can have two return types: `String` or `Number`. This return type must be configured for each attribute
+    that is going to be converted. Default value type is `String`.
+-   Whenever an expression is executed without error, its result will be cast to the configured type. If the conversion
+    fails (e.g.: if the expression is null or a String and is cast to Number), the measurement update will fail, and an
+    error will be reported to the device.
+
+However, the usage that the Expression Translation plugin does of that function is using always `String` type. That
+means that at the end, the result of the expression will be always cast to `String`. However, in NGSI v2 that `String`
+result could be re-cast to the right type (i.e. the one defined for the attribute in the provision operation). Have a
+look at the [NGSI v2 support](#ngsiv2) for more information on this.
+
+### Values
+
+#### Variables
+
+All the information reported in the measurement received by the IoT Agent is available for the expression to use. For
+every attribute coming from the South Bound, a variable with the syntax `@<object_id>` will be created for its use in
+the expression language.
+
+Attribute expressions can contain values taken from the value of other attributes. Those values have, by default, the
+String type. For most arithmetic operations (`*`, `/`, etc...) if a variable is involved, its value will be cast to
+Number, regardless of the original type. For, example, if a variable `@humidity` has the value `'50'` (a String value),
+the following expression:
+
+```
+${@humidity * 10}
+```
+
+will give `500` as the result (i.e.: the value `'50'` is cast to number, to get `50`, that is then multiplied by 10). If
+this cast fails (because the value of the variable is not a number, e.g.: `'Fifty'`), the overall result will be `NaN`.
+
+#### Constants
+
+The expression language allows for two kinds of constants:
+
+-   Numbers (integer or float)
+-   Strings (marked with double quotes)
+
+Current allowed characters are:
+
+-   All the alphanumerical characters
+-   Whitespaces
+
+### Allowed operations
+
+The following operations are currently available, divided by attribute type
+
+#### Number operations
+
+-   multiplication ('\*')
+-   division ('/')
+-   addition ('+')
+-   subtraction ('-' binary)
+-   negation ('-' unary)
+-   power ('^')
+
+#### String operations
+
+-   concatenation ('#'): returns the concatenation of the two values separated by `#`.
+-   substring location (`indexOf(<variable>, <substring>)`): returns the index where the first occurrence of the
+    substring `<substring>` can be found in the string value of `<variable>`.
+-   substring (`substr(<variable>, <start> <end>)`): returns a substring of the string variable passed as a parameter,
+    starting at posisiton `start` and ending at position `<end>`.
+-   whitespace removal (`trim(<string>)`): removes all the spaces surrounding the string passed as a parameter.
+
+#### Other available operators
+
+Parenthesis can be used to define precedence in the operations. Whitespaces between tokens are generally ignored.
+
+### Examples of expressions
+
+The following table shows expressions and their expected outcomes for a measure with two attributes: `@value` with value
+`6` and `@name` with value `DevId629`.
+
+| Expression                  | Expected outcome      | Format |
+| :-------------------------- | :-------------------- | ------ |
+| `5 \* @value`               | `30`                  | Number |
+| `(6 + @value) \* 3`         | `36`                  | Number |
+| `@value / 12 + 1`           | `1.5`                 | Number |
+| `(5 + 2) \* (@value + 7)`   | `91`                  | Number |
+| `@value \* 5.2`             | `31.2`                | Number |
+| `"Pruebas " + "De Strings"` | `Pruebas De Strings`  | String |
+| `@name value is @value`     | `DevId629 value is 6` | String |
+
+### NGSI v2 support
+
+As it is explained in previous sections, expressions can have two return types: `String` or `Number`, being the former
+one the default. Whenever an expression is executed without error, its result will be cast to the configured type.
+
+NGSI v2 and NGSI-LD fully supports all the types described in the JSON specification (`string`, `number`, `boolean`,
+`object`, `array` and `null`). Therefore, the result of an expression must be cast to the appropriate type (the type
+used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of
+the value that is being sent.
+
+Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address
+this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the
+following:
+
+1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
+2. The expression will be applied
+3. The output type will be cast again to the original attribute type.
+
+-   If attribute type is `Number` and the value is an `Integer`, then the value is casted to integer (JSON number)
+-   If attribute type is `Number` and the value is a `Float`, then the value is casted to float (JSON number)
+-   If attribute type is `Boolean` then the value is cast to boolean (JSON boolean). In order to do this conversion,
+    only `true` or `1` are cast to true.
+-   If attribute type is `None` then the value is cast to `null` (JSON null)
+
+> **Note**. All the operations and castings described above are not performed using JELX, because the user has full
+> control on the final value of the attributes, so there is no need of adding a layer of autocast that would interfere
+> and makes things more complicated.
+
+E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
+
+```json
+{
+    "name": "status",
+    "type": "Boolean",
+    "expression": "${@status *  20}"
+}
+```
+
+and a measurement with the following values arrive to the IoT Agent:
+
+```
+status: true
+```
+
+1. The expression `*` is a multiplication, so the expression type makes `status` to be casted to Number. The cast of
+   `true` to number is 1.
+2. Expression is evaluated, resulting in 20
+3. 20 is cast to `20` since Expression Plugin always use String as Expression type.
+4. The attribute type is `Boolean` so the result is casted to Boolean before sending it to CB. The cast of `20` to
+   boolean is false (only `true` or `1` are cast to true).
+
+More examples of this workflow are presented below for the different types of attributes supported in NGSI v2 and the
+two possible types of expressions: Integer (arithmetic operations) or Strings.
+
+-   `pressure` with value 52 (integer)
+-   `consumption` with value 0.44 (float)
+-   `active` with value `null` (None type)
+
+| Expression              | Expected outcome | Format  |
+| :---------------------- | :--------------- | ------- |
+| `${@pressure * 20}`     | `1040`           | Integer |
+| `${trim(@pressure)}`    | `52`             | Integer |
+| `${@consumption * 20}`  | `8.8`            | Float   |
+| `${trim(@consumption)}` | `0.44`           | Float   |
+| `${@pressure * 20}`     | `1040`           | Integer |
+| `${@active * 20}`       | `null`           | None    |
+| `${trim(@active)`       | `null`           | None    |
+| `${trim(@consumption)}` | `0.44`           | Float   |
