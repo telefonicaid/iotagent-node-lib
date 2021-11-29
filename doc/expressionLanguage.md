@@ -34,14 +34,14 @@ which is newer and most powerful.
 
 ## Comparison between expression languages
 
--   JEXL supports multiples types: Boolean, String, Number, Object, Array.
--   JEXL also supports the creation of GeoJSON Objects
+-   JEXL supports multiples types: Boolean, String, Number, Object, Array, NULL.
+-   JEXL also supports the management and creation of JSON structures  (including GeoJSON Objects)
 -   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
 -   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
 -   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
     Logical OR `||`. Negation operator is `!`
 -   JEXL supports [comparisons](https://github.com/TomFrost/jexl#comparisons).
--   JEXL supports defining custo functions.
+-   JEXL supports defining custom transformations (JEXL functions are not currently supported in Perseo).
 
 For more details, check JEXL language details [here](https://github.com/TomFrost/jexl#all-the-details).
 
