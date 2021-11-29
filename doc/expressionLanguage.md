@@ -35,7 +35,7 @@ which is newer and most powerful.
 ## Comparison between expression languages
 
 -   JEXL supports multiples types: Boolean, String, Number, Object, Array, NULL.
--   JEXL also supports the management and creation of JSON structures  (including GeoJSON Objects)
+-   JEXL also supports the management and creation of JSON structures (including GeoJSON Objects)
 -   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
 -   JEXL supports if..then...else... via [ternary operator](https://github.com/TomFrost/jexl#ternary-operator).
 -   JEXL additionally supports the following operations: Divide and floor `//`, Modulus `%`, Logical AND `&&` and
@@ -410,13 +410,13 @@ Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
 
 The following are some examples of **JEXL** expressions not supported by the **legacy** expression language:
 
-| Expression                                          | Expected outcome                    | Format  |
-| :-------------------------------------------------- | :---------------------------------- | ------- |
-| `value == 6? true : false`                          | `true`                              | Boolean |
-| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Boolean |
-| `array[1]+1`                                        | `3`                                 | Number  |
-| `object.name`                                       | `"John"`                            | String  |
-| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` | Object  |
+| Expression                                          | Expected outcome                    | Format      |
+| :-------------------------------------------------- | :---------------------------------- | ----------- |
+| `value == 6? true : false`                          | `true`                              | Boolean     |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Boolean     |
+| `array[1]+1`                                        | `3`                                 | Number      |
+| `object.name`                                       | `"John"`                            | String      |
+| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` | JSON Object |
 
 ### Available functions
 
@@ -462,7 +462,10 @@ Current common transformation set:
 
 ## Legacy Expression Language Transformations
 
-FIXME This is the default... Due to backward non breaking... We encourage you not to use this language...
+As described in previous sections, this is the default language just for backward compatibility reasons, but we strongly
+encourage you not to use this language for defining expression in order to transform measures, since it is not capable
+to handle JSON native types, it is not extensible and many other reasons as described on the section
+[Comparison between expression languages](#comparison-between-expression-languages)
 
 ### Expressions
 
