@@ -26,11 +26,11 @@
 ## Overview
 
 The IoTAgent Library provides an expression language for measurement transformation, that can be used to adapt the
-information coming from the South Bound APIs to the information reported to the Context Broker. This is really usefull
+information coming from the South Bound APIs to the information reported to the Context Broker. This is really useful
 when you need to adapt measure.
 
-There are available two differen expression languages `jexl` and `legacy`. The recomended language to use is `jexl`,
-which is newer and most powerfull.
+There are available two differen expression languages `jexl` and `legacy`. The recommended language to use is `jexl`,
+which is newer and most powerful.
 
 ## Comparison between expression languages
 
@@ -331,10 +331,10 @@ Will now generate the following NGSI v2 payload:
 
 ## JEXL Based Transformations
 
-The recomended expression language for the IoTAgent Library is [JEXL](https://github.com/TomFrost/jexl). To use JEXL,
+The recommended expression language for the IoTAgent Library is [JEXL](https://github.com/TomFrost/jexl). To use JEXL,
 you will need to either configure it as default language using the `defaultExpressionLanguage` field to `jexl` (see
 [configuration documentation](installationguide.md)) or configuring the usage of JEXL as expression language for a given
-given group or device (as shown above).
+group or device (as shown above).
 
 ```json
 {
