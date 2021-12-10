@@ -34,6 +34,8 @@ which is newer and most powerful.
 
 ## Comparison between expression languages
 
+JEXL overpasses the legacy language in several aspects:
+
 -   JEXL supports multiples types: Boolean, String, Number, Object, Array, NULL.
 -   JEXL also supports the management and creation of JSON structures (including GeoJSON Objects)
 -   JEXL allows to navigate and [filter](https://github.com/TomFrost/jexl#collections) objects and arrays.
@@ -476,8 +478,8 @@ test all the functions described above.
 
 ## Legacy Expression Language Transformations
 
-As described in previous sections, this is the default language just for backward compatibility reasons, but we strongly
-encourage you not to use this language for defining expression in order to transform measures, since it is not capable
+As described in previous sections, this is the default language just for backward compatibility reasons, but **we strongly
+encourage you not to use this language** for defining expression in order to transform measures, since it is not capable
 to handle JSON native types, it is not extensible and many other reasons as described on the section
 [Comparison between expression languages](#comparison-between-expression-languages). The following example shows a
 device provisioning payload with defined expressions using the Legacy Expression Language:
