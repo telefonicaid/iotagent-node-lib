@@ -624,8 +624,7 @@ NGSI v2 and NGSI-LD fully supports all the types described in the JSON specifica
 used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of
 the value that is being sent.
 
-Currently, the expression parser does not support JSON Arrays and JSON document. A new issue has been created to address
-this aspect https://github.com/telefonicaid/iotagent-node-lib/issues/568. For the rest of types the workflow will be the
+The expression parser for legacy does not support JSON Arrays and JSON document. For the rest of types the workflow will be the
 following:
 
 1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
