@@ -6,7 +6,7 @@
 -   [Measurement transformation](#measurement-transformation)
     -   [Expression definition](#expression-definition)
     -   [Expression execution](#expression-execution)
-    -   [object_id](#object_id)
+    -   [Multientity plugin support (`object_id`)](#multientity-plugin-support-object_id)
 -   [JEXL Based Transformations](#jexl-based-transformations)
     -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
     -   [Available functions](#available-functions)
@@ -248,7 +248,7 @@ following to CB:
 
 [Interactive expression `spaces | trim`][5]
 
-### object_id
+### Multientity plugin support (`object_id`)
 
 To allow support for expressions in combination with multi entity plugin, where the same attribute is generated for
 different entities out of different incoming attribute values (i.e. `object_id`), we introduced support for `object_id`
