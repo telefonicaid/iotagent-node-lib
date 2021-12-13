@@ -7,13 +7,14 @@ if [ "${CONGIF_FROM_ENV}" = true ] ; then
     echo 'listener 9001' >> /etc/mosquitto/mosquitto.conf
     echo 'protocol websockets' >> /etc/mosquitto/mosquitto.conf
     echo 'listener 1883' >> /etc/mosquitto/mosquitto.conf
-    echo 'protocol mqtt' >> /etc/mosquitto/mosquitto.conf    
+    echo 'protocol mqtt' >> /etc/mosquitto/mosquitto.conf
     if ! [ -z "${IOTA_PASS}" ] ; then
       # Only if IOTA_PASS is set and not empty MQTT user/pass authentication is used
       touch /etc/mosquitto/pwfile
       sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf
       cp -f /root/aclfile /etc/mosquitto/aclfile
-      mosquitto_passwd -b /etc/mosquitto/pwfile iota ${IOTA_PASS}
+      sed -i 's/user iota/user ${IOTA_USER}/g' /etc/mosquitto/aclfile
+      mosquitto_passwd -b /etc/mosquitto/pwfile ${IOTA_USER} ${IOTA_PASS}
     fi
 fi
 
