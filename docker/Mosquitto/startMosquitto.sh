@@ -13,7 +13,7 @@ if [ "${CONGIF_FROM_ENV}" = true ] ; then
       touch /etc/mosquitto/pwfile
       sed -i '$ i acl_file /etc/mosquitto/aclfile\npassword_file /etc/mosquitto/pwfile' /etc/mosquitto/mosquitto.conf
       cp -f /root/aclfile /etc/mosquitto/aclfile
-      sed -i 's/user iota/user ${IOTA_USER}/g' /etc/mosquitto/aclfile
+      sed -i 's/user iota/user "${IOTA_USER}"/g' /etc/mosquitto/aclfile
       mosquitto_passwd -b /etc/mosquitto/pwfile ${IOTA_USER} ${IOTA_PASS}
     fi
 fi
