@@ -36,7 +36,8 @@ const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
-        ngsiVersion: 'v2'
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
     },
     defaultExpressionLanguage: 'jexl',
     server: {
@@ -257,9 +258,9 @@ const iotAgentConfig = {
     throttling: 'PT5S'
 };
 
-describe('Java expression language (JEXL) based transformations plugin', function () {
+describe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -318,13 +319,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -359,13 +359,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin4a.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -394,13 +393,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -429,13 +427,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin1a.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -465,13 +462,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -501,13 +497,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin8a.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -537,13 +532,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -573,13 +567,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -608,13 +601,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -644,13 +636,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -678,13 +669,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin12a.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -712,13 +702,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -751,13 +740,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -785,13 +773,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin29.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -818,13 +805,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/ws1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin31.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin31.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -863,13 +849,12 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/gps1/attrs',
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin32.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 

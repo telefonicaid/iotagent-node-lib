@@ -1,0 +1,16 @@
+{
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "coordinates": [
+        9.704217,
+        50.5744
+      ],
+      "type": "Point"
+    }
+  },
+  "TimeInstant": {
+    "type": "DateTime",
+    "value": "2021-11-18T14:20:14.901Z"
+  }
+}
