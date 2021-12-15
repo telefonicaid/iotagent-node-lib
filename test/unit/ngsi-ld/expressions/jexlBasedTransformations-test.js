@@ -822,48 +822,4 @@ describe('NGSI-LD: JEXL', function () {
             });
         });
     });
-
-    describe('When there are hidden attributes sent by the device to be calculated', function () {
-        // Case: Expression which results is sent as a new attribute
-        const values = [
-            {
-                name: 'lat',
-                type: 'Number',
-                value: 52
-            },
-            {
-                name: 'lon',
-                type: 'Number',
-                value: 13
-            },
-            {
-                name: 'ts',
-                type: 'Number',
-                value: 1
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin32.json'
-                    )
-                )
-                .reply(204);
-        });
-
-        it('should calculate them and remove hidden attrs from the payload', function (done) {
-            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
 });
