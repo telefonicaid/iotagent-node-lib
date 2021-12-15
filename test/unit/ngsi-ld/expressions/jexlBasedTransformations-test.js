@@ -232,23 +232,9 @@ const iotAgentConfig = {
                     name: 'TimeInstant',
                     type: 'DateTime',
                     expression: 'ts|toisodate'
-                },
-                {
-                    name: 'lat',
-                    hidden: true,
-                    type: 'Number'
-                },
-                {
-                    name: 'lon',
-                    hidden: true,
-                    type: 'Number'
-                },
-                {
-                    name: 'ts',
-                    hidden: true,
-                    type: 'Number'
                 }
-            ]
+            ],
+            explicitAttrs: true
         }
     },
     service: 'smartgondor',
@@ -823,7 +809,7 @@ describe('NGSI-LD: JEXL', function () {
         });
     });
 
-    describe('When there are hidden attributes sent by the device to be calculated', function () {
+    describe('When there are additional attributes sent by the device to be calculated and removed', function () {
         // Case: Expression which results is sent as a new attribute
         const values = [
             {
@@ -858,7 +844,7 @@ describe('NGSI-LD: JEXL', function () {
                 .reply(204);
         });
 
-        it('should calculate them and remove hidden attrs from the payload', function (done) {
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
             iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
