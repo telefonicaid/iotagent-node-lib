@@ -250,12 +250,10 @@ the API resource fields and the same fields in the database model.
 In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them
 have the same syntax, an object containing the following attributes:
 
--   `object_id` **optional** name of the attribute as coming from the device.
--   `name` **mandatory** ID of the attribute in the target entity in the Context Broker.
--   `type` **mandatory** name of the type of the attribute in the target entity.
--   `metadata` **optional** additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
--   `hidden` **optional** hidden attributes may be used to calculate expressions, but are not passed to the context
-    broker.
+-   **object_id** (optional): name of the attribute as coming from the device.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
+-   **type** (mandatory): name of the type of the attribute in the target entity.
+-   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
 Some transformation plugins also allow the use of the following optional attributes:
 

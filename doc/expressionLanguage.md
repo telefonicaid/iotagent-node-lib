@@ -140,12 +140,10 @@ provisioning. The following example shows a device provisioning payload with def
                 },
                 {
                     "name": "latitude",
-                    "hidden": true,
                     "type": "Number"
                 },
                 {
                     "name": "longitude",
-                    "hidden": true,
                     "type": "Number"
                 }
             ]
