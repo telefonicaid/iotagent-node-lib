@@ -478,9 +478,9 @@ test all the functions described above.
 
 ## Legacy Expression Language Transformations
 
-As described in previous sections, this is the default language just for backward compatibility reasons, but **we
-strongly encourage you not to use this language** for defining expression in order to transform measures, since it is
-not capable to handle JSON native types, it is not extensible and many other reasons as described on the section
+As described in previous sections, this is the default language just for backward compatibility reasons, but **we strongly
+encourage you not to use this language** for defining expression in order to transform measures, since it is not capable
+to handle JSON native types, it is not extensible and many other reasons as described on the section
 [Comparison between expression languages](#comparison-between-expression-languages). The following example shows a
 device provisioning payload with defined expressions using the Legacy Expression Language:
 
@@ -624,8 +624,8 @@ NGSI v2 and NGSI-LD fully supports all the types described in the JSON specifica
 used to define the attribute) in order to avoid inconsistencies between the type field for an attribute and the type of
 the value that is being sent.
 
-The expression parser for legacy does not support JSON Arrays and JSON document. For the rest of types the workflow will
-be the following:
+The expression parser for legacy does not support JSON Arrays and JSON document. For the rest of types the workflow will be the
+following:
 
 1. Variables will be cast to String no matter the expression type (see [comments above](#types) regarding this)
 2. The expression will be applied
