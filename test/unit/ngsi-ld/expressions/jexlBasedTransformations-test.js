@@ -246,7 +246,7 @@ const iotAgentConfig = {
 };
 
 const iotAgentConfigTS = {
-    logLevel: 'DEBUG',
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -280,7 +280,7 @@ const iotAgentConfigTS = {
 
 describe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -890,7 +890,7 @@ describe('NGSI-LD: JEXL', function () {
 
 describe('NGSI-LD: JEXL - Timestamps', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfigTS, function () {
             iotAgentLib.clearAll(function () {

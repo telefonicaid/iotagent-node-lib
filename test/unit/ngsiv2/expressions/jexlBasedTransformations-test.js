@@ -245,7 +245,7 @@ const iotAgentConfig = {
 };
 
 const iotAgentConfigTS = {
-    logLevel: 'DEBUG',
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
