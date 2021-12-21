@@ -214,6 +214,26 @@ const iotAgentConfig = {
             ],
             type: 'SensorCommand',
             lazy: []
+        },
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            explicitAttrs: true
         }
     },
     service: 'smartgondor',
@@ -456,6 +476,47 @@ describe('NGSI-LD - Multi-entity plugin', function () {
 
         it('should use the device type as a default value', function (done) {
             iotAgentLib.update('ws4', 'WeatherStation2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement explicitAttrs for one entity', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin15.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
