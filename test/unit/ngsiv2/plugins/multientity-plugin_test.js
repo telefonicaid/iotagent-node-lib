@@ -1026,6 +1026,11 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 name: 'y',
                 type: 'Number',
                 value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
             }
         ];
 
