@@ -236,6 +236,19 @@ const iotAgentConfig = {
                 }
             ],
             explicitAttrs: true
+        },
+        GPS2: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: true
         }
     },
     service: 'smartgondor',
@@ -880,6 +893,49 @@ describe('NGSI-LD: JEXL', function () {
 
         it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
             iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When there is an extra TimeInstant sent by the device to be removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS2', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
