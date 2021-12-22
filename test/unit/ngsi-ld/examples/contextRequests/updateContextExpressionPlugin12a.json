@@ -1,0 +1,7 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]
