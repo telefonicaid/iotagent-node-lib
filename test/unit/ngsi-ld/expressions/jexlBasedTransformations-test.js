@@ -30,6 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
+const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -232,23 +233,22 @@ const iotAgentConfig = {
                     name: 'TimeInstant',
                     type: 'DateTime',
                     expression: 'ts|toisodate'
-                },
-                {
-                    name: 'lat',
-                    hidden: true,
-                    type: 'Number'
-                },
-                {
-                    name: 'lon',
-                    hidden: true,
-                    type: 'Number'
-                },
-                {
-                    name: 'ts',
-                    hidden: true,
-                    type: 'Number'
                 }
-            ]
+            ],
+            explicitAttrs: true
+        },
+        GPS2: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: true
         }
     },
     service: 'smartgondor',
@@ -258,9 +258,42 @@ const iotAgentConfig = {
     throttling: 'PT5S'
 };
 
+const iotAgentConfigTS = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
+    },
+    defaultExpressionLanguage: 'jexl',
+    server: {
+        port: 4041
+    },
+    types: {
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: true
+        }
+    },
+    timestamp: true,
+    service: 'smartgondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartgondor.com'
+};
+
 describe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -816,6 +849,166 @@ describe('NGSI-LD: JEXL', function () {
 
         it('should not calculate the expression and allow falsy values', function (done) {
             iotAgentLib.update('ws1', 'WeatherStationUndef', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there are additional attributes sent by the device to be calculated and removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'ts',
+                type: 'Number',
+                value: 1
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin32.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When there is an extra TimeInstant sent by the device to be removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+});
+
+describe('NGSI-LD: JEXL - Timestamps', function () {
+    beforeEach(function (done) {
+        logger.setLevel('FATAL');
+
+        iotAgentLib.activate(iotAgentConfigTS, function () {
+            iotAgentLib.clearAll(function () {
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
+                done();
+            });
+        });
+    });
+
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When timestamps are added but are not explicitly defined', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'ts',
+                type: 'Number',
+                value: 1
+            }
+        ];
+
+        beforeEach(function () {
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+            timekeeper.freeze(time);
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin33.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            timekeeper.reset();
+            done();
+        });
+
+        it('should calculate them and not remove the timestamp from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

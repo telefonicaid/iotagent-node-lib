@@ -1,0 +1,17 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "location": {
+      "type": "GeoProperty",
+      "value": {
+        "coordinates": [
+          13,
+          52
+        ],
+        "type": "Point"
+      }
+    },
+    "id": "urn:ngsi-ld:GPS:gps1",
+    "type": "GPS"
+  }
+]

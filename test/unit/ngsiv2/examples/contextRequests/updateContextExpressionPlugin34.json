@@ -1,0 +1,12 @@
+{
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "coordinates": [
+        13,
+        52
+      ],
+      "type": "Point"
+    }
+  }
+}
