@@ -3,3 +3,4 @@
 - ADD: support for add and update device handler (iota-json#602)
 - ADD: support both WARN and WARNING log levels (#1146)
 - FIX: JEXL NGSI-LD null processing extended to remove invalid calculated values (#1164)
+- FIX: Remove preprocess stripping of explicitAttrs (#1151)
