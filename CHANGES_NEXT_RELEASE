@@ -1,3 +1,4 @@
+- FIX: use colors 1.4.0 to avoid wrong dep
 - FIX: try get group by type using current type if no type is provided (#1155)
 - ADD: allow update polling device field (iota-json#602)
 - Fix: replace request obsolete library by got (#858)
