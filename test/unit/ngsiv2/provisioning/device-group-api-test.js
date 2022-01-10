@@ -28,8 +28,9 @@ const _ = require('underscore');
 const async = require('async');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
-const request = require('request');
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',

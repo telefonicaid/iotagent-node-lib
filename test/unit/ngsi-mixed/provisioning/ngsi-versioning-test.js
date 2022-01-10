@@ -26,7 +26,9 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+const utils = require('../../../tools/utils');
+const request = utils.request;
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',

@@ -187,7 +187,6 @@ describe('NGSI-v2 - Query device information in the Context Broker', function ()
 
         it('should return a ENTITY_GENERIC_ERROR', function (done) {
             iotAgentLib.query('light3', 'Light', '', attributes, function (error) {
-                console.error(error);
                 should.exist(error);
                 should.exist(error.name);
                 should.exist(error.code);

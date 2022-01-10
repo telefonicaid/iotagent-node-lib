@@ -27,6 +27,7 @@ const migration = require('../../../lib/command/migration');
 const mongo = require('mongodb').MongoClient;
 const mongoUtils = require('../mongodb/mongoDBUtils');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const logger = require('logops');
 const async = require('async');
 const apply = async.apply;

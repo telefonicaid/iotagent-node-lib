@@ -22,6 +22,7 @@
  */
 
 const fs = require('fs');
+const request = require('../../lib/fiware-iotagent-lib').request;
 
 function readExampleFile(name, raw) {
     let text = null;
@@ -36,3 +37,4 @@ function readExampleFile(name, raw) {
 }
 
 exports.readExampleFile = readExampleFile;
+exports.request = request;

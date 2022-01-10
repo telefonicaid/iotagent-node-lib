@@ -25,6 +25,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
@@ -246,7 +247,6 @@ describe('NGSI-v2 - Data Mapping Plugins: translation', function () {
         it('should call the middleware', function (done) {
             function testMiddleware(entity, typeInformation, callback) {
                 entity.dimming.value = entity.dimming.value + '%';
-
                 callback(null, entity, typeInformation);
             }
 

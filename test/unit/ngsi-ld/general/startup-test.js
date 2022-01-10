@@ -28,6 +28,7 @@
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const config = require('../../../../lib/commonConfig');
 const iotAgentConfig = {
     logLevel: 'FATAL',

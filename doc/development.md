@@ -27,15 +27,15 @@ The following sections show the available options in detail.
 
 ### Environment requirements
 
-A [MongoDB](https://www.mongodb.com/) 3.2+ instance is required to run tests.
-You can deploy one by using the commodity `docker-compose-dev.yml`:
+A [MongoDB](https://www.mongodb.com/) 3.2+ instance is required to run tests. You can deploy one by using the commodity
+`docker-compose-dev.yml`:
 
 ```
 docker-compose -f docker-compose-dev.yml up -d
 ```
 
-To run docker compose you will need [docker](https://docs.docker.com/get-docker/)
-and [docker-compose](https://docs.docker.com/compose/install/).
+To run docker compose you will need [docker](https://docs.docker.com/get-docker/) and
+[docker-compose](https://docs.docker.com/compose/install/).
 
 ### Testing
 
@@ -51,13 +51,12 @@ To run tests, type
 npm test
 ```
 
-There are additional targets starting with `test:` prefix to run specific test subsets isolatedly. For instance,
-the `test:expressions` target runs the subset of tests related with expression language feature:
+There are additional targets starting with `test:` prefix to run specific test subsets isolatedly. For instance, the
+`test:expressions` target runs the subset of tests related with expression language feature:
 
 ```bash
 npm run test:expressions
 ```
-
 
 ### Debug Test
 
@@ -67,8 +66,8 @@ To debug the code while running run tests, type
 npm run test:debug
 ```
 
-In the console the link to the debugger will be provided. You can connect
-to it via Chrome, for example, by opening the following url: ```chrome://inspect```.
+In the console the link to the debugger will be provided. You can connect to it via Chrome, for example, by opening the
+following url: `chrome://inspect`.
 
 Additional debug clients are listed on [node.js](https://nodejs.org/en/docs/guides/debugging-getting-started/).
 
