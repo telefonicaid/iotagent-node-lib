@@ -27,10 +27,11 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'ERROR',
@@ -174,8 +175,7 @@ describe('NGSI-LD - Device provisioning API: Remove provisioned devices', functi
                 };
 
                 request(options, function (error, response, body) {
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.devices.length.should.equal(2);
+                    body.devices.length.should.equal(2);
                     done();
                 });
             });

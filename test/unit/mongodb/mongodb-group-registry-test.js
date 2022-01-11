@@ -28,8 +28,8 @@
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const async = require('async');
-const request = require('request');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',

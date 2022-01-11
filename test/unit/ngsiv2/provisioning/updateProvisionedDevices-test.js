@@ -27,10 +27,11 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -239,9 +240,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.entity_name.should.equal('ANewLightName');
-                    parsedBody.timezone.should.equal('Europe/Madrid');
+                    body.entity_name.should.equal('ANewLightName');
+                    body.timezone.should.equal('Europe/Madrid');
                     done();
                 });
             });
@@ -261,9 +261,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 request(options, function (error, response, body) {
                     /* jshint camelcase:false */
 
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.entity_type.should.equal('TheLightType');
-                    parsedBody.service.should.equal('smartgondor');
+                    body.entity_type.should.equal('TheLightType');
+                    body.service.should.equal('smartgondor');
                     done();
                 });
             });
@@ -370,10 +369,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    const parsedBody = JSON.parse(body);
-
-                    parsedBody.attributes.length.should.equal(1);
-                    parsedBody.attributes[0].name.should.equal('newAttribute');
+                    body.attributes.length.should.equal(1);
+                    body.attributes[0].name.should.equal('newAttribute');
                     done();
                 });
             });
@@ -440,10 +437,8 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    const parsedBody = JSON.parse(body);
-
-                    parsedBody.static_attributes.length.should.equal(3);
-                    parsedBody.static_attributes[0].name.should.equal('cellID');
+                    body.static_attributes.length.should.equal(3);
+                    body.static_attributes[0].name.should.equal('cellID');
                     done();
                 });
             });
@@ -493,8 +488,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
 
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.explicitAttrs.should.equal(false);
+                    body.explicitAttrs.should.equal(false);
                     done();
                 });
             });

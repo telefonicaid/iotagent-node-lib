@@ -27,13 +27,14 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const async = require('async');
 const apply = async.apply;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {

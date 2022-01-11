@@ -27,10 +27,11 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+
 const nock = require('nock');
 const logger = require('logops');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
 const should = require('should');
 const iotAgentConfig = {

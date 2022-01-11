@@ -27,9 +27,10 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+
 const logger = require('logops');
 const async = require('async');
 const iotAgentConfig = {
@@ -192,12 +193,12 @@ describe('NGSI-v2 - Device Service: utils', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function (
-                error,
-                results
-            ) {
-                done();
-            });
+            async.series(
+                [utils.request.bind(utils.request, groupCreation), utils.request.bind(utils.request, deviceCreation)],
+                function (error, results) {
+                    done();
+                }
+            );
         });
 
         it('should return the existing device', function (done) {
@@ -222,7 +223,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([request.bind(request, groupCreation)], function (error, results) {
+            async.series([utils.request.bind(utils.request, groupCreation)], function (error, results) {
                 done();
             });
         });

@@ -27,14 +27,16 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 let contextBrokerMock;
 let statusAttributeMock;
 const iotAgentConfig = {
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',

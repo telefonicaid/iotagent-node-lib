@@ -28,6 +28,7 @@ const async = require('async');
 const should = require('should');
 const nock = require('nock');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
