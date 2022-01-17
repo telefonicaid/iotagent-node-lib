@@ -1,4 +1,3 @@
-- FIX: Do not provide content-type to delete and get http request (since none body is provided)
 - FIX: try get group by type using current type if no type is provided (#1155)
 - ADD: allow update polling device field (iota-json#602)
 - Fix: replace request obsolete library by got (#858)
