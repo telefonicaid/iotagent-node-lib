@@ -148,7 +148,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8', '')
                 .reply(204);
         });
 
