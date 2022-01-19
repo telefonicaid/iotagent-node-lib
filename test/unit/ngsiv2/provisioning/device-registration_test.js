@@ -290,7 +290,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
-                .delete('/v2/registrations/6319a7f5254b05844116584d',null)
+                .delete('/v2/registrations/6319a7f5254b05844116584d',"")
                 .reply(204, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
