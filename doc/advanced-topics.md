@@ -306,7 +306,8 @@ stored in the Context Broker by adding a new attribute to the entity with the sa
 element. By adding the field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the
 measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
 the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
-precedence.
+precedence. Additionally `explicitAttrs` can be used to define which meassures defined in JSON/JEXL array will be
+propagated to NGSI interface.
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
