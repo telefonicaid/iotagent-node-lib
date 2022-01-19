@@ -260,7 +260,7 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: "[ 'location' ]"
+            explicitAttrs: '[ "location" ]'
         },
         GPS4: {
             commands: [],
@@ -273,7 +273,7 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: "[ 'loca" + "tion' ]"
+            explicitAttrs: '[ "loca" + "tion" ]'
         }
     },
     service: 'smartgondor',
