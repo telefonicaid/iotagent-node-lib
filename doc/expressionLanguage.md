@@ -472,6 +472,8 @@ Current common transformation set:
 | thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
 | bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
 | slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                  |
+| addset: (arr, x)                 | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
+| removeset: (arr, x)              | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
