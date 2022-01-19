@@ -284,7 +284,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
             contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
             contextBrokerMock
-                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
+                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d', '')
                 .reply(204, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
@@ -329,7 +329,7 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
             // provisioning folder
             contextBrokerMock.post('/ngsi-ld/v1/entityOperations/upsert/').reply(204);
 
-            contextBrokerMock.delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d').reply(500);
+            contextBrokerMock.delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d', '').reply(500);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
