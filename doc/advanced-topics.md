@@ -307,12 +307,46 @@ element. By adding the field `explicitAttrs` with `true` value to device or grou
 measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
 the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
 precedence. Additionally `explicitAttrs` can be used to define which meassures defined in JSON/JEXL array will be
-propagated to NGSI interface. Summarizing
+propagated to NGSI interface.
 
-- `explicitAttrs=false`: every measure will be propagated to NGSI interface.
-- `explicitAttrs=true`: just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
-- `explicitAttrs="['attr1','atr2']"`: just measures defined in JSON/JEXL array will be will be propagated to NGSI interface.
-- `explicitAtttrs="JEXL EXPRESION:BOOL/ARRAY"`: just measures returned in JSON/JEXL array (or base case if boolean) will be will be propagated to NGSI interface
+The different possibilities are summarized below:
+
+Case 1 (default):
+
+```
+"explicitAttrs": false
+```
+
+every measure will be propagated to NGSI interface.
+
+Case 2:
+
+```
+"explicitAttrs": true
+```
+
+just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+
+Case 3:
+
+```
+"explicitAttrs": "['attr1','atrr2']"
+```
+
+just measures defined in the array will be will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but
+a string that looks likes a JSON).
+
+Case 4:
+
+```
+"explicitAtttr": "<JEXL expression resulting in bool or array>"
+```
+
+depending on the JEXL expression evaluation:
+
+* If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
+* If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface (as in case 2)
+* If it evaluates to an array just measures defined in the array will be will be propagated to NGSI interface (as in case 3)
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
