@@ -474,7 +474,7 @@ const iotAgentConfig = {
                     value: 'b'
                 }
             ],
-            explicitAttrs: '[ "type", "id", "attr1", "attr2" ]'
+            explicitAttrs: '[ "attr1", "attr2" ]'
         }
     },
     service: 'smartgondor',
