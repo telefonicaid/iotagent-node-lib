@@ -257,7 +257,7 @@ const iotAgentConfig = {
                 {
                     name: 'color',
                     type: 'string',
-                    type: 'blue'
+                    value: 'blue'
                 }
             ],
             active: [
@@ -281,7 +281,7 @@ const iotAgentConfig = {
                 {
                     name: 'color',
                     type: 'string',
-                    type: 'blue'
+                    value: 'blue'
                 }
             ],
             active: [
@@ -305,7 +305,7 @@ const iotAgentConfig = {
                 {
                     name: 'color',
                     type: 'string',
-                    type: 'blue'
+                    value: 'blue'
                 }
             ],
             active: [
