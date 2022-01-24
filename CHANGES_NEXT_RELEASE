@@ -1,4 +1,4 @@
-- ADD: extend explicitAttrs to alow JEXL expression for conditional propagation of measures (#1179)
+- ADD: extend explicitAttrs to allow JEXL expression for conditional propagation of measures (#1179)
 - Add: new JEXL transformations for adding and removing elements to/from Array: addset, removeset
 - FIX: try get group by type using current type if no type is provided (#1155)
 - ADD: allow update polling device field (iota-json#602)
