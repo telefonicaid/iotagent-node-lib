@@ -307,7 +307,12 @@ element. By adding the field `explicitAttrs` with `true` value to device or grou
 measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
 the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
 precedence. Additionally `explicitAttrs` can be used to define which meassures defined in JSON/JEXL array will be
-propagated to NGSI interface.
+propagated to NGSI interface. Summarizing
+
+- `explicitAttrs=false`: every measure will be propagated to NGSI interface.
+- `explicitAttrs=true`: just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+- `explicitAttrs="['attr1','atr2']"`: just measures defined in JSON/JEXL array will be will be propagated to NGSI interface.
+- `explicitAtttrs="JEXL EXPRESION:BOOL/ARRAY"`: just measures returned in JSON/JEXL array (or base case if boolean) will be will be propagated to NGSI interface
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
