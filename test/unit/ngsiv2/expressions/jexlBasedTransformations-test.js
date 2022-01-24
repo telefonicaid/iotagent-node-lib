@@ -253,7 +253,18 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    type: 'blue'
+                }
+            ],
             active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
                 {
                     name: 'location',
                     type: 'geo:json',
@@ -266,7 +277,18 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    type: 'blue'
+                }
+            ],
             active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
                 {
                     name: 'location',
                     type: 'geo:json',
@@ -279,7 +301,18 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    type: 'blue'
+                }
+            ],
             active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
                 {
                     name: 'location',
                     type: 'geo:json',
