@@ -240,6 +240,18 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
+            static: [
+                {
+                    name: 'lat',
+                    type: 'Number',
+                    value: 52
+                },
+                {
+                    name: 'lon',
+                    type: 'Number',
+                    value: 13
+                }
+            ],
             active: [
                 {
                     name: 'location',
@@ -989,16 +1001,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
     describe('When there is an extra TimeInstant sent by the device to be removed', function () {
         // Case: Expression which results is sent as a new attribute
         const values = [
-            {
-                name: 'lat',
-                type: 'Number',
-                value: 52
-            },
-            {
-                name: 'lon',
-                type: 'Number',
-                value: 13
-            },
             {
                 name: 'TimeInstant',
                 type: 'DateTime',
