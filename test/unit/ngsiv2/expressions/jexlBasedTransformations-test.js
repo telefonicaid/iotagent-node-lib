@@ -1196,7 +1196,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When there is an extra TimeInstant sent by the device to be removed', function () {
+    describe('When there is an extra TimeInstant sent by the device to be removedb jexl expression using static attrs', function () {
         // Case: Expression which results is sent as a new attribute
         const values = [
             {
