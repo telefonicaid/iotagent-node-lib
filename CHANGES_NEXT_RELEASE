@@ -1,3 +1,4 @@
+- ADD: add underscore to expressino parser legacy (#1191)
 - FIX: change severity from WARN to INFO when invalid context in contextAvailable of legacy expression plugin occcurs
 - ADD: extend explicitAttrs to allow JEXL expression for conditional propagation of measures (#1179)
 - Add: new JEXL transformations for adding and removing elements to/from Array: addset, removeset
