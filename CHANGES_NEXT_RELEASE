@@ -1,4 +1,5 @@
 - ADD: allow to use static attributes into jexl expressions (#1184)
+- FIX: change severity from WARN to INFO when invalid context in contextAvailable of legacy expression plugin occcurs
 - ADD: extend explicitAttrs to allow JEXL expression for conditional propagation of measures (#1179)
 - Add: new JEXL transformations for adding and removing elements to/from Array: addset, removeset
 - FIX: try get group by type using current type if no type is provided (#1155)
