@@ -23,18 +23,17 @@
 
 /* eslint-disable no-unused-vars */
 
-const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const request = require('request');
 const nock = require('nock');
-const utils = require('../../../tools/utils');
-const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+const utils = require('../../tools/utils');
+const groupRegistryMemory = require('../../../lib/services/groups/groupRegistryMemory');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
-        port: '1026',
-        ngsiVersion: 'v2'
+        port: '1026'
     },
     server: {
         port: 4041
@@ -58,6 +57,7 @@ const iotAgentConfig = {
         }
     },
     providerUrl: 'http://smartgondor.com',
+    deviceRegistrationDuration: 'P1M',
     iotManager: {
         host: 'mockediotam.com',
         port: 9876,
@@ -273,7 +273,7 @@ const configGroupDelete = {
 };
 let iotamMock;
 
-describe('NGSI-v2 - IoT Manager autoregistration', function () {
+describe('NGSI-v1 - IoT Manager autoregistration', function () {
     describe('When the IoT Agent is started without a "iotManager" config parameter and empty services', function () {
         beforeEach(function () {
             nock.cleanAll();
