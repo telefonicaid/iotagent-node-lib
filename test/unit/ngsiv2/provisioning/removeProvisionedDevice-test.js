@@ -120,7 +120,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             // This mock does not check the payload since the aim of the test is not to verify

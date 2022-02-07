@@ -189,7 +189,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             contextBrokerMock
@@ -244,7 +244,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             contextBrokerMock
@@ -297,7 +297,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
             // this function should use the new API. This is just a temporary solution which implies deleting the
             // registration and creating a new one.
-            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(500, {});
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d', '').reply(500, {});
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
