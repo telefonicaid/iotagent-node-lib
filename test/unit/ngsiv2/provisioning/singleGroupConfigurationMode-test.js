@@ -30,7 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
 let contextBrokerMock;
-const request = require('request');
+const request = require('../request-shim');
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {

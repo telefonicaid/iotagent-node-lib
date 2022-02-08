@@ -24,9 +24,10 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+
 const nock = require('nock');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
 const should = require('should');
 const iotAgentConfig = {
@@ -132,6 +133,7 @@ const optionsCreation = {
         'fiware-servicepath': 'theSubService'
     }
 };
+
 const configGroupCreation = {
     url: 'http://localhost:4041/iot/configGroups',
     method: 'POST',
@@ -165,10 +167,11 @@ const configGroupCreation = {
         ]
     },
     headers: {
-        'fiware-service': 'theservice',
+        'fiware-service': 'theService',
         'fiware-servicepath': 'theSubService'
     }
 };
+
 const optionsCreationStatic = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',
@@ -241,7 +244,7 @@ const configGroupCreationStatic = {
         ]
     },
     headers: {
-        'fiware-service': 'theservice',
+        'fiware-service': 'theService',
         'fiware-servicepath': 'theSubService'
     }
 };
@@ -263,7 +266,7 @@ const configGroupDelete = {
     method: 'DELETE',
     json: {},
     headers: {
-        'fiware-service': 'theservice',
+        'fiware-service': 'theService',
         'fiware-servicepath': 'theSubService'
     },
     qs: {
@@ -349,7 +352,6 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new service is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -384,7 +386,6 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
             });
         });
     });
-
     describe('When a new configGroup is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -420,7 +421,8 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    //This test will be removed if at the end /iot/services API (now Deprecated) is removed
+
     describe('When a service is removed from the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -491,7 +493,8 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    //This test will be removed if at the end /iot/services API (now Deprecated) is removed
+
     describe('When a new service with static attributes is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -527,7 +530,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    describe('When a new configGroup with static attributes is created in the IoT Agent', function () {
+    describe('When a new service with static attributes is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
 
@@ -562,3 +565,6 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 });
+
+
+

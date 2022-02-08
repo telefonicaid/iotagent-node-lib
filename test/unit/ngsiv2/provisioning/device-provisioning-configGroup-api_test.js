@@ -29,7 +29,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+const request = require('../request-shim');
 const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
