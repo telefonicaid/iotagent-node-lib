@@ -120,7 +120,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
             // registration and creating a new one.
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
-                .delete('/ngsi-ld/v1/csourceRegistrations/6719a7f5254b058441165849')
+                .delete('/ngsi-ld/v1/csourceRegistrations/6719a7f5254b058441165849', '')
                 .reply(204);
 
             const nockBody3 = utils.readExampleFile(
@@ -179,7 +179,7 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
-                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
+                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             contextBrokerMock

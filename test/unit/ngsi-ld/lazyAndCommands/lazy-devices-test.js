@@ -232,7 +232,6 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 iotAgentConfig.server.port +
                 '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=dimming',
             method: 'GET',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
@@ -301,7 +300,6 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 iotAgentConfig.server.port +
                 '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=dimming',
             method: 'GET',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
@@ -354,7 +352,6 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1',
             method: 'GET',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
@@ -420,7 +417,6 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 iotAgentConfig.server.port +
                 '/ngsi-ld/v1/entities/urn:ngsi-ld:Motion:motion1?attrs=moving,location',
             method: 'GET',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'
@@ -486,7 +482,6 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
                 iotAgentConfig.server.port +
                 '/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=temperature',
             method: 'GET',
-            json: true,
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': 'gardens'

@@ -1,8 +1,0 @@
-- FIX: try get group by type using current type if no type is provided (#1155)
-- ADD: allow update polling device field (iota-json#602)
-- Fix: replace request obsolete library by got (#858)
-- ADD: support for add and update device handler (iota-json#602)
-- ADD: support both WARN and WARNING log levels (#1146)
-- FIX: JEXL NGSI-LD null processing extended to remove invalid calculated values (#1164)
-- FIX: Remove preprocess stripping of explicitAttrs (#1151)
-- Upgrade logops dep from 2.1.0 to 2.1.2 due to colors dependency corruption

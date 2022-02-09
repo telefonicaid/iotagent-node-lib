@@ -711,7 +711,8 @@ the custom IoT Agent to import its own additional request library
     -   `headers`
     -   `responseType` - either `text` or `json`. `json` is the default
     -   `json` - a supplied JSON object as the request body
-    -   `body` - any ASCII text as the request body
+    -   `body` - any ASCII text as the request body. It takes precedence over `json` if both are provided at the same
+        time (not recommended).
     -   `url` - the request URL
     -   `uri` - alternative alias for the request URL.
 -   callback: The callback currently returns an `error` Object, the `response` and `body`. The `body` is parsed to a

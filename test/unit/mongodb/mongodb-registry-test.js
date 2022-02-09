@@ -376,7 +376,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
 
             contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
-            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d').reply(204);
+            contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d', '').reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series(
