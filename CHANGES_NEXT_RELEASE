@@ -9,3 +9,26 @@
 - Upgrade query-string dependency from 6.5.0 to 7.1.1
 - Upgrade underscore dependency from 1.12.1 to 1.13.2
 - Upgrade uuid dependency from 3.3.2 to 8.3.2
+- Upgrade coveralls dev dependency from 3.1.0 to 3.1.1
+- Upgrade eslint dev dependency from 7.5.0 to 8.8.0
+- Upgrade eslint-config-tamia dev dependency from 7.2.5 to 7.2.7
+- Upgrade eslint-plugin-prettier dev dependency from 3.1.4 to 4.0.0
+- Upgrade husky dev dependency from 4.2.5 to 7.0.4
+- Upgrade lint-staged dev dependency from 10.2.11 to 12.3.3
+- Upgrade prettier dev dependency from 2.0.5 to 2.5.1
+- Upgrade mocha dev dependency from 8.0.1 to 9.2.0
+- Upgrade nock dev dependency from 13.0.3 to 13.2.4
+- Add @textlint/types dev peer dependency at 12.1.0
+- Add @textlint/ast-node-types dev peer dependency at 12.1.0
+- Upgrade eslint-plugin-prettier dev dependency from 3.1.4 to 4.0.0
+- Add eslint-plugin-import dev peer dependency at 2.25.4
+- Add eslint-plugin-jsx-a11y dev peer dependency at 6.5.1
+- Add eslint-plugin-react dev peer dependency from 7.28.0
+- Add eslint-plugin-react-hooks dev peer dependency from 4.3.0
+- Upgrade remark-cli dev dependency from 8.0.1
+- Upgrade remark-preset-lint-recommended dev dependency from 4.0.1 to 6.1.2
+- Upgrade remark-cli dev dependency from 10.0.1
+- Upgrade sinon dev dependency from 9.0.2 to 13.0.1
+- Upgrade textlint dev dependency from 11.7.6 to 12.1.0 
+- Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 2.1.5
+- Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
