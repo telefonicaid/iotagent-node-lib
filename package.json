@@ -65,8 +65,6 @@
     "uuid": "~8.3.2"
   },
   "devDependencies": {
-    "@textlint/types": "~12.1.0",
-    "@textlint/ast-node-types": "~12.1.0",
     "coveralls": "~3.1.1",
     "eslint": "~8.8.0",
     "eslint-config-tamia": "~7.2.7",

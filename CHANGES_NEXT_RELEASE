@@ -18,8 +18,6 @@
 - Upgrade prettier dev dependency from 2.0.5 to 2.5.1
 - Upgrade mocha dev dependency from 8.0.1 to 9.2.0
 - Upgrade nock dev dependency from 13.0.3 to 13.2.4
-- Add @textlint/types dev peer dependency at 12.1.0
-- Add @textlint/ast-node-types dev peer dependency at 12.1.0
 - Upgrade eslint-plugin-prettier dev dependency from 3.1.4 to 4.0.0
 - Add eslint-plugin-import dev peer dependency at 2.25.4
 - Add eslint-plugin-jsx-a11y dev peer dependency at 6.5.1
