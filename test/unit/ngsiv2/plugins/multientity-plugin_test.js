@@ -243,6 +243,46 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStation9Jexl: {
+            commands: [],
+            type: 'WeatherStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            static: [
+                {
+                    name: 'st1',
+                    type: 'Number',
+                    value: 1
+                },
+                {
+                    name: 'st2',
+                    type: 'Number',
+                    value: 2
+                }
+            ],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    expression: 'st1 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    expression: 'st2 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    expression: 'v * 100',
+                    type: 'Number'
+                }
+            ]
+        },
         Sensor001: {
             commands: [],
             type: 'Sensor',
@@ -945,6 +985,39 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should send the update value to the resulting value of the expression', function (done) {
             iotAgentLib.update('ws9', 'WeatherStation8Jexl', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute) - JEXL with static', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws9', 'WeatherStation9Jexl', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

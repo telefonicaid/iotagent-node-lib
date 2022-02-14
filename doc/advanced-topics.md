@@ -333,8 +333,8 @@ Case 3:
 "explicitAttrs": "['attr1','atrr2']"
 ```
 
-just measures defined in the array will be will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but
-a string that looks likes a JSON).
+just measures defined in the array will be will be propagated to NGSI interface (note that in this case the value of
+`explicitAttrs` is not a JSON but a string that looks likes a JSON).
 
 Case 4:
 
@@ -344,9 +344,11 @@ Case 4:
 
 depending on the JEXL expression evaluation:
 
-* If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
-* If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface (as in case 2)
-* If it evaluates to an array just measures defined in the array will be will be propagated to NGSI interface (as in case 3)
+-   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
+-   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
+    propagated to NGSI interface (as in case 2)
+-   If it evaluates to an array just measures defined in the array will be will be propagated to NGSI interface (as in
+    case 3)
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
