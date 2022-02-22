@@ -1,1 +1,1 @@
-- Clean service and subservice domain fields when clean domain (#1201)
+- Fix: clean service and subservice domain fields when clean domain so logs now show correct serv= and subserv=  (#1201)
