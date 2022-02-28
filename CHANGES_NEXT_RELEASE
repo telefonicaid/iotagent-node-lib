@@ -1,2 +1,2 @@
 - Fix: clean service and subservice domain fields when clean domain so logs now show correct serv= and subserv=  (#1201)
-- Femove: obsolete NGISv1-based commandLine utility (along with command-shell-lib dependency) 
+- Remove: obsolete NGISv1-based commandLine utility (along with command-shell-lib dependency) 
