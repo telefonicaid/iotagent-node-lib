@@ -27,7 +27,7 @@
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
-    "lint": "eslint lib/ bin/ test/ --cache --fix",
+    "lint": "eslint lib/ test/ --cache --fix",
     "lint:md": "remark  -f '*.md' 'doc/*.md'",
     "lint:text": "textlint '*.md' 'doc/*.md'",
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/**/*.js' '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
