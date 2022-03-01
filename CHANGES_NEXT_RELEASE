@@ -1,1 +1,2 @@
 - Fix: clean service and subservice domain fields when clean domain so logs now show correct serv= and subserv=  (#1201)
+- Remove: obsolete NGSIv1-based commandLine utility (along with command-shell-lib and mu2 dependencies)
