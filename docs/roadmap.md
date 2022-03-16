@@ -25,11 +25,8 @@ Disclaimer:
 The following list of features are planned to be addressed in the short term, and incorporated in a release of the
 product:
 
--   Selectively ignore measure in the southbound interface (community)
--   JEXL support in expressions (community)
 -   cgroup literal in configuration groups management API (community)
 -   Metadata processing improvements
--   Add MongoDB authentication support
 
 ### Medium term
 
@@ -37,7 +34,6 @@ The following list of features are planned to be addressed in the medium term, t
 release(s) generated in the next 9 months after the next planned release:
 
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
--   Removal support for NGSIv1 (which currently is deprecated)
 
 ### Long term
 
@@ -48,3 +44,14 @@ us if you wish to get involved in the implementation or influence the roadmap:
 -   Incremental introduccion of ECMAScript6 syntax (previous analysis of which sub-set of interesting aspect we want to
     take)
 -   Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker
+
+### Features already completed
+
+The following list contains all features that were in the roadmap and have already been implemented.
+
+-   Removal support for NGSIv1 (#966) ([2.18.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.18.0))
+-   Selectively ignore measure in the southbound interface 
+([iotagent-json#416](https://github.com/telefonicaid/iotagent-json/issues/416), 
+[iotagent-ul#372](https://github.com/telefonicaid/iotagent-ul/issues/372)) ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
+-   JEXL support in expressions (#801, #687, #868) ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
+-   Add MongoDB authentication support (#844) ([2.12.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.12.0))
