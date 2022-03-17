@@ -158,6 +158,10 @@
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
           },
+          "expression": {
+              "description": "Optional expression for command transformation",
+              "type": "string"
+          },
           "mqtt": {
               "description": "Mqtt properties",
               "type": "object",
