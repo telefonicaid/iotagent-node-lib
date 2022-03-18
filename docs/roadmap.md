@@ -13,7 +13,7 @@ only, and this section may be revised to provide newer information at any time.
 
 Disclaimer:
 
--   This section has been last updated in March 2020. Please take into account its content could be obsolete.
+-   This section has been last updated in March 2022. Please take into account its content could be obsolete.
 -   Note we develop this software in Agile way, so development plan is continuously under review. Thus, this roadmap has
     to be understood as rough plan of features to be done along time which is fully valid only at the time of writing
     it. This roadmap has not be understood as a commitment on features and/or dates.
