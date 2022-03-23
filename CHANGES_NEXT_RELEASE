@@ -1,1 +1,2 @@
+Fix: search device using entity type when provided to proper match (#1211)
 Add: new JEXL transformations for handle upper and low case: touppercase, tolowercase
