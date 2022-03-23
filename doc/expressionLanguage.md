@@ -474,7 +474,12 @@ Current common transformation set:
 | slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                  |
 | addset: (arr, x)                 | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
 | removeset: (arr, x)              | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
-
+| touppercase: (val)               | `String(val).toUpperCase()`
+   |
+| tolowercase: (val)               | `String(val).toLowerCase()`
+   |
+  
+  
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
 
