@@ -1,3 +1,4 @@
+Fix: bad query searching for group using resource instead of type (#1216)
 Upgrade mongodb dep from 3.6.8 to 3.6.12
 Upgrade mongoose dep from 5.7.7 to 5.7.14
 Fix: search device and group for a command using entity type when provided to proper match (#1211)
