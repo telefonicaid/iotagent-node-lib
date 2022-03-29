@@ -1,3 +1,3 @@
-Add: add expressions and payloadType to commands models
+Add: add expressions, payloadType and contentType to commands models
 Fix: search device and group for a command using entity type when provided to proper match (#1211)
 Add: new JEXL transformations for handle upper and low case: touppercase, tolowercase

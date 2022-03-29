@@ -181,6 +181,10 @@
                     "description": "Payload type",
                     "type": "string"
                 },
+                "contentType": {
+                    "description": "Content type",
+                    "type": "string"
+                },
                 "mqtt": {
                   "description": "Mqtt properties",
                   "type": "object",
