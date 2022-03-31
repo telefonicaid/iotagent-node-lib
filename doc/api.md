@@ -273,11 +273,7 @@ Additionally for commands (which are attributes of `type` command) the following
 -   **expression** indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
     [Expression Language definition](expressionLanguage.md) for details
--   **payloadType**: indicates how command payload will be transformed before be sent to device (
--   **binaryfromstring**: Payload will transformed into a be Buffer after read it form a string.
--   **binaryfromhex**: Payload will transformed into a be Buffer after read it form a string hex.
--   **binaryfromjson**: Payload will transformed into a be Buffer after read it form a JSON string.
--   **json**: Paylaod will be stringify form a JSON.
+-   **payloadType**: indicates how command payload will be transformed before be sent to device
 -   **contentType**: `content-type` header used by http transport
 
 See the transformation plugins Section for more details.
