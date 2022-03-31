@@ -268,7 +268,7 @@ Some transformation plugins also allow the use of the following optional fields:
 -   **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
     in the [Data Mapping Plugins section](advanced-topics.md#bidirectionality-plugin-bidirectional) for details.
 
-Additionally for commands (which are attributes of `type` command) the following fields are optional:
+Additionally for commands (which are attributes of type `command`) the following fields are optional:
 
 -   **expression** indicates that the value of the target command will not be the plain value or the command, but an
     expression based on a combination of the reported values. See the
