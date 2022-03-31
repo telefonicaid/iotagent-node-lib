@@ -255,7 +255,7 @@ have the same syntax, an object containing the following attributes:
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
-Some transformation plugins also allow the use of the following optional attributes:
+Some transformation plugins also allow the use of the following optional fields:
 
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
@@ -267,6 +267,15 @@ Some transformation plugins also allow the use of the following optional attribu
 -   **entity_type**: configures the type of an alternative entity.
 -   **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
     in the [Data Mapping Plugins section](advanced-topics.md#bidirectionality-plugin-bidirectional) for details.
+
+Additionally for commands (which are attributes of type `command`) the following fields are optional:
+
+-   **expression** indicates that the value of the target command will not be the plain value or the command, but an
+    expression based on a combination of the returned values. See the
+    [Expression Language definition](expressionLanguage.md) for details
+-   **payloadType**: indicates how command payload will be transformed before be sent to device. Please have a look to particular 
+    IOTAs documentation for allowed values of this field in each case.
+-   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of transports)
 
 See the transformation plugins Section for more details.
 

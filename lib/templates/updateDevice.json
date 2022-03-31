@@ -158,6 +158,18 @@
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
           },
+          "expression": {
+              "description": "Optional expression for command transformation",
+              "type": "string"
+          },
+          "payloadType": {
+              "description": "Payload type",
+              "type": "string"
+          },
+          "contentType": {
+              "description": "Content type",
+              "type": "string"
+          },
           "mqtt": {
               "description": "Mqtt properties",
               "type": "object",
