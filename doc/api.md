@@ -274,7 +274,7 @@ Additionally for commands (which are attributes of type `command`) the following
     expression based on a combination of the returned values. See the
     [Expression Language definition](expressionLanguage.md) for details
 -   **payloadType**: indicates how command payload will be transformed before be sent to device
--   **contentType**: `content-type` header used when send command by http transport
+-   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of transports)
 
 See the transformation plugins Section for more details.
 
