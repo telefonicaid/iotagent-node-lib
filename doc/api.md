@@ -247,7 +247,7 @@ the API resource fields and the same fields in the database model.
 
 #### Attribute lists
 
-In the device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them
+In the group/device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them
 have the same syntax, an object containing the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
