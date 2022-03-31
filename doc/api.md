@@ -271,7 +271,7 @@ Some transformation plugins also allow the use of the following optional fields:
 Additionally for commands (which are attributes of type `command`) the following fields are optional:
 
 -   **expression** indicates that the value of the target command will not be the plain value or the command, but an
-    expression based on a combination of the reported values. See the
+    expression based on a combination of the returned values. See the
     [Expression Language definition](expressionLanguage.md) for details
 -   **payloadType**: indicates how command payload will be transformed before be sent to device
 -   **contentType**: `content-type` header used when send command by http transport
