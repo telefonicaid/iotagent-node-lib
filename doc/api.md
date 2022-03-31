@@ -273,7 +273,8 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **expression** indicates that the value of the target command will not be the plain value or the command, but an
     expression based on a combination of the returned values. See the
     [Expression Language definition](expressionLanguage.md) for details
--   **payloadType**: indicates how command payload will be transformed before be sent to device
+-   **payloadType**: indicates how command payload will be transformed before be sent to device. Please have a look to particular 
+    IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of transports)
 
 See the transformation plugins Section for more details.
