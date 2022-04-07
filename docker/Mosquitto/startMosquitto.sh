@@ -4,6 +4,7 @@ echo "INFO: startMosquitto..."
 
 if [ "${CONGIF_FROM_ENV}" = true ] ; then
     cp /etc/mosquitto/mosquitto.conf.orig /etc/mosquitto/mosquitto.conf
+    sed -i 's/log_dest file \/var\/log\/mosquitto\/mosquitto.log/log_dest stderr/g' /etc/mosquitto/mosquitto.conf
     echo "log_timestamp true" >> /etc/mosquitto/mosquitto.conf
     echo "log_timestamp_format %Y-%m-%dT%H:%M:%S" >> /etc/mosquitto/mosquitto.conf
     echo 'listener 9001' >> /etc/mosquitto/mosquitto.conf
