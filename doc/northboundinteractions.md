@@ -163,16 +163,15 @@ The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `
 
 ```json
 {
-     "temperature":  {
-          "type": "Property",
-          "value": "23"
-      },
-      "pressure" :{
-          "type": "Property",
-          "value": "720"
-      }
+    "temperature": {
+        "type": "Property",
+        "value": "23"
+    },
+    "pressure": {
+        "type": "Property",
+        "value": "720"
+    }
 }
-
 ```
 
 #### R1 - UpdateContext (response)
@@ -285,7 +284,8 @@ This is an **NGSI-LD** response to `/ngsi-ld/v1/entities/<entity>`
 ```
 
 In this case, the response to the QueryContext is a list of responses, one for each requested entity, indicating whether
-the information has been retrieved successfully (in the HTTP Status code) and the requested Context information in the body of the response.
+the information has been retrieved successfully (in the HTTP Status code) and the requested Context information in the
+body of the response.
 
 Application level errors can be specified for each entity in this payload.
 
@@ -305,7 +305,7 @@ Context Element, but with the request as a whole.
 
 ### Scenario 1: active attributes
 
-![General ](./img/scenario1.png "Scenario 1: active attributes")
+![General ](./img/scenario1.png 'Scenario 1: active attributes')
 
 In this scenario, the interaction is started by the device, that is going to actively send a piece of data to the
 platform. When the IoTAgent receives the data, it sends it to the Context Broker through a P1 request. The Context
@@ -319,7 +319,7 @@ updating process, and can occur at any time (they are to completely different pr
 
 ### Scenario 2: lazy attributes
 
-![General ](./img/scenario2.png "Scenario 2: lazy attributes")
+![General ](./img/scenario2.png 'Scenario 2: lazy attributes')
 
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section
@@ -345,7 +345,7 @@ queries (and thus P2 and R2 payloads).
 
 ### Scenario 3: commands
 
-![General ](./img/scenario3.png "Scenario 3: commands")
+![General ](./img/scenario3.png 'Scenario 3: commands')
 
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section
@@ -364,7 +364,7 @@ use three kinds of attributes:
     value stored in the Context Broker. This attribute will contain the result of the command (this result can be
     information in case the command was a "information retrieval" command or the result of an action if it was an
     "actuator command"). Typically, the name of this attribute will be the same of the input attribute, with an
-    additional sufix (`_info`).
+    additional sufix (`_info`) and the type is `commandResult`
 
 -   Another attribute with the same characteristics as the later will be used to indicate whether the command has ended
     successfully or whether an error has been reported.
@@ -835,7 +835,6 @@ The IoT Agent detects the selected attribute is a command, and replies to the Co
 ```json
 [
     {
-
         "type": "device",
         "id": "Dev0001",
         "switch": {
@@ -854,7 +853,6 @@ The Context Broker, forwards the same response to the user, thus replying the or
 ```json
 [
     {
-
         "type": "device",
         "id": "Dev0001",
         "switch": {
@@ -882,11 +880,11 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             "isPattern": "false",
             "id": "Dev0001",
             "switch_info": {
-                "type": "command_info",
+                "type": "commandResult",
                 "value": "Switched successfully!"
             },
             "switch_status": {
-                "type": "command_status",
+                "type": "commandStatus",
                 "value": "OK"
             }
         }
@@ -906,11 +904,11 @@ The Context Broker replies to the IoT Agent with a R1 payload (200 OK):
         "type": "device",
         "id": "Dev0001",
         "switch_info": {
-            "type": "command_info",
+            "type": "commandResult",
             "value": ""
         },
-        "switch_status":  {
-            "type": "command_status",
+        "switch_status": {
+            "type": "commandStatus",
             "value": ""
         }
     }
@@ -936,8 +934,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "attributes": [
-    	"switch_info",
-    	"switch_status"
+        "switch_info",
+        "switch_status"
     ]
 }' "https://<platform-ip>:10027/v2/op/query"
 ```
@@ -947,20 +945,18 @@ The Context Broker replies with all the desired data, in R2 format (200 OK):
 ```json
 [
     {
-
         "type": "device",
         "id": "Dev0001",
         "switch_info": {
-            "type": "command_info",
+            "type": "commandResult",
             "value": "Switched successfully!"
         },
         "switch_status": {
-            "type": "command_status",
+            "type": "commandStatus",
             "value": "OK"
         }
     }
 ]
-
 ```
 
 ### Scenario 3: commands (error)
@@ -978,11 +974,11 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             "isPattern": "false",
             "id": "Dev0001",
             "switch_info":{
-                "type": "command_info",
+                "type": "commandResult",
                 "value": "The switch could not be switched due to the following error: switch blocked"
             },
             "switch_status":{
-                "type": "command_status",
+                "type": "commandStatus",
                 "value": "ERROR"
             }
         }
@@ -999,11 +995,11 @@ In this case, the Context Broker reply with the following response (200 OK):
         "type": "device",
         "id": "Dev0001",
         "switch_info": {
-            "type": "command_info",
+            "type": "commandResult",
             "value": ""
         },
         "switch_status": {
-            "type": "command_status",
+            "type": "commandStatus",
             "value": ""
         }
     }
