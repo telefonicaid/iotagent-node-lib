@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "INFO: startMosquitto..."
+
 if [ "${CONGIF_FROM_ENV}" = true ] ; then
     cp /etc/mosquitto/mosquitto.conf.orig /etc/mosquitto/mosquitto.conf
     echo "log_timestamp true" >> /etc/mosquitto/mosquitto.conf
@@ -17,5 +19,10 @@ if [ "${CONGIF_FROM_ENV}" = true ] ; then
       mosquitto_passwd -b /etc/mosquitto/pwfile ${IOTA_USER} ${IOTA_PASS}
     fi
 fi
+
+echo "INFO: content /etc/mosquitto/mosquitto.conf: "
+cat /etc/mosquitto/mosquitto.conf
+
+echo "INFO: start: startMosquitto -c /etc/mosquitto/mosquitto.conf"
 
 /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf

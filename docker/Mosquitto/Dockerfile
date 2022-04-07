@@ -21,6 +21,8 @@ RUN \
     chmod 755 /bin/startMosquitto.sh && \
     mkdir -p /var/log/mosquitto && \
     chown mosquitto:mosquitto /var/log/mosquitto && \
+    mkdir -p /var/run/mosquitto/ && \
+    chown mosquitto:mosquitto /var/run/mosquitto && \
     echo "INFO: Cleaning unused software..." && \
     apt-get clean && \
     apt-get -y autoremove --purge && \
