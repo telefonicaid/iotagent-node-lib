@@ -28,8 +28,6 @@ RUN \
     # remove the same packages we installed at the beginning to build Orch
     apt-get -y autoremove --purge \
         wget && \ 
-    # Don't need old log files inside docker images
-    rm -f /var/log/*log
 
 
 EXPOSE 1883
