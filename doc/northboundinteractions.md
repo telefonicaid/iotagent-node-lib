@@ -359,15 +359,18 @@ use three kinds of attributes:
 -   An attribute will be used as the _input attribute_ (the attribute registered in the Context Provider). This input
     attribute can be thought of as a command issued to the IoTAgent (from here the name of the scenario) whose value is
     the set of arguments of the command. Only updateContext operations will be used to interact with this attributes.
+    Typically this attribute is of type `command`.
 
 -   Another attribute will be used as the _result attribute_. This attribute will be updated from the IoTAgent, and its
     value stored in the Context Broker. This attribute will contain the result of the command (this result can be
     information in case the command was a "information retrieval" command or the result of an action if it was an
     "actuator command"). Typically, the name of this attribute will be the same of the input attribute, with an
-    additional sufix (`_info`) and the type is `commandResult`
+    additional sufix (`_info`) and the type is `commandResult`.
 
 -   Another attribute with the same characteristics as the later will be used to indicate whether the command has ended
-    successfully or whether an error has been reported.
+    successfully or whether an error has been reported. Typically, the name of this attribute will be the same of the
+    input attribute, with an additional sufix (`_status`) and the type is `commandStatus`. The possible values of this
+    attribute are: `ERROR`, `EXPIRED`, `PENDING`, `DELIVERED`, `UNKNOWN`
 
 In this scenario, the interaction is also initiated by the User. The user starts the scenario by sending an update
 request P1 to the Context Broker, to the input attribute (1). The Context Broker redirects this same payload to the
