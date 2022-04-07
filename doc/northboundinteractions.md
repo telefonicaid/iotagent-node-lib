@@ -364,13 +364,21 @@ use three kinds of attributes:
 -   Another attribute will be used as the _result attribute_. This attribute will be updated from the IoTAgent, and its
     value stored in the Context Broker. This attribute will contain the result of the command (this result can be
     information in case the command was a "information retrieval" command or the result of an action if it was an
-    "actuator command"). Typically, the name of this attribute will be the same of the input attribute, with an
-    additional sufix (`_info`) and the type is `commandResult`.
+    "actuator command"). Initially its value is empty. Typically, the name of this attribute will be the same of the
+    input attribute, with an additional sufix (`_info`) and the type is `commandResult`.
 
 -   Another attribute with the same characteristics as the later will be used to indicate whether the command has ended
     successfully or whether an error has been reported. Typically, the name of this attribute will be the same of the
     input attribute, with an additional sufix (`_status`) and the type is `commandStatus`. The possible values of this
-    attribute are: `ERROR`, `EXPIRED`, `PENDING`, `DELIVERED`, `UNKNOWN`
+    attribute are: `ERROR`, `EXPIRED`, `PENDING`, `DELIVERED`, `UNKNOWN` with the following meanings:
+    -   ERROR: There is a kind of error.
+    -   EXPIRED: This meens that pull command has been expired without be delivered to device according with
+        `pollingExpiration` time defined by config.
+    -   PENDING: In a PUSH command means that command has been sent to device but not device has still not respond. In a
+        PULL command means that command has been stored and device still has no ask for it.
+    -   DELIVERED: The command has been delivered to phisical device.
+    -   OK: The command has been delivered and device has respond.
+    -   UNKNOWN: This is the initial value.
 
 In this scenario, the interaction is also initiated by the User. The user starts the scenario by sending an update
 request P1 to the Context Broker, to the input attribute (1). The Context Broker redirects this same payload to the
