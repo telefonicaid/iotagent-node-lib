@@ -27,7 +27,7 @@ RUN \
     if [ ${CLEAN_DEV_TOOLS} -eq 0 ] ; then exit 0 ; fi && \
     # remove the same packages we installed at the beginning to build Orch
     apt-get -y autoremove --purge \
-        wget && \ 
+        wget
 
 
 EXPOSE 1883
