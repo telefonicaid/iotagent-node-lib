@@ -49,7 +49,7 @@
     "jexl": "2.3.0",
     "jison": "0.4.18",
     "logops": "2.1.2",
-    "moment": "~2.24.0",
+    "moment": "~2.29.2",
     "moment-timezone": "~0.5.25",
     "mongodb": "3.6.12",
     "mongoose": "5.7.14",
