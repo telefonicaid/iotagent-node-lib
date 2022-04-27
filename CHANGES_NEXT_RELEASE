@@ -1,4 +1,4 @@
-Upgrade moment dep from 2.24.0 to 2.29.2 due to security vulnerability
+Upgrade moment dep from 2.24.0 to 2.29.2 due to security vulnerability (CVE-2022-24785)
 Upgrade async dep from 2.6.2 to 2.6.4 due to security vulnerability (CWE-1321)
 Fix: exclude all attrs when explicitAttrs is an empty array (#1235)
 Add: do not process attr expressions when current attr update is of type 'commandStatus' or 'commandResult'
