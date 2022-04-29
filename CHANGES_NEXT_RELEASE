@@ -1,10 +1,1 @@
-Upgrade moment dep from 2.24.0 to 2.29.2 due to security vulnerability (CVE-2022-24785)
-Upgrade async dep from 2.6.2 to 2.6.4 due to security vulnerability (CWE-1321)
-Fix: exclude all attrs when explicitAttrs is an empty array (#1235)
-Add: do not process attr expressions when current attr update is of type 'commandStatus' or 'commandResult'
-Add: add expressions, payloadType and contentType to commands models
-Fix: bad query searching for group using resource instead of type by executeUpdateSideEffects (commands) (#1216)
-Upgrade mongodb dep from 3.6.8 to 3.6.12
-Upgrade mongoose dep from 5.7.7 to 5.7.14
-Fix: search device and group for a command using entity type when provided to proper match (#1211)
-Add: new JEXL transformations for handle upper and low case: touppercase, tolowercase
+
