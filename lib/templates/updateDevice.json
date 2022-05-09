@@ -197,10 +197,6 @@
       "description": "Free form array of data to be appended to the target entity",
       "type": "array"
     },
-    "explicitAttrs": {
-      "description": "Flag to decide update of active attributes only",
-      "type": "Boolean"
-    },
     "ngsiVersion": {
         "description": "NGSI Interface for this device",
         "type": "string"
