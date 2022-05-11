@@ -41,8 +41,7 @@
             "type": "string"
           },
           "explicitAttrs": {
-            "description": "Flag about only provisioned attributes will be processed to Context Broker",
-            "type": "boolean"
+            "description": "Flag about only provisioned attributes will be processed to Context Broker"
           },
           "ngsiVersion": {
             "description": "NGSI Interface for this device",

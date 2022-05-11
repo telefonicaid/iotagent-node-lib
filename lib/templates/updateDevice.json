@@ -198,8 +198,7 @@
       "type": "array"
     },
     "explicitAttrs": {
-      "description": "Flag to decide update of active attributes only",
-      "type": "Boolean"
+      "description": "Flag to decide update of active attributes only"
     },
     "ngsiVersion": {
         "description": "NGSI Interface for this device",
