@@ -1,1 +1,3 @@
-
+- Fix: allow use JEXL expresions in explicitAttrs for conditional propagation of measures (reopen #1179, for Devices)
+- Fix: avoid raising mongo alarm (DEVICE_GROUP_NOT_FOUND) before launch op against CB 
+- Fix: fix issue with unrecognized NGSILD-Tenant and NGSILD-Path headers
