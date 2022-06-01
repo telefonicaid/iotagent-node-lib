@@ -99,11 +99,11 @@ The following table shows the alarms that can be raised in the IoTAgent library.
 log starting with the prefix "Raising [%s]:" (where %s is the alarm name). All the alarms are released by an info log
 with the prefix "Releasing [%s]". These texts appear in the `msg=` field of the generic log record format.
 
-| Alarm name    | Severity     | Description                                              |
-| :------------ | :----------- | :------------------------------------------------------- |
-| MONGO-ALARM_X | **Critical** | Indicates an error in the MongoDB connectivity           |
-| ORION-ALARM   | **Critical** | Indicates a persistent error accesing the Context Broker |
-| IOTAM-ALARM   | **Critical** | Indicates a persistent error accessing the IoTAM         |
+| Alarm name     | Severity     | Description                                              |
+| :------------- | :----------- | :------------------------------------------------------- |
+| MONGO-ALARM_XX | **Critical** | Indicates an error in the MongoDB connectivity           |
+| ORION-ALARM    | **Critical** | Indicates a persistent error accesing the Context Broker |
+| IOTAM-ALARM    | **Critical** | Indicates a persistent error accessing the IoTAM         |
 
 while the 'Severity' criterium is as follows:
 
@@ -111,7 +111,7 @@ while the 'Severity' criterium is as follows:
 -   **Major** - The system has a problem that degrades the service and must be addressed
 -   **Warning** - It is happening something that must be notified
 
-In order to identify the internal flow which origins a mongo alarm, there is a suffix `_X` which identifies from `1` to
+In order to identify the internal flow which origins a mongo alarm, there is a suffix `_XX` which identifies from `01` to
 `11` each flow.
 
 ## Error naming code
