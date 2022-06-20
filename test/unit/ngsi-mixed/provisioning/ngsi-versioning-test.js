@@ -171,7 +171,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
     beforeEach(function (done) {
         mongoUtils.cleanDbs(function () {
             iotAgentLib.activate(iotAgentConfig, function () {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
