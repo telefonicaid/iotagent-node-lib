@@ -2,5 +2,5 @@
 - Fix: allow use JEXL expresions in explicitAttrs for conditional propagation of measures (reopen #1179, for Devices)
 - Fix: avoid raising mongo alarm (DEVICE_GROUP_NOT_FOUND) before launch op against CB 
 - Fix: fix issue with unrecognized NGSILD-Tenant and NGSILD-Path headers
-- Fix: mongodb move to devDependencies (as it is used only in test code)
+- Fix: mongodb dependency moved to devDependencies (as it is used only in test code)
 - Upgrade mongodb dep from 3.6.12 to 4.7.0
