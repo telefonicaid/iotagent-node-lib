@@ -25,7 +25,6 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
-const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const mongo = require('mongodb').MongoClient;
@@ -191,7 +190,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
         logger.setLevel('FATAL');
 
         mongoUtils.cleanDbs(function () {
-            mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+            mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                 iotAgentDb = db;
                 done();
             });
@@ -204,7 +203,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
             iotAgentDb
                 .db()
                 .collection('devices')
-                .deleteOne(function (error) {
+                .deleteOne({}, function (error) {
                     iotAgentDb.close(function (error) {
                         mongoUtils.cleanDbs(done);
                     });
