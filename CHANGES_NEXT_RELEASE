@@ -6,7 +6,7 @@
 - Upgrade mongodb dep from 3.6.12 to 4.7.0
 - Upgrade body-parser dependency from 1.19.0 to 1.20.0
 - Upgrade express dependency from 4.16.4 to 4.18.1
-- Upgrade got dependency from 11.8.2 to 11.8.3
+- Upgrade got dependency from 11.8.2 to 11.8.5
 - Upgrade moment-timezone dependency from 0.5.25 to 0.5.34
 - Upgrade mongoose dependency from 5.7.7 to 6.4.0
 - Upgrade query-string dependency from 6.5.0 to 7.1.1
