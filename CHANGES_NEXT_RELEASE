@@ -23,6 +23,6 @@
 - Upgrade remark-cli dev dependency from 8.0.1 to 10.0.1
 - Upgrade remark-preset-lint-recommended dev dependency from 4.0.1 to 6.1.2
 - Upgrade sinon dev dependency from 9.0.2 to 14.0.0
-- Upgrade textlint dev dependency from 11.7.6 to 12.1.1 
+- Upgrade textlint dev dependency from 11.7.6 to 12.2.1 
 - Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 3.0.2
 - Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
