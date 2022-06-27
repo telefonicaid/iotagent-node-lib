@@ -158,6 +158,18 @@
             "type": "string",
             "pattern": "^([^<>();'=\"]+)*$"
           },
+          "expression": {
+              "description": "Optional expression for command transformation",
+              "type": "string"
+          },
+          "payloadType": {
+              "description": "Payload type",
+              "type": "string"
+          },
+          "contentType": {
+              "description": "Content type",
+              "type": "string"
+          },
           "mqtt": {
               "description": "Mqtt properties",
               "type": "object",
@@ -186,8 +198,7 @@
       "type": "array"
     },
     "explicitAttrs": {
-      "description": "Flag to decide update of active attributes only",
-      "type": "Boolean"
+      "description": "Flag to decide update of active attributes only"
     },
     "ngsiVersion": {
         "description": "NGSI Interface for this device",

@@ -484,10 +484,11 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
         it('should provision the explicitAttrs attribute appropriately', function (done) {
             request(optionsUpdate, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
                 request(optionsGetDevice, function (error, response, body) {
                     should.not.exist(error);
                     response.statusCode.should.equal(200);
-
                     body.explicitAttrs.should.equal(false);
                     done();
                 });

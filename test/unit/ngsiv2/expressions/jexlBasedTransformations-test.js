@@ -319,7 +319,7 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: '[ myattr ]'
+            explicitAttrs: "[ 'myattr' ]"
         },
         GPS6: {
             commands: [],
@@ -345,6 +345,30 @@ const iotAgentConfig = {
                 }
             ],
             explicitAttrs: true
+        },
+        GPS7: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    value: 'blue'
+                }
+            ],
+            active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: '[ ]'
         }
     },
     service: 'smartgondor',
@@ -1180,7 +1204,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .patch(
                     '/v2/entities/gps1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
                     )
                 )
                 .query({ type: 'GPS' })
@@ -1226,6 +1250,43 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             iotAgentLib.update('gps1', 'GPS6', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed by jexl expression with context but with empty explicitAttrs', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'myattr',
+                type: 'String',
+                value: 'location'
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+        });
+
+        it('should calculate them and remove non-explicitAttrs by jexl expression with context from the payload ', function (done) {
+            iotAgentLib.update('gps1', 'GPS7', '', values, function (error) {
+                should.not.exist(error);
                 done();
             });
         });

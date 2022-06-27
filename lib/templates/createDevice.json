@@ -41,8 +41,7 @@
             "type": "string"
           },
           "explicitAttrs": {
-            "description": "Flag about only provisioned attributes will be processed to Context Broker",
-            "type": "boolean"
+            "description": "Flag about only provisioned attributes will be processed to Context Broker"
           },
           "ngsiVersion": {
             "description": "NGSI Interface for this device",
@@ -172,6 +171,18 @@
                   "description": "Value of the command (currently ignored)",
                   "type": "string",
                   "pattern": "^([^<>();'=\"]+)*$"
+                },
+                "expression": {
+                  "description": "Optional expression for command transformation",
+                  "type": "string"
+                },
+                "payloadType": {
+                    "description": "Payload type",
+                    "type": "string"
+                },
+                "contentType": {
+                    "description": "Content type",
+                    "type": "string"
                 },
                 "mqtt": {
                   "description": "Mqtt properties",

@@ -20,7 +20,7 @@ platform (authentication and authorization of the channel) and provide other com
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/docs/roadmap.md) |
+| :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/roadmap.md) |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 
 
@@ -72,7 +72,7 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require("iotagent-node-lib");
+const iotagentLib = require('iotagent-node-lib');
 ```
 
 Information about how to configure the Library can be found at the corresponding section of the
@@ -298,64 +298,13 @@ configuration is independent, and can be checked with the `showConfigCb` and `sh
 Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be
 deleted upon startup.
 
-#### Creating specialized testers
-
-The command-line testing tools make use of the
-[command-node Node.js library](https://github.com/telefonicaid/command-shell-lib) for command-line utils. In order to
-help creating testing tools for IoTAgents of specific protocols, all the commands of the library tester are offered as a
-array that can be directly imported into other Command-Line tools, using the following steps:
-
--   Require the `iotagent-node-lib` command-line module in your command-line tool:
-
-```javascript
-var iotaCommands = require("iotagent-node-lib").commandLine;
-```
-
--   Initialize the command-line utils (the initialization function takes two arguments, that will be explained in detail
-    below:
-
-```javascript
-iotaCommands.init(configCb, configIot);
-```
-
--   Add the IOTA Lib commands to your array of commands
-
-```javascript
-commands = commands.concat(commands, iotaCommands.commands);
-```
-
--   Execute the command-line interpreter as usual:
-
-```javascript
-clUtils.initialize(commandLine.commands, "IoT Agent tester> ");
-```
-
-The command-line module makes use of two configuration objects. Both can be shown and edited in the command-line using
-the provided commands, but a default value must be present.
-
-The Context Broker configuration object holds all the information about the Context Broker where the IoT Agent to be
-tested is connected. It MUST contain the following attributes:
-
--   **host**: host where the Context Broker instance is located.
--   **port**: port where the Context Broker instance is listening.
--   **service**: service that will be used in all the NGSI operations.
--   **subservice**: service that will be used in all the NGSI operations.
-
-The IoT Agent configuration object holds information about the IoT Agent that is being tested. It MUST contain the
-following attributes:
-
--   **host**: host where the IoT Agent instance is located.
--   **port**: port where the IoT Agent instance is listening.
--   **service**: service that will be used to group devices and device information.
--   **subservice**: subservice that will be used to group devices and device information.
-
 ---
 
 ## Licence
 
 The IoT Agent Node Library is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
-© 2019 Telefonica Investigación y Desarrollo, S.A.U
+© 2022 Telefonica Investigación y Desarrollo, S.A.U
 
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
@@ -364,8 +313,8 @@ related with the fact that different people assign different interpretations on 
 used in these licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL
 licenses (even without _modifying_ it).
 
-For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license
-wish to make a clarifying public statement as follows:
+For the avoidance of doubt, the owners of this software licensed under an AGPL-3.0 license wish to make a clarifying
+public statement as follows:
 
 > Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
 > incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.

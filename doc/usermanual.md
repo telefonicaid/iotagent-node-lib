@@ -209,8 +209,8 @@ function setCommandResult(entityName, resource, apikey, commandName, commandResu
 ###### Description
 
 Update the result of a command in the Context Broker. The result of the command has two components: the result of the
-command itself will be represented with the suffix `_result` in the entity while the status is updated in the attribute
-with the `_info` suffix.
+command itself will be represented with the suffix `_info` in the entity while the status is updated in the attribute
+with the `_status` suffix.
 
 ###### Params
 
