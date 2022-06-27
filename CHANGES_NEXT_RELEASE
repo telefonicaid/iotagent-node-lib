@@ -4,25 +4,25 @@
 - Fix: fix issue with unrecognized NGSILD-Tenant and NGSILD-Path headers
 - Fix: mongodb dependency moved to devDependencies (as it is used only in test code)
 - Upgrade mongodb dep from 3.6.12 to 4.7.0
-- Upgrade body-parser dependency from 1.19.0 to 1.19.1
-- Upgrade express dependency from 4.16.4 to 4.17.2
+- Upgrade body-parser dependency from 1.19.0 to 1.20.0
+- Upgrade express dependency from 4.16.4 to 4.18.1
 - Upgrade got dependency from 11.8.2 to 11.8.3
 - Upgrade moment-timezone dependency from 0.5.25 to 0.5.34
-- Upgrade mongoose dependency from 5.7.7 to 5.13.14
+- Upgrade mongoose dependency from 5.7.7 to 6.4.0
 - Upgrade query-string dependency from 6.5.0 to 7.1.1
-- Upgrade underscore dependency from 1.12.1 to 1.13.2
+- Upgrade underscore dependency from 1.12.1 to 1.13.4
 - Upgrade uuid dependency from 3.3.2 to 8.3.2
 - Upgrade coveralls dev dependency from 3.1.0 to 3.1.1
-- Upgrade eslint dev dependency from 7.5.0 to 8.8.0
-- Upgrade eslint-config-tamia dev dependency from 7.2.5 to 7.2.7
+- Upgrade eslint dev dependency from 7.5.0 to 8.18.0
+- Upgrade eslint-config-tamia dev dependency from 7.2.5 to 8.0.0
 - Upgrade eslint-plugin-prettier dev dependency from 3.1.4 to 4.0.0
-- Upgrade lint-staged dev dependency from 10.2.11 to 12.3.3
+- Upgrade lint-staged dev dependency from 10.2.11 to 13.0.3
 - Upgrade prettier dev dependency from 2.0.5 to 2.5.1
-- Upgrade mocha dev dependency from 8.0.1 to 9.2.0
-- Upgrade nock dev dependency from 13.0.3 to 13.2.4
-- Upgrade remark-cli dev dependency from 8.0.1 to 10.0.1
+- Upgrade mocha dev dependency from 8.0.1 to 10.0.0
+- Upgrade nock dev dependency from 13.0.3 to 13.2.7
+- Upgrade remark-cli dev dependency from 8.0.1 to 11.0.0
 - Upgrade remark-preset-lint-recommended dev dependency from 4.0.1 to 6.1.2
-- Upgrade sinon dev dependency from 9.0.2 to 13.0.1
-- Upgrade textlint dev dependency from 11.7.6 to 12.1.0 
-- Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 2.1.5
+- Upgrade sinon dev dependency from 9.0.2 to 14.0.0
+- Upgrade textlint dev dependency from 11.7.6 to 12.1.1 
+- Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 3.0.2
 - Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
