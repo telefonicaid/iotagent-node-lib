@@ -2,7 +2,7 @@
   "actionType": "update",
   "entities": [
     {
-      "id": "ws4",
+      "id": "ws9b",
       "type": "WeatherStation",
       "pressure": {
         "type": "Hgmm",
@@ -21,7 +21,7 @@
         }
       },
       "type": "Higrometer",
-      "id": "ws4"
+      "id": "ws9b"
     }
   ]
 }

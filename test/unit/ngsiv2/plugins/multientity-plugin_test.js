@@ -218,6 +218,7 @@ const iotAgentConfig = {
         WeatherStation9: {
             commands: [],
             type: 'WeatherStation',
+            name: 'ws9b',
             lazy: [],
             active: [
                 {
@@ -635,7 +636,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
         });
 
         it('should send two context elements, one for each entity', function (done) {
-            iotAgentLib.update('ws4', 'WeatherStation9', '', values, function (error) {
+            iotAgentLib.update('ws9b', 'WeatherStation9', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
