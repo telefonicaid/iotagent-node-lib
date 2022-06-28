@@ -1,0 +1,27 @@
+{
+  "actionType": "update",
+  "entities": [
+    {
+      "id": "ws4",
+      "type": "WeatherStation",
+      "pressure": {
+        "type": "Hgmm",
+        "value": "52"
+      }
+    },
+    {
+      "humidity": {
+        "type": "Percentage",
+        "value": "12",
+        "metadata": {
+          "unitCode": {
+            "type": "Text",
+            "value": "Hgmm"
+          }
+        }
+      },
+      "type": "Higrometer",
+      "id": "ws4"
+    }
+  ]
+}
