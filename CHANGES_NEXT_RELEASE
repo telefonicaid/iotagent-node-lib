@@ -1,3 +1,4 @@
+- Fix: return error to client if expresson or multientity plugins gets error
 - Fix: multientity just with entity_type but not entity_name, then use device.name (#1220)
 - Add: identify each flow of mongo alarms about device group 
 - Fix: allow use JEXL expresions in explicitAttrs for conditional propagation of measures (reopen #1179, for Devices)
