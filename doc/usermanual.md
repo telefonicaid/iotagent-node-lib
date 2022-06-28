@@ -258,7 +258,7 @@ function setDataUpdateHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
-with the following parameters: (id, type, service, subservice, attributes, callback). The handler is in charge of
+with the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler is in charge of
 updating the corresponding values in the devices with the appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
@@ -296,7 +296,7 @@ function setDataQueryHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives, with
-the following parameters: (id, type, service, subservice, attributes, callback). The handler must retrieve all the
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve all the
 corresponding information from the devices and return a NGSI entity with the requested values.
 
 The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:

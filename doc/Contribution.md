@@ -33,7 +33,7 @@ contributions are done using a pull request (PR). The detailed "protocol" used i
 
 * Direct commits to master branch (even single-line modifications) are not allowed. Every modification has to come as a PR
 * In case the PR is implementing/fixing a numbered issue, the issue number has to be referenced in the body of the PR at creation time
-* Anybody is welcome to provide comments to the PR (either direct comments or using the review feature offered by Github)
+* Anybody is welcome to provide comments to the PR (either direct comments or using the review feature offered by GitHub)
 * Use *code line comments* instead of *general comments*, for traceability reasons (see comments lifecycle below)
 * Comments lifecycle
   * Comment is created, initiating a *comment thread*
@@ -142,7 +142,7 @@ point to each of the released versions of the project, they are permanent and th
 
 ## Change log
 
-The project contains a version changelog, called CHANGES_NEXT_RELEASE, that can be found in the root of the project.
+The project contains a version change log, called CHANGES_NEXT_RELEASE, that can be found in the root of the project.
 Whenever a new feature or bug fix is going to be merged with `master`, a new entry should be added to this changelog.
 The new entry should contain the reference number of the issue it is solving (if any).
 
@@ -159,7 +159,7 @@ The process of making a release consists of the following steps:
    new target version (without any sufix), and PR into `master`. Also, in this task, the contents of the Change log are
    copied to the RPM spec.
 2. Create a tag from the last version of `master` named with the version number and push it to the repository.
-3. Create the release in Github, from the created tag. In the description, add the contents of the Change log.
+3. Create the release in GitHub, from the created tag. In the description, add the contents of the Change log.
 4. Create a release branch from the last version of `master` named with the version number.
 5. Create a new task for preparing the next release, adding the sufix `-next` to the current version number (to signal
    this as the development version), and flush the contents of the CHANGES_NEXT_RELEASE file.
