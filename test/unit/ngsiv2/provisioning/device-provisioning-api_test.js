@@ -5,7 +5,7 @@
  *
  * fiware-iotagent-lib is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the License,
+ * published by the ree Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
  * fiware-iotagent-lib is distributed in the hope that it will be useful,
@@ -697,6 +697,71 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
                             results.devices[0].staticAttributes.length.should.equal(2);
+                            done();
+                        });
+                    });
+                });
+            });
+        }
+    );
+
+    describe(
+        'When a device provisioning request arrives to the IoTA' + ' and entityNameExp was configured at group level',
+        function () {
+            const options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+                method: 'POST',
+                json: utils.readExampleFile(
+                    './test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice4.json'
+                ),
+                headers: {
+                    'fiware-service': 'smartgondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+            const groupCreation = {
+                url: 'http://localhost:4041/iot/services',
+                method: 'POST',
+                json: {
+                    services: [
+                        {
+                            resource: '/Thing',
+                            apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                            /*jshint camelcase: false */
+                            entity_type: 'MicroLights',
+                            entityNameExp: 'EntityNameByExp',
+                            cbroker: 'http://192.168.1.1:1026'
+                        }
+                    ]
+                },
+                headers: {
+                    'fiware-service': 'smartgondor',
+                    'fiware-servicepath': '/gardens'
+                }
+            };
+
+            beforeEach(function (done) {
+                nock.cleanAll();
+                contextBrokerMock = nock('http://192.168.1.1:1026')
+                    .matchHeader('fiware-service', 'smartgondor')
+                    .matchHeader('fiware-servicepath', '/gardens')
+                    .post(
+                        '/v2/entities?options=upsert',
+                        utils.readExampleFile(
+                            './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice4.json'
+                        )
+                    )
+                    .reply(204);
+
+                done();
+            });
+
+            it('should store the entity name defined by expression', function (done) {
+                request(groupCreation, function (error, response, body) {
+                    request(options, function (error, response, body) {
+                        iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
+                            should.exist(results.devices[0].name);
+                            results.devices[0].name.should.equal('EntityNameByExp');
                             done();
                         });
                     });
