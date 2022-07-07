@@ -76,7 +76,7 @@ The table below shows the information held in the service group provisioning res
 correspondence between the API resource fields and the same fields in the database model.
 
 | Payload Field                  | DB Field                       | Definition                                                                                                                                                                                                                                                                |
-| ------------------------------ | ------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ------------------------------ | ------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
 | `service`                      | `service`                      | Service of the devices of this type                                                                                                                                                                                                                                       |
 | `subservice`                   | `subservice`                   | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
 | `resource`                     | `resource`                     | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
@@ -92,6 +92,7 @@ correspondence between the API resource fields and the same fields in the databa
 | `internal_attributes`          | `internalAttributes`           | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
 | `expressionLanguage`           | `expresionLanguage`            | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, `legacy` is used as default value.                                                                                      |
 | `explicitAttrs`                | `explicitAttrs`                | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
+| `entityNameExp`                | `entityNameExp`                | optional field to allow use expressions to define entity name, instead default id + type                                                                                                                                                                                  |
 | `ngsiVersion`                  | `ngsiVersion`                  | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
 | `defaultEntityNameConjunction` | `defaultEntityNameConjunction` | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
 | `autoprovision`                | `autoprovision`                | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
@@ -247,8 +248,8 @@ the API resource fields and the same fields in the database model.
 
 #### Attribute lists
 
-In the group/device model there are three list of attributes that can be declared: attributes, lazy and commands. All of them
-have the same syntax, an object containing the following attributes:
+In the group/device model there are three list of attributes that can be declared: attributes, lazy and commands. All of
+them have the same syntax, an object containing the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
 -   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
@@ -273,9 +274,10 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **expression** indicates that the value of the target command will not be the plain value or the command, but an
     expression based on a combination of the returned values. See the
     [Expression Language definition](expressionLanguage.md) for details
--   **payloadType**: indicates how command payload will be transformed before be sent to device. Please have a look to particular 
-    IOTAs documentation for allowed values of this field in each case.
--   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of transports)
+-   **payloadType**: indicates how command payload will be transformed before be sent to device. Please have a look to
+    particular IOTAs documentation for allowed values of this field in each case.
+-   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
+    transports)
 
 See the transformation plugins Section for more details.
 
