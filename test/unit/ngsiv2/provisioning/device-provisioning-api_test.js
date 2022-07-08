@@ -705,6 +705,66 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         }
     );
 
+    describe('When a device provisioning request arrives to the IoTA and entityNameExp was configured at group level', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice4.json'),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const groupCreation = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/Thing',
+                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                        /*jshint camelcase: false */
+                        entity_type: 'MicroLights',
+                        entityNameExp: 'EntityNameByExp',
+                        cbroker: 'http://192.168.1.1:1026'
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice4.json'
+                    )
+                )
+                .reply(204);
+
+            done();
+        });
+
+        it('should store the entity name defined by expression', function (done) {
+            request(groupCreation, function (error, response, body) {
+                request(options, function (error, response, body) {
+                    iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
+                        should.exist(results.devices[0].name);
+                        results.devices[0].name.should.equal('EntityNameByExp');
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
     describe(
         'When a device provisioning request with static attributes arrives to the IoTA' +
             ' and same static attribute is also configured at group level',
