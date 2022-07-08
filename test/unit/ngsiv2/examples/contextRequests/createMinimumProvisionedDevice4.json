@@ -1,0 +1,8 @@
+{
+  "id": "EntityNameByExp",    
+  "type": "MicroLights",
+  "attr_name": {
+    "type": "string",
+    "value": null
+  }
+}

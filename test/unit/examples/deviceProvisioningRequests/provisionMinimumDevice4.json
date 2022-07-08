@@ -1,0 +1,14 @@
+{
+  "devices": [
+    {
+      "device_id": "MicroLight1",
+      "protocol": "GENERIC_PROTO",
+      "attributes": [
+        {
+          "name": "attr_name",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
