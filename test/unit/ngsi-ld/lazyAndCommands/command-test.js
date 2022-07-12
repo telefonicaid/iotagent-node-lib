@@ -499,7 +499,6 @@ describe('NGSI-LD - Command functionalities', function () {
             let handlerCalled = 0;
 
             iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
-                console.error(attributes);
                 id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
