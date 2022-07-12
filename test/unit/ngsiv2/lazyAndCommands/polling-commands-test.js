@@ -36,7 +36,7 @@ const mongoUtils = require('../../mongodb/mongoDBUtils');
 let contextBrokerMock;
 let statusAttributeMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -135,7 +135,7 @@ const device3 = {
     polling: true
 };
 const device4 = {
-    id: 'r2d2',
+    id: 'r2d4',
     type: 'RobotExp',
     service: 'smartgondor',
     subservice: 'gardens',
@@ -417,7 +417,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post('/v2/registrations')
-            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584m' });
 
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
@@ -429,7 +429,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
     });
 
     afterEach(function (done) {
-        delete device3.registrationId;
+        delete device4.registrationId;
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(function () {
                 mongoUtils.cleanDbs(function () {
@@ -450,7 +450,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                 actionType: 'update',
                 entities: [
                     {
-                        id: 'Robot:r2d2',
+                        id: 'RobotExp:r2d4',
                         type: 'RobotExp',
                         position: {
                             type: 'Array',
@@ -470,7 +470,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .patch(
-                    '/v2/entities/Robot:r2d2/attrs?type=RobotExp',
+                    '/v2/entities/RobotExp:r2d4/attrs?type=RobotExp',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -521,7 +521,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
             });
 
             request(options, function (error, response, body) {
-                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d2', function (error, listCommands) {
+                iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d4', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
                     listCommands.commands[0].name.should.equal('position');
