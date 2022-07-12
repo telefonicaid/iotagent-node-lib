@@ -29,4 +29,5 @@
 - Upgrade textlint dev dependency from 11.7.6 to 12.2.1 
 - Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 3.0.2
 - Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
+- Add: Support for NGSI-LD LanguageProperty
 - Add: NGSI-LD PUT support
