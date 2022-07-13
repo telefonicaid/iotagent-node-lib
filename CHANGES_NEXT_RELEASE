@@ -1,4 +1,5 @@
 - Add: add id type service and subservice to context expression of multientity plugin
+- Add: set jexl as default parser for generic plugin
 - Fix: apply expressions to pull commands (#1263)
 - Add: entityNameExp to Group Model to allow define device.name using expressions (#1222, #1145)
 - Fix: return error to client if expression or multientity plugins get error
@@ -32,3 +33,4 @@
 - Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 3.0.2
 - Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
 - Add: NGSI-LD PUT support
+- Add: NGSI-LD support for multiple attribute updates.
