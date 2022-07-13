@@ -197,7 +197,7 @@ e.g.:
 When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
 following:
 
--   `Property`, `Relationship`, `Geoproperty`
+-   `Property`, `Relationship`, `GeoProperty`, `LanguageProperty`
 -   Native JSON types (e.g. `String`, `Boolean`, `Float` , `Integer` `Number`)
 -   Temporal Properties (e.g. `Datetime`, `Date` , `Time`)
 -   GeoJSON types (e.g `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`)
