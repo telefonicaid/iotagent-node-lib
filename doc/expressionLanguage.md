@@ -344,7 +344,7 @@ Will now generate the following NGSI v2 payload:
 
 ## Available keys for all Expressions
 
-Not just for measure transfomration (including multientity) are expressions availables, also for:
+Apart from measurement transformations (including multientity cases), expressions can be used in the following cases:
 
 -   Default EntityName defined at group level and used for provision and autoprovision of devices
 -   Commands (push and pull)
