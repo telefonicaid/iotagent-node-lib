@@ -102,7 +102,7 @@ const iotAgentConfig = {
         RobotExp: {
             commands: [
                 {
-                    name: 'position',
+                    name: 'positionExp',
                     type: 'Array',
                     expression: '[22]'
                 }
@@ -425,6 +425,8 @@ describe('NGSI-v2 - Polling commands expressions', function () {
             .post('/v2/entities?options=upsert')
             .reply(204);
 
+        iotAgentConfig.pollingExpiration = 0;
+        iotAgentConfig.pollingDaemonFrequency = 0;
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
@@ -452,7 +454,7 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                     {
                         id: 'RobotExp:r2d4',
                         type: 'RobotExp',
-                        position: {
+                        positionExp: {
                             type: 'Array',
                             value: '[28, -104, 23]'
                         }
@@ -471,7 +473,9 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .patch(
                     '/v2/entities/RobotExp:r2d4/attrs?type=RobotExp',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus2.json'
+                    )
                 )
                 .reply(204);
 
@@ -490,9 +494,9 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                     type,
                     attributes: [
                         {
-                            name: 'position',
+                            name: 'positionExp',
                             type: 'Array',
-                            value: '[22]'
+                            value: '[28, -104, 23]'
                         }
                     ]
                 });
@@ -524,9 +528,9 @@ describe('NGSI-v2 - Polling commands expressions', function () {
                 iotAgentLib.commandQueue('smartgondor', 'gardens', 'r2d4', function (error, listCommands) {
                     should.not.exist(error);
                     listCommands.count.should.equal(1);
-                    listCommands.commands[0].name.should.equal('position');
+                    listCommands.commands[0].name.should.equal('positionExp');
                     listCommands.commands[0].type.should.equal('Array');
-                    listCommands.commands[0].value.should.equal('[22]');
+                    listCommands.commands[0].value[0].should.equal(22);
                     done();
                 });
             });
