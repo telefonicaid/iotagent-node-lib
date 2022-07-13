@@ -10,7 +10,8 @@
                 }
             ],
             "properties": [
-                "position"
+                "position",
+                "orientation"
             ]
         }
     ],
