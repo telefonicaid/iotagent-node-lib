@@ -352,7 +352,7 @@ Not just for measure transfomration (including multientity) are expressions avai
 
 In all of them the following device data is available to all expressions
 
--   `id`: device id
+-   `id`: device ID
 -   `type`: device type
 -   `service`: device service
 -   `subservice`: device subservice
