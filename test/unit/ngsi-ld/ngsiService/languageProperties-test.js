@@ -70,8 +70,7 @@ describe('NGSI-LD - LanguageProperty test', function () {
     });
 
     describe(
-        'When the IoT Agent receives new exonym from a device.' +
-            'name with LanguageProperty type and a JSON object',
+        'When the IoT Agent receives new exonym from a device name with LanguageProperty type and a JSON object',
         function () {
             const values = [
                 {
