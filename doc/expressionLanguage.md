@@ -342,6 +342,21 @@ Will now generate the following NGSI v2 payload:
 }
 ```
 
+## Available keys for all Expressions
+
+Apart from measurement transformations (including multientity cases), expressions can be used in the following cases:
+
+-   Default EntityName defined at group level and used for provision and autoprovision of devices
+-   Commands (push and pull)
+-   Endpoint of push http commands
+
+In all of them the following device data is available to all expressions
+
+-   `id`: device ID
+-   `type`: device type
+-   `service`: device service
+-   `subservice`: device subservice
+
 ## JEXL Based Transformations
 
 The recommended expression language for the IoTAgent Library is [JEXL](https://github.com/TomFrost/jexl). To use JEXL,
@@ -474,10 +489,9 @@ Current common transformation set:
 | slice: (arr, init, end)          | `arr.slice(init,end);`                                                                                                  |
 | addset: (arr, x)                 | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
 | removeset: (arr, x)              | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
-| touppercase: (val)               | `String(val).toUpperCase()`                                                                                            |
-| tolowercase: (val)               | `String(val).toLowerCase()`                                                                                            |
+| touppercase: (val)               | `String(val).toUpperCase()`                                                                                             |
+| tolowercase: (val)               | `String(val).toLowerCase()`                                                                                             |
 
-  
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
 

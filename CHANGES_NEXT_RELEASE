@@ -1,3 +1,4 @@
+- Add: add id, type, service and subservice to context expression of multientity plugin
 - Add: set jexl as default parser for generic plugin
 - Fix: apply expressions to pull commands (#1263)
 - Add: entityNameExp to Group Model to allow define device.name using expressions (#1222, #1145)
