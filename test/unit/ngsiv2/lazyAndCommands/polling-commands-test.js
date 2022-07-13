@@ -36,7 +36,7 @@ const mongoUtils = require('../../mongodb/mongoDBUtils');
 let contextBrokerMock;
 let statusAttributeMock;
 const iotAgentConfig = {
-    logLevel: 'DEBUG',
+    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -409,7 +409,7 @@ describe('NGSI-v2 - Polling commands', function () {
 
 describe('NGSI-v2 - Polling commands expressions', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         nock.cleanAll();
 
