@@ -1,4 +1,5 @@
-- Add: add id type service and subservice to context expression of multientity plugin 
+- Add: add id type service and subservice to context expression of multientity plugin
+- Fix: apply expressions to pull commands (#1263)
 - Add: entityNameExp to Group Model to allow define device.name using expressions (#1222, #1145)
 - Fix: return error to client if expression or multientity plugins get error
 - Fix: multientity just with entity_type but not entity_name, then use device.name (#1220)
