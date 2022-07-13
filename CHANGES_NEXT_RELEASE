@@ -1,3 +1,4 @@
+- Add: set jexl as default parser for generic plugin
 - Fix: apply expressions to pull commands (#1263)
 - Add: entityNameExp to Group Model to allow define device.name using expressions (#1222, #1145)
 - Fix: return error to client if expression or multientity plugins get error
