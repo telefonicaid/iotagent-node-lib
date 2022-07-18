@@ -113,7 +113,7 @@ response to the caller, transparently.
 
 #### Commands
 
-**IMPORTANT NOTE:** at the present moment, commands (both push and poll) are supported only in the case of explictly
+**IMPORTANT NOTE:** at the present moment, commands (both push and poll) are supported only in the case of explicitly
 provisioned agents. For autoprovisioned agents commands are not currently supported, although
 [an issue](https://github.com/telefonicaid/iot-agent-node-lib/issues/572) has been created about this functionality.
 
