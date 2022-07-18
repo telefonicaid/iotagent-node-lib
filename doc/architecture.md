@@ -119,7 +119,8 @@ provisioned agents. For autoprovisioned agents commands are not currently suppor
 
 Commands are modelled as updates over a lazy attribute. As in the case of the lazy attributes, updates over a command
 will be forwarded by the Context Broker to the IoT Agent, that will in turn interact with the device to perform the
-requested action. Parameters for the command will be passed inside the command `value` along with any `metadata`, and in the case of an NGSI-LD command a `datasetId` if provided.
+requested action. Parameters for the command will be passed inside the command `value` along with any `metadata`, and in
+the case of an NGSI-LD command a `datasetId` if provided.
 
 There are two differences with the lazy attributes:
 
@@ -166,50 +167,49 @@ The library does not deal with protocol transformation or South Bound communicat
 
 ##### NGSI-LD `datasetId` support
 
-Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential commands for a single attribute can be sent as an NGSI-LD PATCH payload as follows:
-
+Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential
+commands for a single attribute can be sent as an NGSI-LD PATCH payload as follows:
 
 ```json
 {
-  "lampColor": [
-    {
-      "type": "Property",
-      "value": { "color": "green", "duration": "55 secs"},
-      "datasetId": "urn:ngsi-ld:Sequence:do-this"
-    },
-    {
-      "type": "Property",
-      "value": {"color": "red", "duration": "10 secs"},
-      "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
-    }
-  ]
+    "lampColor": [
+        {
+            "type": "Property",
+            "value": { "color": "green", "duration": "55 secs" },
+            "datasetId": "urn:ngsi-ld:Sequence:do-this"
+        },
+        {
+            "type": "Property",
+            "value": { "color": "red", "duration": "10 secs" },
+            "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
+        }
+    ]
 }
 ```
 
-This results in the following sequential array of attribute updates to be sent to the `UpdateHandler` of the IoT Agent itself:
+This results in the following sequential array of attribute updates to be sent to the `UpdateHandler` of the IoT Agent
+itself:
 
 ```json
 [
-  {
-    "name": "lampColor",
-    "type": "Property",
-    "datasetId": "urn:ngsi-ld:Sequence:do-this",
-    "metadata": {},
-    "value": { "color": "green", "duration": "55 secs"}
-  },
-  {
-    "name": "lampColor",
-    "type": "Property",
-    "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
-    "metadata": {},
-    "value": {"color": "red", "duration": "10 secs"}
-  }
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:do-this",
+        "metadata": {},
+        "value": { "color": "green", "duration": "55 secs" }
+    },
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
+        "metadata": {},
+        "value": { "color": "red", "duration": "10 secs" }
+    }
 ]
 ```
 
-
-The equivalent for NGSI-v2 is not required since `datasetId`  syntax is not supported by NGSI-v2.
-
+The equivalent for NGSI-v2 is not required since `datasetId` syntax is not supported by NGSI-v2.
 
 #### Active attributes
 
@@ -261,9 +261,9 @@ device to a command update to the device.
 As part of the device to entity mapping process the IoT Agent creates and updates automatically a special timestamp.
 This timestamp is represented as two different properties of the mapped entity::
 
--   With NGSI-v2, an attribute metadata named `TimeInstant` (per dynamic attribute mapped, which captures as an
-    ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
-    Standard `observedAt` property-of-a-property is used instead.
+-   With NGSI-v2, an attribute metadata named `TimeInstant` (per dynamic attribute mapped, which captures as an ISO8601
+    timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
+    `observedAt` property-of-a-property is used instead.
 
 -   For NGSI-v2 only, an additional attribute `TimeInstant` is added to the entity which captures as an ISO8601
     timestamp when the last measurement received from the device was observed.
