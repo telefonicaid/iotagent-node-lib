@@ -264,6 +264,116 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
         });
     });
 
+    describe('When a notification with metadata arrives for a bidirectional attribute', function () {
+        const notificationOptions = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+            method: 'POST',
+            json: utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalNotificationWithMetadata.json'
+            ),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        let executedHandler = false;
+
+        beforeEach(function () {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/subscriptions/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(204);
+        });
+
+        afterEach(function () {
+            iotAgentLib.setNotificationHandler();
+        });
+
+        it('should execute the original handler', function (done) {
+            function mockedHandler(device, notification, callback) {
+                
+                notification[0].name.should.equal('location');
+                notification[0].value.should.equal('12.4, -9.6');
+                notification[0].metadata.qos.value.should.equal(1);
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    executedHandler.should.equal(true);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return a 200 OK', function (done) {
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    response.statusCode.should.equal(200);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return the transformed values', function (done) {
+            let transformedHandler = false;
+
+            function mockedHandler(device, values, callback) {
+                let latitudeFound = false;
+                let longitudeFound = false;
+
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                        latitudeFound = true;
+                    }
+
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                        longitudeFound = true;
+                    }
+                }
+
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    contextBrokerMock.done();
+                    transformedHandler.should.equal(true);
+                    done();
+                });
+            });
+        });
+    });
+
+
     describe('When a new Group provisioning request arrives with bidirectional attributes', function () {
         const provisionGroup = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
