@@ -1,2 +1,3 @@
+FIX: make avaliable measures in JEXL context for ExplicitAttrs (#1269)
+Add: FEATURE #1267 Support of  Object_id as part of ExplicitAttrs list.
 
-FEATURE #1267 Support of  Object_id as part of ExplicitAttrs list.
