@@ -1,1 +1,12 @@
-{"myattr":{"type": "String","value": "location"}}
+{
+    "mylocation": {
+        "type": "geo:json",
+        "value": {
+            "coordinates": [
+                13,
+                52
+            ],
+            "type": "Point"
+        }
+    }
+}
