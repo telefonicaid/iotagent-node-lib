@@ -271,7 +271,7 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: '[ "location" ]'
+            explicitAttrs: ' location&&price ? [ "location", "price" ] : location ? [ "location" ] : []'
         },
         GPS4: {
             commands: [],
@@ -314,12 +314,12 @@ const iotAgentConfig = {
                     type: 'number'
                 },
                 {
-                    name: 'location',
-                    type: 'geo:json',
-                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                    object_id: 'theLocation',
+                    name: 'mylocation',
+                    type: 'geo:json'
                 }
             ],
-            explicitAttrs: "[ 'myattr' ]"
+            explicitAttrs: "theLocation ? ['mylocation'] :  []"
         },
         GPS6: {
             commands: [],
@@ -1184,9 +1184,9 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 value: 13
             },
             {
-                name: 'myattr',
-                type: 'String',
-                value: 'location'
+                name: 'theLocation',
+                type: 'geo:json',
+                value: { coordinates: [13, 52], type: 'Point' }
             },
             {
                 name: 'TimeInstant',
