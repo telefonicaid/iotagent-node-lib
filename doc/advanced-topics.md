@@ -305,7 +305,7 @@ stored in the Context Broker by adding a new attribute to the entity with the sa
 element. By adding the field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the
 measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
 the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
-precedence. Additionally `explicitAttrs` can be used to define which meassures (identified by their attribute names, not 
+precedence. Additionally `explicitAttrs` can be used to define which meassures (identified by their attribute names, not
 by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
 
 The different possibilities are summarized below:
@@ -332,10 +332,21 @@ Case 3:
 "explicitAttrs": "['attr1','atrr2']"
 ```
 
-just measures defined in the array (identified by their attribute names, not by their object_id) will be will be 
-propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a string that looks likes a JSON).
+just NGSI attributes defined in the array (identified by their attribute names, not by their object_id, plus
+conditionally TimeInstant) will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is
+not a JSON but a JEXL Array that looks likes a JSON).
 
 Case 4:
+
+```
+"explicitAttrs": "['attr1','atrr2',{object_id:'active_id'}]"
+```
+
+just NGSI attributes defined in the array (identified by their attribute names and/or by their object_id) will be
+propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
+that looks likes a JSON). This is necessary when same attribute names are used within multiple entities.
+
+Case 5:
 
 ```
 "explicitAtttr": "<JEXL expression resulting in bool or array>"
@@ -346,8 +357,8 @@ depending on the JEXL expression evaluation:
 -   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
 -   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
     propagated to NGSI interface (as in case 2)
--   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their object_id)
-    will be will be propagated to NGSI interface (as in case 3)
+-   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
+    object_id) will be will be propagated to NGSI interface (as in case 3)
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 

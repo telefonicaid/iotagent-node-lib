@@ -320,6 +320,8 @@ const iotAgentConfig = {
                 }
             ],
             explicitAttrs: "theLocation ? ['mylocation'] :  []"
+            // #1267 this is not working:
+            //explicitAttrs: "theLocation ? [{object_id: 'theLocation'}] :  []"
         },
         GPS6: {
             commands: [],
