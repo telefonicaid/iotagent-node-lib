@@ -319,7 +319,7 @@ const iotAgentConfig = {
                     type: 'geo:json'
                 }
             ],
-            explicitAttrs: "theLocation ? [{'mylocation'] :  []"
+            explicitAttrs: "theLocation ? ['mylocation'] :  []"
             // #1267 this is not working:
             //explicitAttrs: "theLocation ? [{object_id: 'theLocation'}] :  []"
         },
