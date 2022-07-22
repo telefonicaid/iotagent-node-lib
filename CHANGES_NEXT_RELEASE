@@ -1,3 +1,2 @@
 - Protect explcitAttrs evaluation of a bad formed expression
-FIX: make avaliable measures in JEXT context for ExplicitAttrs (#1269)
 
