@@ -1,2 +1,2 @@
-- Protect explcitAttrs evaluation of a bad formed expression
+- Fix: protect explicitAttrs evaluation of a bad formed expression (#1175)
 
