@@ -260,7 +260,7 @@ function setDataUpdateHandler(newHandler)
 Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
 with the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). Every object within of
 the `attributes` array contains `name`, `type` and `value` attributes, and may also include additional attributes for
-`metadata` and `datasetId` The handler is in charge of updating the corresponding values in the devices with the
+`metadata` and `datasetId`. The handler is in charge of updating the corresponding values in the devices with the
 appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
