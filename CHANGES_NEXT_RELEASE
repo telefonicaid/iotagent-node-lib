@@ -1,2 +1,2 @@
-- Fix: Ensure GET /ngsi-ld/v1/entities/<entity-id> returns a valid response (#1276)
-
+- Fix: protect explicitAttrs evaluation of a bad formed expression (#1175)
+- Fix: ensure GET /ngsi-ld/v1/entities/<entity-id> returns a valid response (#1276)
