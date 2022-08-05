@@ -615,4 +615,42 @@ describe('NGSI-LD - Command functionalities', function () {
             });
         });
     });
+
+    describe('When a query arrives to the IoT Agent with registered commands but no lazy attributes', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should return the a valid empty response', function (done) {
+            iotAgentLib.setDataQueryHandler(function (id, type, service, subservice, attributes, callback) {
+                should.exist(attributes);
+                attributes.length.should.equal(0);
+                callback(null, {
+                        id: 'urn:ngsi-ld:Robot:r2d2',
+                        type: 'Robot'
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+    });
 });
