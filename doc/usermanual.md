@@ -312,9 +312,9 @@ callback(null, {
         {
             name: "lumniscence",
             type: "Lumens",
-            value: "432",
-        },
-    ],
+            value: "432"
+        }
+    ]
 });
 ```
 
