@@ -1,2 +1,2 @@
-
+- FIX: set bodyparser limit from 100Kbs to 1Mb
 
