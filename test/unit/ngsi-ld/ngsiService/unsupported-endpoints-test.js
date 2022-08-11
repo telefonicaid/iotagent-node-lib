@@ -107,5 +107,27 @@ describe('NGSI-LD - Unsupported Endpoints', function () {
                 done();
             });
         });
+
+
+        it('PUT /entities/<entity-id> includes an NGSI-LD Null should return a valid NSGI-LD error message', function (done) {
+            const options = {
+                url:
+                    'http://localhost:' +
+                    iotAgentConfig.server.port +
+                    '/ngsi-ld/v1/entities/urn:ngsi-ld:entity/attrs/att',
+                method: 'PUT',
+                json: {
+                    "value":  "urn:ngsi-ld:null"
+                },
+                headers: {
+                    'fiware-service': 'smartgondor',
+                    'content-type': 'application/ld+json'
+                }
+            };
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(400);
+                done();
+            });
+        });
     });
 });
