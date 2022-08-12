@@ -522,7 +522,6 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
             for (let i = 0; i < 10; i++) {
                 devices.push({
                     id: 'id' + i,
-                    name: 'Light' + i + ':' + 'id' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
                     service: 'smartgondor',
