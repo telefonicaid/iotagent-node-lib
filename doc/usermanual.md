@@ -25,7 +25,7 @@ More values will be added in the future to the library. The applications using t
 Registry just by using the following function:
 
 ```javascript
-iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
+iotagentLib.statsRegistry.add("statName", statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
@@ -80,7 +80,7 @@ In order to use the library, add the following dependency to your package.json f
 In order to use this library, first you must require it:
 
 ```javascript
-var iotagentLib = require('iotagent-node-lib');
+var iotagentLib = require("iotagent-node-lib");
 ```
 
 The library supports four groups of features, one for each direction of the communication: client-to-server and
@@ -258,21 +258,23 @@ function setDataUpdateHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
-with the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler is in charge of
-updating the corresponding values in the devices with the appropriate protocol.
+with the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). Every object within of
+the `attributes` array contains `name`, `type` and `value` attributes, and may also include additional attributes for
+`metadata` and `datasetId`. The handler is in charge of updating the corresponding values in the devices with the
+appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
 
 ```javascript
 callback(null, {
-    type: 'TheType',
+    type: "TheType",
     isPattern: false,
-    id: 'EntityID',
+    id: "EntityID",
     attributes: [
         {
-            name: 'lumniscence',
-            type: 'Lumens',
-            value: '432'
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
         }
     ]
 });
@@ -296,21 +298,21 @@ function setDataQueryHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives, with
-the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve all the
-corresponding information from the devices and return a NGSI entity with the requested values.
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
 
 The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
 
 ```javascript
 callback(null, {
-    type: 'TheType',
+    type: "TheType",
     isPattern: false,
-    id: 'EntityID',
+    id: "EntityID",
     attributes: [
         {
-            name: 'lumniscence',
-            type: 'Lumens',
-            value: '432'
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
         }
     ]
 });
