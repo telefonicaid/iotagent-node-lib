@@ -4,3 +4,4 @@
 - Add: datasetId and metadata support for NGSI-LD PATCH+PUT operations (commands)
 - Add: datasetId and metadata support for NGSI-LD Notifications (bidirectional attributes)
 - Add: metadata support to NGSI-v2 notifications (bidirectional attributes)
+- Fix: ensure circular error objects are logged correctly (#1280)
