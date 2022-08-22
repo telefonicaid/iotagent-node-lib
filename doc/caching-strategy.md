@@ -23,7 +23,6 @@ received from the database this allows multiple IoT Agent instances to access th
 This is the default operation mode with Mongo-DB. Whenever a measure is received, provisioning data is requested from
 the database. This may become a bottleneck in high availability systems.
 
-
 ### MongoDB with in-memory Cache
 
 if `memCache.enabled = true` within the config this provides a transient memory-based cache in front of the mongo-DB
@@ -45,5 +44,5 @@ IoT Agents would potential hold inconsistent provisioning data until the cache h
 ## Bypassing cache
 
 In some cases consistent provisioning data is more vital than throughput. When creating or updating a provisioned device
-or service group adding a `cache` attribute with the value `true` will ensure that the data can be cached, otherwise it is never placed into a
-cache and therefore always consistently received from the Mongo-DB instance.
+or service group adding a `cache` attribute with the value `true` will ensure that the data can be cached, otherwise it
+is never placed into a cache and therefore always consistently received from the Mongo-DB instance.

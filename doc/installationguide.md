@@ -160,7 +160,7 @@ used for the same purpose. For instance:
 
 ```javascript
 {
-    type: 'mongodb';
+    type: "mongodb";
 }
 ```
 
