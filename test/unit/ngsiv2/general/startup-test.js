@@ -146,6 +146,39 @@ describe('NGSI-v2 - Startup tests', function () {
         });
     });
 
+    describe('When the IoT Agent is started with memcache environment variables', function () {
+        beforeEach(function () {
+            process.env.IOTA_MEMCACHE_ENABLED = 'true';
+            process.env.IOTA_MEMCACHE_DEVICE_MAX = 9990;
+            process.env.IOTA_MEMCACHE_DEVICE_TTL = 99;
+            process.env.IOTA_MEMCACHE_GROUP_MAX = 90;
+            process.env.IOTA_MEMCACHE_GROUP_TTL = 9;
+        });
+
+        afterEach(function () {
+            delete process.env.IOTA_MEMCACHE_ENABLED;
+            delete process.env.IOTA_MEMCACHE_DEVICE_MAX;
+            delete process.env.IOTA_MEMCACHE_DEVICE_TTL;
+            delete process.env.IOTA_MEMCACHE_GROUP_MAX;
+            delete process.env.IOTA_MEMCACHE_GROUP_TTL;
+        });
+
+        afterEach(function (done) {
+            iotAgentLib.deactivate(done);
+        });
+
+        it('should load the correct configuration parameters', function (done) {
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                config.getConfig().memCache.enabled.should.equal(true);
+                config.getConfig().memCache.deviceMax.should.equal('9990');
+                config.getConfig().memCache.deviceTTL.should.equal('99');
+                config.getConfig().memCache.groupMax.should.equal('90');
+                config.getConfig().memCache.groupTTL.should.equal('9');
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent is started with mongodb params', function () {
         beforeEach(function () {
             process.env.IOTA_MONGO_HOST = 'mongohost';

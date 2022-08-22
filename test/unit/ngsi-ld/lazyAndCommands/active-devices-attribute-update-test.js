@@ -31,7 +31,7 @@ const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const mongoUtils = require('../../mongodb/mongoDBUtils');
+const mongoUtils = require('../../../tools/mongoDBUtils');
 
 let contextBrokerMock;
 const iotAgentConfig = {

@@ -204,6 +204,21 @@ used for the same purpose. For instance:
 }
 ```
 
+-   **memCache**: Whether to use a memory cache in front of Mongo-DB when using the `mongodb` **deviceRegistry** option
+    to reduce I/O. This memory cache will hold and serve a set of recently requested groups and devices (up to a given
+    maximum time-to-live) and return the cached response so long as the value is still within `TTL`. When enabled the
+    default values are to hold up to 200 devices and 160 groups in memory and retain values for up to 60 seconds.
+
+```javascript
+{
+    enabled: true,
+    deviceMax: 200,
+    deviceTTL: 60,
+    groupMax: 50,
+    groupTTL: 60
+}
+```
+
 -   **iotManager**: configures all the information needed to register the IoT Agent in the IoTManager. If this section
     is present, the IoTA will try to register to a IoTAM in the `host`, `port` and `path` indicated, with the
     information configured in the object. The IoTAgent URL that will be reported will be the `providedUrl` (described
