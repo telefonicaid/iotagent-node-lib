@@ -66,7 +66,7 @@ describe('NGSI-LD - Startup tests', function () {
         beforeEach(function () {
             process.env.IOTA_CB_HOST = 'cbhost';
             process.env.IOTA_CB_PORT = '1111';
-            process.env.IOTA_CB_NGSI_VERSION = 'v2';
+            process.env.IOTA_CB_NGSI_VERSION = 'ld';
             process.env.IOTA_NORTH_HOST = 'localhost';
             process.env.IOTA_NORTH_PORT = '2222';
             process.env.IOTA_PROVIDER_URL = 'provider:3333';
@@ -83,6 +83,11 @@ describe('NGSI-LD - Startup tests', function () {
             process.env.IOTA_MONGO_DB = 'themongodb';
             process.env.IOTA_MONGO_REPLICASET = 'customReplica';
             process.env.IOTA_DEFAULT_RESOURCE = '/iot/custom';
+            process.env.IOTA_JSON_LD_CONTEXT = 'http://context.jsonld';
+            process.env.IOTA_FALLBACK_TENANT = 'openiot';
+            process.env.IOTA_FALLBACK_PATH = 'smartgondor';
+            process.env.IOTA_LD_SUPPORT_NULL = 'false';
+            process.env.IOTA_LD_SUPPORT_DATASET_ID = 'false';
 
             nock.cleanAll();
 
@@ -114,6 +119,11 @@ describe('NGSI-LD - Startup tests', function () {
             delete process.env.IOTA_MONGO_DB;
             delete process.env.IOTA_MONGO_REPLICASET;
             delete process.env.IOTA_DEFAULT_RESOURCE;
+            delete process.env.IOTA_JSON_LD_CONTEXT;
+            delete process.env.IOTA_FALLBACK_TENANT;
+            delete process.env.IOTA_FALLBACK_PATH;
+            delete process.env.IOTA_LD_SUPPORT_NULL;
+            delete process.env.IOTA_LD_SUPPORT_DATASET_ID;
         });
 
         afterEach(function (done) {
@@ -123,7 +133,12 @@ describe('NGSI-LD - Startup tests', function () {
         it('should load the correct configuration parameters', function (done) {
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
-                config.getConfig().contextBroker.ngsiVersion.should.equal('v2');
+                config.getConfig().contextBroker.ngsiVersion.should.equal('ld');
+                config.getConfig().contextBroker.jsonLdContext.should.equal('http://context.jsonld');
+                config.getConfig().contextBroker.fallbackTenant.should.equal( 'openiot');
+                config.getConfig().contextBroker.fallbackPath.should.equal('smartgondor');
+                config.getConfig().server.ldPayloadSupport.supportNull.should.equal(false);
+                config.getConfig().server.ldPayloadSupport.supportDatasetId.should.equal(false);
                 config.getConfig().server.host.should.equal('localhost');
                 config.getConfig().server.port.should.equal('2222');
                 config.getConfig().providerUrl.should.equal('provider:3333');

@@ -29,7 +29,11 @@ var config = {
     },
     server: {
         port: 4041,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        ldPayloadSupport : {
+           supportNull: true,
+           supportDatasetId: true
+       }
     },
     authentication: {
         enabled: true,
