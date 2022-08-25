@@ -194,4 +194,55 @@ describe('NGSI-v2 - In memory device registry', function () {
             });
         });
     });
+  
+    describe('When a the registry is queried for device in a particular name and type', function (){
+	    beforeEach(function (done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v2/entities?options=upsert')
+                .times(10)
+                .reply(204);
+
+            const devices = [];
+
+            for (let i = 0; i < 10; i++) 
+            {
+                devices.push(
+                {
+                    id: 'id' + i,
+                    name : 'name' + i,
+                    type: 'Light' + i,
+                    internalId: 'internal' + i,
+                    service: 'smartgondor',
+                    subservice: 'gardens',
+                    active: [ {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }]
+                });
+            }
+
+            async.map(devices, iotAgentLib.register, function (error, results) {
+                done();
+            });
+        });
+
+        afterEach(function (done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return the name and type of device', function (done)
+        {
+            iotAgentLib.getDeviceByNameAndType('name5', 'Light5','smartgondor', 'gardens' ,function(error, device)
+            {
+                should.not.exist(error);
+                should.exist(device);
+                should.exist(device.name);
+                should.exist(device.type);
+                device.name.should.equal('name5');
+                device.type.should.equal('Light5');
+                Object.keys(device).length.should.equal(12);
+                done();
+            });
+        });
+    });
 });
