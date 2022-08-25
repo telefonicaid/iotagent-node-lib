@@ -30,7 +30,7 @@ var config = {
     server: {
         port: 4041,
         host: '0.0.0.0',
-        ldPayloadSupport : {
+        ldSupport : {
            supportNull: true,
            supportDatasetId: true
        }

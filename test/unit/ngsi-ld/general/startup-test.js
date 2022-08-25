@@ -137,8 +137,8 @@ describe('NGSI-LD - Startup tests', function () {
                 config.getConfig().contextBroker.jsonLdContext.should.equal('http://context.jsonld');
                 config.getConfig().contextBroker.fallbackTenant.should.equal( 'openiot');
                 config.getConfig().contextBroker.fallbackPath.should.equal('smartgondor');
-                config.getConfig().server.ldPayloadSupport.supportNull.should.equal(false);
-                config.getConfig().server.ldPayloadSupport.supportDatasetId.should.equal(false);
+                config.getConfig().server.ldSupport.null.should.equal(false);
+                config.getConfig().server.ldSupport.datasetId.should.equal(false);
                 config.getConfig().server.host.should.equal('localhost');
                 config.getConfig().server.port.should.equal('2222');
                 config.getConfig().providerUrl.should.equal('provider:3333');

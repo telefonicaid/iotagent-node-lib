@@ -58,9 +58,9 @@ const iotAgentConfigWithLimitedSupport = {
     },
     server: {
         port: 4041,
-        ldPayloadSupport : {
-           supportNull: false,
-           supportDatasetId: false
+        ldSupport : {
+           null: false,
+           datasetId: false
        }
     },
     types: {
