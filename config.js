@@ -31,8 +31,8 @@ var config = {
         port: 4041,
         host: '0.0.0.0',
         ldSupport : {
-           supportNull: true,
-           supportDatasetId: true
+           null: true,
+           datasetId: true
        }
     },
     authentication: {
