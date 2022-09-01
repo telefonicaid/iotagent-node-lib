@@ -353,7 +353,8 @@ Apart from measurement transformations (including multientity cases), expression
 In all of them the following device data is available to all expressions
 
 -   `id`: device ID
--   `type`: device type
+-   `entity_name`: NGSI entity Name (principal)
+-   `type`: NGSI entity type (principal)
 -   `service`: device service
 -   `subservice`: device subservice
 
