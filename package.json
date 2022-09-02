@@ -23,7 +23,7 @@
   },
   "main": "lib/fiware-iotagent-lib",
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
