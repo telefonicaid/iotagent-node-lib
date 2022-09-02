@@ -51,7 +51,6 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 12.x
           - 14.x
           - 16.x
     steps:
@@ -78,10 +77,10 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-      - name: 'Test Coverage with Node.js 12.x'
+      - name: 'Test Coverage with Node.js 16.x'
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
       - run: |
           npm install
           npm run test:coverage
