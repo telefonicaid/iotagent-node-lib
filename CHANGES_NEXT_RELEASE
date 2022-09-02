@@ -1,8 +1,0 @@
-- Add: NGSI-LD Unsupported Endpoints return valid error responses (#1277)
-- Fix: protect explicitAttrs evaluation of a bad formed expression (#1175)
-- Fix: ensure GET /ngsi-ld/v1/entities/<entity-id> returns a valid response (#1276)
-- Add: datasetId and metadata support for NGSI-LD PATCH+PUT operations (commands)
-- Add: datasetId and metadata support for NGSI-LD Notifications (bidirectional attributes)
-- Add: metadata support to NGSI-v2 notifications (bidirectional attributes)
-- Fix: ensure circular error objects are logged correctly (#1280)
-- Add: Update Bidirectional plugin to reuse expressionPlugin (#1281)
