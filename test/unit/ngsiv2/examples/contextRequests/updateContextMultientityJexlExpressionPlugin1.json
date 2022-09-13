@@ -1,0 +1,22 @@
+{
+  "actionType":"update",
+  "entities":[
+    {
+    "id":"lightPseudo:id",
+    "type":"Light",
+    "pressure":{
+      "type":"Number",
+      "value":60
+      }
+    },
+    {
+      "id":"Ligth:mymulti",
+      "type":"myType",
+      "pressure":{
+          "type":"Number",
+          "value":90
+        }
+
+    }
+  ]
+}
