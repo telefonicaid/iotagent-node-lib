@@ -1,1 +1,2 @@
 - Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
+- New INVALID EXPRESSION policy at JEXL expression in attributes and entity_names. Defaul values will be propagated and a warn will be logged instead of exception
