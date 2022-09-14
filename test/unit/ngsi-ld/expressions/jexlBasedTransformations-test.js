@@ -321,11 +321,25 @@ describe('NGSI-LD: JEXL', function () {
             }
         ];
 
-        it('should apply the expression before sending the values', function (done) {
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin30.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should ignore the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
-                should.exist(error);
-                error.name.should.equal('INVALID_EXPRESSION');
-                error.code.should.equal(400);
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
