@@ -1,2 +1,3 @@
 - Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
 - Fix: INVALID EXPRESSION policy at JEXL expression in attributes and entity_names (default values will be propagated and a warn will be logged instead of exception) (#1292)
+- Export plguinUtils
