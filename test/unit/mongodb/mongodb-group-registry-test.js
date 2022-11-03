@@ -448,4 +448,28 @@ describe('MongoDB Group Registry test', function () {
             });
         });
     });
+
+    describe('When the device info request with name and type', function () {
+        beforeEach(function (done) {
+            async.series([async.apply(request, optionsCreation)], done);
+        });
+
+        afterEach(function (done) {
+            iotAgentLib.clearRegistry(done);
+        });
+
+        it('should return the name and type of device', function (done) {
+            request(optionsGet, function (error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(1);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(1);
+                should.exist(body.services[0].entity_type);
+                body.services[0].entity_type.should.equal('Light');
+                done();
+            });
+        });
+    });
 });
