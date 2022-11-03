@@ -168,7 +168,7 @@ let iotamMock;
 describe('NGSI-v2 - Device Service: utils', function () {
     beforeEach(function (done) {
         nock.cleanAll();
-        logger.setLevel('INFO');
+        logger.setLevel('ERROR');
         iotamMock = nock('http://localhost:8082').post('/protocols').reply(200, {});
 
         iotAgentLib.activate(iotAgentConfig, done);
