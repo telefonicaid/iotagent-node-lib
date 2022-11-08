@@ -2,7 +2,7 @@
   {
     "apikey" : "7e5721f478220be21f41f4700e50be2",
     "token" : "e50b7781d5e2d39d577e7c15e4a21f470ed39d5777e7c15e2e2d39d5777e7c1e2",
-    "cbroker" : "http://10.0.0.2:1026",
+    "cbHost" : "http://10.0.0.2:1026",
     "entity_type" : "device",
     "resource" : "/iot/d",
     "service" : "smart_gondor",
@@ -10,7 +10,7 @@
   },
   {
     "apikey" : "gdb13gq3f8q4beuk263besr8eh9ri",
-    "cbroker" : "http://10.0.0.2:1026",
+    "cbHost" : "http://10.0.0.2:1026",
     "entity_type" : "device",
     "resource" : "/iot/d",
     "service" : "dumb_mordor",
@@ -25,7 +25,7 @@
   },
   {
     "apikey" : "hs4h2ke7oerfdvrexbyh54w2",
-    "cbroker" : "http://10.0.0.2:1026",
+    "cbHost" : "http://10.0.0.2:1026",
     "entity_type" : "device",
     "resource" : "/iot/d",
     "service" : "demo",
