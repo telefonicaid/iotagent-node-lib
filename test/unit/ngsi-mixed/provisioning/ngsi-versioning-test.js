@@ -65,7 +65,6 @@ const optionsCreationDefault = {
         services: [
             {
                 apikey: 'default-test',
-                cbHost: 'http://orion:1026',
                 entity_type: 'Device',
                 resource: '/iot/default',
                 attributes: [
@@ -90,7 +89,6 @@ const optionsCreationV2 = {
         services: [
             {
                 apikey: 'v2-test',
-                cbHost: 'http://orion:1026',
                 ngsiVersion: 'v2',
                 entity_type: 'Device',
                 resource: '/iot/v2',
@@ -117,7 +115,6 @@ const optionsCreationLD = {
         services: [
             {
                 apikey: 'ld-test',
-                cbHost: 'http://orion:1026',
                 entity_type: 'Device',
                 ngsiVersion: 'ld',
                 resource: '/iot/ld',
