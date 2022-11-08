@@ -24,7 +24,7 @@
             "description": "token",
             "type": "string"
           },
-          "cbroker": {
+          "cbHost": {
             "description": "uri for the context broker",
             "type": "string"
           },
