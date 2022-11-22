@@ -9,10 +9,12 @@
                     "type": "TheLightType"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "luminance"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations" :["retrieveOps"],
     "type": "ContextSourceRegistration"
 }

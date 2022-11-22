@@ -9,10 +9,14 @@
                     "type": "Light"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "pressure"
             ]
         }
+    ],
+    "mode": "exclusive",
+    "operations": [
+        "retrieveOps"
     ],
     "type": "ContextSourceRegistration"
 }

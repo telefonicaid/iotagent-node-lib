@@ -9,11 +9,13 @@
                     "type": "Robot"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "position",
                 "orientation"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations" :["updateOps"],
     "type": "ContextSourceRegistration"
 }

@@ -9,10 +9,12 @@
                     "type": "Light"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "temperature"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations" :["retrieveOps"],
     "type": "ContextSourceRegistration"
 }

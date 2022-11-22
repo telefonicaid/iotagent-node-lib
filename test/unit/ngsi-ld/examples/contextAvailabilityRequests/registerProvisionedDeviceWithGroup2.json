@@ -9,13 +9,18 @@
                     "type": "SensorMachine"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "luminance",
                 "luminescence",
                 "commandAttr",
                 "wheel1"
             ]
         }
+    ],
+    "mode": "exclusive",
+    "operations" : [
+        "retrieveOps",
+        "updateOps"
     ],
     "type": "ContextSourceRegistration"
 }
