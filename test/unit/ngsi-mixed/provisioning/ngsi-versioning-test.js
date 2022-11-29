@@ -65,7 +65,6 @@ const optionsCreationDefault = {
         services: [
             {
                 apikey: 'default-test',
-                cbroker: 'http://orion:1026',
                 entity_type: 'Device',
                 resource: '/iot/default',
                 attributes: [
@@ -90,7 +89,6 @@ const optionsCreationV2 = {
         services: [
             {
                 apikey: 'v2-test',
-                cbroker: 'http://orion:1026',
                 ngsiVersion: 'v2',
                 entity_type: 'Device',
                 resource: '/iot/v2',
@@ -117,7 +115,6 @@ const optionsCreationLD = {
         services: [
             {
                 apikey: 'ld-test',
-                cbroker: 'http://orion:1026',
                 entity_type: 'Device',
                 ngsiVersion: 'ld',
                 resource: '/iot/ld',
@@ -171,7 +168,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
     beforeEach(function (done) {
         mongoUtils.cleanDbs(function () {
             iotAgentLib.activate(iotAgentConfig, function () {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                     iotAgentDb = db;
                     done();
                 });

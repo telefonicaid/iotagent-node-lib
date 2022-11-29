@@ -215,6 +215,31 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStation9: {
+            commands: [],
+            type: 'WeatherStation',
+            name: 'ws9b',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_type: 'Higrometer',
+                    metadata: {
+                        unitCode: {
+                            type: 'Text',
+                            value: 'Hgmm'
+                        }
+                    }
+                }
+            ]
+        },
         WeatherStation8Jexl: {
             commands: [],
             type: 'WeatherStation',
@@ -515,6 +540,26 @@ const iotAgentConfig = {
                 }
             ],
             explicitAttrs: '[ "attr1", "attr2" ]'
+        },
+        LightMultiDefault: {
+            commands: [],
+            type: 'Light',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    entity_type: 'myType',
+                    entity_name: 'Ligth:mymulti'
+                },
+                {
+                    object_id: 'q',
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            expressionLanguage: 'jexl'
         }
     },
     service: 'smartgondor',
@@ -574,6 +619,44 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should send two context elements, one for each entity', function (done) {
             iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement based on entity_type', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin17.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send two context elements, one for each entity', function (done) {
+            iotAgentLib.update('ws9b', 'WeatherStation9', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -1293,6 +1376,44 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             });
         }
     );
+
+    describe('When pseudo-multientity device is provisioned (entity_type and default entity_id)', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'p',
+                type: 'Number',
+                value: 90
+            },
+            {
+                name: 'q',
+                type: 'Number',
+                value: 60
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityJexlExpressionPlugin1.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should work without invalid expression error', function (done) {
+            iotAgentLib.update('lightPseudo:id', 'LightMultiDefault', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });
 
 describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function () {

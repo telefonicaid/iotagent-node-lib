@@ -25,7 +25,6 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
-const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const mongo = require('mongodb').MongoClient;
@@ -191,7 +190,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
         logger.setLevel('FATAL');
 
         mongoUtils.cleanDbs(function () {
-            mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+            mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                 iotAgentDb = db;
                 done();
             });
@@ -204,7 +203,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
             iotAgentDb
                 .db()
                 .collection('devices')
-                .deleteOne(function (error) {
+                .deleteOne({}, function (error) {
                     iotAgentDb.close(function (error) {
                         mongoUtils.cleanDbs(done);
                     });
@@ -504,6 +503,55 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
                 should.not.exist(error);
                 should.exist(result.count);
                 result.count.should.equal(10);
+                done();
+            });
+        });
+    });
+    
+     describe('When the device is queried with the name and type', function () {
+        beforeEach(function (done) {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post('/v2/entities?options=upsert')
+                .times(10)
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .reply(204);
+
+            const devices = [];
+
+            for (let i = 0; i < 10; i++) {
+                devices.push({
+                    id: 'id' + i,
+                    type: 'Light' + i,
+                    internalId: 'internal' + i,
+                    service: 'smartgondor',
+                    subservice: 'gardens',
+                    active: [
+                        {
+                            id: 'attrId',
+                            type: 'attrType' + i,
+                            value: i
+                        }
+                    ]
+                });
+            }
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                async.map(devices, iotAgentLib.register, function (error, results) {
+                    done();
+                });
+            });
+        });
+        afterEach(function (done) {
+            iotAgentLib.clearRegistry(done);
+        });
+        it('should return the device with name and type', function (done) {
+            iotAgentLib.getDeviceByNameAndType('Light4:id4', 'Light4', 'smartgondor', 'gardens', function ( error, device ) {
+                should.not.exist(error);
+                should.exist(device);
+                should.exist(device.name);
+                should.exist(device.type);
+                device.name.should.equal('Light4:id4');
+                device.type.should.equal('Light4');
                 done();
             });
         });

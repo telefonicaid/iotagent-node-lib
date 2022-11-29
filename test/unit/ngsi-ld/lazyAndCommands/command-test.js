@@ -94,6 +94,10 @@ const iotAgentConfig = {
                 {
                     name: 'position',
                     type: 'Array'
+                },
+                {
+                    name: 'orientation',
+                    type: 'Array'
                 }
             ],
             lazy: [],
@@ -158,7 +162,114 @@ describe('NGSI-LD - Command functionalities', function () {
             });
         });
     });
-    describe('When a command update arrives to the IoT Agent as Context Provider', function () {
+
+    describe('When multiple command updates via PATCH /attrs arrive to the IoT Agent as Context Provider', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs',
+            method: 'PATCH',
+            json: {
+                orientation: {
+                    type: 'Property',
+                    value: [1, 2, 3]
+                },
+                position: {
+                    type: 'Property',
+                    value: [28, -104, 23]
+                }
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[1].name.should.equal('orientation');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                JSON.stringify(attributes[1].value).should.equal('[1,2,3]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        },
+                        {
+                            name: 'orientation',
+                            type: 'Array',
+                            value: '[1, 2, 3]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command update PATCH attrs/attr-name arrives to the IoT Agent as Context Provider', function () {
         const options = {
             url:
                 'http://localhost:' +
@@ -253,6 +364,825 @@ describe('NGSI-LD - Command functionalities', function () {
             });
         });
     });
+
+    describe('When a sequential command with datasetId updates via PATCH  /attrs/attr-name arrives to the IoT Agent', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs',
+            method: 'PUT',
+            json: {
+                position: [
+                    {
+                        type: 'Property',
+                        value: [1, 2, 3],
+                        datasetId: 'urn:ngsi-ld:this'
+                    },
+                    {
+                        type: 'Property',
+                        value: [28, -104, 23],
+                        datasetId: 'urn:ngsi-ld:that'
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once including datasetId', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].datasetId.should.equal('urn:ngsi-ld:this');
+                attributes[1].name.should.equal('position');
+                attributes[1].datasetId.should.equal('urn:ngsi-ld:that');
+                JSON.stringify(attributes[0].value).should.equal('[1,2,3]');
+                JSON.stringify(attributes[1].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        },
+                        {
+                            name: 'orientation',
+                            type: 'Array',
+                            value: '[1, 2, 3]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command update PATCH  attrs/attr-name with datasetId arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PATCH',
+            json: {
+                type: 'Property',
+                value: [28, -104, 23],
+                datasetId: 'urn:ngsi-ld:this'
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once including datasetId', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].datasetId.should.equal('urn:ngsi-ld:this');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command update PATCH  attrs/attr-name with metadata arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PATCH',
+            json: {
+                type: 'Property',
+                value: [28, -104, 23],
+                qos: 1
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once including metadata', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].metadata.qos.should.equal(1);
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command overwrite PUT  attrs/attr-name arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PUT',
+            json: {
+                type: 'Property',
+                value: [28, -104, 23]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a sequential command with datasetId overwrites via PUT  /attrs/attr-name arrives to the IoT Agent', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs',
+            method: 'PUT',
+            json: {
+                position: [
+                    {
+                        type: 'Property',
+                        value: [1, 2, 3],
+                        datasetId: 'urn:ngsi-ld:this'
+                    },
+                    {
+                        type: 'Property',
+                        value: [28, -104, 23],
+                        datasetId: 'urn:ngsi-ld:that'
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].datasetId.should.equal('urn:ngsi-ld:this');
+                attributes[1].name.should.equal('position');
+                attributes[1].datasetId.should.equal('urn:ngsi-ld:that');
+                JSON.stringify(attributes[0].value).should.equal('[1,2,3]');
+                JSON.stringify(attributes[1].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        },
+                        {
+                            name: 'orientation',
+                            type: 'Array',
+                            value: '[1, 2, 3]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When multiple command overwrites via PUT  /attrs arrive to the IoT Agent as Context Provider', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs',
+            method: 'PUT',
+            json: {
+                orientation: {
+                    type: 'Property',
+                    value: [1, 2, 3]
+                },
+                position: {
+                    type: 'Property',
+                    value: [28, -104, 23]
+                }
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[1].name.should.equal('orientation');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                JSON.stringify(attributes[1].value).should.equal('[1,2,3]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        },
+                        {
+                            name: 'orientation',
+                            type: 'Array',
+                            value: '[1, 2, 3]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command overwrite PUT  attrs/attr-name with datasetId arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PUT',
+            json: {
+                type: 'Property',
+                value: [28, -104, 23],
+                datasetId: 'urn:ngsi-ld:this'
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].datasetId.should.equal('urn:ngsi-ld:this');
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a command update PUT  attrs/attr-name with metadata arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
+            method: 'PUT',
+            json: {
+                type: 'Property',
+                value: [28, -104, 23],
+                qos: 1
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once including metadata', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].metadata.qos.should.equal(1);
+                JSON.stringify(attributes[0].value).should.equal('[28,-104,23]');
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceReceived = false;
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceReceived = service === 'smartgondor';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceReceived.should.equal(true);
+                done();
+            });
+        });
+    });
+
     describe('When an update arrives from the south bound for a registered command', function () {
         beforeEach(function (done) {
             statusAttributeMock = nock('http://192.168.1.1:1026')
@@ -297,6 +1227,44 @@ describe('NGSI-LD - Command functionalities', function () {
             iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', 'Stalled', 'ERROR', function (error) {
                 should.not.exist(error);
                 statusAttributeMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a query arrives to the IoT Agent with registered commands but no lazy attributes', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'content-type': 'application/ld+json'
+            }
+        };
+
+        beforeEach(function (done) {
+            logger.setLevel('ERROR');
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should return the a valid empty response', function (done) {
+            iotAgentLib.setDataQueryHandler(function (id, type, service, subservice, attributes, callback) {
+                should.exist(attributes);
+                attributes.length.should.equal(0);
+                callback(null, {
+                        id: 'urn:ngsi-ld:Robot:r2d2',
+                        type: 'Robot'
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
                 done();
             });
         });

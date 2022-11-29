@@ -1,0 +1,15 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "name": {
+      "type": "LanguageProperty",
+      "languageMap": {
+        "el": "Κωνσταντινούπολις",
+        "en": "Constantinople",
+        "tr": "İstanbul"
+      }
+    },
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]
