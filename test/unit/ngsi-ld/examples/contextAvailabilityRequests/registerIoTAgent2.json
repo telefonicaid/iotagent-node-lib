@@ -18,5 +18,11 @@
         "retrieveOps"
     ],
     "endpoint": "http://smartgondor.com",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "@context": "http://context.json-ld"
 }

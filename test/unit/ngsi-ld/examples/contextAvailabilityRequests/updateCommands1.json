@@ -1,5 +1,11 @@
 {
     "type":"ContextSourceRegistration",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "information":[
         {
             "entities":[
