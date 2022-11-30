@@ -40,7 +40,7 @@ The following table provides information about the last iotagent-node-lib versio
 
 | **Removed feature**    | **Last iotagent-node-lib version supporting feature** | **That version release date** |
 | ---------------------- | ----------------------------------------------------- | ----------------------------- |
-| NGSI v1 API            | 2.18.0                                                | November 12th, 2021           |
+| NGSI v1 API            | 2.17.0                                                | August 30th, 2021             |
 | Support to Node.js v4  | 2.8.1                                                 | December 19th, 2018           |
 | Support to Node.js v6  | 2.9.0                                                 | May 22nd, 2019                |
 | Support to Node.js v8  | 2.12.0                                                | April 7th, 2020               |
