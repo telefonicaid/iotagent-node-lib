@@ -1385,4 +1385,23 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
         });
     });
+    describe('When a device provisioning request arrives to the Agent without device_id', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDeviceEmpty.json')
+        };
+
+        it('should return a 400 error', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
+                done();
+            });
+        });
+    });
 });
