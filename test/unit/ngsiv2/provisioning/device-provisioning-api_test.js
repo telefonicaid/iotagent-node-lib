@@ -450,7 +450,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true
                         }
                     ]
@@ -516,7 +516,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -589,7 +589,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true
                         }
                     ]
@@ -656,7 +656,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -726,7 +726,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
                         entityNameExp: 'EntityNameByExp',
-                        cbroker: 'http://192.168.1.1:1026'
+                        cbHost: 'http://192.168.1.1:1026'
                     }
                 ]
             },
@@ -790,7 +790,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -1381,6 +1381,25 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
+                done();
+            });
+        });
+    });
+    describe('When a device provisioning request arrives to the Agent without device_id', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDeviceEmpty.json')
+        };
+
+        it('should return a 400 error', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
                 done();
             });
         });

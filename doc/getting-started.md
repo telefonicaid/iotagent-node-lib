@@ -56,7 +56,7 @@ curl -iX POST \
  "services": [
    {
      "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
-     "cbroker":     "http://orion:1026",
+     "cbHost":     "http://orion:1026",
      "entity_type": "Device",
      "resource":    "/iot/d",
    }
