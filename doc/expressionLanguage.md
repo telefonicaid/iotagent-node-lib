@@ -75,7 +75,7 @@ can check the following example:
     "services": [
         {
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "cbroker": "http://orion:1026",
+            "cbHost": "http://orion:1026",
             "entity_type": "Thing",
             "resource":    "/iot/d"
             "expressionLanguage": "jexl",
