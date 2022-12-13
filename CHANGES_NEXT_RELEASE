@@ -2,3 +2,5 @@
 - Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
 - Fix: INVALID EXPRESSION policy at JEXL expression in attributes and entity_names (default values will be propagated and a warn will be logged instead of exception) (#1292)
 - Fix: empty device_id on device registration (#1298)
+- Export pluginUtils (so they can be used by IOTA code importing the library)
+- Fix: empty device_id on device registration (#1298)
