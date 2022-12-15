@@ -484,6 +484,8 @@ Current common transformation set:
 | replaceallstr: (str, from, to)   | `str.replaceAll(from, to);`                                                                                             |
 | replaceallregexp: (str, reg, to) | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
 | split: (str, ch)                 | `str.split(ch);`                                                                                                        |
+| joinarrtostr: (arr, ch)          | `arr.join(ch);`                                                                                                         |
+| concatarr: (arr, arr2)           | `arr.concat(arr2);`                                                                                                     |
 | mapper: (val, values, choices)   | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
 | thmapper: (val, values, choices) | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
 | bitwisemask: (i,mask,op,shf)     | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
