@@ -448,16 +448,16 @@ describe('MongoDB Group Registry test', function () {
             });
         });
     });
-    
+
     describe('When the device info request with name and type', function () {
         beforeEach(function (done) {
             async.series([async.apply(request, optionsCreation)], done);
         });
-        
+
         afterEach(function (done) {
             iotAgentLib.clearRegistry(done);
         });
-        
+
         it('should return the name and type of device', function (done) {
             request(optionsGet, function (error, response, body) {
                 should.exist(body);
