@@ -8,6 +8,7 @@
 -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
 -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
 -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+-   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
 -   [Data mapping plugins](#data-mapping-plugins)
     -   [Development](#development)
     -   [Provided plugins](#provided-plugins)
@@ -20,7 +21,6 @@
         -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
     -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
     -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-    -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
 
 ### Secured access to the Context Broker
 
