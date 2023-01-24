@@ -484,20 +484,24 @@ Current common transformation set:
 | replaceallstr: (str, from, to)       | `str.replaceAll(from, to);`                                                                                             |
 | replaceallregexp: (str, reg, to)     | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
 | split: (str, ch)                     | `str.split(ch);`                                                                                                        |
+| joinarrtostr: (arr, ch)              | `arr.join(ch);`                                                                                                         |
+| concatarr: (arr, arr2)               | `arr.concat(arr2);`                                                                                                     |
 | mapper: (val, values, choices)       | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
 | thmapper: (val, values, choices)     | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
 | bitwisemask: (i,mask,op,shf)         | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
 | slice: (arr, init, end)              | `arr.slice(init,end);`                                                                                                  |
 | addset: (arr, x)                     | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
 | removeset: (arr, x)                  | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
-| touppercase: (val)                   | `String(val).toUpperCase()`                                                                                           |
+| touppercase: (val)                   | `String(val).toUpperCase()`                                                                                             |
 | tolowercase: (val)                   | `String(val).toLowerCase()`                                                                                             |
-| round: (val)                         | `Math.round(val)`                                                                                                         |
-| toFixed: (val, decimals)             | `Number.parseFloat(val).toFixed(decimals)`                                                                                |
-| getTime: (d)                         | `new Date(d).getTime()`                                                                                                   |
-| toISOString: (d)                     | `new Date(d).toISOString()`                                                                                               |
-| localeString: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                           |
-| now: ()                              | `Date.now()`                                                                                                              |
+| round: (val)                         | `Math.round(val)`                                                                                                       |
+| floor: (val)                         | `Math.floor(val)`                                                                                                       |
+| ceil: (val)                          | `Math.ceil(val)`                                                                                                        |
+| tofixed: (val, decimals)             | `Number.parseFloat(val).toFixed(decimals)`                                                                              |
+| gettime: (d)                         | `new Date(d).getTime()`                                                                                                 |
+| toisostring: (d)                     | `new Date(d).toISOString()`                                                                                             |
+| localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
+| now: ()                              | `Date.now()`                                                                                                            |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
