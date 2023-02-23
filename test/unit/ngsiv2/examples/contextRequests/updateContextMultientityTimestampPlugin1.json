@@ -1,45 +1,45 @@
 {
-  "actionType": "update",
-  "entities": [
-    {
-      "pressure": {
-        "type": "Hgmm",
-        "value": "52",
-        "metadata": {
-          "TimeInstant": {
-            "type": "DateTime",
-            "value": "2016-05-30T16:25:22.304Z"
-          }
+    "entities": [
+        {
+            "id": "ws4",
+            "type": "WeatherStation",
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2016-05-30T16:25:22.304Z"
+            },
+            "pressure": {
+                "value": "52",
+                "type": "Hgmm",
+                "metadata": {
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2016-05-30T16:25:22.304Z"
+                    }
+                }
+            }
+        },
+        {
+            "id": "Higro2000",
+            "type": "Higrometer",
+            "humidity": {
+                "value": "12",
+                "type": "Percentage",
+                "metadata": {
+                    "unitCode": {
+                        "type": "Text",
+                        "value": "Hgmm"
+                    },
+                    "TimeInstant": {
+                        "type": "DateTime",
+                        "value": "2016-05-30T16:25:22.304Z"
+                    }
+                }
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2016-05-30T16:25:22.304Z"
+            }
         }
-      },
-      "TimeInstant": {
-        "type": "DateTime",
-        "value": "2016-05-30T16:25:22.304Z"
-      },
-      "id": "ws4",
-      "type": "WeatherStation"
-    },
-    {
-      "humidity": {
-        "type": "Percentage",
-        "value": "12",
-        "metadata": {
-          "unitCode": {
-            "type": "Text",
-            "value": "Hgmm"
-          },
-          "TimeInstant": {
-            "type": "DateTime",
-            "value": "2016-05-30T16:25:22.304Z"
-          }
-        }
-      },
-      "TimeInstant": {
-        "type": "DateTime",
-        "value": "2016-05-30T16:25:22.304Z"
-      },
-      "id": "Higro2000",
-      "type": "Higrometer"
-    }
-  ]
+    ],
+    "actionType": "update"
 }
