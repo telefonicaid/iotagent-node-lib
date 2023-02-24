@@ -1117,6 +1117,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             .post(
                 '/v2/op/update',
                 utils.readExampleFile(
+                    // Updated test same case that updateContextMultientityPlugin4.json
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
                 )
             )
@@ -1507,7 +1508,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             });
         });
 
-        it('should send two context elements, one for each entity', function (done) {
+        it('should send two context elements, one for each entity bis', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -1609,8 +1610,9 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post(
-                '/v2/op/update',
+            .patch(
+                //'/v2/op/update',
+                '/v2/entities/sensorCommand/attrs?type=SensorCommand',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )
