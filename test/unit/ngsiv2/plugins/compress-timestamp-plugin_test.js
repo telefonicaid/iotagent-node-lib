@@ -122,6 +122,7 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
+                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.queryNgsi2);
                 done();
             });
         });
