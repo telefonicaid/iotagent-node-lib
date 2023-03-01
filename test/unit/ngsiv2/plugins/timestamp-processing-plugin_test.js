@@ -67,7 +67,6 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
@@ -100,6 +99,7 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .patch(
                     '/v2/entities/light1/attrs',
+                    // this tests breaks jexlBasedTransformation-test with uses updateContextExpressionPlugin32 which do not includes Timestamp in metadata attributes
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'
                     )
