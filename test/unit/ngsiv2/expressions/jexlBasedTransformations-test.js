@@ -346,7 +346,7 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: true
+            explicitAttrs: 'TimeInstant == null ? [] : true' // which is true
         },
         GPS7: {
             commands: [],
