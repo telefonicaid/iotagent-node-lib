@@ -96,16 +96,19 @@ describe('NGSI-v2 - In memory device registry', function () {
             iotAgentLib.clearRegistry(done);
         });
         it('should return the appropriate device', function (done) {
-            iotAgentLib.getDevicesByAttribute('internalId', 'internal3', 'smartgondor', 'gardens', function (
-                error,
-                devices
-            ) {
-                should.not.exist(error);
-                should.exist(devices);
-                devices.length.should.equal(1);
-                devices[0].id.should.equal('id3');
-                done();
-            });
+            iotAgentLib.getDevicesByAttribute(
+                'internalId',
+                'internal3',
+                'smartgondor',
+                'gardens',
+                function (error, devices) {
+                    should.not.exist(error);
+                    should.exist(devices);
+                    devices.length.should.equal(1);
+                    devices[0].id.should.equal('id3');
+                    done();
+                }
+            );
         });
     });
 
@@ -194,9 +197,9 @@ describe('NGSI-v2 - In memory device registry', function () {
             });
         });
     });
-  
-    describe('When a the registry is queried for device in a particular name and type', function (){
-	    beforeEach(function (done) {
+
+    describe('When a the registry is queried for device in a particular name and type', function () {
+        beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/entities?options=upsert')
                 .times(10)
@@ -204,21 +207,21 @@ describe('NGSI-v2 - In memory device registry', function () {
 
             const devices = [];
 
-            for (let i = 0; i < 10; i++) 
-            {
-                devices.push(
-                {
+            for (let i = 0; i < 10; i++) {
+                devices.push({
                     id: 'id' + i,
-                    name : 'name' + i,
+                    name: 'name' + i,
                     type: 'Light' + i,
                     internalId: 'internal' + i,
                     service: 'smartgondor',
                     subservice: 'gardens',
-                    active: [ {
+                    active: [
+                        {
                             id: 'attrId',
                             type: 'attrType' + i,
                             value: i
-                        }]
+                        }
+                    ]
                 });
             }
 
@@ -230,10 +233,8 @@ describe('NGSI-v2 - In memory device registry', function () {
         afterEach(function (done) {
             iotAgentLib.clearRegistry(done);
         });
-        it('should return the name and type of device', function (done)
-        {
-            iotAgentLib.getDeviceByNameAndType('name5', 'Light5','smartgondor', 'gardens' ,function(error, device)
-            {
+        it('should return the name and type of device', function (done) {
+            iotAgentLib.getDeviceByNameAndType('name5', 'Light5', 'smartgondor', 'gardens', function (error, device) {
                 should.not.exist(error);
                 should.exist(device);
                 should.exist(device.name);

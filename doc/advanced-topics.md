@@ -8,6 +8,7 @@
 -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
 -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
 -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+-   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
 -   [Data mapping plugins](#data-mapping-plugins)
     -   [Development](#development)
     -   [Provided plugins](#provided-plugins)
@@ -20,7 +21,6 @@
         -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
     -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
     -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-    -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
 
 ### Secured access to the Context Broker
 
@@ -367,6 +367,28 @@ This is a flag that can be enabled by activating the parameter `appendMode` in t
 [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). If this flag is
 activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
 UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
+### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+
+Since those configuration parameters are quite similar, this section is intended to clarify the relation between them. 
+
+If `autoprovision` is set to `true` (default case), the agent will perform an initial request creating a new entity into 
+the Context Broker with **only** the static and active attributes provisioned in the config group, and also a new
+Device in the agent, every time a measure arrives with a new `device_id`. Otherwise, this measure is ignored. This is 
+something related to the **southbound**.
+
+What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device 
+provision or config group. That also would avoid propagating the measures to the Context Broker.
+
+The default way the agent updates the information into the Context Broker is by using an update request. If 
+`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store 
+the attributes even if they are not present in the entity. This seems the same functionality that the one provided by
+`autoprovision`, but it is a different concept since the scope of this config is to setup how the IoT interacts with the
+context broker, this is something related to the **northbound**.
+
+Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously 
+the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further 
+information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ### Data mapping plugins
 

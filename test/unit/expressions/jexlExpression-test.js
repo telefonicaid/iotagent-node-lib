@@ -234,6 +234,26 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When an concatarr function is used with an array', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('array|concatarr(array)', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.deepEqual([1, 2, 1, 2]);
+                done();
+            });
+        });
+    });
+
+    describe('When an joinarrtostr function is used with an array', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('array|joinarrtostr("_")', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('1_2');
+                done();
+            });
+        });
+    });
+
     describe('When a function is applied to an array', function () {
         it('should work on the expression value', function (done) {
             expressionParser.parse('array[1]+1', scope, function (error, result) {
@@ -313,14 +333,15 @@ describe('Jexl expression interpreter', function () {
 
     describe('When a JSON parse transformation is applied', function () {
         it('should work on the expression value', function (done) {
-            expressionParser.parse('"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse', scope, function (
-                error,
-                result
-            ) {
-                should.not.exist(error);
-                result.should.eql(scope.object);
-                done();
-            });
+            expressionParser.parse(
+                '"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse',
+                scope,
+                function (error, result) {
+                    should.not.exist(error);
+                    result.should.eql(scope.object);
+                    done();
+                }
+            );
         });
     });
 
