@@ -73,7 +73,7 @@ overriding the group setting.
 ```
 
 When connected to an **NGSI-LD** context broker, an IoT Agent is able to indicate whether it is willing to accept `null`
-values and also whether it is able to process the **NGSI-LD** `datasetId` meta data element. Setting these
+values and also whether it is able to process the **NGSI-LD** `datasetId` metadata element. Setting these
 values to `false` will cause the IoT Agent to return a 400 **Bad Request** HTTP status code explaining that the IoT
 Agent does not support nulls or multi-attribute requests if they are encountered.
 
