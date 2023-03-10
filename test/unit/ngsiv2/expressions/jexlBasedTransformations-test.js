@@ -437,16 +437,31 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         const values = [
             {
                 name: 'p',
-                type: 'centigrades',
-                value: '52'
+                type: 'Number',
+                value: 1040
             }
         ];
 
-        it('should apply the expression before sending the values', function (done) {
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
+                    )
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+        });
+
+        it('should ignore the expression and send the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
-                should.exist(error);
-                error.name.should.equal('INVALID_EXPRESSION');
-                error.code.should.equal(400);
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
