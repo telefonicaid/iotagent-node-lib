@@ -1,6 +1,12 @@
 {
     "@context": "http://context.json-ld",
     "endpoint": "http://smartgondor.com",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "information": [
         {
             "entities": [
@@ -9,10 +15,12 @@
                     "type": "Light"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "temperature"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations" :["retrieveOps"],
     "type": "ContextSourceRegistration"
 }
