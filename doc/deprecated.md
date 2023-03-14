@@ -19,7 +19,9 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to Node.js v10 in iotagent-node-lib 2.15.0 (finally removed in 2.16.0)
 -   Support to Node.js v12 in iotagent-node-lib 2.24.0 (finally removed in 2.25.0)
 -   Support to NGSI-LD v1.3 in iotagent-node-lib 2.25.0
--   Support to `deviceRegistry.type=memory` value. 
+-   Support groups (provision) statically defined by configuration.
+-   Support to `deviceRegistry.type=memory` value.
+ 
 
 The use of Node.js v14 is highly recommended.
 
