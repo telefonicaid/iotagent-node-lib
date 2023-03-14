@@ -1,5 +1,11 @@
 {
     "type":"ContextSourceRegistration",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "information":[
         {
             "entities":[
@@ -8,11 +14,13 @@
                     "id":"urn:ngsi-ld:Light:light1"
                 }
             ],
-            "properties":[
+            "propertyNames":[
                 "move"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations":["updateOps"],
     "endpoint":"http://smartgondor.com",
     "@context": "http://context.json-ld"
 }

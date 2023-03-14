@@ -1,18 +1,28 @@
 {
-  "type": "ContextSourceRegistration",
-  "information": [
-    {
-      "entities": [
+    "type": "ContextSourceRegistration",
+    "information": [
         {
-          "type": "Motion",
-          "id": "urn:ngsi-ld:Motion:motion1"
+            "entities": [
+                {
+                    "type": "Motion",
+                    "id": "urn:ngsi-ld:Motion:motion1"
+                }
+            ],
+            "propertyNames": [
+                "moving"
+            ]
         }
-      ],
-      "properties": [
-        "moving"
-      ]
-    }
-  ],
-  "endpoint": "http://smartgondor.com",
-  "@context": "http://context.json-ld"
+    ],
+    "mode": "exclusive",
+    "operations": [
+        "retrieveOps"
+    ],
+    "endpoint": "http://smartgondor.com",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
+    "@context": "http://context.json-ld"
 }

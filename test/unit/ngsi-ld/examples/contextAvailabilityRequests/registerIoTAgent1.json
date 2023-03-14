@@ -1,18 +1,28 @@
 {
-    "@context": "http://context.json-ld",
-    "endpoint": "http://smartgondor.com",
-    "information": [
+  "type": "ContextSourceRegistration",
+  "information": [
+    {
+      "entities": [
         {
-            "entities": [
-                {
-                    "id": "urn:ngsi-ld:Light:light1",
-                    "type": "Light"
-                }
-            ],
-            "properties": [
-                "temperature"
-            ]
+          "type": "Light",
+          "id": "urn:ngsi-ld:Light:light1"
         }
-    ],
-    "type": "ContextSourceRegistration"
+      ],
+      "propertyNames": [
+        "temperature"
+      ]
+    }
+  ],
+  "mode": "exclusive",
+  "operations": [
+    "retrieveOps"
+  ],
+  "endpoint": "http://smartgondor.com",
+  "contextSourceInfo": [
+    {
+      "key": "jsonldContext",
+      "value": "http://context.json-ld"
+    }
+  ],
+  "@context": "http://context.json-ld"
 }
