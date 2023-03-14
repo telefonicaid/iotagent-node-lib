@@ -4,15 +4,25 @@
     {
       "entities": [
         {
-          "type": "RobotPre",
-          "id": "urn:ngsi-ld:RobotPre:TestRobotPre"
+          "type": "Light",
+          "id": "urn:ngsi-ld:Light:light1"
         }
       ],
-      "properties": [
-        "moving"
+      "propertyNames": [
+        "temperature"
       ]
     }
   ],
+  "mode": "exclusive",
+  "operations": [
+    "retrieveOps"
+  ],
   "endpoint": "http://smartgondor.com",
+  "contextSourceInfo": [
+    {
+      "key": "jsonldContext",
+      "value": "http://context.json-ld"
+    }
+  ],
   "@context": "http://context.json-ld"
 }
