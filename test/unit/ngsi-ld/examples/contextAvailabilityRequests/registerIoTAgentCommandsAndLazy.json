@@ -1,20 +1,31 @@
 {
-    "@context": "http://context.json-ld",
-    "endpoint": "http://smartgondor.com",
-    "information": [
+  "type": "ContextSourceRegistration",
+  "information": [
+    {
+      "entities": [
         {
-            "entities": [
-                {
-                    "id": "urn:ngsi-ld:Robot:r2d2",
-                    "type": "Robot"
-                }
-            ],
-            "properties": [
-                "batteryLevel",
-                "position",
-                "orientation"
-            ]
+          "type": "Robot",
+          "id": "urn:ngsi-ld:Robot:r2d2"
         }
-    ],
-    "type": "ContextSourceRegistration"
+      ],
+      "propertyNames": [
+        "batteryLevel",
+        "position",
+        "orientation"
+      ]
+    }
+  ],
+  "mode": "exclusive",
+  "operations": [
+    "retrieveOps",
+    "updateOps"
+  ],
+  "endpoint": "http://smartgondor.com",
+  "contextSourceInfo": [
+    {
+      "key": "jsonldContext",
+      "value": "http://context.json-ld"
+    }
+  ],
+  "@context": "http://context.json-ld"
 }

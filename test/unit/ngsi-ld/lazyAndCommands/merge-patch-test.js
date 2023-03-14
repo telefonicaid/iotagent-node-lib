@@ -146,7 +146,6 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('FATAL');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
