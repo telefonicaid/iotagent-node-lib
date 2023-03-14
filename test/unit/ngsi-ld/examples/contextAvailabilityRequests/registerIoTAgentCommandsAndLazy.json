@@ -19,7 +19,7 @@
   "operations": [
     "retrieveOps",
     "updateOps",
-    "merge"
+    "mergeEntity"
   ],
   "endpoint": "http://smartgondor.com",
   "contextSourceInfo": [
