@@ -44,7 +44,12 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        ldSupport: {
+            null: true,
+            datasetId: false,
+            merge: true
+        }
     },
     types: {
         Robot: {

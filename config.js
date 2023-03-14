@@ -32,7 +32,8 @@ var config = {
         host: '0.0.0.0',
         ldSupport : {
            null: true,
-           datasetId: true
+           datasetId: true,
+           merge: false
        }
     },
     authentication: {

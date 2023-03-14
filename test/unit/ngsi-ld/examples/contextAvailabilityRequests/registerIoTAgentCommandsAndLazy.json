@@ -18,7 +18,8 @@
   "mode": "exclusive",
   "operations": [
     "retrieveOps",
-    "updateOps"
+    "updateOps",
+    "merge"
   ],
   "endpoint": "http://smartgondor.com",
   "contextSourceInfo": [
