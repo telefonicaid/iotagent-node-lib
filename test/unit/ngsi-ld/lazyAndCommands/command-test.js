@@ -184,7 +184,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -287,7 +286,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -368,7 +366,7 @@ describe('NGSI-LD - Command functionalities', function () {
     describe('When a sequential command with datasetId updates via PATCH  /attrs/attr-name arrives to the IoT Agent', function () {
         const options = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs',
-            method: 'PUT',
+            method: 'PATCH',
             json: {
                 position: [
                     {
@@ -390,7 +388,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -496,7 +493,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -594,7 +590,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -691,7 +686,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -794,7 +788,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -902,7 +895,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -1006,7 +998,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -1104,7 +1095,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -1246,7 +1236,6 @@ describe('NGSI-LD - Command functionalities', function () {
         };
 
         beforeEach(function (done) {
-            logger.setLevel('ERROR');
             iotAgentLib.register(device3, function (error) {
                 done();
             });
