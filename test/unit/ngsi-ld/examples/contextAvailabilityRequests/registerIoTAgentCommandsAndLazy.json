@@ -4,18 +4,22 @@
     {
       "entities": [
         {
-          "type": "Light",
-          "id": "urn:ngsi-ld:Light:light1"
+          "type": "Robot",
+          "id": "urn:ngsi-ld:Robot:r2d2"
         }
       ],
       "propertyNames": [
-        "temperature"
+        "batteryLevel",
+        "position",
+        "orientation"
       ]
     }
   ],
   "mode": "exclusive",
   "operations": [
-    "retrieveOps"
+    "retrieveOps",
+    "updateOps",
+    "mergeEntity"
   ],
   "endpoint": "http://smartgondor.com",
   "contextSourceInfo": [

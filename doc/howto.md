@@ -430,6 +430,14 @@ iotAgentLib.setDataUpdateHandler(updateContextHandler);
 iotAgentLib.setDataQueryHandler(queryContextHandler);
 ```
 
+Where necessary, additional handlers to deal with command actuations and merge-patch operations may also be added when
+necessary.
+
+```javascript
+iotAgentLib.setCommandHandler(commandHandler);
+iotAgentLib.setMergePatchHandler(mergePatchHandler);
+```
+
 #### IOTA Testing
 
 In order to test it, we need to create an HTTP server simulating the device. The quickest way to do that may be using

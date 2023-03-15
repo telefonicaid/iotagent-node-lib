@@ -354,6 +354,83 @@ values.
 The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in
 the IoT Agent).
 
+##### iotagentLib.setCommandHandler()
+
+###### Signature
+
+```javascript
+function setCommandHandler(newHandler)
+```
+
+###### Description
+
+Sets the new user handler for registered entity commands. This handler will be called whenever a command request arrives, with
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
+
+The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
+
+```javascript
+callback(null, {
+    type: "TheType",
+    isPattern: false,
+    id: "EntityID",
+    attributes: [
+        {
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
+        }
+    ]
+});
+```
+
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
+entity, and all the results will be combined into a single response.  Only IoT Agents which deal with actuator devices will include a handler for commands.
+
+###### Params
+
+-   newHandler: User handler for command requests.
+
+##### iotagentLib.setMergePatchHandler()
+
+###### Signature
+
+```javascript
+function setMergePatchHandler(newHandler)
+```
+
+###### Description
+
+Sets the new user handler for NGSI-LD Entity [merge-patch](https://datatracker.ietf.org/doc/html/rfc7386) requests. This handler will be called whenever a merge-patch request arrives, with
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
+
+The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
+
+```javascript
+callback(null, {
+    type: "TheType",
+    isPattern: false,
+    id: "EntityID",
+    attributes: [
+        {
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
+        }
+    ]
+});
+```
+
+In the case of NGSI-LD requests affecting multiple entities, this handler will be
+called multiple times. Since merge-patch is an advanced function, not all IoT Agents
+will include a handler for merge-patch.
+
+###### Params
+
+-   newHandler: User handler for merge-patch requests.
+
 ##### iotagentLib.setProvisioningHandler()
 
 ###### Signature
