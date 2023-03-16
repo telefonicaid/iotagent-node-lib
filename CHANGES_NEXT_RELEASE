@@ -1,5 +1,1 @@
 - Refactor replace alias, multientity, expressions and timestamp plugins by a single processing (#1195, #1314)
-- Add NGSI-LD Merge-Patch Support Handling #1283
-- Update to offer NGSI-LD 1.6.1. Registrations #1302
-- Document removal of support for NGSI-LD 1.3.1 Interface
-
