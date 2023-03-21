@@ -30,10 +30,6 @@
                 "id": "SO3"
             },
             {
-                "type": "WM",
-                "id": "SO4"
-            },
-            {
                 "vol": {
                     "type": "number",
                     "value": "42"

@@ -1,6 +1,10 @@
 {
   "actionType": "update",
-  "entities": [
+    "entities": [
+    {
+        "id": "ws11",
+        "type": "WrongStation"
+    },
     {
       "id": "WrongStation1",
       "type": "WrongStation",

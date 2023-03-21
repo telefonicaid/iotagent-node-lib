@@ -127,9 +127,6 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
 
         iotAgentLib.activate(iotAgentConfigJexl, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
