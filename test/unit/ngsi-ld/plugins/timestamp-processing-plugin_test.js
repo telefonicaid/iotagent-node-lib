@@ -28,6 +28,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
+const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
     contextBroker: {
@@ -99,11 +100,26 @@ describe('NGSI-LD - Timestamp processing plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextProcessTimestamp.json'
-                    )
-                )
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
+                    const expectedBody = utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples' +
+                            '/contextRequests/updateContextProcessTimestamp.json'
+                    );
+
+                    // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
+                    // fields. The following code just checks that TimeInstant fields are present.
+                    if (!body[0].state.observedAt) {
+                        return false;
+                    }
+
+                    const timeInstantAtt = body[0].state.observedAt;
+                    if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+                        delete body[0].state.observedAt;
+                        delete expectedBody[0].state.observedAt;
+                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                    }
+                    return false;
+                })
                 .reply(204);
         });
 

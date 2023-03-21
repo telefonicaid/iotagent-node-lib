@@ -614,16 +614,11 @@ describe('NGSI-LD - Multi-entity plugin', function () {
 
 describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
 
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
-                done();
+               done();
             });
         });
     });
