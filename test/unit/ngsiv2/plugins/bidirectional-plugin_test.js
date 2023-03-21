@@ -241,7 +241,6 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             let transformedHandler = false;
 
             function mockedHandler(device, values, callback) {
-
                 let latitudeFound = false;
                 let longitudeFound = false;
 
@@ -270,7 +269,6 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             });
         });
     });
-
 
     describe('When a notification with metadata arrives for a bidirectional attribute', function () {
         const notificationOptions = {
@@ -314,7 +312,6 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
 
         it('should execute the original handler', function (done) {
             function mockedHandler(device, notification, callback) {
-
                 notification[0].name.should.equal('location');
                 notification[0].value.should.equal('12.4, -9.6');
                 notification[0].metadata.qos.value.should.equal(1);
@@ -383,7 +380,6 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             });
         });
     });
-
 
     describe('When a new Group provisioning request arrives with bidirectional attributes', function () {
         const provisionGroup = {
