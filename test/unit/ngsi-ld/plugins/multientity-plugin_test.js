@@ -732,12 +732,26 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
+                    const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin3.json'
-                    )
-                )
+                    );
+
+                    // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
+                    // fields. The following code just checks that TimeInstant fields are present.
+                    if (!body[1].humidity.observedAt) {
+                        return false;
+                    }
+
+                    const timeInstantAtt = body[1].humidity.observedAt;
+                    if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+                        delete body[1].humidity.observedAt;
+                        delete expectedBody[1].humidity.observedAt;
+                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                    }
+                    return false;
+                })
                 .reply(204);
 
             const tsValue = [
