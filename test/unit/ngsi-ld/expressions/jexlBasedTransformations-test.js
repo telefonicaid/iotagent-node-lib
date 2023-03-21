@@ -293,7 +293,7 @@ const iotAgentConfigTS = {
 
 describe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        //logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
