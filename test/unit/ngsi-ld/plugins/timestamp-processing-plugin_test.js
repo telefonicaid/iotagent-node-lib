@@ -99,11 +99,9 @@ describe('NGSI-LD - Timestamp processing plugin', function () {
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     const expectedBody = utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples' +
-                            '/contextRequests/updateContextProcessTimestamp.json'
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextProcessTimestamp.json'
                     );
 
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
