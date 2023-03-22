@@ -1,1 +1,2 @@
+- Simplify cast to native attributes type: use just JSON.parse (#1323)
 - Refactor replace alias, multientity, expressions and timestamp plugins by a single processing (#1195, #1314)
