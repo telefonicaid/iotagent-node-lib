@@ -9,7 +9,7 @@
   },
   "pressure": {
     "type":"Number",
-    "value":20071103,
+    "value":"20071103T131805",
     "metadata": {
       "type":"Property",
       "value":"Hgmm"
