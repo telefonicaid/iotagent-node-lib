@@ -75,6 +75,18 @@ const iotAgentConfig = {
                 {
                     name: 'configuration',
                     type: 'Object'
+                },
+                {
+                    name: 'date',
+                    type: 'Date'
+                },
+                {
+                    name: 'time',
+                    type: 'Time'
+                },
+                {
+                    name: 'dateTime',
+                    type: 'DateTime'
                 }
             ]
         }
@@ -327,7 +339,7 @@ describe('NGSI-LD - JSON native types autocast test', function () {
     describe('When the IoT Agent receives new information from a device. Observation with Time type', function () {
         const values = [
             {
-                name: 'configuration',
+                name: 'time',
                 type: 'Time',
                 value: '2016-04-30T14:59:46.000Z'
             }
@@ -360,7 +372,7 @@ describe('NGSI-LD - JSON native types autocast test', function () {
     describe('When the IoT Agent receives new information from a device. Observation with DateTime type', function () {
         const values = [
             {
-                name: 'configuration',
+                name: 'dateTime',
                 type: 'DateTime',
                 value: '2016-04-30Z'
             }
@@ -393,7 +405,7 @@ describe('NGSI-LD - JSON native types autocast test', function () {
     describe('When the IoT Agent receives new information from a device. Observation with Date type', function () {
         const values = [
             {
-                name: 'configuration',
+                name: 'date',
                 type: 'Date',
                 value: '2016-04-30T14:59:46.000Z'
             }

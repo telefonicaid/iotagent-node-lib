@@ -6,26 +6,26 @@
     },
     {
         "@context": "http://context.json-ld",
-        "id": "urn:ngsi-ld:Higrometer:Higro2002",
-        "pressure": {
-            "type": "Property",
-            "value": {
-                "@type": "Hgmm",
-                "@value": "17"
-            }
-        },
-        "type": "Higrometer"
-    },
-    {
-        "@context": "http://context.json-ld",
         "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "type": "Higrometer",
         "pressure": {
             "type": "Property",
             "value": {
                 "@type": "Hgmm",
                 "@value": "16"
             }
-        },
-        "type": "Higrometer"
+        }
+    },
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2002",
+        "type": "Higrometer",
+        "pressure": {
+            "type": "Property",
+            "value": {
+                "@type": "Hgmm",
+                "@value": "17"
+            }
+        }
     }
 ]
