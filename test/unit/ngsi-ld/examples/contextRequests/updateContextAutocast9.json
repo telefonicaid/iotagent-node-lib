@@ -1,7 +1,7 @@
 [
     {
         "@context": "http://context.json-ld",
-        "configuration": {
+        "dateTime": {
             "type": "Property",
             "value": {
                 "@type": "DateTime",

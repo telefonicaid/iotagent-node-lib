@@ -198,9 +198,6 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
@@ -746,13 +743,13 @@ describe('NGSI-LD - Expression-based transformations plugin', function () {
         });
     });
 
-    describe('When an update comes for attributes without expressions and Object type', function () {
+    describe('When an update comes for attributes without expressions and Array type', function () {
         // Case: Update for a JSON array attribute without expression
 
         const values = [
             {
                 name: 'r',
-                type: 'Object',
+                type: 'Array',
                 value: ['v0.1', 'v0.2', 'v0.3']
             }
         ];

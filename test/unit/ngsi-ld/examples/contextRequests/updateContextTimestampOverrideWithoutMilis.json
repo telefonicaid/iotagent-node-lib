@@ -2,10 +2,11 @@
     {
         "@context": "http://context.json-ld",
         "id": "urn:ngsi-ld:Light:light1",
+        "type": "Light",
         "state": {
             "type": "Property",
-            "value": true
-        },
-        "type": "Light"
+            "value": true,
+            "observedAt": "2022-10-22T22:22:22.000Z"
+        }
     }
 ]

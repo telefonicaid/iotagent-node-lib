@@ -1,1 +1,2 @@
 - Refactor replace alias, multientity, expressions and timestamp plugins by a single processing (#1195, #1314)
+- Refactor NGSI-LD processing to align with alias, multientity, expressions and timestamp plugin changes (#1322)

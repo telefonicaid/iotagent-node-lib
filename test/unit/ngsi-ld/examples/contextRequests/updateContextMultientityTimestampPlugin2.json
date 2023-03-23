@@ -6,14 +6,15 @@
     },
     {
         "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Higrometer:Higro2000",
+        "type": "Higrometer",
         "humidity": {
             "type": "Property",
             "value": {
                 "@type": "Percentage",
                 "@value": "12"
-            }
-        },
-        "id": "urn:ngsi-ld:Higrometer:Higro2000",
-        "type": "Higrometer"
+            },
+            "observedAt": "2023-03-21T16:54:11.464Z"
+        }
     }
 ]
