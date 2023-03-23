@@ -123,8 +123,8 @@ describe('NGSI-LD - Timestamp compression plugin', function () {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.updateNgsi2);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.queryNgsi2);
+                // iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.updateNgsi2);
+                // iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.queryNgsi2);
                 done();
             });
         });

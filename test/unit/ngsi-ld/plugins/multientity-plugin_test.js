@@ -246,9 +246,9 @@ describe('NGSI-LD - Multi-entity plugin', function () {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
+                // iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                // iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                // iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
                 done();
             });
         });
@@ -614,11 +614,10 @@ describe('NGSI-LD - Multi-entity plugin', function () {
 
 describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
-
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-               done();
+                done();
             });
         });
     });
@@ -726,8 +725,7 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
         it('should propagate user provider timestamp to mapped entities', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin3.json'

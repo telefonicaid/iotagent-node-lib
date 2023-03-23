@@ -961,9 +961,9 @@ describe('NGSI-LD: JEXL - Timestamps', function () {
 
         iotAgentLib.activate(iotAgentConfigTS, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
+                //                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+                //                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
+                //                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
