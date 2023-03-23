@@ -1,7 +1,7 @@
 [
     {
         "@context": "http://context.json-ld",
-        "configuration": {
+        "time": {
             "type": "Property",
             "value": {
                 "@type": "Time",
