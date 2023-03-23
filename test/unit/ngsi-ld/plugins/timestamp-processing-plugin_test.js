@@ -69,7 +69,6 @@ describe('NGSI-LD - Timestamp processing plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                //                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
