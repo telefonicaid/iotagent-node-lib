@@ -5,7 +5,7 @@
         "pressure": {
             "type": "Property",
             "unitCode": "Hgmm",
-            "value": "20071103T131805"
+            "value": 20071103
         },
         "temperature": {
             "type": "Property",
