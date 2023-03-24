@@ -1313,9 +1313,6 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
 
         iotAgentLib.activate(iotAgentConfigTS, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });

@@ -123,8 +123,6 @@ describe('NGSI-LD - Timestamp compression plugin', function () {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.compressTimestamp.updateNgsi2);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.compressTimestamp.queryNgsi2);
                 done();
             });
         });
@@ -210,35 +208,6 @@ describe('NGSI-LD - Timestamp compression plugin', function () {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When a query comes for a timestamp through the plugin', function () {
-        const values = ['state', 'TheTargetValue'];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .get('/ngsi-ld/v1/entities/urn:ngsi-ld:Light:light1?attrs=state,TheTargetValue')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextResponses/queryContextCompressTimestamp1Success.json'
-                    )
-                );
-        });
-
-        it('should return an entity with all its timestamps without separators (basic format)', function (done) {
-            iotAgentLib.query('light1', 'Light', '', values, function (error, response) {
-                should.not.exist(error);
-                should.exist(response);
-                should.exist(response.TheTargetValue);
-                should.exist(response.TheTargetValue.value);
-                response.TheTargetValue.value.should.equal('20071103T131805');
                 done();
             });
         });

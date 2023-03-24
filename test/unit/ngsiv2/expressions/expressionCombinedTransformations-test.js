@@ -213,9 +213,6 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
 
         iotAgentLib.activate(iotAgentConfigLegacy, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
