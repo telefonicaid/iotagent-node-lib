@@ -1,23 +1,33 @@
 # IoT Agent API
 
+<!-- TOC WIP -->
+
+# Preface
+
 The **IoT Agent node library** offers a simple REST API which provides common functionality to access, provision and
 decommission devices.
 
-## About API
+<!-- TOPICS WIP -->
 
-A GET request to the `/iot/about` path, will return a payload similar to the following:
+# Topics
 
-```json
-{
-    "libVersion": "2.7.0",
-    "port": "4041",
-    "baseRoot": "/",
-    "version": "1.7.0"
-}
-```
+## Terminology
 
-the `version` field will be read from the `iotaVersion` field of the config, if it exists. It can be used as a heartbeat
-operation to check the health of the IoT Agent if required.
+### Service groups
+
+### Devices
+
+### Provision
+
+## Device attributes model
+
+### `attributes`
+
+### `static_attributes`
+
+### `commands`
+
+### `lazy` attributes
 
 ## Service Group API
 
@@ -70,122 +80,6 @@ information configured:
 -   **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific
     types of devices.
 
-### Service Group Model
-
-The table below shows the information held in the service group provisioning resource. The table also contains the
-correspondence between the API resource fields and the same fields in the database model.
-
-| Payload Field                  | DB Field                       | Definition                                                                                                                                                                                                                                                                |
-| ------------------------------ | ------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `service`                      | `service`                      | Service of the devices of this type                                                                                                                                                                                                                                       |
-| `subservice`                   | `subservice`                   | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
-| `resource`                     | `resource`                     | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
-| `apikey`                       | `apikey`                       | API Key string.                                                                                                                                                                                                                                                           |
-| `timestamp`                    | `timestamp`                    | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. | true |
-| `entity_type`                  | `entity_type`                  | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                         |
-| `trust`                        | `trust`                        | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                       |
-| `cbHost`                       | `cbHost`                       | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                |
-| `lazy`                         | `lazy`                         | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                                                                                                                                 |
-| `commands`                     | `commands`                     | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                          |
-| `attributes`                   | `attributes`                   | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                            |
-| `static_attributes`            | `staticAttributes`             | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                                                                                                                               |
-| `internal_attributes`          | `internalAttributes`           | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
-| `expressionLanguage`           | `expresionLanguage`            | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, `legacy` is used as default value.                                                                                      |
-| `explicitAttrs`                | `explicitAttrs`                | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
-| `entityNameExp`                | `entityNameExp`                | optional field to allow use expressions to define entity name, instead default `id` and `type`                                                                                                                                                                            |
-| `ngsiVersion`                  | `ngsiVersion`                  | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
-| `defaultEntityNameConjunction` | `defaultEntityNameConjunction` | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
-| `autoprovision`                | `autoprovision`                | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
-
-### Service Group Endpoint
-
-The following actions are available under the service group endpoint:
-
-##### POST /iot/services
-
-Creates a set of service groups for the given service and service path. The service and subservice information will
-taken from the headers, overwritting any preexisting values.
-
-Body params:
-
--   `services`: list of service groups to create. Each one adheres to the service group Model.
-
-E.g.:
-
-```json
-{
-    "services": [
-        {
-            "resource": "/deviceTest",
-            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "type": "Light",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "wheel1", "type": "Wheel" }],
-            "attributes": [
-                {
-                    "name": "luminescence",
-                    "type": "Integer",
-                    "metadata": {
-                        "unitCode": { "type": "Text", "value": "CAL" }
-                    }
-                }
-            ],
-            "lazy": [{ "name": "status", "type": "Boolean" }]
-        }
-    ]
-}
-```
-
-Returns:
-
--   200 OK if successful, with no payload.
--   400 MISSING_HEADERS if any of the mandatory headers is not present.
--   400 WRONG_SYNTAX if the body doesn't comply with the schema.
--   500 SERVER ERROR if there was any error not contemplated above.
-
-##### GET /iot/services
-
-Retrieves service groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
-subservices for the service are returned. The specific subservice parameters are returned in any other case.
-
-Returns:
-
--   200 OK if successful, returning a service group body.
--   400 MISSING_HEADERS if any of the mandatory headers is not present.
--   500 SERVER ERROR if there was any error not contemplated above.
-
-##### PUT /iot/services
-
-Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
-Takes a service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
-existing attributes will be updated
-
-E.g.:
-
-```json
-{
-    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-    "cbHost": "http://orion:1026"
-}
-```
-
-Returns:
-
--   200 OK if successful, returning the updated body.
--   400 MISSING_HEADERS if any of the mandatory headers is not present.
--   500 SERVER ERROR if there was any error not contemplated above.
-
-##### DELETE /iot/services
-
-Removes a service group configuration from the DB, specified by the `resource` and `apikey` query parameters.
-
-Returns:
-
--   200 OK if successful.
--   400 MISSING_HEADERS if any of the mandatory headers is not present.
--   500 SERVER ERROR if there was any error not contemplated above.
-
 ## Device API
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
@@ -218,33 +112,6 @@ with `type=X`/`apiKey=111` and no other service group has been provisioned.
     the entity inherits from service group but `apiKey` is overridden. Device entity has `type=X` and `apiKey=222`.
 -   IoT Agent receives a provisioning request for an explicit device of `type=Y`/`apiKey=222`. No matching. Device
     entity has `type=Y` and `apiKey=222` and no service group.
-
-### Device model
-
-The table below shows the information held in the Device resource. The table also contains the correspondence between
-the API resource fields and the same fields in the database model.
-
-| Payload Field         | DB Field             | Definition                                                                                                                                                                                                                                                                | Example of value                              |
-| --------------------- | -------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------- |
-| `device_id`           | `id`                 | Device ID that will be used to identify the device.                                                                                                                                                                                                                       | UO834IO                                       |
-| `service`             | `service`            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                                                                                                                                    | smartGondor                                   |
-| `service_path`        | `subservice`         | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                                                                                                                                     | /gardens                                      |
-| `entity_name`         | `name`               | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                          | ParkLamplight12                               |
-| `entity_type`         | `type`               | Type of the entity in the Context Broker                                                                                                                                                                                                                                  | Lamplights                                    |
-| `timezone`            | `timezone`           | Time zone of the sensor if it has any                                                                                                                                                                                                                                     | America/Santiago                              |
-| `timestamp`           | `timestamp`          | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. | true                                          |
-| `apikey`              | `apikey`             | Optional Apikey key string to use instead of group apikey                                                                                                                                                                                                                 | 9n4hb1vpwbjozzmw9f0flf9c2                     |
-| `endpoint`            | `endpoint`           | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                           | http://theDeviceUrl:1234/commands             |
-| `protocol`            | `protocol`           | Name of the device protocol, for its use with an IoT Manager.                                                                                                                                                                                                             | IoTA-UL                                       |
-| `transport`           | `transport`          | Name of the device transport protocol, for the IoT Agents with multiple transport protocols.                                                                                                                                                                              | MQTT                                          |
-| `attributes`          | `active`             | List of active attributes of the device                                                                                                                                                                                                                                   | `[ { "name": "attr_name", "type": "Text" } ]` |
-| `lazy`                | `lazy`               | List of lazy attributes of the device                                                                                                                                                                                                                                     | `[ { "name": "attr_name", "type": "Text" } ]` |
-| `commands`            | `commands`           | List of commands of the device                                                                                                                                                                                                                                            | `[ { "name": "attr_name", "type": "Text" } ]` |
-| `internal_attributes` | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration                                                                                                                                                                                         | LWM2M mappings from object URIs to attributes |
-| `static_attributes`   | `staticAttributes`   | List of static attributes to append to the entity. All the updateContext requests to the CB will have this set of attributes appended.                                                                                                                                    | `[ { "name": "attr_name", "type": "Text" } ]` |
-| `expressionLanguage`  | `expresionLanguage`  | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, legacy is used as default value.                                                                                        |
-| `explicitAttrs`       | `explicitAttrs`      | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   | (see details in specific section)             |
-| `ngsiVersion`         | `ngsiVersion`        | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              | `v2/ld`                                       |
 
 #### Attribute lists
 
@@ -315,63 +182,285 @@ used should be taken from those defined by
 }
 ```
 
-#### API Actions
+<!-- END OF TOPICS WIP -->
 
-##### POST /iot/devices
+# API Routes
 
-Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload.
+## Service Group API
 
-Returns:
+### Service group datamodel
 
--   200 OK if successful.
--   500 SERVER ERROR if there was any error not contemplated above.
+Service group is represented by a JSON object with the following fields:
 
-Payload example:
+| Field                          | Optional | Type           | Expression | Definitiom                                                                                                                                                                                                                                                                |
+| ------------------------------ | -------- | -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service`                      |          | string         |            | Service of the devices of this type                                                                                                                                                                                                                                       |
+| `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
+| `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
+| `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                           |
+| `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `entity_type`                  |          | string         |            | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                         |
+| `trust`                        | ✓        | string         |            | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                       |
+| `cbHost`                       | ✓        | string         |            | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                |
+| `lazy`                         | ✓        |                |            | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                                                                                                                                 |
+| `commands`                     | ✓        |                |            | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                          |
+| `attributes`                   | ✓        |                |            | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                            |
+| `static_attributes`            | ✓        |                |            | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                                                                                                                               |
+| `internal_attributes`          | ✓        |                |            | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
+| `expressionLanguage`           | ✓        | string         |            | optional boolean value, to set expression language used to compute expressions, possible values are: legacy or jexl. When not set or wrongly set, `legacy` is used as default value.                                                                                      |
+| `explicitAttrs`                | ✓        | string or bool | ✓          | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattr)                                                                                    |
+| `entityNameExp`                | ✓        | string         |            | optional field to allow use expressions to define entity name, instead default `id` and `type`                                                                                                                                                                            |
+| `ngsiVersion`                  | ✓        | string         |            | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
+| `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
+| `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
+
+### Service group operations
+
+The following actions are available under the service group endpoint:
+
+#### Create service group `POST /iot/services`
+
+Creates a set of service groups for the given service and service path. The service and subservice information will
+taken from the headers, overwritting any preexisting values.
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request payload**_
+
+-   `services`: an array of of service groups objects to create.
+
+Example:
 
 ```json
 {
-    "devices": [
+    "services": [
         {
-            "device_id": "DevID1",
-            "entity_name": "urn:ngsi-ld:Device:TheDevice1",
-            "entity_type": "Device",
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
             "attributes": [
-                { "object_id": "t", "name": "temperature", "type": "Float" },
-                { "object_id": "h", "name": "humidity", "type": "Float" }
-            ],
-            "lazy": [
                 {
-                    "object_id": "l",
-                    "name": "percentage",
+                    "name": "luminescence",
                     "type": "Integer",
                     "metadata": {
-                        "unitCode": { "type": "Text", "value": "P1" }
+                        "unitCode": { "type": "Text", "value": "CAL" }
                     }
                 }
             ],
-            "commands": [{ "object_id": "t", "name": "turn", "type": "Text" }],
-            "static_attributes": [{ "name": "serialID", "value": "02598347", "type": "Text" }]
+            "lazy": [{ "name": "status", "type": "Boolean" }]
         }
     ]
 }
 ```
 
-##### GET /iot/devices
+_**Response code**_
 
-Returns a list of all the devices in the device registry with all its data.
+-   `200` `OK` if successful, with no payload.
+-   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
+-   `400` `WRONG_SYNTAX` if the body doesn't comply with the schema.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-Query parameters:
+_**Response headers**_
 
--   limit: if present, limits the number of devices returned in the list.
--   offset: if present, skip that number of devices from the original query.
+Successful operations return `Content-Type` header with `application/json` value.
 
-Returns:
+#### List services group `GET /iot/services`
 
--   200 OK if successful, and the selected Device payload in JSON format.
--   404 NOT FOUND if the device was not found in the database.
+Retrieves service groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
+subservices for the service are returned. The specific subservice parameters are returned in any other case.
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Response code**_
+
+-   200 OK if successful, returning a service group body.
+-   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
-Example of return payload:
+_**Response headers**_
+
+Successful operations return `Content-Type` header with `application/json` value.
+
+_**Response payload**_
+
+A json object with a services parameter that contains an array of services that match the request.
+
+Example:
+
+```json
+{
+    "services": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        },
+        {
+            "resource": "/deviceTest2",
+            "apikey": "A21323ASDG12312ASDN21LWQEJPO2J123",
+            "type": "Switch",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "on", "type": "order" }],
+            "attributes": [
+                {
+                    "name": "swithc_status",
+                    "type": "boolean"
+                }
+            ]
+        }
+    ]
+}
+```
+
+#### Modify service group `PUT /iot/services`
+
+Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
+Takes a service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
+existing attributes will be updated
+
+_**Request query parameters**_
+
+| Parameter | Mandatory | Description                                   | Example                                   |
+| --------- | --------- | --------------------------------------------- | ----------------------------------------- |
+| resource  | ✓         | Resource of the service group to be modified. | `/device`                                 |
+| apikey    | ✓         | Apikey of the service group to be modified.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request payload**_
+
+Example:
+
+```json
+{
+    "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+    "cbHost": "http://orion:1026"
+}
+```
+
+_**Response code**_
+
+-   200 OK if successful, returning the updated body.
+-   400 MISSING_HEADERS if any of the mandatory headers is not present.
+-   500 SERVER ERROR if there was any error not contemplated above.:
+
+#### DELETE /iot/services `DELETE /iot/services`
+
+Removes a service group configuration from the DB, specified by the `resource` and `apikey` query parameters.
+
+_**Request query parameters**_
+
+| Parameter | Mandatory | Description                                  | Example                                   |
+| --------- | --------- | -------------------------------------------- | ----------------------------------------- |
+| resource  | ✓         | Resource of the service group to be removed. | `/device`                                 |
+| apikey    | ✓         | Apikey of the service group to be removed.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+## Device API
+
+### Device datamodel
+
+The table below shows the information held in the Device resource. The table also contains the correspondence between
+the API resource fields and the same fields in the database model.
+
+| Field                 | Optional | Type      | Expression | Definitiom                                                                                                                                                                                                                                                       |
+| --------------------- | -------- | --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `device_id`           |          | `string`  |            | Device ID that will be used to identify the device.                                                                                                                                                                                                              |
+| `service`             |          | `string`  |            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                                                                                                                           |
+| `service_path`        |          | `string`  |            | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                                                                                                                            |
+| `entity_name`         |          | `string`  |            | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                 |
+| `entity_type`         |          | `string`  |            | Type of the entity in the Context Broker                                                                                                                                                                                                                         |
+| `timezone`            | ✓        | `string`  |            | Timezone of the device if that has any                                                                                                                                                                                                                           |
+| `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `apikey`              | ✓        | `string`  |            | Apikey key string to use instead of group apikey                                                                                                                                                                                                                 |
+| `endpoint`            | ✓        | `string`  |            | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                  |
+| `protocol`            | ✓        | `string`  |            | Pame of the device protocol, for its use with an IoT Manager                                                                                                                                                                                                     |
+| `transport`           | ✓        | `string`  |            | Transport protocol used by the device to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                     |
+| `attributes`          | ✓        | `array`   |            | List of attributes that will be stored in the Context Broker.                                                                                                                                                                                                    |
+| `commands`            | ✓        | `array`   |            | List of commands that will be stored in the Context Broker.                                                                                                                                                                                                      |
+| `lazy`                | ✓        | `array`   |            | List of lazy attributes that will be stored in the Context Broker.                                                                                                                                                                                               |
+| `static_attributes`   | ✓        | `array`   |            | List of static attributes that will be stored in the Context Broker.                                                                                                                                                                                             |
+| `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                               |
+| `expression_language` | ✓        | `string`  |            | Expression language used in the expressions. Possible values are: `legacy` or `jexl`. When not set or wrongly set, legacy is used as default value.                                                                                                              |
+| `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
+| `mgsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
+
+### Device operations
+
+#### Device list
+
+#### List devices /iot/devices `GET /iot/devices`
+
+List all the devices registered in the IoT Agent device registry with all their information for a given service and
+subservice.
+
+_**Request query parameters**_
+
+| Parameter | Mandatory | Description                                               | Example |
+| --------- | --------- | --------------------------------------------------------- | ------- |
+| `limit`   |           | Maximum number of results to return in a single response. | `20`    |
+| `offset`  |           | Number of results to skip from the original query.        | `0`     |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if there are no devices for the given service and subservice.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response body**_
+
+Example:
 
 ```json
 {
@@ -416,17 +505,72 @@ Example of return payload:
 }
 ```
 
-##### GET /iot/devices/:deviceId
+##### Create device `POST /iot/devices`
+
+Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload.
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request body**_
+
+The body of the a JSON object with field named `devices` containing a list of devices to be provisioned.
+
+Example:
+
+```json
+{
+    "devices": [
+        {
+            "device_id": "DevID1",
+            "entity_name": "urn:ngsi-ld:Device:TheDevice1",
+            "entity_type": "Device",
+            "attributes": [
+                { "object_id": "t", "name": "temperature", "type": "Float" },
+                { "object_id": "h", "name": "humidity", "type": "Float" }
+            ]
+        }
+    ]
+}
+```
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+#### Device by ID
+
+##### Get device details `GET /iot/devices/:deviceId`
 
 Returns all the information about a particular device.
 
-Returns:
+_**Request URL parameters**_
 
--   200 OK if successful, and the selected Device payload in JSON format.
--   404 NOT FOUND if the device was not found in the database.
--   500 SERVER ERROR if there was any error not contemplated above.
+| Parameter  | Mandatory | Description | Example  |
+| ---------- | --------- | ----------- | -------- |
+| `deviceId` | ✓         | Device ID.  | `DevID1` |
 
-Example of return payload:
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if the device was not found in the database.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response body**_
+
+Example:
 
 ```json
 {
@@ -452,29 +596,53 @@ Example of return payload:
 }
 ```
 
-##### DELETE /iot/devices/:deviceId
+##### Delete device `DELETE /iot/devices/:deviceId`
 
-Remove a device from the device registry. No payload is required or received.
+Remove a device from the device registry. The device is identified by the Device ID.
 
-Returns:
+_**Request URL parameters**_
 
--   200 OK if successful, with no payload.
--   404 NOT FOUND if the device was not found in the database.
--   500 SERVER ERROR if there was any error not contemplated above.
+| Parameter  | Mandatory | Description             | Example  |
+| ---------- | --------- | ----------------------- | -------- |
+| `deviceId` | ✓         | Device ID to be deleted | `DevID1` |
 
-##### PUT /iot/devices/:deviceId
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if the device was not found in the database.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+##### Modify device `PUT /iot/devices/:deviceId`
 
 Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
 device can be changed using this method (as they are used to link the already created entities in the CB to the
 information in the device). Service and servicepath, being taken from the headers, can't be changed also.
 
-Returns:
+_**Request URL parameters**_
 
--   200 OK if successful, with no payload.
--   404 NOT FOUND if the device was not found in the database.
--   500 SERVER ERROR if there was any error not contemplated above.
+| Parameter  | Mandatory | Description             | Example  |
+| ---------- | --------- | ----------------------- | -------- |
+| `deviceId` | ✓         | Device ID to be updated | `DevID1` |
 
-Payload example:
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request body**_
+
+The body of the a JSON object with the fields to be updated.
+
+Example:
 
 ```json
 {
@@ -489,23 +657,80 @@ Payload example:
 }
 ```
 
-## Log API
+_**Response code**_
 
-The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). This library is
-required in a `logger` object, shared between all of the modules. In order for the logging to be consistent across the
-different modules of an IoTAgent (i.e.: the ones provided by the IoTA Library as well as those created for the
-particular IoTAgent), the `logger` object is exported in the `logModule` property of the library. The agents should use
-this module for logging.
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if the device was not found in the database.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-The IoT Agent Library also provides a configuration API that lets the administrator change and manage the log level in
-realtime. This API has the following two actions:
+## Miscellaneous API
 
-##### PUT /admin/log
+### Log operations
 
-This operation gets the new log level using the query parameter `level`. If the new level is a valid level for Logops
-(i.e.: one of the items in the array ['INFO', 'ERROR', 'FATAL', 'DEBUG', 'WARNING']), it will be automatically changed
-for future logs.
+The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). The IoT Agent
+Library provides a configuration API that lets the administrator change and manage the log level in realtime.
 
-##### PUT /admin/log
+#### Modify Logleve `PUT /admin/log`
+
+This operation gets the new log level using the query parameter `level`. If the new level is a valid level, it will be
+automatically changed for future logs.
+
+_**Request query parameters**_
+
+| Parameter | Mandatory | Description                                                                                                         | Example |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------- | ------- |
+| `level`   | ✓         | New log level. One of the following: `INFO`, `ERROR`, `FATAL`, `DEBUG`, `WARNING`. it will be automatically changed |
+
+for future logs. | `DEBUG` |
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+#### Retrieve log level `PUT /admin/log`
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response body**_
 
 Returns the current log level, in a json payload with a single attribute `level`.
+
+Example:
+
+```json
+{
+    "level": "DEBUG"
+}
+```
+
+### About operations
+
+#### List IoTA Information `GET /iot/about`
+
+Returns a useful information about component version and deployment information. It can be used as a heartbeat operation
+to check the health of the IoT Agent if required.
+
+_**Response payload**_
+
+The response is a JSON object with the following parameters:
+
+-   `libVersion`: This field is the iotagent-node-lib version with which the IoT Agent has been developed.
+-   `port`:
+-   `baseRoot`:
+-   `version`: This field is the IoT Agent version. It will be read from the `iotaVersion` field of the config, if it
+    exists.
+
+Example:
+
+```json
+{
+    "libVersion": "2.7.0",
+    "port": "4041",
+    "baseRoot": "/",
+    "version": "1.7.0"
+}
+```
