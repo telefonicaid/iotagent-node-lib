@@ -41,7 +41,8 @@ const iotAgentConfig = {
     },
     defaultExpressionLanguage: 'jexl',
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -389,7 +390,8 @@ const iotAgentConfigTS = {
     },
     defaultExpressionLanguage: 'jexl',
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         GPS: {

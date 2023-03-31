@@ -37,7 +37,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     authentication: {
         // Next line is syntactically correct from a configuration point of

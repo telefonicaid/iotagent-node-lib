@@ -45,7 +45,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -343,11 +344,12 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], function (
-                error
-            ) {
-                done();
-            });
+            async.series(
+                [apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)],
+                function (error) {
+                    done();
+                }
+            );
         });
 
         it('should not give any error', function (done) {

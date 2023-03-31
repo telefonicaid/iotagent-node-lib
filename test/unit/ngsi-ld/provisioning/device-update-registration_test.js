@@ -40,7 +40,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -244,17 +245,19 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function () {
         });
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
-                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartgondor', 'gardens', function (
-                    error,
-                    deviceResult
-                ) {
-                    should.not.exist(error);
-                    should.exist(deviceResult);
-                    deviceResult.internalId.should.equal(deviceUpdated.internalId);
-                    deviceResult.commands[0].name.should.equal('move');
-                    deviceResult.active[0].name.should.equal('temperature');
-                    done();
-                });
+                iotAgentLib.getDevice(
+                    deviceCommandUpdated.id,
+                    'smartgondor',
+                    'gardens',
+                    function (error, deviceResult) {
+                        should.not.exist(error);
+                        should.exist(deviceResult);
+                        deviceResult.internalId.should.equal(deviceUpdated.internalId);
+                        deviceResult.commands[0].name.should.equal('move');
+                        deviceResult.active[0].name.should.equal('temperature');
+                        done();
+                    }
+                );
             });
         });
     });

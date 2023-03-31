@@ -44,7 +44,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -1224,10 +1225,7 @@ describe('NGSI-LD - Command functionalities', function () {
 
     describe('When a query arrives to the IoT Agent with registered commands but no lazy attributes', function () {
         const options = {
-            url:
-                'http://localhost:' +
-                iotAgentConfig.server.port +
-                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
             method: 'GET',
             headers: {
                 'fiware-service': 'smartgondor',
@@ -1246,8 +1244,8 @@ describe('NGSI-LD - Command functionalities', function () {
                 should.exist(attributes);
                 attributes.length.should.equal(0);
                 callback(null, {
-                        id: 'urn:ngsi-ld:Robot:r2d2',
-                        type: 'Robot'
+                    id: 'urn:ngsi-ld:Robot:r2d2',
+                    type: 'Robot'
                 });
             });
 
