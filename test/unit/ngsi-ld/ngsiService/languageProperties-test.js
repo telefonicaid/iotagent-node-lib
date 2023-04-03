@@ -41,7 +41,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -69,44 +70,41 @@ describe('NGSI-LD - LanguageProperty test', function () {
         iotAgentLib.deactivate(done);
     });
 
-    describe(
-        'When the IoT Agent receives new exonym from a device name with LanguageProperty type and a JSON object',
-        function () {
-            const values = [
-                {
-                    name: 'name',
-                    type: 'LanguageProperty',
-                    value:  {
-                       el: "Κωνσταντινούπολις",
-                       en: "Constantinople",
-                       tr: "İstanbul"
-                    }
+    describe('When the IoT Agent receives new exonym from a device name with LanguageProperty type and a JSON object', function () {
+        const values = [
+            {
+                name: 'name',
+                type: 'LanguageProperty',
+                value: {
+                    el: 'Κωνσταντινούπολις',
+                    en: 'Constantinople',
+                    tr: 'İstanbul'
                 }
-            ];
+            }
+        ];
 
-            beforeEach(function (done) {
-                nock.cleanAll();
+        beforeEach(function (done) {
+            nock.cleanAll();
 
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartgondor')
-                    .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                        utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/contextRequests/updateContextLanguageProperties1.json'
-                        )
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextLanguageProperties1.json'
                     )
-                    .reply(204);
+                )
+                .reply(204);
 
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
 
-            it('should change the value of the corresponding attribute in the context broker', function (done) {
-                iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                });
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
             });
-        }
-    );
+        });
+    });
 });

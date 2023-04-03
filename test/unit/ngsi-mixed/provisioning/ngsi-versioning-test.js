@@ -40,6 +40,7 @@ const iotAgentConfig = {
     server: {
         name: 'testAgent',
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -268,13 +269,18 @@ describe('Mixed Mode: ngsiVersion test', function () {
             });
         });
         it('should operate using NGSI-v2', function (done) {
-            iotAgentLib.update('light2', 'Device', 'v2-test', values, { ngsiVersion: 'v2', type: 'Device' }, function (
-                error
-            ) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            iotAgentLib.update(
+                'light2',
+                'Device',
+                'v2-test',
+                values,
+                { ngsiVersion: 'v2', type: 'Device' },
+                function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                }
+            );
         });
     });
 });

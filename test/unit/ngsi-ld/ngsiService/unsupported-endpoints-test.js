@@ -40,14 +40,14 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {},
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com'
 };
-
 
 const iotAgentConfigWithLimitedSupport = {
     contextBroker: {
@@ -58,10 +58,11 @@ const iotAgentConfigWithLimitedSupport = {
     },
     server: {
         port: 4041,
-        ldSupport : {
-           null: false,
-           datasetId: false
-       }
+        host: 'localhost',
+        ldSupport: {
+            null: false,
+            datasetId: false
+        }
     },
     types: {
         Robot: {
@@ -90,7 +91,6 @@ const device = {
     type: 'Robot',
     service: 'smartgondor'
 };
-
 
 describe('NGSI-LD - Unsupported Endpoints', function () {
     beforeEach(function (done) {
@@ -153,7 +153,6 @@ describe('NGSI-LD - Unsupported Endpoints', function () {
             });
         });
 
-
         it('PUT /entities/<entity-id> includes an NGSI-LD Null should return a valid NSGI-LD error message', function (done) {
             const options = {
                 url:
@@ -162,7 +161,7 @@ describe('NGSI-LD - Unsupported Endpoints', function () {
                     '/ngsi-ld/v1/entities/urn:ngsi-ld:entity/attrs/att',
                 method: 'PUT',
                 json: {
-                    "value":  "urn:ngsi-ld:null"
+                    value: 'urn:ngsi-ld:null'
                 },
                 headers: {
                     'fiware-service': 'smartgondor',
@@ -194,7 +193,6 @@ describe('NGSI-LD - Limiting Support', function () {
             .post('/ngsi-ld/v1/entityOperations/upsert/')
             .reply(204);
 
-
         iotAgentLib.activate(iotAgentConfigWithLimitedSupport, function () {
             iotAgentLib.clearAll(function () {
                 done();
@@ -217,7 +215,7 @@ describe('NGSI-LD - Limiting Support', function () {
                     '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
                 method: 'PATCH',
                 json: {
-                    "value":  "urn:ngsi-ld:null"
+                    value: 'urn:ngsi-ld:null'
                 },
                 headers: {
                     'fiware-service': 'smartgondor',
@@ -235,9 +233,8 @@ describe('NGSI-LD - Limiting Support', function () {
                     done();
                 });
             });
-
         });
-    });   
+    });
     describe('When sending a payload including a datasetId when datasetIds are unsupported ', function () {
         it('should return a valid NSGI-LD error message', function (done) {
             const options = {
@@ -276,7 +273,6 @@ describe('NGSI-LD - Limiting Support', function () {
                     done();
                 });
             });
-
         });
-    });    
+    });
 });
