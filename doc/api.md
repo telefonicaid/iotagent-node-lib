@@ -232,7 +232,8 @@ _**Request headers**_
 
 _**Request payload**_
 
--   `services`: an array of of service groups objects to create.
+A JSON object with a `services` field. The value is an array of service groups objects to create. See the
+[service group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
@@ -274,8 +275,9 @@ Successful operations return `Content-Type` header with `application/json` value
 
 #### List services group `GET /iot/services`
 
-Retrieves service groups from the database. If the servicepath header has the wildcard expression, `/*`, all the
-subservices for the service are returned. The specific subservice parameters are returned in any other case.
+List all the service groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
+has the wildcard expression, `/*`, all the service groups for that `fiware-service` are returned. The service groups
+that match the `fiware-servicepath` are returned in any other case.
 
 _**Request headers**_
 
@@ -296,7 +298,8 @@ Successful operations return `Content-Type` header with `application/json` value
 
 _**Response payload**_
 
-A json object with a services parameter that contains an array of services that match the request.
+A JSON object with a services field that contains an array of services that match the request. See the
+[service group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
@@ -341,9 +344,9 @@ Example:
 
 #### Modify service group `PUT /iot/services`
 
-Modifies the information for a service group configuration, identified by the `resource` and `apikey` query parameters.
-Takes a service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
-existing attributes will be updated
+Modifies the information of a service group, identified by the `resource` and `apikey` query parameters. Takes a service
+group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
+the JSON body will be updated. The rest of the attributes will remain unchanged.
 
 _**Request query parameters**_
 
@@ -360,6 +363,9 @@ _**Request headers**_
 | `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
 
 _**Request payload**_
+
+A JSON object with the service group information to be modified. See the
+[service group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
@@ -378,7 +384,7 @@ _**Response code**_
 
 #### DELETE /iot/services `DELETE /iot/services`
 
-Removes a service group configuration from the DB, specified by the `resource` and `apikey` query parameters.
+Removes a service group, identified by the `resource` and `apikey` query parameters.
 
 _**Request query parameters**_
 
@@ -429,14 +435,12 @@ the API resource fields and the same fields in the database model.
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
 | `mgsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
 
-### Device operations
-
-#### Device list
+### Device list operations
 
 #### List devices /iot/devices `GET /iot/devices`
 
-List all the devices registered in the IoT Agent device registry with all their information for a given service and
-subservice.
+List all the devices registered in the IoT Agent device registry with all their information for a given `fiware-service`
+and `fiware-servicepath`.
 
 _**Request query parameters**_
 
@@ -458,7 +462,18 @@ _**Response code**_
 -   `404` `NOT FOUND` if there are no devices for the given service and subservice.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
+_**Response headers**_
+
+Successful operations return `Content-Type` header with `application/json` value.
+
 _**Response body**_
+
+The response body contains a JSON object with the following fields:
+
+| Field     | Type      | Description                                                                                                                                                                        |
+| --------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `count`   | `integer` | Number of devices in the response.                                                                                                                                                 |
+| `devices` | `array`   | List of devices in the response. Each device is represented by a JSON object. For more information about the device object, see the [Device datamodel](#device-datamodel) section. |
 
 Example:
 
@@ -507,7 +522,8 @@ Example:
 
 ##### Create device `POST /iot/devices`
 
-Provision a new device in the IoT Agent's device registry. Takes a Device in JSON format as the payload.
+Provision a new device in the IoT Agent's device registry for a given `fiware-service` and `fiware-servicepath`. Takes a
+Device in JSON format as the payload.
 
 _**Request headers**_
 
@@ -518,7 +534,8 @@ _**Request headers**_
 
 _**Request body**_
 
-The body of the a JSON object with field named `devices` containing a list of devices to be provisioned.
+The body of the a JSON object with field named `devices` containing a list of devices to be provisioned. Each device is
+represented by device JSON object. For more information, see the [Device datamodel](#device-datamodel) section.
 
 Example:
 
@@ -543,11 +560,12 @@ _**Response code**_
 -   `200` `OK` if successful.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-#### Device by ID
+### Device by ID operations
 
-##### Get device details `GET /iot/devices/:deviceId`
+#### Get device details `GET /iot/devices/:deviceId`
 
-Returns all the information about a particular device.
+Returns all the information about a device in the IoT Agent's device registry for a given `fiware-service` and
+`fiware-servicepath`.
 
 _**Request URL parameters**_
 
@@ -568,7 +586,14 @@ _**Response code**_
 -   `404` `NOT FOUND` if the device was not found in the database.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
+_**Response headers**_
+
+Successful operations return `Content-Type` header with `application/json` value.
+
 _**Response body**_
+
+The response body contains a device JSON object. For more information, see the [Device datamodel](#device-datamodel)
+section.
 
 Example:
 
@@ -596,9 +621,9 @@ Example:
 }
 ```
 
-##### Delete device `DELETE /iot/devices/:deviceId`
+#### Delete device `DELETE /iot/devices/:deviceId`
 
-Remove a device from the device registry. The device is identified by the Device ID.
+Remove a device from the device registry. The device is identified by the Device ID as URL parameter.
 
 _**Request URL parameters**_
 
@@ -619,11 +644,12 @@ _**Response code**_
 -   `404` `NOT FOUND` if the device was not found in the database.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-##### Modify device `PUT /iot/devices/:deviceId`
+#### Modify device `PUT /iot/devices/:deviceId`
 
 Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
-device can be changed using this method (as they are used to link the already created entities in the CB to the
-information in the device). Service and servicepath, being taken from the headers, can't be changed also.
+device can be changed using this method (as they are used to link the already created entities in the Context Broker to
+the information in the device). `fiware-service` and `fiware-servicepath`, being taken from the headers, can't be
+changed also.
 
 _**Request URL parameters**_
 
@@ -640,7 +666,8 @@ _**Request headers**_
 
 _**Request body**_
 
-The body of the a JSON object with the fields to be updated.
+The request body contains a device JSON object the values of which will be updated in the device registry. For more
+information, see the [Device datamodel](#device-datamodel) section.
 
 Example:
 
@@ -670,7 +697,7 @@ _**Response code**_
 The IoT Agent Library makes use of the [Logops logging library](https://github.com/telefonicaid/logops). The IoT Agent
 Library provides a configuration API that lets the administrator change and manage the log level in realtime.
 
-#### Modify Logleve `PUT /admin/log`
+#### Modify Loglevel `PUT /admin/log`
 
 This operation gets the new log level using the query parameter `level`. If the new level is a valid level, it will be
 automatically changed for future logs.
@@ -719,8 +746,8 @@ _**Response payload**_
 The response is a JSON object with the following parameters:
 
 -   `libVersion`: This field is the iotagent-node-lib version with which the IoT Agent has been developed.
--   `port`:
--   `baseRoot`:
+-   `port`: port where the IoT Agent will be listening as a Context Provider.
+-   `baseRoot`: base root to prefix all the paths where the IoT Agent will be listening as a Context Provider.
 -   `version`: This field is the IoT Agent version. It will be read from the `iotaVersion` field of the config, if it
     exists.
 
