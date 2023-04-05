@@ -52,7 +52,7 @@ provided by the IoT Agent node library.
 
 # Topics
 
-## Terminology
+### Terminology
 
 -   **Devices**: A resource that match physical devices that are connected to the IoT Agent. Each device has a set of
     attributes that can be read or written and a set of commands that can be invoked. The device is identified by a
@@ -64,7 +64,7 @@ provided by the IoT Agent node library.
 -   **Service**: It is the `FIWARE-Service` that the device or config group belongs to.
 -   **Subservice**: It is the specific `FIWARE-ServicePath` that the device or config group belongs to.
 
-## IoT Agent information model
+### IoT Agent information model
 
 IoT Agents models 2 different kinds of resources: devices and config groups. Devices are the physical devices that send
 measurements to the IoT Agent. Config groups are logical groups of devices that share the same configuration. A config
@@ -75,7 +75,7 @@ erDiagram
     "Config Group" ||--o{ Devices : contains
 ```
 
-### Config groups
+#### Config groups
 
 Config groups provides a template configuration for the all devices that belong to them. This allows to provision a set
 of devices with a single operation. They are identified by an `apikey` and a `resource` and mapped to a particular
@@ -98,7 +98,7 @@ Config groups can be created with preconfigured sets of attributes, service info
 parameters. The specific parameters that can be configured for a given service group are described in the
 [Config group datamodel](#config-group-datamodel) section.
 
-### Devices
+#### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
 are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
@@ -110,7 +110,7 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
-## Entity attributes
+### Entity attributes
 
 In the group/device model there are four list of attributes with different purpose to configure how the information
 coming from the device is mapped to the Context Broker attributes:
@@ -167,21 +167,21 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
 
-## Advice on Attribute definitions
+### Advice on Attribute definitions
 
-### Reuse of attribute names
+#### Reuse of attribute names
 
 Check for the existence of the same Attribute on any of the other models and reuse it, if pertinent. Have a look at
 schema.org trying to find a similar term with the same semantics. Try to find common used ontologies or existing
 standards well accepted by the Community, or by goverments, agencies, etc. For instance, Open311 for civic issue
 tracking or Datex II for transport systems.
 
-### Reuse of attribute types
+#### Reuse of attribute types
 
 When possible reuse [schema.org](http://schema.org/) data types (`Text`, `Number`, `DateTime`, `StructuredValue`, etc.).
 Remember that `null` is not allowed in NGSI-LD and therefore should be avoided as a value.
 
-### How to specify attribute Units of Measurement
+#### How to specify attribute Units of Measurement
 
 If your data use the default unit defined in the Data Model, you don't need to specify any. It is implied. Unless
 explicitly stated otherwise, all FIWARE data models use the metric system of measurements by default. Regardless the
@@ -201,7 +201,7 @@ used should be taken from those defined by
 }
 ```
 
-## Overriding global Context Broker host
+### Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
 of devices.
