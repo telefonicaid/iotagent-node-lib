@@ -1,8 +1,6 @@
 ## Advanced Topics
 
 -   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
--   [Metadata support](#metadata-support)
-    -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
 -   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
 -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
 -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
@@ -100,87 +98,6 @@ formats:
         "coordinates": [23, 12.5]
     }
 }
-```
-
-### Metadata support
-
-Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
-units of measurement can be placed into the resultant entity.
-
-e.g.:
-
-```json
-{
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text", "value" :["state", "luminosity"]},
-              "alias":{"type": "Text", "value" :"lamp"}
-            }
-          },
-     ]
-   }
-```
-
-#### NGSI-LD data and metadata considerations
-
-When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
-following:
-
--   `Property`, `Relationship`, `GeoProperty`, `LanguageProperty`
--   Native JSON types (e.g. `String`, `Boolean`, `Float` , `Integer` `Number`)
--   Temporal Properties (e.g. `Datetime`, `Date` , `Time`)
--   GeoJSON types (e.g `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`)
-
-Most NGSI-LD attributes are sent to the Context Broker as _properties_. If a GeoJSON type or native JSON type is
-defined, the data will be converted to the appropriate type. Temporal properties should always be expressed in UTC,
-using ISO 8601. This ISO 8601 conversion is applied automatically for the `observedAt` _property-of-a-property_ metadata
-where present.
-
-Data for any attribute defined as a _relationship_ must be a valid URN.
-
-Note that when the `unitCode` metadata attribute is supplied in the provisioning data under NGSI-LD, the standard
-`unitCode` _property-of-a-property_ `String` attribute is created.
-
-Other unrecognised `type` attributes will be passed as NGSI-LD data using the following JSON-LD format:
-
-```json
-    "<property_name>": {
-       "type" : "Property",
-       "value": {
-          "@type":  "<property_type>",
-          "@value":  { string or object}
-      }
-    }
-```
-
-`null` values will be passed in the following format:
-
-```json
-     "<property_name>": {
-       "type" : "Property",
-       "value": {
-          "@type":  "Intangible",
-          "@value":  null
-      }
-    }
 ```
 
 ### NGSI-LD Linked Data support
