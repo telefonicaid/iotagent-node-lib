@@ -17,6 +17,9 @@
         -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
+    -   [NGSI-LD support](#ngsi-ld-support)
+        -   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
+        -   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
 -   [API Routes](#api-routes)
     -   [Config group API](#config-group-api)
         -   [Config group datamodel](#config-group-datamodel)
@@ -347,6 +350,143 @@ Complete info on Keystone trust tokens could be found at:
 
 -   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
 -   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
+
+### NGSI-LD Support
+
+#### NGSI-LD `GeoProperty` support
+
+For NGSI-LD only, the defined `type` of any GeoJSON attribute can be any set using any of the standard NGSI-v2 GeoJSON
+types - (e.g. `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also
+accepted `type` values. If the latitude and longitude are received as separate measures, the JEXL or legacy
+[expression language](expressionLanguage.md) can be used to concatenate them into GeoJSON objects an array of tuples or
+a string as shown
+
+##### Legacy - encode as String
+
+```json
+{
+    "entity_type": "GPS",
+    "resource":    "/iot/d",
+    "protocol":    "PDI-IoTA-JSON",
+..etc
+    "attributes": [
+        {
+            "name": "location",
+            "type": "geo:json",
+            "expression": "${@lng}, ${@lat}"
+        }
+    ]
+}
+```
+
+##### JEXL - encode as GeoJSON
+
+```json
+{
+    "entity_type": "GPS",
+    "resource":    "/iot/d",
+    "protocol":    "PDI-IoTA-JSON",
+    "expressionLanguage": "jexl",
+..etc
+    "attributes": [
+        {
+            "name": "location",
+            "type": "geo:json",
+            "expression": "{coordinates: [longitude,latitude], type: 'Point'}"
+        }
+    ]
+}
+```
+
+JEXL can be used to create GeoJSON objects directly. The Legacy expression language does not support GeoJSON. However,
+there is a workaround specifically for NGSI-LD Entities which always require `location` to be encoded as GeoJSON. For
+`attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
+currently accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following
+formats:
+
+-   a comma delimited string
+
+```json
+{
+    "name": "location",
+    "value": "23, 12.5"
+}
+```
+
+-   an array of numbers
+
+```json
+{
+    "name": "location",
+    "value": [23, 12.5]
+}
+```
+
+-   an fully formatted GeoJSON object
+
+```json
+{
+    "name": "location",
+    "value": {
+        "type": "Point",
+        "coordinates": [23, 12.5]
+    }
+}
+```
+
+#### NGSI-LD Linked Data support
+
+`static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that
+active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for
+example a temperature gauge placed within a building. The **Device** data model literally represents the IoT device
+itself, but the `temperature` attribute also needs to be shared with the **Building** entity
+
+A `link` between them can be provisioned as shown:
+
+e.g.:
+
+```json
+{
+     "entity_type": "Device",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+..etc
+     "attributes": [
+        {"object_id": "l", "name": "temperature", "type":"Float",
+          "metadata":{
+              "unitCode":{"type": "Text", "value" :"CEL"}
+          }
+        }
+     ],
+     "static_attributes": [
+        {
+          "name": "controlledAsset",
+          "type": "Relationship",
+          "value": "urn:ngsi-ld:Building:001",
+          "link": {
+             "attributes": ["temperature"],
+             "name": "providedBy",
+             "type": "Building"
+          }
+        }
+     ]
+  }
+```
+
+Whenever a `temperature` measure is received **Device** is updated, and entity `urn:ngsi-ld:Building:001` is also
+updated as shown:
+
+```json
+"temperature": {
+    "type": "Property",
+    "value": 27.6,
+    "unitCode": "CEL",
+    "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Device:thermometer1"
+    }
+}
+```
 
 # API Routes
 
