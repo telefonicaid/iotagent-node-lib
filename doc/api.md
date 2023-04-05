@@ -1,5 +1,45 @@
 # IoT Agent API
 
+<!-- TOC -->
+
+-   [Preface](#preface)
+-   [Topics](#topics)
+    -   [Terminology](#terminology)
+    -   [IoT Agent information model](#iot-agent-information-model)
+        -   [Config groups](#config-groups)
+        -   [Devices](#devices)
+    -   [Entity attributes](#entity-attributes)
+    -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
+        -   [Reuse of attributes names](#reuse-of-attributes-names)
+        -   [Reuse of attribute types](#reuse-of-attribute-types)
+        -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
+    -   [Securized access](#securized-access)
+    -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
+-   [API Routes](#api-routes)
+    -   [Config group API](#config-group-api)
+        -   [Config group datamodel](#config-group-datamodel)
+        -   [Config group operations](#config-group-operations)
+            -   [Retrieve config groups `GET /iot/services`](#retrieve-config-group-get-iotservices)
+            -   [Create config group `POST /iot/services`](#create-config-group-post-iotservices)
+            -   [Modify config group `PUT /iot/services`](#modify-config-group-put-iotservices)
+            -   [Remove config group `DELETE /iot/services`](#remove-config-group-delete-iotservices)
+    -   [Device API](#device-api)
+        -   [Device datamodel](#device-datamodel)
+        -   [Device operations](#device-operations)
+            -   [Retrieve devices /iot/devices `GET /iot/devices`](#retrieve-devices-iotdevices-get-iotdevices)
+            -   [Create device `POST /iot/devices`](#create-device-post-iotdevices)
+            -   [Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid)
+            -   [Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid)
+            -   [Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid)
+    -   [Miscellaneous API](#miscellaneous-api)
+        -   [Log operations](#log-operations)
+            -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
+            -   [Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog)
+        -   [About operations](#about-operations)
+            -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+
+<!-- /TOC -->
+
 # Preface
 
 The IoT Agent mission is to provide a common abstraction layer between the devices and the NGSI entities stored in
@@ -127,7 +167,7 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
 
-## Advice on Attribute defintions
+## Advice on Attribute definitions
 
 ### Reuse of attribute names
 
@@ -161,7 +201,7 @@ used should be taken from those defined by
 }
 ```
 
-## Securized acces
+## Securized access
 
 **trust** token to use for secured access to the Context Broker for this type of devices (optional; only needed for
 secured scenarios). Trust tokens may be called `access_tokens` by some Oauth2 providers.
@@ -211,62 +251,7 @@ Config group is represented by a JSON object with the following fields:
 
 The following actions are available under the config group endpoint:
 
-#### Create config group `POST /iot/services`
-
-Creates a set of config groups for the given service and service path. The service and subservice information will taken
-from the headers, overwritting any preexisting values.
-
-_**Request headers**_
-
-| Header               | Optional | Description                                                                                    | Example    |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
-| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
-
-_**Request payload**_
-
-A JSON object with a `services` field. The value is an array of config groups objects to create. See the
-[config group datamodel](#service-group-datamodel) for more information.
-
-Example:
-
-```json
-{
-    "services": [
-        {
-            "resource": "/deviceTest",
-            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "type": "Light",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "wheel1", "type": "Wheel" }],
-            "attributes": [
-                {
-                    "name": "luminescence",
-                    "type": "Integer",
-                    "metadata": {
-                        "unitCode": { "type": "Text", "value": "CAL" }
-                    }
-                }
-            ],
-            "lazy": [{ "name": "status", "type": "Boolean" }]
-        }
-    ]
-}
-```
-
-_**Response code**_
-
--   `200` `OK` if successful, with no payload.
--   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
--   `400` `WRONG_SYNTAX` if the body doesn't comply with the schema.
--   `500` `SERVER ERROR` if there was any error not contemplated above.
-
-_**Response headers**_
-
-Successful operations return `Content-Type` header with `application/json` value.
-
-#### List services group `GET /iot/services`
+#### Retrieve config groups `GET /iot/services`
 
 List all the config groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
 has the wildcard expression, `/*`, all the config groups for that `fiware-service` are returned. The config groups that
@@ -335,6 +320,61 @@ Example:
 }
 ```
 
+#### Create config group `POST /iot/services`
+
+Creates a set of config groups for the given service and service path. The service and subservice information will taken
+from the headers, overwritting any preexisting values.
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request payload**_
+
+A JSON object with a `services` field. The value is an array of config groups objects to create. See the
+[config group datamodel](#service-group-datamodel) for more information.
+
+Example:
+
+```json
+{
+    "services": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        }
+    ]
+}
+```
+
+_**Response code**_
+
+-   `200` `OK` if successful, with no payload.
+-   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
+-   `400` `WRONG_SYNTAX` if the body doesn't comply with the schema.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response headers**_
+
+Successful operations return `Content-Type` header with `application/json` value.
+
 #### Modify config group `PUT /iot/services`
 
 Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a service
@@ -375,7 +415,7 @@ _**Response code**_
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.:
 
-#### DELETE /iot/services `DELETE /iot/services`
+#### Remove config group `DELETE /iot/services`
 
 Removes a config group, identified by the `resource` and `apikey` query parameters.
 
@@ -428,9 +468,9 @@ the API resource fields and the same fields in the database model.
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
 | `mgsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
 
-### Device list operations
+### Device operations
 
-#### List devices /iot/devices `GET /iot/devices`
+#### Retrieve devices /iot/devices `GET /iot/devices`
 
 List all the devices registered in the IoT Agent device registry with all their information for a given `fiware-service`
 and `fiware-servicepath`.
@@ -553,8 +593,6 @@ _**Response code**_
 -   `200` `OK` if successful.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-### Device by ID operations
-
 #### Get device details `GET /iot/devices/:deviceId`
 
 Returns all the information about a device in the IoT Agent's device registry for a given `fiware-service` and
@@ -614,29 +652,6 @@ Example:
 }
 ```
 
-#### Delete device `DELETE /iot/devices/:deviceId`
-
-Remove a device from the device registry. The device is identified by the Device ID as URL parameter.
-
-_**Request URL parameters**_
-
-| Parameter  | Mandatory | Description             | Example  |
-| ---------- | --------- | ----------------------- | -------- |
-| `deviceId` | ✓         | Device ID to be deleted | `DevID1` |
-
-_**Request headers**_
-
-| Header               | Optional | Description                                                                                    | Example    |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
-| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
-
-_**Response code**_
-
--   `200` `OK` if successful.
--   `404` `NOT FOUND` if the device was not found in the database.
--   `500` `SERVER ERROR` if there was any error not contemplated above.
-
 #### Modify device `PUT /iot/devices/:deviceId`
 
 Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
@@ -676,6 +691,29 @@ Example:
     "static_attributes": [{ "name": "serialID", "type": "02598347" }]
 }
 ```
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if the device was not found in the database.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+#### Remove device `DELETE /iot/devices/:deviceId`
+
+Remove a device from the device registry. The device is identified by the Device ID as URL parameter.
+
+_**Request URL parameters**_
+
+| Parameter  | Mandatory | Description             | Example  |
+| ---------- | --------- | ----------------------- | -------- |
+| `deviceId` | ✓         | Device ID to be deleted | `DevID1` |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
 
 _**Response code**_
 
