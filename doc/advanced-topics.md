@@ -1,6 +1,5 @@
 ## Advanced Topics
 
--   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
 -   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
 -   [Metadata support](#metadata-support)
     -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
@@ -21,58 +20,6 @@
         -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
     -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
     -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-
-### Secured access to the Context Broker
-
-For access to instances of the Context Broker secured with a
-[PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
-tokens is provided. A trust token is a way of Keystone to allow an user delegates a role to another user for a
-subservice. It is a long-term token that can be issued by any user to give another user permissions to impersonate him
-with a given role in a given project (subservice). Such impersonation itself is in turn based on a short-term access
-token.
-
-For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully
-configured, and the `authentication.enabled` subattribute should have the value `true`.
-
-When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured
-Context Broker, he should follow this steps:
-
--   First, a Trust Token ID should be requested to Keystone, using the service administrator credentials, the role ID
-    and the IoT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
-
-```bash
-curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
-    -s \
-    -H "X-Auth-Token: $ADMIN_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '
-{
-    "trust": {
-        "impersonation": false,
-        "project_id": "'$SUBSERVICE_ID'",
-        "roles": [
-            {"id": "'$ID_ROLE'"
-            }
-        ],
-        "trustee_user_id": "'$ID_IOTAGENT_USER'",
-        "trustor_user_id": "'$ID_ADM1'"
-    }
-}'
-```
-
--   Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token ID in
-    its configuration.
--   Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust Token ID to generate a
-    temporary access token, that is attached to the request (in the `X-Auth-token` header) (using Keystone API
-    https://developer.openstack.org/api-ref/identity/v3-ext/#consuming-a-trust).
-
-Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
-Agent.
-
-Complete info on Keystone trust tokens could be found at:
-
--   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
--   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
 ### NGSI-LD `GeoProperty` support
 
@@ -370,24 +317,24 @@ UPDATE. This have implications in the use of attributes with Context Providers, 
 
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
-Since those configuration parameters are quite similar, this section is intended to clarify the relation between them. 
+Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
 
-If `autoprovision` is set to `true` (default case), the agent will perform an initial request creating a new entity into 
-the Context Broker with **only** the static and active attributes provisioned in the config group, and also a new
-Device in the agent, every time a measure arrives with a new `device_id`. Otherwise, this measure is ignored. This is 
-something related to the **southbound**.
+If `autoprovision` is set to `true` (default case), the agent will perform an initial request creating a new entity into
+the Context Broker with **only** the static and active attributes provisioned in the config group, and also a new Device
+in the agent, every time a measure arrives with a new `device_id`. Otherwise, this measure is ignored. This is something
+related to the **southbound**.
 
-What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device 
+What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device
 provision or config group. That also would avoid propagating the measures to the Context Broker.
 
-The default way the agent updates the information into the Context Broker is by using an update request. If 
-`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store 
-the attributes even if they are not present in the entity. This seems the same functionality that the one provided by
-`autoprovision`, but it is a different concept since the scope of this config is to setup how the IoT interacts with the
-context broker, this is something related to the **northbound**.
+The default way the agent updates the information into the Context Broker is by using an update request. If
+`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store the attributes
+even if they are not present in the entity. This seems the same functionality that the one provided by `autoprovision`,
+but it is a different concept since the scope of this config is to setup how the IoT interacts with the context broker,
+this is something related to the **northbound**.
 
-Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously 
-the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further 
+Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously
+the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
 information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ### Data mapping plugins
@@ -536,7 +483,9 @@ intercepted by the plugin, so the mapped values are included in the updated noti
 
 When a device is provisioned with bidirectional attributes, the IoTAgent subscribes to changes in that attribute. When a
 change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
-provisioning payload to the notification, and calls the underlying notification handler with the transformed entity including the `value` along with any `metadata`, and in the case of an NGSI-LD bidirectional attribute a `datasetId` if provided.
+provisioning payload to the notification, and calls the underlying notification handler with the transformed entity
+including the `value` along with any `metadata`, and in the case of an NGSI-LD bidirectional attribute a `datasetId` if
+provided.
 
 The following `attributes` section shows an example of the plugin configuration (using `IOTA_AUTOCAST=false` to avoid
 translation from geo:point to geo:json)
@@ -574,52 +523,53 @@ how the value is then progressed to the device are protocol-specific.
 
 ##### NGSI-LD `datasetId` support
 
-Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential commands for a single attribute can be sent as an NGSI-LD notification as follows:
-
+Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential
+commands for a single attribute can be sent as an NGSI-LD notification as follows:
 
 ```json
 {
-  "id": "urn:ngsi-ld:Notification:5fd0fa684eb81930c97005f3",
-  "type": "Notification",
-  "subscriptionId": "urn:ngsi-ld:Subscription:5fd0f69b4eb81930c97005db",
-  "notifiedAt": "2020-12-09T16:25:12.193Z",
-  "data": [
-    {
-      "lampColor": [
+    "id": "urn:ngsi-ld:Notification:5fd0fa684eb81930c97005f3",
+    "type": "Notification",
+    "subscriptionId": "urn:ngsi-ld:Subscription:5fd0f69b4eb81930c97005db",
+    "notifiedAt": "2020-12-09T16:25:12.193Z",
+    "data": [
         {
-          "type": "Property",
-          "value": { "color": "green", "duration": "55 secs"},
-          "datasetId": "urn:ngsi-ld:Sequence:do-this"
-        },
-        {
-          "type": "Property",
-          "value": {"color": "red", "duration": "10 secs"},
-          "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
+            "lampColor": [
+                {
+                    "type": "Property",
+                    "value": { "color": "green", "duration": "55 secs" },
+                    "datasetId": "urn:ngsi-ld:Sequence:do-this"
+                },
+                {
+                    "type": "Property",
+                    "value": { "color": "red", "duration": "10 secs" },
+                    "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 ```
 
-This results in the following sequential array of attribute updates to be sent to the `NotificationHandler` of the IoT Agent itself:
+This results in the following sequential array of attribute updates to be sent to the `NotificationHandler` of the IoT
+Agent itself:
 
 ```json
 [
-  {
-    "name": "lampColor",
-    "type": "Property",
-    "datasetId": "urn:ngsi-ld:Sequence:do-this",
-    "metadata": {},
-    "value": { "color": "green", "duration": "55 secs"}
-  },
-  {
-    "name": "lampColor",
-    "type": "Property",
-    "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
-    "metadata": {},
-    "value": {"color": "red", "duration": "10 secs"}
-  }
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:do-this",
+        "metadata": {},
+        "value": { "color": "green", "duration": "55 secs" }
+    },
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
+        "metadata": {},
+        "value": { "color": "red", "duration": "10 secs" }
+    }
 ]
 ```
 

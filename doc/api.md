@@ -14,6 +14,7 @@
         -   [Reuse of attribute types](#reuse-of-attribute-types)
         -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
+    -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
 -   [API Routes](#api-routes)
     -   [Config group API](#config-group-api)
         -   [Config group datamodel](#config-group-datamodel)
@@ -211,6 +212,58 @@ of devices.
 Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
 performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
 this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+
+### Secured access to the Context Broker
+
+For access to instances of the Context Broker secured with a
+[PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
+tokens is provided. A trust token is a way of Keystone to allow an user delegates a role to another user for a
+subservice. It is a long-term token that can be issued by any user to give another user permissions to impersonate him
+with a given role in a given project (subservice). Such impersonation itself is in turn based on a short-term access
+token.
+
+For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully
+configured, and the `authentication.enabled` subattribute should have the value `true`.
+
+When the administrator of a service is configuring a set of devices or device types in the IoT Agent to use a secured
+Context Broker, he should follow this steps:
+
+-   First, a Trust Token ID should be requested to Keystone, using the service administrator credentials, the role ID
+    and the IoT Agent User ID. The Trust token can be retrieved using the following request (shown as a curl command):
+
+```bash
+curl http://${KEYSTONE_HOST}/v3/OS-TRUST/trusts \
+    -s \
+    -H "X-Auth-Token: $ADMIN_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '
+{
+    "trust": {
+        "impersonation": false,
+        "project_id": "'$SUBSERVICE_ID'",
+        "roles": [
+            {"id": "'$ID_ROLE'"
+            }
+        ],
+        "trustee_user_id": "'$ID_IOTAGENT_USER'",
+        "trustor_user_id": "'$ID_ADM1'"
+    }
+}'
+```
+
+-   Every device or type of devices configured to use a secured Context Broker must be provided with a Trust Token ID in
+    its configuration.
+-   Before any request is sent to a secured Context Broker, the IoT Agent uses the Trust Token ID to generate a
+    temporary access token, that is attached to the request (in the `X-Auth-token` header) (using Keystone API
+    https://developer.openstack.org/api-ref/identity/v3-ext/#consuming-a-trust).
+
+Apart from the generation of the trust, the use of secured Context Brokers should be transparent to the user of the IoT
+Agent.
+
+Complete info on Keystone trust tokens could be found at:
+
+-   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
+-   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
 # API Routes
 
