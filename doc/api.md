@@ -13,7 +13,6 @@
         -   [Reuse of attributes names](#reuse-of-attributes-names)
         -   [Reuse of attribute types](#reuse-of-attribute-types)
         -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
-    -   [Securized access](#securized-access)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
 -   [API Routes](#api-routes)
     -   [Config group API](#config-group-api)
@@ -96,7 +95,8 @@ which device). Those operations of the API targeting specific resources will nee
 parameters to select the appropriate instance.
 
 Config groups can be created with preconfigured sets of attributes, service information, security information and other
-parameters. The specific parameters that can be configured for a given service group are:
+parameters. The specific parameters that can be configured for a given service group are described in the
+[Config group datamodel](#config-group-datamodel) section.
 
 ### Devices
 
@@ -107,23 +107,16 @@ has been provisioned with `type=X`/`apiKey=111` and no other config group has be
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
 subservice mapping, security information and attribute configuration can be specified in a per device way instead of
-relaying on the config group configuration.
+relaying on the config group configuration. The specific parameters that can be configured for a given device are
+described in the [Device datamodel](#device-datamodel) section.
 
 ## Entity attributes
 
-In the group/device model there are four list of attributes that can be declared: `attributes`, `lazy`, `static` and
-`commands`. Each of them have a different purpose and are used in different ways by the IoT Agent, but they are the way
-to configure how the information coming from the device is mapped to the Context Broker attributes.
-
-All of them have the same syntax, an object containing the following attributes:
-
--   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
--   **type** (mandatory): name of the type of the attribute in the target entity.
--   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
+In the group/device model there are four list of attributes with different purpose to configure how the information
+coming from the device is mapped to the Context Broker attributes:
 
 -   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
-    to the Context Broker as u pdateContext requests over the device entity. NGSI queries to the context broker will be
+    to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
     resolved in the Broker database. For each attribute, its `name` and `type` must be provided. Additional `metadata`
     is optional.
 
@@ -143,6 +136,13 @@ All of them have the same syntax, an object containing the following attributes:
     not updated by the device. They are updated by the Context Broker, and the IoT Agent will be in charge of
     translating the updateContext request to the proper action in the device. Two additional attributes are created for
     each command: `status` and `info`. For each command, its `name` and `type` must be provided.
+
+All of them have the same syntax, a list of objects with the following attributes:
+
+-   **object_id** (optional): name of the attribute as coming from the device.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
+-   **type** (mandatory): name of the type of the attribute in the target entity.
+-   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
 Some transformation plugins also allow the use of the following optional fields:
 
@@ -200,11 +200,6 @@ used should be taken from those defined by
     }
 }
 ```
-
-## Securized access
-
-**trust** token to use for secured access to the Context Broker for this type of devices (optional; only needed for
-secured scenarios). Trust tokens may be called `access_tokens` by some Oauth2 providers.
 
 ## Overriding global Context Broker host
 
