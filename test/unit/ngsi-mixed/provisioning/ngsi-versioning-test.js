@@ -58,7 +58,7 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 const mongo = require('mongodb').MongoClient;
-const mongoUtils = require('../../mongodb/mongoDBUtils');
+const mongoUtils = require('../../../tools/mongoDBUtils');
 const optionsCreationDefault = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',

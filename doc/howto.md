@@ -395,11 +395,11 @@ function updateContextHandler(id, type, service, subservice, attributes, callbac
 }
 ```
 
-The updateContext handler deals with the modification requests that arrive at the North Port of the IoT Agent via `/v2/op/update`. It is
-invoked once for each entity requested (note that a single request can contain multiple entity updates), with the same
-parameters used in the queryContext handler. The only difference is the value of the attributes array, now containing a
-list of attribute objects, each containing name, type and value. The handler must also make use of the callback to
-return a list of updated attributes.
+The updateContext handler deals with the modification requests that arrive at the North Port of the IoT Agent via
+`/v2/op/update`. It is invoked once for each entity requested (note that a single request can contain multiple entity
+updates), with the same parameters used in the queryContext handler. The only difference is the value of the attributes
+array, now containing a list of attribute objects, each containing name, type and value. The handler must also make use
+of the callback to return a list of updated attributes.
 
 For this handler we have used a helper function called `createQueryFromAttributes()`, that transforms the NGSI
 representation of the attributes to the UL type expected by the device:

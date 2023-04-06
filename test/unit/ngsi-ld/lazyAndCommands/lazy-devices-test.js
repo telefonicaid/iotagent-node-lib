@@ -33,9 +33,9 @@ const apply = async.apply;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const mongoUtils = require('../../mongodb/mongoDBUtils');
-
+const mongoUtils = require('../../../tools/mongoDBUtils');
 const timekeeper = require('timekeeper');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     contextBroker: {

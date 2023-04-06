@@ -48,6 +48,8 @@ Module mocking during testing can be done with [proxyquire](https://github.com/t
 To run tests, type
 
 ```bash
+docker run --name mongodb --publish 27017:27017 --detach mongo:4.2
+
 npm test
 ```
 
