@@ -27,10 +27,11 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     contextBroker: {
@@ -40,7 +41,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {},
     service: 'smartgondor',
@@ -143,7 +145,7 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
-                .delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8', '')
                 .reply(204);
         });
 
@@ -198,6 +200,227 @@ describe('NGSI-LD - Bidirectional data plugin', function () {
 
         it('should execute the original handler', function (done) {
             function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    executedHandler.should.equal(true);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return a 200 OK', function (done) {
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    response.statusCode.should.equal(200);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return the transformed values', function (done) {
+            let transformedHandler = false;
+
+            function mockedHandler(device, values, callback) {
+                let latitudeFound = false;
+                let longitudeFound = false;
+
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                        latitudeFound = true;
+                    }
+
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                        longitudeFound = true;
+                    }
+                }
+
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    contextBrokerMock.done();
+                    transformedHandler.should.equal(true);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a notification with metadata arrives for a bidirectional attribute', function () {
+        const notificationOptions = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+            method: 'POST',
+            json: utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalNotificationWithMetadata.json'
+            ),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        let executedHandler = false;
+
+        beforeEach(function () {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/subscriptions/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(204);
+        });
+
+        afterEach(function () {
+            iotAgentLib.setNotificationHandler();
+        });
+
+        it('should execute the original handler', function (done) {
+            function mockedHandler(device, notification, callback) {
+                notification[0].name.should.equal('location');
+                notification[0].value.should.equal('12.4, -9.6');
+                notification[0].metadata.qos.value.should.equal(1);
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    executedHandler.should.equal(true);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return a 200 OK', function (done) {
+            function mockedHandler(device, notification, callback) {
+                executedHandler = true;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    response.statusCode.should.equal(200);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+        });
+
+        it('should return the transformed values', function (done) {
+            let transformedHandler = false;
+
+            function mockedHandler(device, values, callback) {
+                let latitudeFound = false;
+                let longitudeFound = false;
+
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                        latitudeFound = true;
+                    }
+
+                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                        longitudeFound = true;
+                    }
+                }
+
+                transformedHandler = values.length >= 2 && longitudeFound && latitudeFound;
+                callback();
+            }
+
+            iotAgentLib.setNotificationHandler(mockedHandler);
+
+            request(options, function (error, response, body) {
+                request(notificationOptions, function (error, response, body) {
+                    contextBrokerMock.done();
+                    transformedHandler.should.equal(true);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a sequential notification with datasetId arrives for a bidirectional attribute', function () {
+        const notificationOptions = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/notify',
+            method: 'POST',
+            json: utils.readExampleFile(
+                './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalNotificationWithDatasetId.json'
+            ),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        let executedHandler = false;
+
+        beforeEach(function () {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/subscriptions/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/subscriptionRequests/bidirectionalSubscriptionRequest.json'
+                    )
+                )
+                .reply(201, null, { Location: '/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/',
+                    utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/createBidirectionalDevice.json')
+                )
+                .reply(204);
+        });
+
+        afterEach(function () {
+            iotAgentLib.setNotificationHandler();
+        });
+
+        it('should execute the original handler', function (done) {
+            function mockedHandler(device, notification, callback) {
+                notification[0].name.should.equal('location');
+                notification[0].value.should.equal('12.4, -9.6');
+                notification[0].datasetId.should.equal('urn:ngsi-ld:Property:do-this');
+
+                notification[1].name.should.equal('location');
+                notification[1].value.should.equal('6, 10');
+                notification[1].datasetId.should.equal('urn:ngsi-ld:Property:then-do-this');
+
                 executedHandler = true;
                 callback();
             }

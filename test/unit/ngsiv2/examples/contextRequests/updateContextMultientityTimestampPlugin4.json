@@ -1,8 +1,4 @@
 {
-  "actionType": "update",
-  "entities": [{
-    "id": "sensorCommand",
-    "type": "SensorCommand",
     "PING_status": {
       "type": "commandStatus",
       "value": "OK",
@@ -27,5 +23,4 @@
       "type": "DateTime",
       "value": "2015-08-05T07:35:01.468Z"
     }
-  }]
 }

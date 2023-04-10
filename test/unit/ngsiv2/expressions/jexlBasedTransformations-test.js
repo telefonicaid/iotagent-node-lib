@@ -30,6 +30,7 @@ const utils = require('../../../tools/utils');
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
+const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -40,7 +41,8 @@ const iotAgentConfig = {
     },
     defaultExpressionLanguage: 'jexl',
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -140,6 +142,37 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStationUndef: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'u',
+                    name: 'undef',
+                    type: 'json',
+                    expression: 'u["no"]'
+                },
+                {
+                    object_id: 'n',
+                    name: 'nil',
+                    type: 'json',
+                    expression: 'u["no"]?u["no"]:null'
+                },
+                {
+                    object_id: 'f',
+                    name: 'falsy',
+                    type: 'Boolean',
+                    expression: 'u["no"]?u["no"]:false'
+                },
+                {
+                    object_id: 'z',
+                    name: 'zero',
+                    type: 'Number',
+                    expression: 'u["no"]?u["no"]:0'
+                }
+            ]
+        },
         WeatherStationMultiple: {
             commands: [],
             type: 'WeatherStation',
@@ -185,6 +218,160 @@ const iotAgentConfig = {
                     expression: 'updated|trim'
                 }
             ]
+        },
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    expression: 'ts|toisodate'
+                }
+            ],
+            explicitAttrs: true
+        },
+        GPS2: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: true
+        },
+        GPS3: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    value: 'blue'
+                }
+            ],
+            active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: ' location&&price ? [ "location", "price" ] : location ? [ "location" ] : []'
+        },
+        GPS4: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    value: 'blue'
+                }
+            ],
+            active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: '[ "loca" + "tion" ]'
+        },
+        GPS5: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    value: 'blue'
+                }
+            ],
+            active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
+                {
+                    object_id: 'theLocation',
+                    name: 'mylocation',
+                    type: 'geo:json'
+                }
+            ],
+            explicitAttrs: "theLocation ? ['mylocation'] :  []"
+            // #1267 this is not working:
+            //explicitAttrs: "theLocation ? [{object_id: 'theLocation'}] :  []"
+        },
+        GPS6: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'lat',
+                    type: 'Number',
+                    value: 52
+                },
+                {
+                    name: 'lon',
+                    type: 'Number',
+                    value: 13
+                }
+            ],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: 'TimeInstant == null ? [] : true' // which is true
+        },
+        GPS7: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            static: [
+                {
+                    name: 'color',
+                    type: 'string',
+                    value: 'blue'
+                }
+            ],
+            active: [
+                {
+                    name: 'price',
+                    type: 'number'
+                },
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: '[ ]'
         }
     },
     service: 'smartgondor',
@@ -194,15 +381,45 @@ const iotAgentConfig = {
     throttling: 'PT5S'
 };
 
+const iotAgentConfigTS = {
+    logLevel: 'FATAL',
+    contextBroker: {
+        host: '192.168.1.1',
+        port: '1026',
+        ngsiVersion: 'v2'
+    },
+    defaultExpressionLanguage: 'jexl',
+    server: {
+        port: 4041,
+        host: 'localhost'
+    },
+    types: {
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                }
+            ],
+            explicitAttrs: true
+        }
+    },
+    timestamp: true,
+    service: 'smartgondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartgondor.com'
+};
+
 describe('Java expression language (JEXL) based transformations plugin', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
@@ -219,16 +436,31 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         const values = [
             {
                 name: 'p',
-                type: 'centigrades',
-                value: '52'
+                type: 'Number',
+                value: 1040
             }
         ];
 
-        it('should apply the expression before sending the values', function (done) {
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/light1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
+                    )
+                )
+                .query({ type: 'Light' })
+                .reply(204);
+        });
+
+        it('should ignore the expression and send the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
-                should.exist(error);
-                error.name.should.equal('INVALID_EXPRESSION');
-                error.code.should.equal(400);
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });
@@ -734,6 +966,412 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should not calculate the expression', function (done) {
             iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+    describe('When a measure arrives and there is not enough information to calculate an expression', function () {
+        const values = [
+            {
+                name: 'u',
+                type: 'json',
+                value: '{}'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/ws1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin31.json'
+                    )
+                )
+                .query({ type: 'WeatherStation' })
+                .reply(204);
+        });
+
+        it('should not calculate the expression and allow falsy values', function (done) {
+            iotAgentLib.update('ws1', 'WeatherStationUndef', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there are additional attributes sent by the device to be calculated and removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'ts',
+                type: 'Number',
+                value: 1
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed by string', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs by string from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS3', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed by jexl expression', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs by jexl expression from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS4', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed by jexl expression with context ', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'theLocation',
+                type: 'geo:json',
+                value: { coordinates: [13, 52], type: 'Point' }
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs by jexl expression with context from the payload ', function (done) {
+            iotAgentLib.update('gps1', 'GPS5', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removedb jexl expression using static attrs', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS6', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra TimeInstant sent by the device to be removed by jexl expression with context but with empty explicitAttrs', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'myattr',
+                type: 'String',
+                value: 'location'
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+        });
+
+        it('should calculate them and remove non-explicitAttrs by jexl expression with context from the payload ', function (done) {
+            iotAgentLib.update('gps1', 'GPS7', '', values, function (error) {
+                should.not.exist(error);
+                done();
+            });
+        });
+    });
+});
+
+describe('Java expression language (JEXL) based transformations plugin - Timestamps', function () {
+    beforeEach(function (done) {
+        logger.setLevel('FATAL');
+
+        iotAgentLib.activate(iotAgentConfigTS, function () {
+            iotAgentLib.clearAll(function () {
+                done();
+            });
+        });
+    });
+
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When timestamps are added but are not explicitly defined', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'ts',
+                type: 'Number',
+                value: 1
+            }
+        ];
+
+        beforeEach(function () {
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+            timekeeper.freeze(time);
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin33.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            timekeeper.reset();
+            done();
+        });
+
+        it('should calculate them and not remove the timestamp from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

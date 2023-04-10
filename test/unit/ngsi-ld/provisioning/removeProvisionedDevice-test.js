@@ -27,10 +27,11 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 const async = require('async');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'ERROR',
@@ -42,6 +43,7 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -115,7 +117,7 @@ describe('NGSI-LD - Device provisioning API: Remove provisioned devices', functi
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
-                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d')
+                .delete('/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             // This mock does not check the payload since the aim of the test is not to verify
@@ -174,8 +176,7 @@ describe('NGSI-LD - Device provisioning API: Remove provisioned devices', functi
                 };
 
                 request(options, function (error, response, body) {
-                    const parsedBody = JSON.parse(body);
-                    parsedBody.devices.length.should.equal(2);
+                    body.devices.length.should.equal(2);
                     done();
                 });
             });

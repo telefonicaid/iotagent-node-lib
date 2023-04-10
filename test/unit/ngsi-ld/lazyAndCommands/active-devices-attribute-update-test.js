@@ -26,11 +26,13 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -41,7 +43,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {

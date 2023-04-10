@@ -25,10 +25,10 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
 let contextBrokerMock;
 let keystoneMock;
 const iotAgentConfig = {
@@ -37,7 +37,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     authentication: {
         // Next line is syntactically correct from a configuration point of

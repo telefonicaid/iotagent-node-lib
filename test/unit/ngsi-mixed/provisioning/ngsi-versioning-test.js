@@ -26,7 +26,9 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
-const request = require('request');
+const utils = require('../../../tools/utils');
+const request = utils.request;
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -38,6 +40,7 @@ const iotAgentConfig = {
     server: {
         name: 'testAgent',
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -63,7 +66,6 @@ const optionsCreationDefault = {
         services: [
             {
                 apikey: 'default-test',
-                cbroker: 'http://orion:1026',
                 entity_type: 'Device',
                 resource: '/iot/default',
                 attributes: [
@@ -88,7 +90,6 @@ const optionsCreationV2 = {
         services: [
             {
                 apikey: 'v2-test',
-                cbroker: 'http://orion:1026',
                 ngsiVersion: 'v2',
                 entity_type: 'Device',
                 resource: '/iot/v2',
@@ -115,7 +116,6 @@ const optionsCreationLD = {
         services: [
             {
                 apikey: 'ld-test',
-                cbroker: 'http://orion:1026',
                 entity_type: 'Device',
                 ngsiVersion: 'ld',
                 resource: '/iot/ld',
@@ -169,7 +169,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
     beforeEach(function (done) {
         mongoUtils.cleanDbs(function () {
             iotAgentLib.activate(iotAgentConfig, function () {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
@@ -269,13 +269,18 @@ describe('Mixed Mode: ngsiVersion test', function () {
             });
         });
         it('should operate using NGSI-v2', function (done) {
-            iotAgentLib.update('light2', 'Device', 'v2-test', values, { ngsiVersion: 'v2', type: 'Device' }, function (
-                error
-            ) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            iotAgentLib.update(
+                'light2',
+                'Device',
+                'v2-test',
+                values,
+                { ngsiVersion: 'v2', type: 'Device' },
+                function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                }
+            );
         });
     });
 });

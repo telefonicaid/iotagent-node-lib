@@ -1,5 +1,4 @@
 {
-  "actionType": "update",
   "entities": [
     {
       "id": "ws4",
@@ -8,9 +7,9 @@
     {
       "id": "Higro2000",
       "type": "Higrometer",
-      "humidity": {
-          "type": "Percentage",
+        "humidity": {
           "value": "12",
+          "type": "Percentage",
           "metadata": {
               "TimeInstant": {
                   "type": "DateTime",
@@ -24,5 +23,6 @@
           "value": "2018-06-13T13:28:34.611Z"
       }
     }
-  ]
+  ],
+  "actionType": "update"
 }

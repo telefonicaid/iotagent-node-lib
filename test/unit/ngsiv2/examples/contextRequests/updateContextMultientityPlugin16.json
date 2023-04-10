@@ -1,0 +1,25 @@
+{
+  "actionType": "update",
+  "entities": [
+    {
+      "id": "gps1",
+      "type": "GPS"
+    },
+    {
+      "attr1": {
+        "type": "number",
+        "value": 52
+      },
+      "type": "GPS",
+      "id": "SO5"
+    },
+    {
+      "attr2": {
+        "type": "number",
+        "value": 13
+      },
+      "type": "GPS",
+      "id": "SO6"
+    }
+  ]
+}

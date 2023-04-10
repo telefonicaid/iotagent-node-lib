@@ -1,6 +1,12 @@
 {
     "@context": "http://context.json-ld",
     "endpoint": "http://smartgondor.com",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "information": [
         {
             "entities": [
@@ -9,10 +15,13 @@
                     "type": "Robot"
                 }
             ],
-            "properties": [
-                "position"
+            "propertyNames": [
+                "position",
+                "orientation"
             ]
         }
     ],
+    "mode": "exclusive",
+    "operations" :["updateOps"],
     "type": "ContextSourceRegistration"
 }

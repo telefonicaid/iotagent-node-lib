@@ -30,6 +30,7 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const config = require('../../../../lib/commonConfig');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -38,7 +39,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {

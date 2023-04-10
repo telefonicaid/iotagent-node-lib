@@ -28,8 +28,8 @@
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const async = require('async');
-const request = require('request');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -40,6 +40,7 @@ const iotAgentConfig = {
     server: {
         name: 'testAgent',
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -179,7 +180,7 @@ describe('MongoDB Group Registry test', function () {
     beforeEach(function (done) {
         mongoUtils.cleanDbs(function () {
             iotAgentLib.activate(iotAgentConfig, function () {
-                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
@@ -444,6 +445,30 @@ describe('MongoDB Group Registry test', function () {
                 should.exist(body.services);
                 should.exist(body.services.length);
                 body.services.length.should.equal(10);
+                done();
+            });
+        });
+    });
+
+    describe('When the device info request with name and type', function () {
+        beforeEach(function (done) {
+            async.series([async.apply(request, optionsCreation)], done);
+        });
+
+        afterEach(function (done) {
+            iotAgentLib.clearRegistry(done);
+        });
+
+        it('should return the name and type of device', function (done) {
+            request(optionsGet, function (error, response, body) {
+                should.exist(body);
+                should.exist(body.count);
+                body.count.should.equal(1);
+                should.exist(body.services);
+                should.exist(body.services.length);
+                body.services.length.should.equal(1);
+                should.exist(body.services[0].entity_type);
+                body.services[0].entity_type.should.equal('Light');
                 done();
             });
         });

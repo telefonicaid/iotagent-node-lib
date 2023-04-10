@@ -39,7 +39,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -151,8 +152,8 @@ const iotAgentConfig = {
                     expression: '${trim(@pressure)}'
                 },
                 {
-                    object_id: 'p25',
-                    name: 'pressure25',
+                    object_id: 'p_25',
+                    name: 'pressure_25',
                     type: 'Number'
                 },
                 {
@@ -169,7 +170,7 @@ const iotAgentConfig = {
                 {
                     name: 'weather',
                     type: 'Summary',
-                    expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure25 * 20}'
+                    expression: 'Humidity ${@humidity12 / 2} and pressure ${@pressure_25 * 20}'
                 },
                 {
                     object_id: 'a',
@@ -197,9 +198,6 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
@@ -276,7 +274,7 @@ describe('NGSI-v2 - Expression-based transformations plugin', function () {
 
         const values = [
             {
-                name: 'p25',
+                name: 'p_25',
                 type: 'Number',
                 value: 52
             },

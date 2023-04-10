@@ -39,7 +39,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -115,8 +116,6 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 done();
             });
         });

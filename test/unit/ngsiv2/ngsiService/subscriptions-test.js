@@ -27,8 +27,9 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
-const request = require('request');
+
 const nock = require('nock');
 let contextBrokerMock;
 const iotAgentConfig = {
@@ -39,7 +40,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {},
     service: 'smartgondor',
@@ -133,7 +135,7 @@ describe('NGSI-v2 - Subscription tests', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8', '')
                 .reply(204);
 
             done();
@@ -171,7 +173,7 @@ describe('NGSI-v2 - Subscription tests', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8')
+                .delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8', '')
                 .reply(204);
 
             done();

@@ -21,7 +21,8 @@
             "value": {
                 "@type": "Percentage",
                 "@value": "12"
-            }
+            },
+            "observedAt": "2023-03-21T18:30:30.948Z"
         }
     }
 ]

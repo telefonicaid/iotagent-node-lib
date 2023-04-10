@@ -1,6 +1,12 @@
 {
     "@context": "http://context.json-ld",
     "endpoint": "http://smartgondor.com",
+    "contextSourceInfo":[
+      {
+        "key": "jsonldContext",
+        "value": "http://context.json-ld"
+      }
+    ],
     "information": [
         {
             "entities": [
@@ -9,13 +15,18 @@
                     "type": "SensorMachine"
                 }
             ],
-            "properties": [
+            "propertyNames": [
                 "luminance",
                 "luminescence",
                 "commandAttr",
                 "wheel1"
             ]
         }
+    ],
+    "mode": "exclusive",
+    "operations" : [
+        "retrieveOps",
+        "updateOps"
     ],
     "type": "ContextSourceRegistration"
 }

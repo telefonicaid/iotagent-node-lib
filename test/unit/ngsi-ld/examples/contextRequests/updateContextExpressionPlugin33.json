@@ -1,0 +1,18 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "location": {
+      "type": "GeoProperty",
+      "value": {
+        "coordinates": [
+          13,
+          52
+        ],
+        "type": "Point"
+      },
+      "observedAt": "2015-08-05T07:35:01.468Z"
+    },
+    "id": "urn:ngsi-ld:GPS:gps1",
+    "type": "GPS"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "actionType": "update",
+  "entities": [
+    {
+      "id": "sh2",
+      "type": "ShareStation",
+      "vol":{
+        "type": "Number",
+        "value": 0
+      }
+    },
+    {
+      "id": "WeatherStation1",
+      "type": "Type1",
+      "vol":{
+        "type": "Number",
+        "value": 1
+      }
+    },
+    {
+      "id": "WeatherStation1",
+      "type": "Type2",
+      "vol":{
+        "type": "Number",
+        "value": 2
+      },
+      "extravol": {
+        "type": "Number",
+        "value": 3
+      }
+    }
+  ]
+}

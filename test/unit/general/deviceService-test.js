@@ -25,9 +25,9 @@
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const utils = require('../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
 const logger = require('logops');
 const async = require('async');
 const iotAgentConfig = {
@@ -36,7 +36,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -134,7 +135,7 @@ const groupCreation = {
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                 entity_type: 'TheLightType',
                 trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                cbHost: 'http://unexistentHost:1026',
+                cbHost: 'http://192.168.1.1:1026',
                 commands: [],
                 lazy: [],
                 attributes: [
@@ -181,12 +182,11 @@ describe('NGSI-v2 - Device Service: utils', function () {
 
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
         beforeEach(function (done) {
-            contextBrokerMock = nock('http://unexistentHost:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
@@ -194,13 +194,12 @@ describe('NGSI-v2 - Device Service: utils', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-
-            async.series([request.bind(request, groupCreation), request.bind(request, deviceCreation)], function (
-                error,
-                results
-            ) {
-                done();
-            });
+            async.series(
+                [request.bind(request, groupCreation), request.bind(request, deviceCreation)],
+                function (error, results) {
+                    done();
+                }
+            );
         });
 
         it('should return the existing device', function (done) {
@@ -216,17 +215,16 @@ describe('NGSI-v2 - Device Service: utils', function () {
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {
-            contextBrokerMock = nock('http://unexistentHost:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                 .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert')
                 .reply(204);
 
             async.series([request.bind(request, groupCreation)], function (error, results) {
@@ -235,32 +233,34 @@ describe('NGSI-v2 - Device Service: utils', function () {
         });
 
         it('should register the device and return it', function (done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function (
-                error,
-                device
-            ) {
-                should.not.exist(error);
-                should.exist(device);
+            iotAgentLib.retrieveDevice(
+                'UNEXISTENT_DEV',
+                '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                function (error, device) {
+                    should.not.exist(error);
+                    should.exist(device);
 
-                device.id.should.equal('UNEXISTENT_DEV');
-                should.exist(device.protocol);
-                device.protocol.should.equal('MQTT_UL');
-                done();
-            });
+                    device.id.should.equal('UNEXISTENT_DEV');
+                    should.exist(device.protocol);
+                    device.protocol.should.equal('MQTT_UL');
+                    done();
+                }
+            );
         });
     });
 
     describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function () {
         it('should raise an error', function (done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV_AND_GROUP', 'H2332Y909DSF3H346yh20JK092', function (
-                error,
-                device
-            ) {
-                should.exist(error);
-                error.name.should.equal('DEVICE_GROUP_NOT_FOUND');
-                should.not.exist(device);
-                done();
-            });
+            iotAgentLib.retrieveDevice(
+                'UNEXISTENT_DEV_AND_GROUP',
+                'H2332Y909DSF3H346yh20JK092',
+                function (error, device) {
+                    should.exist(error);
+                    error.name.should.equal('DEVICE_GROUP_NOT_FOUND');
+                    should.not.exist(device);
+                    done();
+                }
+            );
         });
     });
 });

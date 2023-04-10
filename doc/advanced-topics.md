@@ -1,37 +1,35 @@
 ## Advanced Topics
 
-* [Secured access to the Context Broker](#secured-access-to-the-context-broker)
-* [GeoJSON support NGSI-LD only](#geojson-support-ngsi-ld-only)
-* [Metadata support](#metadata-support)
-    * [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
-* [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
-* [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
-* [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-* [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
-* [Data mapping plugins](#data-mapping-plugins)
-    * [Development](#development)
-    * [Provided plugins](#provided-plugins)
-        * [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
-        * [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
-        * [Event plugin (addEvents)](#event-plugin-addevents)
-        * [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
-        * [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
-        * [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
-        * [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
-    * [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
-    * [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-    * [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
-* [Old IoTAgent data migration](#old-iotagent-data-migration)
-
+-   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
+-   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
+-   [Metadata support](#metadata-support)
+    -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
+-   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
+-   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+-   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+-   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+-   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
+-   [Data mapping plugins](#data-mapping-plugins)
+    -   [Development](#development)
+    -   [Provided plugins](#provided-plugins)
+        -   [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
+        -   [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
+        -   [Event plugin (addEvents)](#event-plugin-addevents)
+        -   [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
+        -   [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
+        -   [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
+        -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
+    -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+    -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
 
 ### Secured access to the Context Broker
 
 For access to instances of the Context Broker secured with a
 [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
-tokens is provided. A trust token is a way of Keystone to allow an user delegates a role to another user for a subservice.
-It is a long-term token that can be issued by any user to give another user permissions
-to impersonate him with a given role in a given project (subservice). Such impersonation itself is in turn based on a short-term
-access token.
+tokens is provided. A trust token is a way of Keystone to allow an user delegates a role to another user for a
+subservice. It is a long-term token that can be issued by any user to give another user permissions to impersonate him
+with a given role in a given project (subservice). Such impersonation itself is in turn based on a short-term access
+token.
 
 For the authentication mechanisms to work, the `authentication` attribute in the configuration has to be fully
 configured, and the `authentication.enabled` subattribute should have the value `true`.
@@ -73,15 +71,18 @@ Agent.
 
 Complete info on Keystone trust tokens could be found at:
 
-- [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
-- [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
+-   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
+-   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
-### GeoJSON support NGSI-LD only
+### NGSI-LD `GeoProperty` support
 
-The defined `type` of any GeoJSON attribute can be any set to any of the standard NGSI-v2 GeoJSON types - (e.g.
-`geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also accepted `type`
-values. If the latitude and longitude are received as separate measures, the
-[expression language](expressionLanguage.md) can be used to concatenate them.
+For NGSI-LD only, the defined `type` of any GeoJSON attribute can be any set using any of the standard NGSI-v2 GeoJSON
+types - (e.g. `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also
+accepted `type` values. If the latitude and longitude are received as separate measures, the JEXL or legacy
+[expression language](expressionLanguage.md) can be used to concatenate them into GeoJSON objects an array of tuples or
+a string as shown
+
+#### Legacy - encode as String
 
 ```json
 {
@@ -99,8 +100,30 @@ values. If the latitude and longitude are received as separate measures, the
 }
 ```
 
-For `attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
-accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following formats:
+#### JEXL - encode as GeoJSON
+
+```json
+{
+    "entity_type": "GPS",
+    "resource":    "/iot/d",
+    "protocol":    "PDI-IoTA-JSON",
+    "expressionLanguage": "jexl",
+..etc
+    "attributes": [
+        {
+            "name": "location",
+            "type": "geo:json",
+            "expression": "{coordinates: [longitude,latitude], type: 'Point'}"
+        }
+    ]
+}
+```
+
+JEXL can be used to create GeoJSON objects directly. The Legacy expression language does not support GeoJSON. However,
+there is a workaround specifically for NGSI-LD Entities which always require `location` to be encoded as GeoJSON. For
+`attributes` and `static_attributes` which need to be formatted as GeoJSON values, three separate input formats are
+currently accepted. Provided the `type` is provisioned correctly, the `value` may be defined using any of the following
+formats:
 
 -   a comma delimited string
 
@@ -174,7 +197,7 @@ e.g.:
 When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
 following:
 
--   `Property`, `Relationship`, `Geoproperty`
+-   `Property`, `Relationship`, `GeoProperty`, `LanguageProperty`
 -   Native JSON types (e.g. `String`, `Boolean`, `Float` , `Integer` `Number`)
 -   Temporal Properties (e.g. `Datetime`, `Date` , `Time`)
 -   GeoJSON types (e.g `Point`, `LineString`, `Polygon`, `MultiPoint`, `MultiLineString`, `MultiPolygon`)
@@ -269,26 +292,103 @@ updated as shown:
 
 ### Autoprovision configuration (autoprovision)
 
-By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the IoTA 
-creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false` 
-when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the 
-data to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is 
-intended to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the
+IoTA creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false`
+when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the data
+to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
+to avoid provisioning devices (and for it to be effective, it would have to be provisional).
 
 ### Explicitly defined attributes (explicitAttrs)
 
-If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is stored 
-in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure element. By adding the
-field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the measure elements that are not defined 
-in the mappings of device or group provision, persisting only the one defined in the mappings of the provision. If `explicitAttrs`
-is provided both at device and group level, the device level takes precedence.
+If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is
+stored in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure
+element. By adding the field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the
+measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
+the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
+precedence. Additionally `explicitAttrs` can be used to define which meassures (identified by their attribute names, not
+by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
+
+The different possibilities are summarized below:
+
+Case 1 (default):
+
+```
+"explicitAttrs": false
+```
+
+every measure will be propagated to NGSI interface.
+
+Case 2:
+
+```
+"explicitAttrs": true
+```
+
+just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+
+Case 3:
+
+```
+"explicitAttrs": "['attr1','atrr2']"
+```
+
+just NGSI attributes defined in the array (identified by their attribute names, not by their object_id, plus
+conditionally TimeInstant) will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is
+not a JSON but a JEXL Array that looks likes a JSON).
+
+Case 4:
+
+```
+"explicitAttrs": "['attr1','atrr2',{object_id:'active_id'}]"
+```
+
+just NGSI attributes defined in the array (identified by their attribute names and/or by their object_id) will be
+propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
+that looks likes a JSON). This is necessary when same attribute names are used within multiple entities.
+
+Case 5:
+
+```
+"explicitAtttr": "<JEXL expression resulting in bool or array>"
+```
+
+depending on the JEXL expression evaluation:
+
+-   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
+-   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
+    propagated to NGSI interface (as in case 2)
+-   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
+    object_id) will be will be propagated to NGSI interface (as in case 3)
 
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
-This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the `IOTA_APPEND_MODE`
-environment variable (more info [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). 
-If this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the 
-default UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
+`IOTA_APPEND_MODE` environment variable (more info
+[here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). If this flag is
+activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
+UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
+### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+
+Since those configuration parameters are quite similar, this section is intended to clarify the relation between them. 
+
+If `autoprovision` is set to `true` (default case), the agent will perform an initial request creating a new entity into 
+the Context Broker with **only** the static and active attributes provisioned in the config group, and also a new
+Device in the agent, every time a measure arrives with a new `device_id`. Otherwise, this measure is ignored. This is 
+something related to the **southbound**.
+
+What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device 
+provision or config group. That also would avoid propagating the measures to the Context Broker.
+
+The default way the agent updates the information into the Context Broker is by using an update request. If 
+`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store 
+the attributes even if they are not present in the entity. This seems the same functionality that the one provided by
+`autoprovision`, but it is a different concept since the scope of this config is to setup how the IoT interacts with the
+context broker, this is something related to the **northbound**.
+
+Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously 
+the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further 
+information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ### Data mapping plugins
 
@@ -373,8 +473,8 @@ events in the IoT Agent with the configured type name will be marked as events. 
 
 ##### Timestamp Processing Plugin (timestampProcess)
 
-This plugin processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSIv2,
-the plugin adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the
+This plugin processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the
+plugin adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the
 Standard `observedAt` property-of-a-property is used instead.
 
 ##### Expression Translation plugin (expressionTransformation)
@@ -436,9 +536,10 @@ intercepted by the plugin, so the mapped values are included in the updated noti
 
 When a device is provisioned with bidirectional attributes, the IoTAgent subscribes to changes in that attribute. When a
 change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
-provisioning payload to the notification, and calls the underlying notification handler with the transformed entity.
+provisioning payload to the notification, and calls the underlying notification handler with the transformed entity including the `value` along with any `metadata`, and in the case of an NGSI-LD bidirectional attribute a `datasetId` if provided.
 
-The following `attributes` section shows an example of the plugin configuration (using IOTA_AUTOCAST=false to avoid translation from geo:point to geo:json)
+The following `attributes` section shows an example of the plugin configuration (using `IOTA_AUTOCAST=false` to avoid
+translation from geo:point to geo:json)
 
 ```json
       "attributes": [
@@ -471,34 +572,55 @@ For each attribute in the `reverse` array, an expression must be defined to calc
 notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
 how the value is then progressed to the device are protocol-specific.
 
-### Old IoTAgent data migration
+##### NGSI-LD `datasetId` support
 
-In order to ease the transition from the old IoTAgent implementation (formerly known as IDAS) to the new Node.js based
-implementations, a data migration tool has been developed. This data migration tool has been integrated as a command in
-the IoTAgent command-line tester.
+Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential commands for a single attribute can be sent as an NGSI-LD notification as follows:
 
-In order to perform a full migration, follow this steps:
 
--   From the project root, start the command-line tester:
-
-```bash
-    bin/iotAgentTester.js
+```json
+{
+  "id": "urn:ngsi-ld:Notification:5fd0fa684eb81930c97005f3",
+  "type": "Notification",
+  "subscriptionId": "urn:ngsi-ld:Subscription:5fd0f69b4eb81930c97005db",
+  "notifiedAt": "2020-12-09T16:25:12.193Z",
+  "data": [
+    {
+      "lampColor": [
+        {
+          "type": "Property",
+          "value": { "color": "green", "duration": "55 secs"},
+          "datasetId": "urn:ngsi-ld:Sequence:do-this"
+        },
+        {
+          "type": "Property",
+          "value": {"color": "red", "duration": "10 secs"},
+          "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
+        }
+      ]
+    }
+  ]
+}
 ```
 
--   Configure the MongoDB host and port, and the origin Database (that holds the data to be migrated):
+This results in the following sequential array of attribute updates to be sent to the `NotificationHandler` of the IoT Agent itself:
 
-```bash
-    configMigration localhost 27017 originDB
+```json
+[
+  {
+    "name": "lampColor",
+    "type": "Property",
+    "datasetId": "urn:ngsi-ld:Sequence:do-this",
+    "metadata": {},
+    "value": { "color": "green", "duration": "55 secs"}
+  },
+  {
+    "name": "lampColor",
+    "type": "Property",
+    "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
+    "metadata": {},
+    "value": {"color": "red", "duration": "10 secs"}
+  }
+]
 ```
 
--   Launch the migration, using the special value "\*" as service and subservice
-
-```bash
-    migrate targetDB * *
-```
-
-Some warnings may appear with the "Attribute [_id] was not found for item translation" message during the migration.
-They show the values existing in the original DB that had no translation for the target DB.
-
-If you want to restrict the migration for certain services and subservices, just substitute the `*` value for the
-particular service and subservice you want to use.
+A `datasetId` is also maintained for each new attribute defined in the `reverse` field.

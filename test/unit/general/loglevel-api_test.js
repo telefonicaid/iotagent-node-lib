@@ -26,14 +26,16 @@
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const should = require('should');
 const logger = require('logops');
-const request = require('request');
+const utils = require('../../tools/utils');
+const request = utils.request;
 const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -72,8 +74,6 @@ describe('Log level API', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
                 done();
             });
         });
@@ -129,10 +129,8 @@ describe('Log level API', function () {
 
         it('should return the current log level', function (done) {
             request(options, function (error, response, body) {
-                const parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.level);
-                parsedBody.level.should.equal('FATAL');
+                should.exist(body.level);
+                body.level.should.equal('FATAL');
 
                 done();
             });
@@ -158,9 +156,7 @@ describe('Log level API', function () {
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                const parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('invalid log level');
+                body.error.should.equal('invalid log level');
 
                 done();
             });
@@ -183,9 +179,7 @@ describe('Log level API', function () {
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                const parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('log level missing');
+                body.error.should.equal('log level missing');
 
                 done();
             });

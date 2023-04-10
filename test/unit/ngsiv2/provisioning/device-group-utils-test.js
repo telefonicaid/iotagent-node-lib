@@ -25,10 +25,11 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const async = require('async');
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
-const request = require('request');
+
 const groupCreation = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',
@@ -55,6 +56,7 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {

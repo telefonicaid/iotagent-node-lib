@@ -27,11 +27,12 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
-const request = require('request');
+
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 let statusAttributeMock;
@@ -42,7 +43,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -306,6 +308,112 @@ describe('NGSI-v2 - Command functionalities', function () {
             iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', 'Stalled', 'ERROR', function (error) {
                 should.not.exist(error);
                 statusAttributeMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a command update with metadata arrives to the IoT Agent as Context Provider', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            method: 'POST',
+            json: {
+                actionType: 'update',
+                entities: [
+                    {
+                        id: 'Robot:r2d2',
+                        type: 'Robot',
+                        position: {
+                            type: 'Array',
+                            value: '[28, -104, 23]',
+                            metadata: {
+                                qos: 1
+                            }
+                        }
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            iotAgentLib.register(device3, function (error) {
+                done();
+            });
+        });
+
+        it('should call the client handler once including metadata', function (done) {
+            let handlerCalled = 0;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal(device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[0].value.should.equal('[28, -104, 23]');
+                attributes[0].metadata.qos.should.equal(1);
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                done();
+            });
+        });
+        it('should create the attribute with the "_status" prefix in the Context Broker', function (done) {
+            let serviceAndSubservice = false;
+
+            iotAgentLib.setCommandHandler(function (id, type, service, subservice, attributes, callback) {
+                serviceAndSubservice = service === 'smartgondor' && subservice === 'gardens';
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
+
+            request(options, function (error, response, body) {
+                serviceAndSubservice.should.equal(true);
                 done();
             });
         });

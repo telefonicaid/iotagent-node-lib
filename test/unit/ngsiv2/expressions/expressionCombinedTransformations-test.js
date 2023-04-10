@@ -38,7 +38,8 @@ const iotAgentConfigJexl = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     defaultExpressionLanguage: 'jexl',
     types: {
@@ -83,7 +84,8 @@ const iotAgentConfigLegacy = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStationLegacy: {
@@ -127,9 +129,6 @@ describe('Combine Jexl and legacy expressions (default JEXL) - NGSI v2', functio
 
         iotAgentLib.activate(iotAgentConfigJexl, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });
@@ -216,9 +215,6 @@ describe('Combine Jexl and legacy expressions (default Legacy) - NGSI v2', funct
 
         iotAgentLib.activate(iotAgentConfigLegacy, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
                 done();
             });
         });

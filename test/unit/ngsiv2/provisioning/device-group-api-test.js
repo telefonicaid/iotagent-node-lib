@@ -28,8 +28,9 @@ const _ = require('underscore');
 const async = require('async');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
-const request = require('request');
+
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -40,6 +41,7 @@ const iotAgentConfig = {
     server: {
         name: 'testAgent',
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -424,7 +426,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .delete('/v2/registrations/6319a7f5254b05844116584d')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
                 .reply(204);
 
             contextBrokerMock

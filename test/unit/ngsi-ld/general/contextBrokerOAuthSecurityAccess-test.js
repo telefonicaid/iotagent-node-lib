@@ -27,10 +27,10 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const request = require('request');
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 let oauth2Mock;
@@ -42,7 +42,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     authentication: {
         type: 'oauth2',
@@ -336,7 +337,7 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                 )
                 .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
 
-            contextBrokerMock.delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8').reply(204);
+            contextBrokerMock.delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8', '').reply(204);
 
             iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {

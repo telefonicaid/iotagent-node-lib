@@ -27,9 +27,10 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const nock = require('nock');
-const request = require('request');
+
 const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
@@ -41,6 +42,7 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -449,7 +451,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true
                         }
                     ]
@@ -515,7 +517,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -588,7 +590,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true
                         }
                     ]
@@ -655,7 +657,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -704,6 +706,66 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         }
     );
 
+    describe('When a device provisioning request arrives to the IoTA and entityNameExp was configured at group level', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionMinimumDevice4.json'),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+        const groupCreation = {
+            url: 'http://localhost:4041/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/Thing',
+                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                        /*jshint camelcase: false */
+                        entity_type: 'MicroLights',
+                        entityNameExp: 'EntityNameByExp',
+                        cbHost: 'http://192.168.1.1:1026'
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice4.json'
+                    )
+                )
+                .reply(204);
+
+            done();
+        });
+
+        it('should store the entity name defined by expression', function (done) {
+            request(groupCreation, function (error, response, body) {
+                request(options, function (error, response, body) {
+                    iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
+                        should.exist(results.devices[0].name);
+                        results.devices[0].name.should.equal('EntityNameByExp');
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
     describe(
         'When a device provisioning request with static attributes arrives to the IoTA' +
             ' and same static attribute is also configured at group level',
@@ -729,7 +791,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                             apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                             /*jshint camelcase: false */
                             entity_type: 'MicroLights',
-                            cbroker: 'http://192.168.1.1:1026',
+                            cbHost: 'http://192.168.1.1:1026',
                             explicitAttrs: true,
                             static_attributes: [
                                 {
@@ -1320,6 +1382,25 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(404);
+                done();
+            });
+        });
+    });
+    describe('When a device provisioning request arrives to the Agent without device_id', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionNewDeviceEmpty.json')
+        };
+
+        it('should return a 400 error', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(400);
                 done();
             });
         });

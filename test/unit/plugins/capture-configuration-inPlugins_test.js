@@ -24,16 +24,19 @@
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
+const utils = require('../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
-const request = require('request');
+
 const iotAgentConfig = {
     contextBroker: {
         host: '192.168.1.1',
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {

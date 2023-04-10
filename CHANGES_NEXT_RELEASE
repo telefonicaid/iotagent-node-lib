@@ -1,7 +1,3 @@
 - Fix: use 'options=upsert' when update ngsiv2 CB entities (#956)
-- Fix: set status code response from CB for EntityGenericError is raised (#1109)
-- Remove: NGSI-v1 implementation (#966)
-- FIx: export fillDomains function to iotagent-node-lib available functions (needed to fix logs in iotagent-json#587 and iotagent-ul#508)
-- Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
-- Add: new JEXL get TimeZone Offset (valid for summer winter schedulles) and binary shifting for bitwise operator
-- Fix: accept the entry internal_attributes in a PUT /iot/devices/:deviceId (#1083)
+- Add support to run tests with node 18
+- Set Nodejs 16 as minimum version in packages.json (effectively removing Nodev14 from supported versions)

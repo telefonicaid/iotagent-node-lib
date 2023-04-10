@@ -23,6 +23,7 @@
 
 const should = require('should');
 const expressionParser = require('../../../lib/plugins/jexlParser');
+expressionParser.setTransforms({});
 
 describe('Jexl expression interpreter', function () {
     const scope = {
@@ -203,6 +204,16 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When an slice function is used with an string', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('"AABBCC"|slice(2,4)', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('BB');
+                done();
+            });
+        });
+    });
+
     describe('When an ternary operator is used with an expression', function () {
         it('should work on the expression value', function (done) {
             expressionParser.parse('value == 6? true : false', scope, function (error, result) {
@@ -218,6 +229,26 @@ describe('Jexl expression interpreter', function () {
             expressionParser.parse('value == 6 && spaces|indexOf("a")>0', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When an concatarr function is used with an array', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('array|concatarr(array)', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.deepEqual([1, 2, 1, 2]);
+                done();
+            });
+        });
+    });
+
+    describe('When an joinarrtostr function is used with an array', function () {
+        it('should work on the expression value', function (done) {
+            expressionParser.parse('array|joinarrtostr("_")', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('1_2');
                 done();
             });
         });
@@ -258,7 +289,7 @@ describe('Jexl expression interpreter', function () {
         const noMap = "I'm not what you expect";
 
         it('it should detect when it is not a map', function (done) {
-            let [error, message, resultMap] = expressionParser.checkTransformationMap(noMap);
+            const [error, message, resultMap] = expressionParser.checkTransformationMap(noMap);
             should.exist(error);
             message.should.equal('No trasformations were added to JEXL Parser');
             resultMap.should.eql({});
@@ -266,7 +297,7 @@ describe('Jexl expression interpreter', function () {
         });
 
         it('it should be empty {}', function (done) {
-            let [error, message, resultMap] = expressionParser.checkTransformationMap({});
+            const [error, message, resultMap] = expressionParser.checkTransformationMap({});
             should.not.exist(error);
             message.should.equal('No trasformations were added to JEXL Parser');
             resultMap.should.eql({});
@@ -274,7 +305,7 @@ describe('Jexl expression interpreter', function () {
         });
 
         it('it should be empty null', function (done) {
-            let [error, message, resultMap] = expressionParser.checkTransformationMap(null);
+            const [error, message, resultMap] = expressionParser.checkTransformationMap(null);
             should.not.exist(error);
             message.should.equal('No trasformations were added to JEXL Parser');
             resultMap.should.eql({});
@@ -282,7 +313,7 @@ describe('Jexl expression interpreter', function () {
         });
 
         it('it should detect wrong transformations (not a funtion)', function (done) {
-            let [error, message, resultMap] = expressionParser.checkTransformationMap(wrongMap);
+            const [error, message, resultMap] = expressionParser.checkTransformationMap(wrongMap);
             should.not.exist(error);
             message.should.equal('wrongTransformation1,wrongTransformation2 must be a function');
             should.not.exist(resultMap.wrongTransformation1);
@@ -292,7 +323,7 @@ describe('Jexl expression interpreter', function () {
         });
 
         it('it should be correct (map of funtions)', function (done) {
-            let [error, message, resultMap] = expressionParser.checkTransformationMap(niceMap);
+            const [error, message, resultMap] = expressionParser.checkTransformationMap(niceMap);
             should.not.exist(error);
             message.should.equal('Trasformations can be added to JEXL parser');
             resultMap.should.eql(niceMap);
@@ -302,14 +333,15 @@ describe('Jexl expression interpreter', function () {
 
     describe('When a JSON parse transformation is applied', function () {
         it('should work on the expression value', function (done) {
-            expressionParser.parse('"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse', scope, function (
-                error,
-                result
-            ) {
-                should.not.exist(error);
-                result.should.eql(scope.object);
-                done();
-            });
+            expressionParser.parse(
+                '"{\\"name\\":\\"John\\",\\"surname\\":\\"Doe\\"}"|jsonparse',
+                scope,
+                function (error, result) {
+                    should.not.exist(error);
+                    result.should.eql(scope.object);
+                    done();
+                }
+            );
         });
     });
 
@@ -323,11 +355,39 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When a JSON with an NGSI operator is applied', function () {
+        it('should work on the expression value', function (done) {
+            const scope = { ina: 34, outa: 4 };
+            expressionParser.parse('{$inc:ina-outa}', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.eql({ $inc: 30 });
+                done();
+            });
+        });
+    });
+
     describe('When an expression aims at creating an object', function () {
         it('it should work', function (done) {
             expressionParser.parse('{type:"Point",coordinates: [value,other]}', scope, function (error, result) {
                 should.not.exist(error);
                 result.should.deepEqual({ type: 'Point', coordinates: [6, 3] });
+                done();
+            });
+        });
+    });
+
+    describe('When an expression access to non existent property', function () {
+        it('it should return null', function (done) {
+            expressionParser.parse('object["nothing"]', scope, function (error, result) {
+                should.not.exist(error);
+                should.equal(result, null);
+                done();
+            });
+        });
+        it('it should return null', function (done) {
+            expressionParser.parse('object["nothing"]?object["nothing"]:null', scope, function (error, result) {
+                should.not.exist(error);
+                should.equal(result, null);
                 done();
             });
         });

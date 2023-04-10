@@ -27,6 +27,7 @@
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
@@ -40,7 +41,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStation: {
@@ -214,6 +216,31 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStation9: {
+            commands: [],
+            type: 'WeatherStation',
+            name: 'ws9b',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_type: 'Higrometer',
+                    metadata: {
+                        unitCode: {
+                            type: 'Text',
+                            value: 'Hgmm'
+                        }
+                    }
+                }
+            ]
+        },
         WeatherStation8Jexl: {
             commands: [],
             type: 'WeatherStation',
@@ -231,6 +258,46 @@ const iotAgentConfig = {
                     object_id: 'v2',
                     name: 'vol',
                     expression: 'v2 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    expression: 'v * 100',
+                    type: 'Number'
+                }
+            ]
+        },
+        WeatherStation9Jexl: {
+            commands: [],
+            type: 'WeatherStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            static: [
+                {
+                    name: 'st1',
+                    type: 'Number',
+                    value: 1
+                },
+                {
+                    name: 'st2',
+                    type: 'Number',
+                    value: 2
+                }
+            ],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    expression: 'st1 * 100',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    expression: 'st2 * 100',
                     type: 'Number',
                     entity_name: 'WeatherStation2'
                 },
@@ -293,6 +360,207 @@ const iotAgentConfig = {
             ],
             type: 'SensorCommand',
             lazy: []
+        },
+        WrongStation: {
+            commands: [],
+            type: 'WrongStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'type',
+                    type: 'string',
+                    entity_name: 'WrongStation1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'id',
+                    type: 'string',
+                    entity_name: 'WrongStation1'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WrongStation1'
+                }
+            ]
+        },
+        SharedIds1: {
+            commands: [],
+            type: 'ShareStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'volt1',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'volt2',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v3',
+                    name: 'extravolt2',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
+        },
+        SharedIds2: {
+            commands: [],
+            type: 'ShareStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'v1',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'v2',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v3',
+                    name: 'extravol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
+        },
+        SharedIds3: {
+            commands: [],
+            type: 'ShareStation',
+            expressionLanguage: 'jexl',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'fakev1',
+                    expression: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type1'
+                },
+                {
+                    object_id: 'fakev2',
+                    expression: 'v',
+                    name: 'vol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'fakev3',
+                    expression: 'v',
+                    name: 'extravol',
+                    type: 'Number',
+                    entity_name: 'WeatherStation1',
+                    entity_type: 'Type2'
+                },
+                {
+                    object_id: 'v',
+                    name: 'vol',
+                    type: 'Number'
+                }
+            ]
+        },
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            explicitAttrs: true
+        },
+        GPS2: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'foo',
+                    type: 'text',
+                    object_id: 'f'
+                },
+                {
+                    name: 'attr1',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'attr2',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            static: [
+                {
+                    name: 'bar',
+                    type: 'text',
+                    value: 'b'
+                }
+            ],
+            explicitAttrs: '[ "attr1", "attr2" ]'
+        },
+        LightMultiDefault: {
+            commands: [],
+            type: 'Light',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    entity_type: 'myType',
+                    entity_name: 'Ligth:mymulti'
+                },
+                {
+                    object_id: 'q',
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            expressionLanguage: 'jexl'
         }
     },
     service: 'smartgondor',
@@ -306,10 +574,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
                 done();
             });
         });
@@ -352,6 +616,44 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should send two context elements, one for each entity', function (done) {
             iotAgentLib.update('ws4', 'WeatherStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement based on entity_type', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            },
+            {
+                name: 'h',
+                type: 'Percentage',
+                value: '12'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin17.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send two context elements, one for each entity', function (done) {
+            iotAgentLib.update('ws9b', 'WeatherStation9', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -598,6 +900,135 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
         });
     });
 
+    describe('When an update comes for a multientity with same entity_id and different entity_type with different attrs', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            },
+            {
+                name: 'v3',
+                type: 'Number',
+                value: 3
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin12.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with different attribute names and different object_id', function (done) {
+            iotAgentLib.update('sh1', 'SharedIds1', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity with same entity_id and different entity_type whit shared attrs', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            },
+            {
+                name: 'v3',
+                type: 'Number',
+                value: 3
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin13.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with same attribute names', function (done) {
+            iotAgentLib.update('sh2', 'SharedIds2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity with same entity_id and different entity_type whit shared attrs and shared object_id', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin14.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to three entities with same attribute names', function (done) {
+            iotAgentLib.update('sh3', 'SharedIds3', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute) - JEXL', function () {
         const values = [
             {
@@ -641,6 +1072,98 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
         });
     });
 
+    describe('When an update comes for a multientity defined with an expression (multi values / multiple entities / same attribute) - JEXL with static', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression', function (done) {
+            iotAgentLib.update('ws9', 'WeatherStation9Jexl', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    beforeEach(function () {
+        nock.cleanAll();
+
+        contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'smartgondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post(
+                '/v2/op/update',
+                utils.readExampleFile(
+                    // Updated test same case that updateContextMultientityPlugin4.json
+                    './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
+                )
+            )
+            .reply(204);
+    });
+
+    describe('When an update comes for a multientity whith a wrong mapping)', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 0
+            },
+            {
+                name: 'v1',
+                type: 'Number',
+                value: 1
+            },
+            {
+                name: 'v2',
+                type: 'Number',
+                value: 2
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should send the update value to the resulting value of the expression overwriting wrong id and type mapped attributes', function (done) {
+            iotAgentLib.update('ws11', 'WrongStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When an update comes for a multientity measurement without type for one entity', function () {
         const values = [
             {
@@ -672,6 +1195,90 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should use the device type as a default value', function (done) {
             iotAgentLib.update('ws4', 'WeatherStation2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement explicitAttrs for one entity', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin15.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement explicitAttrs as jexl for one entity', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin16.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS2', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -767,6 +1374,44 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             });
         }
     );
+
+    describe('When pseudo-multientity device is provisioned (entity_type and default entity_id)', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'p',
+                type: 'Number',
+                value: 90
+            },
+            {
+                name: 'q',
+                type: 'Number',
+                value: 60
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityJexlExpressionPlugin1.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should work without invalid expression error', function (done) {
+            iotAgentLib.update('lightPseudo:id', 'LightMultiDefault', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
 });
 
 describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function () {
@@ -776,10 +1421,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
@@ -860,7 +1501,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             });
         });
 
-        it('should send two context elements, one for each entity', function (done) {
+        it('should send two context elements, one for each entity bis', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -942,10 +1583,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         timekeeper.freeze(time);
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
@@ -962,8 +1599,9 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post(
-                '/v2/op/update',
+            .patch(
+                //'/v2/op/update',
+                '/v2/entities/sensorCommand/attrs?type=SensorCommand',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )

@@ -80,7 +80,7 @@ Fields in JSON object representing a configuration group are:
 |:-----------------------|:------------------------------------------------------------|
 |`apikey`                |It is a key used for devices belonging to this service. If "", service does not use apikey, but it must be specified.|
 |`token`                 |If authentication/authorization system is configured, IoT Agent works as user when it publishes information. That token allows that other components to verify the identity of IoT Agent. Depends on authentication and authorization system.|
-|`cbroker`               |Context Broker endpoint assigned to this service, it must be a real uri.|
+|`cbHost`                |Context Broker endpoint assigned to this service, it must be a real uri.|
 |`outgoing_route`        |It is an identifier for VPN/GRE tunnel. It is used when device is into a VPN and a command is sent.|
 |`resource`              |Path in IoTAgent. When protocol is HTTP a device could send information to this uri. In general, it is a uri in a HTTP server needed to load and execute a module.|
 |`entity_type`           |Entity type used in entity publication (overload default).|
@@ -126,7 +126,7 @@ Retrieve a configuration group.
                     "service": "service2",
                     "service_path": "/srvpath2",
                     "token": "token2",
-                    "cbroker": "http://127.0.0.1:1026",
+                    "cbHost": "http://127.0.0.1:1026",
                     "entity_type": "thing",
                     "resource": "/iot/d"
                 }
@@ -152,7 +152,7 @@ Retrieve a configuration group.
                     "service": "service2",
                     "service_path": "/srvpath2",
                     "token": "token2",
-                    "cbroker": "http://127.0.0.1:1026",
+                    "cbHost": "http://127.0.0.1:1026",
                     "entity_type": "thing",
                     "resource": "/iot/d"
                 }
@@ -162,7 +162,7 @@ Retrieve a configuration group.
 
 ### Create a configuration group [POST]
 
-Create a new configuration group. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).
+Create a new configuration group. From service model, mandatory fields are: apikey, resource (cbHost field is temporary mandatory).
 
 + Request (application/json)
 
@@ -178,7 +178,7 @@ Create a new configuration group. From service model, mandatory fields are: apik
                 {
                   "apikey": "apikey3",
                   "token": "token2",
-                  "cbroker": "http://127.0.0.1:1026",
+                  "cbHost": "http://127.0.0.1:1026",
                   "entity_type": "thing",
                   "resource": "/iot/d"
                 }

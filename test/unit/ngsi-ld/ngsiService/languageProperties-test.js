@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2022 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -18,39 +18,40 @@
  * If not, see http://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::daniel.moranjimenez@telefonica.com
+ * please contact with::[contacto@tid.es]
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
+/* eslint-disable no-unused-vars */
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
+const utils = require('../../../tools/utils');
+const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 let contextBrokerMock;
 const iotAgentConfig = {
+    autocast: true,
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
-        ngsiVersion: 'v2'
+        ngsiVersion: 'ld',
+        jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
             commands: [],
             type: 'Light',
-            lazy: [
-                {
-                    name: 'temperature',
-                    type: 'centigrades'
-                }
-            ],
             active: [
                 {
-                    name: 'pressure',
-                    type: 'Hgmm'
+                    name: 'name',
+                    type: 'LanguageProperty'
                 }
             ]
         }
@@ -60,54 +61,45 @@ const iotAgentConfig = {
     providerUrl: 'http://smartgondor.com'
 };
 
-describe('NGSI-v2 - Event plugin', function () {
-    beforeEach(function (done) {
+describe('NGSI-LD - LanguageProperty test', function () {
+    beforeEach(function () {
         logger.setLevel('FATAL');
-
-        iotAgentLib.activate(iotAgentConfig, function () {
-            iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.addEvents.query);
-                done();
-            });
-        });
     });
 
     afterEach(function (done) {
-        iotAgentLib.clearAll(function () {
-            iotAgentLib.deactivate(done);
-        });
+        iotAgentLib.deactivate(done);
     });
-    describe('When an update comes with an event to the plugin', function () {
+
+    describe('When the IoT Agent receives new exonym from a device name with LanguageProperty type and a JSON object', function () {
         const values = [
             {
-                name: 'state',
-                type: 'Boolean',
-                value: 'true'
-            },
-            {
-                name: 'activation',
-                type: 'Event',
-                value: '1'
+                name: 'name',
+                type: 'LanguageProperty',
+                value: {
+                    el: 'Κωνσταντινούπολις',
+                    en: 'Constantinople',
+                    tr: 'İstanbul'
+                }
             }
         ];
 
-        beforeEach(function () {
+        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .patch('/v2/entities/light1/attrs', function (body) {
-                    const dateRegex = /\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d.\d{3}Z/;
-
-                    return body.activation.value.match(dateRegex);
-                })
-                .query({ type: 'Light' })
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextLanguageProperties1.json'
+                    )
+                )
                 .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        it('should return an entity with all its timestamps expanded to have separators', function (done) {
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();

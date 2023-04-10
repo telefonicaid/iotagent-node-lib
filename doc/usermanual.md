@@ -209,8 +209,8 @@ function setCommandResult(entityName, resource, apikey, commandName, commandResu
 ###### Description
 
 Update the result of a command in the Context Broker. The result of the command has two components: the result of the
-command itself will be represented with the suffix `_result` in the entity while the status is updated in the attribute
-with the `_info` suffix.
+command itself will be represented with the suffix `_info` in the entity while the status is updated in the attribute
+with the `_status` suffix.
 
 ###### Params
 
@@ -258,8 +258,10 @@ function setDataUpdateHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity update requests. This handler will be called whenever an update request arrives
-with the following parameters: (id, type, service, subservice, attributes, callback). The handler is in charge of
-updating the corresponding values in the devices with the appropriate protocol.
+with the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). Every object within of
+the `attributes` array contains `name`, `type` and `value` attributes, and may also include additional attributes for
+`metadata` and `datasetId`. The handler is in charge of updating the corresponding values in the devices with the
+appropriate protocol.
 
 Once all the updates have taken place, the callback must be invoked with the updated Context Element. E.g.:
 
@@ -272,9 +274,9 @@ callback(null, {
         {
             name: "lumniscence",
             type: "Lumens",
-            value: "432",
-        },
-    ],
+            value: "432"
+        }
+    ]
 });
 ```
 
@@ -296,8 +298,8 @@ function setDataQueryHandler(newHandler)
 ###### Description
 
 Sets the new user handler for Entity query requests. This handler will be called whenever a query request arrives, with
-the following parameters: (id, type, service, subservice, attributes, callback). The handler must retrieve all the
-corresponding information from the devices and return a NGSI entity with the requested values.
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
 
 The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
 
@@ -310,9 +312,9 @@ callback(null, {
         {
             name: "lumniscence",
             type: "Lumens",
-            value: "432",
-        },
-    ],
+            value: "432"
+        }
+    ]
 });
 ```
 
@@ -351,6 +353,83 @@ values.
 
 The handler is expected to call its callback once with no parameters (failing to do so may cause unexpected behaviors in
 the IoT Agent).
+
+##### iotagentLib.setCommandHandler()
+
+###### Signature
+
+```javascript
+function setCommandHandler(newHandler)
+```
+
+###### Description
+
+Sets the new user handler for registered entity commands. This handler will be called whenever a command request arrives, with
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
+
+The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
+
+```javascript
+callback(null, {
+    type: "TheType",
+    isPattern: false,
+    id: "EntityID",
+    attributes: [
+        {
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
+        }
+    ]
+});
+```
+
+In the case of NGSI requests affecting multiple entities, this handler will be called multiple times, one for each
+entity, and all the results will be combined into a single response.  Only IoT Agents which deal with actuator devices will include a handler for commands.
+
+###### Params
+
+-   newHandler: User handler for command requests.
+
+##### iotagentLib.setMergePatchHandler()
+
+###### Signature
+
+```javascript
+function setMergePatchHandler(newHandler)
+```
+
+###### Description
+
+Sets the new user handler for NGSI-LD Entity [merge-patch](https://datatracker.ietf.org/doc/html/rfc7386) requests. This handler will be called whenever a merge-patch request arrives, with
+the following parameters: (`id`, `type`, `service`, `subservice`, `attributes`, `callback`). The handler must retrieve
+all the corresponding information from the devices and return a NGSI entity with the requested values.
+
+The callback must be invoked with the updated Context Element, using the information retrieved from the devices. E.g.:
+
+```javascript
+callback(null, {
+    type: "TheType",
+    isPattern: false,
+    id: "EntityID",
+    attributes: [
+        {
+            name: "lumniscence",
+            type: "Lumens",
+            value: "432"
+        }
+    ]
+});
+```
+
+In the case of NGSI-LD requests affecting multiple entities, this handler will be
+called multiple times. Since merge-patch is an advanced function, not all IoT Agents
+will include a handler for merge-patch.
+
+###### Params
+
+-   newHandler: User handler for merge-patch requests.
 
 ##### iotagentLib.setProvisioningHandler()
 
@@ -685,6 +764,38 @@ unexpectedly dead, a new process is created automatically to keep always the max
     section).
 -   iotAgent: The IoT Agent Objects, used to start the agent.
 -   callback: The callback function.
+
+##### iotagentLib.request()
+
+###### Signature
+
+```javascript
+function request(options, callback)
+```
+
+###### Description
+
+Make a direct HTTP request using the underlying request library (currently [got](https://github.com/sindresorhus/got)),
+this is useful when creating agents which use an HTTP transport for their southbound commands, and removes the need for
+the custom IoT Agent to import its own additional request library
+
+###### Params
+
+-   options: definition of the request (see
+    [got options](https://github.com/sindresorhus/got/blob/main/documentation/2-options.md) for more details). The
+    following attributes are currently exposed.
+    -   `method` - HTTP Method
+    -   `searchParams` - query string params
+    -   `qs` - alias for query string params
+    -   `headers`
+    -   `responseType` - either `text` or `json`. `json` is the default
+    -   `json` - a supplied JSON object as the request body
+    -   `body` - any ASCII text as the request body. It takes precedence over `json` if both are provided at the same
+        time (not recommended).
+    -   `url` - the request URL
+    -   `uri` - alternative alias for the request URL.
+-   callback: The callback currently returns an `error` Object, the `response` and `body`. The `body` is parsed to a
+    JSON object if the `responseType` is JSON.
 
 #### Generic middlewares
 

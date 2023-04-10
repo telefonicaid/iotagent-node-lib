@@ -41,7 +41,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStation: {
@@ -214,6 +215,26 @@ const iotAgentConfig = {
             ],
             type: 'SensorCommand',
             lazy: []
+        },
+        GPS: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            explicitAttrs: true
         }
     },
     service: 'smartgondor',
@@ -226,9 +247,6 @@ describe('NGSI-LD - Multi-entity plugin', function () {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
                 done();
             });
         });
@@ -463,6 +481,47 @@ describe('NGSI-LD - Multi-entity plugin', function () {
         });
     });
 
+    describe('When an update comes for a multientity measurement explicitAttrs for one entity', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextRequests/updateContextMultientityPlugin15.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe(
         'When an update comes for a multientity measurement and there are attributes with' +
             ' the same name but different alias and mapped to different CB entities',
@@ -553,15 +612,9 @@ describe('NGSI-LD - Multi-entity plugin', function () {
 
 describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
-
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
@@ -670,13 +723,26 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
         it('should propagate user provider timestamp to mapped entities', function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
+                .post('/ngsi-ld/v1/entityOperations/upsert/?options=update', function (body) {
+                    const expectedBody = utils.readExampleFile(
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin3.json'
-                    )
-                )
+                    );
+
+                    // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
+                    // fields. The following code just checks that TimeInstant fields are present.
+                    if (!body[1].humidity.observedAt) {
+                        return false;
+                    }
+
+                    const timeInstantAtt = body[1].humidity.observedAt;
+                    if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
+                        delete body[1].humidity.observedAt;
+                        delete expectedBody[1].humidity.observedAt;
+                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                    }
+                    return false;
+                })
                 .reply(204);
 
             const tsValue = [
@@ -711,10 +777,6 @@ describe('NGSI-LD - Multi-entity plugin is executed for a command update for a r
         timekeeper.freeze(time);
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-                iotAgentLib.addQueryMiddleware(iotAgentLib.dataPlugins.attributeAlias.query);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
-                iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
                 done();
             });
         });
