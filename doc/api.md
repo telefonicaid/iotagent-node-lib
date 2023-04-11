@@ -1,122 +1,143 @@
 # IoT Agent API
 
-<!-- TOC WIP -->
+<!-- TOC -->
+
+-   [Preface](#preface)
+-   [Topics](#topics)
+    -   [Terminology](#terminology)
+    -   [IoT Agent information model](#iot-agent-information-model)
+        -   [Config groups](#config-groups)
+        -   [Devices](#devices)
+    -   [Entity attributes](#entity-attributes)
+    -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
+        -   [Reuse of attribute names](#reuse-of-attribute-names)
+        -   [Reuse of attribute types](#reuse-of-attribute-types)
+        -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
+    -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
+-   [API Routes](#api-routes)
+    -   [Config group API](#config-group-api)
+        -   [Config group datamodel](#config-group-datamodel)
+        -   [Config group operations](#config-group-operations)
+            -   [Retrieve config groups `GET /iot/services`](#retrieve-config-groups-get-iotservices)
+            -   [Create config group `POST /iot/services`](#create-config-group-post-iotservices)
+            -   [Modify config group `PUT /iot/services`](#modify-config-group-put-iotservices)
+            -   [Remove config group `DELETE /iot/services`](#remove-config-group-delete-iotservices)
+    -   [Device API](#device-api)
+        -   [Device datamodel](#device-datamodel)
+        -   [Device operations](#device-operations)
+            -   [Retrieve devices /iot/devices `GET /iot/devices`](#retrieve-devices-iotdevices-get-iotdevices)
+            -   [Create device `POST /iot/devices`](#create-device-post-iotdevices)
+            -   [Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid)
+            -   [Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid)
+            -   [Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid)
+    -   [Miscellaneous API](#miscellaneous-api)
+        -   [Log operations](#log-operations)
+            -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
+            -   [Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog)
+        -   [About operations](#about-operations)
+            -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+
+<!-- /TOC -->
 
 # Preface
 
-The **IoT Agent node library** offers a simple REST API which provides common functionality to access, provision and
-decommission devices.
+The IoT Agent mission is to provide a common abstraction layer between the devices and the NGSI entities stored in
+Context Broker. In order to achieve this, the IoT Agent sits between the Context Broker and a set of devices. It is in
+charge of translating the information coming from the devices into NGSI requests and viceversa.
 
-<!-- TOPICS WIP -->
+The **IoT Agent node library** is a Node.js module that can be used to implement IoT Agents. It provides a set of common
+functionality that can be used to implement the different IoT Agents, offering a simple REST API which provides common
+functionality to access, provision and decommission devices and groups of devices. This document describes the API
+provided by the IoT Agent node library.
 
 # Topics
 
-## Terminology
+### Terminology
 
-### Service groups
+-   **Devices**: A resource that match physical devices that are connected to the IoT Agent. Each device has a set of
+    attributes that can be read or written and a set of commands that can be invoked. The device is identified by a
+    `device_id` and points particular entity in the context broker.
+-   **Config Groups**: Also known as `provisioning groups` or `service groups`. A logical group of devices. Each Config
+    Group has a set of attributes that can be read or written. The config group is identified by a an `apikey`, used to
+    authenticate the requests coming from the devices.
+-   **Measurements**: A set of values that are sent by a device to the IoT Agent.
+-   **Service**: It is the `FIWARE-Service` that the device or config group belongs to.
+-   **Subservice**: It is the specific `FIWARE-ServicePath` that the device or config group belongs to.
 
-### Devices
+### IoT Agent information model
 
-### Provision
+IoT Agents models 2 different kinds of resources: devices and config groups. Devices are the physical devices that send
+measurements to the IoT Agent. Config groups are logical groups of devices that share the same configuration. A config
+group contains zero or more devices.
 
-## Device attributes model
+```mermaid
+erDiagram
+    "Config Group" ||--o{ Devices : contains
+```
 
-### `attributes`
+#### Config groups
 
-### `static_attributes`
+Config groups provides a template configuration for the all devices that belong to them. This allows to provision a set
+of devices with a single operation. They are identified by an `apikey` and a `resource` and mapped to a particular
+entity type.
 
-### `commands`
+Once a measure is received by the IoT Agent, the `apikey` and `resource` are used to identify the config group to which
+the device belongs. The config group is used to map the measure to a particular entity type and to provide the
+information needed to interact with the Context Broker.
 
-### `lazy` attributes
+If the device already exists in the Context Broker, the IoT Agent will update the entity with the new values. If the
+device does not exist, the IoT Agent will create it with the information provided by the config group and eventually
+will also create the entity in the Context Broker. This last operation is only possible if the IoT Agent is configured
+to use autoprovisioning.
 
-## Service Group API
+For every config group, the pair (resource, apikey) _must_ be unique (as it is used to identify which group to assign to
+which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey`
+parameters to select the appropriate instance.
 
-For some services, there will be no need to provision individual devices, but it will make more sense to provision
-different service groups, each of one mapped to a different type of entity in the context broker. How the type of entity
-is assigned to a device will depend on the Southbound technology (e.g.: path, port, APIKey...). Once the device has an
-assigned type, its configuration values can be extracted from those of the type.
+Config groups can be created with preconfigured sets of attributes, service information, security information and other
+parameters. The specific parameters that can be configured for a given service group are described in the
+[Config group datamodel](#config-group-datamodel) section.
 
-The IoT Agents provide two means to define those service groups:
+#### Devices
 
--   Static **Type Configuration**: configuring the `ngsi.types` attribute within the `config.js` file.
--   Dynamic **Configuration API**: making use of the API URLs in the configuration URI, `/iot/services`. Please, note
-    that the configuration API manage servers under a URL that requires the `server.name` parameter to be set (the name
-    of the IoT Agent we are using). If no name is configured `default` is taken as the default one.
-
-Both approaches provide the same configuration information for the types and end up in the same configuration
-collection, they are described in the sections below.
-
-The following sections show the available operations for the Configuration API. Every operation in the API require the
-`fiware-service` and `fiware-servicepath` to be defined; the operations are performed in the scope of those headers. For
-the list case, the special wildcard servicepath can be specified, `/*`. In this case, the operation applies to all the
-subservices of the service given by the `fiware-service` header.
-
-For every service group, the pair (resource, apikey) _must_ be unique (as it is used to identify which group to assign
-to which device). Those operations of the API targeting specific resources will need the use of the `resource` and
-`apikey` parameters to select the appropriate instance.
-
-Note that there is a 1:1 correspondence between payload fields and DB fields (but with some changes in the attribute
-naming; e.g.: subservice -> service_path).
-
-### Type Configuration
-
-The IoT Agent can be configured to expect certain kinds of devices, with preconfigured sets of attributes, service
-information, security information and other attributes. The `types` attribute of the configuration is a map, where the
-key is the type name and the value is an object containing all the type information. Each type can has the following
-information configured:
-
--   **service**: service of the devices of this type.
--   **subservice**: subservice of the devices of this type.
--   **attributes**: list of active attributes of the device. For each attribute, its `name` and `type` must be provided,
-    additional `metadata` is optional.
--   **lazy**: list of lazy attributes of the device. For each attribute, its `name` and `type` must be provided.
--   **commands**: list of commands attributes of the device. For each attribute, its `name` and `type` must be provided.
--   **internalAttributes**: optional section with free format, to allow specific IoT Agents to store information along
-    with the devices in the Device Registry.
--   **staticAttributes**: this array of attributes will be added to every entity of this type 'as is'. `name` and `type`
-    must be provided, additional `metadata` is optional.
--   **trust**: trust token to use for secured access to the Context Broker for this type of devices (optional; only
-    needed for secured scenarios). Trust tokens may be called `access_tokens` by some Oauth2 providers.
--   **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific
-    types of devices.
-
-## Device API
+A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
+are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
+`type` matching (in the case `apiKey` matching fails). For instance, let's consider a situation in which a config group
+has been provisioned with `type=X`/`apiKey=111` and no other config group has been provisioned.
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
 subservice mapping, security information and attribute configuration can be specified in a per device way instead of
-relaying on the type configuration. The following section specifies the format of the device payload; this will be the
-payload accepted by all the write operations and that will be returned by all the read operations. Take care of the
-exception of the POST operation: in this case, the device objects must be specified as an array, as multiple devices can
-be provided simultaneusly for the same service.
+relaying on the config group configuration. The specific parameters that can be configured for a given device are
+described in the [Device datamodel](#device-datamodel) section.
 
-Two parameters in this payload are given a special treatment: service and subservice. This two parameters are needed to
-fill the `fiware-service` and `fiware-servicepath` mandatory headers that will be used in the interactions with the
-Context Broker. This parameters should not be passed along with the rest of the body, but they will be taken from the
-same headers, as received by the Device Provisioning API (this two headers are, thus, mandatory both for incoming and
-outgoing requests).
+### Entity attributes
 
-Note that there is a 1:1 correspondence between payload fields and DB fields (but using a different capitalization, e.g.
-`service_path` vs. `servicePath`).
+In the group/device model there are four list of attributes with different purpose to configure how the information
+coming from the device is mapped to the Context Broker attributes:
 
-### Relationship between service groups and devices
+-   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
+    to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
+    resolved in the Broker database. For each attribute, its `name` and `type` must be provided. Additional `metadata`
+    is optional.
 
-Devices may be associated to exisiting service groups (or not) based in `apiKey` matching or `type` matching (in the
-case `apiKey` matching fails). For instance, let's consider a situation in which a service group has been provisioned
-with `type=X`/`apiKey=111` and no other service group has been provisioned.
+-   **`lazy`**: Passive measures that are pulled from the device to the IoT agent. When a request for data from a lazy
+    attribute arrives to the Context Broker, it forwards the request to the Context Provider of that entity, in this
+    case the IoT Agent. The IoT Agent will then ask the device for the information needed, transform that information to
+    a NGSI format and return it to the Context Broker. This operation will be synchronous from the customer perspective:
+    the Context Broker won't return a response until the device has returned its response to the IoT Agent. For each
+    attribute, its `name` and `type` must be provided.
 
--   IoT Agent receives an anonymous measure with `apiKey=111`. The matching `apiKey` means the entity inherits from
-    service group. Device entity has `type=X` and `apiKey=111`
--   IoT Agent receives a provisioning request for an explicit device of `type=Y`/`apiKey=111`. The matching `apiKey`
-    means the entity inherits from service group but type is overridden. Device entity has `type=Y` and `apiKey=111`
--   IoT Agent receives a provisioning request for an explicit device of `type=X`/`apiKey=222`. The matching `type` means
-    the entity inherits from service group but `apiKey` is overridden. Device entity has `type=X` and `apiKey=222`.
--   IoT Agent receives a provisioning request for an explicit device of `type=Y`/`apiKey=222`. No matching. Device
-    entity has `type=Y` and `apiKey=222` and no service group.
+-   **`static`**: It is static attributes that are persisted in the Context Broker. They are not updated by the device,
+    but they can be modified by the user. They are useful to store information about the device that is not updated by
+    the device itself. For instance, a `location` static attribute is can be used to store the location of a fixed
+    device.
 
-#### Attribute lists
+-   **`commands`**: Commands are actions that can be invoked in the device. They are similar to attributes, but they are
+    not updated by the device. They are updated by the Context Broker, and the IoT Agent will be in charge of
+    translating the updateContext request to the proper action in the device. Two additional attributes are created for
+    each command: `status` and `info`. For each command, its `name` and `type` must be provided.
 
-In the group/device model there are three list of attributes that can be declared: attributes, lazy and commands. All of
-them have the same syntax, an object containing the following attributes:
+All of them have the same syntax, a list of objects with the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
 -   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
@@ -146,23 +167,21 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
 
-See the transformation plugins Section for more details.
+### Advice on Attribute definitions
 
-#### Advice on Attribute defintions
-
-##### Reuse of attribute names
+#### Reuse of attribute names
 
 Check for the existence of the same Attribute on any of the other models and reuse it, if pertinent. Have a look at
 schema.org trying to find a similar term with the same semantics. Try to find common used ontologies or existing
 standards well accepted by the Community, or by goverments, agencies, etc. For instance, Open311 for civic issue
 tracking or Datex II for transport systems.
 
-##### Reuse of attribute types
+#### Reuse of attribute types
 
 When possible reuse [schema.org](http://schema.org/) data types (`Text`, `Number`, `DateTime`, `StructuredValue`, etc.).
 Remember that `null` is not allowed in NGSI-LD and therefore should be avoided as a value.
 
-##### How to specify attribute Units of Measurement
+#### How to specify attribute Units of Measurement
 
 If your data use the default unit defined in the Data Model, you don't need to specify any. It is implied. Unless
 explicitly stated otherwise, all FIWARE data models use the metric system of measurements by default. Regardless the
@@ -182,19 +201,28 @@ used should be taken from those defined by
 }
 ```
 
-<!-- END OF TOPICS WIP -->
+### Overriding global Context Broker host
+
+**cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
+of devices.
+
+### Multitenancy, FIWARE Service and FIWARE ServicePath
+
+Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
+performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
+this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
 # API Routes
 
-## Service Group API
+## Config group API
 
-### Service group datamodel
+### Config group datamodel
 
-Service group is represented by a JSON object with the following fields:
+Config group is represented by a JSON object with the following fields:
 
 | Field                          | Optional | Type           | Expression | Definitiom                                                                                                                                                                                                                                                                |
 | ------------------------------ | -------- | -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `service`                      |          | string         |            | Service of the devices of this type                                                                                                                                                                                                                                       |
+| `service`                      |          | string         |            | `FIWARE-Service` header to be used                                                                                                                                                                                                                                        |
 | `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
 | `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
 | `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                           |
@@ -214,70 +242,15 @@ Service group is represented by a JSON object with the following fields:
 | `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
 | `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
 
-### Service group operations
+### Config group operations
 
-The following actions are available under the service group endpoint:
+The following actions are available under the config group endpoint:
 
-#### Create service group `POST /iot/services`
+#### Retrieve config groups `GET /iot/services`
 
-Creates a set of service groups for the given service and service path. The service and subservice information will
-taken from the headers, overwritting any preexisting values.
-
-_**Request headers**_
-
-| Header               | Optional | Description                                                                                    | Example    |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
-| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
-
-_**Request payload**_
-
-A JSON object with a `services` field. The value is an array of service groups objects to create. See the
-[service group datamodel](#service-group-datamodel) for more information.
-
-Example:
-
-```json
-{
-    "services": [
-        {
-            "resource": "/deviceTest",
-            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "type": "Light",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "wheel1", "type": "Wheel" }],
-            "attributes": [
-                {
-                    "name": "luminescence",
-                    "type": "Integer",
-                    "metadata": {
-                        "unitCode": { "type": "Text", "value": "CAL" }
-                    }
-                }
-            ],
-            "lazy": [{ "name": "status", "type": "Boolean" }]
-        }
-    ]
-}
-```
-
-_**Response code**_
-
--   `200` `OK` if successful, with no payload.
--   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
--   `400` `WRONG_SYNTAX` if the body doesn't comply with the schema.
--   `500` `SERVER ERROR` if there was any error not contemplated above.
-
-_**Response headers**_
-
-Successful operations return `Content-Type` header with `application/json` value.
-
-#### List services group `GET /iot/services`
-
-List all the service groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
-has the wildcard expression, `/*`, all the service groups for that `fiware-service` are returned. The service groups
-that match the `fiware-servicepath` are returned in any other case.
+List all the config groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
+has the wildcard expression, `/*`, all the config groups for that `fiware-service` are returned. The config groups that
+match the `fiware-servicepath` are returned in any other case.
 
 _**Request headers**_
 
@@ -288,7 +261,7 @@ _**Request headers**_
 
 _**Response code**_
 
--   200 OK if successful, returning a service group body.
+-   200 OK if successful, returning a config group body.
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.
 
@@ -299,7 +272,7 @@ Successful operations return `Content-Type` header with `application/json` value
 _**Response payload**_
 
 A JSON object with a services field that contains an array of services that match the request. See the
-[service group datamodel](#service-group-datamodel) for more information.
+[config group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
@@ -342,18 +315,10 @@ Example:
 }
 ```
 
-#### Modify service group `PUT /iot/services`
+#### Create config group `POST /iot/services`
 
-Modifies the information of a service group, identified by the `resource` and `apikey` query parameters. Takes a service
-group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
-the JSON body will be updated. The rest of the attributes will remain unchanged.
-
-_**Request query parameters**_
-
-| Parameter | Mandatory | Description                                   | Example                                   |
-| --------- | --------- | --------------------------------------------- | ----------------------------------------- |
-| resource  | ✓         | Resource of the service group to be modified. | `/device`                                 |
-| apikey    | ✓         | Apikey of the service group to be modified.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
+Creates a set of config groups for the given service and service path. The service and subservice information will taken
+from the headers, overwritting any preexisting values.
 
 _**Request headers**_
 
@@ -364,8 +329,71 @@ _**Request headers**_
 
 _**Request payload**_
 
-A JSON object with the service group information to be modified. See the
-[service group datamodel](#service-group-datamodel) for more information.
+A JSON object with a `services` field. The value is an array of config groups objects to create. See the
+[config group datamodel](#service-group-datamodel) for more information.
+
+Example:
+
+```json
+{
+    "services": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        }
+    ]
+}
+```
+
+_**Response code**_
+
+-   `200` `OK` if successful, with no payload.
+-   `400` `MISSING_HEADERS` if any of the mandatory headers is not present.
+-   `400` `WRONG_SYNTAX` if the body doesn't comply with the schema.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response headers**_
+
+Successful operations return `Content-Type` header with `application/json` value.
+
+#### Modify config group `PUT /iot/services`
+
+Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a service
+group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
+the JSON body will be updated. The rest of the attributes will remain unchanged.
+
+_**Request query parameters**_
+
+| Parameter | Mandatory | Description                                  | Example                                   |
+| --------- | --------- | -------------------------------------------- | ----------------------------------------- |
+| resource  | ✓         | Resource of the config group to be modified. | `/device`                                 |
+| apikey    | ✓         | Apikey of the config group to be modified.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request payload**_
+
+A JSON object with the config group information to be modified. See the
+[config group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
@@ -382,16 +410,16 @@ _**Response code**_
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.:
 
-#### DELETE /iot/services `DELETE /iot/services`
+#### Remove config group `DELETE /iot/services`
 
-Removes a service group, identified by the `resource` and `apikey` query parameters.
+Removes a config group, identified by the `resource` and `apikey` query parameters.
 
 _**Request query parameters**_
 
-| Parameter | Mandatory | Description                                  | Example                                   |
-| --------- | --------- | -------------------------------------------- | ----------------------------------------- |
-| resource  | ✓         | Resource of the service group to be removed. | `/device`                                 |
-| apikey    | ✓         | Apikey of the service group to be removed.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
+| Parameter | Mandatory | Description                                 | Example                                   |
+| --------- | --------- | ------------------------------------------- | ----------------------------------------- |
+| resource  | ✓         | Resource of the config group to be removed. | `/device`                                 |
+| apikey    | ✓         | Apikey of the config group to be removed.   | `801230BJKL23Y9090DSFL123HJK09H324HV8732` |
 
 _**Request headers**_
 
@@ -435,9 +463,9 @@ the API resource fields and the same fields in the database model.
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
 | `mgsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
 
-### Device list operations
+### Device operations
 
-#### List devices /iot/devices `GET /iot/devices`
+#### Retrieve devices /iot/devices `GET /iot/devices`
 
 List all the devices registered in the IoT Agent device registry with all their information for a given `fiware-service`
 and `fiware-servicepath`.
@@ -560,8 +588,6 @@ _**Response code**_
 -   `200` `OK` if successful.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-### Device by ID operations
-
 #### Get device details `GET /iot/devices/:deviceId`
 
 Returns all the information about a device in the IoT Agent's device registry for a given `fiware-service` and
@@ -621,29 +647,6 @@ Example:
 }
 ```
 
-#### Delete device `DELETE /iot/devices/:deviceId`
-
-Remove a device from the device registry. The device is identified by the Device ID as URL parameter.
-
-_**Request URL parameters**_
-
-| Parameter  | Mandatory | Description             | Example  |
-| ---------- | --------- | ----------------------- | -------- |
-| `deviceId` | ✓         | Device ID to be deleted | `DevID1` |
-
-_**Request headers**_
-
-| Header               | Optional | Description                                                                                    | Example    |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
-| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
-
-_**Response code**_
-
--   `200` `OK` if successful.
--   `404` `NOT FOUND` if the device was not found in the database.
--   `500` `SERVER ERROR` if there was any error not contemplated above.
-
 #### Modify device `PUT /iot/devices/:deviceId`
 
 Changes the stored values for the device with the provided Device payload. Neither the name, the type nor the ID of the
@@ -683,6 +686,29 @@ Example:
     "static_attributes": [{ "name": "serialID", "type": "02598347" }]
 }
 ```
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `404` `NOT FOUND` if the device was not found in the database.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+#### Remove device `DELETE /iot/devices/:deviceId`
+
+Remove a device from the device registry. The device is identified by the Device ID as URL parameter.
+
+_**Request URL parameters**_
+
+| Parameter  | Mandatory | Description             | Example  |
+| ---------- | --------- | ----------------------- | -------- |
+| `deviceId` | ✓         | Device ID to be deleted | `DevID1` |
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
 
 _**Response code**_
 
