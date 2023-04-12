@@ -15,6 +15,12 @@
         -   [Reuse of attribute names](#reuse-of-attribute-names)
         -   [Reuse of attribute types](#reuse-of-attribute-types)
         -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
+    -   [Measurement persistence options](#measurement-persistence-options)
+        -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
+        -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
+        -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
+        -   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
+    -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
     -   [NGSI-LD support](#ngsi-ld-support)
@@ -287,6 +293,118 @@ used should be taken from those defined by
     }
 }
 ```
+
+### Measurement persistence options
+
+There are 3 different options to configure how the IoTAgent stores the measures received from the devices, depending on
+the following parameters:
+
+-   `autoprovision`: If the device is not provisioned, the IoTAgent will create a new device and entity for it.
+-   `explicitAttrs`: If the measure element (object_id) is not defined in the mappings of the device or group provision,
+    the measure is stored in the Context Broker by adding a new attribute to the entity with the same name of the
+    undefined measure element.
+-   `appendMode`: It configures the request to the Context Broker to update the entity every time a new measure arrives.
+    It have implications depending if the entity is already created or not in the Context Broker.
+
+#### Autoprovision configuration (autoprovision)
+
+By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the
+IoTA creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false`
+when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the data
+to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
+to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+
+#### Explicitly defined attributes (explicitAttrs)
+
+If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is
+stored in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure
+element. By adding the field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the
+measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
+the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
+precedence. Additionally `explicitAttrs` can be used to define which meassures (identified by their attribute names, not
+by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
+
+The different possibilities are summarized below:
+
+Case 1 (default):
+
+```
+"explicitAttrs": false
+```
+
+every measure will be propagated to NGSI interface.
+
+Case 2:
+
+```
+"explicitAttrs": true
+```
+
+just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+
+Case 3:
+
+```
+"explicitAttrs": "['attr1','atrr2']"
+```
+
+just NGSI attributes defined in the array (identified by their attribute names, not by their object_id, plus
+conditionally TimeInstant) will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is
+not a JSON but a JEXL Array that looks likes a JSON).
+
+Case 4:
+
+```
+"explicitAttrs": "['attr1','atrr2',{object_id:'active_id'}]"
+```
+
+just NGSI attributes defined in the array (identified by their attribute names and/or by their object_id) will be
+propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
+that looks likes a JSON). This is necessary when same attribute names are used within multiple entities.
+
+Case 5:
+
+```
+"explicitAtttr": "<JEXL expression resulting in bool or array>"
+```
+
+depending on the JEXL expression evaluation:
+
+-   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
+-   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
+    propagated to NGSI interface (as in case 2)
+-   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
+    object_id) will be will be propagated to NGSI interface (as in case 3)
+
+#### Configuring operation to persist the data in Context Broker (appendMode)
+
+This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
+`IOTA_APPEND_MODE` environment variable (more info
+[here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). If this flag is
+activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
+UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+
+#### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+
+Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
+
+If `autoprovision` is set to `true` (default case), the agent will perform an initial request creating a new entity into
+the Context Broker with **only** the static and active attributes provisioned in the config group, and also a new Device
+in the agent, every time a measure arrives with a new `device_id`. Otherwise, this measure is ignored. This is something
+related to the **southbound**.
+
+What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device
+provision or config group. That also would avoid propagating the measures to the Context Broker.
+
+The default way the agent updates the information into the Context Broker is by using an update request. If
+`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store the attributes
+even if they are not present in the entity. This seems the same functionality that the one provided by `autoprovision`,
+but it is a different concept since the scope of this config is to setup how the IoT interacts with the context broker,
+this is something related to the **northbound**.
+
+Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously
+the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
+information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ### Overriding global Context Broker host
 
