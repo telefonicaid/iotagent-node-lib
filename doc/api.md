@@ -26,6 +26,7 @@
     -   [NGSI-LD support](#ngsi-ld-support)
         -   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
         -   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
+        -   [NGSI-LD `datasetId` support](#ngsi-ld-datasetid-support)
 -   [API Routes](#api-routes)
     -   [Config group API](#config-group-api)
         -   [Config group datamodel](#config-group-datamodel)
@@ -605,6 +606,60 @@ updated as shown:
     }
 }
 ```
+
+##### NGSI-LD `datasetId` support
+
+Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential
+commands for a single attribute can be sent as an NGSI-LD notification as follows:
+
+```json
+{
+    "id": "urn:ngsi-ld:Notification:5fd0fa684eb81930c97005f3",
+    "type": "Notification",
+    "subscriptionId": "urn:ngsi-ld:Subscription:5fd0f69b4eb81930c97005db",
+    "notifiedAt": "2020-12-09T16:25:12.193Z",
+    "data": [
+        {
+            "lampColor": [
+                {
+                    "type": "Property",
+                    "value": { "color": "green", "duration": "55 secs" },
+                    "datasetId": "urn:ngsi-ld:Sequence:do-this"
+                },
+                {
+                    "type": "Property",
+                    "value": { "color": "red", "duration": "10 secs" },
+                    "datasetId": "urn:ngsi-ld:Sequence:then-do-this"
+                }
+            ]
+        }
+    ]
+}
+```
+
+This results in the following sequential array of attribute updates to be sent to the `NotificationHandler` of the IoT
+Agent itself:
+
+```json
+[
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:do-this",
+        "metadata": {},
+        "value": { "color": "green", "duration": "55 secs" }
+    },
+    {
+        "name": "lampColor",
+        "type": "Property",
+        "datasetId": "urn:ngsi-ld:Sequence:then-do-this",
+        "metadata": {},
+        "value": { "color": "red", "duration": "10 secs" }
+    }
+]
+```
+
+A `datasetId` is also maintained for each new attribute defined in the `reverse` field.
 
 # API Routes
 
