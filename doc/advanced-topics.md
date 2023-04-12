@@ -10,8 +10,6 @@
         -   [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
         -   [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
         -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
-    -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
-    -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
 
 ### Data mapping plugins
 
