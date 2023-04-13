@@ -168,7 +168,7 @@ Some transformation plugins also allow the use of the following optional fields:
     be defined as expressions, using the [Expression Language definition](expressionLanguage.md).
 -   **entity_type**: configures the type of an alternative entity.
 -   **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
-    in the [Data Mapping Plugins section](advanced-topics.md#bidirectionality-plugin-bidirectional) for details.
+    in the [Data Mapping Plugins section](development.md#bidirectionality-plugin-bidirectional) for details.
 
 Additionally for commands (which are attributes of type `command`) the following fields are optional:
 
