@@ -1,76 +1,12 @@
 ## Advanced Topics
 
--   [Data mapping plugins](#data-mapping-plugins)
-    -   [Development](#development)
-    -   [Provided plugins](#provided-plugins)
-        -   [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
-        -   [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
-        -   [Event plugin (addEvents)](#event-plugin-addevents)
-        -   [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
-        -   [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
-        -   [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
-        -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
-
-### Data mapping plugins
-
-The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations
-on incoming data (both from the device and from the context consumers). This mechanism is based in the use of
-middlewares, i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but
-taking care of returning a valid entity, that can be used as the input for other middlewares; this way, all those pieces
-of code can be chained together in order to make all the needed transformations in the target entity.
-
-There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext
-middlewares are applied before the information is sent to the Context Broker, modifiying the entity before it is sent to
-Orion. The queryContext middlewares are applied on the received data, whenever the IoT Agent queries the Context Broker
-for information. I.e.: both middlewares will be automatically applied whenever the `update()` or `query()` functions are
-called in the library.
-
-All the middlewares have the opportunity to break the chain of middleware applications by calling the `callback()` with
-an error object (the usual convention). If any of the updateContext middlewares raise an error, no request will be sent
-to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()`
-function will end up in an error if any of the queryContext middlewares report an error.
-
-#### Development
-
-All the middlewares have the same signature:
-
-```javascript
-function middlewareName(entity, typeInformation, callback) {}
-```
-
-The arguments for any middleware are the NGSI data over which it can operate:
-
--   An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise;
--   a typeInformation object containing all the information about the device stored during registration.
--   and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call
-    this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an
-    optional error in the first argument and the same arguments received (potentially modified) as the following.
-
-In order to manage the middlewares to the system, the following functions can be used:
-
--   `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be
-    applied to every call to the `update()` function. The final payload of the updateContext request will be the result
-    of applying all this middlewares in the order they have been defined.
-
--   `addQueryMiddleware`: adds a queryContext middleware to the stack of middlewares. All the middlewares will be
-    applied to every call to the `query()` function.
-
--   `resetMiddlewares`: remove all the middlewares from the system.
-
-Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they
-should not change a lot during the IoT lifetime.
-
-#### Provided plugins
-
-The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
-use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
-
-```javascript
-var iotaLib = require('iotagent-node-lib');
-
-iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
-iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
-```
+-   [Timestamp Compression plugin (compressTimestamp)](#timestamp-compression-plugin-compresstimestamp)
+-   [Attribute Alias plugin (attributeAlias)](#attribute-alias-plugin-attributealias)
+-   [Event plugin (addEvents)](#event-plugin-addevents)
+-   [Timestamp Processing Plugin (timestampProcess)](#timestamp-processing-plugin-timestampprocess)
+-   [Expression Translation plugin (expressionTransformation)](#expression-translation-plugin-expressiontransformation)
+-   [Multientity plugin (multiEntity)](#multientity-plugin-multientity)
+-   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
 
 ##### Timestamp Compression plugin (compressTimestamp)
 
