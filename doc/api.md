@@ -9,6 +9,7 @@
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
     -   [Entity attributes](#entity-attributes)
+    -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
     -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
@@ -20,6 +21,9 @@
         -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
         -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
         -   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
+    -   [Timestamp Compression](#timestamp-compression)
+    -   [Timestamp Processing](#timestamp-processing)
+    -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -179,6 +183,47 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
+
+##### Multientity support
+
+The IOTA is able to persists measures comming from a single device to more than one entity, declaring the target
+entities through the Configuration or Device provisioning APIs.
+
+```json
+{
+    "devices": [
+        {
+            "protocol": "IoTA-UL",
+            "entity_name": "urn:ngsi-ld:Device:contador12",
+            "entity_type": "multientity",
+            "attributes": [
+                {
+                    "object_id": "cont1",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria01",
+                    "entity_type": "WaterMeter"
+                },
+                {
+                    "object_id": "cont2",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria02",
+                    "entity_type": "WaterMeter"
+                },
+                {
+                    "object_id": "cont3",
+                    "name": "vol",
+                    "type": "Text",
+                    "entity_name": "urn:ngsi-ld:Device:WaterMeterSoria03",
+                    "entity_type": "WaterMeter"
+                }
+            ],
+            "device_id": "contador12"
+        }
+    ]
+}
+```
 
 ### Metadata support
 
@@ -406,6 +451,67 @@ this is something related to the **northbound**.
 Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously
 the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
 information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
+
+### Timestamp Compression
+
+This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
+attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
+calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
+it in queries (and viceversa, receive the extended one in queries and return it in updates).
+
+### Timestamp Processing
+
+The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
+adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
+`observedAt` property-of-a-property is used instead.
+
+##### Bidirectionality plugin (bidirectional)
+
+This plugin allows the devices with composite values an expression to update the original values in the devices when the
+composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
+
+IoTAs using this plugins should also define a notification handler to handle incoming values. This handler will be
+intercepted by the plugin, so the mapped values are included in the updated notification.
+
+When a device is provisioned with bidirectional attributes, the IoTAgent subscribes to changes in that attribute. When a
+change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
+provisioning payload to the notification, and calls the underlying notification handler with the transformed entity
+including the `value` along with any `metadata`, and in the case of an NGSI-LD bidirectional attribute a `datasetId` if
+provided.
+
+The following `attributes` section shows an example of the plugin configuration (using `IOTA_AUTOCAST=false` to avoid
+translation from geo:point to geo:json)
+
+```json
+      "attributes": [
+        {
+          "name":"location",
+          "type":"geo:point",
+          "expression": "${@latitude}, ${@longitude}",
+          "reverse": [
+            {
+              "object_id":"longitude",
+              "type": "Text",
+              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+            },
+            {
+              "object_id":"latitude",
+              "type": "Text",
+              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+            }
+          ]
+        }
+      ],
+```
+
+For each attribute that would have bidirectionality, a new field `reverse` must be configured. This field will contain
+an array of fields that will be created based on the notifications content. The expression notification can contain any
+attribute of the same entity as the bidirectional attribute; declaring them in the expressions will add them to the
+subscription payload.
+
+For each attribute in the `reverse` array, an expression must be defined to calculate its value based on the
+notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
+how the value is then progressed to the device are protocol-specific.
 
 ### Overriding global Context Broker host
 
