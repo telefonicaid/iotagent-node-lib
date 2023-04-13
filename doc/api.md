@@ -465,7 +465,7 @@ The IOTA processes the entity attributes looking for a `TimeInstant` attribute. 
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 
-##### Bidirectionality plugin (bidirectional)
+### Bidirectionality plugin (bidirectional)
 
 This plugin allows the devices with composite values an expression to update the original values in the devices when the
 composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
