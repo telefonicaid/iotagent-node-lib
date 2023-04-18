@@ -38,7 +38,8 @@ var config = {
     subservice: '/test',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing'
+    defaultType: 'Thing',
+    defaultExpressionLanguage: 'jexl'
 };
 
 module.exports = config;
