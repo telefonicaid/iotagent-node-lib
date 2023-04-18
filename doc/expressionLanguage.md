@@ -56,14 +56,6 @@ configure the expression language used:
 -   At service group level.
 -   At device level.
 
-**Setting the expression language at global level**
-
-It is possible to set the default language at global level by setting the
-[global configuration parameter](installationguide.md#global-configuration) `defaultExpressionLanguage` or the
-[environment variable](installationguide.md#configuration-using-environment-variables)
-`IOTA_DEFAULT_EXPRESSION_LANGUAGE`. This option configures the default expression language used to compute expressions,
-possible values are: `legacy` or `jexl`. When not set or wrongly set, `legacy` is used as default value.
-
 **Setting the expression language at service group level**
 
 It is possible to define the expression language at service group by adding the `expressionLanguage` parameter. It is

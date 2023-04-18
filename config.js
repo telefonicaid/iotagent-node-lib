@@ -30,11 +30,11 @@ var config = {
     server: {
         port: 4041,
         host: '0.0.0.0',
-        ldSupport : {
-           null: true,
-           datasetId: true,
-           merge: false
-       }
+        ldSupport: {
+            null: true,
+            datasetId: true,
+            merge: false
+        }
     },
     authentication: {
         enabled: true,
@@ -76,8 +76,7 @@ var config = {
     subservice: '/gardens',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing',
-    defaultExpressionLanguage: 'jexl'
+    defaultType: 'Thing'
 };
 
 module.exports = config;
