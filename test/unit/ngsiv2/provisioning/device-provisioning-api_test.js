@@ -757,7 +757,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             request(groupCreation, function (error, response, body) {
                 request(options, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
-                        console.log('******' + JSON.stringify(results) + '******');
                         should.exist(results.devices[0].name);
                         results.devices[0].name.should.equal('EntityNameByExp');
                         done();
