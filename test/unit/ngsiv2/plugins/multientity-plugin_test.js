@@ -102,7 +102,7 @@ const iotAgentConfig = {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },
@@ -115,13 +115,13 @@ const iotAgentConfig = {
                     object_id: 'p',
                     name: 'pressure',
                     type: 'Hgmm',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 },
                 {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },
@@ -197,21 +197,21 @@ const iotAgentConfig = {
                 {
                     object_id: 'v1',
                     name: 'vol',
-                    expression: '${@v1*100}',
+                    expression: 'v1*100',
                     type: 'Number',
                     entity_name: 'WeatherStation1'
                 },
                 {
                     object_id: 'v2',
                     name: 'vol',
-                    expression: '${@v2*100}',
+                    expression: 'v2*100',
                     type: 'Number',
                     entity_name: 'WeatherStation2'
                 },
                 {
                     object_id: 'v',
                     name: 'vol',
-                    expression: '${@v*100}',
+                    expression: 'v*100',
                     type: 'Number'
                 }
             ]
@@ -244,7 +244,6 @@ const iotAgentConfig = {
         WeatherStation8Jexl: {
             commands: [],
             type: 'WeatherStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -272,7 +271,6 @@ const iotAgentConfig = {
         WeatherStation9Jexl: {
             commands: [],
             type: 'WeatherStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             static: [
                 {
@@ -364,7 +362,6 @@ const iotAgentConfig = {
         WrongStation: {
             commands: [],
             type: 'WrongStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -456,7 +453,6 @@ const iotAgentConfig = {
         SharedIds3: {
             commands: [],
             type: 'ShareStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -559,8 +555,7 @@ const iotAgentConfig = {
                     name: 'pressure',
                     type: 'Number'
                 }
-            ],
-            expressionLanguage: 'jexl'
+            ]
         }
     },
     service: 'smartgondor',
