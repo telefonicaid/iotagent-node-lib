@@ -1,0 +1,1 @@
+- Fix: propage TimeInstant to all metadata attributes when TimeInstant is provided as measure
