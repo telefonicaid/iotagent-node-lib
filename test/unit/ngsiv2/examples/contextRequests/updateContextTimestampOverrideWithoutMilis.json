@@ -1,7 +1,13 @@
 {
   "state": {
     "value": true,
-    "type": "boolean"
+    "type": "boolean",
+    "metadata": {
+        "TimeInstant":{
+            "type": "DateTime",
+            "value": "2022-10-22T22:22:22Z"
+        }
+    }
   },
   "TimeInstant":{
     "type": "DateTime",
