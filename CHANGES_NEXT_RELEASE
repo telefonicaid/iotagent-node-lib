@@ -1,2 +1,1 @@
-
-
+- Fix: reenable invocation of custom plugins on update (#1348)
