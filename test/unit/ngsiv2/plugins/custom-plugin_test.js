@@ -64,14 +64,14 @@ describe('NGSI-v2 - Custom plugin', function () {
     let updateInvoked = false;
     let queryInvoked = false;
 
-    function updatePlugin  (entity, typeInformation, callback){
+    function updatePlugin(entity, typeInformation, callback) {
         updateInvoked = true;
         return callback(null, entity, typeInformation);
-    };
-    function queryPlugin (entity, typeInformation, callback){
+    }
+    function queryPlugin(entity, typeInformation, callback) {
         queryInvoked = true;
         return callback(null, entity, typeInformation);
-    };
+    }
     beforeEach(function (done) {
         logger.setLevel('FATAL');
 
@@ -133,7 +133,7 @@ describe('NGSI-v2 - Custom plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .get('/v2/entities/light1/attrs')
-                .query({ type: 'Light' , attrs: 'state,dimming'})
+                .query({ type: 'Light', attrs: 'state,dimming' })
                 .reply(200, { state: 'good', dimming: '23' });
         });
 
