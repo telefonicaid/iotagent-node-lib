@@ -1,22 +1,27 @@
 {
-  "location": {
-    "type": "geo:json",
-    "value": {
-      "coordinates": [
-        13,
-        52
-      ],
-      "type": "Point"
-    },
-    "metadata": {
-      "TimeInstant": {
-        "type": "DateTime",
-        "value": "2015-08-05T07:35:01.468Z"
-      }
-    }
-  },
-  "TimeInstant": {
-    "type": "DateTime",
-    "value": "2015-08-05T07:35:01.468Z"
-  }
+    "lat": {
+            "value": 52,
+            "type": "Number",
+            "metadata": {
+                "TimeInstant": {
+                    "type": "DateTime",
+                    "value": "2015-08-05T07:35:01.468Z"
+                }
+            }
+        },
+        "lon": {
+            "value": 13,
+            "type": "Number",
+            "metadata": {
+                "TimeInstant": {
+                    "type": "DateTime",
+                    "value": "2015-08-05T07:35:01.468Z"
+                }
+            }
+        },
+        "TimeInstant": {
+            "type": "DateTime",
+            "value": "2015-08-05T07:35:01.468Z"
+        }
+
 }

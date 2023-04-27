@@ -1,0 +1,10 @@
+{
+    "lat": {
+        "value": 52,        
+        "type": "Number"
+    },
+    "lon": {
+        "value": 13,        
+        "type": "Number"
+    }
+}

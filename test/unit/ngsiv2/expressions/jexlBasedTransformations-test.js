@@ -230,6 +230,16 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 },
                 {
+                    object_id: 'lat',
+                    name: 'lat',
+                    type: 'Number'
+                },
+                {
+                    object_id: 'lon',
+                    name: 'lon',
+                    type: 'Number'
+                },
+                {
                     name: 'TimeInstant',
                     type: 'DateTime',
                     expression: 'ts|toisodate'
@@ -246,6 +256,16 @@ const iotAgentConfig = {
                     name: 'location',
                     type: 'geo:json',
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
+                },
+                {
+                    object_id: 'lat',
+                    name: 'lat',
+                    type: 'Number'
+                },
+                {
+                    object_id: 'lon',
+                    name: 'lon',
+                    type: 'Number'
                 }
             ],
             explicitAttrs: true
@@ -403,6 +423,16 @@ const iotAgentConfigTS = {
                     name: 'location',
                     type: 'geo:json',
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
+                },
+                {
+                    object_id: 'lat',
+                    name: 'lat',
+                    type: 'Number'
+                },
+                {
+                    object_id: 'lon',
+                    name: 'lon',
+                    type: 'Number'
                 }
             ],
             explicitAttrs: true
@@ -1080,7 +1110,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .patch(
                     '/v2/entities/gps1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
                 )
                 .query({ type: 'GPS' })

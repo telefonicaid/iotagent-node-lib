@@ -1,22 +1,10 @@
 {
-  "location": {
-    "type": "geo:json",
-    "value": {
-      "coordinates": [
-        13,
-        52
-      ],
-      "type": "Point"
+    "lat": {
+        "type": "Number",
+        "value": 52
     },
-    "metadata": {
-        "TimeInstant": {
-            "type": "DateTime",
-            "value": "1970-01-01T00:00:00.001Z"
-        }
+    "lon": {
+        "type": "Number",
+        "value": 13
     }
-  },
-  "TimeInstant": {
-    "type": "DateTime",
-    "value": "1970-01-01T00:00:00.001Z"
-  }
 }
