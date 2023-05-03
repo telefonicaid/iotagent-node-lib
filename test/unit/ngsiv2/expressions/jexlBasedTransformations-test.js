@@ -406,6 +406,57 @@ const iotAgentConfigTS = {
                 }
             ],
             explicitAttrs: true
+        },
+        WaterTank: {
+            commands: [],
+            type: 'WaterTank',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'cnt2',
+                    name: 'contA',
+                    type: 'Number'
+                },
+                {
+                    object_id: 'cnt3',
+                    name: 'contB',
+                    type: 'Number'
+                },
+                {
+                    object_id: 'false2',
+                    name: 'waterLeavingTanks',
+                    type: 'Number',
+                    expression: 'cnt2*0.1',
+                    entity_name: 'PA_A_0001',
+                    entity_type: 'WaterTank'
+                },
+                {
+                    object_id: 'false3',
+                    name: 'waterLeavingTanks',
+                    type: 'Number',
+                    expression: 'cnt3*0.1',
+                    entity_name: 'PA_B_0001',
+                    entity_type: 'WaterTank'
+                },
+                {
+                    object_id: 'foostatus2',
+                    name: 'status',
+                    type: 'Text',
+                    expression: 'status',
+                    entity_name: 'PA_A_0001',
+                    entity_type: 'WaterTank'
+                },
+                {
+                    object_id: 'foostatus3',
+                    name: 'status',
+                    type: 'Text',
+                    expression: 'status',
+                    entity_name: 'PA_B_0001',
+                    entity_type: 'WaterTank'
+                }
+            ],
+            explicitAttrs:
+                "contA&&contB?['TimeInstant','contA',{object_id:'false2'},'contB',{object_id:'false3'},'status']:contA?['TimeInstant','contA',{object_id:'false2'},{object_id:'foostatus2'}]:contB?['TimeInstant','contB',{object_id:'false3'},{object_id:'foostatus3'}]:[]"
         }
     },
     timestamp: true,
@@ -1311,7 +1362,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
 describe('Java expression language (JEXL) based transformations plugin - Timestamps', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfigTS, function () {
             iotAgentLib.clearAll(function () {
@@ -1372,6 +1423,48 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
 
         it('should calculate them and not remove the timestamp from the payload', function (done) {
             iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When explicitAttrs is a jexl expression in a multientity case', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'cnt3',
+                type: 'Number',
+                value: '31450.000'
+            }
+        ];
+
+        beforeEach(function () {
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+            timekeeper.freeze(time);
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin40.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            timekeeper.reset();
+            done();
+        });
+
+        it('should calculate them and not remove the timestamp from the payload', function (done) {
+            iotAgentLib.update('water1', 'WaterTank', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
