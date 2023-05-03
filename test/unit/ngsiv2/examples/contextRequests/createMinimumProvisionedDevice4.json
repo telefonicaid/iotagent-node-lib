@@ -4,5 +4,9 @@
   "attr_name": {
     "type": "string",
     "value": null
+  },
+  "suffix_st": {
+      "type": "Text",
+      "value": "SUFFIX"
   }
 }

@@ -34,7 +34,7 @@ const nock = require('nock');
 const moment = require('moment');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -726,9 +726,16 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
-                        entityNameExp: "id + '__SUFFIX'",
+                        entityNameExp: "id + '__' + suffix_st",
                         expressionLanguage: 'jexl',
-                        cbHost: 'http://192.168.1.1:1026'
+                        cbHost: 'http://192.168.1.1:1026',
+                        static_attributes: [
+                            {
+                                name: 'suffix_st',
+                                type: 'Text',
+                                value: 'SUFFIX'
+                            }
+                        ]
                     }
                 ]
             },
