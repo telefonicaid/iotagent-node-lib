@@ -250,6 +250,24 @@ const iotAgentConfig = {
             ],
             explicitAttrs: true
         },
+        GPS2b: {
+            commands: [],
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'location',
+                    type: 'geo:json',
+                    expression: "{coordinates: [lon,lat], type: 'Point'}"
+                },
+                {
+                    name: 'temperature',
+                    type: 'Number',
+                    expression: 't * 10'
+                }
+            ],
+            explicitAttrs: true
+        },
         GPS3: {
             commands: [],
             type: 'GPS',
@@ -1089,6 +1107,56 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
             iotAgentLib.update('gps1', 'GPS2', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When there is an extra measure sent by the device to be removed', function () {
+        // Case: Expression which results is sent as a new attribute
+        const values = [
+            {
+                name: 'lat',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'lon',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'another',
+                type: 'Number',
+                value: 99
+            },
+            {
+                name: 'TimeInstant',
+                type: 'DateTime',
+                value: '2015-08-05T07:35:01.468+00:00'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .patch(
+                    '/v2/entities/gps1/attrs',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin41.json'
+                    )
+                )
+                .query({ type: 'GPS' })
+                .reply(204);
+        });
+
+        it('should calculate them and remove non-explicitAttrs from the payload', function (done) {
+            iotAgentLib.update('gps1', 'GPS2b', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
