@@ -12,17 +12,17 @@
         {
           "name":"location",
           "type":"geo:point",
-          "expression": "${latitude}, ${longitude}",
+          "expression": "latitude,longitude",
           "reverse": [
             {
               "object_id":"latitude",
               "type": "string",
-              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+              "expression": "location | split(', ')[1] | parsefloat()"
             },
             {
               "object_id":"longitude",
               "type": "string",
-              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+              "expression": "location | split(', ')[0] | parsefloat()"
             }
           ]
         }
