@@ -358,6 +358,8 @@ In all of them the following device data is available to all expressions
 -   `service`: device service
 -   `subservice`: device subservice
 
+Static attributes from device and group are also avaiable in related context of expression evaluation.
+
 ## JEXL Based Transformations
 
 The recommended expression language for the IoTAgent Library is [JEXL](https://github.com/TomFrost/jexl). To use JEXL,
