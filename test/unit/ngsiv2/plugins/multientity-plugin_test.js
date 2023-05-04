@@ -606,7 +606,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
