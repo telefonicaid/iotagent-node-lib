@@ -1172,7 +1172,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .patch(
                     '/v2/entities/gps1/attrs',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin35.json'
                     )
                 )
                 .query({ type: 'GPS' })
