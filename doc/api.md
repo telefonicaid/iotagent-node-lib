@@ -69,7 +69,7 @@ provided by the IoT Agent node library.
 
 # Topics
 
-### Terminology
+## Terminology
 
 -   **Devices**: A resource that match physical devices that are connected to the IoT Agent. Each device has a set of
     attributes that can be read or written and a set of commands that can be invoked. The device is identified by a
@@ -81,7 +81,7 @@ provided by the IoT Agent node library.
 -   **Service**: It is the `FIWARE-Service` that the device or config group belongs to.
 -   **Subservice**: It is the specific `FIWARE-ServicePath` that the device or config group belongs to.
 
-### IoT Agent information model
+## IoT Agent information model
 
 IoT Agents models 2 different kinds of resources: devices and config groups. Devices are the physical devices that send
 measurements to the IoT Agent. Config groups are logical groups of devices that share the same configuration. A config
@@ -92,7 +92,7 @@ erDiagram
     "Config Group" ||--o{ Devices : contains
 ```
 
-#### Config groups
+### Config groups
 
 Config groups provides a template configuration for the all devices that belong to them. This allows to provision a set
 of devices with a single operation. They are identified by an `apikey` and a `resource` and mapped to a particular
@@ -115,7 +115,7 @@ Config groups can be created with preconfigured sets of attributes, service info
 parameters. The specific parameters that can be configured for a given service group are described in the
 [Config group datamodel](#config-group-datamodel) section.
 
-#### Devices
+### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
 are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
@@ -127,7 +127,7 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
-### Entity attributes
+## Entity attributes
 
 In the group/device model there are four list of attributes with different purpose to configure how the information
 coming from the device is mapped to the Context Broker attributes:
@@ -184,7 +184,7 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
 
-##### Multientity support
+## Multientity support
 
 The IOTA is able to persists measures comming from a single device to more than one entity, declaring the target
 entities through the Configuration or Device provisioning APIs.
@@ -225,7 +225,7 @@ entities through the Configuration or Device provisioning APIs.
 }
 ```
 
-### Metadata support
+## Metadata support
 
 Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
 units of measurement can be placed into the resultant entity.
@@ -262,7 +262,7 @@ e.g.:
    }
 ```
 
-#### NGSI-LD data and metadata considerations
+### NGSI-LD data and metadata considerations
 
 When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
 following:
@@ -306,21 +306,21 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
     }
 ```
 
-### Advice on Attribute definitions
+## Advice on Attribute definitions
 
-#### Reuse of attribute names
+### Reuse of attribute names
 
 Check for the existence of the same Attribute on any of the other models and reuse it, if pertinent. Have a look at
 schema.org trying to find a similar term with the same semantics. Try to find common used ontologies or existing
 standards well accepted by the Community, or by goverments, agencies, etc. For instance, Open311 for civic issue
 tracking or Datex II for transport systems.
 
-#### Reuse of attribute types
+### Reuse of attribute types
 
 When possible reuse [schema.org](http://schema.org/) data types (`Text`, `Number`, `DateTime`, `StructuredValue`, etc.).
 Remember that `null` is not allowed in NGSI-LD and therefore should be avoided as a value.
 
-#### How to specify attribute Units of Measurement
+### How to specify attribute Units of Measurement
 
 If your data use the default unit defined in the Data Model, you don't need to specify any. It is implied. Unless
 explicitly stated otherwise, all FIWARE data models use the metric system of measurements by default. Regardless the
@@ -340,7 +340,7 @@ used should be taken from those defined by
 }
 ```
 
-### Measurement persistence options
+## Measurement persistence options
 
 There are 3 different options to configure how the IoTAgent stores the measures received from the devices, depending on
 the following parameters:
@@ -352,7 +352,7 @@ the following parameters:
 -   `appendMode`: It configures the request to the Context Broker to update the entity every time a new measure arrives.
     It have implications depending if the entity is already created or not in the Context Broker.
 
-#### Autoprovision configuration (autoprovision)
+### Autoprovision configuration (autoprovision)
 
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the
 IoTA creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false`
@@ -360,7 +360,7 @@ when provisioning the device group, the IoTA to reject the measure at the southb
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
 to avoid provisioning devices (and for it to be effective, it would have to be provisional).
 
-#### Explicitly defined attributes (explicitAttrs)
+### Explicitly defined attributes (explicitAttrs)
 
 If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is
 stored in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure
@@ -422,7 +422,7 @@ depending on the JEXL expression evaluation:
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
 
-#### Configuring operation to persist the data in Context Broker (appendMode)
+### Configuring operation to persist the data in Context Broker (appendMode)
 
 This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
 `IOTA_APPEND_MODE` environment variable (more info
@@ -430,7 +430,7 @@ This is a flag that can be enabled by activating the parameter `appendMode` in t
 activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
 UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
-#### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
 Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
 
@@ -452,20 +452,20 @@ Note that, even creating a group with `autoprovision=true` and `explicitAttrs=tr
 the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
 information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
-### Timestamp Compression
+## Timestamp Compression
 
 This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
 attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
 calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
 it in queries (and viceversa, receive the extended one in queries and return it in updates).
 
-### Timestamp Processing
+## Timestamp Processing
 
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 
-### Bidirectionality plugin (bidirectional)
+## Bidirectionality plugin (bidirectional)
 
 This plugin allows the devices with composite values an expression to update the original values in the devices when the
 composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
@@ -513,18 +513,18 @@ For each attribute in the `reverse` array, an expression must be defined to calc
 notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
 how the value is then progressed to the device are protocol-specific.
 
-### Overriding global Context Broker host
+## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
 of devices.
 
-### Multitenancy, FIWARE Service and FIWARE ServicePath
+## Multitenancy, FIWARE Service and FIWARE ServicePath
 
 Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
 performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
 this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
-### Secured access to the Context Broker
+## Secured access to the Context Broker
 
 For access to instances of the Context Broker secured with a
 [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
@@ -576,9 +576,9 @@ Complete info on Keystone trust tokens could be found at:
 -   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
 -   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
-### NGSI-LD Support
+## NGSI-LD Support
 
-#### NGSI-LD `GeoProperty` support
+### NGSI-LD `GeoProperty` support
 
 For NGSI-LD only, the defined `type` of any GeoJSON attribute can be any set using any of the standard NGSI-v2 GeoJSON
 types - (e.g. `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also
@@ -604,7 +604,7 @@ a string as shown
 }
 ```
 
-##### JEXL - encode as GeoJSON
+#### JEXL - encode as GeoJSON
 
 ```json
 {
@@ -659,7 +659,7 @@ formats:
 }
 ```
 
-#### NGSI-LD Linked Data support
+### NGSI-LD Linked Data support
 
 `static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that
 active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for
@@ -713,7 +713,7 @@ updated as shown:
 }
 ```
 
-##### NGSI-LD `datasetId` support
+#### NGSI-LD `datasetId` support
 
 Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential
 commands for a single attribute can be sent as an NGSI-LD notification as follows:
