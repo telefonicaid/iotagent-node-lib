@@ -1,3 +1,6 @@
 - Fix: avoid usage of newlines in logs
+- Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
+- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
+- Fix: allow use static attributes from group in entityNameExp of group
 - Fix: disable device attribute entity_name validation using pattern
 - Fix: change level of log about not context available for apply expression from warn to info
