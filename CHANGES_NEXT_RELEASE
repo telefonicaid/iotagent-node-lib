@@ -1,1 +1,3 @@
 - Fix: avoid usage of newlines in logs
+- Fix: disable device attribute entity_name validation using pattern
+- Fix: change level of log about not context available for apply expression from warn to info
