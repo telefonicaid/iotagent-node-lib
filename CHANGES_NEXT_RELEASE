@@ -1,3 +1,3 @@
-- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression
+- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
 - Fix: disable device attribute entity_name validation using pattern
 - Fix: change level of log about not context available for apply expression from warn to info
