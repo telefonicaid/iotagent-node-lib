@@ -1425,7 +1425,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
 describe('Java expression language (JEXL) based transformations plugin - Timestamps', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfigTS, function () {
             iotAgentLib.clearAll(function () {
