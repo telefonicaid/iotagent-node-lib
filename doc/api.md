@@ -24,6 +24,7 @@
     -   [Expression language support](#expression-language-support)
         -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
         -   [Available functions](#available-functions)
+        -   [Expressions with multiple transformations](#expressions-with-multiple-transformations)
     -   [Measurement transformation](#measurement-transformation)
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
@@ -583,6 +584,30 @@ Current common transformation set:
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
 
+### Expressions with multiple transformations
+
+When you need to apply multiples transformations to the same value, you can use the pipe character `|` to separate the
+transformations. For example, if you want to apply the `trim` and `replacestr` transformations to a value, you can use
+the following expression:
+
+```json
+{
+    "expression": "variable | trim | replacestr('hello','hi')"
+}
+```
+
+If variable takes value `hello world`, the result of the previous expression will be `hi world`.
+
+Another example using functions that return more than one value is the following:
+
+```json
+{
+    "expression": "location | split(', ')[1] | parsefloat()"
+}
+```
+
+For a location value `"40.4165, -3.70256"`, the result of the previous expression will be `-3.70256`.
+
 ## Measurement transformation
 
 The IoTAgent Library provides support for measurement transformation using a
@@ -858,17 +883,17 @@ translation from geo:point to geo:json)
         {
           "name":"location",
           "type":"geo:point",
-          "expression": "${@latitude}, ${@longitude}",
+          "expression": "latitude, longitude",
           "reverse": [
             {
               "object_id":"longitude",
-              "type": "Text",
-              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+              "type": "Number",
+              "expression": "location | split(', ')[0] | parsefloat()"
             },
             {
               "object_id":"latitude",
-              "type": "Text",
-              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+              "type": "Number",
+              "expression": "location | split(', ')[1] | parsefloat()"
             }
           ]
         }
