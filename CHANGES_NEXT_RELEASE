@@ -1,2 +1,6 @@
-- Add support to run tests with node 18
-- Set Nodejs 16 as minimum version in packages.json (effectively removing Nodev14 from supported versions)
+- Fix: avoid usage of newlines in logs (#1342)
+- Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
+- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
+- Fix: allow use static attributes from group in entityNameExp of group
+- Fix: disable device attribute entity_name validation using pattern
+- Fix: change level of log about not context available for apply expression from warn to info

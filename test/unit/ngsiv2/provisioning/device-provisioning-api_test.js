@@ -726,8 +726,16 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
-                        entityNameExp: '"EntityNameByExp"',
-                        cbHost: 'http://192.168.1.1:1026'
+                        entityNameExp: "id + '__' + suffix_st",
+                        expressionLanguage: 'jexl',
+                        cbHost: 'http://192.168.1.1:1026',
+                        static_attributes: [
+                            {
+                                name: 'suffix_st',
+                                type: 'Text',
+                                value: 'SUFFIX'
+                            }
+                        ]
                     }
                 ]
             },
@@ -758,7 +766,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 request(options, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                         should.exist(results.devices[0].name);
-                        results.devices[0].name.should.equal('EntityNameByExp');
+                        results.devices[0].name.should.equal('MicroLight1__SUFFIX');
                         done();
                     });
                 });
