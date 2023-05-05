@@ -14,12 +14,12 @@
           "reverse": [
             {
               "object_id":"latitude",
-              "type": "string",
+              "type": "Number",
               "expression": "location | split(', ')[1] | parsefloat()"
             },
             {
               "object_id":"longitude",
-              "type": "string",
+              "type": "Number",
               "expression": "location | split(', ')[0] | parsefloat()"
             }
           ]
