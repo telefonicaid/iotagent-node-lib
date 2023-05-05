@@ -794,7 +794,7 @@ For example, the following device:
 }
 ```
 
-When receiving the attributes `v`, `v1` and `v2` in a payload from a message received in the southbound:
+When receiving the measures `v`, `v1` and `v2` in a payload from a message received in the southbound:
 
 ```json
 {
