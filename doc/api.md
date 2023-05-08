@@ -794,23 +794,18 @@ For example, the following device:
 }
 ```
 
-When receiving the measures `v`, `v1` and `v2` in a payload from a message received in the southbound:
+When receiving the measures `v`, `v1` and `v2` in a payload from a message received in the southbound (using as an
+example a payload for the [IoT Agent JSON](https://github.com/telefonicaid/iotagent-json)):
 
 ```json
 {
-    "name": "v",
-    "type": "Number",
-    "value": 0
+    "v": 0
 },
 {
-    "name": "v1",
-    "type": "Number",
-    "value": 1
+    "v1": 1
 },
 {
-    "name": "v2",
-    "type": "Number",
-    "value": 2
+    "v2": 2
 }
 ```
 
