@@ -94,8 +94,7 @@
           },
           "entity_name": {
             "description": "Optional entity name for multientity updates",
-            "type": "string",
-            "pattern": "^([^<>;'=\"]+)+$"
+            "type": "string"
           },
           "entity_type": {
             "description": "Optional entity type for multientity updatess",
