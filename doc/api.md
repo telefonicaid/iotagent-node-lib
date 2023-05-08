@@ -21,6 +21,14 @@
         -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
         -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
         -   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
+    -   [Expression language support](#expression-language-support)
+        -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
+        -   [Available functions](#available-functions)
+        -   [Expressions with multiple transformations](#expressions-with-multiple-transformations)
+    -   [Measurement transformation](#measurement-transformation)
+        -   [Measurement transformation definition](#measurement-transformation-definition)
+        -   [Measurement transformation execution](#measurement-transformation-execution)
+        -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
@@ -69,7 +77,7 @@ provided by the IoT Agent node library.
 
 # Topics
 
-### Terminology
+## Terminology
 
 -   **Devices**: A resource that match physical devices that are connected to the IoT Agent. Each device has a set of
     attributes that can be read or written and a set of commands that can be invoked. The device is identified by a
@@ -81,7 +89,7 @@ provided by the IoT Agent node library.
 -   **Service**: It is the `FIWARE-Service` that the device or config group belongs to.
 -   **Subservice**: It is the specific `FIWARE-ServicePath` that the device or config group belongs to.
 
-### IoT Agent information model
+## IoT Agent information model
 
 IoT Agents models 2 different kinds of resources: devices and config groups. Devices are the physical devices that send
 measurements to the IoT Agent. Config groups are logical groups of devices that share the same configuration. A config
@@ -92,7 +100,7 @@ erDiagram
     "Config Group" ||--o{ Devices : contains
 ```
 
-#### Config groups
+### Config groups
 
 Config groups provides a template configuration for the all devices that belong to them. This allows to provision a set
 of devices with a single operation. They are identified by an `apikey` and a `resource` and mapped to a particular
@@ -115,7 +123,7 @@ Config groups can be created with preconfigured sets of attributes, service info
 parameters. The specific parameters that can be configured for a given service group are described in the
 [Config group datamodel](#config-group-datamodel) section.
 
-#### Devices
+### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
 are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
@@ -127,7 +135,7 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
-### Entity attributes
+## Entity attributes
 
 In the group/device model there are four list of attributes with different purpose to configure how the information
 coming from the device is mapped to the Context Broker attributes:
@@ -184,7 +192,7 @@ Additionally for commands (which are attributes of type `command`) the following
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
 
-##### Multientity support
+## Multientity support
 
 The IOTA is able to persists measures comming from a single device to more than one entity, declaring the target
 entities through the Configuration or Device provisioning APIs.
@@ -225,7 +233,7 @@ entities through the Configuration or Device provisioning APIs.
 }
 ```
 
-### Metadata support
+## Metadata support
 
 Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
 units of measurement can be placed into the resultant entity.
@@ -262,7 +270,7 @@ e.g.:
    }
 ```
 
-#### NGSI-LD data and metadata considerations
+### NGSI-LD data and metadata considerations
 
 When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
 following:
@@ -306,21 +314,21 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
     }
 ```
 
-### Advice on Attribute definitions
+## Advice on Attribute definitions
 
-#### Reuse of attribute names
+### Reuse of attribute names
 
 Check for the existence of the same Attribute on any of the other models and reuse it, if pertinent. Have a look at
 schema.org trying to find a similar term with the same semantics. Try to find common used ontologies or existing
 standards well accepted by the Community, or by goverments, agencies, etc. For instance, Open311 for civic issue
 tracking or Datex II for transport systems.
 
-#### Reuse of attribute types
+### Reuse of attribute types
 
 When possible reuse [schema.org](http://schema.org/) data types (`Text`, `Number`, `DateTime`, `StructuredValue`, etc.).
 Remember that `null` is not allowed in NGSI-LD and therefore should be avoided as a value.
 
-#### How to specify attribute Units of Measurement
+### How to specify attribute Units of Measurement
 
 If your data use the default unit defined in the Data Model, you don't need to specify any. It is implied. Unless
 explicitly stated otherwise, all FIWARE data models use the metric system of measurements by default. Regardless the
@@ -340,7 +348,7 @@ used should be taken from those defined by
 }
 ```
 
-### Measurement persistence options
+## Measurement persistence options
 
 There are 3 different options to configure how the IoTAgent stores the measures received from the devices, depending on
 the following parameters:
@@ -352,7 +360,7 @@ the following parameters:
 -   `appendMode`: It configures the request to the Context Broker to update the entity every time a new measure arrives.
     It have implications depending if the entity is already created or not in the Context Broker.
 
-#### Autoprovision configuration (autoprovision)
+### Autoprovision configuration (autoprovision)
 
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the
 IoTA creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false`
@@ -360,7 +368,7 @@ when provisioning the device group, the IoTA to reject the measure at the southb
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
 to avoid provisioning devices (and for it to be effective, it would have to be provisional).
 
-#### Explicitly defined attributes (explicitAttrs)
+### Explicitly defined attributes (explicitAttrs)
 
 If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is
 stored in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure
@@ -422,7 +430,7 @@ depending on the JEXL expression evaluation:
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
 
-#### Configuring operation to persist the data in Context Broker (appendMode)
+### Configuring operation to persist the data in Context Broker (appendMode)
 
 This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
 `IOTA_APPEND_MODE` environment variable (more info
@@ -430,7 +438,7 @@ This is a flag that can be enabled by activating the parameter `appendMode` in t
 activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
 UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
-#### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
 Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
 
@@ -452,20 +460,403 @@ Note that, even creating a group with `autoprovision=true` and `explicitAttrs=tr
 the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
 information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
-### Timestamp Compression
+## Expression language support
+
+The IoTAgent Library provides an expression language for measurement transformation and other purposes. This expression
+language is based on the [TomFrost/JEXL](https://github.com/TomFrost/Jexl) library. The common usage of this feature is
+to adapt the information coming from the South Bound APIs to the information reported to the Context Broker. This is
+really useful when you need to adapt measure (for example, to change the units, or to apply a formula to). All the usage
+of expression in the IoT Agent are:
+
+-   [Measurement transformation](#measurement-transformation).
+-   Commands payload transformation (push and pull).
+-   Auto provisioned devices entity name. It is configured at Config Group level by setting the `entityNameExp`
+    parameter. It defines an expression to generate the Entity Name for autoprovisioned devices.
+-   Dynamic `endpoint` definition. Configured at device level, it defines where the device listen for push http
+    commands. It can be either a static value or an expression.
+
+In all of them the following device data is available to all expressions
+
+-   `id`: device ID
+-   `entity_name`: NGSI entity Name (principal)
+-   `type`: NGSI entity type (principal)
+-   `service`: device service
+-   `subservice`: device subservice
+
+### Examples of JEXL expressions
+
+The following table shows expressions and their expected outcomes taking into account the following measures at
+southbound interface:
+
+-   `value` with value 6 (number)
+-   `ts` with value 1637245214901 (unix timestamp)
+-   `name` with value `"DevId629"` (string)
+-   `object` with value `{name: "John", surname: "Doe"}` (JSON object)
+-   `array` with value `[1, 3]` (JSON Array)
+
+| Expression                                    | Expected outcome                          | Format              | Playground    |
+| :-------------------------------------------- | :---------------------------------------- | ------------------- | ------------- |
+| `5 * value`                                   | `30`                                      | Integer             | [Example][6]  |
+| `(6 + value) * 3`                             | `36`                                      | Integer             | [Example][7]  |
+| `value / 12 + 1`                              | `1.5`                                     | Float               | [Example][8]  |
+| `(5 + 2) * (value + 7)`                       | `91`                                      | Integer             | [Example][9]  |
+| `value * 5.2`                                 | `31.2`                                    | Float               | [Example][10] |
+| `"Pruebas " + "De Strings"`                   | `"Pruebas De Strings"`                    | String              | [Example][11] |
+| `name + "value is " +value`                   | `"DevId629 value is 6"`                   | String              | [Example][12] |
+| `{coordinates: [value,value], type: 'Point'}` | `{"coordinates": [6,6], "type": "Point"}` | GeoJSON `Object`    | [Example][13] |
+| <code>ts&vert;toisodate</code>                | `2021-11-18T14:20:14.901Z`                | ISO 8601 `DateTime` | [Example][14] |
+
+Support for `trim`, `length`, `substr` and `indexOf` transformations was added.
+
+| Expression                                                | Expected outcome | Playground    |
+| :-------------------------------------------------------- | :--------------- | ------------- |
+| <code>" a "&vert; trim</code>                             | `a`              | [Example][15] |
+| <code>name&vert;length</code>                             | `8`              | [Example][16] |
+| <code>name&vert;indexOf("e")</code>                       | `1`              | [Example][17] |
+| <code>name&vert;substr(0,name&vert;indexOf("e")+1)</code> | `"De"`           | [Example][18] |
+
+The following are some examples of **JEXL** expressions not supported by the **legacy** expression language:
+
+| Expression                                          | Expected outcome                    | Format      | Playground    |
+| :-------------------------------------------------- | :---------------------------------- | ----------- | ------------- |
+| `value == 6? true : false`                          | `true`                              | Boolean     | [Example][19] |
+| <code>value == 6 && name&vert;indexOf("e")>0</code> | `true`                              | Boolean     | [Example][20] |
+| `array[1]+1`                                        | `3`                                 | Number      | [Example][21] |
+| `object.name`                                       | `"John"`                            | String      | [Example][22] |
+| `{type:"Point",coordinates: [value,value]}`         | `{type:"Point",coordinates: [6,6]}` | JSON Object | [Example][23] |
+
+### Available functions
+
+There are several predefined JEXL transformations available to be used at any JEXL expression. The definition of those
+transformations and their JavaScript implementation can be found at jexlTransformsMap.js.
+
+The library module also exports a method `iotAgentLib.dataPlugins.expressionTransformation.setJEXLTransforms(Map)` to be
+used by specific IoT Agent implementations in order to incorporate extra transformations to this set. It is important to
+remark that the lib `jexlTransformsMap` cannot be overwritten by the API additions. The idea behind this is to be able
+to incorporate new transformations from the IoT Agent configuration file in a fast and tactical way.
+
+Current common transformation set:
+
+| JEXL Transformation                  | Equivalent JavaScript Function                                                                                          |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| jsonparse: (str)                     | `JSON.parse(str);`                                                                                                      |
+| jsonstringify: (obj)                 | `JSON.stringify(obj);`                                                                                                  |
+| indexOf: (val, char)                 | `String(val).indexOf(char);`                                                                                            |
+| length: (val)                        | `String(val).length;`                                                                                                   |
+| trim: (val)                          | `String(val).trim();`                                                                                                   |
+| substr: (val, int1, int2)            | `String(val).substr(int1, int2);`                                                                                       |
+| addreduce: (arr)                     | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                          |
+| lengtharray: (arr)                   | `arr.length;`                                                                                                           |
+| typeof: (val)                        | `typeof val;`                                                                                                           |
+| isarray: (arr)                       | `Array.isArray(arr);`                                                                                                   |
+| isnan: (val)                         | `isNaN(val);`                                                                                                           |
+| parseint: (val)                      | `parseInt(val);`                                                                                                        |
+| parsefloat: (val)                    | `parseFloat(val);`                                                                                                      |
+| toisodate: (val)                     | `new Date(val).toISOString();`                                                                                          |
+| timeoffset:(isostr)                  | `new Date(isostr).getTimezoneOffset();`                                                                                 |
+| tostring: (val)                      | `val.toString();`                                                                                                       |
+| urlencode: (val)                     | `encodeURI(val);`                                                                                                       |
+| urldecode: (val)                     | `decodeURI(val);`                                                                                                       |
+| replacestr: (str, from, to)          | `str.replace(from, to);`                                                                                                |
+| replaceregexp: (str, reg, to)        | `str.replace(new RegExp(reg), to);`                                                                                     |
+| replaceallstr: (str, from, to)       | `str.replaceAll(from, to);`                                                                                             |
+| replaceallregexp: (str, reg, to)     | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
+| split: (str, ch)                     | `str.split(ch);`                                                                                                        |
+| joinarrtostr: (arr, ch)              | `arr.join(ch);`                                                                                                         |
+| concatarr: (arr, arr2)               | `arr.concat(arr2);`                                                                                                     |
+| mapper: (val, values, choices)       | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
+| thmapper: (val, values, choices)     | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
+| bitwisemask: (i,mask,op,shf)         | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
+| slice: (arr, init, end)              | `arr.slice(init,end);`                                                                                                  |
+| addset: (arr, x)                     | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
+| removeset: (arr, x)                  | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
+| touppercase: (val)                   | `String(val).toUpperCase()`                                                                                             |
+| tolowercase: (val)                   | `String(val).toLowerCase()`                                                                                             |
+| round: (val)                         | `Math.round(val)`                                                                                                       |
+| floor: (val)                         | `Math.floor(val)`                                                                                                       |
+| ceil: (val)                          | `Math.ceil(val)`                                                                                                        |
+| tofixed: (val, decimals)             | `Number.parseFloat(val).toFixed(decimals)`                                                                              |
+| gettime: (d)                         | `new Date(d).getTime()`                                                                                                 |
+| toisostring: (d)                     | `new Date(d).toISOString()`                                                                                             |
+| localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
+| now: ()                              | `Date.now()`                                                                                                            |
+
+You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
+test all the functions described above.
+
+### Expressions with multiple transformations
+
+When you need to apply multiples transformations to the same value, you can use the pipe character `|` to separate the
+transformations. For example, if you want to apply the `trim` and `replacestr` transformations to a value, you can use
+the following expression:
+
+```json
+{
+    "expression": "variable | trim | replacestr('hello','hi')"
+}
+```
+
+If variable takes value `hello world`, the result of the previous expression will be `hi world`.
+
+Another example using functions that return more than one value is the following:
+
+```json
+{
+    "expression": "location | split(', ')[1] | parsefloat()"
+}
+```
+
+For a location value `"40.4165, -3.70256"`, the result of the previous expression will be `-3.70256`.
+
+## Measurement transformation
+
+The IoTAgent Library provides support for measurement transformation using a
+[Expression Language](#expression-language-support) This feature can be used to adapt the information coming from the
+South Bound APIs to the information reported to the Context Broker. This is really useful when you need to adapt measure
+(for example, to change the units, or to apply a formula to).
+
+### Measurement transformation definition
+
+Measurement transformation can be defined for Active attributes, either in the Device provisioning or in the Config
+Group provisioning. The following example shows a device provisioning payload with defined Measurement transformation:
+
+```json
+{
+    "devices": [
+        {
+            "device_id": "45",
+            "protocol": "GENERIC_PROTO",
+            "entity_name": "WasteContainer:WC45",
+            "entity_type": "WasteContainer",
+            "expressionLanguage": "jexl",
+            "attributes": [
+                {
+                    "name": "location",
+                    "type": "geo:json",
+                    "expression": "{coordinates: [longitude,latitude], type: 'Point'}"
+                },
+                {
+                    "name": "fillingLevel",
+                    "type": "Number",
+                    "expression": "level / 100"
+                },
+                {
+                    "name": "level",
+                    "type": "Number"
+                },
+                {
+                    "name": "latitude",
+                    "type": "Number"
+                },
+                {
+                    "name": "longitude",
+                    "type": "Number"
+                }
+            ]
+        }
+    ]
+}
+```
+
+[Interactive expression `{coordinates: [longitude,latitude], type: 'Point'}`][1]
+
+[Interactive expression `level / 100`][2]
+
+The value of the `expression` field defines the measure transformation. is a string that can contain any number of
+expression patterns. In order to complete expression to be evaluated, all the expression patterns must be evaluable
+(there must be a value in the measurement for all the variables of all the expression patterns).
+
+Note that you need to include in the provision operation all the attributes required as inputs for the expressions. In
+this example, they are `level`, `latitude` and `longitude`. Otherwise the device sending the measures will get
+`{"name":"ATTRIBUTE_NOT_FOUND","message":"Some of the attributes does not exist"}` when it sends some of these and the
+expression will not be calculated.
+
+The exact same syntax works for Configuration and Device provisioning.
+
+### Measurement transformation execution
+
+Whenever a new measurement arrives to the IoT Agent for a device with declared expressions, all of the expressions for
+the device will be checked for execution: for all the defined active attributes containing expressions, the IoT Agent
+will check which ones contain expressions whose variables are present in the received measurement. For all of those
+whose variables are covered, their expressions will be executed with the received values, and their values updated in
+the Context Broker.
+
+E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
+
+```json
+{
+   "name":"location",
+   "type":"geo:point",
+   "expression": "longitude+', '+latitude"
+},
+{
+   "name":"fillingLevel",
+   "type":"Number",
+   "expression": "level / 100",
+},
+```
+
+[Interactive expression `longitude+', '+latitude`][3]
+
+[Interactive expression `level / 100`][4]
+
+and a measurement with the following values arrive to the IoT Agent:
+
+```text
+latitude: 1.9
+level: 85.3
+```
+
+The only expression rule that will be executed will be that of the `fillingLevel` attribute. It will produce the value
+`0.853` that will be sent to the Context Broker.
+
+Note that expressions are only applied if the attribute name (as received by the IoT Agent in the southbound interface)
+matches the expression variable. Otherwise, the southbound value is used directly. Let's illustrate with the following
+example:
+
+```json
+"consumption": {
+   "type": "String",
+   "value": "spaces | trim"
+}
+```
+
+-   Case 1: the following measure is received at the southbound interface:
+
+```text
+consumption: "0.44"
+```
+
+As `spaces` attribute is not included, then the expression is not applied and the `consumption` measure value is
+directly used, so the following is sent to CB:
+
+```json
+"consumption": {
+   "type": "String",
+   "value": "0.44"
+}
+```
+
+-   Case 2: the following measure is received at the southbound interface:
+
+```text
+consumption: "0.44"
+spaces: "  foobar  "
+```
+
+As `spaces` attribute is included, then the expression is evaluated, so overriding the 0.44 value and sending the
+following to CB:
+
+```json
+"consumption": {
+    "type": "String",
+    "value": "foobar"
+}
+```
+
+[Interactive expression `spaces | trim`][5]
+
+### Multientity measurement transformation support (`object_id`)
+
+To allow support for measurement transformation in combination with multi entity plugin, where the same attribute is
+generated for different entities out of different incoming attribute values (i.e. `object_id`), we introduced support
+for `object_id` in the expression context.
+
+For example, the following device:
+
+```json
+"WeatherStation": {
+    "commands": [],
+    "type": "WeatherStation",
+    "lazy": [],
+    "active": [
+        {
+            "object_id": "v1",
+            "name": "vol",
+            "expression" : "v1*100",
+            "type": "Number",
+            "entity_name": "WeatherStation1"
+        },
+        {
+            "object_id": "v2",
+            "name": "vol",
+            "expression" : "v2*100",
+            "type": "Number",
+            "entity_name": "WeatherStation2"
+        },
+        {
+            "object_id": "v",
+            "name": "vol",
+            "expression" : "v*100",
+            "type": "Number"
+        }
+    ]
+}
+```
+
+When receiving the measures `v`, `v1` and `v2` in a payload from a message received in the southbound (using as an
+example a payload for the [IoT Agent JSON](https://github.com/telefonicaid/iotagent-json)):
+
+```json
+{
+    "v": 0
+},
+{
+    "v1": 1
+},
+{
+    "v2": 2
+}
+```
+
+Will now generate the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws9",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            }
+        },
+        {
+            "vol": {
+                "type": "Number",
+                "value": 100
+            },
+            "type": "WeatherStation",
+            "id": "WeatherStation1"
+        },
+        {
+            "vol": {
+                "type": "Number",
+                "value": 200
+            },
+            "type": "WeatherStation",
+            "id": "WeatherStation2"
+        }
+    ]
+}
+```
+
+## Timestamp Compression
 
 This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
 attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
 calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
 it in queries (and viceversa, receive the extended one in queries and return it in updates).
 
-### Timestamp Processing
+## Timestamp Processing
 
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 
-### Bidirectionality plugin (bidirectional)
+## Bidirectionality plugin (bidirectional)
 
 This plugin allows the devices with composite values an expression to update the original values in the devices when the
 composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
@@ -487,17 +878,17 @@ translation from geo:point to geo:json)
         {
           "name":"location",
           "type":"geo:point",
-          "expression": "${@latitude}, ${@longitude}",
+          "expression": "latitude, longitude",
           "reverse": [
             {
               "object_id":"longitude",
-              "type": "Text",
-              "expression": "${trim(substr(@location, indexOf(@location, \",\") + 1, length(@location)))}"
+              "type": "Number",
+              "expression": "location | split(', ')[0] | parsefloat()"
             },
             {
               "object_id":"latitude",
-              "type": "Text",
-              "expression": "${trim(substr(@location, 0, indexOf(@location, \",\")))}"
+              "type": "Number",
+              "expression": "location | split(', ')[1] | parsefloat()"
             }
           ]
         }
@@ -513,18 +904,18 @@ For each attribute in the `reverse` array, an expression must be defined to calc
 notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
 how the value is then progressed to the device are protocol-specific.
 
-### Overriding global Context Broker host
+## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
 of devices.
 
-### Multitenancy, FIWARE Service and FIWARE ServicePath
+## Multitenancy, FIWARE Service and FIWARE ServicePath
 
 Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
 performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
 this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
 
-### Secured access to the Context Broker
+## Secured access to the Context Broker
 
 For access to instances of the Context Broker secured with a
 [PEP Proxy](https://github.com/telefonicaid/fiware-orion-pep), an authentication mechanism based in Keystone Trust
@@ -576,9 +967,9 @@ Complete info on Keystone trust tokens could be found at:
 -   [Trusts concept](https://docs.openstack.org/keystone/stein/user/trusts)
 -   [Trusts API](https://docs.openstack.org/keystone/stein/api_curl_examples.html#post-v3-os-trust-trusts)
 
-### NGSI-LD Support
+## NGSI-LD Support
 
-#### NGSI-LD `GeoProperty` support
+### NGSI-LD `GeoProperty` support
 
 For NGSI-LD only, the defined `type` of any GeoJSON attribute can be any set using any of the standard NGSI-v2 GeoJSON
 types - (e.g. `geo:json`, `geo:point`). NGSI-LD formats such as `GeoProperty`, `Point` and `LineString` are also
@@ -604,7 +995,7 @@ a string as shown
 }
 ```
 
-##### JEXL - encode as GeoJSON
+#### JEXL - encode as GeoJSON
 
 ```json
 {
@@ -659,7 +1050,7 @@ formats:
 }
 ```
 
-#### NGSI-LD Linked Data support
+### NGSI-LD Linked Data support
 
 `static_attributes` may be supplied with an additional `link` data element when provisioning an IoT Agent to ensure that
 active attributes from the provisioned IoT Device may be maintained in parallel with a linked data entity . Take for
@@ -713,7 +1104,7 @@ updated as shown:
 }
 ```
 
-##### NGSI-LD `datasetId` support
+#### NGSI-LD `datasetId` support
 
 Limited support for parsing the NGSI-LD `datasetId` attribute is included within the library. A series of sequential
 commands for a single attribute can be sent as an NGSI-LD notification as follows:
@@ -1342,3 +1733,52 @@ Example:
     "version": "1.7.0"
 }
 ```
+
+[1]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22longitude%22%3A%205%2C%0A%20%20%22latitude%22%3A%2037%2C%0A%20%20%22level%22%3A223%0A%7D&input=%7Bcoordinates%3A%20%5Blongitude%2Clatitude%5D%2C%20type%3A%20'Point'%7D&transforms=%7B%0A%7D
+[2]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22longitude%22%3A%205%2C%0A%20%20%22latitude%22%3A%2037%2C%0A%20%20%22level%22%3A223%0A%7D&input=level%2F100&transforms=%7B%0A%7D
+[3]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%20%0A%20%20%22latitude%22%3A%201.9%2C%0A%20%20%22level%22%3A85.3%0A%7D&input=longitude%2B%22%2C%20%22%2Blatitude&transforms=%7B%0A%7D
+[4]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%20%0A%20%20%22latitude%22%3A%201.9%2C%0A%20%20%22level%22%3A85.3%0A%7D&input=level%2F100&transforms=%7B%0A%7D
+[5]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22spaces%22%20%3A%20%22%20%20foobar%20%20%22%0A%7D&input=spaces%20%7C%20trim&transforms=%7B%0A%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%0A%7D
+[6]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=5%20*%20value&transforms=%7B%0A%7D
+[7]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=(6%20%2B%20value)%20*%203&transforms=%7B%0A%7D
+[8]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=value%20%2F%2012%20%2B%201&transforms=%7B%0A%7D
+[9]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=(5%20%2B%202)%20*%20(value%20%2B%207)&transforms=%7B%0A%7D
+[10]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=value%20*%205.2&transforms=%7B%0A%7D
+[11]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=%22Pruebas%20%22%20%2B%20%22De%20Strings%22&transforms=%7B%0A%7D
+[12]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=name%20%2B%20%22value%20is%20%22%20%2Bvalue&transforms=%7B%0A%7D
+[13]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=%7Bcoordinates%3A%20%5Bvalue%2Cvalue%5D%2C%20type%3A%20'Point'%7D&transforms=%7B%0A%7D
+[14]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=ts%7Ctoisodate&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[15]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=%22%20a%20%22%7Ctrim&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[16]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=name%7Clength&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[17]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=name%7CindexOf(%22e%22)&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[18]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=name%7Csubstr(0%2Cname%7CindexOf(%22e%22)%2B1)&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[19]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=value%20%3D%3D%206%3F%20true%20%3A%20false&transforms=%7B%7D
+[20]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=value%20%3D%3D%206%20%26%26%20name%7CindexOf(%22e%22)%3E0&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
+[21]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=array%5B1%5D%2B1&transforms=%7B%7D
+[22]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=object.name&transforms=%7B%7D
+[23]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22value%22%20%3A%206%2C%0A%20%20%22ts%22%3A%201637245214901%2C%0A%20%22name%22%3A%20%22DevId629%22%2C%0A%20%22object%22%3A%7Bname%3A%20%22John%22%2C%20surname%3A%20%22Doe%22%7D%2C%0A%20%20%22array%22%3A%5B1%2C3%5D%0A%7D&input=%7Btype%3A%22Point%22%2Ccoordinates%3A%20%5Bvalue%2Cvalue%5D%7D&transforms=%7B%7D
+[99]:
+    https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22text%22%20%3A%20%22%20%20foobar%7B%7D%20%20%22%0A%7D&input=text%20%7C%20replacestr(%22foo%22%2C%22FOO%22)%7Ctrim%7Curlencode&transforms=%7B%0A%20%20%20%20jsonparse%3A%20(str)%20%3D%3E%20JSON.parse(str)%2C%0A%20%20%20%20jsonstringify%3A%20(obj)%20%3D%3E%20JSON.stringify(obj)%2C%0A%20%20%20%20indexOf%3A%20(val%2C%20char)%20%3D%3E%20String(val).indexOf(char)%2C%0A%20%20%20%20length%3A%20(val)%20%3D%3E%20String(val).length%2C%0A%20%20%20%20trim%3A%20(val)%20%3D%3E%20String(val).trim()%2C%0A%20%20%20%20substr%3A%20(val%2C%20int1%2C%20int2)%20%3D%3E%20String(val).substr(int1%2C%20int2)%2C%0A%20%20%20%20addreduce%3A%20(arr)%20%3D%3E%20arr.reduce((i%2C%20v)%20%3D%3E%20i%20%2B%20v)%2C%0A%20%20%20%20lengtharray%3A%20(arr)%20%3D%3E%20arr.length%2C%0A%20%20%20%20typeof%3A%20(val)%20%3D%3E%20typeof%20val%2C%0A%20%20%20%20isarray%3A%20(arr)%20%3D%3E%20Array.isArray(arr)%2C%0A%20%20%20%20isnan%3A%20(val)%20%3D%3E%20isNaN(val)%2C%0A%20%20%20%20parseint%3A%20(val)%20%3D%3E%20parseInt(val)%2C%0A%20%20%20%20parsefloat%3A%20(val)%20%3D%3E%20parseFloat(val)%2C%0A%20%20%20%20toisodate%3A%20(val)%20%3D%3E%20new%20Date(val).toISOString()%2C%0A%20%20%20%20timeoffset%3A%20(isostr)%20%3D%3E%20new%20Date(isostr).getTimezoneOffset()%2C%0A%20%20%20%20tostring%3A%20(val)%20%3D%3E%20val.toString()%2C%0A%20%20%20%20urlencode%3A%20(val)%20%3D%3E%20encodeURI(val)%2C%0A%20%20%20%20urldecode%3A%20(val)%20%3D%3E%20decodeURI(val)%2C%0A%20%20%20%20replacestr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replace(from%2C%20to)%2C%0A%20%20%20%20replaceregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replace(new%20RegExp(reg)%2C%20to)%2C%0A%20%20%20%20replaceallstr%3A%20(str%2C%20from%2C%20to)%20%3D%3E%20str.replaceAll(from%2C%20to)%2C%0A%20%20%20%20replaceallregexp%3A%20(str%2C%20reg%2C%20to)%20%3D%3E%20str.replaceAll(new%20RegExp(reg%2C%20'g')%2C%20to)%2C%0A%20%20%20%20split%3A%20(str%2C%20ch)%20%3D%3E%20str.split(ch)%2C%0A%20%20%20%20mapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%20choices%5Bvalues.findIndex((target)%20%3D%3E%20target%20%3D%3D%3D%20val)%5D%2C%0A%20%20%20%20thmapper%3A%20(val%2C%20values%2C%20choices)%20%3D%3E%0A%20%20%20%20%20%20%20%20choices%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20values.reduce((acc%2C%20curr%2C%20i)%20%3D%3E%20(acc%20%3D%3D%3D%200%20%7C%7C%20acc%20%3F%20acc%20%3A%20val%20%3C%3D%20curr%20%3F%20(acc%20%3D%20i)%20%3A%20(acc%20%3D%20null))%2C%20null)%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20bitwisemask%3A%20(i%2C%20mask%2C%20op%2C%20shf)%20%3D%3E%0A%20%20%20%20%20%20%20%20(op%20%3D%3D%3D%20'%26'%20%3F%20parseInt(i)%20%26%20mask%20%3A%20op%20%3D%3D%3D%20'%7C'%20%3F%20parseInt(i)%20%7C%20mask%20%3A%20op%20%3D%3D%3D%20'%5E'%20%3F%20parseInt(i)%20%5E%20mask%20%3A%20i)%20%3E%3E%0A%20%20%20%20%20%20%20%20shf%2C%0A%20%20%20%20slice%3A%20(arr%2C%20init%2C%20end)%20%3D%3E%20arr.slice(init%2C%20end)%0A%7D
