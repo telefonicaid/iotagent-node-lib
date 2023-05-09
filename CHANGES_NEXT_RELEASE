@@ -1,3 +1,5 @@
+- Remove: remove legacy expression support (#1340)
+- Fix: swithching bidirectinal plugin expression support from Legacy to JEXL
 - Fix: avoid usage of newlines in logs (#1342)
 - Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
 - Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)

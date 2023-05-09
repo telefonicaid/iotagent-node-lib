@@ -21,6 +21,7 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to NGSI-LD v1.3 in iotagent-node-lib 2.25.0 (finally removed in 2.26.0)
 -   Support groups (provision) statically defined by configuration
 -   Support to in-memory registry (i.e.`deviceRegistry.type=memory`)
+-   Support to legacy expressions 
 
 The use of Node.js v14 is highly recommended.
 
