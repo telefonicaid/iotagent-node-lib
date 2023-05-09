@@ -41,7 +41,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStation: {
@@ -494,6 +495,42 @@ const iotAgentConfig = {
             type: 'GPS',
             lazy: [],
             active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            explicitAttrs: true
+        },
+        GPS1: {
+            commands: [],
+            expressionLanguage: 'jexl',
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    object_id: 'z'
+                },
+                {
+                    name: 'expectedAtt',
+                    type: 'number',
+                    expression: 'z+1'
+                },
+                {
+                    name: 'nonexpectedAtt',
+                    type: 'number',
+                    expression: 'w+1'
+                },
                 {
                     name: 'explicit',
                     type: 'number',
@@ -1236,6 +1273,48 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         it('should remove hidden attrs from the value', function (done) {
             iotAgentLib.update('gps1', 'GPS', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an update comes for a multientity measurement explicitAttrs for several entities', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin25.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS1', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

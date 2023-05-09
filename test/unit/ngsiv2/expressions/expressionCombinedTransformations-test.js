@@ -38,7 +38,8 @@ const iotAgentConfigJexl = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     defaultExpressionLanguage: 'jexl',
     types: {
@@ -83,7 +84,8 @@ const iotAgentConfigLegacy = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStationLegacy: {
