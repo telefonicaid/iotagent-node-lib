@@ -475,13 +475,15 @@ of expression in the IoT Agent are:
 -   Dynamic `endpoint` definition. Configured at device level, it defines where the device listen for push http
     commands. It can be either a static value or an expression.
 
-In all of them the following device data is available to all expressions
+The agent provides additional information, hereafter referred as **context**, in order to be used to evaluate the
+expression. In all cases the following data is available to all expressions:
 
 -   `id`: device ID
 -   `entity_name`: NGSI entity Name (principal)
 -   `type`: NGSI entity type (principal)
 -   `service`: device service
 -   `subservice`: device subservice
+-   `staticAttributes`: static attributes defined in the device or config group
 
 ### Examples of JEXL expressions
 
