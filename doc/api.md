@@ -72,8 +72,8 @@ charge of translating the information coming from the devices into NGSI requests
 
 The **IoT Agent node library** is a Node.js module that can be used to implement IoT Agents. It provides a set of common
 functionality that can be used to implement the different IoT Agents, offering a simple REST API which provides common
-functionality to access, provision and decommission devices and groups of devices. This document describes the API
-provided by the IoT Agent node library.
+functionality to access, provision and decommission devices and config groups of devices. This document describes the
+API provided by the IoT Agent node library.
 
 # Topics
 
@@ -88,6 +88,12 @@ provided by the IoT Agent node library.
 -   **Measurements**: A set of values that are sent by a device to the IoT Agent.
 -   **Service**: It is the `FIWARE-Service` that the device or config group belongs to.
 -   **Subservice**: It is the specific `FIWARE-ServicePath` that the device or config group belongs to.
+-   **provision**: The process of creating a new device. A device provisioned means that the device has been already
+    created in the IoT Agent. It can also refer to the group creation process.
+-   **autoprovision**: The process of creating a new device when a measure arrives to the IoT Agent and the device is
+    not provisioned yet. The attributes, entity type and other information is taken from the config group, and entity
+    name is generated according to the entity type and device ID or as a result of an expression if `entityNameExp` is
+    defined.
 
 ## IoT Agent information model
 
@@ -120,7 +126,7 @@ which device). Those operations of the API targeting specific resources will nee
 parameters to select the appropriate instance.
 
 Config groups can be created with preconfigured sets of attributes, service information, security information and other
-parameters. The specific parameters that can be configured for a given service group are described in the
+parameters. The specific parameters that can be configured for a given config group are described in the
 [Config group datamodel](#config-group-datamodel) section.
 
 ### Devices
@@ -137,8 +143,8 @@ described in the [Device datamodel](#device-datamodel) section.
 
 ## Entity attributes
 
-In the group/device model there are four list of attributes with different purpose to configure how the information
-coming from the device is mapped to the Context Broker attributes:
+In the config group/device model there are four list of attributes with different purpose to configure how the
+information coming from the device is mapped to the Context Broker attributes:
 
 -   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
     to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
@@ -194,8 +200,8 @@ Additionally for commands (which are attributes of type `command`) the following
 
 ## Multientity support
 
-The IOTA is able to persists measures comming from a single device to more than one entity, declaring the target
-entities through the Configuration or Device provisioning APIs.
+The IOTA is able to persists measures coming from a single device to more than one entity, declaring the target entities
+through the config group or device provision APIs.
 
 ```json
 {
@@ -235,8 +241,8 @@ entities through the Configuration or Device provisioning APIs.
 
 ## Metadata support
 
-Both `attributes` and `static_attributes` may be supplied with metadata when provisioning an IoT Agent, so that the
-units of measurement can be placed into the resultant entity.
+Both `attributes` and `static_attributes` may be supplied with metadata when creating a config group, so that the units
+of measurement can be placed into the resultant entity.
 
 e.g.:
 
@@ -354,28 +360,28 @@ There are 3 different options to configure how the IoTAgent stores the measures 
 the following parameters:
 
 -   `autoprovision`: If the device is not provisioned, the IoTAgent will create a new device and entity for it.
--   `explicitAttrs`: If the measure element (object_id) is not defined in the mappings of the device or group provision,
-    the measure is stored in the Context Broker by adding a new attribute to the entity with the same name of the
-    undefined measure element.
+-   `explicitAttrs`: If the measure element (object_id) is not defined in the mappings of the device or config group
+    provision, the measure is stored in the Context Broker by adding a new attribute to the entity with the same name of
+    the undefined measure element.
 -   `appendMode`: It configures the request to the Context Broker to update the entity every time a new measure arrives.
     It have implications depending if the entity is already created or not in the Context Broker.
 
 ### Autoprovision configuration (autoprovision)
 
 By default, when a measure arrives to the IoTAgent, if the `device_id` does not match with an existing one, then, the
-IoTA creates a new device and a new entity according to the group config. Defining the field `autoprovision` to `false`
-when provisioning the device group, the IoTA to reject the measure at the southbound, allowing only to persist the data
+IoTA creates a new device and a new entity according to the config group. Defining the field `autoprovision` to `false`
+when provisioning the config group, the IoTA to reject the measure at the southbound, allowing only to persist the data
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
 to avoid provisioning devices (and for it to be effective, it would have to be provisional).
 
 ### Explicitly defined attributes (explicitAttrs)
 
-If a given measure element (object_id) is not defined in the mappings of the device or group provision, the measure is
+If a given measure element (object_id) is not defined in the mappings of the device or config group, the measure is
 stored in the Context Broker by adding a new attribute to the entity with the same name of the undefined measure
-element. By adding the field `explicitAttrs` with `true` value to device or group provision, the IoTAgent rejects the
-measure elements that are not defined in the mappings of device or group provision, persisting only the one defined in
-the mappings of the provision. If `explicitAttrs` is provided both at device and group level, the device level takes
-precedence. Additionally `explicitAttrs` can be used to define which meassures (identified by their attribute names, not
+element. By adding the field `explicitAttrs` with `true` value to device or config group, the IoTAgent rejects the
+measure elements that are not defined in the mappings of device or config group, persisting only the one defined in the
+mappings of the provision. If `explicitAttrs` is provided both at device and config group level, the device level takes
+precedence. Additionally `explicitAttrs` can be used to define which measures (identified by their attribute names, not
 by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
 
 The different possibilities are summarized below:
@@ -456,9 +462,9 @@ even if they are not present in the entity. This seems the same functionality th
 but it is a different concept since the scope of this config is to setup how the IoT interacts with the context broker,
 this is something related to the **northbound**.
 
-Note that, even creating a group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision previously
-the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`. For further
-information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
+Note that, even creating a config group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision
+previously the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`.
+For further information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ## Expression language support
 
@@ -470,7 +476,7 @@ of expression in the IoT Agent are:
 
 -   [Measurement transformation](#measurement-transformation).
 -   Commands payload transformation (push and pull).
--   Auto provisioned devices entity name. It is configured at Config Group level by setting the `entityNameExp`
+-   Auto provisioned devices entity name. It is configured at config Group level by setting the `entityNameExp`
     parameter. It defines an expression to generate the Entity Name for autoprovisioned devices.
 -   Dynamic `endpoint` definition. Configured at device level, it defines where the device listen for push http
     commands. It can be either a static value or an expression.
@@ -609,8 +615,8 @@ South Bound APIs to the information reported to the Context Broker. This is real
 
 ### Measurement transformation definition
 
-Measurement transformation can be defined for Active attributes, either in the Device provisioning or in the Config
-Group provisioning. The following example shows a device provisioning payload with defined Measurement transformation:
+Measurement transformation can be defined for Active attributes, either in the Device provisioning or in the config
+group provisioning. The following example shows a device provisioning payload with defined Measurement transformation:
 
 ```json
 {
@@ -672,7 +678,7 @@ will check which ones contain expressions whose variables are present in the rec
 whose variables are covered, their expressions will be executed with the received values, and their values updated in
 the Context Broker.
 
-E.g.: if a device with the following provisioning information is provisioned in the IoT Agent:
+E.g.: if a device with the following provisioning information is created in the IoT Agent:
 
 ```json
 {
@@ -1374,7 +1380,7 @@ the API resource fields and the same fields in the database model.
 | `lazy`                | ✓        | `array`   |            | List of lazy attributes that will be stored in the Context Broker.                                                                                                                                                                                               |
 | `static_attributes`   | ✓        | `array`   |            | List of static attributes that will be stored in the Context Broker.                                                                                                                                                                                             |
 | `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                               |
-| `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](advanced-topics.md#explicitly-defined-attributes-explicitattrs)                                                                                   |
+| `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                     |
 | `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
 
 ### Device operations
