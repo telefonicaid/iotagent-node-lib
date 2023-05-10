@@ -104,7 +104,7 @@
                 },
                 "skip_value": {
                   "description": "Attribute is skipped when result of apply expression is this value",
-                  "type": "string"
+                  "type": "any"
                 },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",
