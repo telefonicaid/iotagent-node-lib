@@ -1,1 +1,9 @@
 - Fix: reenable invocation of custom plugins on update (#1348)
+- Add: JEXL support to bidirectinal plugin
+- Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
+- Fix: avoid usage of newlines in logs (#1342)
+- Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
+- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
+- Fix: allow use static attributes from group in entityNameExp of group
+- Fix: disable device attribute entity_name validation using pattern
+- Fix: change level of log about not context available for apply expression from warn to info

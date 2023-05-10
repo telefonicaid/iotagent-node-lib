@@ -18,5 +18,15 @@
                 "value": "2015-08-05T07:35:01.468+00:00"
             }
         }
+    },
+    "temperature": {
+        "value": null,
+        "type": "Number",
+        "metadata": {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2015-08-05T07:35:01.468+00:00"
+            }
+        }
     }
 }

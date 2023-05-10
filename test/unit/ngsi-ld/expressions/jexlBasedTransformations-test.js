@@ -40,7 +40,6 @@ const iotAgentConfig = {
         ngsiVersion: 'ld',
         jsonLdContext: 'http://context.json-ld'
     },
-    defaultExpressionLanguage: 'jexl',
     server: {
         port: 4041
     },
@@ -266,7 +265,6 @@ const iotAgentConfigTS = {
         ngsiVersion: 'ld',
         jsonLdContext: 'http://context.json-ld'
     },
-    defaultExpressionLanguage: 'jexl',
     server: {
         port: 4041
     },

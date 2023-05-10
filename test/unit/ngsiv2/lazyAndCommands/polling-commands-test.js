@@ -140,8 +140,7 @@ const device4 = {
     type: 'RobotExp',
     service: 'smartgondor',
     subservice: 'gardens',
-    polling: true,
-    expressionLanguage: 'jexl'
+    polling: true
 };
 
 describe('NGSI-v2 - Polling commands', function () {
