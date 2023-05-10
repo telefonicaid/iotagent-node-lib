@@ -1,5 +1,6 @@
 - Add: JEXL support to bidirectinal plugin
-- Remove: remove legacy expression support (#1340)
+- Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
+
 - Fix: avoid usage of newlines in logs (#1342)
 - Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
 - Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
