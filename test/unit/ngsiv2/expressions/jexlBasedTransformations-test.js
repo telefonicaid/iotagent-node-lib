@@ -39,7 +39,6 @@ const iotAgentConfig = {
         port: '1026',
         ngsiVersion: 'v2'
     },
-    defaultExpressionLanguage: 'jexl',
     server: {
         port: 4041,
         host: 'localhost'
@@ -429,7 +428,6 @@ const iotAgentConfigTS = {
         port: '1026',
         ngsiVersion: 'v2'
     },
-    defaultExpressionLanguage: 'jexl',
     server: {
         port: 4041,
         host: 'localhost'

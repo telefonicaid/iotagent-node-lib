@@ -73,9 +73,9 @@ overriding the group setting.
 ```
 
 When connected to an **NGSI-LD** context broker, an IoT Agent is able to indicate whether it is willing to accept `null`
-values and also whether it is able to process the **NGSI-LD** `datasetId` metadata element. Setting these
-values to `false` will cause the IoT Agent to return a 400 **Bad Request** HTTP status code explaining that the IoT
-Agent does not support nulls or multi-attribute requests if they are encountered.
+values and also whether it is able to process the **NGSI-LD** `datasetId` metadata element. Setting these values to
+`false` will cause the IoT Agent to return a 400 **Bad Request** HTTP status code explaining that the IoT Agent does not
+support nulls or multi-attribute requests if they are encountered.
 
 ```javascript
 {
@@ -277,8 +277,6 @@ used for the same purpose. For instance:
     the IoTAgent runs in a single thread. For more details about multi-core functionality, please refer to the
     [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
     [this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
--   **defaultExpressionLanguage**: the default expression language used to compute expressions, possible values are:
-    `legacy` or `jexl`. When not set or wrongly set, `legacy` is used as default value.
 -   **fallbackTenant** - For Linked Data Context Brokers which do not support multi-tenancy, this provides an
     alternative mechanism for supplying the `NGSILD-Tenant` header. Note that NGSILD-Tenant has not yet been included in
     the NGSI-LD standard (it has been proposed for the next update of the standard, but the final decision has yet been
@@ -362,7 +360,6 @@ overrides.
 | IOTA_JSON_LD_CONTEXT                 | `jsonLdContext`                 |
 | IOTA_FALLBACK_TENANT                 | `fallbackTenant`                |
 | IOTA_FALLBACK_PATH                   | `fallbackPath`                  |
-| IOTA_DEFAULT_EXPRESSION_LANGUAGE     | `defaultExpressionLanguage`     |
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |

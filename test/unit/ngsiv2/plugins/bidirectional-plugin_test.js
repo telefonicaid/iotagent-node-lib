@@ -246,11 +246,11 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 let longitudeFound = false;
 
                 for (let i = 0; i < values.length; i++) {
-                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                    if (values[i].name === 'latitude' && values[i].type === 'Number' && values[i].value === -9.6) {
                         latitudeFound = true;
                     }
 
-                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                    if (values[i].name === 'longitude' && values[i].type === 'Number' && values[i].value === 12.4) {
                         longitudeFound = true;
                     }
                 }
@@ -357,11 +357,11 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 let longitudeFound = false;
 
                 for (let i = 0; i < values.length; i++) {
-                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                    if (values[i].name === 'latitude' && values[i].type === 'Number' && values[i].value === -9.6) {
                         latitudeFound = true;
                     }
 
-                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                    if (values[i].name === 'longitude' && values[i].type === 'Number' && values[i].value === 12.4) {
                         longitudeFound = true;
                     }
                 }
@@ -503,11 +503,11 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
                 let longitudeFound = false;
 
                 for (let i = 0; i < values.length; i++) {
-                    if (values[i].name === 'latitude' && values[i].type === 'string' && values[i].value === '-9.6') {
+                    if (values[i].name === 'latitude' && values[i].type === 'Number' && values[i].value === -9.6) {
                         latitudeFound = true;
                     }
 
-                    if (values[i].name === 'longitude' && values[i].type === 'string' && values[i].value === '12.4') {
+                    if (values[i].name === 'longitude' && values[i].type === 'Number' && values[i].value === 12.4) {
                         longitudeFound = true;
                     }
                 }

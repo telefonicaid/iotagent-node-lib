@@ -96,7 +96,7 @@ const iotAgentConfig = {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },
