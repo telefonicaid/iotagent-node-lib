@@ -1,4 +1,4 @@
-- Add: skip_value for expression to allow skip attribute when match with result of apply expression (#1353)
+- Add: skipValue for expression to allow skip attribute when match with result of apply expression (#1353)
 - Add: JEXL support to bidirectinal plugin
 - Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
 - Fix: avoid usage of newlines in logs (#1342)

@@ -180,7 +180,7 @@ Some transformation plugins also allow the use of the following optional fields:
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
     [Expression Language definition](#expression-language-support) for details
--   **skip_value**: indicates the value to discard attribute of be sent ti CB when as a result of `expression`.
+-   **skipValue**: indicates the value to discard attribute of be sent ti CB when as a result of `expression`.
 -   **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device
     entity but in a new entity with an ID given by this attribute. The type of this additional entity can be configured
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
