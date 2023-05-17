@@ -578,6 +578,7 @@ Current common transformation set:
 | toisostring: (d)                     | `new Date(d).toISOString()`                                                                                             |
 | localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
 | now: ()                              | `Date.now()`                                                                                                            |
+| hextostring: (val)                   | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                       |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
