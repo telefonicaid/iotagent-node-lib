@@ -1,3 +1,4 @@
+- Add: add hextostring transformation jexl function
 - Add: JEXL support to bidirectinal plugin
 - Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
 - Fix: avoid usage of newlines in logs (#1342)
