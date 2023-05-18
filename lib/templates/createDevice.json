@@ -102,6 +102,10 @@
                   "description": "Optional expression for measurement transformation",
                   "type": "string"
                 },
+                "skipValue": {
+                  "description": "Attribute is skipped when result of apply expression is this value",
+                  "type": "any"
+                },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",
                   "type": "string"

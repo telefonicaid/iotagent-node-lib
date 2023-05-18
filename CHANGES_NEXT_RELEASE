@@ -1,3 +1,4 @@
+- Add: skipValue for expression to allow skip attribute when match with result of apply expression (#1353)
 - Add: add hextostring transformation jexl function (#1367)
 - Add: JEXL support to bidirectinal plugin
 - Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
