@@ -39,22 +39,29 @@
         -   [NGSI-LD `GeoProperty` support](#ngsi-ld-geoproperty-support)
         -   [NGSI-LD Linked Data support](#ngsi-ld-linked-data-support)
         -   [NGSI-LD `datasetId` support](#ngsi-ld-datasetid-support)
--   [API Routes](#api-routes) - [Config group API](#config-group-api) -
-[Config group datamodel](#config-group-datamodel) - [Config group operations](#config-group-operations) -
-[Retrieve config groups `GET /iot/services`](#retrieve-config-groups-get-iotservices) -
-[Create config group `POST /iot/services`](#create-config-group-post-iotservices) -
-[Modify config group `PUT /iot/services`](#modify-config-group-put-iotservices) -
-[Remove config group `DELETE /iot/services`](#remove-config-group-delete-iotservices) - [Device API](#device-api) -
-[Device datamodel](#device-datamodel) - [Device operations](#device-operations) -
-[Retrieve devices /iot/devices `GET /iot/devices`](#retrieve-devices-iotdevices-get-iotdevices) -
-[Create device `POST /iot/devices`](#create-device-post-iotdevices) -
-[Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid) -
-[Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid) -
-[Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid) -
-[Miscellaneous API](#miscellaneous-api) - [Log operations](#log-operations) -
-[Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog) -
-[Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog) - [About operations](#about-operations) -
-[List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+-   [API Routes](#api-routes)
+    -   [Config group API](#config-group-api)
+        -   [Config group datamodel](#config-group-datamodel)
+        -   [Config group operations](#config-group-operations)
+            -   [Retrieve config groups `GET /iot/services`](#retrieve-config-groups-get-iotservices)
+            -   [Create config group `POST /iot/services`](#create-config-group-post-iotservices)
+            -   [Modify config group `PUT /iot/services`](#modify-config-group-put-iotservices)
+            -   [Remove config group `DELETE /iot/services`](#remove-config-group-delete-iotservices)
+    -   [Device API](#device-api)
+        -   [Device datamodel](#device-datamodel)
+        -   [Device operations](#device-operations)
+            -   [Retrieve devices /iot/devices `GET /iot/devices`](#retrieve-devices-iotdevices-get-iotdevices)
+            -   [Create device `POST /iot/devices`](#create-device-post-iotdevices)
+            -   [Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid)
+            -   [Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid)
+            -   [Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid)
+    -   [Miscellaneous API](#miscellaneous-api)
+        -   [Log operations](#log-operations)
+            -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
+            -   [Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog)
+        -   [About operations](#about-operations)
+            -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+
 <!-- /TOC -->
 
 # Preface
