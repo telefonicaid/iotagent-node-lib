@@ -109,7 +109,7 @@ const iotAgentConfig = {
                     object_id: 'p',
                     name: 'pressure',
                     type: 'Number',
-                    expression: 'p * 20'
+                    expression: 'pressure * 20'
                 },
                 {
                     object_id: 'e',
