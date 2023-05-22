@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
-    "services": {
+    "configGroups": {
       "type": "array",
       "id": "services",
       "required": true,
@@ -24,7 +24,7 @@
             "description": "token",
             "type": "string"
           },
-          "cbHost": {
+          "cbroker": {
             "description": "uri for the context broker",
             "type": "string"
           },
@@ -39,10 +39,6 @@
           },
           "expressionLanguage": {
             "description": "Expression language used to for the group of devices",
-            "type": "string"
-          },
-          "ngsiVersion": {
-            "description": "NGSI Interface for this group of devices",
             "type": "string"
           },
           "attributes": {

@@ -22,16 +22,15 @@
  *
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
-// FIXME: parallel tests in singleGroupConfigurationMode-test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
+
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const utils = require('../../../tools/utils');
-const request = utils.request;
 const should = require('should');
 const nock = require('nock');
 let contextBrokerMock;
-
+const request = require('request');
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
@@ -41,7 +40,6 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
-        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -266,7 +264,9 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
         it('should be provisioned with the default type', function (done) {
             request(deviceCreation, function (error, response, body) {
                 request(getDevice, function (error, response, body) {
-                    body.entity_type.should.equal('SensorMachine');
+                    const parsedBody = JSON.parse(body);
+
+                    parsedBody.entity_type.should.equal('SensorMachine');
 
                     done();
                 });
