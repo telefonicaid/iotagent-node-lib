@@ -381,6 +381,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
             });
         });
     });
+    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
 
     describe('When a new Group provisioning request arrives with bidirectional attributes', function () {
         const provisionGroup = {

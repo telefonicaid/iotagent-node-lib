@@ -153,6 +153,7 @@ const groupCreation = {
         'fiware-servicepath': '/testingPath'
     }
 };
+
 const configGroupCreation = {
     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/configGroups',
     method: 'POST',
@@ -163,7 +164,7 @@ const configGroupCreation = {
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
                 entity_type: 'TheLightType',
                 trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                cbHost: 'http://unexistentHost:1026',
+                cbHost: 'http://192.168.1.1:1026',
                 commands: [],
                 lazy: [],
                 attributes: [
@@ -181,6 +182,7 @@ const configGroupCreation = {
         'fiware-servicepath': '/testingPath'
     }
 };
+
 const deviceCreation = {
     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
     method: 'POST',
@@ -241,34 +243,27 @@ describe('NGSI-v2 - Device Service: utils', function () {
             });
         });
     });
+
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
         beforeEach(function (done) {
-            contextBrokerMock = nock('http://unexistentHost:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
-            async.series([request.bind(request, configGroupCreation), request.bind(request, deviceCreation)], function (
-                error,
-                results
-            ) {
-                done();
-            });
+            async.series(
+                [request.bind(request, configGroupCreation), request.bind(request, deviceCreation)],
+                function (error, results) {
+                    done();
+                }
+            );
         });
 
         it('should return the existing device', function (done) {
@@ -283,6 +278,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
     });
 
     //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -321,25 +317,17 @@ describe('NGSI-v2 - Device Service: utils', function () {
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {
-            contextBrokerMock = nock('http://unexistentHost:1026')
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/NGSI9/registerContext')
-                .reply(
-                    200,
-                    utils.readExampleFile(
-                        './test/unit/examples/contextAvailabilityResponses/registerProvisionedDeviceSuccess.json'
-                    )
-                );
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v1/updateContext')
-                .reply(
-                    200,
-                    utils.readExampleFile('./test/unit/examples/contextResponses/createProvisionedDeviceSuccess.json')
-                );
+                .post('/v2/entities?options=upsert')
+                .reply(204);
 
             async.series([request.bind(request, configGroupCreation)], function (error, results) {
                 done();
@@ -347,18 +335,19 @@ describe('NGSI-v2 - Device Service: utils', function () {
         });
 
         it('should register the device and return it', function (done) {
-            iotAgentLib.retrieveDevice('UNEXISTENT_DEV', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function (
-                error,
-                device
-            ) {
-                should.not.exist(error);
-                should.exist(device);
+            iotAgentLib.retrieveDevice(
+                'UNEXISTENT_DEV',
+                '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                function (error, device) {
+                    should.not.exist(error);
+                    should.exist(device);
 
-                device.id.should.equal('UNEXISTENT_DEV');
-                should.exist(device.protocol);
-                device.protocol.should.equal('MQTT_UL');
-                done();
-            });
+                    device.id.should.equal('UNEXISTENT_DEV');
+                    should.exist(device.protocol);
+                    device.protocol.should.equal('MQTT_UL');
+                    done();
+                }
+            );
         });
     });
 
