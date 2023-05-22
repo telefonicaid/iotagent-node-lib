@@ -1,4 +1,4 @@
-- Add: save value from current expresion in current context
+- Add: save result of apply expression attribute into current context for futher usages
 - Add: skipValue for expression to allow skip attribute when match with result of apply expression (#1353)
 - Add: add hextostring transformation jexl function (#1367)
 - Add: JEXL support to bidirectinal plugin
