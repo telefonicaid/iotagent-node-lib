@@ -125,7 +125,7 @@ const iotAgentConfig = {
                 {
                     name: 'weather',
                     type: 'Summary',
-                    expression: '"Humidity " + (humidity / 2) + " and pressure " + (pressure * 20)'
+                    expression: '"Humidity " + (humidity / 2) + " and pressure " + (p * 20)'
                 },
                 {
                     object_id: 'a',
