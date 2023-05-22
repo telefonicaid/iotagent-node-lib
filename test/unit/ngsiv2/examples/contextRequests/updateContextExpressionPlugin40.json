@@ -1,0 +1,42 @@
+{
+        "entities": [
+            {
+                "id": "water1",
+                "type": "WaterTank",
+                "contB": {
+                    "value": "31450.000",
+                    "type": "Number",
+                    "metadata": {
+                        "TimeInstant": {
+                            "type": "DateTime",
+                            "value": "2015-08-05T07:35:01.468Z"
+                        }
+                    }
+                },
+                "TimeInstant": {
+                    "type": "DateTime",
+                    "value": "2015-08-05T07:35:01.468Z"
+                }
+            },
+            {
+                "id": "PA_B_0001",
+                "type": "WaterTank",
+                "waterLeavingTanks": {
+                    "value": 3145,
+                    "type": "Number",
+                    "metadata": {
+                        "TimeInstant": {
+                            "type": "DateTime",
+                            "value": "2015-08-05T07:35:01.468Z"
+                        }
+                    }
+                },
+                "TimeInstant": {
+                    "type": "DateTime",
+                    "value": "2015-08-05T07:35:01.468Z"
+                }
+            }
+        ],
+        "actionType": "update"
+}
+

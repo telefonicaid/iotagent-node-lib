@@ -30,11 +30,11 @@ var config = {
     server: {
         port: 4041,
         host: '0.0.0.0',
-        ldSupport : {
-           null: true,
-           datasetId: true,
-           merge: false
-       }
+        ldSupport: {
+            null: true,
+            datasetId: true,
+            merge: false
+        }
     },
     authentication: {
         enabled: true,

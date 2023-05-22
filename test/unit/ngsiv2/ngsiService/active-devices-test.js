@@ -464,7 +464,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             done();
         });
 
-        it('should not override the received instant and should not add metadatas for this request', function (done) {
+        it('should not override the received instant and should add metadatas for this request', function (done) {
             iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
