@@ -1172,7 +1172,7 @@ Config group is represented by a JSON object with the following fields:
 
 The following actions are available under the config group endpoint:
 
-#### Retrieve config groups `GET /iot/services`
+#### Retrieve config groups GET `/iot/configGroups` or `GET /iot/services`
 
 List all the config groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
 has the wildcard expression, `/*`, all the config groups for that `fiware-service` are returned. The config groups that
@@ -1197,10 +1197,49 @@ Successful operations return `Content-Type` header with `application/json` value
 
 _**Response payload**_
 
-A JSON object with a services field that contains an array of services that match the request. See the
+A JSON object with a configGroups or services field that contains an array of services that match the request. See the
 [config group datamodel](#service-group-datamodel) for more information.
 
 Example:
+
+```json
+{
+    "configGroups": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        },
+        {
+            "resource": "/deviceTest2",
+            "apikey": "A21323ASDG12312ASDN21LWQEJPO2J123",
+            "type": "Switch",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "on", "type": "order" }],
+            "attributes": [
+                {
+                    "name": "swithc_status",
+                    "type": "boolean"
+                }
+            ]
+        }
+    ]
+}
+```
 
 ```json
 {
@@ -1241,7 +1280,7 @@ Example:
 }
 ```
 
-#### Create config group `POST /iot/services`
+#### Create config group `POST /iot/configGroups` or `POST /iot/services`
 
 Creates a set of config groups for the given service and service path. The service and subservice information will taken
 from the headers, overwritting any preexisting values.
@@ -1255,10 +1294,37 @@ _**Request headers**_
 
 _**Request payload**_
 
-A JSON object with a `services` field. The value is an array of config groups objects to create. See the
+A JSON object with a `configGroups` or `services` field. The value is an array of config groups objects to create. See the
 [config group datamodel](#service-group-datamodel) for more information.
 
 Example:
+
+
+```json
+{
+    "configGroups": [
+        {
+            "resource": "/deviceTest",
+            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
+            "type": "Light",
+            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
+            "cbHost": "http://orion:1026",
+            "commands": [{ "name": "wheel1", "type": "Wheel" }],
+            "attributes": [
+                {
+                    "name": "luminescence",
+                    "type": "Integer",
+                    "metadata": {
+                        "unitCode": { "type": "Text", "value": "CAL" }
+                    }
+                }
+            ],
+            "lazy": [{ "name": "status", "type": "Boolean" }]
+        }
+    ]
+}
+```
+OR
 
 ```json
 {
@@ -1296,9 +1362,9 @@ _**Response headers**_
 
 Successful operations return `Content-Type` header with `application/json` value.
 
-#### Modify config group `PUT /iot/services`
+#### Modify config group `PUT /iot/configGroups` or `PUT /iot/services`
 
-Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a service
+Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a configuration/service
 group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
 the JSON body will be updated. The rest of the attributes will remain unchanged.
 
@@ -1336,7 +1402,7 @@ _**Response code**_
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.:
 
-#### Remove config group `DELETE /iot/services`
+#### Remove config group `DELETE /iot/configGroups` or `DELETE /iot/services`
 
 Removes a config group, identified by the `resource` and `apikey` query parameters.
 
