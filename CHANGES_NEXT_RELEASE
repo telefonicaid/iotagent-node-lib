@@ -1,4 +1,5 @@
 - Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
+- Add: save result of apply expression attribute into current context for futher usages (#1305)
 - Add: skipValue for expression to allow skip attribute when match with result of apply expression (#1353)
 - Add: add hextostring transformation jexl function (#1367)
 - Add: JEXL support to bidirectinal plugin
