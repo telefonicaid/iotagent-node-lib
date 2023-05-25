@@ -41,6 +41,10 @@
             "description": "Expression language used to for the group of devices",
             "type": "string"
           },
+          "ngsiVersion": {
+            "description": "NGSI Interface for this group of devices",
+            "type": "string"
+          },
           "attributes": {
             "description": "list of active attributes of the devices",
             "type": "array"
