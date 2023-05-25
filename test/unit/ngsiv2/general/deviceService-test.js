@@ -339,8 +339,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
         });
     });
 
-
-   ('When an unexisting device tries to be retrieved for an unexisting APIKey', function () {
+    describe('When an unexisting device tries to be retrieved for an unexisting APIKey', function () {
         it('should raise an error', function (done) {
             iotAgentLib.retrieveDevice(
                 'UNEXISTENT_DEV_AND_GROUP',
