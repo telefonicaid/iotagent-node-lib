@@ -44,7 +44,7 @@ adding the following line to the `package.json` file:
 ```json
 ...
 "dependencies": {
-    "iotagent-node-lib": "*",
+    "iotagent-node-lib": "x.y.z",
 }
 ```
 
