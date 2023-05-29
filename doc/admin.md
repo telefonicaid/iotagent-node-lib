@@ -48,6 +48,8 @@ adding the following line to the `package.json` file:
 }
 ```
 
+wher `x.y.z` is an actual version number.
+
 As alternative, you can use the master branch as dependency. In this case, you will be using the latest version of the code but note that some instability could exist (as the code in master is work in progress until the next version is closed).
 
 ```json

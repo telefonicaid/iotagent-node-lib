@@ -440,7 +440,7 @@ depending on the JEXL expression evaluation:
 
 This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
 `IOTA_APPEND_MODE` environment variable (more info
-[here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/admin.md)). If this flag is activated, the
+[here](admin.md)). If this flag is activated, the
 update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
 have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
