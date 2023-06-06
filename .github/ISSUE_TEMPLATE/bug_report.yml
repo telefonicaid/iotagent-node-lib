@@ -1,0 +1,134 @@
+name: 'Bug report'
+description: Create a report to help us improve
+labels: ['bug']
+
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this bug report!
+
+  - type: input
+    id: version
+    attributes:
+      label: IoT Agent Node Libe version the issue has been seen with
+      description: |
+        Do not submit bug reports about anything but the two most recently released *major* systemd versions upstream!
+        If there have been multiple stable releases for that major version, please consider updating to a recent one before reporting an issue.
+        See https://github.com/telefonicaid/iotagent-node-lib/releases/ for the list of most recent releases.
+      placeholder: '3.2.0'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: port
+    attributes:
+      label: Bound or port used (API interaction)
+      description: Select with part of the API is motivating this issue creation.
+      multiple: true
+      options:
+        - 'Southbound (Devices data API)'
+        - 'Northbound (Provision API and NGSI Interactions)'
+        - 'Other'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ngsi-version
+    attributes:
+      label: NGSI version
+      description: Please chose the NGSI version configured
+      multiple: true
+      options:
+        - 'NGSIv2'
+        - 'NGSI-LD'
+        - 'Mixed Mode'
+        - 'Other'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: containerized
+    attributes:
+      label: Are you running a container?
+      description: In case you are using a container, please select the image type the issue was seen on
+      options:
+        - 'Yes, I am using a contaner (Docker, Kubernetes...)'
+        - 'No, I am running it natively'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: image-type
+    attributes:
+      label: Image type
+      description: In case you are using a container, please select the image type the issue was seen on
+      options:
+        - normal
+        - pm2
+        - distroless
+    validations:
+      required: false
+      
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected behaviour you didn't see
+    validations:
+      required: false
+
+  - type: textarea
+    id: unexpected-behaviour
+    attributes:
+      label: Unexpected behaviour you saw
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce the problem
+      description: Please fill this field with all the required information and steps to reproduce the issue described above. 
+        Consider including curl requests if required
+      placeholder: |
+        ```sh
+        # Get IoTA version
+        `curl -iX GET 'http://localhost:4041/iot/about'`
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configs
+      description: |
+        Please provide details about your environment vars or config file by copying and pasting the enviroments variables 
+        or the config.js file.
+      value: |
+        ```yaml
+        environment:
+            - "IOTA_CB_HOST=orion"
+            - "IOTA_CB_PORT=1026"
+            - "IOTA_NORTH_PORT=4041"
+            - "IOTA_REGISTRY_TYPE=mongodb"
+            - "IOTA_MONGO_HOST=mongodb"
+            - "IOTA_MONGO_PORT=27017"
+            - "IOTA_MONGO_DB=iotagent-json"
+            - "IOTA_HTTP_PORT=7896"
+            - "IOTA_PROVIDER_URL=http://iot-agent:4041"
+        ```
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Log output
+      description: |
+        Please paste the output log here, ideally when generated in debug mode (try setting the `IOTA_LOG_LEVEL=debug` environment variable).
+        For very long copy/pasted data consider using a service like https://gist.github.com/. Where copy/paste is not possible, a photo of the screen might do too, but text is always much preferred.
+      placeholder: Paste your log here
+      render: sh
+    validations:
+      required: false

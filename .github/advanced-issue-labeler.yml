@@ -1,0 +1,22 @@
+policy:
+  - template: [bug_report.yml]
+    section:
+      - id: [ngsi-version]
+        block-list: ['None', 'Other', 'Mixed Mode']
+        label:
+          - name: 'NGSIv2'
+            keys: ['NGSIv2']
+          - name: 'NGSI-LD'
+            keys: ['NGSI-LD']
+
+  - template: [feature_request.yml]
+    section:
+      - id: [type]
+        block-list: ['None', 'Other']
+        label:
+          - name: 'Feature request'
+            keys: ['New feature']
+          - name: 'Enhancement'
+            keys: ['Feature enhancement']
+          - name: 'Techdeb'
+            keys: ['Techdeb']
