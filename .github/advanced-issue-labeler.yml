@@ -1,3 +1,11 @@
+#
+# This file is used by .github/workflows/issue-labeler.yml
+# Here, you can configure which dropdown fields are used
+# to assing a label (keys) to the issue and the name of the label (name)
+#
+# More info: https://github.com/marketplace/actions/advanced-issue-labeler
+#
+
 policy:
   - template: [bug_report.yml]
     section:

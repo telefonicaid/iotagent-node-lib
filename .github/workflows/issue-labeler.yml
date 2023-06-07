@@ -1,3 +1,11 @@
+#
+# This workflow is used to asign labels to issues created through the templates. 
+# There is another file associated that maps a issue label name to each field on the 
+# issue template. You can find that file in /.github/advanced-issue-labeler.yml 
+#
+# More info: https://github.com/marketplace/actions/advanced-issue-labeler
+#
+
 name: Issue labeler
 on:
   issues:
@@ -14,9 +22,6 @@ jobs:
       # required for all workflows
       issues: write
 
-      # only required for workflows in private repositories
-      # actions: read
-      # contents: read
     strategy:
       matrix:
         template: [ bug_report.yml, feature_request.yml ]
