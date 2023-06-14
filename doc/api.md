@@ -449,7 +449,7 @@ activated, the update requests to the Context Broker will be performed always wi
 UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
 When running the agent using `appendMode=false`, if sending measures that are not included in the config group (as 
-active measures), the IoT Agent should return a `422 Unprocessable Entity` code with the following message:
+active measures), the IoT Agent returns a `422 Unprocessable Entity` code with the following message:
 
 ```json
 {
@@ -458,7 +458,7 @@ active measures), the IoT Agent should return a `422 Unprocessable Entity` code 
 }
 ```
 
-Additionaly, The agent should have created the device and the corresponding entity in the broker if `autoprovision==true` 
+Additionaly, the agent creates the device and the corresponding entity in the broker if `autoprovision==true` 
 (default behaviour).
 
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
