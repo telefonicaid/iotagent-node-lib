@@ -458,7 +458,7 @@ active measures), the IoT Agent returns a `422 Unprocessable Entity` code with t
 }
 ```
 
-Additionaly, the agent creates the device and the corresponding entity in the broker if `autoprovision==true` 
+Additionally, the agent creates the device and the corresponding entity in the broker if `autoprovision==true` 
 (default behaviour).
 
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
