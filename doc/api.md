@@ -448,6 +448,19 @@ This is a flag that can be enabled by activating the parameter `appendMode` in t
 activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
 UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
 
+When running the agent using `appendMode=false`, if sending measures that are not included in the config group (as 
+active measures), the IoT Agent should return a `422 Unprocessable Entity` code with the following message:
+
+```json
+{
+    "name": "ENTITY_GENERIC_ERROR",
+    "message": "Error accesing entity data for device: deviceType:dev of type: deviceType"
+}
+```
+
+Additionaly, The agent should have created the device and the corresponding entity in the broker if `autoprovision==true` 
+(default behaviour).
+
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
 Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
