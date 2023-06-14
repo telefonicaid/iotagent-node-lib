@@ -9,9 +9,8 @@ This python script will help you to migrate the legacy expressions to JEXL expre
 expressions in the database and
 replace them with the new expressions.
 
-This script will search for the legacy expressions in the database and replace them with the new expressions. It can be also 
-be executed in dry-run mode, so it will not modify the database, but it will generate a series os files that can be used to 
-ease and verify data migration.
+This script will search for the legacy expressions in the database and replace them with the new expressions. By default, it runs in dry-run mode, so database is not modified and the output is a series of files that can be used to 
+ease and verify data migration. We you are sure you want to modify the DB, then you have to enable it using the `--commit` argument.
 
 ## Output files
 
@@ -44,7 +43,7 @@ file. The file looks like this:
 
 ### `objects_replaced.json`
 
-This file contains a list of objects where the legacy expressions have been replaced with all the information associated. This 
+This file contains a list of documents where the legacy expressions are going to be replaced with all the information associated. This 
 file is useful to preview the changes expected to be done in the database before applying them.
 
 ### `objects_backup.json`
@@ -81,6 +80,8 @@ The list of possible arguments that the scripts accepts are:
 | `-S`, `--service` | The fiware service filter to replace the expressions | All subservices | No |
 | `-P`, `--service-path` | The fiware service path filter to replace the expressions | All subservices | No |
 | `-i`, `--deviceid` | The device id filter to replace the expressions | All devices | No |
+
+Note that filters (`--service`, `--service-path` and `--deviceid`) are interpreted in additive way (i.e. like a logical AND).
 
 ## Usage
 
@@ -145,7 +146,7 @@ python legacy_expression_tool.py \
 In order to ensure that the replacement would work you have to consider:
 
 - You didn't get an error while executing. If any expression is not found in the database, the script will raise an error 
-`ERROR: Expression not found in translation file: ${@myexpre*100} in object: 123481a8ac03ab212ab9e0c`
+`ERROR: Expression not found in translation file: ${@myexpre*100} in object: 123481a8ac03ab212ab9e0c`. Note that the script doesn't stop on error (if `--commit` is enabled, the expressions found in the translation file are translated, remaining in the DB only the ones that result in an error like this, a next pass should be done one the missing expression gets added to the translation document).
 
 - Comparing files `objects_replaced.json` and `objects_backup.json`. The first one contains the objects where the legacy 
 expressions have been replaced with all the information associated. The second one contains a list of objects containing 
@@ -158,7 +159,7 @@ diff objects_replaced.json objects_backup.json
 ### Executing the replacement in the database
 
 If everithing is correct, you can execute the script passing the commit parameter to apply the changes to the database. 
-You only have to provide the commit parameter to the previous command:
+You only have to provide the `--commit` parameter to the previous command:
 
 ```bash
 python legacy_expression_tool.py \
