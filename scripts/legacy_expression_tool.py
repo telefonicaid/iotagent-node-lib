@@ -38,11 +38,11 @@ import matplotlib.pyplot as plt
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
-object_replaced_list = []
-find_object_occurrences = []
+document_replaced_list = []
+find_document_occurrences = []
 found_legacy_expressions = []
 translation_legacy_expressions = []
-object_occurrences_backup = []
+document_occurrences_backup = []
 
 # Init time
 now = datetime.now()
@@ -100,12 +100,12 @@ if args['commit'] == True:
 
 if args['service']:
     fiware_service = args['service']
-    if debug
+    if debug:
         print('Filtering by service: ' + fiware_service)
 
 if args['servicepath']:
     fiware_servicepath = args['servicepath']
-    if debug
+    if debug:
         print('Filtering by servicepath: ' + fiware_servicepath)
 
 if args['filterdevices'] and args['filterdevices'] != '':
@@ -124,7 +124,7 @@ _regex_legacy_expression = '\\${.*(@)'
 
 # Create a client instance of the MongoClient class
 client = MongoClient('mongodb://'+host+':'+port+'/') # Create a client instance of the MongoClient class
-if debug
+if debug:
     print('Connected to mongodb://'+host+':'+port+'/')
 
 
@@ -135,7 +135,7 @@ elif args['expressionlanguage'] == 'jexl':
     filter['$and'][0]['$or'].append({'expressionLanguage':{'$exists': True}})
     expressionlanguage = 'jexl'
 
-if debug
+if debug:
     print('Running in debug mode')
     print('MongoDB Query: ' + str(filter))
 
@@ -148,7 +148,7 @@ result_cursor = client[mongodb_db][mongodb_collection].find(
 for occurrence in result_cursor:
 
     # Append the expression to the backup list
-    object_occurrences_backup.append(parse_json(occurrence))
+    document_occurrences_backup.append(parse_json(occurrence))
 
     # Find the legacy expressions and replace them
     if 'active' in occurrence:
@@ -159,50 +159,50 @@ for occurrence in result_cursor:
                                                             
                     if active['expression'] not in found_legacy_expressions:
                         found_legacy_expressions.append(active['expression'])
-                    find_object_occurrences.append({'_id':occurrence_id, 'expression':active['expression'], 'type':'active.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['expression'])})
-                    if debug
+                    find_document_occurrences.append({'_id':occurrence_id, 'expression':active['expression'], 'type':'active.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['expression'])})
+                    if debug:
                         print ('ocurrence: ' + occurrence_id + ' active: ' + str(active['expression']))
                     if translation_legacy_expressions!=[]:
                         # Do the replacement of the legacy expression
                         if active['expression'] in translation_legacy_expressions[0]:
                             active['expression'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(active['expression'])]
-                            if debug
-                                print(' Replaced expression: "' + active['expression'] + '" in object: ' + occurrence_id)
+                            if debug:
+                                print(' Replaced expression: "' + active['expression'] + '" in document: ' + occurrence_id)
                         else:
-                            print('ERROR: Expression not found in translation file: ' + active['expression'] + ' in object: ' + occurrence_id)
+                            print('ERROR: Expression not found in translation file: ' + active['expression'] + ' in document: ' + occurrence_id)
                         
             if 'entity_name' in active:
                 if re.search(_regex_legacy_expression, active['entity_name']):
                     if active['entity_name'] not in found_legacy_expressions:
                         found_legacy_expressions.append(active['entity_name'])
-                    find_object_occurrences.append({'_id':occurrence_id, 'expression':active['entity_name'], 'type':'active.entity_name', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['entity_name'])})
-                    if debug
+                    find_document_occurrences.append({'_id':occurrence_id, 'expression':active['entity_name'], 'type':'active.entity_name', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['entity_name'])})
+                    if debug:
                         print ('ocurrence: ' + occurrence_id + ' active: ' + str(active['entity_name']))
                     if translation_legacy_expressions!=[]:
                         # Do the replacement of the legacy expression
                         if active['entity_name'] in translation_legacy_expressions[0]:
                             active['entity_name'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(active['entity_name'])]
-                            if debug
-                                print(' Replaced expression: "' + active['entity_name'] + '" in object: ' + occurrence_id)
+                            if debug:
+                                print(' Replaced expression: "' + active['entity_name'] + '" in document: ' + occurrence_id)
                         else:
-                            print('ERROR: Expression not found in translation file: ' + active['entity_name'] + ' in object: ' + occurrence_id)
+                            print('ERROR: Expression not found in translation file: ' + active['entity_name'] + ' in document: ' + occurrence_id)
 
             if 'reverse' in active:
                     if 'expression' in active['reverse']:
                         if re.search(_regex_legacy_expression, active['reverse']['expression']):
                             if active['reverse']['expression'] not in found_legacy_expressions:
                                 found_legacy_expressions.append(active['reverse']['expression'])
-                            find_object_occurrences.append({'_id':occurrence_id, 'expression':active['reverse']['expression'], 'type':'active.reverse.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['reverse']['expression'])})
-                            if debug
+                            find_document_occurrences.append({'_id':occurrence_id, 'expression':active['reverse']['expression'], 'type':'active.reverse.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(active['reverse']['expression'])})
+                            if debug:
                                 print ('ocurrence: ' + occurrence_id + ' active: ' + str(active['reverse']['expression']))
                             if translation_legacy_expressions!=[]:
                                 # Do the replacement of the legacy expression
                                 if active['reverse']['expression'] in translation_legacy_expressions[0]:
                                     active['reverse']['expression'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(active['reverse']['expression'])]
-                                    if debug
-                                        print(' Replaced expression: "' + active['reverse']['expression'] + '" in object: ' + occurrence_id)
+                                    if debug:
+                                        print(' Replaced expression: "' + active['reverse']['expression'] + '" in document: ' + occurrence_id)
                                 else:
-                                    print('ERROR: Expression not found in translation file: ' + active['reverse']['expression'] + ' in object: ' + occurrence_id)
+                                    print('ERROR: Expression not found in translation file: ' + active['reverse']['expression'] + ' in document: ' + occurrence_id)
 
     if 'attributes' in occurrence:
         for attribute in occurrence['attributes']:
@@ -210,50 +210,50 @@ for occurrence in result_cursor:
                 if re.search(_regex_legacy_expression, attribute['expression']):
                     if attribute['expression'] not in found_legacy_expressions:
                         found_legacy_expressions.append(attribute['expression'])
-                    find_object_occurrences.append({'_id':occurrence_id, 'expression':attribute['expression'], 'type':'attribute.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['expression'])})
-                    if debug
+                    find_document_occurrences.append({'_id':occurrence_id, 'expression':attribute['expression'], 'type':'attribute.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['expression'])})
+                    if debug:
                         print ('ocurrence: ' + occurrence_id + ' attribute: ' + str(attribute['expression']))
                     if translation_legacy_expressions!=[]:
                         # Do the replacement of the legacy expression
                         if attribute['expression'] in translation_legacy_expressions[0]:
                             attribute['expression'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(attribute['expression'])]
-                            if debug
-                                print(' Replaced expression: "' + attribute['expression'] + '" in object: ' + occurrence_id)
+                            if debug:
+                                print(' Replaced expression: "' + attribute['expression'] + '" in document: ' + occurrence_id)
                         else:
-                            print('ERROR: Expression not found in translation file: ' + attribute['expression'] + ' in object: ' + occurrence_id)
+                            print('ERROR: Expression not found in translation file: ' + attribute['expression'] + ' in document: ' + occurrence_id)
 
             if 'entity_name' in attribute:
                 if re.search(_regex_legacy_expression, attribute['entity_name']):
                     if attribute['entity_name'] not in found_legacy_expressions:
                         found_legacy_expressions.append(attribute['entity_name'])
-                    find_object_occurrences.append({'_id':occurrence_id, 'expression':attribute['entity_name'], 'type':'attribute.entity_name', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['entity_name'])})
-                    if debug
+                    find_document_occurrences.append({'_id':occurrence_id, 'expression':attribute['entity_name'], 'type':'attribute.entity_name', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['entity_name'])})
+                    if debug:
                         print ('ocurrence: ' + occurrence_id + ' attribute: ' + str(attribute['entity_name']))
                     if translation_legacy_expressions!=[]:
                         # Do the replacement of the legacy expression
                         if attribute['entity_name'] in translation_legacy_expressions[0]:
                             attribute['entity_name'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(attribute['entity_name'])]
-                            if debug
-                                print(' Replaced expression: "' + attribute['entity_name'] + '" in object: ' + occurrence_id)
+                            if debug:
+                                print(' Replaced expression: "' + attribute['entity_name'] + '" in document: ' + occurrence_id)
                         else:
-                            print('ERROR: Expression not found in translation file: ' + attribute['entity_name'] + ' in object: ' + occurrence_id)
+                            print('ERROR: Expression not found in translation file: ' + attribute['entity_name'] + ' in document: ' + occurrence_id)
 
             if 'reverse' in attribute:  
                 if 'expression' in attribute['reverse']:
                     if re.search(_regex_legacy_expression, attribute['reverse']['expression']):
                         if attribute['reverse']['expression'] not in found_legacy_expressions:
                             found_legacy_expressions.append(attribute['reverse']['expression'])
-                        find_object_occurrences.append({'_id':occurrence_id, 'expression':attribute['reverse']['expression'], 'type':'attribute.reverse.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['reverse']['expression'])})
-                        if debug
+                        find_document_occurrences.append({'_id':occurrence_id, 'expression':attribute['reverse']['expression'], 'type':'attribute.reverse.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(attribute['reverse']['expression'])})
+                        if debug:
                             print ('ocurrence: ' + occurrence_id + ' attribute: ' + str(attribute['reverse']['expression']))
                         if translation_legacy_expressions!=[]:
                             # Do the replacement of the legacy expression
                             if attribute['reverse']['expression'] in translation_legacy_expressions[0]:
                                 attribute['reverse']['expression'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(attribute['reverse']['expression'])]
-                                if debug
-                                    print(' Replaced expression: "' + attribute['reverse']['expression'] + '" in object: ' + occurrence_id)
+                                if debug:
+                                    print(' Replaced expression: "' + attribute['reverse']['expression'] + '" in document: ' + occurrence_id)
                             else:
-                                print('ERROR: Expression not found in translation file: ' + attribute['reverse']['expression'] + ' in object: ' + occurrence_id)
+                                print('ERROR: Expression not found in translation file: ' + attribute['reverse']['expression'] + ' in document: ' + occurrence_id)
     
     if 'commands' in occurrence:
         for command in occurrence['commands']:
@@ -261,73 +261,73 @@ for occurrence in result_cursor:
                 if re.search(_regex_legacy_expression, command['expression']):
                     if command['expression'] not in found_legacy_expressions:
                         found_legacy_expressions.append(command['expression'])
-                    find_object_occurrences.append({'_id':occurrence_id, 'expression':command['expression'], 'type':'command.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(command['expression'])})
-                    if debug
+                    find_document_occurrences.append({'_id':occurrence_id, 'expression':command['expression'], 'type':'command.expression', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(command['expression'])})
+                    if debug:
                         print ('ocurrence: ' + occurrence_id + ' command: ' + str(command['expression']))
                     if translation_legacy_expressions!=[]:
                         # Do the replacement of the legacy expression
                         if command['expression'] in translation_legacy_expressions[0]:
                             command['expression'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(command['expression'])]
-                            if debug
-                                print(' Replaced expression: "' + command['expression'] + '" in object: ' + occurrence_id)
+                            if debug:
+                                print(' Replaced expression: "' + command['expression'] + '" in document: ' + occurrence_id)
                         else:
-                            print('ERROR: Expression not found in translation file: ' + command['expression'] + ' in object: ' + occurrence_id)
+                            print('ERROR: Expression not found in translation file: ' + command['expression'] + ' in document: ' + occurrence_id)
             
     if 'endpoint' in occurrence:
         if re.search(_regex_legacy_expression, occurrence['endpoint']):
             if occurrence['endpoint'] not in found_legacy_expressions:
                 found_legacy_expressions.append(occurrence['endpoint'])
-            find_object_occurrences.append({'_id':occurrence_id, 'expression':occurrence['endpoint'], 'type':'endpoint', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['endpoint'])})
-            if debug
+            find_document_occurrences.append({'_id':occurrence_id, 'expression':occurrence['endpoint'], 'type':'endpoint', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['endpoint'])})
+            if debug:
                 print ('ocurrence: ' + occurrence_id + ' endpoint: ' + str(occurrence['endpoint']))
             if translation_legacy_expressions!=[]:
                 # Do the replacement of the legacy expression
                 if occurrence['endpoint'] in translation_legacy_expressions[0]:
                     occurrence['endpoint'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(occurrence['endpoint'])]
-                    if debug
-                        print(' Replaced expression: "' + occurrence['endpoint'] + '" in object: ' + occurrence_id)
+                    if debug:
+                        print(' Replaced expression: "' + occurrence['endpoint'] + '" in document: ' + occurrence_id)
                 else:
-                    print('ERROR: Expression not found in translation file: ' + occurrence['endpoint'] + ' in object: ' + occurrence_id)
+                    print('ERROR: Expression not found in translation file: ' + occurrence['endpoint'] + ' in document: ' + occurrence_id)
 
     if 'entityNameExp' in occurrence:
         if re.search(_regex_legacy_expression, occurrence['entityNameExp']):
             if occurrence['entityNameExp'] not in found_legacy_expressions:
                 found_legacy_expressions.append(occurrence['entityNameExp'])
-            find_object_occurrences.append({'_id':occurrence_id, 'expression':occurrence['entityNameExp'], 'type':'entityNameExp', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['entityNameExp'])})
-            if debug
+            find_document_occurrences.append({'_id':occurrence_id, 'expression':occurrence['entityNameExp'], 'type':'entityNameExp', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['entityNameExp'])})
+            if debug:
                 print ('ocurrence: ' + occurrence_id + ' entityNameExp: ' + str(occurrence['entityNameExp']))
             if translation_legacy_expressions!=[]:
                 # Do the replacement of the legacy expression
                 if occurrence['entityNameExp'] in translation_legacy_expressions[0]:
                     occurrence['entityNameExp'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(occurrence['entityNameExp'])]
-                    if debug
-                        print(' Replaced expression: "' + occurrence['entityNameExp'] + '" in object: ' + occurrence_id)
+                    if debug:
+                        print(' Replaced expression: "' + occurrence['entityNameExp'] + '" in document: ' + occurrence_id)
                 else:
-                    print('ERROR: Expression not found in translation file: ' + occurrence['entityNameExp'] + ' in object: ' + occurrence_id)
+                    print('ERROR: Expression not found in translation file: ' + occurrence['entityNameExp'] + ' in document: ' + occurrence_id)
 
     if 'explicitAttrs' in occurrence:
         if re.search(_regex_legacy_expression, str(occurrence['explicitAttrs'])):       # Note that explicitAttrs can be a boolean value. For that reason, we convert ocurrence['explicitAttrs'] to string, otherwise "TypeError: expected string or bytes-like object" will be raised
             if occurrence['explicitAttrs'] not in found_legacy_expressions:
                 found_legacy_expressions.append(occurrence['explicitAttrs'])
-            find_object_occurrences.append({'_id':occurrence_id, 'expression':occurrence['explicitAttrs'], 'type':'explicitAttrs', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['explicitAttrs'])})
-            if debug
+            find_document_occurrences.append({'_id':occurrence_id, 'expression':occurrence['explicitAttrs'], 'type':'explicitAttrs', 'service':occurrence['service'], 'subservice':occurrence['subservice'], 'expressionIndex':found_legacy_expressions.index(occurrence['explicitAttrs'])})
+            if debug:
                 print ('ocurrence: ' + occurrence_id + ' explicitAttrs: ' + str(occurrence['explicitAttrs']))
             if translation_legacy_expressions!=[]:
                 # Do the replacement of the legacy expression
                 if occurrence['explicitAttrs'] in translation_legacy_expressions[0]:
                     occurrence['explicitAttrs'] = translation_legacy_expressions[1][translation_legacy_expressions[0].index(occurrence['explicitAttrs'])]
-                    if debug
-                        print(' Replaced expression: "' + occurrence['explicitAttrs'] + '" in object: ' + occurrence_id)
+                    if debug:
+                        print(' Replaced expression: "' + occurrence['explicitAttrs'] + '" in document: ' + occurrence_id)
                 else:
-                    print('ERROR: Expression not found in translation file: ' + occurrence['explicitAttrs'] + ' in object: ' + occurrence_id)
+                    print('ERROR: Expression not found in translation file: ' + occurrence['explicitAttrs'] + ' in document: ' + occurrence_id)
     
     if 'expressionLanguage' in occurrence:
         if expressionlanguage == 'delete':
-            if debug
+            if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
             del occurrence['expressionLanguage']
         elif expressionlanguage == 'jelx':
-            if debug
+            if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
             occurrence['expressionLanguage'] = 'jexl'
 
@@ -339,28 +339,28 @@ for occurrence in result_cursor:
             occurrence
         )
 
-    # Update element in the list of objects with 
-    object_replaced_list.append(parse_json(occurrence))
+    # Update element in the list of documents with 
+    document_replaced_list.append(parse_json(occurrence))
 
     
 # write the results to files
 f1 = open(init_time+"legacy_expression_occurrences.json", "w")
-f1.write(json.dumps(find_object_occurrences,indent=4))
+f1.write(json.dumps(find_document_occurrences,indent=4))
 f1.close()
 f2 = open(init_time+"legacy_expressions_list.json", "w")
 f2.write(json.dumps(found_legacy_expressions,indent=4))
 f2.close()
-f3 = open(init_time+"objects_replaced.json", "w")
-f3.write(json.dumps(object_replaced_list,indent=4))
+f3 = open(init_time+"documents_replaced.json", "w")
+f3.write(json.dumps(document_replaced_list,indent=4))
 f3.close()
-f4 = open(init_time+"objects_backup.json", "w")
-f4.write(json.dumps(object_occurrences_backup,indent=4))
+f4 = open(init_time+"documents_backup.json", "w")
+f4.write(json.dumps(document_occurrences_backup,indent=4))
 f4.close()
 
 if args['statistics']:
     
     # Load data into pandas dataframe
-    df = pd.DataFrame(find_object_occurrences, columns=['_id', 'expression', 'type', 'service', 'subservice', 'expressionIndex'])
+    df = pd.DataFrame(find_document_occurrences, columns=['_id', 'expression', 'type', 'service', 'subservice', 'expressionIndex'])
 
     # Configure pandas to display all data
     pd.set_option('expand_frame_repr', False)
