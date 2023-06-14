@@ -87,11 +87,9 @@ parser.add_argument('--deviceid', help='Device ID filter', required=False, defau
 args = vars(parser.parse_args())
 
 # Process args
-if args['host']:
-    host = args['host']
+host = args['host']
 
-if args['port']:
-    port = args['port']
+port = args['port']
 
 if args['debug']:
     debug = True
