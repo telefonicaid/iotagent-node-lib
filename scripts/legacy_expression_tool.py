@@ -23,7 +23,6 @@
 from pymongo import MongoClient
 from bson import json_util, ObjectId
 import json
-from operator import itemgetter
 import re
 
 from datetime import datetime
@@ -31,8 +30,6 @@ from datetime import datetime
 import argparse
 
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def parse_json(data):
@@ -44,9 +41,59 @@ found_legacy_expressions = []
 translation_legacy_expressions = []
 document_occurrences_backup = []
 
+debug = False
+commit = False
+replacement_count=0
+
+
 # Init time
 now = datetime.now()
 init_time = now.strftime("%y-%m-%d %H:%M:%S")
+
+# Create the CLI argunments parser
+parser = argparse.ArgumentParser(description='Tool to migrate legacy expressions in IoT Agents')
+parser.add_argument('--database', help='Database name', required=True)
+parser.add_argument('--collection', help='Collection name', required=True)
+parser.add_argument('--host', help='Mongodb host', required=False, default='localhost')
+parser.add_argument('--port', help='Mongodb port', required=False, default=27017)
+parser.add_argument('--translation', help='Translation file', required=False)
+parser.add_argument('--debug', help='Debug mode', required=False, action='store_true')
+parser.add_argument('--commit', help='Commit changes to database', required=False, action='store_true')
+parser.add_argument('--expressionlanguage', help='How to handle expressionLanguage values. Can be: delete, ignore or jexl', required=False, default='ignore')
+parser.add_argument('--statistics', help='Show statistics at the end of the execution. Possible values: service subservice', required=False, default='service')
+parser.add_argument('--regexservice', help='FIWARE service filter', required=False, default='.*')
+parser.add_argument('--regexservicepath', help='FIWARE servicepath filter', required=False, default='.*')
+parser.add_argument('--regexdeviceid', help='Device ID filter', required=False, default='.*')
+parser.add_argument('--regexentitytype', help='Entity type filter', required=False, default='.*')
+parser.add_argument('--service', help='FIWARE service filter', required=False)
+parser.add_argument('--servicepath', help='FIWARE servicepath filter', required=False)
+parser.add_argument('--deviceid', help='Device ID filter', required=False, default='')
+parser.add_argument('--entitytype', help='Entity type filter', required=False)
+args = vars(parser.parse_args())
+
+# Process args
+host = args['host']
+
+port = args['port']
+
+if args['debug']:
+    debug = True
+
+if args['commit'] == True:
+    print('INFO: Running the script in commit mode, this will update the database')
+    commit = True
+
+if args['translation'] != None and args['translation'] != '':
+    with open(args['translation']) as f:
+        translation_legacy_expressions = json.load(f)
+elif (args['translation'] == None or args['translation'] == '') and commit == True:
+    print('ERROR: Translation file is required in commit mode')
+    exit(1)
+
+mongodb_db = args['database']
+mongodb_collection = args['collection']
+
+_regex_legacy_expression = '\\${.*(@)'
 
 # Create a filter for the query
 filter = {
@@ -63,70 +110,12 @@ filter = {
             {'entityNameExp': {'$regex': _regex_legacy_expression}},
             {'explicitAttrs': {'$regex': _regex_legacy_expression}},
             ]
-        },
-        {'service': fiware_service},
-        {'subservice': fiware_servicepath},
+        }
+        # {'service': fiware_service},
+        # {'subservice': fiware_servicepath},
         # {'id': {'$regex': '.*'}},
         ]
 }
-
-# Create the CLI argunments parser
-parser = argparse.ArgumentParser(description='Tool to migrate legacy expressions in IoT Agents')
-parser.add_argument('--database', help='Database name', required=True)
-parser.add_argument('--collection', help='Collection name', required=True)
-parser.add_argument('--host', help='Mongodb host', required=False, default='localhost')
-parser.add_argument('--port', help='Mongodb port', required=False, default=27017)
-parser.add_argument('--translation', help='Translation file', required=False, default='translation.json')
-parser.add_argument('--debug', help='Debug mode', required=False, action='store_true')
-parser.add_argument('--commit', help='Commit changes to database', required=False, action='store_true')
-parser.add_argument('--expressionlanguage', help='How to handle expressionLanguage values. Can be: delete, ignore or jexl', required=False, default='ignore')
-parser.add_argument('--statistics', help='Show statistics at the end of the execution. Possible values: service subservice', required=False, default='service')
-parser.add_argument('--service', help='FIWARE service filter', required=False, default={'$regex': '.*'})
-parser.add_argument('--servicepath', help='FIWARE servicepath filter', required=False, default={'$regex': '.*'})
-parser.add_argument('--deviceid', help='Device ID filter', required=False, default={'$regex': '.*'})
-args = vars(parser.parse_args())
-
-# Process args
-host = args['host']
-
-port = args['port']
-
-if args['debug']:
-    debug = True
-
-if args['commit'] == True:
-    print('INFO: Running the script in commit mode, this will update the database')
-    commit = True
-
-if args['service']:
-    fiware_service = args['service']
-    if debug:
-        print('Filtering by service: ' + fiware_service)
-
-if args['servicepath']:
-    fiware_servicepath = args['servicepath']
-    if debug:
-        print('Filtering by servicepath: ' + fiware_servicepath)
-
-if args['filterdevices'] and args['filterdevices'] != '':
-    filter_device_id = args['filterdevices']
-    filter['$and'].append({'id': {'$regex': filter_device_id}})
-    print('Filtering by device ID: ' + filter_device_id)
-
-if args['translation'] != None:
-    with open(args['translation']) as f:
-        translation_legacy_expressions = json.load(f)
-
-mongodb_db = args['database']
-mongodb_collection = args['collection']
-
-_regex_legacy_expression = '\\${.*(@)'
-
-# Create a client instance of the MongoClient class
-client = MongoClient('mongodb://'+host+':'+port+'/') # Create a client instance of the MongoClient class
-if debug:
-    print('Connected to mongodb://'+host+':'+port+'/')
-
 
 if args['expressionlanguage'] == 'delete':
     filter['$and'][0]['$or'].append({'expressionLanguage':{'$exists': True}})
@@ -134,6 +123,58 @@ if args['expressionlanguage'] == 'delete':
 elif args['expressionlanguage'] == 'jexl':
     filter['$and'][0]['$or'].append({'expressionLanguage':{'$exists': True}})
     expressionlanguage = 'jexl'
+else:
+    expressionlanguage = 'ignore'
+
+if args['regexdeviceid'] != '.*':
+    filter_device_id = args['regexdeviceid']
+    filter['$and'].append({'id': {'$regex': filter_device_id}})
+    if debug:
+        print('Filtering by regex device ID: ' + str(filter_device_id))
+
+if args['regexentitytype'] != '.*':
+    filter_entity_type = args['regexentitytype']
+    filter['$and'].append({'type': {'$regex': filter_entity_type}})
+    if debug:
+        print('Filtering by regex entity type: ' + str(filter_entity_type))
+
+if args['regexservice'] != '.*':
+    fiware_service = args['regexservice']
+    filter['$and'].append({'service': {'$regex': fiware_service}})
+    if debug:
+        print('Filtering by regex service: ' + str(fiware_service))
+
+if args['regexservicepath'] != '.*':
+    fiware_servicepath = args['regexservicepath']
+    filter['$and'].append({'subservice': {'$regex': fiware_servicepath}})
+    if debug:
+        print('Filtering by regex servicepath: ' + fiware_servicepath)
+
+if args['deviceid']:
+    filter['$and'].append({'id': args['deviceid']})
+    if debug:
+        print('Filtering by device ID: ' + str(args['deviceid']))
+
+if args['entitytype']:
+    filter['$and'].append({'type': args['entitytype']})
+    if debug:
+        print('Filtering by entity type: ' + str(args['entitytype']))
+
+if args['service']:
+    filter['$and'].append({'service': args['service']})
+    if debug:
+        print('Filtering by service: ' + str(args['service']))
+
+if args['servicepath']:
+    filter['$and'].append({'subservice': args['servicepath']})
+    if debug:
+        print('Filtering by servicepath: ' + str(args['servicepath']))  
+
+# Create a client instance of the MongoClient class
+client = MongoClient('mongodb://'+str(host)+':'+str(port)+'/') # Create a client instance of the MongoClient class
+if debug:
+    print('Connected to mongodb://'+str(host)+':'+str(port)+'/')
+
 
 if debug:
     print('Running in debug mode')
@@ -149,11 +190,12 @@ for occurrence in result_cursor:
 
     # Append the expression to the backup list
     document_occurrences_backup.append(parse_json(occurrence))
+    
+    occurrence_id = str(occurrence['_id'])
 
     # Find the legacy expressions and replace them
     if 'active' in occurrence:
         for active in occurrence['active']:
-            occurrence_id = str(occurrence['_id'])
             if 'expression' in active:
                 if re.search(_regex_legacy_expression, active['expression']):
                                                             
@@ -326,7 +368,7 @@ for occurrence in result_cursor:
             if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
             del occurrence['expressionLanguage']
-        elif expressionlanguage == 'jelx':
+        elif expressionlanguage == 'jexl':
             if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
             occurrence['expressionLanguage'] = 'jexl'
@@ -338,10 +380,15 @@ for occurrence in result_cursor:
             {'_id': occurrence['_id']},
             occurrence
         )
+        replacement_count+=1
 
     # Update element in the list of documents with 
     document_replaced_list.append(parse_json(occurrence))
 
+# Print the counts
+print ('\nFound ' + str(len(find_document_occurrences)) + ' legacy expressions in ' + str(len(document_replaced_list)) + ' documents')
+if commit:
+    print ('Updated ' + str(replacement_count) + ' documents in the database')
     
 # write the results to files
 f1 = open(init_time+"legacy_expression_occurrences.json", "w")
@@ -372,7 +419,7 @@ if args['statistics']:
     if args['statistics'] == 'subservice':
         table_collums.append('subservice')
 
-    new = df.pivot_table(index='expression', columns=table_collums, values=['_id'], aggfunc='count', fill_value=0)
+    new = df.pivot_table(index='expression', columns=table_collums, values=['_id'], aggfunc='count', fill_value=0, margins=True)
     
     # Display all data
     print(new)
