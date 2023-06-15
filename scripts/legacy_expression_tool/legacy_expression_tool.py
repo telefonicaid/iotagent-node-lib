@@ -48,7 +48,7 @@ replacement_count=0
 
 # Init time
 now = datetime.now()
-init_time = now.strftime("%y%m%dT%H%M%S_")
+init_time = now.strftime("%Y%m%dT%H%M%S_")
 
 # Create the CLI argunments parser
 parser = argparse.ArgumentParser(description='Tool to migrate legacy expressions in IoT Agents')
