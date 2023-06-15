@@ -111,9 +111,6 @@ filter = {
             {'explicitAttrs': {'$regex': _regex_legacy_expression}},
             ]
         }
-        # {'service': fiware_service},
-        # {'subservice': fiware_servicepath},
-        # {'id': {'$regex': '.*'}},
         ]
 }
 
