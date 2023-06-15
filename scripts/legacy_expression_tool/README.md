@@ -13,6 +13,18 @@ default, it runs in dry-run mode, so database is not modified and the output is 
 ease and verify data migration. We you are sure you want to modify the DB, then you have to enable it using the
 `--commit` argument.
 
+## Installation
+
+This script requires Python 3 to work (it has been tested with Python 3.9 and 3.10).
+
+It is recommended to create virtual env to run this script, installing dependencies on it, this way:
+
+```
+$ virtualenv /path/to/venv
+$ source /path/to/venv/bin/active
+(venv)$ pin install -r requirements.txt
+```
+
 ## Output files
 
 The script generates 4 different files each time it is executed:
