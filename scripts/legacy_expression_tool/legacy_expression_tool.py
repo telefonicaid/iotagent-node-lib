@@ -54,11 +54,10 @@ init_time = now.strftime("%Y%m%dT%H%M%S_")
 parser = argparse.ArgumentParser(description='Tool to migrate legacy expressions in IoT Agents')
 parser.add_argument('--database', help='Database name', required=True)
 parser.add_argument('--collection', help='Collection name', required=True)
-parser.add_argument('--host', help='Mongodb host', required=False, default='localhost')
-parser.add_argument('--port', help='Mongodb port', required=False, default=27017)
 parser.add_argument('--translation', help='Translation file', required=False)
 parser.add_argument('--debug', help='Debug mode', required=False, action='store_true')
 parser.add_argument('--commit', help='Commit changes to database', required=False, action='store_true')
+parser.add_argument('--mongouri', help='Database connection URI', required=False, default='mongodb://localhost:27017/')
 parser.add_argument('--expressionlanguage', help='How to handle expressionLanguage values. Can be: delete, ignore or jexl', required=False, default='ignore')
 parser.add_argument('--statistics', help='Show statistics at the end of the execution. Possible values: service subservice', required=False, default='service')
 parser.add_argument('--regexservice', help='FIWARE service filter', required=False, default='.*')
@@ -71,10 +70,6 @@ parser.add_argument('--deviceid', help='Device ID filter', required=False, defau
 parser.add_argument('--entitytype', help='Entity type filter', required=False)
 args = vars(parser.parse_args())
 
-# Process args
-host = args['host']
-
-port = args['port']
 
 if args['debug']:
     debug = True
@@ -168,10 +163,9 @@ if args['servicepath']:
         print('Filtering by servicepath: ' + str(args['servicepath']))  
 
 # Create a client instance of the MongoClient class
-client = MongoClient('mongodb://'+str(host)+':'+str(port)+'/') # Create a client instance of the MongoClient class
 if debug:
-    print('Connected to mongodb://'+str(host)+':'+str(port)+'/')
-
+    print('Connected to: '+str(args['mongouri']))
+client = MongoClient(args['mongouri']) # Create a client instance of the MongoClient class
 
 if debug:
     print('Running in debug mode')

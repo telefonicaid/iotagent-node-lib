@@ -82,25 +82,24 @@ python legacy_expression_tool.py \
 
 The list of possible arguments that the scripts accepts are:
 
-| Argument               | Description                                                                                   | Default value      | Mandatory |
-| ---------------------- | --------------------------------------------------------------------------------------------- | ------------------ | --------- |
-| `--host`               | The host of the MongoDB instance                                                              | `localhost`        | No        |
-| `--port`               | The port of the MongoDB instance                                                              | `27017`            | No        |
-| `--database`           | The database name to replace the expressions                                                  | NA                 | Yes       |
-| `--collection`         | The collection name to replace the expressions                                                | NA                 | Yes       |
-| `--translation`        | The translation dictionary file to replace the expressions                                    | `translation.json` | No        |
-| `--debug`              | Enable debug mode                                                                             | `False`            | No        |
-| `--commit`             | Commit the changes to the database                                                            | `False`            | No        |
-| `--expressionlanguage` | What to do with the expression language field. Possibles values: `delete`, `ignore` or `jexl` | `ignore`           | No        |
-| `--statistics`         | Print match statistics. Aggregation modes are the possible values: `service` and `subservice` | `service`          | No        |
-| `--service`            | The fiware service filter to replace the expressions                                          | All subservices    | No        |
-| `--service-path`       | The fiware service path filter to replace the expressions                                     | All subservices    | No        |
-| `--deviceid`           | The device id filter to replace the expressions                                               | All devices        | No        |
-| `--entitytype`         | The entity type filter to replace the expressions                                             | All entity types   | No        |
-| `--regexservice`       | The fiware service regex filter to replace the expressions                                    | All subservices    | No        |
-| `--regexservicepath`   | The fiware service path regex filter to replace the expressions                               | All subservices    | No        |
-| `--regexdeviceid`      | The device id regex filter to replace the expressions                                         | All devices        | No        |
-| `--regexentitytype`    | The entity type regex filter to replace the expressions                                       | All entity types   | No        |
+| Argument               | Description                                                                                   | Default value                | Mandatory |
+| ---------------------- | --------------------------------------------------------------------------------------------- | ---------------------------- | --------- |
+| `--mongouri`           | The MongoDB URI to connect to                                                                 | `mongodb://localhost:27017/` | No        |
+| `--database`           | The database name to replace the expressions                                                  | NA                           | Yes       |
+| `--collection`         | The collection name to replace the expressions                                                | NA                           | Yes       |
+| `--translation`        | The translation dictionary file to replace the expressions                                    | `translation.json`           | No        |
+| `--debug`              | Enable debug mode                                                                             | `False`                      | No        |
+| `--commit`             | Commit the changes to the database                                                            | `False`                      | No        |
+| `--expressionlanguage` | What to do with the expression language field. Possibles values: `delete`, `ignore` or `jexl` | `ignore`                     | No        |
+| `--statistics`         | Print match statistics. Aggregation modes are the possible values: `service` and `subservice` | `service`                    | No        |
+| `--service`            | The fiware service filter to replace the expressions                                          | All subservices              | No        |
+| `--service-path`       | The fiware service path filter to replace the expressions                                     | All subservices              | No        |
+| `--deviceid`           | The device id filter to replace the expressions                                               | All devices                  | No        |
+| `--entitytype`         | The entity type filter to replace the expressions                                             | All entity types             | No        |
+| `--regexservice`       | The fiware service regex filter to replace the expressions                                    | All subservices              | No        |
+| `--regexservicepath`   | The fiware service path regex filter to replace the expressions                               | All subservices              | No        |
+| `--regexdeviceid`      | The device id regex filter to replace the expressions                                         | All devices                  | No        |
+| `--regexentitytype`    | The entity type regex filter to replace the expressions                                       | All entity types             | No        |
 
 Note that filters (`--service`, `--service-path`, `--deviceid` and `--entitytype`, and the regex versions) are
 interpreted in additive way (i.e. like a logical AND).
