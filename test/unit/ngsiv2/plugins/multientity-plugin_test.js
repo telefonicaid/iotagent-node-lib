@@ -601,7 +601,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -1672,7 +1672,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .patch(
+            .post(
                 //'/v2/op/update',
                 '/v2/entities/sensorCommand/attrs?type=SensorCommand',
                 utils.readExampleFile(

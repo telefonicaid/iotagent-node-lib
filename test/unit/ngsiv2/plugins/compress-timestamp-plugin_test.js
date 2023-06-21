@@ -153,7 +153,7 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
+                .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp1.json'
@@ -198,7 +198,7 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
+                .post(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp2.json'
