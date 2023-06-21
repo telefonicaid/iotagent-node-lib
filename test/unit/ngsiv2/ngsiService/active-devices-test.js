@@ -782,7 +782,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             contextBrokerMock = nock('http://cbhost:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
+                .patch(
                     '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
