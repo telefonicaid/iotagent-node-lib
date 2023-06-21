@@ -1,1 +1,1 @@
-- Make appendMode true by default
+- Fix: appendMode at general level (config.js / env var) changes default from false to true
