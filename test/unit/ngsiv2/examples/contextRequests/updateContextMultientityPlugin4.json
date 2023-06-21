@@ -1,5 +1,5 @@
 {
-  "actionType": "update",
+  "actionType": "append",
   "entities": [
     { "id": "ws5",
       "type": "WeatherStation"

@@ -128,7 +128,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
+                .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
                 .reply(204);
             iotAgentLib.activate(iotAgentConfig, done);
@@ -166,7 +166,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
+                .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
                 .reply(403, { name: 'ACCESS_FORBIDDEN' });
 
@@ -199,7 +199,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
+                .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' });
 
             iotAgentLib.activate(iotAgentConfig, done);
