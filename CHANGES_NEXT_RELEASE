@@ -1,1 +1,2 @@
 - Fix: appendMode at general level (config.js / env var) changes its default from false to true
+- Fix: remove sensitive MongoDB connection parameters from log traces (remove 'option' object from logs)
