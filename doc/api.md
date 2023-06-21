@@ -180,10 +180,10 @@ Some transformation plugins also allow the use of the following optional fields:
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
     [Expression Language definition](#expression-language-support) for details
--   **skipValue**: indicates that if the result of applying `expression` to a measure is equal to the value of `skipValue` then
-    the attribute corresponding to the measure is not sent to CB. By default if `skipValue` is not defined then is
-    considered as `null` (i.e. if the result of apply `expression` results in `null` then corresponding attribute is not
-    sent to CB). It is only used if `expression` is provided (otherwise is ignored).
+-   **skipValue**: indicates that if the result of applying `expression` to a measure is equal to the value of
+    `skipValue` then the attribute corresponding to the measure is not sent to CB. By default if `skipValue` is not
+    defined then is considered as `null` (i.e. if the result of apply `expression` results in `null` then corresponding
+    attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored).
 -   **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device
     entity but in a new entity with an ID given by this attribute. The type of this additional entity can be configured
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
@@ -445,10 +445,11 @@ depending on the JEXL expression evaluation:
 This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
 `IOTA_APPEND_MODE` environment variable (more info
 [here](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/installationguide.md)). If this flag is
-activated, the update requests to the Context Broker will be performed always with APPEND type, instead of the default
-UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be used with care.
+activated (its default behaviour), the update requests to the Context Broker will be performed always with APPEND type,
+instead of the default UPDATE. This have implications in the use of attributes with Context Providers, so this flag
+should be used with care.
 
-When running the agent using `appendMode=false`, if sending measures that are not included in the config group (as 
+When running the agent using `appendMode=false`, if sending measures that are not included in the config group (as
 active measures), the IoT Agent returns a `422 Unprocessable Entity` code with the following message:
 
 ```json
@@ -458,8 +459,8 @@ active measures), the IoT Agent returns a `422 Unprocessable Entity` code with t
 }
 ```
 
-Additionally, the agent creates the device and the corresponding entity in the broker if `autoprovision==true` 
-(default behaviour).
+Additionally, the agent creates the device and the corresponding entity in the broker if `autoprovision==true` (default
+behaviour).
 
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
@@ -474,10 +475,10 @@ What `explicitAttrs` does is to filter from the southbound the parameters that a
 provision or config group. That also would avoid propagating the measures to the Context Broker.
 
 The default way the agent updates the information into the Context Broker is by using an update request. If
-`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store the attributes
-even if they are not present in the entity. This seems the same functionality that the one provided by `autoprovision`,
-but it is a different concept since the scope of this config is to setup how the IoT interacts with the context broker,
-this is something related to the **northbound**.
+`appendMode=true` (the default behaviour), the IoTA will use an append request instead of an update one. This means it
+will store the attributes even if they are not present in the entity. This seems the same functionality that the one
+provided by `autoprovision`, but it is a different concept since the scope of this config is to setup how the IoT
+interacts with the context broker, this is something related to the **northbound**.
 
 Note that, even creating a config group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision
 previously the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`.

@@ -249,10 +249,10 @@ used for the same purpose. For instance:
     'http://192.168.56.1:4041'.
 -   **iotaVersion**: indicates the version of the IoTA that will be displayed in the about method (it should be filled
     automatically by each IoTA).
--   **appendMode**: if this flag is activated, the update requests to the Context Broker will be performed always with
-    APPEND type, instead of the default UPDATE. This have implications in the use of attributes with Context Providers,
-    so this flag should be used with care. This flag is overwritten by `autoprovision` flag in group or device
-    provision.
+-   **appendMode**: if this flag is activated (its default behaviour), the update requests to the Context Broker will be
+    performed always with APPEND type, instead of the default UPDATE. This have implications in the use of attributes
+    with Context Providers, so this flag should be used with care. This flag is overwritten by `autoprovision` flag in
+    group or device provision.
 -   **dieOnUnexpectedError**: if this flag is activated, the IoTAgent will not capture global exception, thus dying upon
     any unexpected error.
 -   **singleConfigurationMode**: enables the Single Configuration mode for backwards compatibility (see description in
