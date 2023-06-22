@@ -107,11 +107,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast1.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -141,11 +140,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast2.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -175,11 +173,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast3.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -209,11 +206,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast4.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -243,11 +239,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast5.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -277,11 +272,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast6.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -311,11 +305,10 @@ describe('NGSI-v2 - JSON native types autocast test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAutocast7.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

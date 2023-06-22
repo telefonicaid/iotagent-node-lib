@@ -205,8 +205,8 @@ describe('NGSI-v2 - Polling commands', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -299,8 +299,8 @@ describe('NGSI-v2 - Polling commands', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -352,8 +352,8 @@ describe('NGSI-v2 - Polling commands', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus.json')
                 )
                 .reply(204);
@@ -361,8 +361,8 @@ describe('NGSI-v2 - Polling commands', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/Robot:r2d2/attrs?type=Robot',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCommandExpired.json'
                     )
@@ -471,8 +471,8 @@ describe('NGSI-v2 - Polling commands expressions', function () {
             statusAttributeMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/RobotExp:r2d4/attrs?type=RobotExp',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCommandStatus2.json'
                     )

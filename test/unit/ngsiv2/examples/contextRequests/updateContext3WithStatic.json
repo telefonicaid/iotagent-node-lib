@@ -1,4 +1,6 @@
 {
+    "id":"machine1",
+    "type":"SensorMachine",
     "status": {
         "value": "STARTING",
         "type": "String"

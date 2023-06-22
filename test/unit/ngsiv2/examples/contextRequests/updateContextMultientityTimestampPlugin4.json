@@ -1,4 +1,6 @@
 {
+    "id":"sensorCommand",
+    "type":"SensorCommand",
     "PING_status": {
       "type": "commandStatus",
       "value": "OK",

@@ -37,6 +37,6 @@
                 }
             }
         ],
-        "actionType": "update"
+        "actionType": "append"
 }
 
