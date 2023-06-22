@@ -38,7 +38,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -111,20 +112,18 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch('/v2/entities/light1/attrs')
-                .query({ type: 'Light' })
+                .post('/v2/entities?options=upsert')
                 .times(4)
                 .reply(204)
-                .patch('/v2/entities/light1/attrs', function (body) {
+                .post('/v2/entities?options=upsert', function (body) {
                     let metadatas = 0;
                     for (const i in body) {
                         if (body[i].metadata) {
                             metadatas += Object.keys(body[i].metadata).length;
                         }
                     }
-                    return metadatas === Object.keys(body).length - 1;
+                    return metadatas === Object.keys(body).length - 1 - 2;
                 })
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

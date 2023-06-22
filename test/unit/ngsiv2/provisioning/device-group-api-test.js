@@ -41,6 +41,7 @@ const iotAgentConfig = {
     server: {
         name: 'testAgent',
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},
@@ -905,11 +906,10 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .patch(
-                    '/v2/entities/machine1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
-                .query({ type: 'SensorMachine' })
                 .reply(204, {});
             async.series([async.apply(request, optionsCreation)], done);
         });

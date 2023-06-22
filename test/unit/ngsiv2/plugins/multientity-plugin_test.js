@@ -41,7 +41,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStation: {
@@ -101,7 +102,7 @@ const iotAgentConfig = {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },
@@ -114,13 +115,13 @@ const iotAgentConfig = {
                     object_id: 'p',
                     name: 'pressure',
                     type: 'Hgmm',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 },
                 {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },
@@ -196,21 +197,21 @@ const iotAgentConfig = {
                 {
                     object_id: 'v1',
                     name: 'vol',
-                    expression: '${@v1*100}',
+                    expression: 'v1*100',
                     type: 'Number',
                     entity_name: 'WeatherStation1'
                 },
                 {
                     object_id: 'v2',
                     name: 'vol',
-                    expression: '${@v2*100}',
+                    expression: 'v2*100',
                     type: 'Number',
                     entity_name: 'WeatherStation2'
                 },
                 {
                     object_id: 'v',
                     name: 'vol',
-                    expression: '${@v*100}',
+                    expression: 'v*100',
                     type: 'Number'
                 }
             ]
@@ -243,7 +244,6 @@ const iotAgentConfig = {
         WeatherStation8Jexl: {
             commands: [],
             type: 'WeatherStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -271,7 +271,6 @@ const iotAgentConfig = {
         WeatherStation9Jexl: {
             commands: [],
             type: 'WeatherStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             static: [
                 {
@@ -363,7 +362,6 @@ const iotAgentConfig = {
         WrongStation: {
             commands: [],
             type: 'WrongStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -455,7 +453,6 @@ const iotAgentConfig = {
         SharedIds3: {
             commands: [],
             type: 'ShareStation',
-            expressionLanguage: 'jexl',
             lazy: [],
             active: [
                 {
@@ -494,6 +491,42 @@ const iotAgentConfig = {
             type: 'GPS',
             lazy: [],
             active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO5',
+                    object_id: 'x'
+                },
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    entity_name: 'SO6',
+                    object_id: 'y'
+                }
+            ],
+            explicitAttrs: true
+        },
+        GPS1: {
+            commands: [],
+            expressionLanguage: 'jexl',
+            type: 'GPS',
+            lazy: [],
+            active: [
+                {
+                    name: 'explicit',
+                    type: 'number',
+                    object_id: 'z'
+                },
+                {
+                    name: 'expectedAtt',
+                    type: 'number',
+                    expression: 'z+1'
+                },
+                {
+                    name: 'nonexpectedAtt',
+                    type: 'number',
+                    expression: 'w+1'
+                },
                 {
                     name: 'explicit',
                     type: 'number',
@@ -558,8 +591,7 @@ const iotAgentConfig = {
                     name: 'pressure',
                     type: 'Number'
                 }
-            ],
-            expressionLanguage: 'jexl'
+            ]
         }
     },
     service: 'smartgondor',
@@ -569,7 +601,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -1243,6 +1275,48 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
         });
     });
 
+    describe('When an update comes for a multientity measurement explicitAttrs for several entities', function () {
+        const values = [
+            {
+                name: 'x',
+                type: 'Number',
+                value: 52
+            },
+            {
+                name: 'y',
+                type: 'Number',
+                value: 13
+            },
+            {
+                name: 'z',
+                type: 'Number',
+                value: 12
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/op/update',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin25.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should remove hidden attrs from the value', function (done) {
+            iotAgentLib.update('gps1', 'GPS1', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When an update comes for a multientity measurement explicitAttrs as jexl for one entity', function () {
         const values = [
             {
@@ -1598,9 +1672,8 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .patch(
-                //'/v2/op/update',
-                '/v2/entities/sensorCommand/attrs?type=SensorCommand',
+            .post(
+                '/v2/entities?options=upsert',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )

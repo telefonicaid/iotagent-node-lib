@@ -36,7 +36,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -152,13 +153,12 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp1.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -197,13 +197,12 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextCompressTimestamp2.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 

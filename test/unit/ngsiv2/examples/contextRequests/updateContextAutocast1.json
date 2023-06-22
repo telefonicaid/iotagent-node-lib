@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",    
     "pressure":{
         "value": 23,
         "type": "Number"

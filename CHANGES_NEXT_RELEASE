@@ -1,0 +1,2 @@
+- Fix: use 'options=upsert' when update ngsiv2 CB entities (#956)
+- Fix: appendMode at general level (config.js / env var) changes its default from false to true

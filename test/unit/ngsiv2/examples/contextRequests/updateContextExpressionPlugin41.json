@@ -1,0 +1,33 @@
+{
+    "id":"gps1","type":"GPS",
+    "TimeInstant": {
+        "type": "DateTime",
+        "value": "2015-08-05T07:35:01.468+00:00"
+    },
+    "location": {
+        "value": {
+            "coordinates": [
+                13,
+                52
+            ],
+            "type": "Point"
+        },
+        "type": "geo:json",
+        "metadata": {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2015-08-05T07:35:01.468+00:00"
+            }
+        }
+    },
+    "temperature": {
+        "value": null,
+        "type": "Number",
+        "metadata": {
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2015-08-05T07:35:01.468+00:00"
+            }
+        }
+    }
+}

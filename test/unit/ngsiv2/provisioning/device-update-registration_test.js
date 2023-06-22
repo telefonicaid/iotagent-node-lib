@@ -39,7 +39,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -176,7 +177,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Light:light1/attrs?type=Light',
+                    '/v2/entities/Light:light1/attrs?options=upsert&type=Light',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateProvisionActiveAttributes1.json'
                     )
@@ -232,7 +233,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/Light:light1/attrs?type=Light',
+                    '/v2/entities/Light:light1/attrs?options=upsert&type=Light',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateProvisionCommands1.json')
                 )
                 .reply(204);
@@ -268,17 +269,19 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
-                iotAgentLib.getDevice(deviceCommandUpdated.id, 'smartgondor', 'gardens', function (
-                    error,
-                    deviceResult
-                ) {
-                    should.not.exist(error);
-                    should.exist(deviceResult);
-                    deviceResult.internalId.should.equal(deviceUpdated.internalId);
-                    deviceResult.commands[0].name.should.equal('move');
-                    deviceResult.active[0].name.should.equal('temperature');
-                    done();
-                });
+                iotAgentLib.getDevice(
+                    deviceCommandUpdated.id,
+                    'smartgondor',
+                    'gardens',
+                    function (error, deviceResult) {
+                        should.not.exist(error);
+                        should.exist(deviceResult);
+                        deviceResult.internalId.should.equal(deviceUpdated.internalId);
+                        deviceResult.commands[0].name.should.equal('move');
+                        deviceResult.active[0].name.should.equal('temperature');
+                        done();
+                    }
+                );
             });
         });
     });
@@ -302,7 +305,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities/Light:light1/attrs?type=Light')
+                .post('/v2/entities/Light:light1/attrs?options=upsert&type=Light')
                 .reply(204);
         });
 

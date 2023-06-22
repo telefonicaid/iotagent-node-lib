@@ -36,7 +36,8 @@ const iotAgentConfig = {
         ngsiVersion: 'v2'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -97,14 +98,13 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     // this tests breaks jexlBasedTransformation-test with uses updateContextExpressionPlugin32 which do not includes Timestamp in metadata attributes
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 

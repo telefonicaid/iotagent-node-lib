@@ -41,6 +41,7 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
+        host: 'localhost',
         baseRoot: '/'
     },
     types: {},

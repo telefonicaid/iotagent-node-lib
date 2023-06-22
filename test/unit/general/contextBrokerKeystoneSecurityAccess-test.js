@@ -37,7 +37,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     authentication: {
         // Next line is syntactically correct from a configuration point of
@@ -127,8 +128,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
-                .query({ type: 'Light' })
+                .post('/v2/entities?options=upsert')
                 .reply(204);
             iotAgentLib.activate(iotAgentConfig, done);
         });
@@ -165,8 +165,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
-                .query({ type: 'Light' })
+                .post('/v2/entities?options=upsert')
                 .reply(403, { name: 'ACCESS_FORBIDDEN' });
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -198,8 +197,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                .patch('/v2/entities/light1/attrs')
-                .query({ type: 'Light' });
+                .post('/v2/entities?options=upsert');
 
             iotAgentLib.activate(iotAgentConfig, done);
         });

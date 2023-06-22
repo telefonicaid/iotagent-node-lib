@@ -41,7 +41,8 @@ const iotAgentConfig = {
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         WeatherStation: {
@@ -95,7 +96,7 @@ const iotAgentConfig = {
                     object_id: 'h',
                     name: 'humidity',
                     type: 'Percentage',
-                    entity_name: 'Station Number ${@sn * 10}'
+                    entity_name: '"Station Number "+sn*10'
                 }
             ]
         },

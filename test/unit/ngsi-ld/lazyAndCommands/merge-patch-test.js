@@ -45,6 +45,7 @@ const iotAgentConfig = {
     },
     server: {
         port: 4041,
+        host: 'localhost',
         ldSupport: {
             null: true,
             datasetId: false,
@@ -53,8 +54,8 @@ const iotAgentConfig = {
     },
     types: {
         Robot: {
-            internalAttributes:[],
-            commands:[
+            internalAttributes: [],
+            commands: [
                 {
                     name: 'position',
                     object_id: 'pos',
@@ -125,24 +126,21 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
 
     describe('When a merge-patch PATCH  arrives to the IoT Agent as Context Provider', function () {
         const options = {
-            url:
-                'http://localhost:' +
-                iotAgentConfig.server.port +
-                '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2',
             method: 'PATCH',
             json: {
-                "position": {
-                    "type": "Property",
-                    "value": {
-                        "moveTo" : [12,34],
-                        "observedAt": "urn:ngsi-ld:null",
-                        "precision": {
-                            "value": 0.95,
-                            "unitCode": "C62"
-                        } 
-                    } 
+                position: {
+                    type: 'Property',
+                    value: {
+                        moveTo: [12, 34],
+                        observedAt: 'urn:ngsi-ld:null',
+                        precision: {
+                            value: 0.95,
+                            unitCode: 'C62'
+                        }
+                    }
                 },
-                "orientation" : "urn:ngsi-ld:null"
+                orientation: 'urn:ngsi-ld:null'
             },
             headers: {
                 'fiware-service': 'smartgondor',
@@ -188,7 +186,6 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
         });
     });
 
-
     xdescribe('When a partial update PATCH with an NGSI-LD Null arrives to the IoT Agent as Context Provider', function () {
         const options = {
             url:
@@ -197,8 +194,8 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
                 '/ngsi-ld/v1/entities/urn:ngsi-ld:Robot:r2d2/attrs/position',
             method: 'PATCH',
             json: {
-                "type": "Property",
-                "value": "urn:ngsi-ld:null"
+                type: 'Property',
+                value: 'urn:ngsi-ld:null'
             },
             headers: {
                 'fiware-service': 'smartgondor',
@@ -236,9 +233,8 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
             });
 
             request(options, function (error, response, body) {
-                console.error(error)
+                console.error(error);
                 should.not.exist(error);
-
 
                 response.statusCode.should.equal(204);
                 handlerCalled.should.equal(1);

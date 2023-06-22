@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",    
   "state": {
     "type": "Boolean",
     "value": true,

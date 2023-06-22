@@ -37,7 +37,8 @@ const iotAgentConfig = {
         port: '1026'
     },
     server: {
-        port: 4041
+        port: 4041,
+        host: 'localhost'
     },
     types: {
         Light: {
@@ -135,7 +136,7 @@ describe('NGSI-LD - Startup tests', function () {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().contextBroker.ngsiVersion.should.equal('ld');
                 config.getConfig().contextBroker.jsonLdContext.should.equal('http://context.jsonld');
-                config.getConfig().contextBroker.fallbackTenant.should.equal( 'openiot');
+                config.getConfig().contextBroker.fallbackTenant.should.equal('openiot');
                 config.getConfig().contextBroker.fallbackPath.should.equal('smartgondor');
                 config.getConfig().server.ldSupport.null.should.equal(false);
                 config.getConfig().server.ldSupport.datasetId.should.equal(false);
