@@ -1673,8 +1673,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
-                //'/v2/op/update',
-                '/v2/entities/sensorCommand/attrs?type=SensorCommand',
+                '/v2/entities?options=upsert',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )
