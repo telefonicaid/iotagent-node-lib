@@ -241,7 +241,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities=options=upsert',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json')
                 )
                 .reply(204);
@@ -770,7 +770,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .patch(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities/light1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .query({ type: 'Light' })

@@ -256,10 +256,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
                 .post('/v2/entities?options=upsert')
                 .reply(204);
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities/light2/attrs')
-                .query({ type: 'Device' })
-                .reply(204);
+            contextBrokerMock = nock('http://192.168.1.1:1026').post('/v2/entities?options=upsert').reply(204);
             request(optionsCreationLD, function (error, response, body) {
                 request(deviceCreationV2, function (error, response, body) {
                     done();
