@@ -907,10 +907,9 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
-                    '/v2/entities/machine1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
-                .query({ type: 'SensorMachine' })
                 .reply(204, {});
             async.series([async.apply(request, optionsCreation)], done);
         });

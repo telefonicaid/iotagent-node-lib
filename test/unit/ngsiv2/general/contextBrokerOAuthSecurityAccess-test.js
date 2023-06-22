@@ -840,12 +840,11 @@ describe(
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
                     .post(
-                        '/v2/entities/machine1/attrs',
+                        '/v2/entities?options=upsert',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .query({ type: 'SensorMachine' })
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
