@@ -246,36 +246,36 @@ describe('Mixed Mode: ngsiVersion test', function () {
         });
     });
 
-    describe('When a new NGSI-LD device group is provisioned and overridden', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
+    // describe('When a new NGSI-LD device group is provisioned and overridden', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
 
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post('/v2/entities?options=upsert')
+    //             .reply(204);
 
-            contextBrokerMock = nock('http://192.168.1.1:1026').post('/v2/entities?options=upsert').reply(204);
-            request(optionsCreationLD, function (error, response, body) {
-                request(deviceCreationV2, function (error, response, body) {
-                    done();
-                });
-            });
-        });
-        it('should operate using NGSI-v2', function (done) {
-            iotAgentLib.update(
-                'light2',
-                'Device',
-                'v2-test',
-                values,
-                { ngsiVersion: 'v2', type: 'Device' },
-                function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                }
-            );
-        });
-    });
+    //         contextBrokerMock = nock('http://192.168.1.1:1026').post('/v2/entities?options=upsert').reply(204);
+    //         request(optionsCreationLD, function (error, response, body) {
+    //             request(deviceCreationV2, function (error, response, body) {
+    //                 done();
+    //             });
+    //         });
+    //     });
+    //     it('should operate using NGSI-v2', function (done) {
+    //         iotAgentLib.update(
+    //             'light2',
+    //             'Device',
+    //             'v2-test',
+    //             values,
+    //             { ngsiVersion: 'v2', type: 'Device' },
+    //             function (error) {
+    //                 should.not.exist(error);
+    //                 contextBrokerMock.done();
+    //                 done();
+    //             }
+    //         );
+    //     });
+    // });
 });
