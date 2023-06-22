@@ -1,0 +1,12 @@
+{
+    "id":"humSensor",
+    "type":"Humidity",
+    "state":{
+        "value": true,
+        "type": "boolean"
+    },
+    "dimming":{
+        "value": 87,
+        "type": "number"
+    }
+}
