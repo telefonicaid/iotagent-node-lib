@@ -1,4 +1,6 @@
 {
+    "id":"motion1",
+    "type":"Motion",    
     "moving":{
         "value": true,
         "type": "boolean"
