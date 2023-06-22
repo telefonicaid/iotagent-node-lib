@@ -1,4 +1,6 @@
 {
+  "id":"light1",
+  "type":"Light",
   "revisions": {
     "type": "Array",
     "value": [ "v0.1", "v0.2", "v0.3" ]

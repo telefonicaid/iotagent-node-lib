@@ -1,4 +1,6 @@
 {
+  "id":"ws1",
+  "type":"WeatherStation",
   "falsy": {
     "type": "Boolean",
     "value": false
