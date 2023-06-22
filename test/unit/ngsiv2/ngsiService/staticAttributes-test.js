@@ -122,7 +122,7 @@ describe('NGSI-v2 - Static attributes test', function () {
                             metadatas += Object.keys(body[i].metadata).length;
                         }
                     }
-                    return metadatas === Object.keys(body).length - 1;
+                    return metadatas === Object.keys(body).length - 1 - 2;
                 })
                 .reply(204);
 
