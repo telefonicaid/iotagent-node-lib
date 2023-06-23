@@ -246,6 +246,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
         });
     });
 
+    // FIXME: ngisld may use also upsert when update entities in appendMode true (default behaviour)
     // describe('When a new NGSI-LD device group is provisioned and overridden', function () {
     //     beforeEach(function (done) {
     //         nock.cleanAll();
