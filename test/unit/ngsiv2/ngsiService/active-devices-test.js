@@ -192,26 +192,27 @@ describe('NGSI-v2 - Active attributes test', function () {
             });
         });
 
-        it('should ignore if wrong type or id are target atributes in the context broker', function (done) {
-            const wrongvalues = [
-                {
-                    name: 'type',
-                    type: 'string',
-                    value: 'wrongtype'
-                },
-                {
-                    name: 'id',
-                    type: 'string',
-                    value: 'wrongid'
-                }
-            ];
+        // Currently id and type are in payload of entities, so they should be right
+        //     it('should ignore if wrong type or id are target atributes in the context broker', function (done) {
+        //         const wrongvalues = [
+        //             {
+        //                 name: 'type',
+        //                 type: 'string',
+        //                 value: 'wrongtype'
+        //             },
+        //             {
+        //                 name: 'id',
+        //                 type: 'string',
+        //                 value: 'wrongid'
+        //             }
+        //         ];
 
-            iotAgentLib.update('light1', 'Light', '', wrongvalues.concat(values), function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        //         iotAgentLib.update('light1', 'Light', '', wrongvalues.concat(values), function (error) {
+        //             should.not.exist(error);
+        //             contextBrokerMock.done();
+        //             done();
+        //         });
+        //     });
     });
 
     describe('When the IoT Agent receives new information and the timestamp flag is on', function () {
@@ -771,7 +772,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .patch(
                     '/v2/entities/light1/attrs',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext6.json')
                 )
                 .query({ type: 'Light' })
                 .reply(204);
