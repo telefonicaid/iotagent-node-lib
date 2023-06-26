@@ -99,13 +99,12 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     // this tests breaks jexlBasedTransformation-test with uses updateContextExpressionPlugin32 which do not includes Timestamp in metadata attributes
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 

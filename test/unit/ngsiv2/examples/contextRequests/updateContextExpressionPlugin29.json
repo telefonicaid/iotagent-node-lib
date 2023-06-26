@@ -1,4 +1,6 @@
 {
+  "id":"ws1",
+  "type":"WeatherStation",    
   "pressure": {
     "type": "Number",
     "value": 1040

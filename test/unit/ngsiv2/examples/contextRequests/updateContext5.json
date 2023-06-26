@@ -1,6 +1,6 @@
 {
-    "id": "light1",
-    "type": "Light",
+    "id":"humSensor",
+    "type":"Humidity",
     "state":{
         "value": true,
         "type": "boolean"

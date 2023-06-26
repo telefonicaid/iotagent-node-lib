@@ -347,7 +347,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/SecondMicroLight/attrs?type=MicroLights',
+                    '/v2/entities/SecondMicroLight/attrs?options=upsert&type=MicroLights',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateProvisionMinimumDevice.json'
                     )
@@ -422,7 +422,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/SecondMicroLight/attrs?type=MicroLights',
+                    '/v2/entities/SecondMicroLight/attrs?options=upsert&type=MicroLights',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateProvisionDeviceStatic.json'
                     )
