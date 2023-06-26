@@ -111,7 +111,7 @@ describe('NGSI-v2 - Custom plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch('/v2/entities/light1/attrs')
+                .post('/v2/entities/light1/attrs')
                 .query({ type: 'Light' })
                 .reply(204);
         });

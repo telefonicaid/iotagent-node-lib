@@ -1,0 +1,1 @@
+- Fix: appendMode at general level (config.js / env var) changes its default from false to true
