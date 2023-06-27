@@ -204,10 +204,6 @@
       "description": "Timestamp",
       "type": "boolean"
     },
-    "expressionLanguage": {
-      "description": "Expression language used to apply expressions for this device",
-      "type": "string"
-    },
     "explicitAttrs": {
       "description": "Flag to decide update of active attributes only"
     },
