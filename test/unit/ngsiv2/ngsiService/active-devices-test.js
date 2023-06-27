@@ -191,28 +191,6 @@ describe('NGSI-v2 - Active attributes test', function () {
                 done();
             });
         });
-
-        // Currently id and type are in payload of entities, so they should be right
-        //     it('should ignore if wrong type or id are target atributes in the context broker', function (done) {
-        //         const wrongvalues = [
-        //             {
-        //                 name: 'type',
-        //                 type: 'string',
-        //                 value: 'wrongtype'
-        //             },
-        //             {
-        //                 name: 'id',
-        //                 type: 'string',
-        //                 value: 'wrongid'
-        //             }
-        //         ];
-
-        //         iotAgentLib.update('light1', 'Light', '', wrongvalues.concat(values), function (error) {
-        //             should.not.exist(error);
-        //             contextBrokerMock.done();
-        //             done();
-        //         });
-        //     });
     });
 
     describe('When the IoT Agent receives new information and the timestamp flag is on', function () {

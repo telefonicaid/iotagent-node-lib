@@ -1,0 +1,12 @@
+{
+    "id":"skip1",
+    "type":"skipvalue",
+    "condition": {
+        "value": 33,
+        "type": "Number"
+    },
+    "neverSkip": {
+        "value": false,
+        "type": "Number"
+    }
+}
