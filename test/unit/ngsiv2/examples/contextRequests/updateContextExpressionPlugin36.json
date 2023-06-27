@@ -1,4 +1,5 @@
 {
+    "id":"gps1","type":"GPS",
     "mylocation": {
         "type": "geo:json",
         "value": {

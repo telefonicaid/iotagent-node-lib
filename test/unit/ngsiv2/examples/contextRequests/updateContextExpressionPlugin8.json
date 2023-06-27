@@ -1,4 +1,6 @@
 {
+  "id":"ws1",
+  "type":"WeatherStation",
   "consumption": {
     "type": "Number",
     "value": 8.8

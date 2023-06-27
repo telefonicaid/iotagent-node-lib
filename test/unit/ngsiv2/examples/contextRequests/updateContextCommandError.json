@@ -1,4 +1,6 @@
 {
+  "id":"r2d2",
+  "type":"Robot",
   "position_status": {
     "value": "ERROR",
     "type": "commandStatus"

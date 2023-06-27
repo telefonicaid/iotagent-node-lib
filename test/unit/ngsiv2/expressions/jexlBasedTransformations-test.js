@@ -568,12 +568,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -608,12 +607,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -649,12 +647,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -684,12 +681,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -719,12 +715,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -755,12 +750,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -791,12 +785,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -827,12 +820,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -863,12 +855,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -898,12 +889,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -934,12 +924,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -968,12 +957,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -1002,12 +990,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -1041,12 +1028,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
                 )
-                .query({ type: 'Light' })
                 .reply(204);
         });
 
@@ -1075,12 +1061,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -1108,12 +1093,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/ws1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin31.json'
                     )
                 )
-                .query({ type: 'WeatherStation' })
                 .reply(204);
         });
 
@@ -1153,12 +1137,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1198,12 +1181,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin35.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1248,12 +1230,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin41.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1293,12 +1274,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1338,12 +1318,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1388,12 +1367,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1428,12 +1406,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1463,12 +1440,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 
@@ -1550,12 +1526,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/skip1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionSkip.json'
                     )
                 )
-                .query({ type: 'skipvalue' })
                 .reply(204);
         });
 
@@ -1620,12 +1595,11 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities/gps1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin33.json'
                     )
                 )
-                .query({ type: 'GPS' })
                 .reply(204);
         });
 

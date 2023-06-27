@@ -1,3 +1,4 @@
 - Add: allow update timestamp and other config fields of device
+- Fix: use 'options=upsert' when update ngsiv2 CB entities and appendMode is enabled (#956)
 - Fix: do not propagate group config (timestamp and explicitAttrs) to autoprovisioned devices (at database level) (#1377)
 - Fix: appendMode at general level (config.js / env var) changes its default from false to true
