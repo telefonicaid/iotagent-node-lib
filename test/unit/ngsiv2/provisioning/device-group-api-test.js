@@ -906,7 +906,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock = nock('http://unexistentHost:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .patch(
+                .post(
                     '/v2/entities/machine1/attrs',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )

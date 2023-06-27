@@ -98,7 +98,7 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
+                .post(
                     '/v2/entities/light1/attrs',
                     // this tests breaks jexlBasedTransformation-test with uses updateContextExpressionPlugin32 which do not includes Timestamp in metadata attributes
                     utils.readExampleFile(

@@ -1,0 +1,30 @@
+#
+# This file is used by .github/workflows/issue-labeler.yml
+# Here, you can configure which dropdown fields are used
+# to assing a label (keys) to the issue and the name of the label (name)
+#
+# More info: https://github.com/marketplace/actions/advanced-issue-labeler
+#
+
+policy:
+  - template: [bug_report.yml]
+    section:
+      - id: [ngsi-version]
+        block-list: ['None', 'Other', 'Mixed Mode']
+        label:
+          - name: 'NGSIv2'
+            keys: ['NGSIv2']
+          - name: 'NGSI-LD'
+            keys: ['NGSI-LD']
+
+  - template: [feature_request.yml]
+    section:
+      - id: [type]
+        block-list: ['None', 'Other']
+        label:
+          - name: 'Feature request'
+            keys: ['New feature']
+          - name: 'Enhancement'
+            keys: ['Feature enhancement']
+          - name: 'Techdeb'
+            keys: ['Techdeb']
