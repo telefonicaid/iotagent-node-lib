@@ -141,6 +141,15 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
+If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
+process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
+associated document created in database doesn't include config group parameters (`timestamp` and `explicitAttrs` in
+particular). The IoT Agent will also create the entity in the Context Broker if it does not exist yet.
+
+This behavior allows that autoprovisioned parameters can freely established modifying the device information after
+creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
+parameters defined at device level in database, the parameters are inherit from config group parameters.
+
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
@@ -376,7 +385,8 @@ By default, when a measure arrives to the IoTAgent, if the `device_id` does not 
 IoTA creates a new device and a new entity according to the config group. Defining the field `autoprovision` to `false`
 when provisioning the config group, the IoTA to reject the measure at the southbound, allowing only to persist the data
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
-to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+to avoid provisioning devices (and for it to be effective, it would have to be provisional). Further information can be
+found in section [Devices](#devices)
 
 ### Explicitly defined attributes (explicitAttrs)
 
