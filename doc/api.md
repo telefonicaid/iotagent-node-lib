@@ -181,10 +181,10 @@ Some transformation plugins also allow the use of the following optional fields:
     an expression based on a combination of the reported values. See the
     [Expression Language definition](#expression-language-support) for details
 -   **skipValue**: indicates that if the result of applying `expression` to a measure is equal to the value of
-    `skipValue` then the attribute corresponding to the measure is not sent to CB. By default if `skipValue` is not
+    `skipValue` then the attribute corresponding to the measure is not sent to CB. In other words, this field **is
+    not an expression**, it is a value that is compared with the result of applying `expression` to a measure. By default if `skipValue` is not
     defined then is considered as `null` (i.e. if the result of apply `expression` results in `null` then corresponding
-    attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored). This field **is
-    not an expression**, it is a value that is compared with the result of applying `expression` to a measure.
+    attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored).
 -   **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device
     entity but in a new entity with an ID given by this attribute. The type of this additional entity can be configured
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
