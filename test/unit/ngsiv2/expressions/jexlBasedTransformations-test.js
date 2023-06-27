@@ -1112,7 +1112,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
                     )
                 )
-                //uery({ type: 'GPS' })
                 .reply(204);
         });
 
