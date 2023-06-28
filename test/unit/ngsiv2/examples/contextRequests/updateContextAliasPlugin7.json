@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",    
   "tags": {
     "type": "Array",
     "value": ["iot","device"]

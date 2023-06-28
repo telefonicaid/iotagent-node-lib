@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",
   "luminance": {
     "type": "Number",
     "value": 9,

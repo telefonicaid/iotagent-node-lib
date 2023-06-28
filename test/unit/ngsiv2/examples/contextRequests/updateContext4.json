@@ -1,4 +1,6 @@
 {
+    "id":"Light1",
+    "type":"SensorMachine",    
     "status": {
         "type": "String",
         "value": "STARTING"
@@ -8,3 +10,4 @@
         "value": "127.0.0.1"
     }
 }
+
