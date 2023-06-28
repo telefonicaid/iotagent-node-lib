@@ -1,4 +1,4 @@
-- Fix: explicitAttrs of device was tained even if not defined
+- Fix: explicitAttrs of device was tainted even if not defined
 - Fix: do not include static, lazy and commands in complete registrations to avoid duplicate them in device (#1377) 
 - Add: allow update timestamp and other config fields of device
 - Fix: use 'options=upsert' when update ngsiv2 CB entities and appendMode is enabled (#956)
