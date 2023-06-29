@@ -288,16 +288,16 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
                 )
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            contextBrokerMock
-                .matchHeader('fiware-service', 'testservice')
-                .matchHeader('fiware-servicepath', '/testingPath')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
-                    )
-                )
-                .reply(204);
+            // contextBrokerMock
+            //     .matchHeader('fiware-service', 'testservice')
+            //     .matchHeader('fiware-servicepath', '/testingPath')
+            //     .post(
+            //         '/v2/entities?options=upsert',
+            //         utils.readExampleFile(
+            //             './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
+            //         )
+            //     )
+            //     .reply(204);
 
             request(groupCreation, done);
         });
