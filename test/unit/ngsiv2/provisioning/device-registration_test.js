@@ -112,11 +112,11 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock = nock('http://192.168.1.1:1026');
+            // .matchHeader('fiware-service', 'smartgondor')
+            // .matchHeader('fiware-servicepath', 'gardens')
+            // .post('/v2/entities?options=upsert')
+            // .reply(204);
 
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'
@@ -279,7 +279,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            //contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
@@ -288,7 +288,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            //contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
 
             contextBrokerMock
                 .delete('/v2/registrations/6319a7f5254b05844116584d', '')

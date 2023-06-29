@@ -687,8 +687,8 @@ describe(
                     'fiware-servicepath': '/testingPath'
                 }
             };
-            let contextBrokerMock2;
-            //let contextBrokerMock3;
+            //let contextBrokerMock2;
+            let contextBrokerMock3;
             beforeEach(function (done) {
                 const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
                 timekeeper.freeze(time);
