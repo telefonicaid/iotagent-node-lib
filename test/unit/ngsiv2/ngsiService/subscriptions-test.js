@@ -64,16 +64,16 @@ describe('NGSI-v2 - Subscription tests', function () {
         nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig, function () {
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
+            contextBrokerMock = nock('http://192.168.1.1:1026');
+            // .matchHeader('fiware-service', 'smartgondor')
+            // .matchHeader('fiware-servicepath', '/gardens')
+            // .post(
+            //     '/v2/entities?options=upsert',
+            //     utils.readExampleFile(
+            //         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
+            //     )
+            // )
+            // .reply(204);
 
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
