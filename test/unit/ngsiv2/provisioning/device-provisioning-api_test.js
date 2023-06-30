@@ -727,7 +727,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
                         entityNameExp: "id + '__' + suffix_st",
-                        expressionLanguage: 'jexl',
                         cbHost: 'http://192.168.1.1:1026',
                         static_attributes: [
                             {
