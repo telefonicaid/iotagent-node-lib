@@ -10,7 +10,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: IoT Agent Node Libe version the issue has been seen with
+      label: IoT Agent Node Lib version the issue has been seen with
       description: |
         Do not submit bug reports about anything but the two most recently released *major* systemd versions upstream!
         If there have been multiple stable releases for that major version, please consider updating to a recent one before reporting an issue.
