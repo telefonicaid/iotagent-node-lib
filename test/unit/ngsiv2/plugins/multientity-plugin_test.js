@@ -508,7 +508,6 @@ const iotAgentConfig = {
         },
         GPS1: {
             commands: [],
-            expressionLanguage: 'jexl',
             type: 'GPS',
             lazy: [],
             active: [
