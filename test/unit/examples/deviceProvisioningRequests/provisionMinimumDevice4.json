@@ -3,7 +3,6 @@
     {
       "device_id": "MicroLight1",
       "protocol": "GENERIC_PROTO",
-      "expressionLanguage": "jexl",
       "attributes": [
         {
           "name": "attr_name",
