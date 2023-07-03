@@ -143,8 +143,8 @@ described in the [Device datamodel](#device-datamodel) section.
 
 If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
 process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
-associated document created in database doesn't include config group parameters (in particular, timestamp, explicitAttrs,
-active or attributes, static and lazy attributes and commands). The IoT Agent will also create the entity in the
+associated document created in database doesn't include config group parameters (in particular, `timestamp`, `explicitAttrs`,
+`active` or `attributes`, `static` and `lazy` attributes and commands). The IoT Agent will also create the entity in the
 Context Broker if it does not exist yet.
 
 This behavior allows that autoprovisioned parameters can freely established modifying the device information after
