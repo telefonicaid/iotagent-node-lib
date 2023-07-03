@@ -1,5 +1,6 @@
 - Fix: explicitAttrs of device was tainted even if not defined
 - Fix: do not include static, lazy and commands from group to device to avoid duplicate them in device (#1377) 
+- Add: Evaluate group entityNameExp with a context including measures (#1334)
 - Remove: expressionLanguage field (as it it not longer needed, due to only one expression language is supported, after the removal of legacy expressions in 3.2.0) (#1384)
 - Add: allow update timestamp and other config fields of device
 - Fix: use 'options=upsert' when update ngsiv2 CB entities and appendMode is enabled (#956)
