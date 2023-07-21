@@ -130,10 +130,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204, {});
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -170,10 +169,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
-                .query({ type: 'Light' })
                 .reply(403, {});
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -206,7 +204,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3cHdWclJ3')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
                 .reply(204, {});
@@ -397,10 +395,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204, {});
 
             iotAgentConfig.authentication.tokenPath = '/oauth2/token';
@@ -537,10 +534,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
                 .matchHeader('fiware-servicepath', 'electricity')
                 .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                 .post(
-                    '/v2/entities/light1/attrs',
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext1.json')
                 )
-                .query({ type: 'Light' })
                 .reply(401, 'Auth-token not found in request header');
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -625,12 +621,11 @@ describe(
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer c1b752e377680acd1349a3ed59db855a1db07605')
                     .post(
-                        '/v2/entities/machine1/attrs',
+                        '/v2/entities?options=upsert',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .query({ type: 'SensorMachine' })
                     .reply(204, {});
 
                 contextBrokerMock2 = nock('http://unexistentHost:1026')
@@ -638,12 +633,11 @@ describe(
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer bbb752e377680acd1349a3ed59db855a1db076aa')
                     .post(
-                        '/v2/entities/machine1/attrs',
+                        '/v2/entities?options=upsert',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .query({ type: 'SensorMachine' })
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
@@ -767,10 +761,9 @@ describe(
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
                     .post(
-                        '/v2/entities/Light1/attrs',
+                        '/v2/entities?options=upsert',
                         utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext4.json')
                     )
-                    .query({ type: 'SensorMachine' })
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';
@@ -847,12 +840,11 @@ describe(
                     .matchHeader('fiware-servicepath', '/testingPath')
                     .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
                     .post(
-                        '/v2/entities/machine1/attrs',
+                        '/v2/entities?options=upsert',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json'
                         )
                     )
-                    .query({ type: 'SensorMachine' })
                     .reply(204, {});
 
                 iotAgentConfig.authentication.tokenPath = '/oauth2/token';

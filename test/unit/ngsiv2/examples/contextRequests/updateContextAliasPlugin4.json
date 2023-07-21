@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",
   "active_power": {
     "type": "Number",
     "value": 0.45

@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",    
   "keep_alive": {
     "type": "None",
     "value": null

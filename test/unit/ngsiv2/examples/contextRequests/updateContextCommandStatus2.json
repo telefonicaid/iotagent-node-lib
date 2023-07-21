@@ -1,4 +1,6 @@
 {
+  "id":"RobotExp:r2d4",
+  "type":"RobotExp",    
   "positionExp_status": {
     "type": "commandStatus",
     "value": "PENDING"

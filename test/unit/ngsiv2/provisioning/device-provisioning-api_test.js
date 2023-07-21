@@ -553,12 +553,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with static attributes provided in configuration', function (done) {
+            it('should not store the device with static attributes provided in configuration', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
-                            results.devices[0].staticAttributes[0].name.should.equal('bootstrapServer');
+                            results.devices[0].staticAttributes.length.should.equal(0);
                             done();
                         });
                     });
@@ -693,12 +693,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with static attributes provided in configuration as well as device', function (done) {
+            it('should store the device with static attributes provided in device but no in configuration', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
-                            results.devices[0].staticAttributes.length.should.equal(2);
+                            results.devices[0].staticAttributes.length.should.equal(1);
                             done();
                         });
                     });
@@ -728,7 +728,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
                         entityNameExp: "id + '__' + suffix_st",
-                        expressionLanguage: 'jexl',
                         cbHost: 'http://192.168.1.1:1026',
                         static_attributes: [
                             {

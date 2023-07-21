@@ -141,6 +141,16 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
+If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
+process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
+associated document created in database doesn't include config group parameters (in particular, `timestamp`, `explicitAttrs`,
+`active` or `attributes`, `static` and `lazy` attributes and commands). The IoT Agent will also create the entity in the
+Context Broker if it does not exist yet.
+
+This behavior allows that autoprovisioned parameters can freely established modifying the device information after
+creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
+parameters defined at device level in database, the parameters are inherit from config group parameters.
+
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
@@ -181,9 +191,10 @@ Some transformation plugins also allow the use of the following optional fields:
     an expression based on a combination of the reported values. See the
     [Expression Language definition](#expression-language-support) for details
 -   **skipValue**: indicates that if the result of applying `expression` to a measure is equal to the value of
-    `skipValue` then the attribute corresponding to the measure is not sent to CB. By default if `skipValue` is not
-    defined then is considered as `null` (i.e. if the result of apply `expression` results in `null` then corresponding
-    attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored).
+    `skipValue` then the attribute corresponding to the measure is not sent to CB. In other words, this field **is not
+    an expression**, it is a value that is compared with the result of applying `expression` to a measure. By default if
+    `skipValue` is not defined then is considered as `null` (i.e. if the result of apply `expression` results in `null`
+    then corresponding attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored).
 -   **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device
     entity but in a new entity with an ID given by this attribute. The type of this additional entity can be configured
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
@@ -376,7 +387,8 @@ By default, when a measure arrives to the IoTAgent, if the `device_id` does not 
 IoTA creates a new device and a new entity according to the config group. Defining the field `autoprovision` to `false`
 when provisioning the config group, the IoTA to reject the measure at the southbound, allowing only to persist the data
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
-to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+to avoid provisioning devices (and for it to be effective, it would have to be provisional). Further information can be
+found in section [Devices](#devices)
 
 ### Explicitly defined attributes (explicitAttrs)
 
@@ -508,6 +520,9 @@ expression. In all cases the following data is available to all expressions:
 -   `service`: device service
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
+
+Additionally, for attribute expressions (`expression`, `entity_name`) and `entityNameExp` measures are avaiable in the
+**context** used to evaluate them.
 
 ### Examples of JEXL expressions
 

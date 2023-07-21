@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",    
   "configuration": {
     "type": "Object",
     "value": "string_value"
