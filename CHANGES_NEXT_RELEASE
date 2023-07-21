@@ -1,3 +1,4 @@
+- Fix: Payload measures are lost after reconnection with Orion (#1407)
 - Fix: check array access in extractVariables of jexlPlugin when bidirectionalPlugin is enabled
 - Fix: explicitAttrs of device was tainted even if not defined
 - Fix: do not include static, lazy and commands from group to device to avoid duplicate them in device (#1377) 
