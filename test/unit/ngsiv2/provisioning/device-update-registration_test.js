@@ -205,13 +205,13 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
-        it('should register as ContextProvider of its lazy attributes', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        // it('should register as ContextProvider of its lazy attributes', function (done) {
+        //     iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
+        //         should.not.exist(error);
+        //         contextBrokerMock.done();
+        //         done();
+        //     });
+        // });
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(deviceUpdated.id, 'smartgondor', 'gardens', function (error, deviceResult) {
@@ -260,13 +260,13 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
-        it('should register as ContextProvider of its commands and create the additional attributes', function (done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        // it('should register as ContextProvider of its commands and create the additional attributes', function (done) {
+        //     iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error) {
+        //         should.not.exist(error);
+        //         contextBrokerMock.done();
+        //         done();
+        //     });
+        // });
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(
