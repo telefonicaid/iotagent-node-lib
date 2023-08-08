@@ -246,4 +246,4 @@ change the`expressionLanguage` field in the document. This means that the legacy
 `expressionLanguage` field will still be set to the default value or legacy. This would make expression evaluation to
 fail, propagating the value of the attribute as the expression literal to the context broker.
 
-To avoid this, it is recommented use always the `--expressionlangauge` parameter set to `jexl` (note that is't optional) and doing it with a value different from `ignore`.
+To avoid this, it is recommended use always the `--expressionlangauge` parameter set to `jexl`, so doing it a value different from `ignore` will be used.
