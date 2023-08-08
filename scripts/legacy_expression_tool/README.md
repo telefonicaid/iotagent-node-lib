@@ -226,7 +226,7 @@ All                                                    1        1   2
 
 When executing the script with `expressionlanguage` set to `jexlall`, the script will look for all the documents
 containing legacy expressions or the parameter `expressionLanguage`. This would change the number of documents found,
-and the statistics will be different.
+and the statistics will be different. Running the script with the option set to `jexl` would not have impact on  the statistics. 
 
 #### Replacing expression without setting jexl at group or device level
 
