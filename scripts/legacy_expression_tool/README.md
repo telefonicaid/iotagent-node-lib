@@ -230,7 +230,7 @@ and the statistics will be different.
 
 #### Replacing expression without setting jexl at group or device level
 
-When executing the script without setting `expressionlanguage` to `jexl` or `jexlall` (or `delete`), the script will not
+When executing the script setting `--expressionlanguage` to `ignore` (or when `--expressionlanguage` is not used), the script will not
 change the`expressionLanguage` field in the document. This means that the legacy expressions will be replaced, but the
 `expressionLanguage` field will still be set to the default value or legacy. This would make expression evaluation to
 fail, propagating the value of the attribute as the expression literal to the context broker.
