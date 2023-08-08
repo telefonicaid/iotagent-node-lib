@@ -106,10 +106,10 @@ interpreted in additive way (i.e. like a logical AND).
 
 With regards to `--expressionlanguage`:
 
-* `delete`: changes expressions from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, deletes the `expressionLanguage` field (no matter its value) in the case it exists in the group/device.
-* `ignore`: changes expressions from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, it leaves untouched the `expressionLanguage` field. This may cause inconsistencies, if the value of the `expressionLanguage` is `legacy`, as detailed [in this section](#replacing-expression-without-setting-jexl-at-group-or-device-level).
-* `jexl`: changes expressions from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not) **if some JEXL expression were translated**.
-* `jexlall`: changes expression from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not) **no matter if some JEXL expression were translated or not**.
+* `delete`: changes expressions from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, deletes the `expressionLanguage` field (no matter its value) in the case it exists in the group/device.
+* `ignore`: changes expressions from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, it leaves untouched the `expressionLanguage` field. This may cause inconsistencies, if the value of the `expressionLanguage` is `legacy`, as detailed [in this section](#replacing-expression-without-setting-jexl-at-group-or-device-level).
+* `jexl`: changes expressions from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not) **if some JEXL expression were translated**.
+* `jexlall`: changes expression from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not) **no matter if some JEXL expression were translated or not**.
 
 The different between `jexl` and `jexall` is that in the former case the `expressionLanuage` field is set to `jexl` only if some expression were translated and the latter sets the field always, no matter if some expression were translated or not.
 
@@ -229,12 +229,27 @@ ${@value*100/total}                                    1        1   2
 All                                                    1        1   2
 ```
 
+### Fields in which expressions may be used
+
+The script implements expression detection and translation in the following fields in group/device documents at DB:
+
+* active.expression
+* active.entity_name
+* active.reverse
+* attributes.expression
+* attributes.entity_name
+* attributes.expression
+* commands.expression
+* endpoint
+* entityNameExp
+* explicitAttrs
+
 ### Known issues
 
 #### Execution with `expressionlanguage` set to `jexlall`
 
 When executing the script with `expressionlanguage` set to `jexlall`, the script will look for all the documents
-containing legacy expressions (in some of the expression capable fields) or the existence of the `expressionLanguage` field.
+containing legacy expressions (in some of the [expression capable fields](#fields-in-which-expressions-may-be-used)) or the existence of the `expressionLanguage` field.
 This would change the number of documents found, and the statistics will include extra documents.
 
 Running the script with the option set to `jexl` would not include such extra documents in statistics.
