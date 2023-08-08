@@ -104,7 +104,7 @@ The list of possible arguments that the scripts accepts are:
 Note that filters (`--service`, `--service-path`, `--deviceid` and `--entitytype`, and the regex versions) are
 interpreted in additive way (i.e. like a logical AND).
 
-With regards to `--expressionLanguage`:
+With regards to `--expressionlanguage`:
 
 * `delete`: changes expressions from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, deletes the `expressionLanguage` field (no matter its value) in the case it exists in the group/device.
 * `ignore`: changes expressions from legacy to JEXL equivalence in the fields where expressions may be used (based on the translation dictionary specified by `--translations`). In addition, it leaves untouched the `expressionLanguage` field. This may cause inconsistencies, if the value of the `expressionLanguage` is `legacy`, as detailed [in this section](#replacing-expression-without-setting-jexl-at-group-or-device-level).
