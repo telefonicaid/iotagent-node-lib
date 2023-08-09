@@ -490,7 +490,7 @@ describe('NGSI-v2 - Bidirectional data plugin and CB is defined using environmen
     };
 
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
         process.env.IOTA_CB_HOST = 'cbhost';
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
