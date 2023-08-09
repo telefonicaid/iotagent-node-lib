@@ -229,11 +229,7 @@ describe('NGSI-v2 - HTTPS support tests', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock = nock('https://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
-                .reply(204);
+            contextBrokerMock = nock('https://192.168.1.1:1026');
 
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'

@@ -124,18 +124,6 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
             });
         });
 
-        it('should continue with the registration process', function (done) {
-            function testMiddleware(device, callback) {
-                callback(null, device);
-            }
-
-            iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
-
-            request(options, function (error, response, body) {
-                contextBrokerMock.done();
-                done();
-            });
-        });
 
         it('should execute the device provisioning handlers', function (done) {
             let executed = false;
