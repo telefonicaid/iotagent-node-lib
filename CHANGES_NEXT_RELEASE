@@ -1,4 +1,4 @@
-- Add: do not create initial entity when a new device is provisioned and appendMode is false
+- Add: do not create initial entity when a new device is provisioned and appendMode is false or NGSI-LD is used
 - Fix: check array access in extractVariables of jexlPlugin when bidirectionalPlugin is enabled
 - Fix: explicitAttrs of device was tainted even if not defined
 - Fix: do not include static, lazy and commands from group to device to avoid duplicate them in device (#1377) 
