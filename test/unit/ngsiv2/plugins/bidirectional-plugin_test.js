@@ -63,7 +63,7 @@ describe('NGSI-v2 - Bidirectional data plugin', function () {
     };
 
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
