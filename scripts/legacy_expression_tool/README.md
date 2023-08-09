@@ -111,8 +111,6 @@ With regards to `--expressionlanguage`:
 * `jexl`: changes expressions from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not) **if some JEXL expression were translated**.
 * `jexlall`: changes expression from legacy to JEXL equivalence in the [fields where expressions may be used](#fields-in-which-expressions-may-be-used) (based on the translation dictionary specified by `--translations`). In addition, it set `expressionLanguage` field to `jexl` (no matter if the field originally exists in the group/device or not). The difference between `jexl`and `jexlall` is in the second case, the script is not only looking for documents that contains legacy expressions, it also includes all groups/devices that have `expressionLanguage` field defined. The `expressionLanguage` field on those documents (and also on the documents that contains legacy expresions) is set to `jexl`.
 
-The different between `jexl` and `jexall` is that in the former case the `expressionLanuage` field is set to `jexl` only if some expression were translated and the latter sets the field always, no matter if some expression were translated or not.
-
 ## Usage
 
 ### Getting legacy expressions matches
