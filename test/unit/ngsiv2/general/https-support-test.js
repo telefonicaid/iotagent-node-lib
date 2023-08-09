@@ -230,10 +230,6 @@ describe('NGSI-v2 - HTTPS support tests', function () {
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
             contextBrokerMock = nock('https://192.168.1.1:1026');
-            // .matchHeader('fiware-service', 'smartgondor')
-            // .matchHeader('fiware-servicepath', 'gardens')
-            // .post('/v2/entities?options=upsert')
-            // .reply(204);
 
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsiv2/examples/contextAvailabilityRequests/registerIoTAgent1.json'

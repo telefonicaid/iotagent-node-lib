@@ -275,13 +275,6 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
 
                 contextBrokerMock = nock('http://192.168.1.1:1026');
 
-                // contextBrokerMock
-                //     .matchHeader('fiware-service', 'smartgondor')
-                //     .matchHeader('fiware-servicepath', 'electricity')
-                //     .matchHeader('X-Auth-Token', '12345679ABCDEF')
-                //     .post('/v2/entities?options=upsert')
-                //     .reply(204);
-
                 contextBrokerMock
                     .post('/v2/registrations')
                     .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
