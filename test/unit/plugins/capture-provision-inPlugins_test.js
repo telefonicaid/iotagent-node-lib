@@ -89,12 +89,6 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
             )
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-        contextBrokerMock
-            .matchHeader('fiware-service', 'smartgondor')
-            .matchHeader('fiware-servicepath', '/gardens')
-            .post('/v2/entities?options=upsert')
-            .reply(204);
-
         iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.clearAll(done);
         });
@@ -124,18 +118,18 @@ describe('NGSI-v2 - Data Mapping Plugins: device provision', function () {
             });
         });
 
-        // it('should continue with the registration process', function (done) {
-        //     function testMiddleware(device, callback) {
-        //         callback(null, device);
-        //     }
+        it('should continue with the registration process', function (done) {
+            function testMiddleware(device, callback) {
+                callback(null, device);
+            }
 
-        //     iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
+            iotAgentLib.addDeviceProvisionMiddleware(testMiddleware);
 
-        //     request(options, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+            request(options, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
 
         it('should execute the device provisioning handlers', function (done) {
             let executed = false;
