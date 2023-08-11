@@ -148,15 +148,6 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-        // This mock does not check the payload since the aim of the test is not to verify
-        // device provisioning functionality. Appropriate verification is done in tests under
-        // provisioning folder
-        contextBrokerMock
-            .matchHeader('fiware-service', 'smartgondor')
-            .matchHeader('fiware-servicepath', 'gardens')
-            .post('/v2/entities?options=upsert')
-            .reply(204);
-
         iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.register(device1, function (error) {
                 done();
@@ -212,6 +203,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 done();
             });
         });
+
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(deviceUpdated.id, 'smartgondor', 'gardens', function (error, deviceResult) {
@@ -267,6 +259,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
                 done();
             });
         });
+
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(

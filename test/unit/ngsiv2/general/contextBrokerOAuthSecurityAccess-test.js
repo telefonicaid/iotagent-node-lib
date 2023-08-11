@@ -293,15 +293,6 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
 
                 contextBrokerMock
                     .post(
-                        '/v2/entities?options=upsert',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic3.json'
-                        )
-                    )
-                    .reply(204, {});
-
-                contextBrokerMock
-                    .post(
                         '/v2/subscriptions',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/subscriptionRequests/simpleSubscriptionRequest2.json'
@@ -687,7 +678,6 @@ describe(
                     'fiware-servicepath': '/testingPath'
                 }
             };
-            let contextBrokerMock2;
             let contextBrokerMock3;
             beforeEach(function (done) {
                 const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
@@ -744,22 +734,10 @@ describe(
                     )
                     .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-                contextBrokerMock2 = nock('http://unexistenthost:1026')
-                    .matchHeader('fiware-service', 'testservice')
-                    .matchHeader('fiware-servicepath', '/testingPath')
-                    .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
-                    .post(
-                        '/v2/entities?options=upsert',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
-                        )
-                    )
-                    .reply(204, {});
-
                 contextBrokerMock3 = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
-                    .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
+                    .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
                     .post(
                         '/v2/entities?options=upsert',
                         utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext4.json')
@@ -783,7 +761,6 @@ describe(
                     should.not.exist(error);
                     response.statusCode.should.equal(201);
                     contextBrokerMock.done();
-                    contextBrokerMock2.done();
                     done();
                 });
             });
@@ -838,7 +815,7 @@ describe(
                 contextBrokerMock = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('fiware-servicepath', '/testingPath')
-                    .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
+                    .matchHeader('Authorization', 'Bearer 000210dacf913772606c95dd0b895d5506cbc700')
                     .post(
                         '/v2/entities?options=upsert',
                         utils.readExampleFile(
@@ -857,7 +834,6 @@ describe(
             it('should send the permanent token in the auth header', function (done) {
                 iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
-                    contextBrokerMock.done();
                     done();
                 });
             });
@@ -865,7 +841,6 @@ describe(
             it('should use the permanent trust token in the following requests', function (done) {
                 iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
-                    contextBrokerMock.done();
                     done();
                 });
             });
