@@ -58,7 +58,7 @@ parser.add_argument('--translation', help='Translation file', required=False)
 parser.add_argument('--debug', help='Debug mode', required=False, action='store_true')
 parser.add_argument('--commit', help='Commit changes to database', required=False, action='store_true')
 parser.add_argument('--mongouri', help='Database connection URI', required=False, default='mongodb://localhost:27017/')
-parser.add_argument('--expressionlanguage', help='How to handle expressionLanguage values. Can be: delete, ignore or jexl', required=False, default='ignore')
+parser.add_argument('--expressionlanguage', help='How to handle expressionLanguage values. Can be: delete, ignore, jexl or jexlall', required=False, default='ignore')
 parser.add_argument('--statistics', help='Show statistics at the end of the execution. Possible values: service subservice', required=False, default='service')
 parser.add_argument('--regexservice', help='FIWARE service filter', required=False, default='.*')
 parser.add_argument('--regexservicepath', help='FIWARE servicepath filter', required=False, default='.*')
@@ -112,8 +112,10 @@ filter = {
 if args['expressionlanguage'] == 'delete':
     filter['$and'][0]['$or'].append({'expressionLanguage':{'$exists': True}})
     expressionlanguage = 'delete'
-elif args['expressionlanguage'] == 'jexl':
+elif args['expressionlanguage'] == 'jexlall':
     filter['$and'][0]['$or'].append({'expressionLanguage':{'$exists': True}})
+    expressionlanguage = 'jexlall'
+elif args['expressionlanguage'] == 'jexl':
     expressionlanguage = 'jexl'
 else:
     expressionlanguage = 'ignore'
@@ -359,9 +361,14 @@ for occurrence in result_cursor:
             if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
             del occurrence['expressionLanguage']
-        elif expressionlanguage == 'jexl':
+        elif expressionlanguage == 'jexl' or expressionlanguage == 'jexlall':
             if debug:
                 print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + str(occurrence['expressionLanguage']))
+            occurrence['expressionLanguage'] = 'jexl'
+    else:
+        if expressionlanguage == 'jexl' or expressionlanguage == 'jexlall':    
+            if debug:
+                print ('ocurrence: ' + occurrence_id + ' expressionLanguage: ' + 'undefined')
             occurrence['expressionLanguage'] = 'jexl'
 
 
