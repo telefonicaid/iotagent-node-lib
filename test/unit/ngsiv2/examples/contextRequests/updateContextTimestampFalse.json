@@ -1,0 +1,12 @@
+{
+  "id": "lightNoTimestamp1",
+  "type": "Light",
+  "state": {
+      "value": true,
+      "type": "boolean"
+  },
+  "dimming": {
+      "value": 87,
+      "type": "number"
+  }
+}
