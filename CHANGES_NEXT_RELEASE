@@ -9,3 +9,5 @@
 - Fix: do not propagate group config (timestamp and explicitAttrs) to autoprovisioned devices (at database level) (#1377)
 - Fix: appendMode at general level (config.js / env var) changes its default from false to true
 - Fix: remove sensitive MongoDB connection parameters from log traces (remove 'option' object from logs)
+- Deprecate: bidirectional plugin
+- Deprecate: appendMode
