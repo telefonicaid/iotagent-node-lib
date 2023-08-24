@@ -53,5 +53,5 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Node.js v12 | 2.24.0                                                | September 2nd, 2022           |
 | Support to NGSI-LD 1.3 | 2.25.0                                                | January 24th, 2023            |
 | Support to Legacy Expressions | 3.1.0                                          | April 25th, 2023              |
-| bidirrectional plugin | 3.3.0                                                  | To be defined                 |
-| appendMode | 3.3.0                                                             | To be defined                 |
+| bidirrectional plugin | 3.3.0                                                  | August 24th, 2023             |
+| appendMode | 3.3.0                                                             | August 24th, 2023             |
