@@ -19,7 +19,7 @@
     -   [Measurement persistence options](#measurement-persistence-options)
         -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
         -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-        -   [Differences between `autoprovision`, `explicitAttrs`.](#differences-between-autoprovision-explicitattrs)
+        -   [Differences between `autoprovision`, `explicitAttrs`](#differences-between-autoprovision-explicitattrs)
     -   [Expression language support](#expression-language-support)
         -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
         -   [Available functions](#available-functions)
@@ -446,7 +446,7 @@ depending on the JEXL expression evaluation:
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
 
-### Differences between `autoprovision`, `explicitAttrs`.
+### Differences between `autoprovision`, `explicitAttrs`
 
 Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
 
