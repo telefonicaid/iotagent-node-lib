@@ -60,6 +60,23 @@ const iotAgentConfig = {
                 }
             ]
         },
+        LightNoTimestamp: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            timestamp: false,
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        },
         BrokenLight: {
             commands: [],
             lazy: [
@@ -245,6 +262,109 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
+    describe('When the IoT Agent receives new information and the timestamp flag is false', function () {
+        let modifiedValues;
+
+        beforeEach(function (done) {
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'boolean',
+                    value: true
+                },
+                {
+                    name: 'dimming',
+                    type: 'number',
+                    value: 87
+                }
+            ];
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalse.json'
+                    )
+                )
+                .reply(204);
+
+            iotAgentConfig.timestamp = false;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function (done) {
+            delete iotAgentConfig.timestamp;
+
+            done();
+        });
+
+        it('should not add the timestamp to the entity and the attributes', function (done) {
+            iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives new information and the timestamp flag is false but the measure contains timeInstant', function () {
+        let modifiedValues;
+
+        beforeEach(function (done) {
+            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+            modifiedValues = [
+                {
+                    name: 'state',
+                    type: 'boolean',
+                    value: true
+                },
+                {
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    value: '2015-12-14T08:06:01.468Z'
+                }
+            ];
+
+            timekeeper.freeze(time);
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalseTimeInstant.json'
+                    )
+                )
+                .reply(204);
+
+            iotAgentConfig.timestamp = false;
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        afterEach(function (done) {
+            delete iotAgentConfig.timestamp;
+            timekeeper.reset();
+
+            done();
+        });
+
+        it('should add the timestamp attribute to the entity but not as attribute metadata', function (done) {
+            iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function () {
         let modifiedValues;
 
@@ -337,7 +457,7 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
-    describe('When the IoT Agent receives new information, the timestamp flag is onand timezone is defined', function () {
+    describe('When the IoT Agent receives new information, the timestamp flag is on and timezone is defined', function () {
         let modifiedValues;
 
         beforeEach(function (done) {
