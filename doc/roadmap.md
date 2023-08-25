@@ -13,7 +13,7 @@ only, and this section may be revised to provide newer information at any time.
 
 Disclaimer:
 
--   This section has been last updated in March 2022. Please take into account its content could be obsolete.
+-   This section has been last updated in August 2023. Please take into account its content could be obsolete.
 -   Note we develop this software in Agile way, so development plan is continuously under review. Thus, this roadmap has
     to be understood as rough plan of features to be done along time which is fully valid only at the time of writing
     it. This roadmap has not be understood as a commitment on features and/or dates.
@@ -26,16 +26,21 @@ The following list of features are planned to be addressed in the short term, an
 product:
 
 -   cgroup literal in configuration groups management API (community)
--   Metadata processing improvements
--   Improve command functionalities (binary data + expression + mapping)
+-   Refactor Append Mode & initial entity
+-   Native support for NGSI-v2 and LD ingestion
+-   Remove plugins structure (bidirectional plugin)
+-   Add init and improve log traces 
 
 ### Medium term
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
 release(s) generated in the next 9 months after the next planned release:
 
--   Accept JEXL Expressions for entity name in autoprovisioned devices (#1145)
--   Refactor entities-NGSI-v2.js module (#1166)
+-   Allow to add metadata to attributes from measures
+-   Cache support
+-   Advanced MQTT per group configuration (MQTT broker, topics)
+-   Subscription based commands
+-   Remove registration support
 
 ### Long term
 
@@ -43,14 +48,21 @@ The following list of features are proposals regarding the longer-term evolution
 development of these features has not yet been scheduled for a release in the near future. Please feel free to contact
 us if you wish to get involved in the implementation or influence the roadmap:
 
+-   Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker (testing pending)
+-   Add support to other transport protocols (BacNET, Modbus, etc)
+-   Dynamic attribute generation (based on values array)
 -   Incremental introduccion of ECMAScript6 syntax (previous analysis of which sub-set of interesting aspect we want to
     take)
--   Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker
--   Add support to other transport protocols (BacNET, Modbus, etc)
 
 ### Features already completed
 
 The following list contains all features that were in the roadmap and have already been implemented.
+
+-   Accept JEXL Expressions for entity name in autoprovisioned devices (#1145)
+-   Improve command functionalities (binary data + expression + mapping)
+-   Refactor entities-NGSI-v2.js module (#1166)
+
+
 
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
 -   Allow to handle binary messages ([iota-ul#530](https://github.com/telefonicaid/iotagent-ul/issues/530))
