@@ -22,6 +22,8 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support groups (provision) statically defined by configuration
 -   Support to in-memory registry (i.e.`deviceRegistry.type=memory`)
 -   Support to legacy expressions (finally removed in 3.2.0)
+-   Bidirectinal pluging (to be removed in 3.4.0)
+-   appendMode (to be removed in 3.4.0)
 
 The use of Node.js v14 is highly recommended.
 
@@ -51,3 +53,5 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Node.js v12 | 2.24.0                                                | September 2nd, 2022           |
 | Support to NGSI-LD 1.3 | 2.25.0                                                | January 24th, 2023            |
 | Support to Legacy Expressions | 3.1.0                                          | April 25th, 2023              |
+| bidirrectional plugin | 3.3.0                                                  | August 24th, 2023             |
+| appendMode | 3.3.0                                                             | August 24th, 2023             |
