@@ -1,1 +1,2 @@
+- Fix: Payload measures are lost after reconnection with Orion (#1407)
 - Upgrade mongoose dep from 5.13.14 to 5.13.20

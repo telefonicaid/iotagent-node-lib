@@ -76,7 +76,9 @@ var config = {
     subservice: '/gardens',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing'
+    defaultType: 'Thing',
+    ORION_DEFAULT_RETRIES: 5,
+    ORION_DEFAULT_RETRY_TIME: 5
 };
 
 module.exports = config;
