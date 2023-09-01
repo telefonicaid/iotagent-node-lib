@@ -77,7 +77,6 @@ var config = {
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
-    appendMode: true,
     ORION_DEFAULT_RETRIES: 5,
     ORION_DEFAULT_RETRY_TIME: 5
 };
