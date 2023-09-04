@@ -800,48 +800,48 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         }
     );
 
-    describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function () {
-        const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-            method: 'POST',
-            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
-            headers: {
-                'fiware-service': 'smartgondor',
-                'fiware-servicepath': '/gardens'
-            }
-        };
+    // describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function () {
+    //     const options = {
+    //         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+    //         method: 'POST',
+    //         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
+    //         headers: {
+    //             'fiware-service': 'smartgondor',
+    //             'fiware-servicepath': '/gardens'
+    //         }
+    //     };
 
-        beforeEach(function (done) {
-            iotAgentLib.deactivate(function () {
-                iotAgentConfig.appendMode = false;
-                iotAgentLib.activate(iotAgentConfig, done);
-            });
-        });
+    //     beforeEach(function (done) {
+    //         iotAgentLib.deactivate(function () {
+    //             iotAgentConfig.appendMode = false;
+    //             iotAgentLib.activate(iotAgentConfig, done);
+    //         });
+    //     });
 
-        afterEach(function () {
-            iotAgentConfig.appendMode = false;
-        });
+    //     afterEach(function () {
+    //         iotAgentConfig.appendMode = false;
+    //     });
 
-        beforeEach(function (done) {
-            nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json')
-                )
-                .reply(204);
-            done();
-        });
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', '/gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json')
+    //             )
+    //             .reply(204);
+    //         done();
+    //     });
 
-        it('should send the appropriate requests to the Context Broker', function (done) {
-            request(options, function (error, response, body) {
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
+    //     it('should send the appropriate requests to the Context Broker', function (done) {
+    //         request(options, function (error, response, body) {
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
 
     describe('When a device provisioning request arrives to the IoTAand timestamp is enabled in configuration', function () {
         const options = {

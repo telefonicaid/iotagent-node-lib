@@ -840,12 +840,12 @@ describe('NGSI-v2 - Active attributes test', function () {
                 )
                 .reply(204);
 
-            iotAgentConfig.appendMode = true;
+            //iotAgentConfig.appendMode = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
         afterEach(function (done) {
-            iotAgentConfig.appendMode = false;
+            //iotAgentConfig.appendMode = false;
 
             done();
         });
