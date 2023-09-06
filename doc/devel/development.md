@@ -30,7 +30,6 @@
     -   [Plugins usage](#plugins-usage)
     -   [Provided plugins](#provided-plugins)
 -   [Developing a new IoT Agent](#developing-a-new-iot-agent)
-    -   [Overview](#overview)
     -   [Protocol](#protocol)
     -   [Requirements](#requirements)
     -   [Basic IOTA](#basic-iot-agent)
