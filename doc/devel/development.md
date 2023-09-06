@@ -231,7 +231,7 @@ npm run prettier:text
 
 The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
 the use of the periodic stats, it must be configured in the config file, as described in the
-[Configuration](installationguide.md#configuration) section.
+[Configuration](../admin.md#configuration) section.
 
 The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
 historical global value and the other one stores the value since the last value reporting (or current value).
@@ -358,7 +358,7 @@ registry for the IoT Agent (based on the deviceRegistry.type configuration optio
 
 ###### Params
 
--   newConfig: Configuration of the Context Server (described in the [Configuration](installationguide.md#configuration)
+-   newConfig: Configuration of the Context Server (described in the [Configuration](../admin.md#configuration)
     section).
 
 ##### iotagentLib.deactivate()
@@ -1001,10 +1001,9 @@ function startServer(newConfig, iotAgent, callback)
 ###### Description
 
 Start the HTTP server either in single-thread or multi-thread (multi-core) based on the value of _multiCore_ variable
-(described in the [Configuration](installationguide.md#configuration) section). If the value is `False` (either was
-directly specified `False` in the `config.js` or it was not specified and by default is assigned `False`), it is a
-normal (single-thread) behaviour. Nevertheless, if _multiCore_ is `True`, the IoTAgent is executed in multi-thread
-environment.
+(described in the [Configuration](../admin.md#configuration) section). If the value is `False` (either was directly
+specified `False` in the `config.js` or it was not specified and by default is assigned `False`), it is a normal
+(single-thread) behaviour. Nevertheless, if _multiCore_ is `True`, the IoTAgent is executed in multi-thread environment.
 
 The number of parallel processes is calculated based on the number of available CPUs. In case of some of the process
 unexpectedly dead, a new process is created automatically to keep always the maximum of them working in parallel.
@@ -1015,7 +1014,7 @@ unexpectedly dead, a new process is created automatically to keep always the max
 
 ###### Params
 
--   newConfig: Configuration of the Context Server (described in the [Configuration](installationguide.md#configuration)
+-   newConfig: Configuration of the Context Server (described in the [Configuration](../admin.md#configuration)
     section).
 -   iotAgent: The IoT Agent Objects, used to start the agent.
 -   callback: The callback function.
@@ -1861,9 +1860,9 @@ process from the library. The variable `config` is used to get details of the co
 information to the Node Lib. The Node Lib will take the decision of single-thread or multi-thread execution base on the
 value of `config.multiCore` attribute.
 
-Finally, we can call the corresponding [iotagentLib.startServer()](usermanual.md#iotagentlibstartserver) like the
-following code with a callback function to show details about any error during the execution or just print the message
-about starting the IoTAgent:
+Finally, we can call the corresponding [iotagentLib.startServer()](#iotagentlibstartserver) like the following code with
+a callback function to show details about any error during the execution or just print the message about starting the
+IoTAgent:
 
 ```javascript
 iotAgentLib.startServer(config, iotAgent, function (error) {

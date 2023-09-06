@@ -405,7 +405,7 @@ When enabled, the IoT Agents runs in multi-thread environment to take advantage 
 values `true` or `false`. This attribute is optional with default to false, which means that the IoTAgent runs in a
 single thread. For more details about multi-core functionality, please refer to the
 [Cluster](https://nodejs.org/api/cluster.html) module in Node.js and
-[this section](howto.md#iot-agent-in-multi-thread-mode) of the library documentation.
+[this section](devel/development.md#iot-agent-in-multi-thread-mode) of the library documentation.
 
 #### `fallbackTenant`
 

@@ -11,8 +11,8 @@ Broker using their own native protocols. IoT Agents should also be able to deal 
 platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
 Github's [README.md](https://github.com/telefonicaid/iotagent-node-lib/blob/master/README.md) provides a good
-documentation summary. The [User Manual](usermanual.md) and the [Admin Guide](installationguide.md) cover more advanced
-topics.
+documentation summary. The [API reference](doc/api.md) and the [Development documentation](devel/development.md) cover
+more advanced topics.
 
 ## Background
 
@@ -51,5 +51,5 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require("iotagent-node-lib");
+const iotagentLib = require('iotagent-node-lib');
 ```
