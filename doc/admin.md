@@ -44,7 +44,20 @@ adding the following line to the `package.json` file:
 ```json
 ...
 "dependencies": {
-    "iotagent-node-lib": "*",
+    "iotagent-node-lib": "x.y.z",
+}
+```
+
+wher `x.y.z` is an actual version number.
+
+As alternative, you can use the master branch as dependency. In this case, you will be using the latest version of the
+code but note that some instability could exist (as the code in master is work in progress until the next version is
+closed).
+
+```json
+...
+"dependencies": {
+    "iotagent-node-lib": "https://github.com/telefonicaid/iotagent-node-lib.git#master",
 }
 ```
 
