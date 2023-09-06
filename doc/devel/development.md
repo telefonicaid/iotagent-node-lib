@@ -310,6 +310,10 @@ sections.
 
 ### Function reference
 
+> **WARNING** This section is outdated. Functions described here may be outdated and not reflect the current
+> implementation of the IoT Agent Library. You could have a look to [iotagentLib.js](./lib/iotagentLib.js) file to see
+> the current detail of functions implemented.
+
 The following fucntions are available in the library:
 
 -   [iotagentLib.activate()](#iotagentlibactivate)
@@ -1274,6 +1278,11 @@ iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
 ```
 
 ## Developing a new IoT Agent
+
+> **WARNING** This section is outdated. Methods and steps described here may be outdated and not reflect the current
+> implementation of the IoT Agent Library. You could have a look to other IoT Agents developed using the IoT Agent
+> Library to get a better idea of how to use it, like the
+> [IoT Agent JSON](http://www.github.com/telefonicaid/iotagent-json)
 
 This section's goal is to show how to develop a new IoT Agent step by step. To do so, a simple invented HTTP protocol
 will be used, so it can be tested with simple command-line instructions as `curl` and `nc`.
