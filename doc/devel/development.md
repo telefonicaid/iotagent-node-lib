@@ -26,9 +26,6 @@
 -   [DB Models from API document](#db-models-from-api-document)
     -   [Service group model](#service-group-model)
     -   [Device model](#device-model)
--   [Data mapping plugins](#data-mapping-plugins)
-    -   [Plugins usage](#plugins-usage)
-    -   [Provided plugins](#provided-plugins)
 -   [Developing a new IoT Agent](#developing-a-new-iot-agent)
     -   [Protocol](#protocol)
     -   [Requirements](#requirements)
@@ -1160,7 +1157,7 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 ## DB Models (from API document)
 
 > **WARNING** This section is outdated. DB fields described here may be outdated and not reflect the current
-> implementation of the IoT Agent Library. 
+> implementation of the IoT Agent Library.
 
 The following sections describe the models used in the database to store the information about the devices and the
 config groups.
@@ -1224,67 +1221,6 @@ You can find the description of the fields in the config group datamodel of the
 | `expressionLanguage`  | `expresionLanguage`  | _Removed_                                                                                                                            |
 | `explicitAttrs`       | `explicitAttrs`      |                                                                                                                                      |
 | `ngsiVersion`         | `ngsiVersion`        |                                                                                                                                      |
-
-## Data mapping plugins
-
-The IoT Agent Library provides a plugin mechanism in order to facilitate reusing code that makes small transformations
-on incoming data (both from the device and from the context consumers). This mechanism is based in the use of
-middlewares, i.e.: small pieces of code that receive and return an `entity`, making as many changes as they need, but
-taking care of returning a valid entity, that can be used as the input for other middlewares; this way, all those pieces
-of code can be chained together in order to make all the needed transformations in the target entity.
-
-There are two kinds of middlewares: updateContext middlewares and queryContext middlewares. The updateContext
-middlewares are applied before the information is sent to the Context Broker, modifiying the entity before it is sent to
-Orion. The queryContext middlewares are applied on the received data, whenever the IoT Agent queries the Context Broker
-for information. I.e.: both middlewares will be automatically applied whenever the `update()` or `query()` functions are
-called in the library.
-
-All the middlewares have the opportunity to break the chain of middleware applications by calling the `callback()` with
-an error object (the usual convention). If any of the updateContext middlewares raise an error, no request will be sent
-to the Context Broker. On the other hand, the queryContext request is always performed, but the call to the `query()`
-function will end up in an error if any of the queryContext middlewares report an error.
-
-### Plugins usage
-
-All the middlewares have the same signature:
-
-```javascript
-function middlewareName(entity, typeInformation, callback) {}
-```
-
-The arguments for any middleware are the NGSI data over which it can operate:
-
--   An updateContext payload in the case of an updateContext middleware and a queryContext payload otherwise;
--   a typeInformation object containing all the information about the device stored during registration.
--   and the customary `callback` parameter, with the usual meaning. It's really important for the library user to call
-    this callback, as failing to do so may hang the IoT Agent completely. The callback must be called with the an
-    optional error in the first argument and the same arguments received (potentially modified) as the following.
-
-In order to manage the middlewares to the system, the following functions can be used:
-
--   `addUpdateMiddleware`: adds an updateContext middleware to the stack of middlewares. All the middlewares will be
-    applied to every call to the `update()` function. The final payload of the updateContext request will be the result
-    of applying all this middlewares in the order they have been defined.
-
--   `addQueryMiddleware`: adds a queryContext middleware to the stack of middlewares. All the middlewares will be
-    applied to every call to the `query()` function.
-
--   `resetMiddlewares`: remove all the middlewares from the system.
-
-Usually, the full list of middlewares an IoT Agent will use would be added in the IoTAgent start sequence, so they
-should not change a lot during the IoT lifetime.
-
-### Provided plugins
-
-The library provides some plugins out of the box, in the `dataPlugins` collection. In order to load any of them, just
-use the `addQueryMiddleware` and `addUpdateMiddleware` functions with the selected plugin, as in the example:
-
-```javascript
-var iotaLib = require('iotagent-node-lib');
-
-iotaLib.addUpdateMiddleware(iotaLib.dataPlugins.compressTimestamp.update);
-iotaLib.addQueryMiddleware(iotaLib.dataPlugins.compressTimestamp.query);
-```
 
 ## Developing a new IoT Agent
 
@@ -1847,10 +1783,6 @@ It is possible that an IoT Agent can be executed in multi-thread approach, which
 request/seconds that can be manage by the server. It's important to remark that the nature of this functionality in
 included in the IoT Agent Node Lib but it is not mandatory that you activate this functionality. In this example, we
 will see how to use this functionality to deploy an IoT Agent in multi-thread environment.
-
-**WARNING:** it has been observed in Orion-IOTA integration tests some fails in bidirectional plugin usage scenarios in
-multi-thread mode. The fail has not been confirmed yet (it could be a glitch of the testing environment). However, take
-this into account if you use multi-thread in combination with bidirectional plugin.
 
 In order to activate the functionality, you have two options, configure the `config.js` file to add the following line:
 
