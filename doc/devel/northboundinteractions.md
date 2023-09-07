@@ -145,7 +145,7 @@ This **NGSI-v2** payload is associated to an update operation (POST `/v2/op/upda
             }
         }
     ],
-    "actionType": "update"
+    "actionType": "append"
 }
 ```
 
@@ -506,8 +506,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 If the request is correct, the Context Broker will reply with the following R1 response (200 OK):
@@ -553,7 +553,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "attrs": ["temperature","pressure"]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker will reply with the updated data values in R2 format (200 OK):
@@ -624,7 +624,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     }
 }
-' "https://<platform-ip>:10027/v2/registrations"
+' "https://<platform-ip>:1026/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -654,7 +654,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "attrs": ["batteryLevel"]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker receives this request and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -757,7 +757,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "duration": "P1M"
-}' "https://<platform-ip>:10027/v2/registrations"
+}' "https://<platform-ip>:1026/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -791,8 +791,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "updateAction": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "updateAction": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 The Context Broker receives this command and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -821,7 +821,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
       }
     }
   ],
-  "updateAction" : "update"
+  "updateAction" : "append"
 }
 ```
 
@@ -885,8 +885,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 This update does not modify the original command attribute, but two auxiliary attributes, that are not provided by the
@@ -933,7 +933,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         "switch_info",
         "switch_status"
     ]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker replies with all the desired data, in R2 format (200 OK):
@@ -979,8 +979,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 In this case, the Context Broker reply with the following response (200 OK):
