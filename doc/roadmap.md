@@ -29,7 +29,8 @@ product:
 -   Refactor Append Mode & initial entity
 -   Native support for NGSI-v2 and LD ingestion
 -   Remove plugins structure (bidirectional plugin)
--   Add init and improve log traces 
+-   Add init and improve log traces
+-   Remove InMemory registry for Devices and Groups (#1429)
 
 ### Medium term
 
