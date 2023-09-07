@@ -1185,7 +1185,6 @@ You can find the description of the fields in the config group datamodel of the
 | `attributes`                   | `attributes`                   |                                                                                                                                                   |
 | `static_attributes`            | `staticAttributes`             |                                                                                                                                                   |
 | `internal_attributes`          | `internalAttributes`           |                                                                                                                                                   |
-| `expressionLanguage`           | `expresionLanguage`            | _Removed_                                                                                                                                         |
 | `explicitAttrs`                | `explicitAttrs`                |                                                                                                                                                   |
 | `entityNameExp`                | `entityNameExp`                |                                                                                                                                                   |
 | `ngsiVersion`                  | `ngsiVersion`                  |                                                                                                                                                   |
@@ -1218,7 +1217,6 @@ You can find the description of the fields in the config group datamodel of the
 | `commands`            | `commands`           |                                                                                                                                      |
 | `internal_attributes` | `internalAttributes` | List of internal attributes with free format for specific IoT Agent configuration. I.E:LWM2M mappings from object URIs to attributes |
 | `static_attributes`   | `staticAttributes`   |                                                                                                                                      |
-| `expressionLanguage`  | `expresionLanguage`  | _Removed_                                                                                                                            |
 | `explicitAttrs`       | `explicitAttrs`      |                                                                                                                                      |
 | `ngsiVersion`         | `ngsiVersion`        |                                                                                                                                      |
 
