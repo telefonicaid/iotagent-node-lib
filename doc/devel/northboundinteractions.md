@@ -155,9 +155,8 @@ As it can be seen in the example, the payload is a JSON Object with the followin
     with the information needed to identify the target entity `id` and `type` attributes. The `entities` attribute is an
     array, so a single update context batch operation can be used to update multiple devices
 
--   An `actionType` indicating the type of update: if this attribute has the value `"append"` the appropriate entity and
-    attributes will be created if the don't exist; if the value is `"update"`, an error will be thrown if the target
-    resources don't exist.
+-   An `actionType` indicating the type of update. It has the value `"append"` the appropriate entity and attributes
+    will be created if the don't exist.
 
 The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `/ngsi-ld/v1/entities/<entity>/attrs/`).
 
@@ -599,20 +598,6 @@ replay with a payload like the following:
 It is worth mentioning that the Context Broker will reply with a 200 OK status code, as in standard NGSI, the HTTP codes
 refer to transport protocol level errors, while the status codes inside of a payload give information about the
 application level protocol.
-
-The example shows an error updating an non-existent attribute (due to the use of UPDATE instead of APPEND).
-
-The following error payload is also valid in standard NGSI:
-
-```json
-{
-    "error": "NotFound",
-    "description": "The requested entity has not been found. Check type and id"
-}
-```
-
-Different kinds of errors can return their information in different formats, so NGSI implementations should check for
-the existence of both.
 
 ### Scenario 2: lazy attributes (happy path)
 
