@@ -19,8 +19,7 @@
     -   [Measurement persistence options](#measurement-persistence-options)
         -   [Autoprovision configuration (autoprovision)](#autoprovision-configuration-autoprovision)
         -   [Explicitly defined attributes (explicitAttrs)](#explicitly-defined-attributes-explicitattrs)
-        -   [Configuring operation to persist the data in Context Broker (appendMode)](#configuring-operation-to-persist-the-data-in-context-broker-appendmode)
-        -   [Differences between `autoprovision`, `explicitAttrs` and `appendMode`](#differences-between-autoprovision-explicitattrs-and-appendmode)
+        -   [Differences between `autoprovision`, `explicitAttrs`](#differences-between-autoprovision-explicitattrs)
     -   [Expression language support](#expression-language-support)
         -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
         -   [Available functions](#available-functions)
@@ -57,7 +56,7 @@
     -   [Miscellaneous API](#miscellaneous-api)
         -   [Log operations](#log-operations)
             -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
-            -   [Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog)
+            -   [Retrieve log level `GET /admin/log`](#retrieve-log-level-get-adminlog)
         -   [About operations](#about-operations)
             -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
 
@@ -140,6 +139,16 @@ subservice mapping, security information and attribute configuration can be spec
 relaying on the config group configuration. The specific parameters that can be configured for a given device are
 described in the [Device datamodel](#device-datamodel) section.
 
+If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
+process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
+associated document created in database doesn't include config group parameters (in particular, `timestamp`,
+`explicitAttrs`, `active` or `attributes`, `static` and `lazy` attributes and commands). The IoT Agent will also create
+the entity in the Context Broker if it does not exist yet.
+
+This behavior allows that autoprovisioned parameters can freely established modifying the device information after
+creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
+parameters defined at device level in database, the parameters are inherit from config group parameters.
+
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
@@ -179,6 +188,11 @@ Some transformation plugins also allow the use of the following optional fields:
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
     [Expression Language definition](#expression-language-support) for details
+-   **skipValue**: indicates that if the result of applying `expression` to a measure is equal to the value of
+    `skipValue` then the attribute corresponding to the measure is not sent to CB. In other words, this field **is not
+    an expression**, it is a value that is compared with the result of applying `expression` to a measure. By default if
+    `skipValue` is not defined then is considered as `null` (i.e. if the result of apply `expression` results in `null`
+    then corresponding attribute is not sent to CB). It is only used if `expression` is provided (otherwise is ignored).
 -   **entity_name**: the presence of this attribute indicates that the value will not be stored in the original device
     entity but in a new entity with an ID given by this attribute. The type of this additional entity can be configured
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
@@ -353,15 +367,13 @@ used should be taken from those defined by
 
 ## Measurement persistence options
 
-There are 3 different options to configure how the IoTAgent stores the measures received from the devices, depending on
+There are 2 different options to configure how the IoTAgent stores the measures received from the devices, depending on
 the following parameters:
 
 -   `autoprovision`: If the device is not provisioned, the IoTAgent will create a new device and entity for it.
 -   `explicitAttrs`: If the measure element (object_id) is not defined in the mappings of the device or config group
     provision, the measure is stored in the Context Broker by adding a new attribute to the entity with the same name of
     the undefined measure element.
--   `appendMode`: It configures the request to the Context Broker to update the entity every time a new measure arrives.
-    It have implications depending if the entity is already created or not in the Context Broker.
 
 ### Autoprovision configuration (autoprovision)
 
@@ -369,7 +381,8 @@ By default, when a measure arrives to the IoTAgent, if the `device_id` does not 
 IoTA creates a new device and a new entity according to the config group. Defining the field `autoprovision` to `false`
 when provisioning the config group, the IoTA to reject the measure at the southbound, allowing only to persist the data
 to devices that are already provisioned. It makes no sense to use this field in device provisioning since it is intended
-to avoid provisioning devices (and for it to be effective, it would have to be provisional).
+to avoid provisioning devices (and for it to be effective, it would have to be provisional). Further information can be
+found in section [Devices](#devices)
 
 ### Explicitly defined attributes (explicitAttrs)
 
@@ -433,14 +446,7 @@ depending on the JEXL expression evaluation:
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
 
-### Configuring operation to persist the data in Context Broker (appendMode)
-
-This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
-`IOTA_APPEND_MODE` environment variable (more info [here](admin.md)). If this flag is activated, the update requests to
-the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This have implications in
-the use of attributes with Context Providers, so this flag should be used with care.
-
-### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
+### Differences between `autoprovision`, `explicitAttrs`
 
 Since those configuration parameters are quite similar, this section is intended to clarify the relation between them.
 
@@ -451,16 +457,6 @@ related to the **southbound**.
 
 What `explicitAttrs` does is to filter from the southbound the parameters that are not explicitly defined in the device
 provision or config group. That also would avoid propagating the measures to the Context Broker.
-
-The default way the agent updates the information into the Context Broker is by using an update request. If
-`appendMode=true`, the IoTA will use an append request instead of an update one. This means it will store the attributes
-even if they are not present in the entity. This seems the same functionality that the one provided by `autoprovision`,
-but it is a different concept since the scope of this config is to setup how the IoT interacts with the context broker,
-this is something related to the **northbound**.
-
-Note that, even creating a config group with `autoprovision=true` and `explicitAttrs=true`, if you do not provision
-previously the entity in the Context Broker (having all attributes to be updated), it would fail if `appendMode=false`.
-For further information check the issue [#1301](https://github.com/telefonicaid/iotagent-node-lib/issues/1301).
 
 ## Expression language support
 
@@ -486,6 +482,9 @@ expression. In all cases the following data is available to all expressions:
 -   `service`: device service
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
+
+Additionally, for attribute expressions (`expression`, `entity_name`) and `entityNameExp` measures are avaiable in the
+**context** used to evaluate them.
 
 ### Examples of JEXL expressions
 
@@ -574,6 +573,7 @@ Current common transformation set:
 | toisostring: (d)                     | `new Date(d).toISOString()`                                                                                             |
 | localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
 | now: ()                              | `Date.now()`                                                                                                            |
+| hextostring: (val)                   | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                        |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
@@ -1609,7 +1609,7 @@ _**Response code**_
 -   `200` `OK` if successful.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-#### Retrieve log level `PUT /admin/log`
+#### Retrieve log level `GET /admin/log`
 
 _**Response code**_
 

@@ -100,15 +100,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     )
                 )
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createProvisionedDevice.json')
-                )
-                .reply(204);
         });
 
         const options = {
@@ -214,7 +205,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             });
         });
 
-        it('should create the initial entity in the Context Broker', function (done) {
+        it('should not create the initial entity in the Context Broker', function (done) {
             request(options, function (error, response, body) {
                 response.statusCode.should.equal(201);
                 iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
@@ -248,15 +239,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json')
-                )
-                .reply(204);
-
             done();
         });
 
@@ -292,15 +274,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createTimeinstantDevice.json')
-                )
-                .reply(204);
-
             done();
         });
 
@@ -336,15 +309,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createExplicitAttrsDevice.json')
-                )
-                .reply(204);
-
             done();
         });
 
@@ -394,17 +358,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
             beforeEach(function (done) {
                 nock.cleanAll();
-                contextBrokerMock = nock('http://192.168.1.1:1026')
-                    .matchHeader('fiware-service', 'smartgondor')
-                    .matchHeader('fiware-servicepath', '/gardens')
-                    .post(
-                        '/v2/entities?options=upsert',
-                        utils.readExampleFile(
-                            './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
-                        )
-                    )
-                    .reply(204);
-
                 done();
             });
 
@@ -552,12 +505,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with static attributes provided in configuration', function (done) {
+            it('should not store the device with static attributes provided in configuration', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
-                            results.devices[0].staticAttributes[0].name.should.equal('bootstrapServer');
+                            results.devices[0].staticAttributes.length.should.equal(0);
                             done();
                         });
                     });
@@ -692,12 +645,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with static attributes provided in configuration as well as device', function (done) {
+            it('should store the device with static attributes provided in device but no in configuration', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
                             should.exist(results.devices[0].staticAttributes);
-                            results.devices[0].staticAttributes.length.should.equal(2);
+                            results.devices[0].staticAttributes.length.should.equal(1);
                             done();
                         });
                     });
@@ -727,7 +680,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                         /*jshint camelcase: false */
                         entity_type: 'MicroLights',
                         entityNameExp: "id + '__' + suffix_st",
-                        expressionLanguage: 'jexl',
                         cbHost: 'http://192.168.1.1:1026',
                         static_attributes: [
                             {

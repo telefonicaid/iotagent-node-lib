@@ -36,10 +36,6 @@
             "description": "Transport protocol used by the platform to communicate with the device",
             "type": "string"
           },
-          "expressionLanguage": {
-            "description": "Expression language used to apply expressions for this device",
-            "type": "string"
-          },
           "explicitAttrs": {
             "description": "Flag about only provisioned attributes will be processed to Context Broker"
           },
@@ -101,6 +97,10 @@
                 "expression": {
                   "description": "Optional expression for measurement transformation",
                   "type": "string"
+                },
+                "skipValue": {
+                  "description": "Attribute is skipped when result of apply expression is this value",
+                  "type": "any"
                 },
                 "entity_name": {
                   "description": "Optional entity name for multientity updates",
