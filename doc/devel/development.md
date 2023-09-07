@@ -1159,6 +1159,9 @@ Stores the information about the IoTAgent for further use in the `retrieveVersio
 
 ## DB Models (from API document)
 
+> **WARNING** This section is outdated. DB fields described here may be outdated and not reflect the current
+> implementation of the IoT Agent Library. 
+
 The following sections describe the models used in the database to store the information about the devices and the
 config groups.
 
