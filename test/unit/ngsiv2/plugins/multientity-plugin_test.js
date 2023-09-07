@@ -508,7 +508,6 @@ const iotAgentConfig = {
         },
         GPS1: {
             commands: [],
-            expressionLanguage: 'jexl',
             type: 'GPS',
             lazy: [],
             active: [
@@ -601,7 +600,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -1672,9 +1671,8 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
         contextBrokerMock = nock('http://192.168.1.1:1026')
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .patch(
-                //'/v2/op/update',
-                '/v2/entities/sensorCommand/attrs?type=SensorCommand',
+            .post(
+                '/v2/entities?options=upsert',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )

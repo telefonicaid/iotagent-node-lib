@@ -1,12 +1,6 @@
 {
-  "undef": {
-    "type": "json",
-    "value": null
-  },
-  "nil": {
-    "type": "json",
-    "value": null
-  },
+  "id":"ws1",
+  "type":"WeatherStation",
   "falsy": {
     "type": "Boolean",
     "value": false

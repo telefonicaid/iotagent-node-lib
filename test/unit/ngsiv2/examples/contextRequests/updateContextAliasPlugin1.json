@@ -1,4 +1,6 @@
 {
+    "id":"light1",
+    "type":"Light",        
   "temperature": {
     "type":"Number",
     "value":52,

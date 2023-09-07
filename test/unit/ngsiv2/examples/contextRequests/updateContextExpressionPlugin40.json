@@ -34,13 +34,9 @@
                 "TimeInstant": {
                     "type": "DateTime",
                     "value": "2015-08-05T07:35:01.468Z"
-                },
-                "status": {
-                    "value": null,
-                    "type": "Text"
                 }
             }
         ],
-        "actionType": "update"
+        "actionType": "append"
 }
 

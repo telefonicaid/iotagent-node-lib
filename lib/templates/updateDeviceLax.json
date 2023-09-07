@@ -154,6 +154,17 @@
     "static_attributes": {
       "description": "Free form array of data to be appended to the target entity",
       "type": "array"
+    },
+    "timestamp": {
+      "description": "Timestamp",
+      "type": "boolean"
+    },
+    "explicitAttrs": {
+      "description": "Flag to decide update of active attributes only"
+    },
+    "ngsiVersion": {
+        "description": "NGSI Interface for this device",
+        "type": "string"
     }
   }
 }
