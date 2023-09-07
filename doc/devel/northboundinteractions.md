@@ -427,7 +427,7 @@ Be sure to understand how each scenario works (as shown in the theory section) b
 Along this document, IP addresses and passwords will be concealed. Substitute the concealed passwords by your own.
 
 A postman collection is available alongside this document to help in reproducing this examples. It can be found
-[here](./doc/NorthboundInteractions.postman_collection).
+[here](NorthboundInteractions.postman_collection).
 
 ### Retrieving a token
 

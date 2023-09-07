@@ -31,7 +31,6 @@
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
-    -   [Bidirectionality plugin (bidirectional)](#bidirectionality-plugin-bidirectional)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -185,8 +184,6 @@ Some transformation plugins also allow the use of the following optional fields:
     with the `entity_type` attribute. If no type is configured, the device entity type is used instead. Entity names can
     be defined as expressions, using the [Expression Language definition](#expression-language-support).
 -   **entity_type**: configures the type of an alternative entity.
--   **reverse**: add bidirectionality expressions to the attribute. See the **bidirectionality** transformation plugin
-    in the [Data Mapping Plugins section](development.md#bidirectionality-plugin-bidirectional) for details.
 
 Additionally for commands (which are attributes of type `command`) the following fields are optional:
 
@@ -439,10 +436,9 @@ depending on the JEXL expression evaluation:
 ### Configuring operation to persist the data in Context Broker (appendMode)
 
 This is a flag that can be enabled by activating the parameter `appendMode` in the configuration file or by using the
-`IOTA_APPEND_MODE` environment variable (more info
-[here](admin.md)). If this flag is activated, the
-update requests to the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This
-have implications in the use of attributes with Context Providers, so this flag should be used with care.
+`IOTA_APPEND_MODE` environment variable (more info [here](admin.md)). If this flag is activated, the update requests to
+the Context Broker will be performed always with APPEND type, instead of the default UPDATE. This have implications in
+the use of attributes with Context Providers, so this flag should be used with care.
 
 ### Differences between `autoprovision`, `explicitAttrs` and `appendMode`
 
@@ -852,54 +848,6 @@ it in queries (and viceversa, receive the extended one in queries and return it 
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
-
-## Bidirectionality plugin (bidirectional)
-
-This plugin allows the devices with composite values an expression to update the original values in the devices when the
-composite expressions are updated in the Context Broker. This behavior is achieved through the use of subscriptions.
-
-IoTAs using this plugins should also define a notification handler to handle incoming values. This handler will be
-intercepted by the plugin, so the mapped values are included in the updated notification.
-
-When a device is provisioned with bidirectional attributes, the IoTAgent subscribes to changes in that attribute. When a
-change notification for that attribute arrives to the IoTA, it applies the transformation defined in the device
-provisioning payload to the notification, and calls the underlying notification handler with the transformed entity
-including the `value` along with any `metadata`, and in the case of an NGSI-LD bidirectional attribute a `datasetId` if
-provided.
-
-The following `attributes` section shows an example of the plugin configuration (using `IOTA_AUTOCAST=false` to avoid
-translation from geo:point to geo:json)
-
-```json
-      "attributes": [
-        {
-          "name":"location",
-          "type":"geo:point",
-          "expression": "latitude, longitude",
-          "reverse": [
-            {
-              "object_id":"longitude",
-              "type": "Number",
-              "expression": "location | split(', ')[0] | parsefloat()"
-            },
-            {
-              "object_id":"latitude",
-              "type": "Number",
-              "expression": "location | split(', ')[1] | parsefloat()"
-            }
-          ]
-        }
-      ],
-```
-
-For each attribute that would have bidirectionality, a new field `reverse` must be configured. This field will contain
-an array of fields that will be created based on the notifications content. The expression notification can contain any
-attribute of the same entity as the bidirectional attribute; declaring them in the expressions will add them to the
-subscription payload.
-
-For each attribute in the `reverse` array, an expression must be defined to calculate its value based on the
-notification attributes. This value will be passed to the underlying protocol with the `object_id` name. Details about
-how the value is then progressed to the device are protocol-specific.
 
 ## Overriding global Context Broker host
 
