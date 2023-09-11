@@ -11,7 +11,6 @@
         -   [mongodb](#mongodb)
         -   [iotManager](#iotmanager)
         -   [types](#types)
-        -   [eventType](#eventtype)
         -   [service](#service)
         -   [subservice](#subservice)
         -   [providerUrl](#providerurl)
@@ -322,10 +321,6 @@ added `agentPath`:
 #### `types`
 
 See **Type Configuration** in the [Configuration API](#configurationapi) section below.
-
-#### `eventType`
-
-Default type for the Events (useful only with the `addEvents` plugin).
 
 #### `service`
 
