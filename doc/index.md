@@ -26,8 +26,6 @@ functions.
     communications are left to the library.
 -   Standardized OAuth2-based security is available to enable each IoT Agent to connect to several common Identity
     Managers (e.g. Keystone and Keyrock) so that communications can be restricted to trusted components.
--   A series of additional plugins are offered where necessary to allow for expression parsing, attribute aliasing and
-    the processing of timestamp metadata.
 
 Each individual IoT Agent offers is driven by a `config.js` configuration file contains explicit custom settings based
 on the protocol and payload the IoT Agent is translating. It will also contain some common flags for common

@@ -11,12 +11,10 @@
         -   [mongodb](#mongodb)
         -   [iotManager](#iotmanager)
         -   [types](#types)
-        -   [eventType](#eventtype)
         -   [service](#service)
         -   [subservice](#subservice)
         -   [providerUrl](#providerurl)
         -   [iotaVersion](#iotaversion)
-        -   [appendMode](#appendmode)
         -   [dieOnUnexpectedError](#dieonunexpectederror)
         -   [singleConfigurationMode](#singleconfigurationmode)
         -   [timestamp](#timestamp)
@@ -324,10 +322,6 @@ added `agentPath`:
 
 See **Type Configuration** in the [Configuration API](#configurationapi) section below.
 
-#### `eventType`
-
-Default type for the Events (useful only with the `addEvents` plugin).
-
 #### `service`
 
 Default service for the IoT Agent. If a device is being registered, and no service information comes with the device
@@ -349,12 +343,6 @@ URL to send in the Context Provider registration requests. Should represent the 
 
 indicates the version of the IoTA that will be displayed in the about method (it should be filled automatically by each
 IoTA).
-
-#### `appendMode`
-
-if this flag is activated, the update requests to the Context Broker will be performed always with APPEND type, instead
-of the default UPDATE. This have implications in the use of attributes with Context Providers, so this flag should be
-used with care. This flag is overwritten by `autoprovision` flag in group or device provision.
 
 #### `dieOnUnexpectedError`
 
@@ -496,7 +484,6 @@ overrides.
 | IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
 | IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
 | IOTA_SINGLE_MODE                     | `singleConfigurationMode`       |
-| IOTA_APPEND_MODE                     | `appendMode`                    |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST                        | `autocast`                      |

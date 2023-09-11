@@ -145,7 +145,7 @@ This **NGSI-v2** payload is associated to an update operation (POST `/v2/op/upda
             }
         }
     ],
-    "actionType": "update"
+    "actionType": "append"
 }
 ```
 
@@ -155,9 +155,8 @@ As it can be seen in the example, the payload is a JSON Object with the followin
     with the information needed to identify the target entity `id` and `type` attributes. The `entities` attribute is an
     array, so a single update context batch operation can be used to update multiple devices
 
--   An `actionType` indicating the type of update: if this attribute has the value `"append"` the appropriate entity and
-    attributes will be created if the don't exist; if the value is `"update"`, an error will be thrown if the target
-    resources don't exist.
+-   An `actionType` indicating the type of update. It has the value `"append"` the appropriate entity and attributes
+    will be created if the don't exist.
 
 The equivalent **NGSI-LD** payload is associated to an update operation (PATCH `/ngsi-ld/v1/entities/<entity>/attrs/`).
 
@@ -507,8 +506,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 If the request is correct, the Context Broker will reply with the following R1 response (200 OK):
@@ -554,7 +553,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "attrs": ["temperature","pressure"]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker will reply with the updated data values in R2 format (200 OK):
@@ -600,20 +599,6 @@ It is worth mentioning that the Context Broker will reply with a 200 OK status c
 refer to transport protocol level errors, while the status codes inside of a payload give information about the
 application level protocol.
 
-The example shows an error updating an non-existent attribute (due to the use of UPDATE instead of APPEND).
-
-The following error payload is also valid in standard NGSI:
-
-```json
-{
-    "error": "NotFound",
-    "description": "The requested entity has not been found. Check type and id"
-}
-```
-
-Different kinds of errors can return their information in different formats, so NGSI implementations should check for
-the existence of both.
-
 ### Scenario 2: lazy attributes (happy path)
 
 Scenario 2 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent must
@@ -639,7 +624,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     }
 }
-' "https://<platform-ip>:10027/v2/registrations"
+' "https://<platform-ip>:1026/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -669,7 +654,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "attrs": ["batteryLevel"]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker receives this request and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -772,7 +757,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         }
     ],
     "duration": "P1M"
-}' "https://<platform-ip>:10027/v2/registrations"
+}' "https://<platform-ip>:1026/v2/registrations"
 ```
 
 If everything has gone OK, the Context Broker will return the following payload:
@@ -806,8 +791,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "updateAction": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "updateAction": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 The Context Broker receives this command and detects that it can be served by a Context Provider (the IoT Agent), so it
@@ -836,7 +821,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
       }
     }
   ],
-  "updateAction" : "update"
+  "updateAction" : "append"
 }
 ```
 
@@ -900,8 +885,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 This update does not modify the original command attribute, but two auxiliary attributes, that are not provided by the
@@ -948,7 +933,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         "switch_info",
         "switch_status"
     ]
-}' "https://<platform-ip>:10027/v2/op/query"
+}' "https://<platform-ip>:1026/v2/op/query"
 ```
 
 The Context Broker replies with all the desired data, in R2 format (200 OK):
@@ -994,8 +979,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "actionType": "update"
-} ' "https://<platform-ip>:10027/v2/op/update"
+    "actionType": "append"
+} ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
 In this case, the Context Broker reply with the following response (200 OK):
