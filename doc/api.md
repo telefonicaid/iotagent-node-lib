@@ -56,7 +56,7 @@
     -   [Miscellaneous API](#miscellaneous-api)
         -   [Log operations](#log-operations)
             -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
-            -   [Retrieve log level `PUT /admin/log`](#retrieve-log-level-put-adminlog)
+            -   [Retrieve log level `GET /admin/log`](#retrieve-log-level-get-adminlog)
         -   [About operations](#about-operations)
             -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
 
@@ -1609,7 +1609,7 @@ _**Response code**_
 -   `200` `OK` if successful.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-#### Retrieve log level `PUT /admin/log`
+#### Retrieve log level `GET /admin/log`
 
 _**Response code**_
 
