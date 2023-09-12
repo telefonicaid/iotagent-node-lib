@@ -1,3 +1,4 @@
+- Fix for non evaluable expressions which should not be propaged to attrs values (#1440)
 - Fix: try to use apikey from measure/group to find, update, remove device in first attempt (#1426, #1435)
 - Fix: ensure device apikey in already provisioned device (#1430)
 - Upgrade mongodb dev dep from 4.7.0 to 4.17.0
