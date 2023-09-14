@@ -674,6 +674,10 @@ will check which ones contain expressions whose variables are present in the rec
 whose variables are covered, their expressions will be executed with the received values, and their values updated in
 the Context Broker.
 
+If as a result of apply expression `undefined` or `null` value is obtained then any of them will not progress to entity
+attribute. Have into acount that some numeric operations results (like nonexistent \* 2) are a kind of null with a
+number type but NaN value, which will also not progress to entity attribute.
+
 E.g.: if a device with the following provisioning information is created in the IoT Agent:
 
 ```json
