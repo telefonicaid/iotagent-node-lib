@@ -310,7 +310,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
         });
 
         it('subscribe requests use auth header', function (done) {
-            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
@@ -331,7 +331,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
 
             contextBrokerMock.delete('/v2/subscriptions/51c0ac9ed714fb3b37d7d5a8', '').reply(204);
 
-            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();

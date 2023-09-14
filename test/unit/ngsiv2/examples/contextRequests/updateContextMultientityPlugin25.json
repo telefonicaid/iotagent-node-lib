@@ -11,11 +11,7 @@
       "expectedAtt": {
           "type": "number",
           "value": 13
-      },
-      "nonexpectedAtt": {
-          "type": "number",
-          "value": null
-      }        
+      }
     },
     {
       "explicit": {

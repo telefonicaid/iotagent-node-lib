@@ -206,7 +206,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
 
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
-                iotAgentLib.getDevice(deviceUpdated.id, 'smartgondor', 'gardens', function (error, deviceResult) {
+                iotAgentLib.getDevice(deviceUpdated.id, null, 'smartgondor', 'gardens', function (error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
                     deviceResult.internalId.should.equal(deviceUpdated.internalId);
@@ -264,6 +264,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
             iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(
                     deviceCommandUpdated.id,
+                    null,
                     'smartgondor',
                     'gardens',
                     function (error, deviceResult) {
