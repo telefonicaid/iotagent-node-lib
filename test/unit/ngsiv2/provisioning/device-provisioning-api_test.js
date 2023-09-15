@@ -812,14 +812,11 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             iotAgentLib.deactivate(function () {
-                iotAgentConfig.appendMode = false;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
         });
 
-        afterEach(function () {
-            iotAgentConfig.appendMode = false;
-        });
+        afterEach(function () {});
 
         beforeEach(function (done) {
             nock.cleanAll();

@@ -827,7 +827,7 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and the appendMode flag is on', function () {
+    describe('When the IoT Agent receives new information from a device', function () {
         beforeEach(function (done) {
             nock.cleanAll();
 
@@ -840,13 +840,10 @@ describe('NGSI-v2 - Active attributes test', function () {
                 )
                 .reply(204);
 
-            //iotAgentConfig.appendMode = true;
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
         afterEach(function (done) {
-            //iotAgentConfig.appendMode = false;
-
             done();
         });
 
