@@ -23,8 +23,8 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to in-memory registry (i.e.`deviceRegistry.type=memory`)
 -   eventType configuration (finally removed in 3.0.0)
 -   Support to legacy expressions (finally removed in 3.2.0)
--   Bidirectinal pluging (to be removed in 3.4.0)
--   appendMode configuration (`IOTA_APPEND_MODE` env var) (to be removed in 3.4.0)
+-   Bidirectinal pluging (finally removed in 3.4.0)
+-   appendMode configuration (`IOTA_APPEND_MODE` env var) (finally removed in 3.4.0)
 
 The use of Node.js v14 is highly recommended.
 
