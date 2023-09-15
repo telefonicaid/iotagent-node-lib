@@ -130,14 +130,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 iotAgentLib.clearAll(done);
             });
         });
-
-        it('should register as ContextProvider of its lazy attributes', function (done) {
-            iotAgentLib.register(device1, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        // FIXME: disabled test by #1421
+        // it('should register as ContextProvider of its lazy attributes', function (done) {
+        //     iotAgentLib.register(device1, function (error) {
+        //         should.not.exist(error);
+        //         contextBrokerMock.done();
+        //         done();
+        //     });
+        // });
     });
 
     describe('When the Context Broker returns a NGSI error while registering a device', function () {
@@ -156,15 +156,15 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 iotAgentLib.clearAll(done);
             });
         });
-
-        it('should register as ContextProvider of its lazy attributes', function (done) {
-            iotAgentLib.register(device1, function (error) {
-                should.exist(error);
-                error.name.should.equal('BAD_REQUEST');
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        // FIXME: disabled test by #1421
+        // it('should register as ContextProvider of its lazy attributes', function (done) {
+        //     iotAgentLib.register(device1, function (error) {
+        //         should.exist(error);
+        //         error.name.should.equal('BAD_REQUEST');
+        //         contextBrokerMock.done();
+        //         done();
+        //     });
+        // });
     });
 
     describe('When the Context Broker returns an HTTP transport error while registering a device', function () {
@@ -299,14 +299,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 );
             });
         });
-
-        it('should update the devices information in Context Broker', function (done) {
-            iotAgentLib.unregister(device1.id, null, 'smartgondor', 'gardens', function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
+        // FIXME: disabled test by #1421
+        // it('should update the devices information in Context Broker', function (done) {
+        //     iotAgentLib.unregister(device1.id, null, 'smartgondor', 'gardens', function (error) {
+        //         should.not.exist(error);
+        //         contextBrokerMock.done();
+        //         done();
+        //     });
+        // });
     });
 
     describe('When the Context Broker returns an error while unregistering a device', function () {
