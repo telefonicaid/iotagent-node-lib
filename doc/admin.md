@@ -36,7 +36,7 @@
 -   [Alarms](#alarms)
 
 The **IoT Agent node library** is not a standalone product and should be added as a dependency to `package.json` of the
-project is going to be used in. The library is published in the NPM repository, so it can be added to the project by
+project is going to be used in. The library is published in the npm repository, so it can be added to the project by
 adding the following line to the `package.json` file:
 
 ```json
