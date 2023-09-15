@@ -868,16 +868,14 @@ describe('NGSI-v2 - Active attributes test', function () {
             contextBrokerMock = nock('http://cbhost:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .patch(
-                    '/v2/entities/light1/attrs',
+                .post(
+                    '/v2/entities?options=upsert',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext6.json')
                 )
-                .query({ type: 'Light' })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
-
         it('should change the value of the corresponding attribute in the context broker', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
