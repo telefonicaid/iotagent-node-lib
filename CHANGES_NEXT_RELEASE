@@ -1,3 +1,5 @@
+- Fix: remove bidirectional plugin (#1413)
+- Fix: remove appendMode and creation of initial entity (#1413)
 - Fix: for non evaluable expressions which should not be propagated to attrs values (#1440)
 - Fix: try to use apikey from measure/group to find, update, remove device in first attempt (#1426, #1435)
 - Fix: ensure device apikey in already provisioned device (#1430)
