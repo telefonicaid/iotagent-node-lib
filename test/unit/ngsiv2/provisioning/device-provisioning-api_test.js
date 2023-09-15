@@ -799,48 +799,39 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
         }
     );
 
-    // describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function () {
-    //     const options = {
-    //         url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
-    //         method: 'POST',
-    //         json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
-    //         headers: {
-    //             'fiware-service': 'smartgondor',
-    //             'fiware-servicepath': '/gardens'
-    //         }
-    //     };
+    describe('When a device provisioning request with a autoprovision attribute arrives to the IoTA', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            method: 'POST',
+            json: utils.readExampleFile('./test/unit/examples/deviceProvisioningRequests/provisionAutoprovision.json'),
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            }
+        };
 
-    //     beforeEach(function (done) {
-    //         iotAgentLib.deactivate(function () {
-    //             iotAgentConfig.appendMode = false;
-    //             iotAgentLib.activate(iotAgentConfig, done);
-    //         });
-    //     });
+        beforeEach(function (done) {
+            iotAgentLib.deactivate(function () {
+                iotAgentConfig.appendMode = false;
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
 
-    //     afterEach(function () {
-    //         iotAgentConfig.appendMode = false;
-    //     });
+        afterEach(function () {
+            iotAgentConfig.appendMode = false;
+        });
 
-    //     beforeEach(function (done) {
-    //         nock.cleanAll();
-    //         contextBrokerMock = nock('http://192.168.1.1:1026')
-    //             .matchHeader('fiware-service', 'smartgondor')
-    //             .matchHeader('fiware-servicepath', '/gardens')
-    //             .post(
-    //                 '/v2/entities?options=upsert',
-    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json')
-    //             )
-    //             .reply(204);
-    //         done();
-    //     });
+        beforeEach(function (done) {
+            nock.cleanAll();
+            done();
+        });
 
-    //     it('should send the appropriate requests to the Context Broker', function (done) {
-    //         request(options, function (error, response, body) {
-    //             contextBrokerMock.done();
-    //             done();
-    //         });
-    //     });
-    // });
+        it('should should not appropriate requests to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                done();
+            });
+        });
+    });
 
     describe('When a device provisioning request arrives to the IoTAand timestamp is enabled in configuration', function () {
         const options = {
@@ -866,40 +857,14 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', function (body) {
-                    const expectedBody = utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createTimeInstantMinimumDevice.json'
-                    );
-                    if (!body.TimeInstant.value) {
-                        return false;
-                    } else if (moment(body.TimeInstant.value, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
-                        const timeInstantDiff = moment().diff(body.TimeInstant.value, 'milliseconds');
-                        if (timeInstantDiff < 500) {
-                            delete body.TimeInstant;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    } else {
-                        return false;
-                    }
-                })
-                .reply(204);
-
             done();
         });
 
-        // TBD
-        // it('should send the appropriate requests to the Context Broker', function (done) {
-        //     request(options, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should not send any requests to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                done();
+            });
+        });
     });
 
     describe('When a device provisioning request with the minimum required data arrives to the IoT Agent', function () {
@@ -915,27 +880,14 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
 
-        // TBD: no initial entity is expected to be created
-        // it('should send the appropriate requests to the Context Broker', function (done) {
-        //     request(options, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should not send any requests to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                done();
+            });
+        });
 
         it('should add the device to the devices list', function (done) {
             request(options, function (error, response, body) {
@@ -975,26 +927,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createGeopointProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
-        // TBD
-        // it('should send the appropriate initial values to the Context Broker', function (done) {
-        //     request(options, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should not send any initial values to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                done();
+            });
+        });
     });
 
     describe('When a device provisioning request with DateTime attributes arrives', function () {
@@ -1010,26 +949,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createDatetimeProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
-        // TBD
-        // it('should send the appropriate initial values to the Context Broker', function (done) {
-        //     request(options, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should not send any initial values to the Context Broker', function (done) {
+            request(options, function (error, response, body) {
+                done();
+            });
+        });
     });
 
     describe('When two devices with the same ID but different services arrive to the agent', function () {
@@ -1123,28 +1049,17 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
-                .replyWithError({ message: 'Description of the error', code: 'STRING_CODE' });
-
             done();
         });
 
-        // TBD
-        // it('should return a valid return code', function (done) {
-        //     request(options, function (error, response, body) {
-        //         should.not.exist(error);
-        //         response.statusCode.should.equal(500);
+        it('should return a valid return code', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
 
-        //         done();
-        //     });
-        // });
+                done();
+            });
+        });
     });
 
     describe('When there is a connection error with a Number code connecting the CB', function () {
@@ -1167,27 +1082,17 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
-                .replyWithError({ message: 'Description of the error', code: 123456789 });
-
             done();
         });
 
-        // TBD
-        // it('should return a valid return code (three character number)', function (done) {
-        //     request(options, function (error, response, body) {
-        //         should.not.exist(error);
-        //         response.statusCode.should.equal(500);
+        it('should return a valid return code (three character number)', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
 
-        //         done();
-        //     });
-        // });
+                done();
+            });
+        });
     });
 
     describe('When a device provisioning request with missing data arrives to the IoT Agent', function () {
