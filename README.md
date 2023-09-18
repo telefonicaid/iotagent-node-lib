@@ -21,8 +21,7 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/roadmap.md) |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 
 ## Index
 
@@ -47,8 +46,6 @@ functions.
     communications are left to the library.
 -   Standardized OAuth2-based security is available to enable each IoT Agent to connect to several common Identity
     Managers (e.g. Keystone and Keyrock) so that communications can be restricted to trusted components.
--   A series of additional plugins are offered where necessary to allow for expression parsing, attribute aliasing and
-    the processing of timestamp metadata.
 
 Each individual IoT Agent offers is driven by a `config.js` configuration file contains explicit custom settings based
 on the protocol and payload the IoT Agent is translating. It will also contain some common flags for common
@@ -76,16 +73,18 @@ const iotagentLib = require('iotagent-node-lib');
 ```
 
 Information about how to configure the Library can be found at the corresponding section of the
-[Installation & Administration Guide](doc/installationguide.md).
+[Installation & Administration Guide](doc/admin.md).
 
 ## Usage
 
-This library has no packaging or build processes. The [Getting Started](doc/getting-started.md) is a good place to
-start. Usage of the library is explained in the [User & Programmers Manual](doc/usermanual.md).
+This library has no packaging or build processes. The [Getting Started](./doc/getting-started.md) is a good place to
+start. You can also review the [API documentation](./doc/api.md) for a full list of the available functions.
 
--   Details of the architecture of an IoT Agent be found [here](doc/architecture.md).
--   Further Advanced topics can be found [here](doc/advanced-topics.md).
--   The following features are listed as [deprecated](doc/deprecated.md).
+If you plan to use the library in your own IoT Agent, you should read the [Developer Guide](./doc/devel/development.md).
+You can also review the [Architecture](./doc/devel/architecture.md) documentation and
+[Northbound API](./doc/devel/northbound-api.md).
+
+The following features are listed as [deprecated](doc/deprecated.md).
 
 ## API
 
@@ -94,7 +93,7 @@ decommission devices. [API](doc/api.md).
 
 ## Testing
 
-Contributions to development can be found [here](doc/development.md) - additional contributions are welcome.
+Contributions to development can be found [here](doc/devel/development.md) - additional contributions are welcome.
 
 ### Agent Console
 

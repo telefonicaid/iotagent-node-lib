@@ -183,7 +183,7 @@ All of them have the same syntax, a list of objects with the following attribute
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
-Some transformation plugins also allow the use of the following optional fields:
+Some advanced features also allow the use of the following optional fields:
 
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
@@ -755,7 +755,7 @@ following to CB:
 
 ### Multientity measurement transformation support (`object_id`)
 
-To allow support for measurement transformation in combination with multi entity plugin, where the same attribute is
+To allow support for measurement transformation in combination with multi entity feature, where the same attribute is
 generated for different entities out of different incoming attribute values (i.e. `object_id`), we introduced support
 for `object_id` in the expression context.
 
@@ -849,7 +849,7 @@ it in queries (and viceversa, receive the extended one in queries and return it 
 
 ## Timestamp Processing
 
-The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
+The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 

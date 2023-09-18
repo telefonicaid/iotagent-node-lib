@@ -13,15 +13,10 @@ pages:
   - Home: 'index.md'
   - 'Getting Started' : 'getting-started.md'
   - 'User & Programmers Manual':
-    - 'Architecture' : 'architecture.md'
     - 'IoT Agent API' : 'api.md'
-    - 'Advanced Topics' : 'advanced-topics.md'
-    - 'Library Functions': 'usermanual.md'
-    - 'Measurement Transformation Expression Language': 'expressionLanguage.md'
-    - 'How to develop a new IoT Agent': 'howto.md'
-    - 'North Port - NGSI Interactions': 'northboundinteractions.md'
-    - 'Development Documentation': development.md
-  - 'Installation & Administration Manual': 
-    - 'Installation Guide': 'installationguide.md'
-    - 'Operations (logs & alarms)': 'operations.md'
-    
+    - 'Installation and administration manual': 'admin.md'
+  - 'Development documentation': 
+    - 'Development manual': 'devel/development.md'
+    - 'Contributing guide': 'devel/contribution-guidelines.md'
+    - 'Architecture' : 'devel/architecture.md'
+    - 'North Port - NGSI Interactions': 'devel/northboundinteractions.md'
