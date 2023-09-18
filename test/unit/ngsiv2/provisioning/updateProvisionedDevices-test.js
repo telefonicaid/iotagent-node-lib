@@ -240,7 +240,6 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
                 request(options, function (error, response, body) {
                     /* jshint camelcase:false */
-
                     body.entity_name.should.equal('ANewLightName');
                     body.timezone.should.equal('Europe/Madrid');
                     done();
