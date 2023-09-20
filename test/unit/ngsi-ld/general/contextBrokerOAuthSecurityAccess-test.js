@@ -291,16 +291,6 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
 
                 contextBrokerMock
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
-                        utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/' +
-                                'contextRequests/createProvisionedDeviceWithGroupAndStatic3.json'
-                        )
-                    )
-                    .reply(204);
-
-                contextBrokerMock
-                    .post(
                         '/ngsi-ld/v1/subscriptions/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/subscriptionRequests/simpleSubscriptionRequest2.json'
