@@ -735,20 +735,11 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/' +
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
                         )
-                    )
-                    .reply(204);
-
-                contextBrokerMock3 = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'testservice')
-                    .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
-                    .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                        utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext5.json')
                     )
                     .reply(204);
 
@@ -769,7 +760,6 @@ describe(
                     should.not.exist(error);
                     response.statusCode.should.equal(201);
                     contextBrokerMock.done();
-                    contextBrokerMock2.done();
                     done();
                 });
             });
@@ -777,7 +767,7 @@ describe(
             it('should send the mixed data to the Context Broker', function (done) {
                 iotAgentLib.update('Light1', 'SensorMachine', '', values, function (error) {
                     should.not.exist(error);
-                    contextBrokerMock3.done();
+                    contextBrokerMock2.done();
                     done();
                 });
             });
@@ -823,7 +813,7 @@ describe(
 
                 contextBrokerMock = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'testservice')
-                    .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
+                    .matchHeader('Authorization', 'Bearer 000210dacf913772606c95dd0b895d5506cbc700')
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
