@@ -68,16 +68,6 @@ describe('NGSI-LD - Subscription tests', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/createMinimumProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .post(
                     '/ngsi-ld/v1/subscriptions/',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/subscriptionRequests/simpleSubscriptionRequest.json'
