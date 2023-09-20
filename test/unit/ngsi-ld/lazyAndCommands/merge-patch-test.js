@@ -55,17 +55,7 @@ const iotAgentConfig = {
     types: {
         Robot: {
             internalAttributes: [],
-            commands: [
-                {
-                    name: 'position',
-                    object_id: 'pos',
-                    type: 'Object'
-                },
-                {
-                    name: 'orientation',
-                    type: 'Object'
-                }
-            ],
+            commands: [],
             lazy: [
                 {
                     name: 'batteryLevel',
@@ -82,7 +72,18 @@ const iotAgentConfig = {
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartgondor'
+    service: 'smartgondor',
+    commands: [
+        {
+            name: 'position',
+            object_id: 'pos',
+            type: 'Object'
+        },
+        {
+            name: 'orientation',
+            type: 'Object'
+        }
+    ]
 };
 
 describe('NGSI-LD - Merge-Patch functionalities', function () {
@@ -158,6 +159,10 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
             let handlerCalled = 0;
 
             iotAgentLib.setMergePatchHandler(function (id, type, service, subservice, attributes, callback) {
+                console.error('======');
+                console.error(id, type, service, subservice, attributes, callback);
+                console.error('======');
+
                 id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
