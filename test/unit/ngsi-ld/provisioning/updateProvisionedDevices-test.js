@@ -358,14 +358,13 @@ describe('NGSI-LD - Device provisioning API: Update provisioned devices', functi
                 });
             });
         });
-        // FIXME: disabled test by #1421
-        // it('should create the initial values for the attributes in the Context Broker', function (done) {
-        //     request(optionsUpdate, function (error, response, body) {
-        //         should.not.exist(error);
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should create the initial values for the attributes in the Context Broker', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
     describe('When a device is updated to add static attributes', function () {

@@ -300,12 +300,12 @@ describe('NGSI-LD - Provisioning API: Single service mode', function () {
                 done();
             });
         });
-        // FIXME: disabled test by #1421
-        // it('should send the mixed data to the Context Broker', function (done) {
-        //     request(deviceCreation, function (error, response, body) {
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+
+        it('should send the mixed data to the Context Broker', function (done) {
+            request(deviceCreation, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 });
