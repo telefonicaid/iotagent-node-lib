@@ -440,6 +440,19 @@ const iotAgentConfig = {
                     object_id: 'condition',
                     name: 'condition',
                     type: 'Number'
+                },
+                {
+                    object_id: 'nonProgressAtt1',
+                    name: 'nonProgressatt1',
+                    type: 'Number',
+                    expression: 'nonexistent * 2'
+                },
+                {
+                    object_id: 'nonProgressAtt2',
+                    name: 'nonProgressatt2',
+                    type: 'Number',
+                    expression: 'nonexistent * 2',
+                    skipValue: null
                 }
             ]
         }
@@ -952,23 +965,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
-                    )
-                )
-                .reply(204);
         });
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
         });

@@ -293,7 +293,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
         });
 
         it('subscribe requests use auth header', function (done) {
-            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     should.not.exist(error);
 
@@ -314,7 +314,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
                     'X-Subject-Token': '12345679ABCDEF'
                 });
 
-            iotAgentLib.getDevice('Light1', 'smartgondor', 'electricity', function (error, device) {
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
                 iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
                     iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
                         contextBrokerMock.done();

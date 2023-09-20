@@ -183,7 +183,7 @@ All of them have the same syntax, a list of objects with the following attribute
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
-Some transformation plugins also allow the use of the following optional fields:
+Some advanced features also allow the use of the following optional fields:
 
 -   **expression**: indicates that the value of the target attribute will not be the plain value or the measurement, but
     an expression based on a combination of the reported values. See the
@@ -674,6 +674,10 @@ will check which ones contain expressions whose variables are present in the rec
 whose variables are covered, their expressions will be executed with the received values, and their values updated in
 the Context Broker.
 
+If as a result of apply expression `undefined` or `null` value is obtained then any of them will not progress to entity
+attribute. Have into acount that some numeric operations results (like nonexistent \* 2) are a kind of null with a
+number type but NaN value, which will also not progress to entity attribute.
+
 E.g.: if a device with the following provisioning information is created in the IoT Agent:
 
 ```json
@@ -751,7 +755,7 @@ following to CB:
 
 ### Multientity measurement transformation support (`object_id`)
 
-To allow support for measurement transformation in combination with multi entity plugin, where the same attribute is
+To allow support for measurement transformation in combination with multi entity feature, where the same attribute is
 generated for different entities out of different incoming attribute values (i.e. `object_id`), we introduced support
 for `object_id` in the expression context.
 
@@ -845,7 +849,7 @@ it in queries (and viceversa, receive the extended one in queries and return it 
 
 ## Timestamp Processing
 
-The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, the plugin
+The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 
@@ -1237,11 +1241,10 @@ _**Request headers**_
 
 _**Request payload**_
 
-A JSON object with a `configGroups` or `services` field. The value is an array of config groups objects to create. See the
-[config group datamodel](#service-group-datamodel) for more information.
+A JSON object with a `configGroups` or `services` field. The value is an array of config groups objects to create. See
+the [config group datamodel](#service-group-datamodel) for more information.
 
 Example:
-
 
 ```json
 {
@@ -1267,6 +1270,7 @@ Example:
     ]
 }
 ```
+
 OR
 
 ```json
@@ -1307,9 +1311,9 @@ Successful operations return `Content-Type` header with `application/json` value
 
 #### Modify config group `PUT /iot/configGroups` or `PUT /iot/services`
 
-Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a configuration/service
-group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
-the JSON body will be updated. The rest of the attributes will remain unchanged.
+Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a
+configuration/service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
+attributes included in the JSON body will be updated. The rest of the attributes will remain unchanged.
 
 _**Request query parameters**_
 
