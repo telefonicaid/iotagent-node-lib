@@ -130,14 +130,6 @@ describe('NGSI-LD - Provisioning API: Single service mode', function () {
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'testservice')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(204);
-
             request(groupCreation, function (error) {
                 request(deviceCreation, function (error, response, body) {
                     done();
@@ -183,26 +175,10 @@ describe('NGSI-LD - Provisioning API: Single service mode', function () {
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'testservice')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(204);
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'AlternateService')
                 .post('/ngsi-ld/v1/csourceRegistrations/')
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'AlternateService')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(204);
 
             request(groupCreation, function (error) {
                 request(deviceCreation, function (error, response, body) {
@@ -279,16 +255,6 @@ describe('NGSI-LD - Provisioning API: Single service mode', function () {
                     )
                 )
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
-                .matchHeader('fiware-service', 'testservice')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/createProvisionedDeviceWithGroupAndStatic.json'
-                    )
-                )
-                .reply(204);
 
             request(groupCreation, done);
         });

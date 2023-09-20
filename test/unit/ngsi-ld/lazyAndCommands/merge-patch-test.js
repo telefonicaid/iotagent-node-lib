@@ -159,10 +159,6 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
             let handlerCalled = 0;
 
             iotAgentLib.setMergePatchHandler(function (id, type, service, subservice, attributes, callback) {
-                console.error('======');
-                console.error(id, type, service, subservice, attributes, callback);
-                console.error('======');
-
                 id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
                 type.should.equal(device3.type);
                 attributes[0].name.should.equal('position');
