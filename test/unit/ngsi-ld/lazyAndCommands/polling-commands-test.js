@@ -90,12 +90,7 @@ const iotAgentConfig = {
             active: []
         },
         Robot: {
-            commands: [
-                {
-                    name: 'position',
-                    type: 'Array'
-                }
-            ],
+            commands: [],
             lazy: [],
             staticAttributes: [],
             active: []
@@ -121,7 +116,13 @@ const device3 = {
     type: 'Robot',
     service: 'smartgondor',
     subservice: 'gardens',
-    polling: true
+    polling: true,
+    commands: [
+        {
+            name: 'position',
+            type: 'Array'
+        }
+    ]
 };
 
 describe('NGSI-LD - Polling commands', function () {
@@ -170,16 +171,6 @@ describe('NGSI-LD - Polling commands', function () {
         };
 
         beforeEach(function (done) {
-            statusAttributeMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextCommandStatus1.json'
-                    )
-                )
-                .reply(204);
-
             iotAgentLib.register(device3, function (error) {
                 done();
             });
@@ -217,7 +208,6 @@ describe('NGSI-LD - Polling commands', function () {
 
             request(options, function (error, response, body) {
                 should.not.exist(error);
-                statusAttributeMock.done();
                 done();
             });
         });
