@@ -148,14 +148,6 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function () {
             .post('/ngsi-ld/v1/csourceRegistrations/')
             .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-        // This mock does not check the payload since the aim of the test is not to verify
-        // device provisioning functionality. Appropriate verification is done in tests under
-        // provisioning folder
-        contextBrokerMock
-            .matchHeader('fiware-service', 'smartgondor')
-            .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(204);
-
         iotAgentLib.activate(iotAgentConfig, function (error) {
             iotAgentLib.register(device1, function (error) {
                 done();
@@ -192,14 +184,14 @@ describe('NGSI-LD - IoT Agent Device Update Registration', function () {
                 )
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
         });
-        // FIXME: disabled test by #1421
-        // it('should register as ContextProvider of its lazy attributes', function (done) {
-        //     iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
-        //         should.not.exist(error);
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
         it('should store the new values in the registry', function (done) {
             iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
                 iotAgentLib.getDevice(deviceUpdated.id, null, 'smartgondor', 'gardens', function (error, deviceResult) {

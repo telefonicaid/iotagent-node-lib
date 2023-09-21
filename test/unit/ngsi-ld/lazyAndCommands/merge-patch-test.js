@@ -55,17 +55,7 @@ const iotAgentConfig = {
     types: {
         Robot: {
             internalAttributes: [],
-            commands: [
-                {
-                    name: 'position',
-                    object_id: 'pos',
-                    type: 'Object'
-                },
-                {
-                    name: 'orientation',
-                    type: 'Object'
-                }
-            ],
+            commands: [],
             lazy: [
                 {
                     name: 'batteryLevel',
@@ -82,7 +72,18 @@ const iotAgentConfig = {
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
-    service: 'smartgondor'
+    service: 'smartgondor',
+    commands: [
+        {
+            name: 'position',
+            object_id: 'pos',
+            type: 'Object'
+        },
+        {
+            name: 'orientation',
+            type: 'Object'
+        }
+    ]
 };
 
 describe('NGSI-LD - Merge-Patch functionalities', function () {
@@ -154,37 +155,36 @@ describe('NGSI-LD - Merge-Patch functionalities', function () {
             });
         });
 
-        // FIXME: after (PR#1396)
-        // it('should call the client handler once', function (done) {
-        //     let handlerCalled = 0;
+        it('should call the client handler once', function (done) {
+            let handlerCalled = 0;
 
-        //     iotAgentLib.setMergePatchHandler(function (id, type, service, subservice, attributes, callback) {
-        //         id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
-        //         type.should.equal(device3.type);
-        //         attributes[0].name.should.equal('position');
-        //         attributes[1].name.should.equal('orientation');
-        //         should.equal(attributes[1].value, null);
-        //         handlerCalled++;
-        //         callback(null, {
-        //             id,
-        //             type,
-        //             attributes: [
-        //                 {
-        //                     name: 'position',
-        //                     type: 'Array',
-        //                     value: '[28, -104, 23]'
-        //                 }
-        //             ]
-        //         });
-        //     });
+            iotAgentLib.setMergePatchHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device3.type + ':' + device3.id);
+                type.should.equal(device3.type);
+                attributes[0].name.should.equal('position');
+                attributes[1].name.should.equal('orientation');
+                should.equal(attributes[1].value, null);
+                handlerCalled++;
+                callback(null, {
+                    id,
+                    type,
+                    attributes: [
+                        {
+                            name: 'position',
+                            type: 'Array',
+                            value: '[28, -104, 23]'
+                        }
+                    ]
+                });
+            });
 
-        //     request(options, function (error, response, body) {
-        //         should.not.exist(error);
-        //         response.statusCode.should.equal(200);
-        //         handlerCalled.should.equal(1);
-        //         done();
-        //     });
-        // });
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                handlerCalled.should.equal(1);
+                done();
+            });
+        });
     });
 
     xdescribe('When a partial update PATCH with an NGSI-LD Null arrives to the IoT Agent as Context Provider', function () {
