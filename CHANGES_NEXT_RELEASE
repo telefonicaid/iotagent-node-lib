@@ -1,1 +1,2 @@
-- Fix remove mongo DeprecationWarning: current Server Discovery and Monitoring engine is deprecated by adding set useUnifiedTopology = true
+- Fix: remove mongo `DeprecationWarning: current Server Discovery and Monitoring engine is deprecated` by setting `useUnifiedTopology = true`
+
