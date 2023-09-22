@@ -38,7 +38,7 @@ The following list of features are planned to be addressed in the medium term, t
 release(s) generated in the next 9 months after the next planned release:
 
 -   Allow to add metadata to attributes from measures ([#1453](https://github.com/telefonicaid/iotagent-node-lib/issues/1453))
--   Cache support
+-   Cache support ([#1467](https://github.com/telefonicaid/iotagent-node-lib/issues/1467))
 -   MQTT per group advanced configuration (MQTT broker, topics) ([#1454](https://github.com/telefonicaid/iotagent-node-lib/issues/1454))
 -   Subscription based commands ([#1455](https://github.com/telefonicaid/iotagent-node-lib/issues/1455))
 -   Remove registration support ([#1456](https://github.com/telefonicaid/iotagent-node-lib/issues/1456))
@@ -59,8 +59,8 @@ us if you wish to get involved in the implementation or influence the roadmap:
 
 The following list contains all features that were in the roadmap and have already been implemented.
 
--   Refactor entities-NGSI-v2.js module (#1166) ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
--   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) (#1145) ([2.24.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.24.0))
+-   Refactor entities-NGSI-v2.js module ([#1166](https://github.com/telefonicaid/iotagent-node-lib/issues/1166)) ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
+-   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145)) ([2.24.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.24.0))
 -   Improve command functionalities (binary data + expression + mapping) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
 -   Allow to handle binary messages ([iota-ul#530](https://github.com/telefonicaid/iotagent-ul/issues/530))
@@ -69,7 +69,9 @@ The following list contains all features that were in the roadmap and have alrea
     ([iotagent-json#416](https://github.com/telefonicaid/iotagent-json/issues/416),
     [iotagent-ul#372](https://github.com/telefonicaid/iotagent-ul/issues/372))
     ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
--   JEXL support in expressions (#801, #687, #868)
+-   JEXL support in expressions ([#801](https://github.com/telefonicaid/iotagent-node-lib/issues/801), 
+     [#687](https://github.com/telefonicaid/iotagent-node-lib/issues/687), 
+     [#868](https://github.com/telefonicaid/iotagent-node-lib/issues/868))
     ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
--   Add MongoDB authentication support (#844)
+-   Add MongoDB authentication support ([#844](https://github.com/telefonicaid/iotagent-node-lib/issues/844))
     ([2.12.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.12.0))
