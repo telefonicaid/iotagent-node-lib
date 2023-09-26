@@ -60,7 +60,7 @@ us if you wish to get involved in the implementation or influence the roadmap:
 The following list contains all features that were in the roadmap and have already been implemented.
 
 -   Refactor entities-NGSI-v2.js module ([#1166](https://github.com/telefonicaid/iotagent-node-lib/issues/1166)) ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
--   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145)) ([2.24.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.24.0))
+-   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145)) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Improve command functionalities (binary data + expression + mapping) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
 -   Allow to handle binary messages ([iota-ul#530](https://github.com/telefonicaid/iotagent-ul/issues/530))
