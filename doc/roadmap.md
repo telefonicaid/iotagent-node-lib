@@ -64,7 +64,7 @@ The following list contains all features that were in the roadmap and have alrea
 -   Improve command functionalities (binary data + expression + mapping) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
 -   Allow to handle binary messages ([iota-ul#530](https://github.com/telefonicaid/iotagent-ul/issues/530))
--   Removal support for NGSIv1 ([#966]((https://github.com/telefonicaid/iotagent-node-lib/issues/966)) ([2.18.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.18.0))
+-   Removal support for NGSIv1 ([#966](https://github.com/telefonicaid/iotagent-node-lib/issues/966)) ([2.18.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.18.0))
 -   Selectively ignore measure in the southbound interface
     ([iotagent-json#416](https://github.com/telefonicaid/iotagent-json/issues/416),
     [iotagent-ul#372](https://github.com/telefonicaid/iotagent-ul/issues/372))
