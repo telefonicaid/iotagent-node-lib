@@ -455,6 +455,48 @@ const iotAgentConfig = {
                     skipValue: null
                 }
             ]
+        },
+        testNull: {
+            commands: [],
+            type: 'testNull',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3'
+                },
+                {
+                    name: 'c',
+                    type: 'Number',
+                    expression: 'v==null'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'soy null':'no soy null'"
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)?'soy null':'no soy null'"
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -591,6 +633,66 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should ignore the expression and send the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When an measure arrives whit null values', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNull1',
+                    type: 'testNull',
+                    v: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: 0,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Number'
+                    },
+                    d: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNull1', 'testNull', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
