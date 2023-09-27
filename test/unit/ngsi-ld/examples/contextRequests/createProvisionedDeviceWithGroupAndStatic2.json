@@ -1,48 +1,17 @@
 [
   {
     "@context": "http://context.json-ld",
-    "id": "urn:ngsi-ld:SensorMachine:TheFirstLight",
+    "id": "urn:ngsi-ld:SensorMachine:Light1",
     "type": "SensorMachine",
-    "hardcodedAttr": {
+    "status": {
       "type": "Property",
-      "value": {
-        "@type": "hardcodedType",
-        "@value": "hardcodedValue"
-      }
+      "value": "STARTING"
     },
     "bootstrapServer": {
       "type": "Property",
       "value": {
         "@type": "Address",
         "@value": "127.0.0.1"
-      }
-    },
-    "commandAttr_status": {
-      "type": "Property",
-      "value": {
-        "@type": "commandStatus",
-        "@value": "UNKNOWN"
-      }
-    },
-    "commandAttr_info": {
-      "type": "Property",
-      "value": {
-        "@type": "commandResult",
-        "@value": " "
-      }
-    },
-    "wheel1_status": {
-      "type": "Property",
-      "value": {
-        "@type": "commandStatus",
-        "@value": "UNKNOWN"
-      }
-    },
-    "wheel1_info": {
-      "type": "Property",
-      "value": {
-        "@type": "commandResult",
-        "@value": " "
       }
     }
   }

@@ -2,7 +2,7 @@
   "name": "iotagent-node-lib",
   "license": "AGPL-3.0-only",
   "description": "IoT Agent library to interface with NGSI Context Broker",
-  "version": "3.3.0-next",
+  "version": "3.4.0-next",
   "homepage": "https://github.com/telefonicaid/iotagent-node-lib",
   "keywords": [
     "fiware",
@@ -65,7 +65,7 @@
     "husky": "~4.2.5",
     "lint-staged": "~12.3.8",
     "mocha": "10.0.0",
-    "mongodb": "4.17.0",
+    "mongodb": "4.17.1",
     "nock": "13.2.7",
     "nyc": "~15.1.0",
     "prettier": "~2.7.1",
