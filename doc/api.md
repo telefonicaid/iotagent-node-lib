@@ -8,7 +8,7 @@
     -   [IoT Agent information model](#iot-agent-information-model)
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
-    -   [Entity attributes](#entity-attributes)
+    -   [Device to NGSI Mapping](#device-to-ngsi-mapping)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
@@ -28,8 +28,8 @@
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
-    -   [Timestamp Compression](#timestamp-compression)
-    -   [Timestamp Processing](#timestamp-processing)
+    -   [TimeInstant and Timestamp flag](#timeinstant-and-timestamp-flag)
+        -   [Timestamp Compression](#timestamp-compression)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -152,12 +152,12 @@ parameters defined at device level in database, the parameters are inherit from 
 ## Device to NGSI Mapping
 
 The way to map the information coming or going to the device to the NGSI attributes is defined in the group or device.
-It is possible to define the entity type and the entity id that a device will use in the Context Broker. It can be
+It is possible to define the entity type and the entity ID that a device will use in the Context Broker. It can be
 configured for a single device in the device provisioning, or it can be defined for all the devices in a group.
 
-The entity type should be defined both in the group and in the device, but the entity name (entity id) is not defined in
-the group. In that case, if there is no a existing device the same device id, the entity name of the device generated
-will be a concatenation of the entity type and the device id (I.E: `entityType:device_id`). It is possible to define the
+The entity type should be defined both in the group and in the device, but the entity name (entity ID) is not defined in
+the group. In that case, if there is no a existing device the same device ID, the entity name of the device generated
+will be a concatenation of the entity type and the device ID (I.E: `entityType:device_id`). It is possible to define the
 entity name as an expression, using the [Expression Language](#expression-language-support) through the `entityNameExp`
 attribute in the group.
 
