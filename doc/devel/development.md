@@ -37,6 +37,7 @@
     -   [IoT Agent in multi-thread mode](#iot-agent-in-multi-thread-mode)
     -   [Configuration management](#configuration-management)
         -   [Provisioning handlers](#provisioning-handlers)
+-   [IoT Agent additional tools](#iot-agent-additional-tools)
 
 ## Preface
 
@@ -1877,3 +1878,212 @@ iotAgentLib.setProvisioningHandler(provisioningHandler);
 Now we can test our implementation by sending provisioning requests to the North Port of the IoT Agent. If we provision
 a new device into the platform, and then we ask for the list of provisioned devices, we shall see the type of the
 provisioned device has changed to `CertifiedType`.
+
+## IoT Agent additional tools
+
+The IoT Agent Node Lib provides some additional tools that can be used to ease the development of IoT Agents and test
+their functionality.
+
+### Agent Console
+
+A command-line client to experiment with the library is packed with it. The command-line client can be started using the
+following command:
+
+```console
+bin/agentConsole.js
+```
+
+The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, register and
+unregister devices, send measures mimicking the device and receive updates of the device data. Take into account that,
+by default, the console uses the same `config.js` file than the IoT Agent.
+
+The command-line client creates a console that offers the following options:
+
+```text
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command-line.
+
+start
+
+	Start the IoT Agent
+
+stop
+
+	Stop the IoT Agent
+
+register <id> <type>
+
+	Register a new device in the IoT Agent. The attributes to register will be extracted from the
+	type configuration
+
+unregister <id> <type>
+
+	Unregister the selected device
+
+showConfig
+
+	Show the current configuration file
+
+config <newConfig>
+
+	Change the configuration file to a new one
+
+updatevalue <deviceId> <deviceType> <attributes>
+
+	Update a device value in the Context Broker. The attributes should be triads with the following
+	format: "name/type/value" sepparated by commas.
+
+listdevices
+
+	List all the devices that have been registered in this IoT Agent session
+```
+
+### Agent tester
+
+#### Command-line testing
+
+The library also offers a Context Broker and IoT Agent client that can be used to:
+
+-   Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy
+    attributes and checking the appropriate values for active ones.
+-   Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
+
+The tester can be started with the following command, from the root folder of the project:
+
+```console
+bin/iotAgentTester.js
+```
+
+From the command-line, the `help` command can be used to show a description of the currently supported features. These
+are the following:
+
+```text
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command-line.
+
+update <entity> <type> <attributes>
+
+	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
+
+append <entity> <type> <attributes>
+
+	Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+
+query <entity> <type>
+
+	Get all the information on the selected object.
+
+queryAttr <entity> <type> <attributes>
+
+	Get information on the selected object for the selected attributes.
+
+discover <entity> <type>
+
+	Get all the context providers for a entity and type.
+
+configCb <host> <port> <service> <subservice>
+
+	Config a new host and port for the remote Context Broker.
+
+showConfigCb
+
+	Show the current configuration of the client for the Context Broker.
+
+configIot <host> <port> <service> <subservice>
+
+	Config a new host and port for the remote IoT Agent.
+
+showConfigIot
+
+	Show the current configuration of the client for the IoT Agent.
+
+provision <filename>
+
+	Provision a new device using the Device Provisioning API. The device configuration is
+	read from the file specified in the "filename" parameter.
+
+provisionGroup <template> <data> <type>
+
+	Provision a group of devices with the selected template, taking the information needed to
+	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
+	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
+	to the same IoT Agent, once the templates have been fulfilled.
+
+listProvisioned
+
+	List all the provisioned devices in an IoT Agent.
+
+removeProvisioned <deviceId>
+
+	Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
+
+addGroup <filename>
+
+	Add a new device group to the specified IoT Agent through the Configuration API. The
+	body is taken from the file specified in the "filename" parameter.
+
+listGroups
+
+	List all the device groups created in the selected IoT Agent for the configured service
+
+removeGroup <apiKey> <resource>
+
+	Remove the device group corresponding to the current configured subservice.
+
+authenticate <host> <port> <user> <password> <service>
+
+	Authenticates to the given authentication server, and use the token in subsequent requests.
+
+setProtocol <protocol>
+
+	Sets the protocol to use in the requests (http or https). Defaults to http.
+
+configMigration <host> <port> <originDb>
+
+	Sets the configuration for a migration between a C++ IoTA and a Node.js one.
+
+showConfigMigration
+
+	Shows the current migration configuration.
+
+addProtocols <protocols>
+
+	Add a protocol translation table, in the following format:
+		protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
+
+
+migrate <targetDb> <service> <subservice>
+
+	Migrate all the devices and services for the selected service and subservice into the
+	specified Mongo database. To perform the migration for all the services or all the
+	subservices, use the "*" value.
+```
+
+The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This
+configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively.
+Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be
+deleted upon startup.
+
+---
