@@ -29,6 +29,7 @@ const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
+const mongoUtils = require('../mongodb/mongoDBUtils');
 let contextBrokerMock;
 let keystoneMock;
 const iotAgentConfig = {
@@ -82,6 +83,15 @@ const iotAgentConfig = {
             active: []
         }
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
@@ -108,7 +118,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
 
     afterEach(function (done) {
         iotAgentLib.deactivate(done);
-        nock.cleanAll();
+        mongoUtils.cleanDbs(function () {
+            nock.cleanAll();
+        });
     });
 
     describe('When a measure is sent to the Context Broker via an Update Context operation', function () {

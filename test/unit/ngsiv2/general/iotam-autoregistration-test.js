@@ -68,6 +68,14 @@ const iotAgentConfig = {
         description: 'A generic protocol',
         agentPath: '/iot'
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     defaultResource: '/iot/d'
 };
 const groupCreation = {

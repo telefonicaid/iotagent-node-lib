@@ -31,7 +31,8 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
 const request = utils.request;
-const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+//const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+const groupRegistryMongoDB = require('../../../../lib/services/groups/groupRegistryMongoDB');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -73,6 +74,14 @@ const iotAgentConfig = {
             service: 'smartgondor',
             subservice: 'gardens'
         }
+    },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
     },
     service: 'smartgondor',
     subservice: 'gardens',
@@ -133,12 +142,12 @@ describe('NGSI-v2 - HTTPS support tests IOTAM', function () {
                 )
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            groupRegistryMemory.create(groupCreation, done);
+            groupRegistryMongoDB.create(groupCreation, done);
         });
 
         afterEach(function (done) {
             nock.cleanAll();
-            groupRegistryMemory.clear(function () {
+            groupRegistryMongoDB.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
