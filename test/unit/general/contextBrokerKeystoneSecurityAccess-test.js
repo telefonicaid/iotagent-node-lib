@@ -86,7 +86,6 @@ const iotAgentConfig = {
     deviceRegistry: {
         type: 'mongodb'
     },
-
     mongodb: {
         host: 'localhost',
         port: '27017',
@@ -117,9 +116,11 @@ describe('NGSI-v2 - Secured access to the Context Broker with Keystone', functio
     });
 
     afterEach(function (done) {
-        iotAgentLib.deactivate(done);
-        mongoUtils.cleanDbs(function () {
-            nock.cleanAll();
+        iotAgentLib.deactivate(function () {
+            mongoUtils.cleanDbs(function () {
+                nock.cleanAll();
+                done();
+            });
         });
     });
 

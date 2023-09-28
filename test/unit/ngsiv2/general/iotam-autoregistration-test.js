@@ -28,7 +28,8 @@ const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
 const request = utils.request;
-const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+//const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+const groupRegistryMongoDB = require('../../../../lib/services/groups/groupRegistryMongoDB');
 const should = require('should');
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -253,11 +254,11 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
                 )
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            groupRegistryMemory.create(groupCreation, done);
+            groupRegistryMongoDB.create(groupCreation, done);
         });
 
         afterEach(function (done) {
-            groupRegistryMemory.clear(function () {
+            groupRegistryMongoDB.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
@@ -292,7 +293,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
 
         afterEach(function (done) {
-            groupRegistryMemory.clear(function () {
+            groupRegistryMongoDB.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
@@ -321,13 +322,13 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
                 .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
                 .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
 
-            groupRegistryMemory.create(groupCreation, function () {
+            groupRegistryMongoDB.create(groupCreation, function () {
                 iotAgentLib.activate(iotAgentConfig, done);
             });
         });
 
         afterEach(function (done) {
-            groupRegistryMemory.clear(function () {
+            groupRegistryMongoDB.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });
@@ -362,7 +363,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
 
         afterEach(function (done) {
-            groupRegistryMemory.clear(function () {
+            groupRegistryMongoDB.clear(function () {
                 iotAgentLib.deactivate(done);
             });
         });

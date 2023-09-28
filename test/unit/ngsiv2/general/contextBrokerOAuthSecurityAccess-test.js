@@ -31,7 +31,6 @@ const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
-const mongoUtils = require('../../mongodb/mongoDBUtils');
 
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
@@ -120,9 +119,7 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider', 
 
     afterEach(function (done) {
         iotAgentLib.deactivate(done);
-        mongoUtils.cleanDbs(function () {
-            nock.cleanAll();
-        });
+        nock.cleanAll();
     });
 
     describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
@@ -373,9 +370,9 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
     });
 
     afterEach(function (done) {
-        iotAgentLib.deactivate(done);
-        mongoUtils.cleanDbs(function () {
+        iotAgentLib.deactivate(function () {
             nock.cleanAll();
+            done();
         });
     });
 
@@ -584,9 +581,7 @@ describe(
 
         afterEach(function (done) {
             iotAgentLib.deactivate(done);
-            mongoUtils.cleanDbs(function () {
-                nock.cleanAll();
-            });
+            nock.cleanAll();
         });
 
         describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
@@ -820,9 +815,7 @@ describe(
 
         afterEach(function (done) {
             iotAgentLib.deactivate(done);
-            mongoUtils.cleanDbs(function () {
-                nock.cleanAll();
-            });
+            nock.cleanAll();
         });
 
         describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
