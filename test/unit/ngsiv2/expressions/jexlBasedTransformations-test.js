@@ -744,7 +744,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-            // logger.setLevel('DEBUG');
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
@@ -754,10 +753,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                     type: 'testNull',
                     v: {
                         value: null,
-                        type: 'Number'
-                    },
-                    b: {
-                        value: 0,
                         type: 'Number'
                     },
                     c: {
@@ -877,7 +872,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                         type: 'Number'
                     },
                     b: {
-                        value: 0,
+                        value: null,
                         type: 'Number'
                     },
                     c: {
@@ -925,7 +920,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-            logger.setLevel('DEBUG');
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
@@ -997,10 +991,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .post('/v2/entities?options=upsert', {
                     id: 'testNullExplicit1',
                     type: 'testNullExplicit',
-                    b: {
-                        value: 0,
-                        type: 'Number'
-                    },
                     c: {
                         value: true,
                         type: 'Boolean'
@@ -1514,6 +1504,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             });
         });
     });
+
     describe('When a measure arrives and there is not enough information to calculate an expression', function () {
         const values = [
             {
