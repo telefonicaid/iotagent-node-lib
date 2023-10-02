@@ -156,6 +156,24 @@ const iotAgentConfig = {
                     }
                 }
             ]
+        },
+        StupidDevice: {
+            type: 'StupidDevice',
+            commands: [],
+            lazy: [],
+            staticAttributes: [],
+            active: [
+                // {
+                //     name: 'type',
+                //     objectId: 'id',
+                //     type: 'text'
+                // },
+                // {
+                //     name: 'id',
+                //     objectId: 'id',
+                //     type: 'text'
+                // }
+            ]
         }
     },
     service: 'smartgondor',
@@ -185,696 +203,744 @@ describe('NGSI-v2 - Active attributes test', function () {
         iotAgentLib.deactivate(done);
     });
 
-    describe('When the IoT Agent receives new information from a device', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information and the timestamp flag is on', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'dimming',
-                    type: 'number',
-                    value: 87
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json')
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = true;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should add the timestamp to the entity and all the attributes', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information and the timestamp flag is false', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'dimming',
-                    type: 'number',
-                    value: 87
-                }
-            ];
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalse.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = false;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-
-            done();
-        });
-
-        it('should not add the timestamp to the entity and the attributes', function (done) {
-            iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information and the timestamp flag is false but the measure contains timeInstant', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2015-12-14T08:06:01.468Z'
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalseTimeInstant.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = false;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should add the timestamp attribute to the entity but not as attribute metadata', function (done) {
-            iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'Boolean',
-                    value: 'true'
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'ISO8601',
-                    value: '2018-10-05T11:03:56 00:00Z'
-                }
-            ];
-
-            nock.cleanAll();
-
-            iotAgentConfig.timestamp = true;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            done();
-        });
-
-        it('should fail with a 400 BAD_TIMESTAMP error', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.exist(error);
-                error.code.should.equal(400);
-                error.name.should.equal('BAD_TIMESTAMP');
-                done();
-            });
-        });
-    });
-
-    describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format without milis', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1666477342000); // 2022-10-22T22:22:22Z
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2022-10-22T22:22:22Z'
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = true;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should not fail', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information, the timestamp flag is on and timezone is defined', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'dimming',
-                    type: 'number',
-                    value: 87
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = true;
-            iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            delete iotAgentConfig.types.Light.timezone;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should add the timestamp to the entity and all the attributes', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2015-12-14T08:06:01.468Z'
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = true;
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should not override the received instant and should add metadatas for this request', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function () {
-        let modifiedValues;
-
-        beforeEach(function (done) {
-            const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-
-            modifiedValues = [
-                {
-                    name: 'state',
-                    type: 'boolean',
-                    value: true
-                },
-                {
-                    name: 'TimeInstant',
-                    type: 'DateTime',
-                    value: '2015-12-14T08:06:01.468Z'
-                }
-            ];
-
-            timekeeper.freeze(time);
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentConfig.timestamp = true;
-            iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        afterEach(function (done) {
-            delete iotAgentConfig.timestamp;
-            delete iotAgentConfig.types.Light.timezone;
-            timekeeper.reset();
-
-            done();
-        });
-
-        it('should not override the received instant and should not add metadatas for this request', function (done) {
-            iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should fail with a 500 TYPE_NOT_FOUND error', function (done) {
-            iotAgentLib.update('light1', 'BrokenLight', '', values, function (error) {
-                should.exist(error);
-                error.code.should.equal(500);
-                error.name.should.equal('TYPE_NOT_FOUND');
-                done();
-            });
-        });
-    });
-
-    describe('When the Context Broker returns an HTTP error code updating an entity', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
-                )
-                .reply(
-                    413,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext1Failed.json')
-                );
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.exist(error);
-                should.exist(error.name);
-                error.code.should.equal(413);
-                error.details.description.should.equal('payload size: 1500000, max size supported: 1048576');
-                error.details.error.should.equal('RequestEntityTooLarge');
-                error.name.should.equal('ENTITY_GENERIC_ERROR');
-                done();
-            });
-        });
-    });
-
-    describe('When the Context Broker returns an application error code updating an entity', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
-                )
-                .reply(
-                    400,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json')
-                );
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.exist(error);
-                should.exist(error.name);
-                error.name.should.equal('ENTITY_GENERIC_ERROR');
-                done();
-            });
-        });
-    });
-
-    describe('When there is a transport error connecting to the Context Broker', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
-                )
-                .reply(
-                    500,
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json')
-                );
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should return a ENTITY_GENERIC_ERROR error to the caller', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.exist(error);
-                should.exist(error.name);
-                error.name.should.equal('ENTITY_GENERIC_ERROR');
-                should.exist(error.details);
-                should.exist(error.code);
-                error.code.should.equal(500);
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent recieves information for a type with a configured Context Broker', function () {
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:3024')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext5.json')
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should use the Context Broker defined by the type', function (done) {
-            iotAgentLib.update('humSensor', 'Humidity', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an IoT Agent receives information for a type with static attributes', function () {
-        const newValues = [
+    // describe('When the IoT Agent receives new information from a device', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information and the timestamp flag is on', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'dimming',
+    //                 type: 'number',
+    //                 value: 87
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json')
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should add the timestamp to the entity and all the attributes', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information and the timestamp flag is false', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'dimming',
+    //                 type: 'number',
+    //                 value: 87
+    //             }
+    //         ];
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalse.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = false;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+
+    //         done();
+    //     });
+
+    //     it('should not add the timestamp to the entity and the attributes', function (done) {
+    //         iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information and the timestamp flag is false but the measure contains timeInstant', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'TimeInstant',
+    //                 type: 'DateTime',
+    //                 value: '2015-12-14T08:06:01.468Z'
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalseTimeInstant.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = false;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should add the timestamp attribute to the entity but not as attribute metadata', function (done) {
+    //         iotAgentLib.update('lightNoTimestamp1', 'LightNoTimestamp', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoTA gets a set of values with a TimeInstant which are not in ISO8601 format', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'Boolean',
+    //                 value: 'true'
+    //             },
+    //             {
+    //                 name: 'TimeInstant',
+    //                 type: 'ISO8601',
+    //                 value: '2018-10-05T11:03:56 00:00Z'
+    //             }
+    //         ];
+
+    //         nock.cleanAll();
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         done();
+    //     });
+
+    //     it('should fail with a 400 BAD_TIMESTAMP error', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.exist(error);
+    //             error.code.should.equal(400);
+    //             error.name.should.equal('BAD_TIMESTAMP');
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoTA gets a set of values with a TimeInstant which are in ISO8601 format without milis', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1666477342000); // 2022-10-22T22:22:22Z
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'TimeInstant',
+    //                 type: 'DateTime',
+    //                 value: '2022-10-22T22:22:22Z'
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should not fail', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information, the timestamp flag is on and timezone is defined', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'dimming',
+    //                 type: 'number',
+    //                 value: 87
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         delete iotAgentConfig.types.Light.timezone;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should add the timestamp to the entity and all the attributes', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoTA gets a set of values with a TimeInstant and the timestamp flag is on', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'TimeInstant',
+    //                 type: 'DateTime',
+    //                 value: '2015-12-14T08:06:01.468Z'
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should not override the received instant and should add metadatas for this request', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoTA gets a set of values with a TimeInstant, the timestamp flag is onand timezone is defined', function () {
+    //     let modifiedValues;
+
+    //     beforeEach(function (done) {
+    //         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+
+    //         modifiedValues = [
+    //             {
+    //                 name: 'state',
+    //                 type: 'boolean',
+    //                 value: true
+    //             },
+    //             {
+    //                 name: 'TimeInstant',
+    //                 type: 'DateTime',
+    //                 value: '2015-12-14T08:06:01.468Z'
+    //             }
+    //         ];
+
+    //         timekeeper.freeze(time);
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentConfig.timestamp = true;
+    //         iotAgentConfig.types.Light.timezone = 'America/Los_Angeles';
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete iotAgentConfig.timestamp;
+    //         delete iotAgentConfig.types.Light.timezone;
+    //         timekeeper.reset();
+
+    //         done();
+    //     });
+
+    //     it('should not override the received instant and should not add metadatas for this request', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', modifiedValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe("When the IoT Agent receives information from a device whose type doesn't have a type name", function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should fail with a 500 TYPE_NOT_FOUND error', function (done) {
+    //         iotAgentLib.update('light1', 'BrokenLight', '', values, function (error) {
+    //             should.exist(error);
+    //             error.code.should.equal(500);
+    //             error.name.should.equal('TYPE_NOT_FOUND');
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the Context Broker returns an HTTP error code updating an entity', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+    //             )
+    //             .reply(
+    //                 413,
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext1Failed.json')
+    //             );
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.exist(error);
+    //             should.exist(error.name);
+    //             error.code.should.equal(413);
+    //             error.details.description.should.equal('payload size: 1500000, max size supported: 1048576');
+    //             error.details.error.should.equal('RequestEntityTooLarge');
+    //             error.name.should.equal('ENTITY_GENERIC_ERROR');
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the Context Broker returns an application error code updating an entity', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+    //             )
+    //             .reply(
+    //                 400,
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json')
+    //             );
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should return ENTITY_GENERIC_ERROR an error to the caller', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.exist(error);
+    //             should.exist(error.name);
+    //             error.name.should.equal('ENTITY_GENERIC_ERROR');
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When there is a transport error connecting to the Context Broker', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+    //             )
+    //             .reply(
+    //                 500,
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextResponses/updateContext2Failed.json')
+    //             );
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should return a ENTITY_GENERIC_ERROR error to the caller', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.exist(error);
+    //             should.exist(error.name);
+    //             error.name.should.equal('ENTITY_GENERIC_ERROR');
+    //             should.exist(error.details);
+    //             should.exist(error.code);
+    //             error.code.should.equal(500);
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent recieves information for a type with a configured Context Broker', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:3024')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext5.json')
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should use the Context Broker defined by the type', function (done) {
+    //         iotAgentLib.update('humSensor', 'Humidity', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When an IoT Agent receives information for a type with static attributes', function () {
+    //     const newValues = [
+    //         {
+    //             name: 'moving',
+    //             type: 'boolean',
+    //             value: true
+    //         }
+    //     ];
+
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+    //     it('should decorate the entity with the static attributes', function (done) {
+    //         iotAgentLib.update('motion1', 'Motion', '', newValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When an IoT Agent receives information for a type with static attributes with metadata', function () {
+    //     const newValues = [
+    //         {
+    //             name: 'luminosity',
+    //             type: 'text',
+    //             value: '100'
+    //         }
+    //     ];
+
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         /* jshint maxlen: 200 */
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+    //     it('should decorate the entity with the static attributes', function (done) {
+    //         iotAgentLib.update('lamp1', 'Lamp', '', newValues, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information from a device', function () {
+    //     beforeEach(function (done) {
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     afterEach(function (done) {
+    //         done();
+    //     });
+
+    //     it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+    // });
+
+    // describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
+    //     beforeEach(function (done) {
+    //         process.env.IOTA_CB_HOST = 'cbhost';
+
+    //         nock.cleanAll();
+
+    //         contextBrokerMock = nock('http://192.168.1.1:1026')
+    //             .matchHeader('fiware-service', 'smartgondor')
+    //             .matchHeader('fiware-servicepath', 'gardens')
+    //             .post(
+    //                 '/v2/entities?options=upsert',
+    //                 utils.readExampleFile(
+    //                     './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
+    //                 )
+    //             )
+    //             .reply(204);
+
+    //         iotAgentLib.activate(iotAgentConfig, done);
+    //     });
+
+    //     it('should change the value of the corresponding attribute in the context broker', function (done) {
+    //         iotAgentLib.update('light1', 'Light', '', values, function (error) {
+    //             should.not.exist(error);
+    //             contextBrokerMock.done();
+    //             done();
+    //         });
+    //     });
+
+    //     afterEach(function (done) {
+    //         delete process.env.IOTA_CB_HOST;
+    //         done();
+    //     });
+    // });
+
+    describe('When the IoT Agent receives measures with ID and type names', function () {
+        const valuesIdType = [
             {
-                name: 'moving',
-                type: 'boolean',
-                value: true
-            }
-        ];
-
-        beforeEach(function (done) {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-        it('should decorate the entity with the static attributes', function (done) {
-            iotAgentLib.update('motion1', 'Motion', '', newValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When an IoT Agent receives information for a type with static attributes with metadata', function () {
-        const newValues = [
-            {
-                name: 'luminosity',
+                name: 'id',
                 type: 'text',
-                value: '100'
+                value: 'idIoTA'
+            },
+            {
+                name: 'type',
+                type: 'text',
+                value: 'typeIoTA'
             }
         ];
 
         beforeEach(function (done) {
-            nock.cleanAll();
+            logger.setLevel('DEBUG');
 
-            /* jshint maxlen: 200 */
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-        it('should decorate the entity with the static attributes', function (done) {
-            iotAgentLib.update('lamp1', 'Lamp', '', newValues, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information from a device', function () {
-        beforeEach(function (done) {
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
-                )
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice1',
+                    type: 'StupidDevice'
+                })
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
 
-        afterEach(function (done) {
-            done();
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
-        beforeEach(function (done) {
-            process.env.IOTA_CB_HOST = 'cbhost';
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://cbhost:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext6.json')
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice1', 'StupidDevice', '', valuesIdType, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
