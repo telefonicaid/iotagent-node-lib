@@ -902,40 +902,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
-    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
-        beforeEach(function (done) {
-            process.env.IOTA_CB_HOST = 'cbhost';
-
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
-                    )
-                )
-                .reply(204);
-
-            iotAgentLib.activate(iotAgentConfig, done);
-        });
-
-        it('should change the value of the corresponding attribute in the context broker', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-
-        afterEach(function (done) {
-            delete process.env.IOTA_CB_HOST;
-            done();
-        });
-    });
-
     describe('When the IoT Agent receives autoprovisioned id and type measures', function () {
         const valuesIdType = [
             {
@@ -1080,6 +1046,38 @@ describe('NGSI-v2 - Active attributes test', function () {
                 contextBrokerMock.done();
                 done();
             });
+        });
+    });
+
+    describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
+        beforeEach(function (done) {
+            process.env.IOTA_CB_HOST = 'cbhost';
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://cbhost:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext6.json')
+                )
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should change the value of the corresponding attribute in the context broker', function (done) {
+            iotAgentLib.update('light1', 'Light', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+
+        afterEach(function (done) {
+            delete process.env.IOTA_CB_HOST;
+            done();
         });
     });
 });
