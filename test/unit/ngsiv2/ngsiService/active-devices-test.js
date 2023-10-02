@@ -179,6 +179,29 @@ const iotAgentConfig = {
                     type: 'String'
                 }
             ]
+        },
+        StupidDevice2: {
+            type: 'StupidDevice2',
+            commands: [],
+            lazy: [],
+            staticAttributes: [],
+            active: [
+                {
+                    name: 'type',
+                    object_id: 'type',
+                    type: 'text'
+                },
+                {
+                    name: 'id',
+                    object_id: 'id',
+                    type: 'text'
+                },
+                {
+                    name: 'meas',
+                    object_id: 'meas',
+                    type: 'String'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -933,7 +956,7 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-            //logger.setLevel('DEBUG');
+            // logger.setLevel('DEBUG');
 
             nock.cleanAll();
 
@@ -962,7 +985,7 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
-    describe('When the IoT Agent receives provisioned id and type measures', function () {
+    describe('When the IoT Agent receives provisioned id and type measures with different object_id names', function () {
         const valuesIdType2 = [
             {
                 name: 'i',
@@ -1004,6 +1027,55 @@ describe('NGSI-v2 - Active attributes test', function () {
 
         it('should not affect to the real ID and Type to store in the context broker', function (done) {
             iotAgentLib.update('stupiddevice2', 'StupidDevice', '', valuesIdType2, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives provisioned id and type measures with the same object_id name', function () {
+        const valuesIdType3 = [
+            {
+                name: 'id',
+                type: 'text',
+                value: 'idIoTA'
+            },
+            {
+                name: 'type',
+                type: 'text',
+                value: 'typeIoTA'
+            },
+            {
+                name: 'meas',
+                type: 'text',
+                value: 'measIoTA'
+            }
+        ];
+
+        beforeEach(function (done) {
+            // logger.setLevel('DEBUG');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice3',
+                    type: 'StupidDevice2',
+                    meas: {
+                        value: 'measIoTA',
+                        type: 'String'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice3', 'StupidDevice2', '', valuesIdType3, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
