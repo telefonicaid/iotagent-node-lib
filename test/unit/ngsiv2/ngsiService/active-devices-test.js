@@ -163,16 +163,21 @@ const iotAgentConfig = {
             lazy: [],
             staticAttributes: [],
             active: [
-                // {
-                //     name: 'type',
-                //     objectId: 'id',
-                //     type: 'text'
-                // },
-                // {
-                //     name: 'id',
-                //     objectId: 'id',
-                //     type: 'text'
-                // }
+                {
+                    name: 'type',
+                    object_id: 't',
+                    type: 'text'
+                },
+                {
+                    name: 'id',
+                    object_id: 'i',
+                    type: 'text'
+                },
+                {
+                    name: 'meas',
+                    object_id: 'm',
+                    type: 'String'
+                }
             ]
         }
     },
@@ -908,7 +913,7 @@ describe('NGSI-v2 - Active attributes test', function () {
     //     });
     // });
 
-    describe('When the IoT Agent receives measures with ID and type names', function () {
+    describe('When the IoT Agent receives autoprovisioned id and type measures', function () {
         const valuesIdType = [
             {
                 name: 'id',
@@ -919,11 +924,16 @@ describe('NGSI-v2 - Active attributes test', function () {
                 name: 'type',
                 type: 'text',
                 value: 'typeIoTA'
+            },
+            {
+                name: 'm',
+                type: 'text',
+                value: 'measIoTA'
             }
         ];
 
         beforeEach(function (done) {
-            logger.setLevel('DEBUG');
+            //logger.setLevel('DEBUG');
 
             nock.cleanAll();
 
@@ -932,7 +942,11 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities?options=upsert', {
                     id: 'stupiddevice1',
-                    type: 'StupidDevice'
+                    type: 'StupidDevice',
+                    meas: {
+                        value: 'measIoTA',
+                        type: 'String'
+                    }
                 })
                 .reply(204);
 
@@ -946,10 +960,54 @@ describe('NGSI-v2 - Active attributes test', function () {
                 done();
             });
         });
+    });
 
-        afterEach(function (done) {
-            delete process.env.IOTA_CB_HOST;
-            done();
+    describe('When the IoT Agent receives provisioned id and type measures', function () {
+        const valuesIdType2 = [
+            {
+                name: 'i',
+                type: 'text',
+                value: 'idIoTA2'
+            },
+            {
+                name: 't',
+                type: 'text',
+                value: 'typeIoTA2'
+            },
+            {
+                name: 'm',
+                type: 'text',
+                value: 'measIoTA2'
+            }
+        ];
+
+        beforeEach(function (done) {
+            //logger.setLevel('DEBUG');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice2',
+                    type: 'StupidDevice',
+                    meas: {
+                        value: 'measIoTA2',
+                        type: 'String'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice2', 'StupidDevice', '', valuesIdType2, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
         });
     });
 });
