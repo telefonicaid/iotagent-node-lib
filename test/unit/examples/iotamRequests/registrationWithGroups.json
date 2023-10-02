@@ -18,6 +18,8 @@
           "type": "Boolean"
         }
       ],
+      "static_attributes": [],
+      "internal_attributes": [],
       "lazy": [
         {
           "name": "luminescence",
