@@ -455,6 +455,34 @@ const iotAgentConfig = {
                     skipValue: null
                 }
             ]
+        },
+        nestedExpressions: {
+            commands: [],
+            type: 'nestedExpressions',
+            lazy: [],
+            active: [
+                {
+                    name: 'value3',
+                    object_id: 'v3',
+                    type: 'Number',
+                    expression: 'v*2',
+                    skipValue: 'notNull'
+                },
+                {
+                    name: 'value2',
+                    object_id: 'v2',
+                    type: 'Number',
+                    expression: 'v3*2',
+                    skipValue: 'notNull'
+                },
+                {
+                    name: 'value1',
+                    object_id: 'v1',
+                    type: 'Number',
+                    expression: 'v2*2',
+                    skipValue: 'notNull'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -1541,6 +1569,59 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should not propagate skipped values', function (done) {
             iotAgentLib.update('skip1', 'skipvalue', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions in a device', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 5
+            }
+        ];
+
+        beforeEach(function () {
+            // logger.setLevel('DEBUG');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nested1',
+                    type: 'nestedExpressions',
+                    v: {
+                        value: 5,
+                        type: 'Number'
+                    },
+                    value3: {
+                        value: 10,
+                        type: 'Number'
+                    },
+                    value2: {
+                        value: 20,
+                        type: 'Number'
+                    },
+                    value1: {
+                        value: 40,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should not propagate skipped values', function (done) {
+            iotAgentLib.update('nested1', 'nestedExpressions', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
