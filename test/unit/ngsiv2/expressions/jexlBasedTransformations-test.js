@@ -2150,8 +2150,8 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities?options=upsert', {
-                    id: 'nested2',
-                    type: 'nestedExpressionsName',
+                    id: 'nested3',
+                    type: 'nestedExpressionsSkip',
                     prefix: {
                         value: 'pre_nestedText',
                         type: 'text'
