@@ -1,0 +1,12 @@
+{
+  "id":"1234",
+  "type":"WeatherStation",    
+  "pressure": {
+    "type": "Number",
+    "value": 1040
+  },
+  "weather": {
+    "type": "Summary",
+    "value": "Humidity NaN and pressure 1040"
+  }
+}
