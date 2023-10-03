@@ -1,1 +1,3 @@
 - FIX: remove attribute of measures with name `id` or `type` to avoid collisions
+- Fix: remove mongo `DeprecationWarning: current Server Discovery and Monitoring engine is deprecated` by setting `useUnifiedTopology = true`
+- Upgrade mongodb dev dep from 4.17.0 to 4.17.1
