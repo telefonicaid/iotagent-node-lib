@@ -456,31 +456,72 @@ const iotAgentConfig = {
                 }
             ]
         },
-        nestedExpressions: {
+        nestedExpressionsObj: {
             commands: [],
-            type: 'nestedExpressions',
+            type: 'nestedExpressionsObj',
             lazy: [],
             active: [
                 {
                     name: 'value3',
                     object_id: 'v3',
                     type: 'Number',
-                    expression: 'v*2',
-                    skipValue: 'notNull'
+                    expression: 'v*2'
                 },
                 {
                     name: 'value2',
                     object_id: 'v2',
                     type: 'Number',
-                    expression: 'v3*2',
-                    skipValue: 'notNull'
+                    expression: 'v3*2'
                 },
                 {
                     name: 'value1',
                     object_id: 'v1',
                     type: 'Number',
-                    expression: 'v2*2',
-                    skipValue: 'notNull'
+                    expression: 'v2*2'
+                }
+            ]
+        },
+        nestedExpressionsName: {
+            commands: [],
+            type: 'nestedExpressionsName',
+            lazy: [],
+            active: [
+                {
+                    name: 'prefix',
+                    object_id: 't1',
+                    type: 'text',
+                    expression: '"pre_"+t'
+                },
+                {
+                    name: 'postfix',
+                    object_id: 't2',
+                    type: 'text',
+                    expression: 'prefix+"_post"'
+                }
+            ]
+        },
+        nestedExpressionsSkip: {
+            commands: [],
+            type: 'nestedExpressionsSkip',
+            lazy: [],
+            active: [
+                {
+                    name: 'prefix',
+                    object_id: 't1',
+                    type: 'text',
+                    expression: '"pre_"+t'
+                },
+                {
+                    name: 'postfix',
+                    object_id: 't2',
+                    type: 'text',
+                    expression: 'prefix+"_post"'
+                },
+                {
+                    name: 't',
+                    object_id: 't',
+                    type: 'text',
+                    expression: 'null'
                 }
             ]
         }
@@ -1567,7 +1608,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             done();
         });
 
-        it('should calculate values using previous expression results', function (done) {
+        it('should not propagate skipped values', function (done) {
             iotAgentLib.update('skip1', 'skipvalue', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -1576,7 +1617,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When using nested expressions in a device', function () {
+    describe('When using nested expressions by pointing to previous objetc_ids in a device ', function () {
         const values = [
             {
                 name: 'v',
@@ -1595,21 +1636,13 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post('/v2/entities?options=upsert', {
                     id: 'nested1',
-                    type: 'nestedExpressions',
+                    type: 'nestedExpressionsObj',
                     v: {
                         value: 5,
                         type: 'Number'
                     },
                     value3: {
                         value: 10,
-                        type: 'Number'
-                    },
-                    value2: {
-                        value: 20,
-                        type: 'Number'
-                    },
-                    value1: {
-                        value: 40,
                         type: 'Number'
                     }
                 })
@@ -1620,8 +1653,102 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             done();
         });
 
-        it('should not propagate skipped values', function (done) {
-            iotAgentLib.update('nested1', 'nestedExpressions', '', values, function (error) {
+        it('should not calculate values using nested object_ids', function (done) {
+            iotAgentLib.update('nested1', 'nestedExpressionsObj', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions by pointing to previous attributes names in a device ', function () {
+        const values = [
+            {
+                name: 't',
+                type: 'Text',
+                value: 'nestedText'
+            }
+        ];
+
+        beforeEach(function () {
+            // logger.setLevel('DEBUG');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nested2',
+                    type: 'nestedExpressionsName',
+                    t: {
+                        value: 'nestedText',
+                        type: 'Text'
+                    },
+                    prefix: {
+                        value: 'pre_nestedText',
+                        type: 'text'
+                    },
+                    postfix: {
+                        value: 'pre_nestedText_post',
+                        type: 'text'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names', function (done) {
+            iotAgentLib.update('nested2', 'nestedExpressionsName', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions by pointing to previous attributes names and skipValue ', function () {
+        const values = [
+            {
+                name: 't',
+                type: 'Text',
+                value: 'nestedText'
+            }
+        ];
+
+        beforeEach(function () {
+            logger.setLevel('DEBUG');
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nested2',
+                    type: 'nestedExpressionsName',
+                    prefix: {
+                        value: 'pre_nestedText',
+                        type: 'text'
+                    },
+                    postfix: {
+                        value: 'pre_nestedText_post',
+                        type: 'text'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nested3', 'nestedExpressionsSkip', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
