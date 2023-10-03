@@ -1,1 +1,0 @@
-- FIX: remove attribute of measures with name `id` or `type` to avoid collisions
