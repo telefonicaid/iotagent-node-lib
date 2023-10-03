@@ -481,6 +481,137 @@ const iotAgentConfig = {
                     type: 'Number',
                     expression: 'v2*2',
                     skipValue: 'notNull'
+        testNull: {
+            commands: [],
+            type: 'testNull',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'"
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined'
+                }
+            ]
+        },
+        testNullSkip: {
+            commands: [],
+            type: 'testNullSkip',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined',
+                    skipValue: 'avoidNull'
+                }
+            ]
+        },
+        testNullExplicit: {
+            type: 'testNullExplicit',
+            explicitAttrs: true,
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'"
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined'
                 }
             ]
         }
@@ -619,6 +750,298 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should ignore the expression and send the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with null values', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNull1',
+                    type: 'testNull',
+                    v: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNull1', 'testNull', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions without values (NaN)', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'z',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNull2',
+                    type: 'testNull',
+                    z: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNull2', 'testNull', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with null values - Skip values disabled', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNullSkip1',
+                    type: 'testNullSkip',
+                    v: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    a: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullSkip1', 'testNullSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions without values (NaN) - Skip values disabled', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'z',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNullSkip2',
+                    type: 'testNullSkip',
+                    z: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    a: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullSkip2', 'testNullSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with not explicit measures - explicitAttrs = true', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'testNullExplicit1',
+                    type: 'testNullExplicit',
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullExplicit1', 'testNullExplicit', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -1106,6 +1529,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             });
         });
     });
+
     describe('When a measure arrives and there is not enough information to calculate an expression', function () {
         const values = [
             {
