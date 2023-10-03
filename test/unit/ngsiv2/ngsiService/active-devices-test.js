@@ -922,7 +922,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-            // logger.setLevel('DEBUG');
 
             nock.cleanAll();
 
@@ -971,7 +970,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-            //logger.setLevel('DEBUG');
 
             nock.cleanAll();
 
@@ -1020,7 +1018,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-            // logger.setLevel('DEBUG');
 
             nock.cleanAll();
 
