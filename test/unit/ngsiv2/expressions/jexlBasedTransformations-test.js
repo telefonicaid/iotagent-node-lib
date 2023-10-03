@@ -2054,8 +2054,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         ];
 
         beforeEach(function () {
-            // logger.setLevel('DEBUG');
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -2099,8 +2097,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         ];
 
         beforeEach(function () {
-            // logger.setLevel('DEBUG');
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -2148,8 +2144,6 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         ];
 
         beforeEach(function () {
-            logger.setLevel('DEBUG');
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
