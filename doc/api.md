@@ -179,8 +179,9 @@ information coming from the device (measures) is mapped to the Context Broker at
 All of them have the same syntax, a list of objects with the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id`` and `type`` are 
-    not valid attribute names at Context Broker. Thus, although a id or type will not break the IOT Agent, they are silently ignored and never progress toward Context Broker entities.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id`` and `type`` 
+    are not valid attribute names at Context Broker. Thus, although a id or type will not break the IOT Agent, they 
+    are silently ignored and never progress toward Context Broker entities.
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
