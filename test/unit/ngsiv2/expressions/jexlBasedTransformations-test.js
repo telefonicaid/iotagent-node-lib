@@ -1567,7 +1567,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             done();
         });
 
-        it('should not propagate skipped values', function (done) {
+        it('should calculate values using previous expression results', function (done) {
             iotAgentLib.update('skip1', 'skipvalue', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
