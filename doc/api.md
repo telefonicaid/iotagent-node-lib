@@ -213,7 +213,7 @@ Additionally for commands (which are attributes of type `command`) the following
 
 Note that, when information comming from devices, this means measures, are not defined neither in the group, nor in the 
 device, the IoT agent will store that information into the destination entity using the same attribute name than the 
-measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invaled, and will be ignored. 
+measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored. 
 
 ## Multientity support
 
