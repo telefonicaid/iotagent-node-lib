@@ -156,6 +156,52 @@ const iotAgentConfig = {
                     }
                 }
             ]
+        },
+        StupidDevice: {
+            type: 'StupidDevice',
+            commands: [],
+            lazy: [],
+            staticAttributes: [],
+            active: [
+                {
+                    name: 'type',
+                    object_id: 't',
+                    type: 'text'
+                },
+                {
+                    name: 'id',
+                    object_id: 'i',
+                    type: 'text'
+                },
+                {
+                    name: 'meas',
+                    object_id: 'm',
+                    type: 'String'
+                }
+            ]
+        },
+        StupidDevice2: {
+            type: 'StupidDevice2',
+            commands: [],
+            lazy: [],
+            staticAttributes: [],
+            active: [
+                {
+                    name: 'type',
+                    object_id: 'type',
+                    type: 'text'
+                },
+                {
+                    name: 'id',
+                    object_id: 'id',
+                    type: 'text'
+                },
+                {
+                    name: 'meas',
+                    object_id: 'meas',
+                    type: 'String'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -856,6 +902,150 @@ describe('NGSI-v2 - Active attributes test', function () {
         });
     });
 
+    describe('When the IoT Agent receives autoprovisioned id and type measures', function () {
+        const valuesIdType = [
+            {
+                name: 'id',
+                type: 'text',
+                value: 'idIoTA'
+            },
+            {
+                name: 'type',
+                type: 'text',
+                value: 'typeIoTA'
+            },
+            {
+                name: 'm',
+                type: 'text',
+                value: 'measIoTA'
+            }
+        ];
+
+        beforeEach(function (done) {
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice1',
+                    type: 'StupidDevice',
+                    meas: {
+                        value: 'measIoTA',
+                        type: 'String'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice1', 'StupidDevice', '', valuesIdType, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives provisioned id and type measures with different object_id names', function () {
+        const valuesIdType2 = [
+            {
+                name: 'i',
+                type: 'text',
+                value: 'idIoTA2'
+            },
+            {
+                name: 't',
+                type: 'text',
+                value: 'typeIoTA2'
+            },
+            {
+                name: 'm',
+                type: 'text',
+                value: 'measIoTA2'
+            }
+        ];
+
+        beforeEach(function (done) {
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice2',
+                    type: 'StupidDevice',
+                    meas: {
+                        value: 'measIoTA2',
+                        type: 'String'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice2', 'StupidDevice', '', valuesIdType2, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent receives provisioned id and type measures with the same object_id name', function () {
+        const valuesIdType3 = [
+            {
+                name: 'id',
+                type: 'text',
+                value: 'idIoTA'
+            },
+            {
+                name: 'type',
+                type: 'text',
+                value: 'typeIoTA'
+            },
+            {
+                name: 'meas',
+                type: 'text',
+                value: 'measIoTA'
+            }
+        ];
+
+        beforeEach(function (done) {
+
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'stupiddevice3',
+                    type: 'StupidDevice2',
+                    meas: {
+                        value: 'measIoTA',
+                        type: 'String'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should not affect to the real ID and Type to store in the context broker', function (done) {
+            iotAgentLib.update('stupiddevice3', 'StupidDevice2', '', valuesIdType3, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When the IoT Agent receives new information from a device and CBis defined using environment variables', function () {
         beforeEach(function (done) {
             process.env.IOTA_CB_HOST = 'cbhost';
@@ -873,6 +1063,7 @@ describe('NGSI-v2 - Active attributes test', function () {
 
             iotAgentLib.activate(iotAgentConfig, done);
         });
+
         it('should change the value of the corresponding attribute in the context broker', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
