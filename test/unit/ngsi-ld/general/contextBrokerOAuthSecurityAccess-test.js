@@ -291,16 +291,6 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
 
                 contextBrokerMock
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
-                        utils.readExampleFile(
-                            './test/unit/ngsi-ld/examples/' +
-                                'contextRequests/createProvisionedDeviceWithGroupAndStatic3.json'
-                        )
-                    )
-                    .reply(204);
-
-                contextBrokerMock
-                    .post(
                         '/ngsi-ld/v1/subscriptions/',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/subscriptionRequests/simpleSubscriptionRequest2.json'
@@ -316,38 +306,38 @@ describe('NGSI-LD - Secured access to the Context Broker with OAuth2 provider', 
                 });
             });
         });
-        // FIXME: disabled test by #1421
-        // it('subscribe requests use auth header', function (done) {
-        //     iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
-        //         iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
-        //             should.not.exist(error);
 
-        //             contextBrokerMock.done();
+        it('subscribe requests use auth header', function (done) {
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
+                    should.not.exist(error);
 
-        //             done();
-        //         });
-        //     });
-        // });
-        // FIXME: disabled test by #1421
-        // it('unsubscribe requests use auth header', function (done) {
-        //     oauth2Mock
-        //         .post(
-        //             '/auth/realms/default/protocol/openid-connect/token',
-        //             utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true)
-        //         )
-        //         .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
+                    contextBrokerMock.done();
 
-        //     contextBrokerMock.delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8', '').reply(204);
+                    done();
+                });
+            });
+        });
 
-        //     iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
-        //         iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
-        //             iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
-        //                 contextBrokerMock.done();
-        //                 done();
-        //             });
-        //         });
-        //     });
-        // });
+        it('unsubscribe requests use auth header', function (done) {
+            oauth2Mock
+                .post(
+                    '/auth/realms/default/protocol/openid-connect/token',
+                    utils.readExampleFile('./test/unit/examples/oauthRequests/getTokenFromTrust.json', true)
+                )
+                .reply(201, utils.readExampleFile('./test/unit/examples/oauthResponses/tokenFromTrust.json'), {});
+
+            contextBrokerMock.delete('/ngsi-ld/v1/subscriptions/51c0ac9ed714fb3b37d7d5a8', '').reply(204);
+
+            iotAgentLib.getDevice('Light1', null, 'smartgondor', 'electricity', function (error, device) {
+                iotAgentLib.subscribe(device, ['dimming'], null, function (error) {
+                    iotAgentLib.unsubscribe(device, '51c0ac9ed714fb3b37d7d5a8', function (error) {
+                        contextBrokerMock.done();
+                        done();
+                    });
+                });
+            });
+        });
     });
 });
 
@@ -745,20 +735,11 @@ describe(
                     .matchHeader('fiware-service', 'testservice')
                     .matchHeader('authorization', 'Bearer bea752e377680acd1349a3ed59db855a1db07zxc')
                     .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/',
+                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
                             './test/unit/ngsi-ld/examples/' +
                                 'contextRequests/createProvisionedDeviceWithGroupAndStatic2.json'
                         )
-                    )
-                    .reply(204);
-
-                contextBrokerMock3 = nock('http://unexistentHost:1026')
-                    .matchHeader('fiware-service', 'testservice')
-                    .matchHeader('authorization', 'Bearer zzz752e377680acd1349a3ed59db855a1db07bbb')
-                    .post(
-                        '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                        utils.readExampleFile('./test/unit/ngsi-ld/examples/contextRequests/updateContext5.json')
                     )
                     .reply(204);
 
@@ -773,24 +754,23 @@ describe(
 
                 done();
             });
-            // FIXME: disabled test by #1421
-            // it('should not raise any error', function (done) {
-            //     request(deviceCreation, function (error, response, body) {
-            //         should.not.exist(error);
-            //         response.statusCode.should.equal(201);
-            //         contextBrokerMock.done();
-            //         contextBrokerMock2.done();
-            //         done();
-            //     });
-            // });
-            // FIXME: disabled test by #1421
-            // it('should send the mixed data to the Context Broker', function (done) {
-            //     iotAgentLib.update('Light1', 'SensorMachine', '', values, function (error) {
-            //         should.not.exist(error);
-            //         contextBrokerMock3.done();
-            //         done();
-            //     });
-            // });
+
+            it('should not raise any error', function (done) {
+                request(deviceCreation, function (error, response, body) {
+                    should.not.exist(error);
+                    response.statusCode.should.equal(201);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+
+            it('should send the mixed data to the Context Broker', function (done) {
+                iotAgentLib.update('Light1', 'SensorMachine', '', values, function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock2.done();
+                    done();
+                });
+            });
         });
     }
 );
@@ -833,7 +813,7 @@ describe(
 
                 contextBrokerMock = nock('http://unexistentHost:1026')
                     .matchHeader('fiware-service', 'testservice')
-                    .matchHeader('Authorization', 'Bearer 999210dacf913772606c95dd0b895d5506cbc988')
+                    .matchHeader('Authorization', 'Bearer 000210dacf913772606c95dd0b895d5506cbc700')
                     .post(
                         '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                         utils.readExampleFile(
@@ -849,22 +829,22 @@ describe(
                     });
                 });
             });
-            // FIXME: disabled test by #1421
-            // it('should send the permanent token in the auth header', function (done) {
-            //     iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
-            //         should.not.exist(error);
-            //         contextBrokerMock.done();
-            //         done();
-            //     });
-            // });
-            // FIXME: disabled test by #1421
-            // it('should use the permanent trust token in the following requests', function (done) {
-            //     iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
-            //         should.not.exist(error);
-            //         contextBrokerMock.done();
-            //         done();
-            //     });
-            // });
+
+            it('should send the permanent token in the auth header', function (done) {
+                iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
+
+            it('should use the permanent trust token in the following requests', function (done) {
+                iotAgentLib.update('machine1', 'SensorMachine', '', values, function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                });
+            });
         });
     }
 );

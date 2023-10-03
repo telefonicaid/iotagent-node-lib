@@ -131,11 +131,6 @@ describe('NGSI-LD - Command functionalities', function () {
             )
             .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
 
-        contextBrokerMock
-            .matchHeader('fiware-service', 'smartgondor')
-            .post('/ngsi-ld/v1/entityOperations/upsert/')
-            .reply(204);
-
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
@@ -155,14 +150,13 @@ describe('NGSI-LD - Command functionalities', function () {
     });
 
     describe('When a device is preregistered with commands', function () {
-        // FIXME: disabled test by #1421
-        // it('should register as Context Provider of the commands', function (done) {
-        //     iotAgentLib.register(device3, function (error) {
-        //         should.not.exist(error);
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+        it('should register as Context Provider of the commands', function (done) {
+            iotAgentLib.register(device3, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
     describe('When multiple command updates via PATCH /attrs arrive to the IoT Agent as Context Provider', function () {
