@@ -1,3 +1,4 @@
+- Fix: ensure entity id and type are string (#1476)
 - Fix: update ctxt allow nested expressions (#1493)
 - Fix: change log level contextAvailable expression exception (from WARN to INFO)
 - Fix: null values arithmetics in JEXL expressions (#1440)
