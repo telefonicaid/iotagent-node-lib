@@ -27,6 +27,7 @@
     -   [Measurement transformation](#measurement-transformation)
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
+        -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
@@ -758,6 +759,47 @@ following to CB:
 ```
 
 [Interactive expression `spaces | trim`][5]
+
+### Measurement transformation order
+
+The IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is 
+evaluated, the JEXL context is updated with the expression result. The order defined in the `attributes` array is 
+taken for expression evaluation. This should be considered when using **nested expressions**, that uses values 
+calculated in other attributes. For example, for a given provision like the following one:
+
+```json
+"attributes": [
+    {
+        "name": "attrA",
+        "type": "Number",
+        "expression": "attrB"
+    },
+    {
+        "name": "attrB",
+        "type": "Number",
+        "expression": "attrB"
+    }
+]
+```
+
+When receiving a measure with the following values:
+
+```json
+{
+    "attrA":10,
+    "attrB":20
+}
+```
+
+Then, as they are executed sequentially, the first attribute expression to be evaluated will be `attrA`, taking the 
+value of the attribute `attrB`, in this case, `20`. After that, the second attribute expression to be evaluated is 
+the one holded by `attrB`. In this case, that attribute would take the value of `attrA`. In that case, since the JEXL
+context was updated with the lastest execution, `attrB` the value will be `20`, being persisted:
+
+```json
+    "attrA":20
+    "attrB":20
+```
 
 ### Multientity measurement transformation support (`object_id`)
 
