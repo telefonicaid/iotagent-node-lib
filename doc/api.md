@@ -152,7 +152,7 @@ parameters defined at device level in database, the parameters are inherit from 
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
-information coming from the device is mapped to the Context Broker attributes:
+information coming from the device (measures) is mapped to the Context Broker attributes:
 
 -   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
     to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
