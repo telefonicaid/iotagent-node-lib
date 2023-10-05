@@ -31,6 +31,7 @@ const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const timekeeper = require('timekeeper');
+const { log } = require('async');
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
@@ -522,6 +523,57 @@ const iotAgentConfig = {
                     object_id: 't',
                     type: 'text',
                     expression: 'null'
+                }
+            ]
+        },
+        nestedExpressionDirect: {
+            commands: [],
+            type: 'nestedExpressionsDirect',
+            lazy: [],
+            active: [
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                },
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                }
+            ]
+        },
+        nestedExpressionReverse: {
+            commands: [],
+            type: 'nestedExpressionsReverse',
+            lazy: [],
+            active: [
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                },
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                }
+            ]
+        },
+        nestedExpressionsAnti: {
+            commands: [],
+            type: 'nestedExpressionsAnti',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'b*10'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'a*10'
                 }
             ]
         },
@@ -2170,6 +2222,144 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should calculate values using nested attributes names and skip measures', function (done) {
             iotAgentLib.update('nested3', 'nestedExpressionsSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Direct case', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedDirect',
+                    type: 'nestedExpressionsDirect',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    },
+                    normalizedLevel: {
+                        value: 0.897,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedDirect', 'nestedExpressionDirect', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Reverse case', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedReverse',
+                    type: 'nestedExpressionsReverse',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedReverse', 'nestedExpressionReverse', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Antipattern', function () {
+        const values = [
+            {
+                name: 'a',
+                type: 'Number',
+                value: 10
+            },
+            {
+                name: 'b',
+                type: 'Number',
+                value: 20
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedAnti',
+                    type: 'nestedExpressionsAnti',
+                    a: {
+                        value: 200,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: 2000,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedAnti', 'nestedExpressionsAnti', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
