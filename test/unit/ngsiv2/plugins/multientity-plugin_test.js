@@ -272,7 +272,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'WeatherStation',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'st1',
                     type: 'Number',
