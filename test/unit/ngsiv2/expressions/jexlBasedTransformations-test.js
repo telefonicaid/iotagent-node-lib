@@ -146,12 +146,6 @@ const iotAgentConfig = {
             type: 'WeatherStation',
             entityNameExp: 'id',
             lazy: [],
-            /* info which will be part of typeInformation passed to iotalib.update*/
-            service: 'smartgondor',
-            subservice: 'gardens',
-            name: '1234',
-            id: '1234',
-            /* end info */
             active: [
                 {
                     object_id: 'p',
@@ -1619,11 +1613,25 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
 
         it('should calculate the expression', function (done) {
-            iotAgentLib.update(1234, 'WeatherStationWithIdNumber', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
+            iotAgentLib.update(
+                1234,
+                'WeatherStationWithIdNumber',
+                '',
+                values,
+                {
+                    service: 'smartgondor',
+                    subservice: 'gardens',
+                    name: '1234',
+                    id: '1234',
+                    type: 'WeatherStation',
+                    active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
+                },
+                function (error) {
+                    should.not.exist(error);
+                    contextBrokerMock.done();
+                    done();
+                }
+            );
         });
     });
 
