@@ -350,7 +350,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'ta',
                 type: 'Array',
-                value: '["iot","device"]'
+                value: ['iot', 'device']
             }
         ];
 
