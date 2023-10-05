@@ -3,7 +3,7 @@
     "type":"Light",        
   "temperature": {
     "type":"Number",
-    "value":52,
+    "value":"52",
     "metadata": {
       "type":"Property",
       "value":"CEL"

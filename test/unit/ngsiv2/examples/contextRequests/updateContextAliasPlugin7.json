@@ -3,6 +3,6 @@
     "type":"Light",    
   "tags": {
     "type": "Array",
-    "value": ["iot","device"]
+    "value": "[\"iot\",\"device\"]"
   }
 }

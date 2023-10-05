@@ -3,6 +3,6 @@
     "type":"Light",
   "active_power": {
     "type": "Number",
-    "value": 0.45
+    "value": "0.45"
   }
 }
