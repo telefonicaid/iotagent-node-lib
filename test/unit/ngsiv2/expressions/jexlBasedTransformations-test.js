@@ -31,7 +31,6 @@ const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
 const timekeeper = require('timekeeper');
-const { log } = require('async');
 let contextBrokerMock;
 const iotAgentConfig = {
     logLevel: 'FATAL',
