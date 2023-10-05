@@ -381,7 +381,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'c',
                 type: 'Object',
-                value: '{"firmware": {"version": "1.1.0","hash": "cf23df2207d99a74fbe169e3eba035e633b65d94"}}'
+                value: { firmware: { version: '1.1.0', hash: 'cf23df2207d99a74fbe169e3eba035e633b65d94' } }
             }
         ];
 
