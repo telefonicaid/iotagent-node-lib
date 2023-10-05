@@ -4,14 +4,6 @@
       {
           "id": "ws9",
           "type": "WeatherStation",
-          "st1": {
-              "value": 1,
-              "type": "Number"
-          },
-          "st2": {
-              "value": 2,
-              "type": "Number"
-          },
           "vol": {
               "type": "Number",
               "value": 0
