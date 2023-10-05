@@ -152,7 +152,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -182,7 +182,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -243,7 +243,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -274,7 +274,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -305,7 +305,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -336,7 +336,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -367,7 +367,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -398,7 +398,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -429,7 +429,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .reply(204);
         });
 
-        it('should rename the attributes as expected by the alias mappings and cast values to JSON native types', function (done) {
+        it('should rename the attributes as expected by the alias mappings', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
