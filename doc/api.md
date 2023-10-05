@@ -784,7 +784,8 @@ For example, let's consider the following provision for a device which send a me
 ]
 ```
 
-The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` is evaluated (using `correctedLevel` calculated attribute, just calculated before).
+The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` 
+is evaluated (using `correctedLevel` calculated attribute, just calculated before).
 
 Note that if we reserve the order, this way:
 
@@ -803,7 +804,10 @@ Note that if we reserve the order, this way:
 ]
 ```
 
-It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end with a `null` value.
+It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only 
+measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end 
+with a `null` value, so will not be part of the update request send to the Context Broker unless `skipValue` (check 
+[Devices](#devices) section avobe) is defined with a different value thant the default one (`null`).
 
 In conclusion: **the order of attributes in the `attributes` arrays at provising time matters with regards to nested expression evaluation**.
 
