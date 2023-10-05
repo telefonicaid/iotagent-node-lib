@@ -1,3 +1,4 @@
+- Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
 - Fix: ensure service and subservice in context of error handlers using req headers
 - Fix: remove attribute of measures with name `id` or `type` to avoid collisions (#1485)
 - Fix: ensure entity id and type are string (#1476)
