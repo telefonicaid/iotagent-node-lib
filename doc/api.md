@@ -816,14 +816,14 @@ Let's consider the following example. It is an anti-pattern but it's quite illus
 ```json
 "attributes": [
     {
-        "name": "A",
+        "name": "a",
         "type": "Number",
-        "expression": "B"
+        "expression": "b*10"
     },
     {
-        "name": "B",
+        "name": "b",
         "type": "Number",
-        "expression": "A"
+        "expression": "a*10"
     }
 ]
 ```
@@ -832,19 +832,20 @@ When receiving a measure with the following values:
 
 ```json
 {
-    "A": 10,
-    "B": 20
+    "a": 10,
+    "b": 20
 }
 ```
 
-Then, as they are executed sequentially, the first attribute expression to be evaluated will be `A`, taking the 
-value of the attribute `B`, in this case, `20`. After that, the second attribute expression to be evaluated is 
-the one holded by `B`. In this case, that attribute would take the value of `A`. In that case, since the JEXL
-context was updated with the lastest execution, `B` the value will be `20`, being update at Context Broker entity:
+Then, as they are executed sequentially, the first attribute expression to be evaluated will be `a`, taking the 
+value of the attribute `b` multiplied by 10, in this case, `200`. After that, the second attribute expression to be 
+evaluated is  the one holded by `b`. In this case, that attribute would take 10 times the value of `a`. In that case, 
+since the JEXL context was updated with the lastest execution, the value of `b` will be `2000`, being update at Context 
+Broker entity:
 
 ```json
-    "A": {"value": 20, "type": "Number"},
-    "B": {"value": 20, "type": "Number"}
+    "a": {"value": 200, "type": "Number"},
+    "b": {"value": 2000, "type": "Number"}
 ```
 
 ### Multientity measurement transformation support (`object_id`)
