@@ -524,7 +524,8 @@ const iotAgentConfig = {
                 {
                     name: 'nonexpectedAtt',
                     type: 'number',
-                    expression: 'w+1'
+                    expression: 'w+1',
+                    skipValue: 'loquesea'
                 },
                 {
                     name: 'explicit',
