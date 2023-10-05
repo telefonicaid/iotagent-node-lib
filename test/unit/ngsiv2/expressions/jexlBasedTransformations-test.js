@@ -2275,7 +2275,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
-    describe('When using nested expressions - Reverse case', function () {
+    describe('When using nested expressions - Reverse case - Antipattern', function () {
         const values = [
             {
                 name: 'level',
