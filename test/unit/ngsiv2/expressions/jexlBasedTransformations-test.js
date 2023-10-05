@@ -1596,6 +1596,14 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 value: '52'
             }
         ];
+        const typeInformation = {
+            service: 'smartgondor',
+            subservice: 'gardens',
+            name: '1234',
+            id: '1234',
+            type: 'WeatherStation',
+            active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
+        };
 
         beforeEach(function () {
             nock.cleanAll();
@@ -1613,25 +1621,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
 
         it('should calculate the expression', function (done) {
-            iotAgentLib.update(
-                1234,
-                'WeatherStationWithIdNumber',
-                '',
-                values,
-                {
-                    service: 'smartgondor',
-                    subservice: 'gardens',
-                    name: '1234',
-                    id: '1234',
-                    type: 'WeatherStation',
-                    active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
-                },
-                function (error) {
-                    should.not.exist(error);
-                    contextBrokerMock.done();
-                    done();
-                }
-            );
+            iotAgentLib.update(1234, 'WeatherStationWithIdNumber', '', values, typeInformation, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
         });
     });
 
