@@ -1,3 +1,10 @@
 - Fix store device subscriptions updates
+- Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
+- Fix: ensure service and subservice in context of error handlers using req headers
+- Fix: remove attribute of measures with name `id` or `type` to avoid collisions (#1485)
+- Fix: ensure entity id and type are string (#1476)
+- Fix: update ctxt allow nested expressions (#1493)
+- Fix: change log level contextAvailable expression exception (from WARN to INFO)
+- Fix: null values arithmetics in JEXL expressions (#1440)
 - Fix: remove mongo `DeprecationWarning: current Server Discovery and Monitoring engine is deprecated` by setting `useUnifiedTopology = true`
 - Upgrade mongodb dev dep from 4.17.0 to 4.17.1
