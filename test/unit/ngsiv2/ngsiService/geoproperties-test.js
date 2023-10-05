@@ -57,7 +57,7 @@ const logger = require('logops');
 //    providerUrl: 'http://smartgondor.com'
 //};
 
-describe('NGSI-v2 - Geo-JSON types autocast test', function () {
+describe('NGSI-v2 - Geo-JSON types test', function () {
     beforeEach(function () {
         logger.setLevel('FATAL');
     });
