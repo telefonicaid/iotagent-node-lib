@@ -528,6 +528,11 @@ const iotAgentConfig = {
                     skipValue: 'loquesea'
                 },
                 {
+                    name: 'nonexpectedAtt'
+                    type: 'number',
+                    expression: 'w+1',
+                },
+                {
                     name: 'explicit',
                     type: 'number',
                     entity_name: 'SO5',
