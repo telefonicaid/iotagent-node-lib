@@ -141,6 +141,20 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStationWithIdNumber: {
+            commands: [],
+            type: 'WeatherStation',
+            entityNameExp: 'id',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: 'pressure * 20'
+                }
+            ]
+        },
         WeatherStationUndef: {
             commands: [],
             type: 'WeatherStation',
@@ -1618,6 +1632,47 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should not calculate the expression', function (done) {
             iotAgentLib.update('ws1', 'WeatherStation', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a measure arrives with id number', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+        const typeInformation = {
+            service: 'smartgondor',
+            subservice: 'gardens',
+            name: '1234',
+            id: '1234',
+            type: 'WeatherStation',
+            active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
+        };
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29b.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate the expression', function (done) {
+            iotAgentLib.update(1234, 'WeatherStationWithIdNumber', '', values, typeInformation, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

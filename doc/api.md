@@ -180,9 +180,9 @@ information coming from the device (measures) is mapped to the Context Broker at
 All of them have the same syntax, a list of objects with the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id` and `type`
-    are not valid attribute names at Context Broker. Thus, although a measure named `id` or `type` will not break the IoT Agent, they 
-    are silently ignored and never progress toward Context Broker entities.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id` and `type` are
+    not valid attribute names at Context Broker. Thus, although a measure named `id` or `type` will not break the IoT
+    Agent, they are silently ignored and never progress toward Context Broker entities.
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
@@ -211,10 +211,10 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
-    
-Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the 
-device, the IoT agent will store that information into the destination entity using the same attribute name than the 
-measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored. 
+
+Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
+device, the IoT agent will store that information into the destination entity using the same attribute name than the
+measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored.
 
 ## Multientity support
 
