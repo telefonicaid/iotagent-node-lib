@@ -564,7 +564,7 @@ const iotAgentConfig = {
                     object_id: 'y'
                 }
             ],
-            static: [
+            staticAttributes: [
                 {
                     name: 'bar',
                     type: 'text',
