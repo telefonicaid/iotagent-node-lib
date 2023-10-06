@@ -417,7 +417,7 @@ Case 2:
 "explicitAttrs": true
 ```
 
-just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+should progress just active attributes, static (plus conditionally TimeInstant)  which receives measures and all active attributes with expressions
 
 Case 3:
 
