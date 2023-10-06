@@ -522,7 +522,13 @@ const iotAgentConfig = {
                     expression: 'z+1'
                 },
                 {
-                    name: 'nonexpectedAtt',
+                    name: 'alsoexpectedAtt',
+                    type: 'number',
+                    expression: 'w+1',
+                    skipValue: 'loquesea'
+                },
+                {
+                    name: 'nonexpectedAttByDefaultSkipValue',
                     type: 'number',
                     expression: 'w+1'
                 },
@@ -600,7 +606,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Multi-entity plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
