@@ -1489,7 +1489,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
 describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
