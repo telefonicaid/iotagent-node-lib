@@ -271,7 +271,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -295,7 +295,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -319,7 +319,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -343,7 +343,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'string',
@@ -368,7 +368,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'Number',
@@ -393,7 +393,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
