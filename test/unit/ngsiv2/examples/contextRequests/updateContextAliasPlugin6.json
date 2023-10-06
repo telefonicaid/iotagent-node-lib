@@ -3,6 +3,6 @@
     "type":"Light",    
   "keep_alive": {
     "type": "None",
-    "value": "null"
+    "value": null
   }
 }

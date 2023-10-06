@@ -3,7 +3,7 @@
     "type":"Light",
   "luminance": {
     "type": "Number",
-    "value": "9",
+    "value": 9,
     "metadata": {
       "type":"Property",
       "value":"CAL"

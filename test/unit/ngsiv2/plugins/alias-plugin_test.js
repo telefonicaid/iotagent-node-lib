@@ -111,7 +111,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Attribute alias plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
 
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -130,7 +130,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 't',
                 type: 'centigrades',
-                value: '52'
+                value: 52
             },
             {
                 name: 'p',
@@ -165,7 +165,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'l',
                 type: 'lums',
-                value: '9'
+                value: 9
             }
         ];
 
@@ -195,7 +195,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'ut',
                 type: 'Number',
-                value: '99823423'
+                value: 99823423
             }
         ];
 
@@ -226,7 +226,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'ut',
                 type: 'Number',
-                value: '99823423'
+                value: 99823423
             }
         ];
 
@@ -257,7 +257,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'ap',
                 type: 'Number',
-                value: '0.45'
+                value: 0.45
             }
         ];
 
@@ -319,7 +319,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
             {
                 name: 'al',
                 type: 'None',
-                value: 'null'
+                value: null
             }
         ];
 
