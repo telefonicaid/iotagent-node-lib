@@ -16,7 +16,6 @@
         -   [providerUrl](#providerurl)
         -   [iotaVersion](#iotaversion)
         -   [dieOnUnexpectedError](#dieonunexpectederror)
-        -   [singleConfigurationMode](#singleconfigurationmode)
         -   [timestamp](#timestamp)
         -   [defaultResource](#defaultresource)
         -   [defaultKey](#defaultkey)
@@ -348,10 +347,6 @@ IoTA).
 
 if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 
-#### `singleConfigurationMode`
-
-enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
-
 #### `timestamp`
 
 if this flag is activated:
@@ -483,7 +478,6 @@ overrides.
 | IOTA_MONGO_RETRY_TIME                | `mongodb.retryTime`             |
 | IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
 | IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
-| IOTA_SINGLE_MODE                     | `singleConfigurationMode`       |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
 | IOTA_AUTOCAST                        | `autocast`                      |
