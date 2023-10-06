@@ -88,7 +88,7 @@ describe('Device Group utils', function () {
         });
     });
 
-    describe('When an API Key is requested for a device in a group without the SingleConfiguration mode', function () {
+    describe('When an API Key is requested for a device in a group', function () {
         beforeEach(function (done) {
             async.series(
                 [
@@ -103,26 +103,6 @@ describe('Device Group utils', function () {
             iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'AnotherMachine', function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('754KL23Y9090DSFL123HSFL12380KL23Y2');
-                done();
-            });
-        });
-    });
-    describe('When an API Key is requested for a device in a subservice with the SingleConfiguration mode', function () {
-        beforeEach(function (done) {
-            iotAgentConfig.singleConfigurationMode = true;
-            iotAgentLib.activate(iotAgentConfig, function () {
-                request(groupCreation, function (error, response, body) {
-                    done();
-                });
-            });
-        });
-        afterEach(function () {
-            iotAgentConfig.singleConfigurationMode = false;
-        });
-        it('should return the API Key of the related subservice', function (done) {
-            iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', null, function (error, apiKey) {
-                should.not.exist(error);
-                apiKey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
                 done();
             });
         });
