@@ -522,7 +522,7 @@ const iotAgentConfig = {
                     expression: 'z+1'
                 },
                 {
-                    name: 'nonexpectedAtt',
+                    name: 'alsoexpectedAtt',
                     type: 'number',
                     expression: 'w+1',
                     skipValue: 'loquesea'
