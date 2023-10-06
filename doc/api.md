@@ -417,7 +417,13 @@ Case 2:
 "explicitAttrs": true
 ```
 
-should progress just active attributes, static (plus conditionally TimeInstant)  which receives measures and all active attributes with expressions
+In this case, should only progress active and static attributes defined in the device or group provision (`TimeInstant` attribute 
+will be also included if enabled). In other words, having `"explicitAttrs":true` would prevent the IoTA creating attributes into the related 
+entity  within the context broker from measures that are not explicitly defined in the device or group provision. 
+
+Note that attributes defined in the provision that are not receiving a measure (or having a expression defined that is resulting `null`) 
+will not progress (this means, the NGSI request to update the entity in the context broker is not going to include that attribute) 
+unless `skipValue` is defined to other value than `null`
 
 Case 3:
 
