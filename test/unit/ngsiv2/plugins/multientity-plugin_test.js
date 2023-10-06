@@ -528,9 +528,9 @@ const iotAgentConfig = {
                     skipValue: 'loquesea'
                 },
                 {
-                    name: 'nonexpectedAtt'
+                    name: 'nonexpectedAttByDefaultSkipValue',
                     type: 'number',
-                    expression: 'w+1',
+                    expression: 'w+1'
                 },
                 {
                     name: 'explicit',
