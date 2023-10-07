@@ -30,6 +30,8 @@ const utils = require('../../../tools/utils');
 const request = utils.request;
 const should = require('should');
 const nock = require('nock');
+const mongoUtils = require('../../mongodb/mongoDBUtils');
+
 let contextBrokerMock;
 
 const iotAgentConfig = {
@@ -45,6 +47,14 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     singleConfigurationMode: true,
     subservice: 'gardens',
@@ -79,9 +89,15 @@ describe('NGSI-v2 - Provisioning API: Single service mode', function () {
     });
 
     afterEach(function (done) {
-        nock.cleanAll();
-        iotAgentLib.setProvisioningHandler();
-        iotAgentLib.deactivate(done);
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
+                    nock.cleanAll();
+                    iotAgentLib.setProvisioningHandler();
+                    done();
+                });
+            });
+        });
     });
 
     describe('When a new configuration arrives to an already configured subservice', function () {

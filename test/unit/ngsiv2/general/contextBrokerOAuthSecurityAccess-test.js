@@ -86,6 +86,14 @@ const iotAgentConfig = {
             active: []
         }
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com'
@@ -362,8 +370,10 @@ describe('NGSI-v2 - Secured access to the Context Broker with OAuth2 provider (F
     });
 
     afterEach(function (done) {
-        iotAgentLib.deactivate(done);
-        nock.cleanAll();
+        iotAgentLib.deactivate(function () {
+            nock.cleanAll();
+            done();
+        });
     });
 
     describe('When a measure is sent to the Context Broker via an Update Context operation', function () {
