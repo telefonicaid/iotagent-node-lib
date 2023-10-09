@@ -1,0 +1,8 @@
+{
+    "id": "gps1",
+    "type": "GPS",
+    "color": {
+        "value": "blue",
+        "type": "string"
+    }
+}

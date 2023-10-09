@@ -1,10 +1,10 @@
 {
     "id":"gps1","type":"GPS",
-    "color": {
-            "value": "blue",
+            "lat": {
+            "value": "52",
             "type": "string"
         },
-    "mylocation": {
+     "mylocation": {
         "type": "geo:json",
         "value": {
             "coordinates": [

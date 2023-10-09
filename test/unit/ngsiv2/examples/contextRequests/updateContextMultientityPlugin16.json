@@ -3,7 +3,11 @@
   "entities": [
     {
       "id": "gps1",
-      "type": "GPS"
+        "type": "GPS",
+        "bar": {
+            "type": "text",
+            "value": "b"
+        }
     },
     {
       "attr1": {
