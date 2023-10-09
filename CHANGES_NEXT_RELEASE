@@ -1,3 +1,4 @@
+- Fix autoprovision with group timestamp false
 - Remove: single configuration mode (along with IOTA_SINGLE_MODE env var) (#1469)
 - Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
 - Fix: ensure service and subservice in context of error handlers using req headers
