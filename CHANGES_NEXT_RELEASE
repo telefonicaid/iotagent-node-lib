@@ -1,4 +1,5 @@
 - Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
+- Remove: single configuration mode (along with IOTA_SINGLE_MODE env var) (#1469)
 - Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
 - Fix: ensure service and subservice in context of error handlers using req headers
 - Fix: remove attribute of measures with name `id` or `type` to avoid collisions (#1485)

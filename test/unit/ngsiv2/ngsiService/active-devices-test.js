@@ -922,7 +922,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -970,7 +969,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -1018,7 +1016,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')

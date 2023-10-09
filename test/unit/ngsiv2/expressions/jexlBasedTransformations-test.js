@@ -141,6 +141,20 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStationWithIdNumber: {
+            commands: [],
+            type: 'WeatherStation',
+            entityNameExp: 'id',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: 'pressure * 20'
+                }
+            ]
+        },
         WeatherStationUndef: {
             commands: [],
             type: 'WeatherStation',
@@ -271,7 +285,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -295,7 +309,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -319,7 +333,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -343,7 +357,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'string',
@@ -368,7 +382,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'Number',
@@ -393,7 +407,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -522,6 +536,57 @@ const iotAgentConfig = {
                     object_id: 't',
                     type: 'text',
                     expression: 'null'
+                }
+            ]
+        },
+        nestedExpressionDirect: {
+            commands: [],
+            type: 'nestedExpressionsDirect',
+            lazy: [],
+            active: [
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                },
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                }
+            ]
+        },
+        nestedExpressionReverse: {
+            commands: [],
+            type: 'nestedExpressionsReverse',
+            lazy: [],
+            active: [
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                },
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                }
+            ]
+        },
+        nestedExpressionsAnti: {
+            commands: [],
+            type: 'nestedExpressionsAnti',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'b*10'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'a*10'
                 }
             ]
         },
@@ -1574,6 +1639,47 @@ describe('Java expression language (JEXL) based transformations plugin', functio
         });
     });
 
+    describe('When a measure arrives with id number', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+        const typeInformation = {
+            service: 'smartgondor',
+            subservice: 'gardens',
+            name: '1234',
+            id: '1234',
+            type: 'WeatherStation',
+            active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
+        };
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29b.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate the expression', function (done) {
+            iotAgentLib.update(1234, 'WeatherStationWithIdNumber', '', values, typeInformation, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a measure arrives and there is not enough information to calculate an expression', function () {
         const values = [
             {
@@ -2170,6 +2276,144 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should calculate values using nested attributes names and skip measures', function (done) {
             iotAgentLib.update('nested3', 'nestedExpressionsSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Direct case', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedDirect',
+                    type: 'nestedExpressionsDirect',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    },
+                    normalizedLevel: {
+                        value: 0.897,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedDirect', 'nestedExpressionDirect', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Reverse case - Antipattern', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedReverse',
+                    type: 'nestedExpressionsReverse',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedReverse', 'nestedExpressionReverse', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Antipattern', function () {
+        const values = [
+            {
+                name: 'a',
+                type: 'Number',
+                value: 10
+            },
+            {
+                name: 'b',
+                type: 'Number',
+                value: 20
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'nestedAnti',
+                    type: 'nestedExpressionsAnti',
+                    a: {
+                        value: 200,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: 2000,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedAnti', 'nestedExpressionsAnti', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

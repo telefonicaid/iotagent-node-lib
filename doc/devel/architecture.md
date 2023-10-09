@@ -79,18 +79,6 @@ configuration was assigned to a particular subservice and just one configuration
 relation between a Device and a Configuration didn't need the type to discriminate between Configurations. That's why
 for those agents, type was not a mandatory parameter.
 
-In order to allow backward-compatibility with those agents, the IoT Agent Library now implement a compatibility mode:
-the **Single Configuration Mode**, that makes the agent behave like the old agents. In this mode:
-
--   Each Subservice can contain just one Configuration. If a second Configuration is created for a Subservice, an error
-    is raised.
-
--   Each Device provisioned for a Subservice is automatically assigned to the Subservice one Configuration if there is
-    any.
-
-This compatibility has to be set for the whole IoT Agent, and there is no option of having both modes simultaneously
-running. Transitions from one mode to the other should be made with care, and may involve data migration.
-
 #### Registration
 
 Whenever a device is registered, the IoT Agent reads the device's entity information from the request or, if that

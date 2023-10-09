@@ -180,9 +180,9 @@ information coming from the device (measures) is mapped to the Context Broker at
 All of them have the same syntax, a list of objects with the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id` and `type`
-    are not valid attribute names at Context Broker. Thus, although a measure named `id` or `type` will not break the IoT Agent, they 
-    are silently ignored and never progress toward Context Broker entities.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id` and `type` are
+    not valid attribute names at Context Broker. Thus, although a measure named `id` or `type` will not break the IoT
+    Agent, they are silently ignored and never progress toward Context Broker entities.
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
@@ -211,10 +211,10 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
-    
-Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the 
-device, the IoT agent will store that information into the destination entity using the same attribute name than the 
-measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored. 
+
+Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
+device, the IoT agent will store that information into the destination entity using the same attribute name than the
+measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored.
 
 ## Multientity support
 
@@ -417,7 +417,13 @@ Case 2:
 "explicitAttrs": true
 ```
 
-just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+In this case, should only progress active and static attributes defined in the device or group provision (`TimeInstant` attribute 
+will be also included if enabled). In other words, having `"explicitAttrs":true` would prevent the IoTA creating attributes into the related 
+entity  within the context broker from measures that are not explicitly defined in the device or group provision. 
+
+Note that attributes defined in the provision that are not receiving a measure (or having a expression defined that is resulting `null`) 
+will not progress (this means, the NGSI request to update the entity in the context broker is not going to include that attribute) 
+unless `skipValue` is defined to other value than `null`
 
 Case 3:
 
@@ -784,7 +790,8 @@ For example, let's consider the following provision for a device which send a me
 ]
 ```
 
-The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` is evaluated (using `correctedLevel` calculated attribute, just calculated before).
+The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` 
+is evaluated (using `correctedLevel` calculated attribute, just calculated before).
 
 Note that if we reserve the order, this way:
 
@@ -803,7 +810,10 @@ Note that if we reserve the order, this way:
 ]
 ```
 
-It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end with a `null` value.
+It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only 
+measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end 
+with a `null` value, so will not be part of the update request send to the Context Broker unless `skipValue` (check 
+[Devices](#devices) section avobe) is defined with a different value thant the default one (`null`).
 
 In conclusion: **the order of attributes in the `attributes` arrays at provising time matters with regards to nested expression evaluation**.
 
@@ -812,14 +822,14 @@ Let's consider the following example. It is an anti-pattern but it's quite illus
 ```json
 "attributes": [
     {
-        "name": "A",
+        "name": "a",
         "type": "Number",
-        "expression": "B"
+        "expression": "b*10"
     },
     {
-        "name": "B",
+        "name": "b",
         "type": "Number",
-        "expression": "A"
+        "expression": "a*10"
     }
 ]
 ```
@@ -828,19 +838,20 @@ When receiving a measure with the following values:
 
 ```json
 {
-    "A": 10,
-    "B": 20
+    "a": 10,
+    "b": 20
 }
 ```
 
-Then, as they are executed sequentially, the first attribute expression to be evaluated will be `A`, taking the 
-value of the attribute `B`, in this case, `20`. After that, the second attribute expression to be evaluated is 
-the one holded by `B`. In this case, that attribute would take the value of `A`. In that case, since the JEXL
-context was updated with the lastest execution, `B` the value will be `20`, being update at Context Broker entity:
+Then, as they are executed sequentially, the first attribute expression to be evaluated will be `a`, taking the 
+value of the attribute `b` multiplied by 10, in this case, `200`. After that, the second attribute expression to be 
+evaluated is  the one holded by `b`. In this case, that attribute would take 10 times the value of `a`. In that case, 
+since the JEXL context was updated with the lastest execution, the value of `b` will be `2000`, being update at Context 
+Broker entity:
 
 ```json
-    "A": {"value": 20, "type": "Number"},
-    "B": {"value": 20, "type": "Number"}
+    "a": {"value": 200, "type": "Number"},
+    "b": {"value": 2000, "type": "Number"}
 ```
 
 ### Multientity measurement transformation support (`object_id`)
