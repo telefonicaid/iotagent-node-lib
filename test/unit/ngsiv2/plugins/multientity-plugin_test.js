@@ -272,7 +272,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'WeatherStation',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'st1',
                     type: 'Number',
@@ -570,7 +570,7 @@ const iotAgentConfig = {
                     object_id: 'y'
                 }
             ],
-            static: [
+            staticAttributes: [
                 {
                     name: 'bar',
                     type: 'text',
@@ -1126,7 +1126,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .post(
                     '/v2/op/update',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10b.json'
                     )
                 )
                 .reply(204);
