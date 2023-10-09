@@ -1,9 +1,5 @@
 {
     "id":"gps1","type":"GPS",
-            "lat": {
-            "value": "52",
-            "type": "string"
-        },
      "mylocation": {
         "type": "geo:json",
         "value": {
