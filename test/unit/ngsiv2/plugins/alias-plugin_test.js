@@ -89,7 +89,8 @@ const iotAgentConfig = {
                 {
                     object_id: 'al',
                     name: 'keep_alive',
-                    type: 'None'
+                    type: 'None',
+                    skipValue: 'null passes'
                 },
                 {
                     object_id: 'ta',
@@ -325,7 +326,6 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
