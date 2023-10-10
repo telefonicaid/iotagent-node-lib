@@ -409,7 +409,7 @@ Case 1 (default):
 "explicitAttrs": false
 ```
 
-every measure will be propagated to NGSI interface.
+every measure will be propagated to NGSI interface, including all static attributes.
 
 Case 2:
 
@@ -417,13 +417,14 @@ Case 2:
 "explicitAttrs": true
 ```
 
-In this case, should only progress active and static attributes defined in the device or group provision (`TimeInstant` attribute 
-will be also included if enabled). In other words, having `"explicitAttrs":true` would prevent the IoTA creating attributes into the related 
-entity  within the context broker from measures that are not explicitly defined in the device or group provision. 
+In this case, should only progress active and static attributes defined in the device or group provision (`TimeInstant`
+attribute will be also included if enabled), including also all static attributes. In other words, having
+`"explicitAttrs":true` would prevent the IoTA creating attributes into the related entity within the context broker from
+measures that are not explicitly defined in the device or group provision.
 
-Note that attributes defined in the provision that are not receiving a measure (or having a expression defined that is resulting `null`) 
-will not progress (this means, the NGSI request to update the entity in the context broker is not going to include that attribute) 
-unless `skipValue` is defined to other value than `null`
+Note that attributes defined in the provision that are not receiving a measure (or having a expression defined that is
+resulting `null`) will not progress (this means, the NGSI request to update the entity in the context broker is not
+going to include that attribute) unless `skipValue` is defined to other value than `null`
 
 Case 3:
 
@@ -433,7 +434,8 @@ Case 3:
 
 just NGSI attributes defined in the array (identified by their attribute names, not by their object_id, plus
 conditionally TimeInstant) will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is
-not a JSON but a JEXL Array that looks likes a JSON).
+not a JSON but a JEXL Array that looks likes a JSON). Only static attributes included in that array will be propagated
+to NGSI interface.
 
 Case 4:
 
@@ -443,7 +445,8 @@ Case 4:
 
 just NGSI attributes defined in the array (identified by their attribute names and/or by their object_id) will be
 propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
-that looks likes a JSON). This is necessary when same attribute names are used within multiple entities.
+that looks likes a JSON). This is necessary when same attribute names are used within multiple entities. Only static
+attributes included in that array will be propagated to NGSI interface.
 
 Case 5:
 
@@ -768,10 +771,10 @@ following to CB:
 
 ### Measurement transformation order
 
-The IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is 
-evaluated, the JEXL context is updated with the expression result. The order defined in the `attributes` array is 
-taken for expression evaluation. This should be considered when using **nested expressions**, that uses values 
-calculated in other attributes. 
+The IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is
+evaluated, the JEXL context is updated with the expression result. The order defined in the `attributes` array is taken
+for expression evaluation. This should be considered when using **nested expressions**, that uses values calculated in
+other attributes.
 
 For example, let's consider the following provision for a device which send a measure named `level`:
 
@@ -790,8 +793,8 @@ For example, let's consider the following provision for a device which send a me
 ]
 ```
 
-The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` 
-is evaluated (using `correctedLevel` calculated attribute, just calculated before).
+The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` is
+evaluated (using `correctedLevel` calculated attribute, just calculated before).
 
 Note that if we reserve the order, this way:
 
@@ -806,16 +809,17 @@ Note that if we reserve the order, this way:
         "name": "correctedLevel",
         "type": "Number",
         "expression": "level * 0.897"
-    },    
+    },
 ]
 ```
 
-It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only 
-measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end 
-with a `null` value, so will not be part of the update request send to the Context Broker unless `skipValue` (check 
+It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only
+measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end with
+a `null` value, so will not be part of the update request send to the Context Broker unless `skipValue` (check
 [Devices](#devices) section avobe) is defined with a different value thant the default one (`null`).
 
-In conclusion: **the order of attributes in the `attributes` arrays at provising time matters with regards to nested expression evaluation**.
+In conclusion: **the order of attributes in the `attributes` arrays at provising time matters with regards to nested
+expression evaluation**.
 
 Let's consider the following example. It is an anti-pattern but it's quite illustrative on how ordering works:
 
@@ -843,11 +847,10 @@ When receiving a measure with the following values:
 }
 ```
 
-Then, as they are executed sequentially, the first attribute expression to be evaluated will be `a`, taking the 
-value of the attribute `b` multiplied by 10, in this case, `200`. After that, the second attribute expression to be 
-evaluated is  the one holded by `b`. In this case, that attribute would take 10 times the value of `a`. In that case, 
-since the JEXL context was updated with the lastest execution, the value of `b` will be `2000`, being update at Context 
-Broker entity:
+Then, as they are executed sequentially, the first attribute expression to be evaluated will be `a`, taking the value of
+the attribute `b` multiplied by 10, in this case, `200`. After that, the second attribute expression to be evaluated is
+the one holded by `b`. In this case, that attribute would take 10 times the value of `a`. In that case, since the JEXL
+context was updated with the lastest execution, the value of `b` will be `2000`, being update at Context Broker entity:
 
 ```json
     "a": {"value": 200, "type": "Number"},
