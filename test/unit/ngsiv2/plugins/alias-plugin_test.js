@@ -112,6 +112,7 @@ const iotAgentConfig = {
 
 describe('NGSI-v2 - Attribute alias plugin', function () {
     beforeEach(function (done) {
+        logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
                 done();
