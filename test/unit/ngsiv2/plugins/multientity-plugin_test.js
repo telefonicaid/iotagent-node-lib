@@ -1502,8 +1502,8 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             iotAgentLib.deactivate(done);
         });
     });
-    /*
-    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function () {
+
+    xdescribe('When an update comes for a multientity measurement and timestamp is enabled in config file', function () {
         const values = [
             {
                 name: 'p',
@@ -1532,7 +1532,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
         beforeEach(function () {
             nock.cleanAll();
-            logger.setLevel('DEBUG');
         });
 
         it('should send two context elements, one for each entity', function (done) {
@@ -1644,7 +1643,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             });
         });
     });
-*/
 });
 
 describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a regular entity ', function () {
