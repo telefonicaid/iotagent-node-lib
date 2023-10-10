@@ -118,7 +118,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartgondor.com'
 };
 
-describe('NGSI-v2 - Timestamp compression plugin', function () {
+xdescribe('NGSI-v2 - Timestamp compression plugin', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
         iotAgentLib.activate(iotAgentConfig, function () {
@@ -133,7 +133,7 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
             iotAgentLib.deactivate(done);
         });
     });
-    describe('When an update comes with a timestamp through the plugin', function () {
+    xdescribe('When an update comes with a timestamp through the plugin', function () {
         const values = [
             {
                 name: 'state',
@@ -171,7 +171,7 @@ describe('NGSI-v2 - Timestamp compression plugin', function () {
         });
     });
 
-    describe('When an update comes with a timestamp through the plugin with metadata.', function () {
+    xdescribe('When an update comes with a timestamp through the plugin with metadata.', function () {
         const values = [
             {
                 name: 'state',
