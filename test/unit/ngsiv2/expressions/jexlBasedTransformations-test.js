@@ -2496,7 +2496,6 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
 
             timekeeper.freeze(time);
             nock.cleanAll();
-            logger.setLevel('DEBUG');
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
