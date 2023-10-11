@@ -1,3 +1,4 @@
+- Fix: use but not store timestamp and explicitAttrs from group with autoprovisioned devices (#1504, partially)
 - Fix: MongoDB connection authentication (user and password were not actually used) (#1510)
 - Fix: add static attributes when use explicitAttrs (#1506)
 - Remove: single configuration mode (along with IOTA_SINGLE_MODE env var) (#1469)

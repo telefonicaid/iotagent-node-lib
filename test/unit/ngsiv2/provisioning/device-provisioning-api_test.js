@@ -366,11 +366,10 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     done();
                 });
             });
-            it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            it('should store the device without explicitAttrs', function (done) {
                 request(options, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
-                        should.exist(results.devices[0].explicitAttrs);
-                        results.devices[0].explicitAttrs.should.equal(false);
+                        should.not.exist(results.devices[0].explicitAttrs);
                         done();
                     });
                 });
@@ -430,12 +429,11 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            it('should store the device without explicitAttrs value', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
-                            should.exist(results.devices[0].explicitAttrs);
-                            results.devices[0].explicitAttrs.should.equal(true);
+                            should.not.exist(results.devices[0].explicitAttrs);
                             done();
                         });
                     });
