@@ -3,7 +3,7 @@
   "entities": [
     {
       "id": "gps1",
-      "type": "GPS"
+        "type": "GPS"
     },
     {
       "attr1": {

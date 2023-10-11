@@ -75,6 +75,102 @@ const iotAgentConfig = {
                     type: 'type4'
                 }
             ]
+        },
+        Light_Explicit_True: {
+            commands: [],
+            type: 'Light_Explicit_True',
+            explicitAttrs: true,
+            timestamp: false,
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            staticAttributes: [
+                {
+                    name: 'attr1',
+                    type: 'Text',
+                    value: 'Static Text'
+                },
+                {
+                    name: 'attr2',
+                    type: 'Number',
+                    value: 123
+                }
+            ]
+        },
+        Light_Explicit_False: {
+            commands: [],
+            type: 'Light_Explicit_False',
+            explicitAttrs: false,
+            timestamp: false,
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            staticAttributes: [
+                {
+                    name: 'attr1',
+                    type: 'Text',
+                    value: 'Static Text'
+                },
+                {
+                    name: 'attr2',
+                    type: 'Number',
+                    value: 123
+                }
+            ]
+        },
+        Light_Explicit_Array: {
+            commands: [],
+            type: 'Light_Explicit_Array',
+            explicitAttrs: '[ "pressure", "attr1" ]',
+            timestamp: false,
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            staticAttributes: [
+                {
+                    name: 'attr1',
+                    type: 'Text',
+                    value: 'Static Text'
+                },
+                {
+                    name: 'attr2',
+                    type: 'Number',
+                    value: 123
+                }
+            ]
+        },
+        Light_Explicit_Expression: {
+            commands: [],
+            type: 'Light_Explicit_Expression',
+            explicitAttrs: ' pressure ? [ "pressure", "attr1" ] : [ "attr2" ] ',
+            timestamp: false,
+            active: [
+                {
+                    name: 'pressure',
+                    type: 'Number'
+                }
+            ],
+            staticAttributes: [
+                {
+                    name: 'attr1',
+                    type: 'Text',
+                    value: 'Static Text'
+                },
+                {
+                    name: 'attr2',
+                    type: 'Number',
+                    value: 123
+                }
+            ]
         }
     },
     timestamp: true,
@@ -144,6 +240,179 @@ describe('NGSI-v2 - Static attributes test', function () {
                     done();
                 }
             );
+        });
+    });
+
+    describe('When using explicitAttrs true', function () {
+        const newValues = [
+            {
+                name: 'pressure',
+                type: 'Number',
+                value: 321
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'light2',
+                    type: 'Light_Explicit_True',
+                    pressure: {
+                        value: 321,
+                        type: 'Number'
+                    },
+                    attr1: {
+                        value: 'Static Text',
+                        type: 'Text'
+                    },
+                    attr2: {
+                        value: 123,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should include all the statics', function (done) {
+            iotAgentLib.update('light2', 'Light_Explicit_True', '', newValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using explicitAttrs false', function () {
+        const newValues = [
+            {
+                name: 'pressure',
+                type: 'Number',
+                value: 321
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'light2',
+                    type: 'Light_Explicit_True',
+                    pressure: {
+                        value: 321,
+                        type: 'Number'
+                    },
+                    attr1: {
+                        value: 'Static Text',
+                        type: 'Text'
+                    },
+                    attr2: {
+                        value: 123,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should include all the statics', function (done) {
+            iotAgentLib.update('light2', 'Light_Explicit_True', '', newValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using explicitAttrs as array', function () {
+        const newValues = [
+            {
+                name: 'pressure',
+                type: 'Number',
+                value: 321
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+            logger.setLevel('DEBUG');
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'light2',
+                    type: 'Light_Explicit_Array',
+                    pressure: {
+                        value: 321,
+                        type: 'Number'
+                    },
+                    attr1: {
+                        value: 'Static Text',
+                        type: 'Text'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should include only statics defined into the array', function (done) {
+            iotAgentLib.update('light2', 'Light_Explicit_Array', '', newValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using explicitAttrs as expression', function () {
+        const newValues = [
+            {
+                name: 'pressure',
+                type: 'Number',
+                value: 321
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', {
+                    id: 'light2',
+                    type: 'Light_Explicit_Expression',
+                    pressure: {
+                        value: 321,
+                        type: 'Number'
+                    },
+                    attr1: {
+                        value: 'Static Text',
+                        type: 'Text'
+                    }
+                })
+                .reply(204);
+
+            iotAgentLib.activate(iotAgentConfig, done);
+        });
+
+        it('should include statics as the result on the expression', function (done) {
+            iotAgentLib.update('light2', 'Light_Explicit_Expression', '', newValues, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
         });
     });
 });

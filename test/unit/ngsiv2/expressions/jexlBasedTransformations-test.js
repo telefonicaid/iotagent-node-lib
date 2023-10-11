@@ -33,7 +33,7 @@ const nock = require('nock');
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -733,7 +733,7 @@ const iotAgentConfig = {
 };
 
 const iotAgentConfigTS = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -2011,7 +2011,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .post(
                     '/v2/entities?options=upsert',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36b.json'
                     )
                 )
                 .reply(204);
@@ -2045,7 +2045,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .post(
                     '/v2/entities?options=upsert',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
                 )
                 .reply(204);
@@ -2087,6 +2087,16 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin37.json'
+                    )
+                )
+                .reply(204);
         });
 
         it('should calculate them and remove non-explicitAttrs by jexl expression with context from the payload ', function (done) {

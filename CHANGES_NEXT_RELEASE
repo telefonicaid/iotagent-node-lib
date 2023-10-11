@@ -1,4 +1,6 @@
 - Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
+- Fix: MongoDB connection authentication (user and password were not actually used) (#1510)
+- Fix: add static attributes when use explicitAttrs (#1506)
 - Remove: single configuration mode (along with IOTA_SINGLE_MODE env var) (#1469)
 - Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
 - Fix: ensure service and subservice in context of error handlers using req headers
