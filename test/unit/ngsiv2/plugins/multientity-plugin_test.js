@@ -1635,7 +1635,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
                     value: '2018-06-13T13:28:34.611Z'
                 }
             ];
-            logger.setLevel('DEBUG');
             iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
