@@ -344,8 +344,6 @@ describe('NGSI-v2 - Static attributes test', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            logger.setLevel('DEBUG');
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
