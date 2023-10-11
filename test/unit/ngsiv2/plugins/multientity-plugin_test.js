@@ -1503,7 +1503,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
         });
     });
 
-    xdescribe('When an update comes for a multientity measurement and timestamp is enabled in config file', function () {
+    describe('When an update comes for a multientity measurement and timestamp is enabled in config file', function () {
         const values = [
             {
                 name: 'p',
@@ -1559,7 +1559,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
                         delete expectedBody.entities[1].TimeInstant;
                         delete expectedBody.entities[1].humidity.metadata.TimeInstant;
-                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        return utils.deepEqual(body, expectedBody);
                     }
                     return false;
                 })
@@ -1597,7 +1597,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
                         delete expectedBody.entities[1].TimeInstant;
                         delete expectedBody.entities[1].humidity.metadata.TimeInstant;
-                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        return utils.deepEqual(body, expectedBody);
                     }
                     return false;
                 })

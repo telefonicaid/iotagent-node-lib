@@ -78,42 +78,4 @@ describe('NGSI-v2 - Timestamp processing plugin', function () {
             iotAgentLib.deactivate(done);
         });
     });
-    xdescribe('When an update comes with a timestamp through the plugin', function () {
-        const values = [
-            {
-                name: 'state',
-                type: 'Boolean',
-                value: true
-            },
-            {
-                name: 'TimeInstant',
-                type: 'DateTime',
-                value: '2016-05-30T16:25:22.304Z'
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    // this tests breaks jexlBasedTransformation-test with uses updateContextExpressionPlugin32 which do not includes Timestamp in metadata attributes
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextProcessTimestamp.json'
-                    )
-                )
-                .reply(204);
-        });
-
-        it('should return an entity with all its timestamps expanded to have separators', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
 });
