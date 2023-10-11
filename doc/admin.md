@@ -261,7 +261,7 @@ the `mongob` section (as described bellow). E.g.:
 
 It configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of
 comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional property
-`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`username`),
+`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`),
 password (`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any
 validation of the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect
 the database. If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection
