@@ -1,3 +1,4 @@
+- Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
 - Fix: use but not store timestamp and explicitAttrs from group with autoprovisioned devices (#1504, partially)
 - Fix: MongoDB connection authentication (user and password were not actually used) (#1510)
 - Fix: add static attributes when use explicitAttrs (#1506)

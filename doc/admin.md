@@ -22,7 +22,6 @@
         -   [componentName](#componentname)
         -   [pollingExpiration](#pollingexpiration)
         -   [pollingDaemonFrequency](#pollingdaemonfrequency)
-        -   [autocast](#autocast)
         -   [multiCore](#multicore)
         -   [fallbackTenant](#fallbacktenant)
         -   [fallbackPath](#fallbackpath)
@@ -378,10 +377,6 @@ amount of time without being collected by the device, the expiration daemon will
 time between collection of expired commands in milliseconds. This attribute is optional (if this parameter doesn't exist
 the polling daemon won't be started).
 
-#### `autocast`
-
-When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type (only for NGSI v2).
-
 #### `multiCore`
 
 When enabled, the IoT Agents runs in multi-thread environment to take advantage of multi-core systems. It allows two
@@ -480,7 +475,6 @@ overrides.
 | IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
-| IOTA_AUTOCAST                        | `autocast`                      |
 | IOTA_MULTI_CORE                      | `multiCore`                     |
 | IOTA_JSON_LD_CONTEXT                 | `jsonLdContext`                 |
 | IOTA_FALLBACK_TENANT                 | `fallbackTenant`                |
