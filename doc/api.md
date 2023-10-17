@@ -27,6 +27,7 @@
     -   [Measurement transformation](#measurement-transformation)
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
+        -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
@@ -152,7 +153,7 @@ parameters defined at device level in database, the parameters are inherit from 
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
-information coming from the device is mapped to the Context Broker attributes:
+information coming from the device (measures) is mapped to the Context Broker attributes:
 
 -   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
     to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
@@ -179,7 +180,9 @@ information coming from the device is mapped to the Context Broker attributes:
 All of them have the same syntax, a list of objects with the following attributes:
 
 -   **object_id** (optional): name of the attribute as coming from the device.
--   **name** (mandatory): ID of the attribute in the target entity in the Context Broker.
+-   **name** (mandatory): ID of the attribute in the target entity in the Context Broker. Note that `id` and `type` are
+    not valid attribute names at Context Broker. Thus, although a measure named `id` or `type` will not break the IoT
+    Agent, they are silently ignored and never progress toward Context Broker entities.
 -   **type** (mandatory): name of the type of the attribute in the target entity.
 -   **metadata** (optional): additional static metadata for the attribute in the target entity. (e.g. `unitCode`)
 
@@ -208,6 +211,10 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
+
+Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
+device, the IoT agent will store that information into the destination entity using the same attribute name than the
+measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored.
 
 ## Multientity support
 
@@ -402,7 +409,7 @@ Case 1 (default):
 "explicitAttrs": false
 ```
 
-every measure will be propagated to NGSI interface.
+every measure will be propagated to NGSI interface, including all static attributes.
 
 Case 2:
 
@@ -410,7 +417,14 @@ Case 2:
 "explicitAttrs": true
 ```
 
-just measures defined in active, static (plus conditionally TimeInstant) will be propagated to NGSI interface.
+In this case, should only progress active and static attributes defined in the device or group provision (`TimeInstant`
+attribute will be also included if enabled), including also all static attributes. In other words, having
+`"explicitAttrs":true` would prevent the IoTA creating attributes into the related entity within the context broker from
+measures that are not explicitly defined in the device or group provision.
+
+Note that attributes defined in the provision that are not receiving a measure (or having a expression defined that is
+resulting `null`) will not progress (this means, the NGSI request to update the entity in the context broker is not
+going to include that attribute) unless `skipValue` is defined to other value than `null`
 
 Case 3:
 
@@ -420,7 +434,8 @@ Case 3:
 
 just NGSI attributes defined in the array (identified by their attribute names, not by their object_id, plus
 conditionally TimeInstant) will be propagated to NGSI interface (note that in this case the value of `explicitAttrs` is
-not a JSON but a JEXL Array that looks likes a JSON).
+not a JSON but a JEXL Array that looks likes a JSON). Only static attributes included in that array will be propagated
+to NGSI interface.
 
 Case 4:
 
@@ -430,7 +445,8 @@ Case 4:
 
 just NGSI attributes defined in the array (identified by their attribute names and/or by their object_id) will be
 propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
-that looks likes a JSON). This is necessary when same attribute names are used within multiple entities.
+that looks likes a JSON). This is necessary when same attribute names are used within multiple entities. Only static
+attributes included in that array will be propagated to NGSI interface.
 
 Case 5:
 
@@ -752,6 +768,94 @@ following to CB:
 ```
 
 [Interactive expression `spaces | trim`][5]
+
+### Measurement transformation order
+
+The IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is
+evaluated, the JEXL context is updated with the expression result. The order defined in the `attributes` array is taken
+for expression evaluation. This should be considered when using **nested expressions**, that uses values calculated in
+other attributes.
+
+For example, let's consider the following provision for a device which send a measure named `level`:
+
+```json
+"attributes": [
+    {
+        "name": "correctedLevel",
+        "type": "Number",
+        "expression": "level * 0.897"
+    },
+    {
+        "name": "normalizedLevel",
+        "type": "Number",
+        "expression": "correctedLevel / 100"
+    }
+]
+```
+
+The expression for `correctedLevel` is evaluated first (using `level` measure as input). Next, the `normalizedLevel` is
+evaluated (using `correctedLevel` calculated attribute, just calculated before).
+
+Note that if we reserve the order, this way:
+
+```json
+"attributes": [
+    {
+        "name": "normalizedLevel",
+        "type": "Number",
+        "expression": "correctedLevel / 100"
+    },
+    {
+        "name": "correctedLevel",
+        "type": "Number",
+        "expression": "level * 0.897"
+    },
+]
+```
+
+It is not going to work. The first expression expects a `correctedLevel` which is neither a measure (remember the only
+measure sent by the device is named `level`) nor a previously calculated attribute. Thus, `correctedLevel` will end with
+a `null` value, so will not be part of the update request send to the Context Broker unless `skipValue` (check
+[Devices](#devices) section avobe) is defined with a different value thant the default one (`null`).
+
+In conclusion: **the order of attributes in the `attributes` arrays at provising time matters with regards to nested
+expression evaluation**.
+
+Let's consider the following example. It is an anti-pattern but it's quite illustrative on how ordering works:
+
+```json
+"attributes": [
+    {
+        "name": "a",
+        "type": "Number",
+        "expression": "b*10"
+    },
+    {
+        "name": "b",
+        "type": "Number",
+        "expression": "a*10"
+    }
+]
+```
+
+When receiving a measure with the following values:
+
+```json
+{
+    "a": 10,
+    "b": 20
+}
+```
+
+Then, as they are executed sequentially, the first attribute expression to be evaluated will be `a`, taking the value of
+the attribute `b` multiplied by 10, in this case, `200`. After that, the second attribute expression to be evaluated is
+the one holded by `b`. In this case, that attribute would take 10 times the value of `a`. In that case, since the JEXL
+context was updated with the lastest execution, the value of `b` will be `2000`, being update at Context Broker entity:
+
+```json
+    "a": {"value": 200, "type": "Number"},
+    "b": {"value": 2000, "type": "Number"}
+```
 
 ### Multientity measurement transformation support (`object_id`)
 
@@ -1188,45 +1292,6 @@ Example:
 }
 ```
 
-```json
-{
-    "services": [
-        {
-            "resource": "/deviceTest",
-            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "type": "Light",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "wheel1", "type": "Wheel" }],
-            "attributes": [
-                {
-                    "name": "luminescence",
-                    "type": "Integer",
-                    "metadata": {
-                        "unitCode": { "type": "Text", "value": "CAL" }
-                    }
-                }
-            ],
-            "lazy": [{ "name": "status", "type": "Boolean" }]
-        },
-        {
-            "resource": "/deviceTest2",
-            "apikey": "A21323ASDG12312ASDN21LWQEJPO2J123",
-            "type": "Switch",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "on", "type": "order" }],
-            "attributes": [
-                {
-                    "name": "swithc_status",
-                    "type": "boolean"
-                }
-            ]
-        }
-    ]
-}
-```
-
 #### Create config group `POST /iot/configGroups` or `POST /iot/services`
 
 Creates a set of config groups for the given service and service path. The service and subservice information will taken
@@ -1249,33 +1314,6 @@ Example:
 ```json
 {
     "configGroups": [
-        {
-            "resource": "/deviceTest",
-            "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
-            "type": "Light",
-            "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
-            "cbHost": "http://orion:1026",
-            "commands": [{ "name": "wheel1", "type": "Wheel" }],
-            "attributes": [
-                {
-                    "name": "luminescence",
-                    "type": "Integer",
-                    "metadata": {
-                        "unitCode": { "type": "Text", "value": "CAL" }
-                    }
-                }
-            ],
-            "lazy": [{ "name": "status", "type": "Boolean" }]
-        }
-    ]
-}
-```
-
-OR
-
-```json
-{
-    "services": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",

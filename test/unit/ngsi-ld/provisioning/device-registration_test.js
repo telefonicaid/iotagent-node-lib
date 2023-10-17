@@ -109,19 +109,10 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
     describe('When a new device is connected to the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
-
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .post('/ngsi-ld/v1/entityOperations/upsert/')
-                .reply(204);
-
             const nockBody = utils.readExampleFile(
                 './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
             );
-            contextBrokerMock
+            contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .post('/ngsi-ld/v1/csourceRegistrations/', nockBody)
                 .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
@@ -130,14 +121,14 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 iotAgentLib.clearAll(done);
             });
         });
-        // FIXME: disabled test by #1421
-        // it('should register as ContextProvider of its lazy attributes', function (done) {
-        //     iotAgentLib.register(device1, function (error) {
-        //         should.not.exist(error);
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.register(device1, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
     describe('When the Context Broker returns a NGSI error while registering a device', function () {
@@ -156,15 +147,15 @@ describe('NGSI-LD - IoT Agent Device Registration', function () {
                 iotAgentLib.clearAll(done);
             });
         });
-        // FIXME: disabled test by #1421
-        // it('should register as ContextProvider of its lazy attributes', function (done) {
-        //     iotAgentLib.register(device1, function (error) {
-        //         should.exist(error);
-        //         error.name.should.equal('BAD_REQUEST');
-        //         contextBrokerMock.done();
-        //         done();
-        //     });
-        // });
+
+        it('should register as ContextProvider of its lazy attributes', function (done) {
+            iotAgentLib.register(device1, function (error) {
+                should.exist(error);
+                error.name.should.equal('BAD_REQUEST');
+                contextBrokerMock.done();
+                done();
+            });
+        });
     });
 
     describe('When the Context Broker returns an HTTP transport error while registering a device', function () {
