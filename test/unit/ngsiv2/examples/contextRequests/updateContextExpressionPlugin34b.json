@@ -1,14 +1,6 @@
 {
   "id":"gps1",
   "type":"GPS",
-  "lat": { 
-      "type": "Number",
-      "value": 52
-  },
-  "lon": {
-      "type": "Number",
-      "value": 13
-  },
   "location": {
     "type": "geo:json",
     "value": {

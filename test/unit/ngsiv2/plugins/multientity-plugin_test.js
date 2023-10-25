@@ -708,7 +708,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -746,7 +745,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -785,7 +783,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -1157,7 +1154,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             .reply(204);
     });
 
-    describe('When an update comes for a multientity whith a wrong mapping)', function () {
+    describe('When an update comes for a multientity whith a wrong mapping', function () {
         const values = [
             {
                 name: 'v',
@@ -1178,7 +1175,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -1378,7 +1374,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
             beforeEach(function () {
                 nock.cleanAll();
-
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
@@ -1430,7 +1425,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
             beforeEach(function () {
                 nock.cleanAll();
-
                 contextBrokerMock = nock('http://192.168.1.1:1026')
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
@@ -1495,7 +1489,6 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
-
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -1566,7 +1559,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 
                         delete expectedBody.entities[1].TimeInstant;
                         delete expectedBody.entities[1].humidity.metadata.TimeInstant;
-                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        return utils.deepEqual(body, expectedBody);
                     }
                     return false;
                 })
@@ -1589,22 +1582,22 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
                     );
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
                     // fields. The following code just checks that TimeInstant fields are present.
-                    if (!body.entities[1].TimeInstant || !body.entities[1].humidity.metadata.TimeInstant) {
+                    if (!body.entities[0].TimeInstant || !body.entities[0].humidity.metadata.TimeInstant) {
                         return false;
                     }
 
-                    const timeInstantEntity2 = body.entities[1].TimeInstant;
-                    const timeInstantAtt = body.entities[1].humidity.metadata.TimeInstant;
+                    const timeInstantEntity2 = body.entities[0].TimeInstant;
+                    const timeInstantAtt = body.entities[0].humidity.metadata.TimeInstant;
                     if (
                         moment(timeInstantEntity2, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid &&
                         moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid
                     ) {
-                        delete body.entities[1].TimeInstant;
-                        delete body.entities[1].humidity.metadata.TimeInstant;
+                        delete body.entities[0].TimeInstant;
+                        delete body.entities[0].humidity.metadata.TimeInstant;
 
-                        delete expectedBody.entities[1].TimeInstant;
-                        delete expectedBody.entities[1].humidity.metadata.TimeInstant;
-                        return JSON.stringify(body) === JSON.stringify(expectedBody);
+                        delete expectedBody.entities[0].TimeInstant;
+                        delete expectedBody.entities[0].humidity.metadata.TimeInstant;
+                        return utils.deepEqual(body, expectedBody);
                     }
                     return false;
                 })
@@ -1642,7 +1635,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
                     value: '2018-06-13T13:28:34.611Z'
                 }
             ];
-
             iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
@@ -1655,7 +1647,6 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
 describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a regular entity ', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
-
         iotAgentConfig.timestamp = true;
         const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
         timekeeper.freeze(time);
