@@ -3,6 +3,6 @@
   "type": "Light",
   "pressure": {
     "type": "Number",
-    "value": 1040
+    "value": null
   }
 }

@@ -377,7 +377,6 @@ describe('NGSI-v2 - Active attributes test', function () {
             ];
 
             timekeeper.freeze(time);
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')

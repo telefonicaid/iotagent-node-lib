@@ -2,10 +2,6 @@
   "actionType": "append",
   "entities": [
             {
-                "id": "Sensor",
-                "type": "Sensor"
-            },
-            {
                 "vol": {
                     "type": "number",
                     "value": "38"
