@@ -41,6 +41,10 @@
             "description": "NGSI Interface for this group of devices",
             "type": "string"
           },
+          "payloadType": {
+            "description": "Payload type allowed for measures for this group",
+            "type": "string"
+          },
           "attributes": {
             "description": "list of active attributes of the devices",
             "type": "array"
