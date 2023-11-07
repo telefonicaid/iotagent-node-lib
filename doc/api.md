@@ -943,13 +943,6 @@ Will now generate the following NGSI v2 payload:
 }
 ```
 
-## Timestamp Compression
-
-This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
-attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
-calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
-it in queries (and viceversa, receive the extended one in queries and return it in updates).
-
 ## Timestamp Processing
 
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
