@@ -29,7 +29,6 @@
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
-    -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
@@ -943,13 +942,6 @@ Will now generate the following NGSI v2 payload:
     ]
 }
 ```
-
-## Timestamp Compression
-
-This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
-attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
-calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
-it in queries (and viceversa, receive the extended one in queries and return it in updates).
 
 ## Timestamp Processing
 
