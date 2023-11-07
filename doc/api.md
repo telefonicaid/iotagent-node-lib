@@ -29,7 +29,6 @@
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
-    -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
