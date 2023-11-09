@@ -101,6 +101,7 @@ function sendMeasureIotaLib(measure, provision) {
 function jsonToIotaMeasures(json) {
     let measures = [];
     for (let key in json) {
+        /* eslint-disable-next-line  no-prototype-builtins */
         if (json.hasOwnProperty(key)) {
             let measure = {
                 name: key,
@@ -130,6 +131,7 @@ const delay = (time) => new Promise((res) => setTimeout(res, time));
 function groupToIoTAConfigType(group, service, subservice) {
     let type = {};
     for (var key in group) {
+        /* eslint-disable-next-line  no-prototype-builtins */
         if (group.hasOwnProperty(key)) {
             if (key === 'attributes') {
                 type.active = group.attributes;
@@ -137,8 +139,7 @@ function groupToIoTAConfigType(group, service, subservice) {
                 type.type = group.entity_type;
             } else if (key === 'static_attributes') {
                 type.staticAttributes = group.static_attributes;
-            } else if (key === 'resource') {
-            } else {
+            } else if (key !== 'resource') {
                 type[key] = group[key];
             }
         }
