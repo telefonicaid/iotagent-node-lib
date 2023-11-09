@@ -2467,7 +2467,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             done();
         });
 
-        it('should calculate values using nested attributes names and skip measures', function (done) {
+        it('should calculate values using device JEXL context', function (done) {
             iotAgentLib.update('testContext', 'testContextVars', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
