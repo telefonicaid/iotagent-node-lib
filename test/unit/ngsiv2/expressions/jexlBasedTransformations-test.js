@@ -724,6 +724,19 @@ const iotAgentConfig = {
                     expression: 'v == undefined'
                 }
             ]
+        },
+        testContextVars: {
+            type: 'testNullExplicit',
+            explicitAttrs: true,
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'a+":"+service+subservice+id+type'
+                }
+            ]
         }
     },
     service: 'smartgondor',
@@ -2412,6 +2425,50 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should calculate values using nested attributes names and skip measures', function (done) {
             iotAgentLib.update('nestedAnti', 'nestedExpressionsAnti', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using context values as part of expressions (service, subservice, dev ID)', function () {
+        const values = [
+            {
+                name: 'a',
+                type: 'Text',
+                value: 'Text123'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert', function (body) {
+                    // Pending to define the expected bod, so far the output is:
+                    // {
+                    //    id: 'testContext',
+                    //    type: 'testNullExplicit',
+                    //    a: {
+                    //      type: 'Number',
+                    //      value: 'Text123:undefinedundefinedundefinedtestNullExplicit'
+                    //    }
+                    // }
+                    console.log(body);
+                    return true;
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('testContext', 'testContextVars', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
