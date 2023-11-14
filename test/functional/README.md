@@ -1,6 +1,6 @@
 ## Functional test suite
 
-This directory contains the functional test suite for the IoTA JSON. This test suite is based on mocha and chai. For
+This directory contains the functional test suite for the IoTA Node Lib. This test suite is based on mocha and chai. For
 mocks, we use the nock library. Additionally, it uses some specific functions to ease to implement the test. Helper
 functions are located in the `testUtils.js` file.
 
@@ -8,11 +8,14 @@ There are 2 tests files in this directory:
 
 -   `fuctional-tests.js`: This file contains the test defined in the "classic way". This means, coded in the JS file as
     any other mocha test. It uses the functions defined in the `testUtils.js` file to simplify the tests.
--   `functional-tests-runner.js`: This file contains the test defined in the "automatic way". This means, the test cases
-    are defined as JSON in a separate file (`testCases.js`). This file is loaded by the test suite and the test cases
-    are automatically generated.
+-   `functional-tests-runner.js`: This file contains the test runner that executes the tests defined as JSON in a
+    separate file (`testCases.js`) in a "automatic way". This file is loaded by the test suite and the test cases are
+    automatically executed.
 
-The recommended way is to use `testCases.js` (run by `functional-tests-runner.js`). The `fuctional-tests.js` file is provides as basically as an example in the case the "old way" needs to be used.
+The recommended way is to use `testCases.js` (run by `functional-tests-runner.js`). The `fuctional-tests.js` file is
+provides as basically as an example in the case the "old way" needs to be used (I.E: when the test follow a different
+pattern than the one supported by the test runner).
+
 ### Automatic test cases
 
 Each test case is defined as a JSON object in the `testCases.js` file. This file is loaded by the test suite and the

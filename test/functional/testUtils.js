@@ -206,7 +206,6 @@ async function testCase(measure, expectation, provision, env, config, type, tran
         expect(response.body, ERR_MEAS_BODY).to.be.empty;
     } else {
         const response = await sendMeasureIotaLib(measure, provision);
-        // expect(response, ERR_MEAS_BODY).to.be.empty;
     }
 
     // Validate Context Broker Expectation

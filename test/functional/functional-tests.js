@@ -26,7 +26,6 @@
 /* eslint-disable no-unused-vars*/
 /* eslint-disable no-unused-expressions*/
 
-// const iotaJson = require('../..');
 const config = require('./config-test.js');
 const nock = require('nock');
 const chai = require('chai');
