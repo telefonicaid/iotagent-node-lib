@@ -1,4 +1,4 @@
-- Add payloadType to device and groups model (iotagent-json#778)
+- Add: payloadType to device and groups model to support NGSI-v2 and NGSI-LD formats in southbound measures (iotagent-json#778)
 - Large refactor of IOTA Lib code to make it simpler
 - Remove: time compression support
 - Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
