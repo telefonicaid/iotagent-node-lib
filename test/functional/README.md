@@ -10,8 +10,9 @@ There are 2 tests files in this directory:
     any other mocha test. It uses the functions defined in the `testUtils.js` file to simplify the tests.
 -   `functional-tests-runner.js`: This file contains the test defined in the "automatic way". This means, the test cases
     are defined as JSON in a separate file (`testCases.js`). This file is loaded by the test suite and the test cases
-    are automatically generated. This is the recommended way to define the test cases.
+    are automatically generated.
 
+The recommended way is to use `testCases.js` (run by `functional-tests-runner.js`). The `fuctional-tests.js` file is provides as basically as an example in the case the "old way" needs to be used.
 ### Automatic test cases
 
 Each test case is defined as a JSON object in the `testCases.js` file. This file is loaded by the test suite and the
