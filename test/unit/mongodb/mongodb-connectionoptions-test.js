@@ -173,7 +173,6 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        authSource: 'admin',
                         useNewUrlParser: true,
                         useUnifiedTopology: true
                     }
@@ -190,14 +189,13 @@ describe('dbConn.configureDb', function () {
                     authSource: 'admin'
                 },
                 expected: {
-                    url: 'mongodb://user01:pass01@example.com:98765/examples',
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin',
                     options: {
                         replicaSet: 'rs0',
                         auth: {
                             user: 'user01',
                             password: 'pass01'
                         },
-                        authSource: 'admin',
                         useNewUrlParser: true,
                         useUnifiedTopology: true
                     }
@@ -308,14 +306,13 @@ describe('dbConn.configureDb', function () {
                     unknownparam: 'unknown'
                 },
                 expected: {
-                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority',
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin',
                     options: {
                         replicaSet: 'rs0',
                         auth: {
                             user: 'user01',
                             password: 'pass01'
                         },
-                        authSource: 'admin',
                         ssl: true,
                         useNewUrlParser: true,
                         useUnifiedTopology: true
