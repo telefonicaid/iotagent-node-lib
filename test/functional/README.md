@@ -28,7 +28,7 @@ test cases are automatically generated. Each test case is defined as an object w
     -   `headers`: The headers to send to the provisioning API. This should contain the `fiware-service` and
         `fiware-servicepath` headers.
     -   `skip`: optional. If set to `true`, the test case (`describe`) will be skipped. This is useful to skip test
-        cases that are not supported by the agent. It can also have a string value `lib`. This will skip the test case
+        cases that are not supported by the agent. It can also have a string value `"lib"`. This will skip the test case
         only if the is executed in the IoTA Node lib repo. This is useful to skip test cases that are not supported by
         the lib (I.E: all tests related to the transport).
 -   `should`: The array of test cases to execute. Each test case is defined as an object with the following elements:
