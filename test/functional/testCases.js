@@ -2029,7 +2029,7 @@ const testCases = [
     },
     {
         describeName:
-            '0330 - Group with explicit attrs: JEXL expression resulting boolean + active attributes + static attributes',
+            '0330 - Group with explicit attrs: JEXL expression based on measure resulting boolean + active attributes + static attributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2077,7 +2077,7 @@ const testCases = [
         should: [
             {
                 shouldName:
-                    'A - WHEN sending both provisioned and not object_ids (measures) through http IT should store only defined in explicitAttrs array into Context Broker',
+                    'A - WHEN sending both provisioned and not object_ids (measures) through http and being the explicitAttrs JEXL result true IT should store only explicit attrs into Context Broker',
                 type: 'single',
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
@@ -2089,7 +2089,8 @@ const testCases = [
                     json: {
                         a: 3,
                         b: 10,
-                        c: 11
+                        c: 11,
+                        d: 12
                     }
                 },
                 expectation: {
@@ -2099,8 +2100,58 @@ const testCases = [
                         value: 3,
                         type: 'Number'
                     },
+                    attr_b: {
+                        value: 10,
+                        type: 'Number'
+                    },
                     static_a: {
                         value: 3,
+                        type: 'Number'
+                    },
+                    static_b: {
+                        value: 4,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending both provisioned and not object_ids (measures) through http and being the explicitAttrs JEXL result false IT should store all attrs into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        d: 12
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 3,
+                        type: 'Number'
+                    },
+                    attr_b: {
+                        value: 10,
+                        type: 'Number'
+                    },
+                    d: {
+                        value: 12,
+                        type: 'string'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    },
+                    static_b: {
+                        value: 4,
                         type: 'Number'
                     }
                 }
