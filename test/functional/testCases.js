@@ -1845,6 +1845,78 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0210 - Simple group with active attributes + JSON value Static attributes ',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: {
+                                    v1: 1,
+                                    v2: {
+                                        v3: 3,
+                                        v4: 4
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending measures through http IT should store complex static attributes into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 10,
+                        type: 'string'
+                    },
+                    static_a: {
+                        value: {
+                            v1: 1,
+                            v2: {
+                                v3: 3,
+                                v4: 4
+                            }
+                        },
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
     // EXPLICIT ATTRIBUTES TESTS
     {
         describeName: '0300 - Group with explicit attrs:false (boolean) + active atributes',
