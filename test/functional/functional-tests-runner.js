@@ -57,7 +57,8 @@ describe('FUNCTIONAL TESTS AUTO', function () {
     testCases.forEach((testCase) => {
         describe(testCase.describeName, function () {
             beforeEach(function (done) {
-                if (testCase.skip && (testCase.skip === true || testCase.skip === 'lib')) {
+                if (testCase.skip && testUtils.checkSkip(testCase.skip, 'lib')) {
+                    // if (testCase.skip && (testCase.skip === true || testCase.skip === 'lib')) {
                     this.skip();
                 }
                 if (testCase.loglevel) {

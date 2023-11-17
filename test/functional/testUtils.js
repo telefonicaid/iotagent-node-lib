@@ -222,6 +222,28 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     }
 }
 
+/**
+ *
+ * @param {*} skip skip string from test case. I.E: "lib, !json"
+ * @param {*} matchPattern skip pattern to check. I.E: "lib"
+ * @returns true if the test should be skipped. False otherwise
+ */
+function checkSkip(skip, matchPattern) {
+    var isMatch = false;
+    // Separate tokens by comma or space, and remove empty tokens
+    var tokens = skip.split(/[ , ]+/).filter(function (value, index, arr) {
+        return value != '' && !value.match(/[* ]+/);
+    });
+    // Check if the skip pattern is in the tokens array, or there is a token starting with ! without the pattern (negative match -!b)
+    tokens.forEach((element) => {
+        if (element == matchPattern || (element[0] == '!' && element.substr(1) != matchPattern)) {
+            isMatch = true;
+        }
+    });
+    return isMatch;
+}
+
+exports.checkSkip = checkSkip;
 exports.sendMeasureHttp = sendMeasureHttp;
 exports.sendMeasureIotaLib = sendMeasureIotaLib;
 exports.delayMs = delay;
