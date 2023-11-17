@@ -232,11 +232,11 @@ function checkSkip(skip, matchPattern) {
     var isMatch = false;
     // Separate tokens by comma or space, and remove empty tokens
     var tokens = skip.split(/[ , ]+/).filter(function (value, index, arr) {
-        return value != '' && !value.match(/[* ]+/);
+        return value !== '' && !value.match(/[* ]+/);
     });
     // Check if the skip pattern is in the tokens array, or there is a token starting with ! without the pattern (negative match -!b)
     tokens.forEach((element) => {
-        if (element == matchPattern || (element[0] == '!' && element.substr(1) != matchPattern)) {
+        if (element === matchPattern || (element[0] === '!' && element.substr(1) !== matchPattern)) {
             isMatch = true;
         }
     });
