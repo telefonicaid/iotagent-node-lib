@@ -58,7 +58,6 @@ describe('FUNCTIONAL TESTS AUTO', function () {
         describe(testCase.describeName, function () {
             beforeEach(function (done) {
                 if (testCase.skip && testUtils.checkSkip(testCase.skip, 'lib')) {
-                    // if (testCase.skip && (testCase.skip === true || testCase.skip === 'lib')) {
                     this.skip();
                 }
                 if (testCase.loglevel) {
@@ -89,7 +88,7 @@ describe('FUNCTIONAL TESTS AUTO', function () {
 
             testCase.should.forEach((should) => {
                 it(should.shouldName, async function () {
-                    if (testCase.skip && (testCase.skip === true || testCase.skip === 'lib')) {
+                    if (testCase.skip && testUtils.checkSkip(testCase.skip, 'lib')) {
                         this.skip();
                     }
                     // Skip the test if the transport is specified (IoTA Lib does not support any transport)
