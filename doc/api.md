@@ -436,6 +436,9 @@ conditionally TimeInstant) will be propagated to NGSI interface (note that in th
 not a JSON but a JEXL Array that looks likes a JSON). Only static attributes included in that array will be propagated
 to NGSI interface.
 
+All attributes contained in the array must be defined as `attributes` or `static_attributes`. Not defined measures
+(`object_id`) will be dropped, even if they are defined in the `explicitAttrs` array.
+
 Case 4:
 
 ```
@@ -446,6 +449,9 @@ just NGSI attributes defined in the array (identified by their attribute names a
 propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
 that looks likes a JSON). This is necessary when same attribute names are used within multiple entities. Only static
 attributes included in that array will be propagated to NGSI interface.
+
+Note that in the previous case show above, when selecting the object_id (with `{object_id:'active_id'}`), the attribute 
+must be defined. In other words, it would not work if the attribute with the corresponding `object_id`, is not defined.
 
 Case 5:
 
