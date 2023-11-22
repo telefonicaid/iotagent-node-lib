@@ -21,7 +21,7 @@ pattern than the one supported by the test runner).
 Each test case is defined as a JSON object in the `testCases.js` file. This file is loaded by the test suite and the
 test cases are automatically generated. Each test case is defined as an object with the following elements:
 
--   `describeName`: The name of the `DESCRIBE` test case. This will be used to generate the test case name in the mocha
+-   `describeName`: The name of the `DESCRIBE` test case. This will be used to generate the test case name in the mocha. Note this name is prefixed by a pure number (e.g `0010 - Simple group without attributes`) which specifies the group to which the test belong (usually meaning a feature) or by a number preced by the `#` symbol to refer to an issue number (e.g. `#1234 - Bug foobar`).
     test suite.
 -   `provision`: The JSON object that will be sent to the IoTA JSON provisioning API. This will be used to create the
     group. It contains the following elements:
