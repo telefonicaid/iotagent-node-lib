@@ -1,3 +1,4 @@
+- Add: payloadType to device and groups model to support NGSI-v2 and NGSI-LD formats in southbound measures (iotagent-json#778)
 - Large refactor of IOTA Lib code to make it simpler
 - Remove: time compression support
 - Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
@@ -14,3 +15,4 @@
 - Fix: null values arithmetics in JEXL expressions (#1440)
 - Fix: remove mongo `DeprecationWarning: current Server Discovery and Monitoring engine is deprecated` by setting `useUnifiedTopology = true`
 - Upgrade mongodb dev dep from 4.17.0 to 4.17.1
+- Fix: mongodb.authSource / IOTA_MONGO_AUTH_SOURCE was not correctly supported (#1526)
