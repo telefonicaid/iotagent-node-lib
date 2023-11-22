@@ -2451,7 +2451,7 @@ const testCases = [
                 shouldName:
                     'D - WHEN no sending any defined case IT should store [static_a,static_b] attrs into Context Broker',
                 type: 'single',
-                skip: '!lib' // FIXME: https://github.com/telefonicaid/iotagent-json/issues/782
+                skip: '!lib', // FIXME: https://github.com/telefonicaid/iotagent-json/issues/782
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
                     method: 'POST',
