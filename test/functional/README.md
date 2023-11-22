@@ -200,7 +200,7 @@ as a batch operation (see the following example).
 #### Multimeasures
 
 It is also supported to test cases in which is sent more than one measure. To do so, you need to define the test case
-expectation as an array, with one object for each measurement. Then, the suite will recognize the array length and will
+`expectation` as an array, with one object for each measurement. Then, the suite will recognize the array length and will
 expect the same number of NGSI requests. I.E:
 
 ```js
@@ -232,7 +232,7 @@ expect the same number of NGSI requests. I.E:
 ];
 ```
 
-You also should define the measure as multimeasure. This is done by defining the measure JSON element as an array of
+You also should define the measure as multimeasure. This is done by defining the `measure` JSON element as an array of
 objects. Each object will be a measure that will be sent to the Context Broker in a different request. I.E:
 
 ```javascript
@@ -308,6 +308,8 @@ the expectation as an empty object. I.E:
     expectation: []
     ...
 ```
+
+Note that this means the CB *must not* receive any payload. In other words, if the CB would receive any payload, the test will fail.
 
 ### Debugging automated tests
 
