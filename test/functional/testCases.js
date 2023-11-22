@@ -2808,7 +2808,7 @@ const testCases = [
         ]
     },
     // 0700 - FULL GROUP TESTS
-    // APIKEY RECOGNITION IS NOT WORKING FOR LIB, SKIPPED
+    // FIXME: APIKEY recognition is not working for lib, and it needs to be tested if works as it is in agents.
     // 0800 - SKIP VALUE
     {
         describeName: '0700 - skipValue test',
