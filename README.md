@@ -95,6 +95,10 @@ decommission devices. [API](doc/api.md).
 
 Contributions to development can be found [here](doc/devel/development.md) - additional contributions are welcome.
 
+If you are whishing to test the library, or include new tests (either as part of a contribution or as a new feature or
+as a bug report), you can use the functional tests suite included in the project. The tests are described using a JSON
+file. You can find more information about the test suite in the [Functional Tests Guide](test/functional/README.md).
+
 ### Agent Console
 
 A command-line client to experiment with the library is packed with it. The command-line client can be started using the
