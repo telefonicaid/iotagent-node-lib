@@ -43,7 +43,7 @@ const globalEnv = {
 };
 
 const testCases = [
-    // BASIC TESTS
+    // 0000 - BASIC TESTS
     {
         describeName: '0010 - Simple group without attributes',
         provision: {
@@ -445,9 +445,9 @@ const testCases = [
             }
         ]
     },
-    // JEXL TESTS
+    // 0100 - JEXL TESTS
     {
-        describeName: '0030 - Simple group with active attribute + JEXL expression boolean (!)',
+        describeName: '0100 - Simple group with active attribute + JEXL expression boolean (!)',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -580,7 +580,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0040 - Simple group with active attribute + JEXL expression numeric (+3)',
+        describeName: '0110 - Simple group with active attribute + JEXL expression numeric (+3)',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -733,7 +733,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0050 - Simple group with active attribute + JEXL expression numeric (*3)',
+        describeName: '0120 - Simple group with active attribute + JEXL expression numeric (*3)',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -879,7 +879,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0060 - Simple group with active attribute + JEXL expression text (a|substr(0,2))',
+        describeName: '0130 - Simple group with active attribute + JEXL expression text (a|substr(0,2))',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1036,7 +1036,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0070 - Simple group with active attribute + chained JEXL expression text (a|substr(0,2))',
+        describeName: '0140 - Simple group with active attribute + chained JEXL expression text (a|substr(0,2))',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1093,7 +1093,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0080 - Simple group with active attribute + JEXL expression text reusing previous values)',
+        describeName: '0150 - Simple group with active attribute + JEXL expression text reusing previous values)',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1160,7 +1160,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0090 - Simple group with active attribute + JEXL expression referencing static attributes',
+        describeName: '0160 - Simple group with active attribute + JEXL expression referencing static attributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1227,7 +1227,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0100 - Simple group with active attribute + JEXL expression referencing context attributes',
+        describeName: '0170 - Simple group with active attribute + JEXL expression referencing context attributes',
         skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
@@ -1289,7 +1289,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0110 - Simple group with active attributes + JEXL multiples expressions at same time',
+        describeName: '0180 - Simple group with active attributes + JEXL multiples expressions at same time',
         skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
@@ -1408,7 +1408,7 @@ const testCases = [
     },
     {
         describeName:
-            '00X0 - Simple group with JEXL expression using static attribute - addressing structured values (JSON)',
+            '0190 - Simple group with JEXL expression using static attribute - addressing structured values (JSON)',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1476,9 +1476,178 @@ const testCases = [
             }
         ]
     },
-    // TIMESTAMP TESTS
+    // 0300 - STATIC ATTRIBUTES TESTS
     {
-        describeName: '0150 - Simple group with active attribute + timestamp:false',
+        describeName:
+            '0300 - Simple group with active attributes + Static attributes + JEXL expression using static attribute value',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Number',
+                                expression: 'a*static_a'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending not provisioned object_ids (measures) through http IT should store static attributes into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        b: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    b: {
+                        value: 10,
+                        type: 'string'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'B - WHEN sending provisioned object_ids (measures) through http IT should store static attributes into Context Broker + calculate expression based on static',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 30,
+                        type: 'Number'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0310 - Simple group with active attributes + JSON value Static attributes ',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: {
+                                    v1: 1,
+                                    v2: {
+                                        v3: 3,
+                                        v4: 4
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending measures through http IT should store complex static attributes into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 10,
+                        type: 'string'
+                    },
+                    static_a: {
+                        value: {
+                            v1: 1,
+                            v2: {
+                                v3: 3,
+                                v4: 4
+                            }
+                        },
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    // 0400 - TIMESTAMP TESTS
+    {
+        describeName: '0400 - Simple group with active attribute + timestamp:false',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1563,7 +1732,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0160 - Simple group with active attribute + timestamp:true',
+        describeName: '0410 - Simple group with active attribute + timestamp:true',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1665,7 +1834,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0170 - Simple group with active attribute + timestamp not defined',
+        describeName: '0420 - Simple group with active attribute + timestamp not defined',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1748,178 +1917,9 @@ const testCases = [
             }
         ]
     },
-    // STATIC ATTRIBUTES TESTS
+    // 0500 - EXPLICIT ATTRIBUTES TESTS
     {
-        describeName:
-            '0200 - Simple group with active attributes + Static attributes + JEXL expression using static attribute value',
-        provision: {
-            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/iot/json',
-                        apikey: globalEnv.apikey,
-                        entity_type: globalEnv.entity_type,
-                        commands: [],
-                        lazy: [],
-                        attributes: [
-                            {
-                                object_id: 'a',
-                                name: 'attr_a',
-                                type: 'Number',
-                                expression: 'a*static_a'
-                            }
-                        ],
-                        static_attributes: [
-                            {
-                                name: 'static_a',
-                                type: 'Number',
-                                value: 3
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': globalEnv.service,
-                'fiware-servicepath': globalEnv.servicePath
-            }
-        },
-        should: [
-            {
-                shouldName:
-                    'A - WHEN sending not provisioned object_ids (measures) through http IT should store static attributes into Context Broker',
-                type: 'single',
-                measure: {
-                    url: 'http://localhost:' + config.http.port + '/iot/json',
-                    method: 'POST',
-                    qs: {
-                        i: globalEnv.deviceId,
-                        k: globalEnv.apikey
-                    },
-                    json: {
-                        b: 10
-                    }
-                },
-                expectation: {
-                    id: globalEnv.entity_name,
-                    type: globalEnv.entity_type,
-                    b: {
-                        value: 10,
-                        type: 'string'
-                    },
-                    static_a: {
-                        value: 3,
-                        type: 'Number'
-                    }
-                }
-            },
-            {
-                shouldName:
-                    'B - WHEN sending provisioned object_ids (measures) through http IT should store static attributes into Context Broker + calculate expression based on static',
-                type: 'single',
-                measure: {
-                    url: 'http://localhost:' + config.http.port + '/iot/json',
-                    method: 'POST',
-                    qs: {
-                        i: globalEnv.deviceId,
-                        k: globalEnv.apikey
-                    },
-                    json: {
-                        a: 10
-                    }
-                },
-                expectation: {
-                    id: globalEnv.entity_name,
-                    type: globalEnv.entity_type,
-                    attr_a: {
-                        value: 30,
-                        type: 'Number'
-                    },
-                    static_a: {
-                        value: 3,
-                        type: 'Number'
-                    }
-                }
-            }
-        ]
-    },
-    {
-        describeName: '0210 - Simple group with active attributes + JSON value Static attributes ',
-        provision: {
-            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/iot/json',
-                        apikey: globalEnv.apikey,
-                        entity_type: globalEnv.entity_type,
-                        commands: [],
-                        lazy: [],
-                        attributes: [],
-                        static_attributes: [
-                            {
-                                name: 'static_a',
-                                type: 'Number',
-                                value: {
-                                    v1: 1,
-                                    v2: {
-                                        v3: 3,
-                                        v4: 4
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': globalEnv.service,
-                'fiware-servicepath': globalEnv.servicePath
-            }
-        },
-        should: [
-            {
-                shouldName:
-                    'A - WHEN sending measures through http IT should store complex static attributes into Context Broker',
-                type: 'single',
-                measure: {
-                    url: 'http://localhost:' + config.http.port + '/iot/json',
-                    method: 'POST',
-                    qs: {
-                        i: globalEnv.deviceId,
-                        k: globalEnv.apikey
-                    },
-                    json: {
-                        a: 10
-                    }
-                },
-                expectation: {
-                    id: globalEnv.entity_name,
-                    type: globalEnv.entity_type,
-                    a: {
-                        value: 10,
-                        type: 'string'
-                    },
-                    static_a: {
-                        value: {
-                            v1: 1,
-                            v2: {
-                                v3: 3,
-                                v4: 4
-                            }
-                        },
-                        type: 'Number'
-                    }
-                }
-            }
-        ]
-    },
-    // EXPLICIT ATTRIBUTES TESTS
-    {
-        describeName: '0300 - Group with explicit attrs:false (boolean) + active atributes',
+        describeName: '0500 - Group with explicit attrs:false (boolean) + active atributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1981,7 +1981,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0310 - Group without explicit (not defined) + active atributes',
+        describeName: '0510 - Group without explicit (not defined) + active atributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2042,7 +2042,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0320 - Group with explicit attrs:true (boolean) + active atributes',
+        describeName: '0520 - Group with explicit attrs:true (boolean) + active atributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2100,8 +2100,87 @@ const testCases = [
         ]
     },
     {
+        describeName: '0530 - Group with explicit attrs:[array] + active attributes + static attributes',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: "['attr_a','static_a']",
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'attr_a',
+                                object_id: 'a',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'attr_b',
+                                object_id: 'b',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            },
+                            {
+                                name: 'static_b',
+                                type: 'Number',
+                                value: 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending both provisioned and not object_ids (measures) through http IT should store only defined in explicitAttrs array into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 3,
+                        type: 'Number'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    {
         describeName:
-            '0330 - Group with explicit attrs: JEXL expression based on measure resulting boolean + active attributes + static attributes',
+            '0540 - Group with explicit attrs: JEXL expression based on measure resulting boolean + active attributes + static attributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2231,7 +2310,8 @@ const testCases = [
         ]
     },
     {
-        describeName: '0340 - Group with explicit attrs:[array] + active attributes + static attributes',
+        describeName:
+            '0550 - Group with explicit attrs: JEXL expression based on measure resulting an array + active attributes + static attributes',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2241,7 +2321,8 @@ const testCases = [
                         resource: '/iot/json',
                         apikey: globalEnv.apikey,
                         entity_type: globalEnv.entity_type,
-                        explicitAttrs: "['attr_a','static_a']",
+                        explicitAttrs:
+                            "(a&&b)?['attr_a','attr_b']:a?['attr_a','static_b']:b?[{object_id:'b'},'c']:['static_a','static_b','d','c']",
                         commands: [],
                         lazy: [],
                         attributes: [
@@ -2253,6 +2334,10 @@ const testCases = [
                             {
                                 name: 'attr_b',
                                 object_id: 'b',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'c',
                                 type: 'Number'
                             }
                         ],
@@ -2278,8 +2363,7 @@ const testCases = [
         },
         should: [
             {
-                shouldName:
-                    'A - WHEN sending both provisioned and not object_ids (measures) through http IT should store only defined in explicitAttrs array into Context Broker',
+                shouldName: 'A - WHEN sending (a&&b) IT should store only [attr_a,attr_b] attrs into Context Broker',
                 type: 'single',
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
@@ -2289,9 +2373,500 @@ const testCases = [
                         k: globalEnv.apikey
                     },
                     json: {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                        d: 4
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 1,
+                        type: 'Number'
+                    },
+                    attr_b: {
+                        value: 2,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName: 'B - WHEN sending only a IT should store only [attr_a,static_b] attrs into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 1,
+                        c: 3,
+                        d: 4
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 1,
+                        type: 'Number'
+                    },
+                    static_b: {
+                        value: 4,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName: 'C - WHEN sending only b IT should store only [{object_id:b}] attrs into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        b: 2,
+                        c: 3,
+                        d: 4
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_b: {
+                        value: 2,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'D - WHEN no sending any defined case IT should store [static_a,static_b] attrs into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        c: 3,
+                        d: 4
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    },
+                    static_b: {
+                        value: 4,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    // 0600 - MULTIENTITY TESTS
+    {
+        describeName: '0600 - Group multientity attrs',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 's',
+                                name: 'status',
+                                type: 'Boolean'
+                            },
+                            {
+                                object_id: 't',
+                                name: 'temperature',
+                                type: 'Number',
+                                entity_name: 'TestType:TestDevice2',
+                                entity_type: 'TestType'
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending provisioned object_ids (measures) through http IT should store both entities into Context Broker',
+                type: 'multientity',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        s: false,
+                        t: 10
+                    }
+                },
+                expectation: {
+                    entities: [
+                        {
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type,
+                            status: {
+                                value: false,
+                                type: 'Boolean'
+                            }
+                        },
+                        {
+                            id: 'TestType:TestDevice2',
+                            type: 'TestType',
+                            temperature: {
+                                value: 10,
+                                type: 'Number'
+                            }
+                        }
+                    ],
+                    actionType: 'append'
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0610 - Group multientity attrs + value JEXL expression',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 's',
+                                name: 'status',
+                                type: 'Boolean'
+                            },
+                            {
+                                object_id: 't',
+                                name: 'temperature',
+                                type: 'Number',
+                                entity_name: 'TestType:TestDevice2',
+                                entity_type: 'TestType',
+                                expression: 'type+":"+(t*2*static_a)' // Only type is used as JEXL context attr due to #1523
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending provisioned object_ids (measures) through http IT should store both entities into Context Broker',
+                type: 'multientity',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        s: false,
+                        t: 10
+                    }
+                },
+                expectation: {
+                    entities: [
+                        {
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type,
+                            status: {
+                                value: false,
+                                type: 'Boolean'
+                            },
+                            static_a: {
+                                value: 3,
+                                type: 'Number'
+                            }
+                        },
+                        {
+                            id: 'TestType:TestDevice2',
+                            type: 'TestType',
+                            temperature: {
+                                value: 'TestType:60',
+                                type: 'Number'
+                            }
+                        }
+                    ],
+                    actionType: 'append'
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0620 - Group multientity attrs + multientity ID JEXL expression',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 's',
+                                name: 'status',
+                                type: 'Boolean'
+                            },
+                            {
+                                object_id: 't',
+                                name: 'temperature',
+                                type: 'Number',
+                                entity_name: 'type+":"+(t*2*static_a)', // Only type is used as JEXL context attr due to #1523
+                                entity_type: 'TestType'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending provisioned object_ids (measures) through http IT should store both entities into Context Broker',
+                type: 'multientity',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        s: false,
+                        t: 10
+                    }
+                },
+                expectation: {
+                    entities: [
+                        {
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type,
+                            status: {
+                                value: false,
+                                type: 'Boolean'
+                            },
+                            static_a: {
+                                value: 3,
+                                type: 'Number'
+                            }
+                        },
+                        {
+                            id: 'TestType:60',
+                            type: 'TestType',
+                            temperature: {
+                                value: 10,
+                                type: 'Number'
+                            }
+                        }
+                    ],
+                    actionType: 'append'
+                }
+            }
+        ]
+    },
+    // 0700 - ENTITY NAME EXPRESSION TESTS
+    {
+        describeName: '0700 - Group JEXL entityNameExpression',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        entityNameExp: 'type+":"+(t*2*static_a)',
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 's',
+                                name: 'status',
+                                type: 'Boolean'
+                            },
+                            {
+                                object_id: 't',
+                                name: 'temperature',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending provisioned object_ids (measures) through http IT should store the entity with the expression generated ID into the Context Broker',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        s: false,
+                        t: 10
+                    }
+                },
+                expectation: {
+                    id: 'TestType:60',
+                    type: globalEnv.entity_type,
+                    status: {
+                        value: false,
+                        type: 'Boolean'
+                    },
+                    temperature: {
+                        value: 10,
+                        type: 'Number'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    // 0700 - FULL GROUP TESTS
+    // FIXME: APIKEY recognition is not working for lib, and it needs to be tested if works as it is in agents.
+    // 0800 - SKIP VALUE
+    {
+        describeName: '0700 - skipValue test',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Number',
+                                skipValue: null
+                            },
+                            {
+                                object_id: 'b',
+                                name: 'attr_b',
+                                type: 'Number',
+                                skipValue: 'skip',
+                                expression: '(b+static_a)>0?(b+static_a):"skip"'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN not matching skip conditions IT should store the entity with all the values (attr_a, attr_b, static_a) into the Context Broker',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
                         a: 3,
-                        b: 10,
-                        c: 11
+                        b: 10
                     }
                 },
                 expectation: {
@@ -2301,6 +2876,61 @@ const testCases = [
                         value: 3,
                         type: 'Number'
                     },
+                    attr_b: {
+                        value: 13,
+                        type: 'Number'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'B - WHEN matching skip conditions for attr_b IT should store the entity with some of the values (attr_a, static_a) into the Context Broker',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: -10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 3,
+                        type: 'Number'
+                    },
+                    static_a: {
+                        value: 3,
+                        type: 'Number'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'C - WHEN matching skip conditions for attr_a and attr_b (expression result) IT should store the entity with only some of the values (static_a) into the Context Broker',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        b: -10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
                     static_a: {
                         value: 3,
                         type: 'Number'
