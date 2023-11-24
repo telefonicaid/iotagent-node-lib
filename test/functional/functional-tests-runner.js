@@ -88,7 +88,7 @@ describe('FUNCTIONAL TESTS AUTO', function () {
 
             testCase.should.forEach((should) => {
                 it(should.shouldName, async function () {
-                    if (testCase.skip && testUtils.checkSkip(testCase.skip, 'lib')) {
+                    if (should.skip && testUtils.checkSkip(should.skip, 'lib')) {
                         this.skip();
                     }
                     // Skip the test if the transport is specified (IoTA Lib does not support any transport)
