@@ -31,7 +31,7 @@ test cases are automatically generated. Each test case is defined as an object w
     -   `headers`: The headers to send to the provisioning API. This should contain the `fiware-service` and
         `fiware-servicepath` headers.
     -   `skip`: optional. Allow to skip test cases (at `describe` level). It allows diferent values: `false` (default, meaning that the test is not skipped in any circustance),
-        `true` (meaning the test is always skipped)`, `"lib"` (meaning the test has to be skipped when running it in IoTA Node lib repo) and
+        `true` (meaning the test is always skipped), `"lib"` (meaning the test has to be skipped when running it in IoTA Node lib repo) and
         `"json"` (meaning the test has to be skipped when running it in IOTA JSON repo). The latter alternatives are useful to skip test cases that are not supported by
         the lib (I.E: all tests related to the transport) or by the IOTA. Combinations (e.g `"lib,json"`) and negation (e.g. `"!lib"`, which is effectively
         equal to `"json"`) are also supported.
