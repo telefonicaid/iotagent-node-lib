@@ -33,7 +33,10 @@ test cases are automatically generated. Each test case is defined as an object w
     -   `skip`: optional. If set to `true`, the test case (`describe`) will be skipped. This is useful to skip test
         cases that are not supported by the agent. It can also have a string value `"lib"`. This will skip the test case
         only if the is executed in the IoTA Node lib repo. This is useful to skip test cases that are not supported by
-        the lib (I.E: all tests related to the transport).
+        the lib (I.E: all tests related to the transport). It also allows to add more than one condition, by separating
+        them with comma (I.E: `"lib,json"`) and also negative condtions (I.E: `"!lib"`) wich means that will be skiped in
+        all cases unless the one specified (in that particular case, using `"!lib"`, it will be skiped in all tests other
+        than `lib`)
 -   `should`: The array of test cases to execute. Each test case is defined as an object with the following elements:
     -   `transport`: The transport to use to send the measure. This can be `HTTP` or `MQTT`. It uses `HTTP` by default
         or if the `transport` element is not defined. See the "Advanced features" section for more information.
