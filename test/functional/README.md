@@ -30,10 +30,10 @@ test cases are automatically generated. Each test case is defined as an object w
     -   `json`: The JSON object that defines the group
     -   `headers`: The headers to send to the provisioning API. This should contain the `fiware-service` and
         `fiware-servicepath` headers.
-    -   `skip`: optional. If set to `true`, the test case (`describe`) will be skipped. This is useful to skip test
-        cases that are not supported by the agent. It can also have a string value `"lib"`. This will skip the test case
-        only if the is executed in the IoTA Node lib repo. This is useful to skip test cases that are not supported by
-        the lib (I.E: all tests related to the transport).
+    -   `skip`: optional. Allow to skip test cases (at `describe` level). It allows diferent values: `false` (default, meaning that the test is not skipped in any circustance),
+        `true` (meaning the test is always skipped), `"lib"` (meaning the test has to be skipped when running it in IoTA Node lib repo) and
+        `"json"` (meaning the test has to be skipped when running it in IOTA JSON repo). The latter alternatives are useful to skip test cases that are not supported by
+        the lib (I.E: all tests related to the transport) or by the IOTA. Combinations (e.g `"lib,json"`) and negation (e.g. `"!lib"`) are also supported.
 -   `should`: The array of test cases to execute. Each test case is defined as an object with the following elements:
     -   `transport`: The transport to use to send the measure. This can be `HTTP` or `MQTT`. It uses `HTTP` by default
         or if the `transport` element is not defined. See the "Advanced features" section for more information.
