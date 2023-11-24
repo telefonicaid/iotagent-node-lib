@@ -121,6 +121,34 @@ function jsonToIotaMeasures(json) {
 }
 
 /**
+ * @brief Sends a device provision to the IoT Agent and returns a promise with the response
+ *
+ * @param {object} deviceProvision  Device to be provisioned
+ * @returns
+ */
+function sendDeviceProvisionHTTP(deviceProvision) {
+    return new Promise((resolve, reject) => {
+        request(deviceProvision, function (error, result, body) {
+            delay(100);
+            iotAgentLib.retrieveDevice(
+                deviceProvision.json.devices[0].device_id,
+                deviceProvision.json.devices[0].apikey,
+                function (error, device) {
+                    // console.log("Device ID: " + JSON.stringify(deviceProvision.json.devices[0].device_id));
+                    // console.log("apikey: " + JSON.stringify(deviceProvision.json.devices[0].apikey));
+                    // console.log("Device provisioned: " + JSON.stringify(device));
+                }
+            );
+            error
+                ? reject(error)
+                : result.statusCode === 400
+                ? reject(ERR_PROVISION.concat(result.body.message))
+                : resolve(result);
+        });
+    });
+}
+
+/**
  * @brief Delays the execution of the code for the specified time in ms
  *
  * @param {Number} time in ms
@@ -156,15 +184,28 @@ function groupToIoTAConfigType(group, service, subservice) {
  *
  * @param {Object} measure      Measure to be sent to the IoT Agent
  * @param {Object} expectation  Expectation for the Context Broker
+ * @param {Object} provision    Provision object (Just for the Lib transport)
+ * @param {Object} deviceProvision    Device Provision object in case a device need to be provisioned
  * @param {Object} env          Environment variables
  * @param {Object} config       IoTA Configuration object
  * @param {String} type         Type of test (multientity or multimeasure)
  * @param {String} transport    Transport to be used (Lib, HTTP or MQTT). If not specified, Lib is used.
  * @param {Boolean} regex       If true, the expectation is treated as a regex
  */
-async function testCase(measure, expectation, provision, env, config, type, transport, regex) {
+async function testCase(measure, expectation, provision, deviceProvision, env, config, type, transport, regex) {
     let receivedContext = [];
     let cbMockRoute = '';
+
+    if (deviceProvision && _.isEmpty(deviceProvision) === false) {
+        if (transport && transport !== 'lib') {
+            // If the transport is not lib, we can provision the device by using the HTTP API.
+            await sendDeviceProvisionHTTP(deviceProvision);
+        } else if (transport && transport === 'lib') {
+            // In this case, we should use the library to provision the device
+            await sendDeviceProvisionHTTP(deviceProvision);
+        }
+    }
+
     // Set the correct route depending if the test is multientity or not
     if (type === 'multientity') {
         cbMockRoute = '/v2/op/update';
@@ -246,6 +287,7 @@ function checkSkip(skip, matchPattern) {
 exports.checkSkip = checkSkip;
 exports.sendMeasureHttp = sendMeasureHttp;
 exports.sendMeasureIotaLib = sendMeasureIotaLib;
+exports.sendDeviceProvisionHTTP = sendDeviceProvisionHTTP;
 exports.delayMs = delay;
 exports.testCase = testCase;
 exports.groupToIoTAConfigType = groupToIoTAConfigType;

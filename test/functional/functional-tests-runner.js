@@ -112,10 +112,11 @@ describe('FUNCTIONAL TESTS AUTO', function () {
                             should.measure,
                             should.expectation,
                             testCase.provision,
+                            should.deviceProvision ? should.deviceProvision : null,
                             env,
                             config,
                             should.type ? should.type : 'single',
-                            should.transport,
+                            should.transport ? should.transport : 'lib',
                             should.isRegex ? should.isRegex : false
                         );
                     }

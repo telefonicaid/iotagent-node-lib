@@ -2940,6 +2940,119 @@ const testCases = [
                 }
             }
         ]
+    },
+    // 5000 - DEVICES TESTS (With device provision)
+    {
+        describeName: 'Simple group without attributes and device provision',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                // loglevel: 'debug',
+                shouldName:
+                    'A - WHEN sending measures through http IT should send measures to Context Broker preserving value types',
+                config: {
+                    type: 'single'
+                },
+                deviceProvision: {
+                    url: 'http://localhost:' + config.iota.server.port + '/iot/devices',
+                    method: 'POST',
+                    json: {
+                        devices: [
+                            {
+                                device_id: globalEnv.deviceId + '1',
+                                entity_name: globalEnv.entity_name + '1',
+                                entity_type: globalEnv.entity_type,
+                                apikey: globalEnv.apikey,
+                                protocol: 'PDI-IoTA-JSON',
+                                transport: 'HTTP',
+                                endpoint: '/iot/json',
+                                attributes: [
+                                    {
+                                        name: 'attr_a',
+                                        type: 'boolean',
+                                        object_id: 'a'
+                                    }
+                                ],
+                                commands: [],
+                                lazy: [],
+                                static_attributes: []
+                            }
+                        ]
+                    },
+                    headers: {
+                        'fiware-service': globalEnv.service,
+                        'fiware-servicepath': globalEnv.servicePath
+                    }
+                },
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId + '1',
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false,
+                        b: 10,
+                        c: 'text',
+                        d: 10.5,
+                        e: [1, 2],
+                        f: { a: 1, b: 2 }
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name + '1',
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: false,
+                        type: 'boolean'
+                    },
+                    b: {
+                        value: 10,
+                        type: 'string'
+                    },
+                    c: {
+                        type: 'string',
+                        value: 'text'
+                    },
+                    d: {
+                        type: 'string',
+                        value: 10.5
+                    },
+                    e: {
+                        type: 'string',
+                        value: [1, 2]
+                    },
+                    f: {
+                        type: 'string',
+                        value: {
+                            a: 1,
+                            b: 2
+                        }
+                    }
+                }
+            }
+        ]
     }
 ];
 

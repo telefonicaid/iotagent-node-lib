@@ -136,7 +136,7 @@ describe('FUNCTIONAL TESTS', function () {
         });
 
         it('should send its value to the Context Broker', async function () {
-            await testUtils.testCase(measure, expectation, provision, globalEnv, config, 'single', '');
+            await testUtils.testCase(measure, expectation, provision, null, globalEnv, config, 'single', '');
         });
     });
 
@@ -235,7 +235,7 @@ describe('FUNCTIONAL TESTS', function () {
         });
 
         it('should send its value to the Context Broker', async function () {
-            await testUtils.testCase(measure, expectation, provision, globalEnv, config, 'multientity', '');
+            await testUtils.testCase(measure, expectation, provision, null, globalEnv, config, 'multientity', '');
         });
     });
 });
