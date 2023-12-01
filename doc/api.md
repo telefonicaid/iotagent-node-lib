@@ -958,6 +958,16 @@ adds a `TimeInstant` attribute as metadata for every other attribute in the same
 If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
 is refused.
 
+timeInstant conf value | measure contains TimeInstant | Behaviour 
+-- | -- | -- 
+true | Yes | TimeInstant and metadata updated with measure value 
+true | No | TimeInstant and metadata updated with server timestamp 
+false | Yes | TimeInstant and metadata updated with measure value 
+false | No | TimeInstant and metadata updated with server timestamp 
+Not defined | Yes | TimeInstant and metadata updated with measure value 
+Not defined | No | TimeInstant and metadata updated with server timestamp 
+
+
 ## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
