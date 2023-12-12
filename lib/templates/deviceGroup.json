@@ -20,6 +20,10 @@
             "type": "string",
             "required": true
           },
+          "transport": {
+            "description": "Transport protocol used by the platform to communicate with the device",
+            "type": "string"
+          },
           "token": {
             "description": "token",
             "type": "string"
