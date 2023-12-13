@@ -32,6 +32,10 @@
             "description": "Protocol the device is using to communicate with the platform",
             "type": "string"
           },
+          "endpoint": {
+            "description": "Endpoint for the commands targeting this device",
+            "type": "string"
+          },
           "transport": {
             "description": "Transport protocol used by the platform to communicate with the device",
             "type": "string"
