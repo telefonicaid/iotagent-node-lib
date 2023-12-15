@@ -1,1 +1,2 @@
+- FIX: store commands from Group at Device level at provision device time
 - Log device id when BadTimestamp error
