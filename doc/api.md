@@ -450,7 +450,7 @@ propagated to NGSI interface (note that in this case the value of `explicitAttrs
 that looks likes a JSON). This is necessary when same attribute names are used within multiple entities. Only static
 attributes included in that array will be propagated to NGSI interface.
 
-Note that in the previous case show above, when selecting the object_id (with `{object_id:'active_id'}`), the attribute 
+Note that in the previous case show above, when selecting the object_id (with `{object_id:'active_id'}`), the attribute
 must be defined. In other words, it would not work if the attribute with the corresponding `object_id`, is not defined.
 
 Case 5:
@@ -1217,6 +1217,8 @@ Config group is represented by a JSON object with the following fields:
 | `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
 | `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
 | `payloadType`                  | ✓        | string         |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                          |
+| `transport`                    | ✓        | `string`       |            | Transport protocol used by the group of devices to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                    |
+| `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                  |
 
 ### Config group operations
 
