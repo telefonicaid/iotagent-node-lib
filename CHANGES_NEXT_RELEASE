@@ -1,1 +1,2 @@
 - Log device id when BadTimestamp error
+- ADD transport and endpoint to Group model (#1542)
