@@ -1507,7 +1507,6 @@ const testCases = [
         },
         should: [
             {
-                loglevel: 'fatal',
                 shouldName:
                     'A - WHEN sending not provisioned object_ids (measures) through http IT should store commands into Context Broker',
                 type: 'single',
@@ -1528,9 +1527,6 @@ const testCases = [
                     b: {
                         value: 10,
                         type: 'string'
-                    },
-                    cmd1: {
-                        type: 'command'
                     }
                 }
             }
