@@ -1494,6 +1494,8 @@ const testCases = [
                                 type: 'command'
                             }
                         ],
+                        endpoint: 'http://myendpoint.com',
+                        transport: 'http',
                         lazy: [],
                         attributes: [],
                         static_attributes: []
