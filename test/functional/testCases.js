@@ -1476,6 +1476,66 @@ const testCases = [
             }
         ]
     },
+    // 0200 - COMMANDS TESTS
+    {
+        describeName: '0200 - Simple group with commands',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [
+                            {
+                                name: 'cmd1',
+                                type: 'command'
+                            }
+                        ],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                loglevel: 'fatal',
+                shouldName:
+                    'A - WHEN sending not provisioned object_ids (measures) through http IT should store commands into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        b: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    b: {
+                        value: 10,
+                        type: 'string'
+                    },
+                    cmd1: {
+                        type: 'command'
+                    }
+                }
+            }
+        ]
+    },
     // 0300 - STATIC ATTRIBUTES TESTS
     {
         describeName:

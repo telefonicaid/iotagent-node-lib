@@ -139,6 +139,8 @@ function groupToIoTAConfigType(group, service, subservice) {
                 type.type = group.entity_type;
             } else if (key === 'static_attributes') {
                 type.staticAttributes = group.static_attributes;
+            } else if (key === 'commands') {
+                type.commands = group.commands;
             } else if (key !== 'resource') {
                 type[key] = group[key];
             }
