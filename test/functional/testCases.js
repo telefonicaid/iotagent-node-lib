@@ -1510,6 +1510,7 @@ const testCases = [
                 shouldName:
                     'A - WHEN sending not provisioned object_ids (measures) through http IT should store commands into Context Broker',
                 type: 'single',
+                skip: '!lib',
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
                     method: 'POST',
