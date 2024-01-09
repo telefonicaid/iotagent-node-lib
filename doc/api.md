@@ -9,6 +9,8 @@
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
     -   [Entity attributes](#entity-attributes)
+    -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
+        -   [Entity creation before sending commands](#entity-creation-before-sending-commands)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
@@ -214,6 +216,27 @@ Additionally for commands (which are attributes of type `command`) the following
 Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
 device, the IoT agent will store that information into the destination entity using the same attribute name than the
 measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored.
+
+## Device autoprovision and entity creation
+
+For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
+automaticaly when a device is created. This means that al entities into the context broker are created when data 
+arrives from a device, either if the device is created or autoprovisioned.
+
+### Entity creation before sending commands
+
+Before sending commands, it is needed the entity is created. This mean you need to create the entity into the context 
+broker by one of the multiples methods that creates an entity before updating the command attribute. Otherwise, you 
+would obtain an error like the following one when updating the entity into the context broker.
+
+```json
+{
+    "error": "NotFound",
+    "description": "The requested entity has not been found. Check type and id"
+}
+```
+
+For further information, check the issue [fiware-orion/#4430](https://github.com/telefonicaid/fiware-orion/issues/4430)
 
 ## Multientity support
 
