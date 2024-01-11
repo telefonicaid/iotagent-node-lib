@@ -225,9 +225,9 @@ arrives from a device, either if the device is created or autoprovisioned.
 
 ### Entity creation before sending commands
 
-Before sending commands, it is needed the entity is created. This mean you need to create the entity into the context 
-broker by one of the multiples methods that creates an entity before updating the command attribute. Otherwise, you 
-would obtain an error like the following one when updating the entity into the context broker.
+Before sending commands, the entity needs to be created. This mean you need to create the entity into the Context 
+Broker by one of the multiples methods that creates an entity (check [Context Broker API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)) before updating the command attribute. Otherwise, you 
+would obtain an error like the following one when updating the entity into the Context Broker.
 
 ```json
 {
