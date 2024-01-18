@@ -10,7 +10,6 @@
         -   [Devices](#devices)
     -   [Entity attributes](#entity-attributes)
     -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
-        -   [Entity creation before sending commands](#entity-creation-before-sending-commands)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
