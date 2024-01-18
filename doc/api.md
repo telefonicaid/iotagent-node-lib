@@ -223,21 +223,6 @@ For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should con
 automaticaly when a device is created. This means that al entities into the context broker are created when data 
 arrives from a device, either if the device is created or autoprovisioned.
 
-### Entity creation before sending commands
-
-Before sending commands, the entity needs to be created. This mean you need to create the entity into the Context 
-Broker by one of the multiples methods that creates an entity (check [Context Broker API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)) before updating the command attribute. Otherwise, you 
-would obtain an error like the following one when updating the entity into the Context Broker.
-
-```json
-{
-    "error": "NotFound",
-    "description": "The requested entity has not been found. Check type and id"
-}
-```
-
-For further information, check the issue [fiware-orion/#4430](https://github.com/telefonicaid/fiware-orion/issues/4430)
-
 ## Multientity support
 
 The IOTA is able to persists measures coming from a single device to more than one entity, declaring the target entities
