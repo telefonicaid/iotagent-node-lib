@@ -30,6 +30,7 @@
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
+    -   [Commands execution](#commands-execution)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
@@ -961,6 +962,33 @@ Will now generate the following NGSI v2 payload:
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
+
+## Commands execution
+
+The way to act upon devices is through the usage of commnamds. Commands are specific set attributes that allows to 
+send information to the device. They are defined in the device provision.
+
+In order to trigger the command, it is required to update the command attribute in the Orion Context Broker. You 
+can use a PUT request as the following one:
+
+```bash
+curl -L -X PUT 'http://localhost:1026/v2/entities/<ENTITY_ID>/attrs/<CMD_NAME>?type=<ENTITY_TYPE>' \
+-H 'Content-Type: application/json' \
+-d '{
+      "type" : "command",
+      "value" : "commandValue"
+}'
+```
+
+**Note**: It is mandatory to add the `type` URL parameter with the entity type to the request, otherwise, you could 
+get the following error message:
+
+```json
+{
+    "error": "NotFound",
+    "description": "The requested entity has not been found. Check type and id"
+}
+```
 
 ## Overriding global Context Broker host
 
