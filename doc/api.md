@@ -963,8 +963,7 @@ of devices.
 ## Multitenancy, FIWARE Service and FIWARE ServicePath
 
 Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
-performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
-this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+performed in the scope of those headers.
 
 ## Secured access to the Context Broker
 
@@ -1226,9 +1225,8 @@ The following actions are available under the config group endpoint:
 
 #### Retrieve config groups `GET /iot/services`
 
-List all the config groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
-has the wildcard expression, `/*`, all the config groups for that `fiware-service` are returned. The config groups that
-match the `fiware-servicepath` are returned in any other case.
+List all the config groups for the given `fiware-service` and `fiware-servicepath`. The config groups that match the
+`fiware-servicepath` are returned in any other case.
 
 _**Request headers**_
 
