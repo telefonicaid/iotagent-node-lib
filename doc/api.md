@@ -1007,6 +1007,8 @@ Push commands are those that are sent to the device once the IoT Agent receives 
 
 Push commands are only valid for HTTP devices. For MQTT devices it is not needed to set the `endpoint` parameter. 
 
+**FIXME**: example of request sent from IoTA-JSON to device listening in "http://[DEVICE_IP]:[PORT]" and response associated to that request should be included, based on the ping example shown above.
+
 **Poll commands**
 
 Poll commands are those that are stored in the IoT Agent waiting to be retrieved by the devices. This kind of 
@@ -1022,6 +1024,8 @@ For HTTP devices, in order to retrieve a poll command from IoTA-JSON Agent the d
 GET /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
 Accept: application/json
 ```
+
+**FIXME**: example of response to this request should be included, based on the ping example shown above.
 
 For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`.
 
@@ -1047,6 +1051,8 @@ following MQTT topic:
 ```
 /<apiKey>/<deviceId>/cmd
 ```
+
+**FIXME**: example of payload sent to this topic by the IoTA-JSON should be included, based on the ping example shown above.
 
 where it will receive the command information. Please note that the device should subscribe to the broker 
 using the disabled clean session mode (enabled using `--disable-clean-session` option CLI parameter in 
@@ -1074,7 +1080,6 @@ The device should publish the result of the command in the following topic.
 ```
 /<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
 ```
-
 
 ## Overriding global Context Broker host
 
