@@ -1040,7 +1040,7 @@ This is also possible for IoTA-UL Agent changing in the request the resource, se
 Once the command is retrieved by the device the status is updated to `"command_status":"DELIVERED"`.
 
 
-## MQTT devices
+#### MQTT devices
 
 For MQTT devices, it is not needed to declare and endpoint. The device is supposed to be subscribed to the 
 following MQTT topic:
