@@ -9,6 +9,7 @@
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
     -   [Entity attributes](#entity-attributes)
+    -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
@@ -29,6 +30,10 @@
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
+    -   [Command execution](#command-execution)
+        -   [Triggering commands](#triggering-commands)
+        -   [Command reception](#command-reception)
+        -   [Command confirmation](#command-confirmation)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
@@ -214,6 +219,12 @@ Additionally for commands (which are attributes of type `command`) the following
 Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
 device, the IoT agent will store that information into the destination entity using the same attribute name than the
 measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names are invalid, and will be ignored.
+
+## Device autoprovision and entity creation
+
+For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
+automatically when a device is created. This means that all entities into the Context Broker are created when data 
+arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
 
 ## Multientity support
 
@@ -954,6 +965,121 @@ Will now generate the following NGSI v2 payload:
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
+
+## Command execution
+
+### Triggering commands
+
+This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker. You need to know which attributes correspond to commands and update them. You can declare the command related attributes at the provisioning process. Also, you can declare the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
+
+For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in the Context Broker will send a command to your device. For instance, to send the `ping` command with value `Ping request` you could use the following operation in the Context Broker API:
+
+```
+PUT /v2/entities/<entity_id>/attrs/ping?type=<entity_type>
+
+{
+  "value": "Ping request",
+  "type": "command"
+}
+
+```
+
+It is important to note that parameter `type`, with the entity type must be included.
+
+Context Broker API is quite flexible and allows to update an attribute in several ways. Please have a look to the [Orion API]([http://telefonicaid.github.io/fiware-orion/api/v2/stable](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)) for details.
+
+**Important note**: don't use operations in the NGSI API with creation semantics. Otherwise, the entity/attribute will be created locally to Context Broker and the command will not progress to the device (and you will need to delete the created entity/attribute if you want to make it to work again). Thus, the following operations *must not* be used:
+
+* `POST /v2/entities`
+* `POST /v2/entities/<id>/attrs`
+* `PUT /v2/entities/<id>/attrs`
+* `POST /v2/op/entites` with `actionType` `append`, `appendStrict` or `replace`
+
+### Command reception
+
+Once the command is triggered, it is send to the device. Depending on transport protocol, it is going to be sent in a different way:
+
+#### HTTP devices
+
+**Push commands**
+
+Push commands are those that are sent to the device once the IoT Agent receives the request from the Context Broker. In order to send push commands it is needed to set the `"endpoint": "http://[DEVICE_IP]:[PORT]"` in the device or group provision. The device is supposed to be listening for commands at that URL in a synchronous way. Make sure the device endpoint is reachable by the IoT Agent.
+
+Push commands are only valid for HTTP devices. For MQTT devices it is not needed to set the `endpoint` parameter. 
+
+**FIXME**: example of request sent from IoTA-JSON to device listening in "http://[DEVICE_IP]:[PORT]" and response associated to that request should be included, based on the ping example shown above.
+
+**Poll commands**
+
+Poll commands are those that are stored in the IoT Agent waiting to be retrieved by the devices. This kind of 
+commands are typically used for devices that doesn't have a public IP or the IP cannot be reached because of 
+power or netkork constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order 
+to configure the device as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
+
+Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
+
+For HTTP devices, in order to retrieve a poll command from IoTA-JSON Agent the device should make the following request:
+
+```
+GET /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
+Accept: application/json
+```
+
+**FIXME**: example of response to this request should be included, based on the ping example shown above.
+
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`.
+
+It can be also possible for a device to retrieve the commands from the IoT Agent when it sends an observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
+
+```
+POST /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
+Content-Type: application/json
+
+{"t":25,"h":42,"l":"1299"}
+```
+
+This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`, `<deviceId>`, payload and headers.
+
+Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`.
+
+
+#### MQTT devices
+
+For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not used). The device is supposed to be subscribed to the 
+following MQTT topic:
+
+```
+/<apiKey>/<deviceId>/cmd
+```
+
+**FIXME**: example of payload sent to this topic by the IoTA-JSON should be included, based on the ping example shown above.
+
+where it will receive the command information. Please note that the device should subscribe to the broker 
+using the disabled clean session mode (enabled using `--disable-clean-session` option CLI parameter in 
+`mosquitto_sub`). This option means that all of the subscriptions for the device will be maintained after 
+it disconnects, along with subsequent QoS 1 and QoS 2 commands that arrive. When the device reconnects, it
+will receive all of the queued commands.
+
+### Command confirmation
+
+Once the command is completely processed by the device, it should return the result of the command to the IoT 
+Agent. This result will be progressed to the Context Broker where it will be stored in the `<command>_info` 
+attribute. The status of the command will be stored in the `<command>_status` attribute (`OK` if everything 
+goes right). 
+
+#### HTTP
+
+**Polling**
+Eventually, once the device makes the response request with the result of the command the status is updated 
+to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
+
+#### MQTT
+
+The device should publish the result of the command in the following topic.
+
+```
+/<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
+```
 
 ## Overriding global Context Broker host
 
