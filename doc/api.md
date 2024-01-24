@@ -970,9 +970,9 @@ adds a `TimeInstant` attribute as metadata for every other attribute in the same
 
 ### Triggering commands
 
-This starts the process of sending data to devices. It starts by updating an attribute into the context broker. You need to know which attributes correspond to commands and update them. You can declare the command related attributes at the registry process. Also, you can declare the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the registry process.
+This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker. You need to know which attributes correspond to commands and update them. You can declare the command related attributes at the provisioning process. Also, you can declare the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
 
-For a given device provisioned with a `ping`command defined, any update on this attribute “ping” at the NGSI entity in the Context Broker will send a command to your device. For instance, to send the `ping` command with value `Ping request` you could use the following operation in the Context Broker API:
+For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in the Context Broker will send a command to your device. For instance, to send the `ping` command with value `Ping request` you could use the following operation in the Context Broker API:
 
 ```
 PUT /v2/entities/<entity_id>/attrs/ping?type=<entity_type>
@@ -984,7 +984,7 @@ PUT /v2/entities/<entity_id>/attrs/ping?type=<entity_type>
 
 ```
 
-It is important to note that parameter `type`, with the `entity_type` must be included.
+It is important to note that parameter `type`, with the entity type must be included.
 
 Context Broker API is quite flexible and allows to update an attribute in several ways. Please have a look to the [Orion API]([http://telefonicaid.github.io/fiware-orion/api/v2/stable](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)) for details.
 
@@ -994,7 +994,6 @@ Context Broker API is quite flexible and allows to update an attribute in severa
 * `POST /v2/entities/<id>/attrs`
 * `PUT /v2/entities/<id>/attrs`
 * `POST /v2/op/entites` with `actionType` `append`, `appendStrict` or `replace`
-* `POST /v1/updateContext` with `actionType` `APPEND`, `APPEND_STRICT` or `REPLACE`
 
 ### Command reception
 
@@ -1013,20 +1012,20 @@ Push commands are only valid for HTTP devices. For MQTT devices it is not needed
 Poll commands are those that are stored in the IoT Agent waiting to be retrieved by the devices. This kind of 
 commands are typically used for devices that doesn't have a public IP or the IP cannot be reached because of 
 power or netkork constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order 
-to configure the device as poll commands you just need to ignore the `endpoint` parameter in the device provision.
+to configure the device as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
 
-Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"command_status":"PENDING"`. 
+Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
 
-For HTTP devices, in order to retrieve a pull command from IoTA-JSON Agent the device should make the following request:
+For HTTP devices, in order to retrieve a poll command from IoTA-JSON Agent the device should make the following request:
 
 ```
 GET /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
 Accept: application/json
 ```
 
-For IoT Agents it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (I.E, IoTA-UL uses `/iot/d` as default resource) and setting the correct apikey and deviceId.
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`.
 
-It can be also possible for a device to retrieve the commands from the IoT Agent when it sends and observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
+It can be also possible for a device to retrieve the commands from the IoT Agent when it sends an observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
 
 ```
 POST /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
@@ -1035,14 +1034,14 @@ Content-Type: application/json
 {"t":25,"h":42,"l":"1299"}
 ```
 
-This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct apikey, deviceId, payload and headers.
+This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`, `<deviceId>`, payload and headers.
 
-Once the command is retrieved by the device the status is updated to `"command_status":"DELIVERED"`.
+Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`.
 
 
 #### MQTT devices
 
-For MQTT devices, it is not needed to declare and endpoint. The device is supposed to be subscribed to the 
+For MQTT devices, it is not needed to declare and endpoint (i.e. if included in the provisioning request, it is not used). The device is supposed to be subscribed to the 
 following MQTT topic:
 
 ```
@@ -1057,16 +1056,16 @@ will receive all of the queued commands.
 
 ### Command confirmation
 
-Once the command is complely procesed by the device, it should return the result of the command to the IoT 
-Agent. This result will be progressed to the Context Broker where it will be stored in the `command_info` 
-attribute. The status of the command will be stored in the `command_status` attribute (`OK` if everything 
+Once the command is completely processed by the device, it should return the result of the command to the IoT 
+Agent. This result will be progressed to the Context Broker where it will be stored in the `<command>_info` 
+attribute. The status of the command will be stored in the `<command>_status` attribute (`OK` if everything 
 goes right). 
 
 #### HTTP
 
 **Polling**
 Eventually, once the device makes the response request with the result of the command the status is updated 
-to`"command_status": "OK"`. Also the result of the command delivered by the device is stored in the `command_info` attribute.
+to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
 
 #### MQTT
 
