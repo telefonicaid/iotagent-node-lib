@@ -223,8 +223,8 @@ measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names a
 ## Device autoprovision and entity creation
 
 For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
-automaticaly when a device is created. This means that al entities into the context broker are created when data 
-arrives from a device, either if the device is created or autoprovisioned.
+automatically when a device is created. This means that all entities into the Context Broker are created when data 
+arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
 
 ## Multientity support
 
