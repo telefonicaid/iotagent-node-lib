@@ -1041,7 +1041,7 @@ Once the command is retrieved by the device the status is updated to `"<command>
 
 #### MQTT devices
 
-For MQTT devices, it is not needed to declare and endpoint (i.e. if included in the provisioning request, it is not used). The device is supposed to be subscribed to the 
+For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not used). The device is supposed to be subscribed to the 
 following MQTT topic:
 
 ```
@@ -1069,7 +1069,7 @@ to`"<command>_status": "OK"`. Also the result of the command delivered by the de
 
 #### MQTT
 
-The device should publish information in the following topic.
+The device should publish the result of the command in the following topic.
 
 ```
 /<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
