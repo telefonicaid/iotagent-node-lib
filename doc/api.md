@@ -955,6 +955,23 @@ The IOTA processes the entity attributes looking for a `TimeInstant` attribute. 
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
 
+If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
+is refused.
+
+Depending on the `timeInstant` configurantion and if the measure contains a 
+value named `TimeInstant` with a correct value, the IoT behaviour is described
+in the following table:
+
+timeInstant conf value | measure contains TimeInstant | Behaviour 
+-- | -- | -- 
+true | Yes | TimeInstant and metadata updated with measure value 
+true | No | TimeInstant and metadata updated with server timestamp 
+false | Yes | TimeInstant and metadata updated with measure value 
+false | No | TimeInstant and metadata updated with server timestamp 
+Not defined | Yes | TimeInstant and metadata updated with measure value 
+Not defined | No | TimeInstant and metadata updated with server timestamp 
+
+
 ## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
@@ -1201,7 +1218,7 @@ Config group is represented by a JSON object with the following fields:
 | `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
 | `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
 | `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                           |
-| `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp or provided `TimeInstant` as measure when follows ISO 8601 format. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
 | `entity_type`                  |          | string         |            | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                         |
 | `trust`                        | ✓        | string         |            | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                       |
 | `cbHost`                       | ✓        | string         |            | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                |
@@ -1425,7 +1442,7 @@ the API resource fields and the same fields in the database model.
 | `entity_name`         |          | `string`  |            | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                 |
 | `entity_type`         |          | `string`  |            | Type of the entity in the Context Broker                                                                                                                                                                                                                         |
 | `timezone`            | ✓        | `string`  |            | Timezone of the device if that has any                                                                                                                                                                                                                           |
-| `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp or provided `TimeInstant` as measure when follows ISO 8601 format. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
 | `apikey`              | ✓        | `string`  |            | Apikey key string to use instead of group apikey                                                                                                                                                                                                                 |
 | `endpoint`            | ✓        | `string`  |            | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                  |
 | `protocol`            | ✓        | `string`  |            | Pame of the device protocol, for its use with an IoT Manager                                                                                                                                                                                                     |
