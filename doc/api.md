@@ -1003,11 +1003,22 @@ Once the command is triggered, it is send to the device. Depending on transport 
 
 **Push commands**
 
-Push commands are those that are sent to the device once the IoT Agent receives the request from the Context Broker. In order to send push commands it is needed to set the `"endpoint": "http://[DEVICE_IP]:[PORT]"` in the device or group provision. The device is supposed to be listening for commands at that URL in a synchronous way. Make sure the device endpoint is reachable by the IoT Agent.
+Push commands are those that are sent to the device once the IoT Agent receives the request from the Context Broker. In order to 
+send push commands it is needed to set the `"endpoint": "http://[DEVICE_IP]:[PORT]/"` in the device or group provision. The device 
+is supposed to be listening for commands at that URL in a synchronous way. Make sure the device endpoint is reachable by the IoT 
+Agent. Push commands are only valid for HTTP devices. For MQTT devices it is not needed to set the `endpoint` parameter. 
 
-Push commands are only valid for HTTP devices. For MQTT devices it is not needed to set the `endpoint` parameter. 
+Considering using the IoTA-JSON Agent, and given the previous example, the device should receive a POST request to 
+`http://[DEVICE_IP]:[PORT]` with the following payload:
 
-**FIXME**: example of request sent from IoTA-JSON to device listening in "http://[DEVICE_IP]:[PORT]" and response associated to that request should be included, based on the ping example shown above.
+```
+POST /
+Content-Type: application/json
+
+{"ping":"Ping request"}
+```
+
+**FIXME**: Pending to add CB attributes values, see #1559
 
 **Poll commands**
 
@@ -1018,16 +1029,22 @@ to configure the device as poll commands you just need to avoid the usage of `en
 
 Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
 
-For HTTP devices, in order to retrieve a poll command from IoTA-JSON Agent the device should make the following request:
+For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path `/iot/json` with the following parameters:
+
+* `k`: API key of the device.
+* `i`: Device ID.
+* `getCmd`: This parameter is used to indicate the IoT Agent that the device is requesting a command. It is needed to set it to `1`
+
+Taking the previous example, and considering the the usage of the IoTA-JSON Agent, the device should make the following request, being the response to this request a JSON object with the command name as key and the command value as value:
 
 ```
 GET /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
 Accept: application/json
+
+{"ping":"Ping request"}
 ```
 
-**FIXME**: example of response to this request should be included, based on the ping example shown above.
-
-For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`.
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
 
 It can be also possible for a device to retrieve the commands from the IoT Agent when it sends an observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
 
@@ -1045,37 +1062,61 @@ Once the command is retrieved by the device the status is updated to `"<command>
 
 #### MQTT devices
 
-For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not used). The device is supposed to be subscribed to the 
-following MQTT topic:
+For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not used). The device 
+is supposed to be subscribed to the following MQTT topic where the IoT Agent will publish the command:
 
 ```
 /<apiKey>/<deviceId>/cmd
 ```
 
-**FIXME**: example of payload sent to this topic by the IoTA-JSON should be included, based on the ping example shown above.
+In the case of using the IoTA-JSON Agent, the device should subscribe to the previous topic where it is going to receive a message like 
+the following one when a command is triggered in the Context Broker like the previous step:
 
-where it will receive the command information. Please note that the device should subscribe to the broker 
-using the disabled clean session mode (enabled using `--disable-clean-session` option CLI parameter in 
-`mosquitto_sub`). This option means that all of the subscriptions for the device will be maintained after 
-it disconnects, along with subsequent QoS 1 and QoS 2 commands that arrive. When the device reconnects, it
-will receive all of the queued commands.
+```json
+{"ping":"Ping request"}
+```
+
+Please note that the device should subscribe to the broker using the disabled clean session mode (enabled using 
+`--disable-clean-session` option CLI parameter in `mosquitto_sub`). This option means that all of the subscriptions for the device will 
+be maintained after it disconnects, along with subsequent QoS 1 and QoS 2 commands that arrive. When the device reconnects, it will 
+receive all of the queued commands.
 
 ### Command confirmation
 
 Once the command is completely processed by the device, it should return the result of the command to the IoT 
 Agent. This result will be progressed to the Context Broker where it will be stored in the `<command>_info` 
 attribute. The status of the command will be stored in the `<command>_status` attribute (`OK` if everything 
-goes right). 
+goes right).
+
+For the IoTA-JSON, the payload of the confirmation message must be a JSON object with name of the command as key 
+and the result of the command as value. For other IoT Agents, the payload must follow the corresponding protocol.
+For a given `ping` command, with a command result `status_ok`, the response payload should be:
+
+```JSON
+{"ping":"status_ok"}
+```
+
+Eventually, once the device makes the response request the IoTA would update the attributes `ping_status` to 
+`OK` and `ping_info` to `status_ok` for the previous example.
 
 #### HTTP
 
-**Polling**
-Eventually, once the device makes the response request with the result of the command the status is updated 
-to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
+In order confirm the command execution, the device must make a POST request to the IoT Agent with the result 
+of the command as payload, no matter if it is a push or a poll command. The request must be made to the
+following resource:
+
+```
+POST /iot/json/commands?k=<apikey>&i=<deviceId>
+Content-Type: application/json
+Accept: application/json
+
+{"ping":"status_ok"}
+```
 
 #### MQTT
 
-The device should publish the result of the command in the following topic.
+The device should publish the result of the command (`{"ping":"status_ok"}` in the previous example) to a
+topic following the next pattern:
 
 ```
 /<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
