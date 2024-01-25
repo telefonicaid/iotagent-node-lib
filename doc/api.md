@@ -958,8 +958,8 @@ adds a `TimeInstant` attribute as metadata for every other attribute in the same
 If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
 is refused.
 
-Depending on the `timeInstant` configurantion and if the measure contains a 
-value named `TimeInstant` with a correct value, the IoT behaviour is described
+Depending on the `timestamp` configurantion and if the measure contains a 
+value named `TimeInstant` with a correct value, the IoTA behaviour is described
 in the following table:
 
 timeInstant conf value | measure contains TimeInstant | Behaviour 
