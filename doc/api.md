@@ -958,11 +958,11 @@ adds a `TimeInstant` attribute as metadata for every other attribute in the same
 If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
 is refused.
 
-Depending on the `timestamp` configurantion and if the measure contains a 
+Depending on the `timestamp` configuration and if the measure contains a 
 value named `TimeInstant` with a correct value, the IoTA behaviour is described
 in the following table:
 
-timeInstant conf value | measure contains TimeInstant | Behaviour 
+timestamp conf value | measure contains TimeInstant | Behaviour 
 -- | -- | -- 
 true | Yes | TimeInstant and metadata updated with measure value 
 true | No | TimeInstant and metadata updated with server timestamp 
