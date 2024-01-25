@@ -6,7 +6,6 @@
           "type": "string",
           "value": "The Attribute Value"
       },
-      "apikey": "theApikey",
       "type": "MicroLights",
       "id": "FirstMicroLight"
     }

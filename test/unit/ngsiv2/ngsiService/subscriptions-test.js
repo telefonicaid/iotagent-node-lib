@@ -33,7 +33,7 @@ const should = require('should');
 const nock = require('nock');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -183,7 +183,7 @@ describe('NGSI-v2 - Subscription tests', function () {
     });
     describe('When a new notification comes to the IoTAgent', function () {
         beforeEach(function (done) {
-            iotAgentLib.getDevice('MicroLight1', 'theApikey', 'smartgondor', '/gardens', function (error, device) {
+            iotAgentLib.getDevice('MicroLight1', null, 'smartgondor', '/gardens', function (error, device) {
                 iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
                     done();
                 });
@@ -275,7 +275,6 @@ describe('NGSI-v2 - Subscription tests', function () {
                     device &&
                     device.id === 'MicroLight1' &&
                     device.name === 'FirstMicroLight' &&
-                    device.apikey === 'theApikey' &&
                     data &&
                     data.length === 1 &&
                     data[0].name === 'attr_name'
