@@ -962,7 +962,7 @@ Depending on the `timestamp` configuration and if the measure contains a
 value named `TimeInstant` with a correct value, the IoTA behaviour is described
 in the following table:
 
-`timestamp` value | measure contains `TimeInstant`` | Behaviour 
+`timestamp` value | measure contains `TimeInstant` | Behaviour 
 -- | -- | -- 
 true | Yes | TimeInstant and metadata updated with measure value 
 true | No | TimeInstant and metadata updated with server timestamp 
