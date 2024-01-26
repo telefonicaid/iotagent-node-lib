@@ -975,8 +975,7 @@ The `timestamp` value used is:
 
 * The one defined at device level
 * The one defined at group level (if not defined at device level)
-* The one defined at [IoTAgent configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at group level or device level)
-* 
+* The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at group level or device level)
 
 
 ## Overriding global Context Broker host
