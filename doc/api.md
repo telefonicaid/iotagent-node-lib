@@ -977,7 +977,6 @@ The `timestamp` value used is:
 * The one defined at group level (if not defined at device level)
 * The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at group level or device level)
 
-
 ## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
