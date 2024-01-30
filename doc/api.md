@@ -149,6 +149,15 @@ This behavior allows that autoprovisioned parameters can freely established modi
 creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
 parameters defined at device level in database, the parameters are inherit from config group parameters.
 
+## Special measures and attributes names
+
+In case of arriving measures with name `id` or `type`, they are automatically transformed to `measure_id` and 
+`measure_type`. The reason behind this is to avoid to collide with the original entity id and type, as mechanism 
+that enable store measure values from parameters called with the same name. It only applies to autoprovisioned
+attributes and is also available at JEXL context with the same name (`measure_id`or `measure_type`).
+
+In case of provisioning attributes using `id` or `type` as names, they are ignored. 
+
 ## Entity attributes
 
 In the config group/device model there are four list of attributes with different purpose to configure how the
