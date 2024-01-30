@@ -1,1 +1,2 @@
+- ADD: extend handleNotificationNgsi2 to allow new commands from CB notifications (#1455)
 - ADD: progress non expected id and type in measures under `measure_` suffix 
