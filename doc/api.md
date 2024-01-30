@@ -8,6 +8,7 @@
     -   [IoT Agent information model](#iot-agent-information-model)
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
+    -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
