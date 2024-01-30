@@ -932,6 +932,14 @@ describe('NGSI-v2 - Active attributes test', function () {
                     meas: {
                         value: 'measIoTA',
                         type: 'String'
+                    },
+                    measure_id: {
+                        type: 'text',
+                        value: 'idIoTA'
+                    },
+                    measure_type: {
+                        type: 'text',
+                        value: 'typeIoTA'
                     }
                 })
                 .reply(204);
@@ -979,14 +987,6 @@ describe('NGSI-v2 - Active attributes test', function () {
                     meas: {
                         value: 'measIoTA2',
                         type: 'String'
-                    },
-                    measure_id: {
-                        value: 'idIoTA2',
-                        type: 'text'
-                    },
-                    measure_type: {
-                        value: 'typeIoTA2',
-                        type: 'text'
                     }
                 })
                 .reply(204);
