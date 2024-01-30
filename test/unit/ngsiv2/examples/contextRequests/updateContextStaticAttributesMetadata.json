@@ -3,7 +3,13 @@
   "type":"Lamp",
   "luminosity": {
     "value": "100",
-    "type": "text"
+    "type": "text",
+    "metadata": {
+      "unitCode": {
+          "type": "Text",
+          "value": "CAL"
+      }
+  }
   },
   "controlledProperty": {
     "value": "StaticValue",

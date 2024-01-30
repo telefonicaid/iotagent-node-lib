@@ -29,7 +29,6 @@
         -   [Measurement transformation execution](#measurement-transformation-execution)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
-    -   [Timestamp Compression](#timestamp-compression)
     -   [Timestamp Processing](#timestamp-processing)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
@@ -437,6 +436,9 @@ conditionally TimeInstant) will be propagated to NGSI interface (note that in th
 not a JSON but a JEXL Array that looks likes a JSON). Only static attributes included in that array will be propagated
 to NGSI interface.
 
+All attributes contained in the array must be defined as `attributes` or `static_attributes`. Not defined measures
+(`object_id`) will be dropped, even if they are defined in the `explicitAttrs` array.
+
 Case 4:
 
 ```
@@ -447,6 +449,9 @@ just NGSI attributes defined in the array (identified by their attribute names a
 propagated to NGSI interface (note that in this case the value of `explicitAttrs` is not a JSON but a JEXL Array/Object
 that looks likes a JSON). This is necessary when same attribute names are used within multiple entities. Only static
 attributes included in that array will be propagated to NGSI interface.
+
+Note that in the previous case show above, when selecting the object_id (with `{object_id:'active_id'}`), the attribute
+must be defined. In other words, it would not work if the attribute with the corresponding `object_id`, is not defined.
 
 Case 5:
 
@@ -944,18 +949,33 @@ Will now generate the following NGSI v2 payload:
 }
 ```
 
-## Timestamp Compression
-
-This functionality changes all the timestamp attributes found in the entity, and all the timestamp metadata found in any
-attribute, from the basic complete calendar timestamp of the ISO8601 (e.g.: 20071103T131805) to the extended complete
-calendar timestamp (e.g.: +002007-11-03T13:18). The middleware expects to receive the basic format in updates and return
-it in queries (and viceversa, receive the extended one in queries and return it in updates).
-
 ## Timestamp Processing
 
 The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
 adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
 `observedAt` property-of-a-property is used instead.
+
+If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
+is refused.
+
+Depending on the `timestamp` configuration and if the measure contains a 
+value named `TimeInstant` with a correct value, the IoTA behaviour is described
+in the following table:
+
+`timestamp` value | measure contains `TimeInstant` | Behaviour 
+-- | -- | -- 
+true | Yes | TimeInstant and metadata updated with measure value 
+true | No | TimeInstant and metadata updated with server timestamp 
+false | Yes | TimeInstant and metadata updated with measure value 
+false | No | TimeInstant and metadata updated with server timestamp 
+Not defined | Yes | TimeInstant and metadata updated with measure value 
+Not defined | No | TimeInstant and metadata updated with server timestamp 
+
+The `timestamp` value used is:
+
+* The one defined at device level
+* The one defined at group level (if not defined at device level)
+* The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at group level or device level)
 
 ## Overriding global Context Broker host
 
@@ -965,8 +985,7 @@ of devices.
 ## Multitenancy, FIWARE Service and FIWARE ServicePath
 
 Every operation in the API require the `fiware-service` and `fiware-servicepath` to be defined; the operations are
-performed in the scope of those headers. For the list case, the special wildcard servicepath can be specified, `/*`. In
-this case, the operation applies to all the subservices of the service given by the `fiware-service` header.
+performed in the scope of those headers.
 
 ## Secured access to the Context Broker
 
@@ -1204,7 +1223,7 @@ Config group is represented by a JSON object with the following fields:
 | `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
 | `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
 | `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                           |
-| `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current server timestamp or provided `TimeInstant` as measure when follows ISO 8601 format (see [timestamp processing](#timestamp-processing) section for aditional detail). With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
 | `entity_type`                  |          | string         |            | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                         |
 | `trust`                        | ✓        | string         |            | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                       |
 | `cbHost`                       | ✓        | string         |            | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                |
@@ -1218,6 +1237,9 @@ Config group is represented by a JSON object with the following fields:
 | `ngsiVersion`                  | ✓        | string         |            | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
 | `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
 | `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
+| `payloadType`                  | ✓        | string         |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                          |
+| `transport`                    | ✓        | `string`       |            | Transport protocol used by the group of devices to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                    |
+| `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                  |
 
 ### Config group operations
 
@@ -1225,9 +1247,8 @@ The following actions are available under the config group endpoint:
 
 #### Retrieve config groups GET `/iot/configGroups` or `GET /iot/services`
 
-List all the config groups for the given `fiware-service` and `fiware-servicepath`. If the `fiware-servicepath` header
-has the wildcard expression, `/*`, all the config groups for that `fiware-service` are returned. The config groups that
-match the `fiware-servicepath` are returned in any other case.
+List all the config groups for the given `fiware-service` and `fiware-servicepath`. The config groups that match the
+`fiware-servicepath` are returned in any other case.
 
 _**Request headers**_
 
@@ -1426,7 +1447,7 @@ the API resource fields and the same fields in the database model.
 | `entity_name`         |          | `string`  |            | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                 |
 | `entity_type`         |          | `string`  |            | Type of the entity in the Context Broker                                                                                                                                                                                                                         |
 | `timezone`            | ✓        | `string`  |            | Timezone of the device if that has any                                                                                                                                                                                                                           |
-| `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current timestamp. With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
+| `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current server timestamp or provided `TimeInstant` as measure when follows ISO 8601 format (see [timestamp processing](#timestamp-processing) section for aditional detail). With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
 | `apikey`              | ✓        | `string`  |            | Apikey key string to use instead of group apikey                                                                                                                                                                                                                 |
 | `endpoint`            | ✓        | `string`  |            | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                  |
 | `protocol`            | ✓        | `string`  |            | Pame of the device protocol, for its use with an IoT Manager                                                                                                                                                                                                     |
@@ -1438,6 +1459,7 @@ the API resource fields and the same fields in the database model.
 | `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                               |
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                     |
 | `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
+| `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                 |
 
 ### Device operations
 

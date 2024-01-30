@@ -1,10 +1,6 @@
 {
   "entities": [
     {
-      "id": "ws4",
-      "type": "WeatherStation"
-    },
-    {
       "id": "Higro2000",
       "type": "Higrometer",
         "humidity": {
