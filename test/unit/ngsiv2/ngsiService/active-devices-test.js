@@ -224,7 +224,7 @@ describe('NGSI-v2 - Active attributes test', function () {
     ];
 
     beforeEach(function () {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
     });
 
     afterEach(function (done) {
