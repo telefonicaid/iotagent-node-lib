@@ -7,14 +7,6 @@
       "vol":{
         "type": "Number",
         "value": 0
-      },
-      "measure_id":{
-        "type": "string",
-        "value": 2
-      },
-      "measure_type":{
-        "type": "string",
-        "value": 1
       }
     }
   ]
