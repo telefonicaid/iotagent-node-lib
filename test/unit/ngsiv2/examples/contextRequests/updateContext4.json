@@ -2,7 +2,7 @@
     "id":"Light1",
     "type":"SensorMachine",    
     "status": {
-        "type": "String",
+        "type": "Text",
         "value": "STARTING"
     },
     "bootstrapServer": {
