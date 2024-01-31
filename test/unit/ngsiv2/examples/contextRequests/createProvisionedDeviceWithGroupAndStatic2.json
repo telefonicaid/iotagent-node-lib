@@ -2,7 +2,7 @@
   "id": "TheFirstLight",
   "type": "SensorMachine",
   "attr_name": {
-    "type": "string",
+    "type": "Text",
     "value": null
   },
   "status": {
