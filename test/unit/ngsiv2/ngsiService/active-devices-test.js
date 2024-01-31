@@ -924,7 +924,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             nock.cleanAll();
 
             // Note that in the case of measure_id and measure_type the type provided by the IOTA when calling iotAgentLib.update()
-            // is used (thus ignoring the one of the StupidDevice group) but in the case of measIoTA the type provided in the
+            // is used (thus ignoring the one of the StupidDevice group for id or type, which is 'text') but in the case of measIoTA the type provided in the
             // provising (String) is used
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
