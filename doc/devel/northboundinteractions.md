@@ -825,8 +825,95 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 }
 ```
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with the following payload
-(200 OK):
+A new way to ContextBroker provides a command to a IoTAgent is through notifications. In this case CB notify the command
+to the IotAgent with a request like the following:
+
+```bash
+POST /notify HTTP/1.1
+Host: <target-host>:<northbound_port>
+fiware-service: workshop
+Fiware-ServicePath: /iota2ngsi
+Accept: application/json
+Content-length: 290
+Content-type: application/json; charset=utf-8
+Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
+
+{
+    "subscriptionId": "60b0cedd497e8b681d40b58e",
+    "data": [{
+     "id": "123456abcdefg",
+     "type": "switchOnOffExecution",
+     "targetEntityId": {
+         "type": "Text",
+         "value": "Dev0001",
+         "metadata": {}
+     },
+     "targetEntityType": {
+         "type": "Text",
+         "value": "device",
+         "metadata": {}
+     },
+     "execTs": {
+         "type": "DateTime",
+         "value": "2020-05-27T00:00:00.000Z",
+         "metadata": {}
+     },
+     "cmd": {
+         "type": "Text",
+         "value": "switch",
+         "metadata": {}
+     },
+     "params": {
+         "type": "Text",
+         "value": 54, 12",
+         "metadata": {}
+     },
+     "status": {
+         "type": "Text",
+         "value": "FORWARDED",
+         "metadata": {}
+     },
+     "info": {
+         "type": "Text",
+         "value": null,
+         "metadata": {}
+     },
+     "onDelivered": {
+         "type": "Request",
+         "value": {
+         }
+     },
+     "onOk": {
+         "type": "Request",
+         "value": {
+         }
+     },
+     "onError": {
+         "type": "Request",
+         "value": {
+         }
+     },
+     "onInfo": {
+         "type": "Request",
+         "value": {
+         }
+     },
+     "cmdExecution": {
+         "type": "value",
+         "value": true,
+         "metadata": {}
+     },
+     "dateExpiration": {
+         "type": "DateTime",
+         "value": "2020-05-27T20:00:00.000Z",
+         "metadata": {}
+     }
+    }]
+}
+```
+
+In both cases (update or command) the IoT Agent detects the selected attribute is a command, and replies to the Context
+Broker with the following payload (200 OK):
 
 ```json
 [
