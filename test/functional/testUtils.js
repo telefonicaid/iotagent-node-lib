@@ -112,7 +112,7 @@ function jsonToIotaMeasures(json) {
             if (key === 'TimeInstant') {
                 measure.type = 'DateTime';
             } else {
-                measure.type = 'string';
+                measure.type = 'Text';
             }
             measures.push(measure);
         }
