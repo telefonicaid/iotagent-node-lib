@@ -157,7 +157,7 @@ In case of arriving measures with name `id` or `type`, they are automatically tr
 that enable store measure values from parameters called with the same name. It only applies to autoprovisioned
 attributes and is also available at JEXL context with the same name (`measure_id`or `measure_type`).
 
-In case of provisioning attributes using `id` or `type` as names, they are ignored. 
+In case of provisioning attributes using `id` or `type` as names (please don't do that ;), they are ignored. 
 
 ## Entity attributes
 
