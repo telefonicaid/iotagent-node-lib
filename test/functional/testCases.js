@@ -1425,7 +1425,7 @@ const testCases = [
                                 object_id: 'a',
                                 name: 'attr_a',
                                 type: 'Boolean',
-                                expression: 'a?threshold[90|toText].max:true'
+                                expression: 'a?threshold[90|tostring].max:true'
                             }
                         ],
                         static_attributes: [
