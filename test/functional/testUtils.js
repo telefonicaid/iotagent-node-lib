@@ -112,6 +112,8 @@ function jsonToIotaMeasures(json) {
             if (key === 'TimeInstant') {
                 measure.type = 'DateTime';
             } else {
+                // Although the type is not meaningfull and we could have picked any string for this,
+                // we have aligned with DEFAULT_ATTRIBUTE_TYPE constant in IOTA-JSON and IOTA-UL repositories
                 measure.type = 'Text';
             }
             measures.push(measure);
