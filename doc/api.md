@@ -8,6 +8,7 @@
     -   [IoT Agent information model](#iot-agent-information-model)
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
+    -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
     -   [Multientity support)](#multientity-support)
     -   [Metadata support](#metadata-support)
@@ -148,6 +149,15 @@ the entity in the Context Broker if it does not exist yet.
 This behavior allows that autoprovisioned parameters can freely established modifying the device information after
 creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
 parameters defined at device level in database, the parameters are inherit from config group parameters.
+
+## Special measures and attributes names
+
+In case of arriving measures with name `id` or `type`, they are automatically transformed to `measure_id` and 
+`measure_type` attributes at Context Broker update. The reason behind this is to avoid to collide with the original entity ID and type, as mechanism 
+that enable store measure values from parameters called with the same name. It only applies to autoprovisioned
+attributes and is also available at JEXL context with the same name (`measure_id`or `measure_type`).
+
+In case of provisioning attributes using `id` or `type` as names (please don't do that ;), they are ignored. 
 
 ## Entity attributes
 
