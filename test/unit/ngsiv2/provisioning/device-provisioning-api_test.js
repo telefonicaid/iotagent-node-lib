@@ -100,6 +100,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     )
                 )
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/subscriptions')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
         const options = {
@@ -1130,7 +1136,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
@@ -1194,6 +1199,12 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 iotAgentConfig.server.baseRoot = '/newBaseRoot';
                 iotAgentLib.activate(iotAgentConfig, done);
             });
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/subscriptions')
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
         });
 
         afterEach(function () {
