@@ -188,7 +188,7 @@ let iotAgentDb;
 
 describe('NGSI-v2 - MongoDB Device Registry', function () {
     beforeEach(function (done) {
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         mongoUtils.cleanDbs(function () {
             mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
