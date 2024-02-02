@@ -130,6 +130,12 @@ describe('NGSI-v2 - Command functionalities', function () {
             )
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartgondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post('/v2/subscriptions')
+            .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
