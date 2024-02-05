@@ -1,1 +1,1 @@
-- ADD: extend handleNotificationNgsi2 to allow new commands from CB notifications (#1455)
+- ADD: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
