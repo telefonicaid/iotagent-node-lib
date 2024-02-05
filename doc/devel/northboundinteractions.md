@@ -865,7 +865,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
      },
      "params": {
          "type": "Text",
-         "value": 54, 12",
+         "value": "54, 12",
          "metadata": {}
      },
      "status": {
