@@ -11,6 +11,10 @@
       "expectedAtt": {
           "type": "number",
           "value": 13
+      },
+      "alsoexpectedAtt": {
+          "value": null,
+          "type": "number"
       }
     },
     {

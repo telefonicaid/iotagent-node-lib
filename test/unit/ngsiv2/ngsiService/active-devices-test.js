@@ -377,7 +377,6 @@ describe('NGSI-v2 - Active attributes test', function () {
             ];
 
             timekeeper.freeze(time);
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -906,25 +905,27 @@ describe('NGSI-v2 - Active attributes test', function () {
         const valuesIdType = [
             {
                 name: 'id',
-                type: 'text',
+                type: 'aTypeProvidedByIoTACodeCallingUpdateOnLib1',
                 value: 'idIoTA'
             },
             {
                 name: 'type',
-                type: 'text',
+                type: 'aTypeProvidedByIoTACodeCallingUpdateOnLib2',
                 value: 'typeIoTA'
             },
             {
                 name: 'm',
-                type: 'text',
+                type: 'aTypeProvidedByIoTACodeCallingUpdateOnLib3',
                 value: 'measIoTA'
             }
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
+            // Note that in the case of measure_id and measure_type the type provided by the IOTA when calling iotAgentLib.update()
+            // is used (thus ignoring the one of the StupidDevice group for id or type, which is 'text') but in the case of measIoTA the type provided in the
+            // provisioning ('String') is used
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -934,6 +935,14 @@ describe('NGSI-v2 - Active attributes test', function () {
                     meas: {
                         value: 'measIoTA',
                         type: 'String'
+                    },
+                    measure_id: {
+                        type: 'aTypeProvidedByIoTACodeCallingUpdateOnLib1',
+                        value: 'idIoTA'
+                    },
+                    measure_type: {
+                        type: 'aTypeProvidedByIoTACodeCallingUpdateOnLib2',
+                        value: 'typeIoTA'
                     }
                 })
                 .reply(204);
@@ -970,7 +979,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -1018,7 +1026,6 @@ describe('NGSI-v2 - Active attributes test', function () {
         ];
 
         beforeEach(function (done) {
-
             nock.cleanAll();
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -1030,6 +1037,14 @@ describe('NGSI-v2 - Active attributes test', function () {
                     meas: {
                         value: 'measIoTA',
                         type: 'String'
+                    },
+                    measure_id: {
+                        value: 'idIoTA',
+                        type: 'text'
+                    },
+                    measure_type: {
+                        value: 'typeIoTA',
+                        type: 'text'
                     }
                 })
                 .reply(204);
