@@ -1,1 +1,2 @@
-- ADD: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
+- Add: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
+- Fix: store device subscriptions updates (#1086)
