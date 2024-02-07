@@ -1,1 +1,2 @@
+- ADD: index for Device model based on {service: 1, subservice: 1, id: 1, apikey: 1} (#1576)
 - Fix: store device subscriptions updates (#1086)
