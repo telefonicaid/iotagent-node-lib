@@ -1745,16 +1745,18 @@ more information, see the [Device datamodel](#device-datamodel) section.
 Example:
 
 ```json
-[
-    {
-        "deviceId": "myDevice1",
-        "apikey": "apikey1"
-    },
-    {
-        "deviceId": "myDevice2",
-        "apikey": "apikey2"
-    }
-]
+{
+    "devices": [
+        {
+            "deviceId": "myDevice1",
+            "apikey": "apikey1"
+        },
+        {
+            "deviceId": "myDevice2",
+            "apikey": "apikey2"
+        }
+    ]
+}
 ```
 
 _**Response code**_

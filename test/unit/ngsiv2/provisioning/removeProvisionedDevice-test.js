@@ -248,20 +248,22 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
                 'fiware-servicepath': '/gardens'
             },
             method: 'DELETE',
-            json: [
-                {
-                    deviceId: 'Light1',
-                    apikey: ''
-                },
-                {
-                    deviceId: 'Light2',
-                    apikey: ''
-                },
-                {
-                    deviceId: 'Light3',
-                    apikey: ''
-                }
-            ]
+            json: {
+                devices: [
+                    {
+                        deviceId: 'Light1',
+                        apikey: ''
+                    },
+                    {
+                        deviceId: 'Light2',
+                        apikey: ''
+                    },
+                    {
+                        deviceId: 'Light3',
+                        apikey: ''
+                    }
+                ]
+            }
         };
 
         it('should return a 204 OK and no errors', function (done) {
