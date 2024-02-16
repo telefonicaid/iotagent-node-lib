@@ -54,7 +54,7 @@
             -   [Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid)
             -   [Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid)
             -   [Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid)
-            -   [Remove devices `DELETE /iot/devices`](#remove-devices-delete-iotdevicesdeviceid)
+            -   [Remove devices `POST /iot/op/delete`](#remove-devices-delete-iotdevicesdeviceid)
     -   [Miscellaneous API](#miscellaneous-api)
         -   [Log operations](#log-operations)
             -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
@@ -1722,11 +1722,11 @@ _**Request headers**_
 
 _**Response code**_
 
--   `200` `OK` if successful.
+-   `204` `OK` if successful.
 -   `404` `NOT FOUND` if the device was not found in the database.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 
-#### Remove devices `DELETE /iot/devices`
+#### Remove devices `POST /iot/op/delete`
 
 Remove a set of devices from the device registry. The devices is identified by the Device IDand apikey in payload body.
 
@@ -1761,7 +1761,7 @@ Example:
 
 _**Response code**_
 
--   `200` `OK` if successful.
+-   `204` `OK` if successful.
 -   `404` `NOT FOUND` if one or several devices were not found in the database.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
 

@@ -231,7 +231,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             method: 'DELETE'
         };
 
-        it('should return a 200 OK and no errors', function (done) {
+        it('should return a 204 OK and no errors', function (done) {
             request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
