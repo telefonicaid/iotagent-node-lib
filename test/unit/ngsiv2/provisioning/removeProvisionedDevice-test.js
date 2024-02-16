@@ -242,12 +242,12 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
 
     describe('When a request to remove a provision devices arrives', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/op/delete',
             headers: {
                 'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             },
-            method: 'DELETE',
+            method: 'POST',
             json: {
                 devices: [
                     {
