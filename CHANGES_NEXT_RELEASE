@@ -1,2 +1,3 @@
+- ADD: Log and return device/group information when EntityGenericError TypeNotFound DeviceNotFound BadTimestamp errors
 - Add: `POST /iot/op/delete` operation to delete multiple devices at once (#1578)
 - Fix: store device subscriptions updates (#1086)
