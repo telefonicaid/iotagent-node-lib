@@ -1,2 +1,6 @@
 - Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
-- ADD: progress non expected id and type in measures under `measure_` suffix 
+- Add: log and return device/group information when EntityGenericError, TypeNotFound, DeviceNotFound, BadTimestamp, BadGeocoordinates, CommandNotFound, GroupNotFound, MissingAttributes, DuplicateDeviceId and DuplicateGroup errors (iotagent-json#815)
+- Hardening: simplify implementation so typeInformation contains global config values (#1515)
+- Add: `POST /iot/op/delete` operation to delete multiple devices at once (#1578)
+- Fix: store device subscriptions updates (#1086)
+- Fix: badtimestamp error should not progress to ContextBroker

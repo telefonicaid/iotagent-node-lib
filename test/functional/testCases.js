@@ -96,26 +96,26 @@ const testCases = [
                     type: globalEnv.entity_type,
                     a: {
                         value: false,
-                        type: 'string'
+                        type: 'Text'
                     },
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     c: {
-                        type: 'string',
+                        type: 'Text',
                         value: 'text'
                     },
                     d: {
-                        type: 'string',
+                        type: 'Text',
                         value: 10.5
                     },
                     e: {
-                        type: 'string',
+                        type: 'Text',
                         value: [1, 2]
                     },
                     f: {
-                        type: 'string',
+                        type: 'Text',
                         value: {
                             a: 1,
                             b: 2
@@ -149,26 +149,26 @@ const testCases = [
                     type: globalEnv.entity_type,
                     a: {
                         value: false,
-                        type: 'string'
+                        type: 'Text'
                     },
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     c: {
-                        type: 'string',
+                        type: 'Text',
                         value: 'text'
                     },
                     d: {
-                        type: 'string',
+                        type: 'Text',
                         value: 10.5
                     },
                     e: {
-                        type: 'string',
+                        type: 'Text',
                         value: [1, 2]
                     },
                     f: {
-                        type: 'string',
+                        type: 'Text',
                         value: {
                             a: 1,
                             b: 2
@@ -363,26 +363,26 @@ const testCases = [
                     type: globalEnv.entity_type,
                     u: {
                         value: false,
-                        type: 'string'
+                        type: 'Text'
                     },
                     v: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     w: {
-                        type: 'string',
+                        type: 'Text',
                         value: 'text'
                     },
                     y: {
-                        type: 'string',
+                        type: 'Text',
                         value: 10.5
                     },
                     x: {
-                        type: 'string',
+                        type: 'Text',
                         value: [1, 2]
                     },
                     z: {
-                        type: 'string',
+                        type: 'Text',
                         value: {
                             a: 1,
                             b: 2
@@ -416,26 +416,26 @@ const testCases = [
                     type: globalEnv.entity_type,
                     u: {
                         value: false,
-                        type: 'string'
+                        type: 'Text'
                     },
                     v: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     w: {
-                        type: 'string',
+                        type: 'Text',
                         value: 'text'
                     },
                     y: {
-                        type: 'string',
+                        type: 'Text',
                         value: 10.5
                     },
                     x: {
-                        type: 'string',
+                        type: 'Text',
                         value: [1, 2]
                     },
                     z: {
-                        type: 'string',
+                        type: 'Text',
                         value: {
                             a: 1,
                             b: 2
@@ -573,7 +573,7 @@ const testCases = [
                     },
                     b: {
                         value: 1,
-                        type: 'string'
+                        type: 'Text'
                     }
                 }
             }
@@ -726,7 +726,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 1,
-                        type: 'string'
+                        type: 'Text'
                     }
                 }
             }
@@ -872,7 +872,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 1,
-                        type: 'string'
+                        type: 'Text'
                     }
                 }
             }
@@ -1029,7 +1029,7 @@ const testCases = [
                     },
                     b: {
                         value: 1,
-                        type: 'string'
+                        type: 'Text'
                     }
                 }
             }
@@ -1529,7 +1529,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     }
                 }
             }
@@ -1594,7 +1594,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     static_a: {
                         value: 3,
@@ -1688,7 +1688,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     a: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     static_a: {
                         value: {
@@ -2029,7 +2029,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     attr_a: {
                         value: 3,
@@ -2090,7 +2090,7 @@ const testCases = [
                     type: globalEnv.entity_type,
                     b: {
                         value: 10,
-                        type: 'string'
+                        type: 'Text'
                     },
                     attr_a: {
                         value: 3,
@@ -2354,7 +2354,7 @@ const testCases = [
                     },
                     d: {
                         value: 12,
-                        type: 'string'
+                        type: 'Text'
                     },
                     static_a: {
                         value: 3,
