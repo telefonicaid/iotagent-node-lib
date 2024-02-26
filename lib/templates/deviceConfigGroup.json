@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "type": "object",
   "properties": {
-    "services": {
+    "configGroups": {
       "type": "array",
       "id": "services",
       "required": true,

@@ -28,18 +28,22 @@ product:
 -   cgroup literal in configuration groups management API (community)
 -   Refactor Append Mode & initial entity ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413))
 -   Native support for NGSI-v2 and LD ingestion ([#1451](https://github.com/telefonicaid/iotagent-node-lib/issues/1451))
--   Remove plugins structure (bidirectional plugin) ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413))
+-   Remove plugins structure (bidirectional plugin)
+    ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413))
 -   Add init and improve log traces ([#1452](https://github.com/telefonicaid/iotagent-node-lib/issues/1452))
--   Remove InMemory registry for Devices and Groups ([#1429](https://github.com/telefonicaid/iotagent-node-lib/issues/1429))
+-   Remove InMemory registry for Devices and Groups
+    ([#1429](https://github.com/telefonicaid/iotagent-node-lib/issues/1429))
 
 ### Medium term
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
 release(s) generated in the next 9 months after the next planned release:
 
--   Allow to add metadata to attributes from measures ([#1453](https://github.com/telefonicaid/iotagent-node-lib/issues/1453))
+-   Allow to add metadata to attributes from measures
+    ([#1453](https://github.com/telefonicaid/iotagent-node-lib/issues/1453))
 -   Cache support ([#1467](https://github.com/telefonicaid/iotagent-node-lib/issues/1467))
--   MQTT per group advanced configuration (MQTT broker, topics) ([#1454](https://github.com/telefonicaid/iotagent-node-lib/issues/1454))
+-   MQTT per group advanced configuration (MQTT broker, topics)
+    ([#1454](https://github.com/telefonicaid/iotagent-node-lib/issues/1454))
 -   Subscription based commands ([#1455](https://github.com/telefonicaid/iotagent-node-lib/issues/1455))
 -   Remove registration support ([#1456](https://github.com/telefonicaid/iotagent-node-lib/issues/1456))
 
@@ -49,9 +53,12 @@ The following list of features are proposals regarding the longer-term evolution
 development of these features has not yet been scheduled for a release in the near future. Please feel free to contact
 us if you wish to get involved in the implementation or influence the roadmap:
 
--   Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker (testing pending) ([#1457](https://github.com/telefonicaid/iotagent-node-lib/issues/1457))
--   Add support to other transport protocols (BacNET, Modbus, etc) ([#1458](https://github.com/telefonicaid/iotagent-node-lib/issues/1458))
--   Dynamic attribute generation (based on values array) ([#1459](https://github.com/telefonicaid/iotagent-node-lib/issues/1459))
+-   Use the lightweight ingestion mechanism for connection oriented updates implemented in Context Broker (testing
+    pending) ([#1457](https://github.com/telefonicaid/iotagent-node-lib/issues/1457))
+-   Add support to other transport protocols (BacNET, Modbus, etc)
+    ([#1458](https://github.com/telefonicaid/iotagent-node-lib/issues/1458))
+-   Dynamic attribute generation (based on values array)
+    ([#1459](https://github.com/telefonicaid/iotagent-node-lib/issues/1459))
 -   Incremental introduccion of ECMAScript6 syntax (previous analysis of which sub-set of interesting aspect we want to
     take)
 
@@ -59,19 +66,24 @@ us if you wish to get involved in the implementation or influence the roadmap:
 
 The following list contains all features that were in the roadmap and have already been implemented.
 
--   Refactor entities-NGSI-v2.js module ([#1166](https://github.com/telefonicaid/iotagent-node-lib/issues/1166)) ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
--   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145)) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
--   Improve command functionalities (binary data + expression + mapping) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
+-   Refactor entities-NGSI-v2.js module ([#1166](https://github.com/telefonicaid/iotagent-node-lib/issues/1166))
+    ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
+-   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp)
+    ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145))
+    ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
+-   Improve command functionalities (binary data + expression + mapping)
+    ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Support for "delta" measures (i.e. "temperature _increased_ in 5 degress" instead of "temperature _is_ 25")
 -   Allow to handle binary messages ([iota-ul#530](https://github.com/telefonicaid/iotagent-ul/issues/530))
--   Removal support for NGSIv1 ([#966](https://github.com/telefonicaid/iotagent-node-lib/issues/966)) ([2.18.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.18.0))
+-   Removal support for NGSIv1 ([#966](https://github.com/telefonicaid/iotagent-node-lib/issues/966))
+    ([2.18.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.18.0))
 -   Selectively ignore measure in the southbound interface
     ([iotagent-json#416](https://github.com/telefonicaid/iotagent-json/issues/416),
     [iotagent-ul#372](https://github.com/telefonicaid/iotagent-ul/issues/372))
     ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
--   JEXL support in expressions ([#801](https://github.com/telefonicaid/iotagent-node-lib/issues/801), 
-     [#687](https://github.com/telefonicaid/iotagent-node-lib/issues/687), 
-     [#868](https://github.com/telefonicaid/iotagent-node-lib/issues/868))
+-   JEXL support in expressions ([#801](https://github.com/telefonicaid/iotagent-node-lib/issues/801),
+    [#687](https://github.com/telefonicaid/iotagent-node-lib/issues/687),
+    [#868](https://github.com/telefonicaid/iotagent-node-lib/issues/868))
     ([2.13.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.13.0))
 -   Add MongoDB authentication support ([#844](https://github.com/telefonicaid/iotagent-node-lib/issues/844))
     ([2.12.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.12.0))
