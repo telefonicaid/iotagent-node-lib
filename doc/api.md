@@ -1765,7 +1765,8 @@ Example:
 _**Response code**_
 
 -   `204` `OK` if successful.
--   `404` `NOT FOUND` if one or several devices were not found in the database. Note that although a 404 error is returned the existing devices are deleted.
+-   `404` `NOT FOUND` if one or several devices were not found in the database. Note that although a 404 error is
+    returned the existing devices are deleted.
 -   `500` `SERVER ERROR` if there was any error not considered above.
 
 ## Miscellaneous API

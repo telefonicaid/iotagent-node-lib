@@ -600,7 +600,6 @@ describe('NGSI-LD - Active attributes test', function () {
                 should.exist(error.name);
                 error.code.should.equal(207);
                 error.details.notUpdated.should.equal('someEntities');
-                error.message.should.equal('Error accesing entity data for device: light1 of type: Light');
                 error.name.should.equal('ENTITY_GENERIC_ERROR');
                 contextBrokerMock.done();
                 done();

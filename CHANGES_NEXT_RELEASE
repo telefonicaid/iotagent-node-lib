@@ -1,3 +1,1 @@
 - Add: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
-- Add: `POST /iot/op/delete` operation to delete multiple devices at once (#1578)
-- Fix: store device subscriptions updates (#1086)
