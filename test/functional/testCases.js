@@ -1036,7 +1036,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0140 - Simple group with active attribute + chained JEXL expression text (a|substr(0,2))',
+        describeName: '0140 - Simple group with active attribute + chained JEXL expression text (a | trim | replacestr("hello","hi"))',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
