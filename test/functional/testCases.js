@@ -1036,7 +1036,8 @@ const testCases = [
         ]
     },
     {
-        describeName: '0140 - Simple group with active attribute + chained JEXL expression text (a | trim | replacestr("hello","hi"))',
+        describeName:
+            '0140 - Simple group with active attribute + chained JEXL expression text (a | trim | replacestr("hello","hi"))',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1970,6 +1971,97 @@ const testCases = [
                     },
                     TimeInstant: {
                         value: '2015-12-14T08:06:01.468Z',
+                        type: 'DateTime'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0430 - Simple group with active attribute + timestamp mapping defined',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        timestamp: true,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'mydatetime',
+                                name: 'TimeInstant',
+                                type: 'DateTime'
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a measure through http IT should map the measure to timestamp attribute and use it for timestmap sent to Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        mydatetime: '2022-02-02T02:22:22.222Z'
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    TimeInstant: {
+                        value: '2022-02-02T02:22:22.222Z',
+                        type: 'DateTime'
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending a measure through http IT should map the measure to timestamp attribute and use it for timestmap and other metadata attributes sent to Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        mydatetime: '2022-02-02T02:22:22.222Z',
+                        a: 23
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 23,
+                        type: 'Text',
+                        metadata: {
+                            TimeInstant: {
+                                value: '2022-02-02T02:22:22.222Z',
+                                type: 'DateTime'
+                            }
+                        }
+                    },
+                    TimeInstant: {
+                        value: '2022-02-02T02:22:22.222Z',
                         type: 'DateTime'
                     }
                 }
