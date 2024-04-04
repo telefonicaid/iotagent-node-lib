@@ -2103,6 +2103,63 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0431 - Simple group with active attribute + bad timestamp mapping defined',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        timestamp: true,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'mydatetime',
+                                name: 'TimeInstant',
+                                type: 'DateTime',
+                                expression: '"2033-03-03T" + "03:33:33.333Z"'
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a measure through http IT should map the measure to fixed timestamp attribute and use it for timestmap sent to Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        mydatetime: '2022-02-02T02:22:22.222Z'
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    TimeInstant: {
+                        value: '2033-03-03T03:33:33.333Z',
+                        type: 'DateTime'
+                    }
+                }
+            }
+        ]
+    },
     // 0500 - EXPLICIT ATTRIBUTES TESTS
     {
         describeName: '0500 - Group with explicit attrs:false (boolean) + active atributes',
