@@ -133,9 +133,9 @@ parameters. The specific parameters that can be configured for a given config gr
 ### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
-are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
-`type` matching (in the case `apiKey` matching fails). For instance, let's consider a situation in which a config group
-has been provisioned with `type=X`/`apiKey=111` and no other config group has been provisioned.
+are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching. For
+instance, let's consider a situation in which a config group has been provisioned with `type=X`/`apiKey=111` and no
+other config group has been provisioned.
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
 subservice mapping, security information and attribute configuration can be specified in a per device way instead of
