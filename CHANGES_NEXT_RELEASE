@@ -1,0 +1,1 @@
+- Add: allow devices with the same device_id in the same service and subservice but different apikey (#1589)
