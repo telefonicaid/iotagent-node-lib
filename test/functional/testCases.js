@@ -2065,6 +2065,40 @@ const testCases = [
                         type: 'DateTime'
                     }
                 }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending a measure without timestamp through http IT should use system timestamp for mapped attribute and use it for timestmap and other metadata attributes sent to Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 23
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 23,
+                        type: 'Text',
+                        metadata: {
+                            TimeInstant: {
+                                value: _.isDateString,
+                                type: 'DateTime'
+                            }
+                        }
+                    },
+                    TimeInstant: {
+                        value: _.isDateString,
+                        type: 'DateTime'
+                    }
+                }
             }
         ]
     },
