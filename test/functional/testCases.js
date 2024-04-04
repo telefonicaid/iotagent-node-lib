@@ -2070,6 +2070,7 @@ const testCases = [
                 shouldName:
                     'A - WHEN sending a measure without timestamp through http IT should use system timestamp for mapped attribute and use it for timestmap and other metadata attributes sent to Context Broker',
                 type: 'single',
+                isRegex: true,
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
                     method: 'POST',
