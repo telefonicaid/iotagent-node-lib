@@ -8,6 +8,7 @@
     -   [IoT Agent information model](#iot-agent-information-model)
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
+        -   [Uniqueness of groups and devices](#uniqueness)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
     -   [Multientity support)](#multientity-support)
@@ -133,8 +134,8 @@ parameters. The specific parameters that can be configured for a given config gr
 ### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
-are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching. For
-instance, let's consider a situation in which a config group has been provisioned with `type=X`/`apiKey=111` and no
+are identified by a `device_id`, and they are associated to an existing config group based in `apikey` matching. For
+instance, let's consider a situation in which a config group has been provisioned with `type=X`/`apikey=111` and no
 other config group has been provisioned.
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
@@ -143,7 +144,7 @@ relaying on the config group configuration. The specific parameters that can be 
 described in the [Device datamodel](#device-datamodel) section.
 
 If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
-process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
+process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apikey` and `type` - the
 associated document created in database doesn't include config group parameters (in particular, `timestamp`,
 `explicitAttrs`, `active` or `attributes`, `static` and `lazy` attributes and commands). The IoT Agent will also create
 the entity in the Context Broker if it does not exist yet.
@@ -151,6 +152,13 @@ the entity in the Context Broker if it does not exist yet.
 This behavior allows that autoprovisioned parameters can freely established modifying the device information after
 creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
 parameters defined at device level in database, the parameters are inherit from config group parameters.
+
+### Uniqueness of groups and devices
+
+Group service uniqueness is defined by the combination of: service, subservice and apikey
+
+Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that the several
+devices with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
 
 ## Special measures and attributes names
 
