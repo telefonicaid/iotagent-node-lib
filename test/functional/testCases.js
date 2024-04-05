@@ -2100,6 +2100,42 @@ const testCases = [
                         type: 'DateTime'
                     }
                 }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending a measure with timestamp through http IT should map the measure to timestamp attribute and use it for timestmap and other metadata attributes sent to Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        mydatetime: '2022-02-02T02:22:22.222Z',
+                        TimeInstant: '2033-03-03T03:33:33.333Z',
+                        a: 23
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 23,
+                        type: 'Text',
+                        metadata: {
+                            TimeInstant: {
+                                value: '2022-02-02T02:22:22.222Z',
+                                type: 'DateTime'
+                            }
+                        }
+                    },
+                    TimeInstant: {
+                        value: '2022-02-02T02:22:22.222Z',
+                        type: 'DateTime'
+                    }
+                }
             }
         ]
     },
