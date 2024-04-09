@@ -1725,7 +1725,10 @@ const testCases = [
                                 type: 'Number',
                                 value: 4,
                                 metadata: {
-                                    color: 'blue'
+                                    accuracy: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
                                 }
                             }
                         ]
@@ -1764,7 +1767,10 @@ const testCases = [
                         value: 4,
                         type: 'Number',
                         metadata: {
-                            color: 'blue'
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
                         }
                     }
                 }
