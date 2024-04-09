@@ -1036,7 +1036,8 @@ const testCases = [
         ]
     },
     {
-        describeName: '0140 - Simple group with active attribute + chained JEXL expression text (a | trim | replacestr("hello","hi"))',
+        describeName:
+            '0140 - Simple group with active attribute + chained JEXL expression text (a | trim | replacestr("hello","hi"))',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1699,6 +1700,72 @@ const testCases = [
                             }
                         },
                         type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0320 - Simple group with active attributes + metadata in Static attributes ',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 4,
+                                metadata: {
+                                    color: 'blue'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending measures through http IT should store metatada static attributes into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 10,
+                        type: 'Text'
+                    },
+                    static_a: {
+                        value: 4,
+                        type: 'Number',
+                        metadata: {
+                            color: 'blue'
+                        }
                     }
                 }
             }
