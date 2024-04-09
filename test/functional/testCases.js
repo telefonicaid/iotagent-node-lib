@@ -2327,6 +2327,147 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0433 - Simple group with active attribute + several timestamp mappings defined',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        timestamp: true,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'a',
+                                type: 'Text'
+                            },
+                            {
+                                object_id: 'mydatetime1',
+                                name: 'TimeInstant',
+                                type: 'DateTime',
+                                entity_name: 'TestType:TestDevice1',
+                                entity_type: 'TestType'
+                            },
+                            {
+                                object_id: 'mydatetime2',
+                                name: 'TimeInstant',
+                                type: 'DateTime',
+                                entity_name: 'TestType:TestDevice2',
+                                entity_type: 'TestType'
+                            },
+                            {
+                                object_id: 'a1',
+                                name: 'a1',
+                                type: 'Text',
+                                expression: 'a',
+                                entity_name: 'TestType:TestDevice1',
+                                entity_type: 'TestType'
+                            },
+                            {
+                                object_id: 'a2',
+                                name: 'a2',
+                                type: 'Text',
+                                expression: 'a',
+                                entity_name: 'TestType:TestDevice2',
+                                entity_type: 'TestType'
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a measure through http IT should map the measure to timestamp attributes and use it for timestmap and other metadata attributes sent to Context Broker',
+                type: 'multientity',
+                isRegex: true,
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 23,
+                        mydatetime1: '2011-01-01T01:11:11.111Z',
+                        mydatetime2: '2022-02-02T02:22:22.222Z'
+                    }
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type,
+                            a: {
+                                value: 23,
+                                type: 'Text',
+                                metadata: {
+                                    TimeInstant: {
+                                        value: _.isDateString,
+                                        type: 'DateTime'
+                                    }
+                                }
+                            },
+                            TimeInstant: {
+                                value: _.isDateString,
+                                type: 'DateTime'
+                            }
+                        },
+                        {
+                            id: 'TestType:TestDevice1',
+                            type: globalEnv.entity_type,
+                            a1: {
+                                value: 23,
+                                type: 'Text',
+                                metadata: {
+                                    TimeInstant: {
+                                        value: '2011-01-01T01:11:11.111Z',
+                                        type: 'DateTime'
+                                    }
+                                }
+                            },
+                            TimeInstant: {
+                                value: '2011-01-01T01:11:11.111Z',
+                                type: 'DateTime'
+                            }
+                        },
+                        {
+                            id: 'TestType:TestDevice2',
+                            type: globalEnv.entity_type,
+                            a2: {
+                                value: 23,
+                                type: 'Text',
+                                metadata: {
+                                    TimeInstant: {
+                                        value: '2022-02-02T02:22:22.222Z',
+                                        type: 'DateTime'
+                                    }
+                                }
+                            },
+                            TimeInstant: {
+                                value: '2022-02-02T02:22:22.222Z',
+                                type: 'DateTime'
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+
     // 0500 - EXPLICIT ATTRIBUTES TESTS
     {
         describeName: '0500 - Group with explicit attrs:false (boolean) + active atributes',
