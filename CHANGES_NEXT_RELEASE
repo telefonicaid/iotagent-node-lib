@@ -1,3 +1,4 @@
 - Fix: reduce information showed handling errors to just config flags (#1594)
+- Upgrade pymongo dep from 4.3.3 to 4.6.3
 - Upgrade express dep from 4.18.1 to 4.19.2
 - Add: allow devices with the same device_id in the same service and subservice but different apikey (#1589)
