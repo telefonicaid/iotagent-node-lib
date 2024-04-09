@@ -445,6 +445,74 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0021   Simple group with active attributes with metadata',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Boolean',
+                                metadata: {
+                                    accuracy: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: false,
+                        type: 'Boolean',
+                        metadata: {
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     // 0100 - JEXL TESTS
     {
         describeName: '0100 - Simple group with active attribute + JEXL expression boolean (!)',
