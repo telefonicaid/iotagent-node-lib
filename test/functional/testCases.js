@@ -1545,6 +1545,75 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0191 - Simple group with JEXL expression in metadata',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Boolean',
+                                expression: 'a?threshold[90|tostring].max:true',
+                                metadata: {
+                                    unit: {
+                                        type: 'Text',
+                                        expression: '"hola" + "adios"'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a measure  through http IT should send to Context Broker expanded metadata value  ',
+                type: 'single',
+                isRegex: true,
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: true,
+                        type: 'Boolean',
+                        metadata: {
+                            unit: {
+                                type: 'Text',
+                                value: 'holaadios'
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     // 0200 - COMMANDS TESTS
     {
         describeName: '0200 - Simple group with commands',
