@@ -2328,7 +2328,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0433 - Simple group with active attribute + several timestamp mappings defined',
+        describeName: '0433 - Simple group with active attribute + several timestamp mappings defined in multientity',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -2459,6 +2459,36 @@ const testCases = [
                             },
                             TimeInstant: {
                                 value: '2022-02-02T02:22:22.222Z',
+                                type: 'DateTime'
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending a measure through http IT should map the measure to timestamp attributes for just mapped entity and sent to Context Broker',
+                type: 'multientity',
+                isRegex: true,
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        mydatetime1: '2011-01-01T01:11:11.111Z'
+                    }
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            id: 'TestType:TestDevice1',
+                            type: globalEnv.entity_type,
+                            TimeInstant: {
+                                value: '2011-01-01T01:11:11.111Z',
                                 type: 'DateTime'
                             }
                         }
