@@ -157,8 +157,8 @@ parameters defined at device level in database, the parameters are inherit from 
 
 Group service uniqueness is defined by the combination of: service, subservice and apikey
 
-Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several
-devices with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
+Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
+with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
 
 ## Special measures and attributes names
 
@@ -307,6 +307,43 @@ e.g.:
           {"name": "controlledProperty", "type": "Text", "value": ["light"],
             "metadata":{
               "includes":{"type": "Text", "value" :["state", "luminosity"]},
+              "alias":{"type": "Text", "value" :"lamp"}
+            }
+          },
+     ]
+   }
+```
+
+Metadata could also has `expression` like attributes in order to expand it:
+
+e.g.:
+
+```json
+{
+     "entity_type": "Lamp",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+..etc
+     "commands": [
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+     ],
+     "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer",
+          "metadata":{
+              "unitCode":{"type": "Text", "value" :"CAL"}
+          }
+        }
+     ],
+     "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": ["light"],
+            "metadata":{
+              "includes":{"type": "Text",
+                          "value" :["state", "luminosity"],
+                          "expression": "level / 100"
+                         },
               "alias":{"type": "Text", "value" :"lamp"}
             }
           },
@@ -525,8 +562,8 @@ expression. In all cases the following data is available to all expressions:
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
 
-Additionally, for attribute expressions (`expression`, `entity_name`) and `entityNameExp` measures are avaiable in the
-**context** used to evaluate them.
+Additionally, for attribute expressions (`expression`, `entity_name`) , `entityNameExp` andmetadata expressions
+(`expression`) measures are avaiable in the **context** used to evaluate them.
 
 ### Examples of JEXL expressions
 
