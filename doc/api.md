@@ -977,19 +977,23 @@ adds a `TimeInstant` attribute as metadata for every other attribute in the same
 `observedAt` property-of-a-property is used instead.
 
 If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure is
-refused.
+refused. In this case `TimeInstant` could be mapped to an attribute and then modified by an expression, see the
+[Expression Language definition](#expression-language-support) for details
 
 Depending on the `timestamp` configuration and if the measure contains a value named `TimeInstant` with a correct value,
 the IoTA behaviour is described in the following table:
 
-| `timestamp` value | measure contains `TimeInstant` | Behaviour                                              |
-| ----------------- | ------------------------------ | ------------------------------------------------------ |
-| true              | Yes                            | TimeInstant and metadata updated with measure value    |
-| true              | No                             | TimeInstant and metadata updated with server timestamp |
-| false             | Yes                            | TimeInstant and metadata updated with measure value    |
-| false             | No                             | TimeInstant and metadata updated with server timestamp |
-| Not defined       | Yes                            | TimeInstant and metadata updated with measure value    |
-| Not defined       | No                             | TimeInstant and metadata updated with server timestamp |
+| `timestamp` conf value | measure contains `TimeInstant` | Behaviour                                              |
+| ---------------------- | ------------------------------ | ------------------------------------------------------ |
+| true                   | Yes                            | TimeInstant and metadata updated with measure value    |
+| true                   | No                             | TimeInstant and metadata updated with server timestamp |
+| false                  | Yes                            | TimeInstant and metadata updated with measure value    |
+| false                  | No                             | TimeInstant and metadata updated with server timestamp |
+| Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
+| Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
+
+If there is an attribute with maps a measure to a TimeInstant, then that value will be used as a default TimeInstant,
+overwriting the above rules, that is, a `TimeInstant` measure or server timestamp.
 
 The `timestamp` value used is:
 
