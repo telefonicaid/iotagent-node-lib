@@ -999,7 +999,7 @@ The `timestamp` conf value used is:
 
 Some additional considerations to take into account:
 
-* If there is an attribute which maps a measure to `TimeInstant` attribute (after [expression evaluation](#expression-language-support) if any is defined), then that value will be used as as `TimeInstant,
+* If there is an attribute which maps a measure to `TimeInstant` attribute (after [expression evaluation](#expression-language-support) if any is defined), then that value will be used as `TimeInstant,
 overwriting the above rules specified in "Behaviour" column. Note that an expression in the  could be used in that mapping.
 * If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server timestamp will take place).
 
