@@ -1009,31 +1009,40 @@ Will now generate the following NGSI v2 payload:
 
 ## Timestamp Processing
 
-The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
-adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
-`observedAt` property-of-a-property is used instead.
+Timestamp processing done by IOTA is as follows:
 
-If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure is
-refused.
+-   An attribute `TimeInstant` is added to updated entities
+-   In the case of NGSI-v2, a `TimeInstant` metadata is added in each updated attribute. With NGSI-LD, the Standard
+    `observedAt` property-of-a-property is used instead.
 
 Depending on the `timestamp` configuration and if the measure contains a value named `TimeInstant` with a correct value,
 the IoTA behaviour is described in the following table:
 
-| `timestamp` value | measure contains `TimeInstant` | Behaviour                                              |
-| ----------------- | ------------------------------ | ------------------------------------------------------ |
-| true              | Yes                            | TimeInstant and metadata updated with measure value    |
-| true              | No                             | TimeInstant and metadata updated with server timestamp |
-| false             | Yes                            | TimeInstant and metadata updated with measure value    |
-| false             | No                             | TimeInstant and metadata updated with server timestamp |
-| Not defined       | Yes                            | TimeInstant and metadata updated with measure value    |
-| Not defined       | No                             | TimeInstant and metadata updated with server timestamp |
+| `timestamp` conf value | measure contains `TimeInstant` | Behaviour                                              |
+| ---------------------- | ------------------------------ | ------------------------------------------------------ |
+| true                   | Yes                            | TimeInstant and metadata updated with measure value    |
+| true                   | No                             | TimeInstant and metadata updated with server timestamp |
+| false                  | Yes                            | TimeInstant and metadata updated with measure value    |
+| false                  | No                             | TimeInstant and metadata updated with server timestamp |
+| Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
+| Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
 
-The `timestamp` value used is:
+The `timestamp` conf value used is:
 
 -   The one defined at device level
 -   The one defined at group level (if not defined at device level)
 -   The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at
     group level or device level)
+
+Some additional considerations to take into account:
+
+-   If there is an attribute which maps a measure to `TimeInstant` attribute (after
+    [expression evaluation](#expression-language-support) if any is defined), then that value will be used as
+    `TimeInstant, overwriting the above rules specified in "Behaviour" column. Note that an expression in the could be
+    used in that mapping.
+-   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
+    measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
+    timestamp will take place).
 
 ## Overriding global Context Broker host
 
