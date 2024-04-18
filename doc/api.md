@@ -562,8 +562,8 @@ expression. In all cases the following data is available to all expressions:
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
 
-Additionally, for attribute expressions (`expression`, `entity_name`) , `entityNameExp` andmetadata expressions
-(`expression`) measures are avaiable in the **context** used to evaluate them.
+Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
+(`expression`) measures are available in the **context** used to evaluate them.
 
 ### Examples of JEXL expressions
 
