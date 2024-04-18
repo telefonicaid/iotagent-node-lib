@@ -1,3 +1,4 @@
+- Add: process JEXL expressions in metadata attributes (#1601)
 - Fix: TimeInstant mapped from attribute overrides default behaviours (#1557)
 - Fix: reduce information showed handling errors to just config flags (#1594)
 - Upgrade pymongo dep from 4.3.3 to 4.6.3

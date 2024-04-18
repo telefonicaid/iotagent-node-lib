@@ -314,6 +314,43 @@ e.g.:
    }
 ```
 
+Metadata could also has `expression` like attributes in order to expand it:
+
+e.g.:
+
+```json
+{
+     "entity_type": "Lamp",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+..etc
+     "commands": [
+        {"name": "on","type": "command"},
+        {"name": "off","type": "command"}
+     ],
+     "attributes": [
+        {"object_id": "s", "name": "state", "type":"Text"},
+        {"object_id": "l", "name": "luminosity", "type":"Integer",
+          "metadata":{
+              "unitCode":{"type": "Text", "value" :"CAL"}
+          }
+        }
+     ],
+     "static_attributes": [
+          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
+          {"name": "controlledProperty", "type": "Text", "value": ["light"],
+            "metadata":{
+              "includes":{"type": "Text",
+                          "value" :["state", "luminosity"],
+                          "expression": "level / 100"
+                         },
+              "alias":{"type": "Text", "value" :"lamp"}
+            }
+          },
+     ]
+   }
+```
+
 ### NGSI-LD data and metadata considerations
 
 When provisioning devices for an NGSI-LD Context Broker, `type` values should typically correspond to one of the
@@ -525,8 +562,8 @@ expression. In all cases the following data is available to all expressions:
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
 
-Additionally, for attribute expressions (`expression`, `entity_name`) and `entityNameExp` measures are avaiable in the
-**context** used to evaluate them.
+Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
+(`expression`) measures are available in the **context** used to evaluate them.
 
 ### Examples of JEXL expressions
 
@@ -974,9 +1011,9 @@ Will now generate the following NGSI v2 payload:
 
 Timestamp processing done by IOTA is as follows:
 
-* An attribute `TimeInstant` is added to updated entities
-* In the case of NGSI-v2, a `TimeInstant` metadata is added in each updated attribute. With NGSI-LD, the Standard
-`observedAt` property-of-a-property is used instead.
+-   An attribute `TimeInstant` is added to updated entities
+-   In the case of NGSI-v2, a `TimeInstant` metadata is added in each updated attribute. With NGSI-LD, the Standard
+    `observedAt` property-of-a-property is used instead.
 
 Depending on the `timestamp` configuration and if the measure contains a value named `TimeInstant` with a correct value,
 the IoTA behaviour is described in the following table:
@@ -999,9 +1036,13 @@ The `timestamp` conf value used is:
 
 Some additional considerations to take into account:
 
-* If there is an attribute which maps a measure to `TimeInstant` attribute (after [expression evaluation](#expression-language-support) if any is defined), then that value will be used as `TimeInstant,
-overwriting the above rules specified in "Behaviour" column. Note that an expression in the  could be used in that mapping.
-* If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server timestamp will take place).
+-   If there is an attribute which maps a measure to `TimeInstant` attribute (after
+    [expression evaluation](#expression-language-support) if any is defined), then that value will be used as
+    `TimeInstant, overwriting the above rules specified in "Behaviour" column. Note that an expression in the could be
+    used in that mapping.
+-   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
+    measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
+    timestamp will take place).
 
 ## Overriding global Context Broker host
 

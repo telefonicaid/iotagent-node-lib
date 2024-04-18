@@ -445,6 +445,74 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0021   Simple group with active attributes with metadata',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Boolean',
+                                metadata: {
+                                    accuracy: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: false,
+                        type: 'Boolean',
+                        metadata: {
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     // 0100 - JEXL TESTS
     {
         describeName: '0100 - Simple group with active attribute + JEXL expression boolean (!)',
@@ -1477,6 +1545,75 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0191 - Simple group with JEXL expression in metadata',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Boolean',
+                                expression: 'a?threshold[90|tostring].max:true',
+                                metadata: {
+                                    unit: {
+                                        type: 'Text',
+                                        expression: '"hola" + "adios"'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a measure  through http IT should send to Context Broker expanded metadata value  ',
+                type: 'single',
+                isRegex: true,
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: true,
+                        type: 'Boolean',
+                        metadata: {
+                            unit: {
+                                type: 'Text',
+                                value: 'holaadios'
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
     // 0200 - COMMANDS TESTS
     {
         describeName: '0200 - Simple group with commands',
@@ -1700,6 +1837,78 @@ const testCases = [
                             }
                         },
                         type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0320 - Simple group with active attributes + metadata in Static attributes ',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 4,
+                                metadata: {
+                                    accuracy: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending measures through http IT should store metatada static attributes into Context Broker',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    a: {
+                        value: 10,
+                        type: 'Text'
+                    },
+                    static_a: {
+                        value: 4,
+                        type: 'Number',
+                        metadata: {
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
+                        }
                     }
                 }
             }
