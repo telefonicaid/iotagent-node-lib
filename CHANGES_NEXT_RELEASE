@@ -1,0 +1,1 @@
+- Fix: allow send multiple measures to CB in a batch (v2/op/update) instead of using multiples single request (iotagent-json#825)
