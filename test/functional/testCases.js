@@ -513,6 +513,72 @@ const testCases = [
             }
         ]
     },
+    {
+        describeName: '0022   Simple group with active attributes and multimeasures',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                loglevel: 'debug',
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types and name mappings',
+                type: 'multimeasure', // TBD: this should be implemented to expect /v2/op/update
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: [
+                        [
+                            {
+                                a: 0
+                            }
+                        ],
+                        [
+                            {
+                                a: 6
+                            }
+                        ]
+                    ]
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 6,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
     // 0100 - JEXL TESTS
     {
         describeName: '0100 - Simple group with active attribute + JEXL expression boolean (!)',
