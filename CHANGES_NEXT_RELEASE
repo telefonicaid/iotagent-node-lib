@@ -1,2 +1,2 @@
 - Fix: allow send multiple measures to CB in a batch (POST /v2/op/update) instead of using multiples single request (iotagent-json#825)
-- Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (telefonicaid/iotagent-json#827)
+- Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (iotagent-json#827)
