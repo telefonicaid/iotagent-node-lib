@@ -544,7 +544,7 @@ const testCases = [
         },
         should: [
             {
-                loglevel: 'debug',
+                //loglevel: 'debug',
                 shouldName:
                     'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types and name mappings',
                 type: 'multimeasure', // TBD: this should be implemented to expect /v2/op/update
@@ -556,25 +556,34 @@ const testCases = [
                         k: globalEnv.apikey
                     },
                     json: [
-                        [
-                            {
-                                a: 0
-                            }
-                        ],
-                        [
-                            {
-                                a: 6
-                            }
-                        ]
+                        {
+                            a: 0
+                        },
+                        {
+                            a: 6
+                        }
                     ]
                 },
                 expectation: {
-                    id: globalEnv.entity_name,
-                    type: globalEnv.entity_type,
-                    attr_a: {
-                        value: 6,
-                        type: 'Number'
-                    }
+                    actionType: 'append',
+                    entities: [
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 0
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 6
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        }
+                    ]
                 }
             }
         ]
