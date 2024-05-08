@@ -560,6 +560,21 @@ const testCases = [
                             a: 0
                         },
                         {
+                            a: 1
+                        },
+                        {
+                            a: 2
+                        },
+                        {
+                            a: 3
+                        },
+                        {
+                            a: 4
+                        },
+                        {
+                            a: 5
+                        },
+                        {
                             a: 6
                         }
                     ]
@@ -571,6 +586,46 @@ const testCases = [
                             attr_a: {
                                 type: 'Number',
                                 value: 0
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 1
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 2
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 3
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 4
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 5
                             },
                             id: globalEnv.entity_name,
                             type: globalEnv.entity_type
