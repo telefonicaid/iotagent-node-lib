@@ -544,10 +544,9 @@ const testCases = [
         },
         should: [
             {
-                //loglevel: 'debug',
                 shouldName:
                     'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types and name mappings',
-                type: 'multimeasure', // TBD: this should be implemented to expect /v2/op/update
+                type: 'multimeasure',
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
                     method: 'POST',
