@@ -639,6 +639,138 @@ const testCases = [
                         }
                     ]
                 }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures with TimeInstant to Context Broker preserving value types and name mappings',
+                type: 'multimeasure',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: [
+                        {
+                            a: 0,
+                            TimeInstant: '2024-04-10T10:00:00Z'
+                        },
+                        {
+                            a: 1,
+                            TimeInstant: '2024-04-10T10:05:00Z'
+                        },
+                        {
+                            a: 2,
+                            TimeInstant: '2024-04-10T10:10:00Z'
+                        },
+                        {
+                            a: 3,
+                            TimeInstant: '2024-04-10T10:15:00Z'
+                        },
+                        {
+                            a: 4,
+                            TimeInstant: '2024-04-10T10:20:00Z'
+                        },
+                        {
+                            a: 5,
+                            TimeInstant: '2024-04-10T10:25:00Z'
+                        },
+                        {
+                            a: 6,
+                            TimeInstant: '2024-04-10T10:30:00Z'
+                        }
+                    ]
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 0
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:00:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 1
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:05:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 2
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:10:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 3
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:15:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 4
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:20:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 5
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:25:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 6
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:30:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        }
+                    ]
+                }
             }
         ]
     },
