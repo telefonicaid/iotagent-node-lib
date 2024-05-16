@@ -2969,6 +2969,164 @@ const testCases = [
         ]
     },
     {
+        describeName: '0531 - Group with explicit attrs:[ ] (empty array) + active attributes + static attributes',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: '[ ]',
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'attr_a',
+                                object_id: 'a',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'attr_b',
+                                object_id: 'b',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            },
+                            {
+                                name: 'static_b',
+                                type: 'Number',
+                                value: 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending both provisioned and not object_ids (measures) through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11
+                    }
+                },
+                expectation: [] // No payload expected
+            }
+        ]
+    },
+    {
+        describeName:
+            '0532 - Group with explicit attrs:[ ] (empty array) + active attributes + static attributes + timestamp:true',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: '[ ]',
+                        timestamp: true,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'attr_a',
+                                object_id: 'a',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'attr_b',
+                                object_id: 'b',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            },
+                            {
+                                name: 'static_b',
+                                type: 'Number',
+                                value: 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending both provisioned and not object_ids (measures) through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11
+                    }
+                },
+                expectation: [] // No payload expected
+            },
+            {
+                shouldName:
+                    'B - WHEN sending data and a measure called TimeInstant through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11,
+                        TimeInstant: '2015-12-14T08:06:01.468Z'
+                    }
+                },
+                expectation: [] // No payload expected
+            }
+        ]
+    },
+    {
         describeName:
             '0540 - Group with explicit attrs: JEXL expression based on measure resulting boolean + active attributes + static attributes',
         provision: {
