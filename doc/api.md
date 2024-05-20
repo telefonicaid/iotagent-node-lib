@@ -11,7 +11,7 @@
         -   [Uniqueness of groups and devices](#uniqueness-of-groups-and-devices)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
-    -   [Multientity support)](#multientity-support)
+    -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
     -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
@@ -286,32 +286,37 @@ e.g.:
 
 ```json
 {
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text", "value" :["state", "luminosity"]},
-              "alias":{"type": "Text", "value" :"lamp"}
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
             }
-          },
-     ]
-   }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"] },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
 ```
 
 Metadata could also has `expression` like attributes in order to expand it:
@@ -320,35 +325,37 @@ e.g.:
 
 ```json
 {
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text",
-                          "value" :["state", "luminosity"],
-                          "expression": "level / 100"
-                         },
-              "alias":{"type": "Text", "value" :"lamp"}
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
             }
-          },
-     ]
-   }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
 ```
 
 ### NGSI-LD data and metadata considerations
