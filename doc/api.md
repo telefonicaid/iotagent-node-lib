@@ -1065,7 +1065,7 @@ For example:
 ]
 ```
 
-In this case a batch update (`/op/v2/update`) to CB will be generated with the following NGSI v2 payload:
+In this case a batch update (`POST /v2/op/update`) to CB will be generated with the following NGSI v2 payload:
 
 ```json
 {
