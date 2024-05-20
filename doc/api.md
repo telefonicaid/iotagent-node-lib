@@ -32,6 +32,7 @@
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Processing](#timestamp-processing)
+    -   [Multimeasure support](#multimeasure-support)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -1043,6 +1044,127 @@ Some additional considerations to take into account:
 -   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
     measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
     timestamp will take place).
+
+## Multimeasure support
+
+A device could receive several measures at the same time.
+
+For example:
+
+```json
+[
+    {
+        "vol": 0
+    },
+    {
+        "vol": 1
+    },
+    {
+        "vol": 2
+    }
+]
+```
+
+In this case a batch update (`/op/v2/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        }
+    ]
+}
+```
+
+Moreover if a multimeasure contains TimeInstant attribute, then CB update is sorted by attribute TimeInstant:
+
+For example:
+
+```json
+[
+    {
+        "vol": 0,
+        "TimeInstant": "2024-04-10T10:15:00Z"
+    },
+    {
+        "vol": 1,
+        "TimeInstant": "2024-04-10T10:10:00Z"
+    },
+    {
+        "vol": 2,
+        "TimeInstant": "2024-04-10T10:05:00Z"
+    }
+]
+```
+
+In this case a batch update (`/op/v2/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 2
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:05:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:10:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:15:00Z"
+            }
+        }
+    ]
+}
+```
 
 ## Overriding global Context Broker host
 
