@@ -138,7 +138,7 @@ const unknownDevice = {
 describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
     beforeEach(function (done) {
         delete device1.registrationId;
-        logger.setLevel('DEBUG');
+        logger.setLevel('FATAL');
 
         nock.cleanAll();
 
