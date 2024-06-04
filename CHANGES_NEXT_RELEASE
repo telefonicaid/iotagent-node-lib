@@ -1,3 +1,4 @@
 - Fix: update device using previous device apikey to avoid error when apikey is updated /(iota-json#833)
 - Fix: allow send multiple measures to CB in a batch (POST /v2/op/update) and sorted by TimeInstant when possible, instead of using multiples single request (iotagent-json#825, #1612)
 - Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (iotagent-json#827)
+- Fix: accept 201 status code from context broker with NGSI-LD interface when first measure is sent and device is created in it (#1617)
