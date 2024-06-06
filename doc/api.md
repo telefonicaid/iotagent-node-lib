@@ -464,8 +464,9 @@ element. By adding the field `explicitAttrs` with `true` value to device or conf
 measure elements that are not defined in the mappings of device or config group, persisting only the one defined in the
 mappings of the provision. If `explicitAttrs` is provided both at device and config group level, the device level takes
 precedence. Additionally `explicitAttrs` can be used to define which measures (identified by their attribute names, not
-by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface. When `explicitAttrs` is an array or
-and JEXL expression resulting in to Array, if this array is empty then `TimeInstant` is not propaged to CB.
+by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
+
+Note that when `explicitAttrs` is an array or a JEXL expression resulting in to Array, if this array is empty then `TimeInstant` is not propaged to CB.
 
 The different possibilities are summarized below:
 
