@@ -1,4 +1,4 @@
-- Feature: do not propage TimeInstnat when explicitAttrs is empty array
+- Fix: do not propage TimeInstant when explicitAttrs is empty array (#1606)
 - Fix: update device using previous device apikey to avoid error when apikey is updated (iota-json#833)
 - Fix: allow send multiple measures to CB in a batch (POST /v2/op/update) and sorted by TimeInstant when possible, instead of using multiples single request (iotagent-json#825, #1612)
 - Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (iotagent-json#827)
