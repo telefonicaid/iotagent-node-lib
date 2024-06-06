@@ -3045,14 +3045,7 @@ const testCases = [
                         t: '2015-12-14T08:06:01.468Z'
                     }
                 },
-                expectation: {
-                    id: 'TestType:TestDevice',
-                    type: 'TestType',
-                    TimeInstant: {
-                        type: 'DateTime',
-                        value: '2015-12-14T08:06:01.468Z'
-                    }
-                }
+                expectation: []
             },
             {
                 shouldName:
