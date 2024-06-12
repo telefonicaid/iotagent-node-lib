@@ -446,7 +446,7 @@ const testCases = [
         ]
     },
     {
-        describeName: '0021   Simple group with active attributes with metadata',
+        describeName: '0021 - Simple group with active attributes with metadata',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -509,6 +509,399 @@ const testCases = [
                             }
                         }
                     }
+                }
+            }
+        ]
+    },
+    {
+        describeName: '0022 - Simple group with active attributes and multimeasures',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures to Context Broker preserving value types and name mappings',
+                type: 'multimeasure',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: [
+                        {
+                            a: 0
+                        },
+                        {
+                            a: 1
+                        },
+                        {
+                            a: 2
+                        },
+                        {
+                            a: 3
+                        },
+                        {
+                            a: 4
+                        },
+                        {
+                            a: 5
+                        },
+                        {
+                            a: 6
+                        }
+                    ]
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 0
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 1
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 2
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 3
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 4
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 5
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 6
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        }
+                    ]
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures with TimeInstant to Context Broker preserving value types and name mappings and order',
+                type: 'multimeasure',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: [
+                        {
+                            a: 0,
+                            TimeInstant: '2024-04-10T10:00:00Z'
+                        },
+                        {
+                            a: 1,
+                            TimeInstant: '2024-04-10T10:05:00Z'
+                        },
+                        {
+                            a: 2,
+                            TimeInstant: '2024-04-10T10:10:00Z'
+                        },
+                        {
+                            a: 3,
+                            TimeInstant: '2024-04-10T10:15:00Z'
+                        },
+                        {
+                            a: 4,
+                            TimeInstant: '2024-04-10T10:20:00Z'
+                        },
+                        {
+                            a: 5,
+                            TimeInstant: '2024-04-10T10:25:00Z'
+                        },
+                        {
+                            a: 6,
+                            TimeInstant: '2024-04-10T10:30:00Z'
+                        }
+                    ]
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 0
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:00:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 1
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:05:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 2
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:10:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 3
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:15:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 4
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:20:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 5
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:25:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 6
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:30:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        }
+                    ]
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids (measures) through http IT should send measures with TimeInstant to Context Broker preserving value types and name mappings and sorted by TimeInstant',
+                type: 'multimeasure',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: [
+                        {
+                            a: 0,
+                            TimeInstant: '2024-04-10T10:15:00Z'
+                        },
+                        {
+                            a: 1,
+                            TimeInstant: '2024-04-10T10:05:00Z'
+                        },
+                        {
+                            a: 2,
+                            TimeInstant: '2024-04-10T10:20:00Z'
+                        },
+                        {
+                            a: 3,
+                            TimeInstant: '2024-04-10T10:00:00Z'
+                        },
+                        {
+                            a: 4,
+                            TimeInstant: '2024-04-10T10:10:00Z'
+                        },
+                        {
+                            a: 5,
+                            TimeInstant: '2024-04-10T10:30:00Z'
+                        },
+                        {
+                            a: 6,
+                            TimeInstant: '2024-04-10T10:25:00Z'
+                        }
+                    ]
+                },
+                expectation: {
+                    actionType: 'append',
+                    entities: [
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 3
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:00:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 1
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:05:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 4
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:10:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 0
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:15:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 2
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:20:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 6
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:25:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        },
+                        {
+                            attr_a: {
+                                type: 'Number',
+                                value: 5
+                            },
+                            TimeInstant: {
+                                type: 'DateTime',
+                                value: '2024-04-10T10:30:00Z'
+                            },
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type
+                        }
+                    ]
                 }
             }
         ]
@@ -2618,24 +3011,6 @@ const testCases = [
                     actionType: 'append',
                     entities: [
                         {
-                            id: globalEnv.entity_name,
-                            type: globalEnv.entity_type,
-                            a: {
-                                value: 23,
-                                type: 'Text',
-                                metadata: {
-                                    TimeInstant: {
-                                        value: _.isDateString,
-                                        type: 'DateTime'
-                                    }
-                                }
-                            },
-                            TimeInstant: {
-                                value: _.isDateString,
-                                type: 'DateTime'
-                            }
-                        },
-                        {
                             id: 'TestType:TestDevice1',
                             type: globalEnv.entity_type,
                             a1: {
@@ -2668,6 +3043,24 @@ const testCases = [
                             },
                             TimeInstant: {
                                 value: '2022-02-02T02:22:22.222Z',
+                                type: 'DateTime'
+                            }
+                        },
+                        {
+                            id: globalEnv.entity_name,
+                            type: globalEnv.entity_type,
+                            a: {
+                                value: 23,
+                                type: 'Text',
+                                metadata: {
+                                    TimeInstant: {
+                                        value: _.isDateString,
+                                        type: 'DateTime'
+                                    }
+                                }
+                            },
+                            TimeInstant: {
+                                value: _.isDateString,
                                 type: 'DateTime'
                             }
                         }
@@ -3103,6 +3496,208 @@ const testCases = [
                     }
                 },
                 expectation: [] // No payload expected
+            },
+            {
+                shouldName:
+                    'B - WHEN sending data and a measure called TimeInstant through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11,
+                        TimeInstant: '2015-12-14T08:06:01.468Z'
+                    }
+                },
+                expectation: [] // No payload expected
+            }
+        ]
+    },
+    {
+        describeName:
+            '0533 - Group with explicit attrs:[ ] (empty array) + active attributes + TimeInstant attribute + static attributes + timestamp:true',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: '[ ]',
+                        timestamp: true,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'attr_a',
+                                object_id: 'a',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'attr_b',
+                                object_id: 'b',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'DateIssued',
+                                object_id: 'TimeInstant',
+                                type: 'DateTime'
+                            },
+                            {
+                                name: 'TimeInstant',
+                                object_id: 't',
+                                type: 'DateTime'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            },
+                            {
+                                name: 'static_b',
+                                type: 'Number',
+                                value: 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending data and a measure called "t" (defined as TimeInstant attribte) through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11,
+                        t: '2015-12-14T08:06:01.468Z'
+                    }
+                },
+                expectation: []
+            },
+            {
+                shouldName:
+                    'B - WHEN sending data and a measure called TimeInstant through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11,
+                        TimeInstant: '2015-12-14T08:06:01.468Z'
+                    }
+                },
+                expectation: [] // No payload expected
+            }
+        ]
+    },
+    {
+        describeName:
+            '0534 - Group with explicit attrs:[ ] (empty array) + active attributes + TimeInstant attribute + static attributes + timestamp:false',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: '[ ]',
+                        timestamp: false,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'attr_a',
+                                object_id: 'a',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'attr_b',
+                                object_id: 'b',
+                                type: 'Number'
+                            },
+                            {
+                                name: 'DateIssued',
+                                object_id: 'TimeInstant',
+                                type: 'DateTime'
+                            },
+                            {
+                                name: 'TimeInstant',
+                                object_id: 't',
+                                type: 'DateTime'
+                            }
+                        ],
+                        static_attributes: [
+                            {
+                                name: 'static_a',
+                                type: 'Number',
+                                value: 3
+                            },
+                            {
+                                name: 'static_b',
+                                type: 'Number',
+                                value: 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending data and a measure called "t" (defined as TimeInstant attribte) through http IT should NOT store anything into the Context Broker (No request to CB)',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 3,
+                        b: 10,
+                        c: 11,
+                        t: '2015-12-14T08:06:01.468Z'
+                    }
+                },
+                expectation: []
             },
             {
                 shouldName:

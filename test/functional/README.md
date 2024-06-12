@@ -39,7 +39,7 @@ test cases are automatically generated. Each test case is defined as an object w
         or if the `transport` element is not defined. See the "Advanced features" section for more information.
     -   `shouldName`: The name of the `IT` test case. This will be used to generate the test case name in the mocha test
         suite.
-    -   `type`: The type of the test case. This can be `single` or `multientity`. See the "Advanced features" section
+    -   `type`: The type of the test case. This can be `single`, `multimeasure` or `multientity`. See the "Advanced features" section
         for more information.
     -   `measure`: The JSON object that will be sent to the IoTA JSON measure API. This will be used to send the
         measure. It contains the following elements:
@@ -199,41 +199,11 @@ as a batch operation (see the following example).
 
 #### Multimeasures
 
-It is also supported to test cases in which is sent more than one measure. To do so, you need to define the test case
-`expectation` as an array, with one object for each measurement. Then, the suite will recognize the array length and will
-expect the same number of NGSI requests. I.E:
+It is also supported to test cases in which is sent more than one measure. To do so, you need to set add to the test case 
+the parameter `should.type` to the value `'multimeasure'`.
 
-```js
-[
-    {
-        id: 'TheLightType2:MQTT_2',
-        type: 'TheLightType2',
-        temperature: {
-            value: 10,
-            type: 'Number'
-        },
-        status: {
-            value: false,
-            type: 'Boolean'
-        }
-    },
-    {
-        id: 'TheLightType2:MQTT_2',
-        type: 'TheLightType2',
-        temperature: {
-            value: 20,
-            type: 'Number'
-        },
-        status: {
-            value: true,
-            type: 'Boolean'
-        }
-    }
-];
-```
-
-You also should define the measure as multimeasure. This is done by defining the `measure` JSON element as an array of
-objects. Each object will be a measure that will be sent to the Context Broker in a different request. I.E:
+You must define the measure as multimeasure. This is done by defining the `measure` JSON element as an array of
+objects. I.E:
 
 ```javascript
 measure: {
@@ -246,15 +216,68 @@ measure: {
     json: [
         {
             s: false,
-            t: 10
+            t: 21
         },
         {
             s: true,
-            t: 20
+            t: 22
+        },
+        {
+            s: false,
+            t: 23
         }
     ]
 }
 ```
+
+And you should define the test case `expectation` as an object, following a Context Broker batch operation. I.E:
+
+```js
+expectation: {
+    actionType: 'append',
+    entities: [
+        {
+            id: 'TheLightType2:MQTT_2',
+            type: 'TheLightType2',
+            temperature: {
+                type: 'Number',
+                value: 21
+            },
+            status: {
+                type: 'Boolean',
+                value: false
+            }
+        },
+        {
+            id: 'TheLightType2:MQTT_2',
+            type: 'TheLightType2',
+            temperature: {
+                type: 'Number',
+                value: 22
+            },
+            status: {
+                type: 'Boolean',
+                value: true
+            }
+        },
+        {
+            id: 'TheLightType2:MQTT_2',
+            type: 'TheLightType2',
+            temperature: {
+                type: 'Number',
+                value: 23
+            },
+            status: {
+                type: 'Boolean',
+                value: false
+            }
+        }
+    ]
+}
+```
+
+Then, a batch request would be sent to the Context Broker containing the different measures. More information about
+how the IoT Agent send multimeasures to the Context Broker [here](/doc/api.md#multimeasure-support).
 
 #### Transport
 

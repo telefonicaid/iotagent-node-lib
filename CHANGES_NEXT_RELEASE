@@ -1,2 +1,1 @@
-- Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (telefonicaid/iotagent-json#827)
 - Fix: service header to use uppercase in case of update and delete (#1528)

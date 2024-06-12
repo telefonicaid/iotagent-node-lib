@@ -11,7 +11,7 @@
         -   [Uniqueness of groups and devices](#uniqueness-of-groups-and-devices)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
-    -   [Multientity support)](#multientity-support)
+    -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
     -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
@@ -32,6 +32,7 @@
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Processing](#timestamp-processing)
+    -   [Multimeasure support](#multimeasure-support)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -286,32 +287,37 @@ e.g.:
 
 ```json
 {
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text", "value" :["state", "luminosity"]},
-              "alias":{"type": "Text", "value" :"lamp"}
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
             }
-          },
-     ]
-   }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"] },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
 ```
 
 Metadata could also has `expression` like attributes in order to expand it:
@@ -320,35 +326,37 @@ e.g.:
 
 ```json
 {
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text",
-                          "value" :["state", "luminosity"],
-                          "expression": "level / 100"
-                         },
-              "alias":{"type": "Text", "value" :"lamp"}
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
             }
-          },
-     ]
-   }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
 ```
 
 ### NGSI-LD data and metadata considerations
@@ -457,6 +465,8 @@ measure elements that are not defined in the mappings of device or config group,
 mappings of the provision. If `explicitAttrs` is provided both at device and config group level, the device level takes
 precedence. Additionally `explicitAttrs` can be used to define which measures (identified by their attribute names, not
 by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
+
+Note that when `explicitAttrs` is an array or a JEXL expression resulting in to Array, if this array is empty then `TimeInstant` is not propaged to CB.
 
 The different possibilities are summarized below:
 
@@ -1043,6 +1053,127 @@ Some additional considerations to take into account:
 -   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
     measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
     timestamp will take place).
+
+## Multimeasure support
+
+A device could receive several measures at the same time.
+
+For example:
+
+```json
+[
+    {
+        "vol": 0
+    },
+    {
+        "vol": 1
+    },
+    {
+        "vol": 2
+    }
+]
+```
+
+In this case a batch update (`POST /v2/op/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        }
+    ]
+}
+```
+
+Moreover if a multimeasure contains TimeInstant attribute, then CB update is sorted by attribute TimeInstant:
+
+For example:
+
+```json
+[
+    {
+        "vol": 0,
+        "TimeInstant": "2024-04-10T10:15:00Z"
+    },
+    {
+        "vol": 1,
+        "TimeInstant": "2024-04-10T10:10:00Z"
+    },
+    {
+        "vol": 2,
+        "TimeInstant": "2024-04-10T10:05:00Z"
+    }
+]
+```
+
+In this case a batch update (`POST /v2/op/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 2
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:05:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:10:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:15:00Z"
+            }
+        }
+    ]
+}
+```
 
 ## Overriding global Context Broker host
 
