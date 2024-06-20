@@ -205,7 +205,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should register as ContextProvider of its lazy attributes', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
+            iotAgentLib.updateRegister(deviceUpdated, device1, false, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -213,7 +213,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should store the new values in the registry', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, false, function (error, data) {
+            iotAgentLib.updateRegister(deviceUpdated, device1, false, function (error, data) {
                 iotAgentLib.getDevice(deviceUpdated.id, null, 'smartgondor', 'gardens', function (error, deviceResult) {
                     should.not.exist(error);
                     should.exist(deviceResult);
@@ -261,7 +261,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should register as ContextProvider of its commands and create the additional attributes', function (done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, device1, false, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -269,7 +269,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should store the new values in the registry', function (done) {
-            iotAgentLib.updateRegister(deviceCommandUpdated, false, function (error, data) {
+            iotAgentLib.updateRegister(deviceCommandUpdated, device1, false, function (error, data) {
                 iotAgentLib.getDevice(
                     deviceCommandUpdated.id,
                     null,
@@ -290,7 +290,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
 
     describe('When a update action is executed in a non registered device', function () {
         it('should return a DEVICE_NOT_FOUND error', function (done) {
-            iotAgentLib.updateRegister(unknownDevice, false, function (error) {
+            iotAgentLib.updateRegister(unknownDevice, device1, false, function (error) {
                 should.exist(error);
                 error.name.should.equal('DEVICE_NOT_FOUND');
                 done();
@@ -312,7 +312,7 @@ describe('NGSI-v2 - IoT Agent Device Update Registration', function () {
         });
 
         it('should return a REGISTRATION_ERROR error in the update action', function (done) {
-            iotAgentLib.updateRegister(deviceUpdated, false, function (error) {
+            iotAgentLib.updateRegister(deviceUpdated, device1, false, function (error) {
                 should.exist(error);
                 error.name.should.equal('UNREGISTRATION_ERROR');
                 done();

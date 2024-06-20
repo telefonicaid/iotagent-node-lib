@@ -6,10 +6,7 @@
             "type": "Property",
             "value": {
                 "@type": "Array",
-                "@value": [
-                    "iot",
-                    "device"
-                ]
+                "@value": "[\"iot\",\"device\"]"
             }
         },
         "type": "Light"

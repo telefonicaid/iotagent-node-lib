@@ -20,6 +20,14 @@
             "type": "string",
             "required": true
           },
+          "endpoint": {
+              "description": "Endpoint for the commands targeting this group",
+              "type": "string"
+          },
+          "transport": {
+            "description": "Transport protocol used by the platform to communicate with the device",
+            "type": "string"
+          },
           "token": {
             "description": "token",
             "type": "string"
@@ -39,6 +47,10 @@
           },
           "ngsiVersion": {
             "description": "NGSI Interface for this group of devices",
+            "type": "string"
+          },
+          "payloadType": {
+            "description": "Payload type allowed for measures for this group",
             "type": "string"
           },
           "attributes": {

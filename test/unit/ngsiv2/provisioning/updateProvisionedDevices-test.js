@@ -302,6 +302,41 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             });
         });
     });
+    describe('When an update request arrives with a new Apikey', function () {
+        const optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithApikey.json'
+            )
+        };
+
+        beforeEach(function () {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
+                .reply(204);
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
+        });
+
+        it('should raise a 204 error', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
+                done();
+            });
+        });
+    });
     describe('When a wrong update request payload arrives', function () {
         const optionsUpdate = {
             url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',

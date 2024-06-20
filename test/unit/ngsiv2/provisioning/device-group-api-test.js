@@ -70,6 +70,8 @@ const optionsCreation = {
                 entity_type: 'SensorMachine',
                 trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                 cbHost: 'http://unexistentHost:1026',
+                transport: 'HTTP',
+                endpoint: 'http://myendpoint.com',
                 commands: [
                     {
                         name: 'wheel1',
@@ -145,6 +147,8 @@ const optionsUpdate = {
     json: {
         trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
         cbHost: 'http://anotherUnexistentHost:1026',
+        transport: 'MQTT',
+        endpoint: 'http://yourendpoint.com',
         commands: [
             {
                 name: 'wheel1',
@@ -226,6 +230,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body.services[0].transport.should.equal('HTTP');
+                    body.services[0].endpoint.should.equal('http://myendpoint.com');
                     done();
                 });
             });
@@ -673,6 +679,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                         ) {
                             body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
                             body.services[i].static_attributes.length.should.equal(1);
+                            body.services[i].endpoint = 'http://yourendpoint.com';
+                            body.services[i].transport = 'MQTT';
                             found = true;
                         }
                     }
