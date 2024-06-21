@@ -510,6 +510,41 @@ const testCases = [
                         }
                     }
                 }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids with special format names (measures) through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false,
+                        '.1.0.0.1': 23.5
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: false,
+                        type: 'Boolean',
+                        metadata: {
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
+                        }
+                    },
+                    '.1.0.0.1': {
+                        type: 'Text',
+                        value: 23.5
+                    }
+                }
             }
         ]
     },
