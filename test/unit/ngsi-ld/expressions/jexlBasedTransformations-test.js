@@ -289,7 +289,7 @@ const iotAgentConfigTS = {
     providerUrl: 'http://smartgondor.com'
 };
 
-xdescribe('NGSI-LD: JEXL', function () {
+describe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
         //logger.setLevel('FATAL');
 
@@ -306,7 +306,7 @@ xdescribe('NGSI-LD: JEXL', function () {
         });
     });
 
-    describe('When an update comes for expressions with syntax errors', function () {
+    xdescribe('When an update comes for expressions with syntax errors', function () {
         // Case: Update for an attribute with bad expression
         const values = [
             {
@@ -557,7 +557,7 @@ xdescribe('NGSI-LD: JEXL', function () {
         });
     });
 
-    describe('When an update comes for attributes without expressions and NULL type', function () {
+    xdescribe('When an update comes for attributes without expressions and NULL type', function () {
         // Case: Update for a Null attribute without expression
 
         const values = [
@@ -696,7 +696,7 @@ xdescribe('NGSI-LD: JEXL', function () {
         });
     });
 
-    describe('When there are expressions including other attributes and they are not updated', function () {
+    xdescribe('When there are expressions including other attributes and they are not updated', function () {
         const values = [
             {
                 name: 'x',
