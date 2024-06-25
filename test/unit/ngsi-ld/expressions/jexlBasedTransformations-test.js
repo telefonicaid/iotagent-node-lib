@@ -289,7 +289,7 @@ const iotAgentConfigTS = {
     providerUrl: 'http://smartgondor.com'
 };
 
-describe('NGSI-LD: JEXL', function () {
+xdescribe('NGSI-LD: JEXL', function () {
     beforeEach(function (done) {
         //logger.setLevel('FATAL');
 

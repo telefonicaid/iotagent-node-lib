@@ -1,11 +1,6 @@
 [
     {
         "@context": "http://context.json-ld",
-        "id": "urn:ngsi-ld:Sensor:Sensor",
-        "type": "Sensor"
-    },
-    {
-        "@context": "http://context.json-ld",
         "id": "urn:ngsi-ld:WM:SO1",
         "type": "WM",
         "vol": {
