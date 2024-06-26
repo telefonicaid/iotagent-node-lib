@@ -1,0 +1,1 @@
+- Fix: service header to use uppercase in case of update and delete (#1528)
