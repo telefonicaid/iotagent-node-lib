@@ -306,40 +306,6 @@ describe('NGSI-LD: JEXL', function () {
         });
     });
 
-    xdescribe('When an update comes for expressions with syntax errors', function () {
-        // Case: Update for an attribute with bad expression
-        const values = [
-            {
-                name: 'p',
-                type: 'centigrades',
-                value: '52'
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin30.json'
-                    )
-                )
-                .reply(204);
-        });
-
-        it('should ignore the expression before sending the values', function (done) {
-            iotAgentLib.update('light1', 'LightError', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
     describe('When there are expression attributes that are just calculated (not sent by the device)', function () {
         // Case: Expression which results is sent as a new attribute
         const values = [
@@ -557,41 +523,6 @@ describe('NGSI-LD: JEXL', function () {
         });
     });
 
-    xdescribe('When an update comes for attributes without expressions and NULL type', function () {
-        // Case: Update for a Null attribute without expression
-
-        const values = [
-            {
-                name: 'a',
-                type: 'None',
-                value: null
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin5.json'
-                    )
-                )
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
     describe('When an update comes for attributes without expressions and Boolean type', function () {
         // Case: Update for a Boolean attribute without expression
 
@@ -682,39 +613,6 @@ describe('NGSI-LD: JEXL', function () {
                     '/ngsi-ld/v1/entityOperations/upsert/?options=update',
                     utils.readExampleFile(
                         './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin7.json'
-                    )
-                )
-                .reply(204);
-        });
-
-        it('should apply the expression before sending the values', function (done) {
-            iotAgentLib.update('light1', 'Light', '', values, function (error) {
-                should.not.exist(error);
-                contextBrokerMock.done();
-                done();
-            });
-        });
-    });
-
-    xdescribe('When there are expressions including other attributes and they are not updated', function () {
-        const values = [
-            {
-                name: 'x',
-                type: 'Number',
-                value: 0.44
-            }
-        ];
-
-        beforeEach(function () {
-            nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/ngsi-ld/v1/entityOperations/upsert/?options=update',
-                    utils.readExampleFile(
-                        './test/unit/ngsi-ld/examples/contextRequests/updateContextExpressionPlugin12a.json'
                     )
                 )
                 .reply(204);
