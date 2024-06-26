@@ -101,6 +101,14 @@ const iotAgentConfig = {
             active: []
         }
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com'
@@ -136,16 +144,16 @@ describe('NGSI-v2 - Command functionalities', function () {
     afterEach(function (done) {
         timekeeper.reset();
         delete device3.registrationId;
-        iotAgentLib.clearAll(function () {
-            iotAgentLib.deactivate(function () {
-                mongoUtils.cleanDbs(function () {
-                    nock.cleanAll();
-                    iotAgentLib.setDataUpdateHandler();
-                    iotAgentLib.setCommandHandler();
-                    done();
-                });
+        //iotAgentLib.clearAll(function () {
+        iotAgentLib.deactivate(function () {
+            mongoUtils.cleanDbs(function () {
+                nock.cleanAll();
+                iotAgentLib.setDataUpdateHandler();
+                iotAgentLib.setCommandHandler();
+                done();
             });
         });
+        //});
     });
 
     describe('When a device is preregistered with commands', function () {
