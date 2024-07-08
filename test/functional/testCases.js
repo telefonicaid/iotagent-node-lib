@@ -4561,6 +4561,78 @@ const testCases = [
                 }
             }
         ]
+    },
+    // 0900 - JEXL FUNCTION TESTS
+    {
+        describeName: '0900 - JEXL function - valuePicker and valuePickerMulti',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        explicitAttrs: true,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'single',
+                                name: 'single',
+                                type: 'Number',
+                                expression: '{alarm1:alarm1,alarm2:alarm2,alarm3:alarm3}|valuePicker(true)'
+                            },
+                            {
+                                object_id: 'multi',
+                                name: 'multi',
+                                type: 'Number',
+                                expression: "a|valuePickerMulti([true,1,'on','nok'])"
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a boolean value (true) through http IT should send to Context Broker the value 3 ',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: { n1: true, n2: 1, n3: 'on', n4: 'nok', n5: 'ok', n6: true, n7: false, n8: 0 },
+                        alarm1: true,
+                        alarm2: false,
+                        alarm3: true
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    single: {
+                        value: ['alarm1', 'alarm3'],
+                        type: 'Number'
+                    },
+                    multi: {
+                        value: ['n1', 'n2', 'n3', 'n4', 'n6'],
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
     }
 ];
 
