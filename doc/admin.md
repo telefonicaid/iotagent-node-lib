@@ -162,11 +162,12 @@ support nulls or multi-attribute requests if they are encountered.
 #### `stats`
 
 It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings.
+writings. The `persistence` flag stores stats in the mongo backend.
 
 ```javascript
 stats: {
     interval: 100;
+    persistence: false;
 }
 ```
 
@@ -482,6 +483,8 @@ overrides.
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
+| IOTA_STATS_INTERVAL                  | `stats.interval`                |
+| IOTA_STATS_PERSISTENCE               | `stats.persistence`             |
 
 Note:
 
