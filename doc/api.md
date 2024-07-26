@@ -8,9 +8,10 @@
     -   [IoT Agent information model](#iot-agent-information-model)
         -   [Config groups](#config-groups)
         -   [Devices](#devices)
+        -   [Uniqueness of groups and devices](#uniqueness-of-groups-and-devices)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
-    -   [Multientity support)](#multientity-support)
+    -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
     -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
@@ -31,6 +32,7 @@
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Timestamp Processing](#timestamp-processing)
+    -   [Multimeasure support](#multimeasure-support)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
     -   [Secured access to the Context Broker](#secured-access-to-the-context-broker)
@@ -54,6 +56,8 @@
             -   [Get device details `GET /iot/devices/:deviceId`](#get-device-details-get-iotdevicesdeviceid)
             -   [Modify device `PUT /iot/devices/:deviceId`](#modify-device-put-iotdevicesdeviceid)
             -   [Remove device `DELETE /iot/devices/:deviceId`](#remove-device-delete-iotdevicesdeviceid)
+        -   [Batch Operations](#batch-operations)
+            -   [Remove devices `POST /iot/op/delete`](#remove-devices-post-iotopdelete)
     -   [Miscellaneous API](#miscellaneous-api)
         -   [Log operations](#log-operations)
             -   [Modify Loglevel `PUT /admin/log`](#modify-loglevel-put-adminlog)
@@ -131,9 +135,9 @@ parameters. The specific parameters that can be configured for a given config gr
 ### Devices
 
 A device contains the information that connects a physical device to a particular entity in the Context Broker. Devices
-are identified by a `device_id`, and they are associated to an existing config group based in `apiKey` matching or
-`type` matching (in the case `apiKey` matching fails). For instance, let's consider a situation in which a config group
-has been provisioned with `type=X`/`apiKey=111` and no other config group has been provisioned.
+are identified by a `device_id`, and they are associated to an existing config group based in `apikey` matching. For
+instance, let's consider a situation in which a config group has been provisioned with `type=X`/`apikey=111` and no
+other config group has been provisioned.
 
 The IoT Agents offer a provisioning API where devices can be preregistered, so all the information about service and
 subservice mapping, security information and attribute configuration can be specified in a per device way instead of
@@ -141,7 +145,7 @@ relaying on the config group configuration. The specific parameters that can be 
 described in the [Device datamodel](#device-datamodel) section.
 
 If devices are not pre-registered, they will be automatically created when a measure arrives to the IoT Agent - this
-process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apiKey` and `type` - the
+process is known as autoprovisioning. The IoT Agent will create an empty device with the group `apikey` and `type` - the
 associated document created in database doesn't include config group parameters (in particular, `timestamp`,
 `explicitAttrs`, `active` or `attributes`, `static` and `lazy` attributes and commands). The IoT Agent will also create
 the entity in the Context Broker if it does not exist yet.
@@ -150,14 +154,22 @@ This behavior allows that autoprovisioned parameters can freely established modi
 creation using the provisioning API. However, note that if a device (autoprovisioned or not) doesn't have these
 parameters defined at device level in database, the parameters are inherit from config group parameters.
 
+### Uniqueness of groups and devices
+
+Group service uniqueness is defined by the combination of: service, subservice and apikey
+
+Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
+with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
+
 ## Special measures and attributes names
 
-In case of arriving measures with name `id` or `type`, they are automatically transformed to `measure_id` and 
-`measure_type` attributes at Context Broker update. The reason behind this is to avoid to collide with the original entity ID and type, as mechanism 
-that enable store measure values from parameters called with the same name. It only applies to autoprovisioned
-attributes and is also available at JEXL context with the same name (`measure_id`or `measure_type`).
+In case of arriving measures with name `id` or `type`, they are automatically transformed to `measure_id` and
+`measure_type` attributes at Context Broker update. The reason behind this is to avoid to collide with the original
+entity ID and type, as mechanism that enable store measure values from parameters called with the same name. It only
+applies to autoprovisioned attributes and is also available at JEXL context with the same name (`measure_id` or
+`measure_type`).
 
-In case of provisioning attributes using `id` or `type` as names (please don't do that ;), they are ignored. 
+In case of provisioning attributes using `id` or `type` as names (please don't do that ;), they are ignored.
 
 ## Entity attributes
 
@@ -275,32 +287,76 @@ e.g.:
 
 ```json
 {
-     "entity_type": "Lamp",
-     "resource":    "/iot/d",
-     "protocol":    "PDI-IoTA-UltraLight",
-..etc
-     "commands": [
-        {"name": "on","type": "command"},
-        {"name": "off","type": "command"}
-     ],
-     "attributes": [
-        {"object_id": "s", "name": "state", "type":"Text"},
-        {"object_id": "l", "name": "luminosity", "type":"Integer",
-          "metadata":{
-              "unitCode":{"type": "Text", "value" :"CAL"}
-          }
-        }
-     ],
-     "static_attributes": [
-          {"name": "category", "type":"Text", "value": ["actuator","sensor"]},
-          {"name": "controlledProperty", "type": "Text", "value": ["light"],
-            "metadata":{
-              "includes":{"type": "Text", "value" :["state", "luminosity"]},
-              "alias":{"type": "Text", "value" :"lamp"}
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
             }
-          },
-     ]
-   }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"] },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
+```
+
+Metadata could also has `expression` like attributes in order to expand it:
+
+e.g.:
+
+```json
+{
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
+            }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
 ```
 
 ### NGSI-LD data and metadata considerations
@@ -410,6 +466,8 @@ mappings of the provision. If `explicitAttrs` is provided both at device and con
 precedence. Additionally `explicitAttrs` can be used to define which measures (identified by their attribute names, not
 by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
 
+Note that when `explicitAttrs` is an array or a JEXL expression resulting in to Array, if this array is empty then `TimeInstant` is not propaged to CB.
+
 The different possibilities are summarized below:
 
 Case 1 (default):
@@ -514,8 +572,8 @@ expression. In all cases the following data is available to all expressions:
 -   `subservice`: device subservice
 -   `staticAttributes`: static attributes defined in the device or config group
 
-Additionally, for attribute expressions (`expression`, `entity_name`) and `entityNameExp` measures are avaiable in the
-**context** used to evaluate them.
+Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
+(`expression`) measures are available in the **context** used to evaluate them.
 
 ### Examples of JEXL expressions
 
@@ -605,6 +663,9 @@ Current common transformation set:
 | localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
 | now: ()                              | `Date.now()`                                                                                                            |
 | hextostring: (val)                   | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                        |
+| valuePicker: (val,pick)              | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code> |
+| valuePickerMulti: (val,pick)              | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code> |
+
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
@@ -961,31 +1022,161 @@ Will now generate the following NGSI v2 payload:
 
 ## Timestamp Processing
 
-The IOTA processes the entity attributes looking for a `TimeInstant` attribute. If one is found, for NGSI v2, then it
-adds a `TimeInstant` attribute as metadata for every other attribute in the same request. With NGSI-LD, the Standard
-`observedAt` property-of-a-property is used instead.
+Timestamp processing done by IOTA is as follows:
 
-If a `TimeInstant` arrives as measure but not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) then measure
-is refused.
+-   An attribute `TimeInstant` is added to updated entities
+-   In the case of NGSI-v2, a `TimeInstant` metadata is added in each updated attribute. With NGSI-LD, the Standard
+    `observedAt` property-of-a-property is used instead.
 
-Depending on the `timestamp` configuration and if the measure contains a 
-value named `TimeInstant` with a correct value, the IoTA behaviour is described
-in the following table:
+Depending on the `timestamp` configuration and if the measure contains a value named `TimeInstant` with a correct value,
+the IoTA behaviour is described in the following table:
 
-`timestamp` value | measure contains `TimeInstant` | Behaviour 
--- | -- | -- 
-true | Yes | TimeInstant and metadata updated with measure value 
-true | No | TimeInstant and metadata updated with server timestamp 
-false | Yes | TimeInstant and metadata updated with measure value 
-false | No | TimeInstant and metadata updated with server timestamp 
-Not defined | Yes | TimeInstant and metadata updated with measure value 
-Not defined | No | TimeInstant and metadata updated with server timestamp 
+| `timestamp` conf value | measure contains `TimeInstant` | Behaviour                                              |
+| ---------------------- | ------------------------------ | ------------------------------------------------------ |
+| true                   | Yes                            | TimeInstant and metadata updated with measure value    |
+| true                   | No                             | TimeInstant and metadata updated with server timestamp |
+| false                  | Yes                            | TimeInstant and metadata updated with measure value    |
+| false                  | No                             | TimeInstant and metadata updated with server timestamp |
+| Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
+| Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
 
-The `timestamp` value used is:
+The `timestamp` conf value used is:
 
-* The one defined at device level
-* The one defined at group level (if not defined at device level)
-* The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at group level or device level)
+-   The one defined at device level
+-   The one defined at group level (if not defined at device level)
+-   The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at
+    group level or device level)
+
+Some additional considerations to take into account:
+
+-   If there is an attribute which maps a measure to `TimeInstant` attribute (after
+    [expression evaluation](#expression-language-support) if any is defined), then that value will be used as
+    `TimeInstant, overwriting the above rules specified in "Behaviour" column. Note that an expression in the could be
+    used in that mapping.
+-   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
+    measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
+    timestamp will take place).
+
+## Multimeasure support
+
+A device could receive several measures at the same time.
+
+For example:
+
+```json
+[
+    {
+        "vol": 0
+    },
+    {
+        "vol": 1
+    },
+    {
+        "vol": 2
+    }
+]
+```
+
+In this case a batch update (`POST /v2/op/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            }
+        }
+    ]
+}
+```
+
+Moreover if a multimeasure contains TimeInstant attribute, then CB update is sorted by attribute TimeInstant:
+
+For example:
+
+```json
+[
+    {
+        "vol": 0,
+        "TimeInstant": "2024-04-10T10:15:00Z"
+    },
+    {
+        "vol": 1,
+        "TimeInstant": "2024-04-10T10:10:00Z"
+    },
+    {
+        "vol": 2,
+        "TimeInstant": "2024-04-10T10:05:00Z"
+    }
+]
+```
+
+In this case a batch update (`POST /v2/op/update`) to CB will be generated with the following NGSI v2 payload:
+
+```json
+{
+    "actionType": "append",
+    "entities": [
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 2
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:05:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 1
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:10:00Z"
+            }
+        },
+        {
+            "id": "ws",
+            "type": "WeatherStation",
+            "vol": {
+                "type": "Number",
+                "value": 0
+            },
+            "TimeInstant": {
+                "type": "DateTime",
+                "value": "2024-04-10T10:15:00Z"
+            }
+        }
+    ]
+}
+```
 
 ## Overriding global Context Broker host
 
@@ -1227,29 +1418,29 @@ A `datasetId` is also maintained for each new attribute defined in the `reverse`
 
 Config group is represented by a JSON object with the following fields:
 
-| Field                          | Optional | Type           | Expression | Definitiom                                                                                                                                                                                                                                                                |
-| ------------------------------ | -------- | -------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `service`                      |          | string         |            | `FIWARE-Service` header to be used                                                                                                                                                                                                                                        |
-| `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                   |
-| `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                       |
-| `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                           |
+| Field                          | Optional | Type           | Expression | Definitiom                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------ | -------- | -------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `service`                      |          | string         |            | `FIWARE-Service` header to be used                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `subservice`                   |          | string         |            | Subservice of the devices of this type.                                                                                                                                                                                                                                                                                                                                                                                             |
+| `resource`                     |          | string         |            | string representing the Southbound resource that will be used to assign a type to a device (e.g.: pathname in the southbound port).                                                                                                                                                                                                                                                                                                 |
+| `apikey`                       |          | string         |            | API Key string.                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `timestamp`                    | ✓        | bool           |            | Optional flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current server timestamp or provided `TimeInstant` as measure when follows ISO 8601 format (see [timestamp processing](#timestamp-processing) section for aditional detail). With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
-| `entity_type`                  |          | string         |            | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                         |
-| `trust`                        | ✓        | string         |            | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                       |
-| `cbHost`                       | ✓        | string         |            | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                |
-| `lazy`                         | ✓        |                |            | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                                                                                                                                 |
-| `commands`                     | ✓        |                |            | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                          |
-| `attributes`                   | ✓        |                |            | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                            |
-| `static_attributes`            | ✓        |                |            | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                                                                                                                               |
-| `internal_attributes`          | ✓        |                |            | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                       |
-| `explicitAttrs`                | ✓        | string or bool | ✓          | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                     |
-| `entityNameExp`                | ✓        | string         |            | optional field to allow use expressions to define entity name, instead default name, based on the device ID and the entity type (i.e. `<device_id>:<entity_type>`)                                                                                                                                                                            |
-| `ngsiVersion`                  | ✓        | string         |            | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                           |
-| `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                         |
-| `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                   |
-| `payloadType`                  | ✓        | string         |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                          |
-| `transport`                    | ✓        | `string`       |            | Transport protocol used by the group of devices to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                    |
-| `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                  |
+| `entity_type`                  |          | string         |            | name of the Entity `type` to assign to the group.                                                                                                                                                                                                                                                                                                                                                                                   |
+| `trust`                        | ✓        | string         |            | trust token to use for secured access to the Context Broker for this type of devices (optional; only needed for secured scenarios).                                                                                                                                                                                                                                                                                                 |
+| `cbHost`                       | ✓        | string         |            | Context Broker connection information. This options can be used to override the global ones for specific types of devices.                                                                                                                                                                                                                                                                                                          |
+| `lazy`                         | ✓        |                |            | list of common lazy attributes of the device. For each attribute, its `name` and `type` must be provided.                                                                                                                                                                                                                                                                                                                           |
+| `commands`                     | ✓        |                |            | list of common commands attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                                                                                                                                                                                    |
+| `attributes`                   | ✓        |                |            | list of common active attributes of the device. For each attribute, its `name` and `type` must be provided, additional `metadata` is optional.                                                                                                                                                                                                                                                                                      |
+| `static_attributes`            | ✓        |                |            | this attributes will be added to all the entities of this group 'as is', additional `metadata` is optional.                                                                                                                                                                                                                                                                                                                         |
+| `internal_attributes`          | ✓        |                |            | optional section with free format, to allow specific IoT Agents to store information along with the devices in the Device Registry.                                                                                                                                                                                                                                                                                                 |
+| `explicitAttrs`                | ✓        | string or bool | ✓          | optional field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                                                                                                                                                                               |
+| `entityNameExp`                | ✓        | string         |            | optional field to allow use expressions to define entity name, instead default name, based on the device ID and the entity type (i.e. `<device_id>:<entity_type>`)                                                                                                                                                                                                                                                                  |
+| `ngsiVersion`                  | ✓        | string         |            | optional string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. Possible values are: `v2` or `ld`. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                                                                                                                                                     |
+| `defaultEntityNameConjunction` | ✓        | string         |            | optional string value to set default conjunction string used to compose a default `entity_name` when is not provided at device provisioning time.                                                                                                                                                                                                                                                                                   |
+| `autoprovision`                | ✓        | bool           | ✓?         | optional boolean: If `false`, autoprovisioned devices (i.e. devices that are not created with an explicit provision operation but when the first measure arrives) are not allowed in this group. Default (in the case of omitting the field) is `true`.                                                                                                                                                                             |
+| `payloadType`                  | ✓        | string         |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                                    |
+| `transport`                    | ✓        | `string`       |            | Transport protocol used by the group of devices to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                                                                                                                                                                              |
+| `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                                                                                                                                                                            |
 
 ### Config group operations
 
@@ -1449,27 +1640,27 @@ _**Response code**_
 The table below shows the information held in the Device resource. The table also contains the correspondence between
 the API resource fields and the same fields in the database model.
 
-| Field                 | Optional | Type      | Expression | Definitiom                                                                                                                                                                                                                                                       |
-| --------------------- | -------- | --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `device_id`           |          | `string`  |            | Device ID that will be used to identify the device.                                                                                                                                                                                                              |
-| `service`             |          | `string`  |            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                                                                                                                           |
-| `service_path`        |          | `string`  |            | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                                                                                                                            |
-| `entity_name`         |          | `string`  |            | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                 |
-| `entity_type`         |          | `string`  |            | Type of the entity in the Context Broker                                                                                                                                                                                                                         |
-| `timezone`            | ✓        | `string`  |            | Timezone of the device if that has any                                                                                                                                                                                                                           |
+| Field                 | Optional | Type      | Expression | Definitiom                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------------- | -------- | --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `device_id`           |          | `string`  |            | Device ID that will be used to identify the device.                                                                                                                                                                                                                                                                                                                                                                        |
+| `service`             |          | `string`  |            | Name of the service the device belongs to (will be used in the fiware-service header).                                                                                                                                                                                                                                                                                                                                     |
+| `service_path`        |          | `string`  |            | Name of the subservice the device belongs to (used in the fiware-servicepath header).                                                                                                                                                                                                                                                                                                                                      |
+| `entity_name`         |          | `string`  |            | Name of the entity representing the device in the Context Broker                                                                                                                                                                                                                                                                                                                                                           |
+| `entity_type`         |          | `string`  |            | Type of the entity in the Context Broker                                                                                                                                                                                                                                                                                                                                                                                   |
+| `timezone`            | ✓        | `string`  |            | Timezone of the device if that has any                                                                                                                                                                                                                                                                                                                                                                                     |
 | `timestamp`           | ✓        | `string`  |            | Flag about whether or not to add the `TimeInstant` attribute to the device entity created, as well as a `TimeInstant` metadata to each attribute, with the current server timestamp or provided `TimeInstant` as measure when follows ISO 8601 format (see [timestamp processing](#timestamp-processing) section for aditional detail). With NGSI-LD, the Standard `observedAt` property-of-a-property is created instead. |
-| `apikey`              | ✓        | `string`  |            | Apikey key string to use instead of group apikey                                                                                                                                                                                                                 |
-| `endpoint`            | ✓        | `string`  |            | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                  |
-| `protocol`            | ✓        | `string`  |            | Pame of the device protocol, for its use with an IoT Manager                                                                                                                                                                                                     |
-| `transport`           | ✓        | `string`  |            | Transport protocol used by the device to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                     |
-| `attributes`          | ✓        | `array`   |            | List of attributes that will be stored in the Context Broker.                                                                                                                                                                                                    |
-| `commands`            | ✓        | `array`   |            | List of commands that will be stored in the Context Broker.                                                                                                                                                                                                      |
-| `lazy`                | ✓        | `array`   |            | List of lazy attributes that will be stored in the Context Broker.                                                                                                                                                                                               |
-| `static_attributes`   | ✓        | `array`   |            | List of static attributes that will be stored in the Context Broker.                                                                                                                                                                                             |
-| `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                               |
-| `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                     |
-| `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                              |
-| `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                 |
+| `apikey`              | ✓        | `string`  |            | Apikey key string to use instead of group apikey                                                                                                                                                                                                                                                                                                                                                                           |
+| `endpoint`            | ✓        | `string`  |            | Endpoint where the device is going to receive commands, if any.                                                                                                                                                                                                                                                                                                                                                            |
+| `protocol`            | ✓        | `string`  |            | Pame of the device protocol, for its use with an IoT Manager                                                                                                                                                                                                                                                                                                                                                               |
+| `transport`           | ✓        | `string`  |            | Transport protocol used by the device to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                                                                                                                                                                               |
+| `attributes`          | ✓        | `array`   |            | List of attributes that will be stored in the Context Broker.                                                                                                                                                                                                                                                                                                                                                              |
+| `commands`            | ✓        | `array`   |            | List of commands that will be stored in the Context Broker.                                                                                                                                                                                                                                                                                                                                                                |
+| `lazy`                | ✓        | `array`   |            | List of lazy attributes that will be stored in the Context Broker.                                                                                                                                                                                                                                                                                                                                                         |
+| `static_attributes`   | ✓        | `array`   |            | List of static attributes that will be stored in the Context Broker.                                                                                                                                                                                                                                                                                                                                                       |
+| `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                                                                                                                                                                                         |
+| `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                                                                                                                                                                               |
+| `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                                                                                                                                                                                        |
+| `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                           |
 
 ### Device operations
 
@@ -1720,9 +1911,51 @@ _**Request headers**_
 
 _**Response code**_
 
--   `200` `OK` if successful.
+-   `204` `OK` if successful.
 -   `404` `NOT FOUND` if the device was not found in the database.
 -   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+### Batch Operations
+
+#### Remove devices `POST /iot/op/delete`
+
+Remove a set of devices from the device registry. The devices is identified by the Device ID and apikey in payload body.
+
+_**Request headers**_
+
+| Header               | Optional | Description                                                                                    | Example    |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------- | ---------- |
+| `Fiware-Service`     | ✓        | Tenant or service. See subsection [Multi tenancy](#multi-tenancy) for more information.        | `acme`     |
+| `Fiware-ServicePath` | ✓        | Service path or subservice. See subsection [Service Path](#service-path) for more information. | `/project` |
+
+_**Request body**_
+
+The request body contains an Array of objects which the values which identifies the devices, deviceId and apikey. For
+more information, see the [Device datamodel](#device-datamodel) section.
+
+Example:
+
+```json
+{
+    "devices": [
+        {
+            "deviceId": "myDevice1",
+            "apikey": "apikey1"
+        },
+        {
+            "deviceId": "myDevice2",
+            "apikey": "apikey2"
+        }
+    ]
+}
+```
+
+_**Response code**_
+
+-   `204` `OK` if successful.
+-   `404` `NOT FOUND` if one or several devices were not found in the database. Note that although a 404 error is
+    returned the existing devices are deleted.
+-   `500` `SERVER ERROR` if there was any error not considered above.
 
 ## Miscellaneous API
 

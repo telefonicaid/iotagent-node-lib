@@ -1,1 +1,3 @@
-- Fix: store device subscriptions updates (#1086)
+- Fix: service header to use uppercase in case of update and delete (#1528)
+- Fix: Allow to send to CB batch update for multimeasures for NGSI-LD (#1623)
+- Add: new JEXL transformations for including into an array keys that have a certain value: valuePicker and valuePickerMulti

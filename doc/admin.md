@@ -261,13 +261,13 @@ the `mongob` section (as described bellow). E.g.:
 
 It configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of
 comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional property
-`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`),
-password (`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any
-validation of the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect
-the database. If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection
-database, extraArgs (`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup
-time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are
-5 and 5 respectively). E.g.:
+`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`), password
+(`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any validation of
+the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect the database.
+If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection database, extraArgs
+(`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup time `retries`
+times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are 5 and 5
+respectively). E.g.:
 
 ```javascript
 {
@@ -422,6 +422,14 @@ characters (such as semi-colons) which are
 specification. When provisioning devices, it is necessary that the developer provides valid `objectId`-`name` mappings
 whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
+#### `expressLimit`
+
+IotAgents, as all Express applications that use the body-parser middleware, have a default limit to the request body
+size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
+request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
+
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -483,6 +491,7 @@ overrides.
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
+| IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 | IOTA_STATS_INTERVAL                  | `stats.interval`                |
 | IOTA_STATS_PERSISTENCE               | `stats.persistence`             |
 
