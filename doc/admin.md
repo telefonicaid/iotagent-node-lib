@@ -162,7 +162,9 @@ support nulls or multi-attribute requests if they are encountered.
 #### `stats`
 
 It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings. The `persistence` flag stores stats in the mongo backend.
+writings. The `persistence` flag stores stats in a collection named `kpis` in the mongo backend. Each document in the
+`kpis` collection will have a `timestamp` attribute with the stat collection time, and an additional attribute
+for each of the stats created by calling the `statsRegistry.add` function.
 
 ```javascript
 stats: {
