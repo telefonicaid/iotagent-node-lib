@@ -162,14 +162,26 @@ support nulls or multi-attribute requests if they are encountered.
 #### `stats`
 
 It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings. The `persistence` flag stores stats in a collection named `kpis` in the mongo backend. Each document in the
-`kpis` collection will have a `timestamp` attribute with the stat collection time, and an additional attribute
-for each of the stats created by calling the `statsRegistry.add` function.
+writings.
+
+By default, stats are logged to the standard log at level `INFO`. If the `persistence` flag is defined and set to
+`true`, stats are also stored in a collection named `kpis` in the mongo backend.
 
 ```javascript
 stats: {
     interval: 100;
     persistence: false;
+}
+```
+
+Each document in the `kpis` collection will have a `timestamp` attribute with the stat collection time, and an
+additional attribute for each of the stats created by calling the `statsRegistry.add` function, e.g.:
+
+```json
+{
+  "timeinstant": new ISODate("2024-07-29T00:00:00.000Z"),
+  "deviceCreationRequests": 1334,
+  "deviceRemovalRequests": 454
 }
 ```
 
