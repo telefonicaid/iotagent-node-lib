@@ -246,7 +246,9 @@ measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names a
 
 For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
 automatically when a device is created. This means that all entities into the Context Broker are created when data 
-arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned. If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the IOTAgent, you can create it in advance using the Context Broker [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
+arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
+
+If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the IOTAgent, you can create it in advance using the Context Broker [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
 
 
 
