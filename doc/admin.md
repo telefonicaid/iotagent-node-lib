@@ -204,7 +204,7 @@ additional attribute for each of the stats created by calling the `statsRegistry
 
 Global stats are also unconditionally exposed at the `/metrics` path in the northbound API, using the
 [prometheus text-based format](https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md#text-based-format),
-regardless of the value of `stats.interval`, so they can be scraped by a prometheus server
+regardless of the value of `stats.interval`, so they can be scraped by a prometheus server.
 
 #### `authentication`
 
