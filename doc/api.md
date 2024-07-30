@@ -1259,16 +1259,28 @@ For HTTP devices, in order to retrieve a poll command, the need to make a GET re
 
 Taking the previous example, and considering the the usage of the IoTA-JSON Agent, the device should make the following request, being the response to this request a JSON object with the command name as key and the command value as value:
 
+**Request:**
+
 ```
 GET /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
 Accept: application/json
 
-{"ping":"Ping request"}
+```
+
+**Response:**:
+
+```
+200 OK  
+Content-type: application/json  
+
+{"ping":"Ping request"}  
 ```
 
 For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
 
 It can be also possible for a device to retrieve the commands from the IoT Agent when it sends an observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
+
+**Request**
 
 ```
 POST /iot/json?k=<apikey>&i=<deviceId>&getCmd=1
@@ -1276,6 +1288,16 @@ Content-Type: application/json
 
 {"t":25,"h":42,"l":"1299"}
 ```
+
+**Response**
+
+```
+200 OK  
+Content-type: application/json  
+
+{"ping":"Ping request"}
+```
+
 
 This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`, `<deviceId>`, payload and headers.
 
