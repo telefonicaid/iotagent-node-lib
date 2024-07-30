@@ -250,8 +250,6 @@ arrives from a device, no matter if the device is explicitly provisioned (via [d
 
 If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the IOTAgent, you can create it in advance using the Context Broker [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
 
-
-
 ## Multientity support
 
 The IOTA is able to persists measures coming from a single device to more than one entity, declaring the target entities
