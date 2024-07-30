@@ -1372,6 +1372,7 @@ topic following the next pattern:
 ```
 
 The IoTA is subscribed to that topic, so it gets the result of the command. When this happens, the status is updated to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
+
 ## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
