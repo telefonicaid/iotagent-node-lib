@@ -1307,7 +1307,7 @@ Content-type: application/json
 
 This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`, `<deviceId>`, payload and headers.
 
-Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`.
+Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`. Note that status `DELIVERED` only make sense in the case of poll commands. In the case of push command it cannot happen.
 
 
 #### MQTT devices
