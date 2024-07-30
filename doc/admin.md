@@ -170,10 +170,10 @@ stats: {
 }
 ```
 
-By default, stats are logged to the standard log at level `INFO`. You can also have your stats written
-to a collection named `kpis` in the mongo backend, if you do these two things:
+By default, stats are logged to the standard log at level `INFO`. You can also have your stats written to a collection
+named `kpis` in the mongo backend, if you do these two things:
 
-- Set the `stats.persistence` flag to `true`.
+-   Set the `stats.persistence` flag to `true`.
 
 ```javascript
 stats: {
@@ -182,11 +182,11 @@ stats: {
 }
 ```
 
-- Schedule periodic collection of stats to mongo by calling `statsRegistry.addTimerAction`.
+-   Schedule periodic collection of stats to mongo by calling `statsRegistry.addTimerAction`.
 
 ```js
 statsRegistry.addTimerAction(statsRegistry.mongodbPersistence, function callback() {
-  // ... called after timer is enabled ...
+    // ... called after timer is enabled ...
 });
 ```
 
@@ -201,6 +201,10 @@ additional attribute for each of the stats created by calling the `statsRegistry
   "measureRequests": 4432
 }
 ```
+
+Global stats are also unconditionally exposed at the `/metrics` path in the northbound API, using the
+[prometheus text-based format](https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md#text-based-format),
+regardless of the value of `stats.interval`, so they can be scraped by a prometheus server
 
 #### `authentication`
 
@@ -459,7 +463,8 @@ IotAgents, as all Express applications that use the body-parser middleware, have
 size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
 request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
 
-The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT`
+environment variable).
 
 ### Configuration using environment variables
 
