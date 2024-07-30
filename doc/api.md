@@ -1252,13 +1252,12 @@ Poll commands are those that are stored in the IoT Agent waiting to be retrieved
 commands are typically used for devices that doesn't have a public IP or the IP cannot be reached because of 
 power or netkork constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order 
 to configure the device as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
-For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path used as `resource` in the provisioned group (`/iot/json` by default in IoTA-JSON if no `resource` is used) with the following parameters:
-
-**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 
 Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
 
-For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path `/iot/json` with the following parameters:
+For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path used as `resource` in the provisioned group (`/iot/json` by default in IoTA-JSON if no `resource` is used) with the following parameters:
+
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 
 * `k`: API key of the device.
 * `i`: Device ID.
@@ -1276,9 +1275,6 @@ Accept: application/json
 
 **Response:**:
 
-For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource instead of `/iot/json`) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
-
-**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 ```
 200 OK  
 Content-type: application/json  
@@ -1286,9 +1282,9 @@ Content-type: application/json
 {"ping":"Ping request"}  
 ```
 
-For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource, `/iot/json` by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource instead of `/iot/json`) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
 
-It can be also possible for a device to retrieve the commands from the IoT Agent when it sends an observation. It just be needed to include the `&getCmd=1` parameter in the observation request. In the following example a device sends an JSON observation and retrieves the commands from the IoTA-JSON Agent.
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 
 **Request**
 
