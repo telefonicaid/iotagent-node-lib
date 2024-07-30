@@ -1197,7 +1197,7 @@ This section reviews the end to end process to trigger and receive commands into
 
 ### Triggering commands
 
-This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker. You need to know which attributes correspond to commands and update them. You can declare the command related attributes at the provisioning process. Also, you can declare the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
+This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker defined as `command` in the [config group](#config-group-datamodel) or in the [device provision](#device-datamodel). Commands attributes are created using `command` as attribute type. Also, you can define the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
 
 For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in the Context Broker will send a command to your device. For instance, to send the `ping` command with value `Ping request` you could use the following operation in the Context Broker API:
 
