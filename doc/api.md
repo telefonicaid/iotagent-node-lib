@@ -1257,7 +1257,7 @@ For HTTP devices, in order to retrieve a poll command, the need to make a GET re
 * `i`: Device ID.
 * `getCmd`: This parameter is used to indicate the IoT Agent that the device is requesting a command. It is needed to set it to `1`
 
-Taking the previous example, and considering the the usage of the IoTA-JSON Agent, the device should make the following request, being the response to this request a JSON object with the command name as key and the command value as value:
+Taking the previous example, and considering the usage of the IoTA-JSON Agent, the device should make the following request, being the response to this request a JSON object with the command name as key and the command value as value:
 
 **Request:**
 
