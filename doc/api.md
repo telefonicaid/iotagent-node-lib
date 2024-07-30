@@ -11,6 +11,7 @@
         -   [Uniqueness of groups and devices](#uniqueness-of-groups-and-devices)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Entity attributes](#entity-attributes)
+    -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
     -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
@@ -245,7 +246,9 @@ measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names a
 
 For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
 automatically when a device is created. This means that all entities into the Context Broker are created when data 
-arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
+arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned. If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the IOTAgent, you can create it in advance using the Context Broker [NGSIv2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
+
+
 
 ## Multientity support
 
@@ -1190,6 +1193,8 @@ In this case a batch update (`POST /v2/op/update`) to CB will be generated with 
 
 ## Command execution
 
+This section reviews the end to end process to trigger and receive commands into devices. The URL paths and and messages format is based on the [IoT Agent JSON](https://github.com/telefonicaid/iotagent-json). It may differ in the case of using any other IoT Agent. In that case, please refer to the specific IoTA documentation.
+
 ### Triggering commands
 
 This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker. You need to know which attributes correspond to commands and update them. You can declare the command related attributes at the provisioning process. Also, you can declare the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
@@ -1247,6 +1252,9 @@ Poll commands are those that are stored in the IoT Agent waiting to be retrieved
 commands are typically used for devices that doesn't have a public IP or the IP cannot be reached because of 
 power or netkork constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order 
 to configure the device as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
+For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path used as `resource` in the provisioned group (`/iot/json` by default in IoTA-JSON if no `resource` is used) with the following parameters:
+
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 
 Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
 
@@ -1268,6 +1276,9 @@ Accept: application/json
 
 **Response:**:
 
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource instead of `/iot/json`) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
+
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
 ```
 200 OK  
 Content-type: application/json  
