@@ -307,6 +307,38 @@ const iotAgentConfig = {
                 }
             ]
         },
+        WeatherStation10: {
+            commands: [],
+            type: 'WeatherStation',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Hgmm'
+                },
+                {
+                    object_id: 'h',
+                    name: 'humidity',
+                    type: 'Percentage',
+                    entity_name: 'Higro2000',
+                    entity_type: 'Higrometer',
+                    metadata: {
+                        unitCode: {
+                            type: 'Text',
+                            value: 'Hgmm'
+                        }
+                    }
+                },
+                {
+                    object_id: 'TimeInstant',
+                    name: 'TimeInstant',
+                    type: 'DateTime',
+                    entity_name: 'Higro2000',
+                    entity_type: 'Higrometer'
+                }
+            ]
+        },
         Sensor001: {
             commands: [],
             type: 'Sensor',
@@ -1488,7 +1520,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
 
 describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plugin', function () {
     beforeEach(function (done) {
-        logger.setLevel('FATAL');
+        logger.setLevel('DEBUG');
         iotAgentConfig.timestamp = true;
         iotAgentLib.activate(iotAgentConfig, function () {
             iotAgentLib.clearAll(function () {
@@ -1635,7 +1667,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
                     value: '2018-06-13T13:28:34.611Z'
                 }
             ];
-            iotAgentLib.update('ws5', 'WeatherStation', '', tsValue, function (error) {
+            iotAgentLib.update('ws5', 'WeatherStation10', '', tsValue, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();

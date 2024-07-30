@@ -696,17 +696,16 @@ describe('NGSI-LD - Multi-entity plugin is executed before timestamp process plu
                         './test/unit/ngsi-ld/examples' +
                             '/contextRequests/updateContextMultientityTimestampPlugin2.json'
                     );
-
                     // Note that TimeInstant fields are not included in the json used by this mock as they are dynamic
                     // fields. The following code just checks that TimeInstant fields are present.
-                    if (!body[1].humidity.observedAt) {
+                    if (!body[0].humidity.observedAt) {
                         return false;
                     }
 
-                    const timeInstantAtt = body[1].humidity.observedAt;
+                    const timeInstantAtt = body[0].humidity.observedAt;
                     if (moment(timeInstantAtt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid) {
-                        delete body[1].humidity.observedAt;
-                        delete expectedBody[1].humidity.observedAt;
+                        delete body[0].humidity.observedAt;
+                        delete expectedBody[0].humidity.observedAt;
                         return JSON.stringify(body) === JSON.stringify(expectedBody);
                     }
                     return false;
