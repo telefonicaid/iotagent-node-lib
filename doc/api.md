@@ -1219,7 +1219,8 @@ Context Broker API is quite flexible and allows to update an attribute in severa
 
 ### Command reception
 
-Once the command is triggered, it is send to the device. Depending on transport protocol, it is going to be sent in a different way:
+Once the command is triggered, it is send to the device. Depending on transport protocol, it is going to be sent to the device in a different way. After sending the command, the IoT Agent will have updated the value of `ping_status` to `PENDING` for entity into the Context Broker. Neither
+`ping_info` nor `ping` will be updated.
 
 #### HTTP devices
 
@@ -1239,8 +1240,6 @@ Content-Type: application/json
 
 {"ping":"Ping request"}
 ```
-
-**FIXME**: Pending to add CB attributes values, see #1559
 
 **Poll commands**
 
