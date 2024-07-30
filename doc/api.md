@@ -1324,8 +1324,7 @@ Eventually, once the device makes the response request the IoTA would update the
 #### HTTP
 
 In order confirm the command execution, the device must make a POST request to the IoT Agent with the result 
-of the command as payload, no matter if it is a push or a poll command. The request must be made to the
-following resource:
+of the command as payload, no matter if it is a push or a poll command. Following with the IoTAgent JSON case, the request must be made to the `/iot/json/commands`, this way:
 
 ```
 POST /iot/json/commands?k=<apikey>&i=<deviceId>
@@ -1344,6 +1343,7 @@ topic following the next pattern:
 /<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
 ```
 
+The IoTA is subscribed to that topic, so it gets the result of the command. When this happens, the status is updated to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
 ## Overriding global Context Broker host
 
 **cbHost**: Context Broker host URL. This option can be used to override the global CB configuration for specific types
