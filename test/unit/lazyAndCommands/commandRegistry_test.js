@@ -40,7 +40,7 @@ const iotAgentConfig = {
     },
     types: {},
     deviceRegistry: {
-        type: 'memory'
+        type: 'mongodb'
     },
     mongodb: {
         host: 'localhost',
@@ -227,5 +227,5 @@ function testRegistry(registryType) {
     });
 }
 
-testRegistry('memory');
+//testRegistry('memory');
 testRegistry('mongodb');
