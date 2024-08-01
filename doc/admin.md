@@ -161,6 +161,11 @@ support nulls or multi-attribute requests if they are encountered.
 
 #### `stats`
 
+**NOTE**: This configuration section is **deprecated**. Users interested in collecting stats are encouraged to scrape
+the `/metrics` endpoint in the [northbound API](./api.md), with an
+[openmetrics-compatible](https://github.com/OpenObservability/OpenMetrics/tree/mainpro) telemetry collector such as
+[prometheus](https://prometheus.io/).
+
 It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
 writings.
 
@@ -201,11 +206,6 @@ additional attribute for each of the stats created by calling the `statsRegistry
   "measureRequests": 4432
 }
 ```
-
-Global stats are also unconditionally exposed at the `/metrics` path in the northbound API, using the
-[openmetrics text-based format](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md),
-regardless of the value of `stats.interval`, so they can be scraped by a prometheus server or other compatible metrics
-collector.
 
 #### `authentication`
 
