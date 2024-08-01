@@ -226,18 +226,20 @@ npm run prettier:text
 
 ### Stats Registry
 
-The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
-the use of the periodic stats, it must be configured in the config file, as described in the
-[Configuration](../admin.md#configuration) section.
-
-The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
-historical global value and the other one stores the value since the last value reporting (or current value).
+The library provides a mechanism for the collection of stats related to the library's work. The Stats Registry holds a
+dictionary with the historical global value of each stat.
 
 The stats library currently stores only the following values:
 
 -   **deviceCreationRequests**: number of Device Creation Requests that arrived to the API (no matter the result).
 -   **deviceRemovalRequests**: number of Removal Device Requests that arrived to the API (no matter the result).
 -   **measureRequests**: number of times the ngsiService.update() function has been invoked (no matter the result).
+-   **raiseAlarm**: number of times the alarmManagement.raise() function has been invoked.
+-   **releaseAlarm**: number of times the alarmManagement.release() function has been invoked.
+-   **updateEntityRequestsOk**: number of times the ngsiService.sendUpdateValue() function has been invoked
+    successfully.
+-   **updateEntityRequestsError**: number of times the ngsiService.sendUpdateValue() function has been invoked and
+    failed.
 
 More values will be added in the future to the library. The applications using the library can add values to the Stats
 Registry just by using the following function:
@@ -247,7 +249,7 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
-to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
+to the specified stat.
 
 ### Alarm module
 

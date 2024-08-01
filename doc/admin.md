@@ -5,7 +5,6 @@
         -   [loglevel](#loglevel)
         -   [contextBroker](#contextbroker)
         -   [server](#server)
-        -   [stats](#stats)
         -   [authentication](#authentication)
         -   [deviceRegistry](#deviceregistry)
         -   [mongodb](#mongodb)
@@ -156,54 +155,6 @@ support nulls or multi-attribute requests if they are encountered.
       null: true,
       datasetId: true
     }
-}
-```
-
-#### `stats`
-
-**NOTE**: This configuration section is **deprecated**. Users interested in collecting stats are encouraged to scrape
-the `/metrics` endpoint in the [northbound API](./api.md), with an
-[openmetrics-compatible](https://github.com/OpenObservability/OpenMetrics/tree/mainpro) telemetry collector such as
-[prometheus](https://prometheus.io/).
-
-It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings.
-
-```javascript
-stats: {
-    interval: 100;
-}
-```
-
-By default, stats are logged to the standard log at level `INFO`. You can also have your stats written to a collection
-named `kpis` in the mongo backend, if you do these two things:
-
--   Set the `stats.persistence` flag to `true`.
-
-```javascript
-stats: {
-    interval: 100;
-    persistence: true;
-}
-```
-
--   Schedule periodic collection of stats to mongo by calling `statsRegistry.addTimerAction`.
-
-```js
-statsRegistry.addTimerAction(statsRegistry.mongodbPersistence, function callback() {
-    // ... called after timer is enabled ...
-});
-```
-
-Each document in the `kpis` collection will have a `timestamp` attribute with the stat collection time, and an
-additional attribute for each of the stats created by calling the `statsRegistry.add` function, e.g.:
-
-```json
-{
-  "timeinstant": new ISODate("2024-07-29T00:00:00.000Z"),
-  "deviceCreationRequests": 1334,
-  "deviceRemovalRequests": 454,
-  "measureRequests": 4432
 }
 ```
 
@@ -529,8 +480,6 @@ overrides.
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
 | IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
-| IOTA_STATS_INTERVAL                  | `stats.interval`                |
-| IOTA_STATS_PERSISTENCE               | `stats.persistence`             |
 
 Note:
 

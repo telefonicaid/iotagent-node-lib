@@ -25,6 +25,7 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to legacy expressions (finally removed in 3.2.0)
 -   Bidirectinal pluging (finally removed in 3.4.0)
 -   appendMode configuration (`IOTA_APPEND_MODE` env var) (finally removed in 3.4.0)
+-   `config.stats` section, and push-mode statistics.
 
 The use of Node.js v14 is highly recommended.
 
