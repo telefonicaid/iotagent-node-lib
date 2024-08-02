@@ -58,3 +58,4 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Legacy Expressions                         | 3.1.0                                                 | April 25th, 2023              |
 | bidirectional plugin                                  | 3.3.0                                                 | August 24th, 2023             |
 | appendMode configuration (`IOTA_APPEND_MODE` env var) | 3.3.0                                                 | August 24th, 2023             |
+| push-mode stats                                       | 4.5.0                                                 | June 11th, 2024               |
