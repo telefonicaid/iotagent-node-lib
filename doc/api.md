@@ -1057,7 +1057,7 @@ attribute called `TimeInstant`. This timestamp is represented as two different p
     timestamp when the associated measurement was observed. With NGSI-LD, the Standard
     `observedAt` property is used instead
 
--   With NGSI-v2, an attribute metadata named `TimeInstant` per dynamic attribute mapped, which captures as an ISO8601
+-   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an ISO8601
     timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
     `observedAt` property-of-a-property is used instead.
 
