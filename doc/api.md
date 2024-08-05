@@ -215,7 +215,8 @@ device preprovisioning). Device measures can have four different behaviors:
     an attribute in the device's entity, for which the IoT Agent will be regitered as Context Provider. The IoT Agent
     will return an immediate response to the Context Broker, and will be held responsible of contacting the device to
     perform the command itself using the device specific protocol. Special `status` and `info` attributes should be
-    update. For each command, its `name` and `type` must be provided.
+    update. For each command, its `name` and `type` must be provided. For further information, please refer to 
+    [Command execution](#command-execution) section.
 
 All of them have the same syntax, a list of objects with the following attributes:
 
