@@ -1829,6 +1829,77 @@ const testCases = [
         ]
     },
     {
+        describeName:
+            '0175 - Simple group with active attribute + JEXL expression referencing metadata context attributes',
+        skip: 'lib', // Explanation in #1523
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        static_attributes: [
+                            {
+                                name: 'st_attr',
+                                type: 'Number',
+                                value: 1.5,
+                                metadata: {
+                                    coef: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            }
+                        ],
+                        attributes: [
+                            {
+                                object_id: 'a',
+                                name: 'attr_a',
+                                type: 'Number',
+                                expression: 'a*st_attr*metadata.st_attr.coef'
+                            }
+                        ]
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending a value (number) through http IT should apply the expression using the context attributes value and send to Context Broker the value "39.60" ',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: 33
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: 39.6,
+                        type: 'Number'
+                    }
+                }
+            }
+        ]
+    },
+    {
         describeName: '0180 - Simple group with active attributes + JEXL multiples expressions at same time',
         skip: 'lib', // Explanation in #1523
         provision: {
