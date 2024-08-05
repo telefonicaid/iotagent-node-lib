@@ -36,7 +36,7 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 | :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/roadmap.md) |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 
-## ToC
+## Content
 
 -   [Documentation](#documentation)
     -   [User documentation](#user-documentation)
