@@ -37,7 +37,6 @@
         -   [Command reception](#command-reception)
         -   [Command confirmation](#command-confirmation)
     -   [TimeInstant and Timestamp flag](#timeinstant-and-timestamp-flag)
-        -   [Timestamp Compression](#timestamp-compression)
     -   [Multimeasure support](#multimeasure-support)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
