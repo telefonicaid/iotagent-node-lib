@@ -16,14 +16,12 @@
         -   [providerUrl](#providerurl)
         -   [iotaVersion](#iotaversion)
         -   [dieOnUnexpectedError](#dieonunexpectederror)
-        -   [singleConfigurationMode](#singleconfigurationmode)
         -   [timestamp](#timestamp)
         -   [defaultResource](#defaultresource)
         -   [defaultKey](#defaultkey)
         -   [componentName](#componentname)
         -   [pollingExpiration](#pollingexpiration)
         -   [pollingDaemonFrequency](#pollingdaemonfrequency)
-        -   [autocast](#autocast)
         -   [multiCore](#multicore)
         -   [fallbackTenant](#fallbacktenant)
         -   [fallbackPath](#fallbackpath)
@@ -262,13 +260,13 @@ the `mongob` section (as described bellow). E.g.:
 
 It configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of
 comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional property
-`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`username`),
-password (`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any
-validation of the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect
-the database. If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection
-database, extraArgs (`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup
-time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are
-5 and 5 respectively). E.g.:
+`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`), password
+(`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any validation of
+the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect the database.
+If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection database, extraArgs
+(`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup time `retries`
+times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are 5 and 5
+respectively). E.g.:
 
 ```javascript
 {
@@ -348,10 +346,6 @@ IoTA).
 
 if this flag is activated, the IoTAgent will not capture global exception, thus dying upon any unexpected error.
 
-#### `singleConfigurationMode`
-
-enables the Single Configuration mode for backwards compatibility (see description in the Overview). Default to false.
-
 #### `timestamp`
 
 if this flag is activated:
@@ -382,10 +376,6 @@ amount of time without being collected by the device, the expiration daemon will
 
 time between collection of expired commands in milliseconds. This attribute is optional (if this parameter doesn't exist
 the polling daemon won't be started).
-
-#### `autocast`
-
-When enabled, the IoT Agents will try to cast attribute's values considering the JSON native type (only for NGSI v2).
 
 #### `multiCore`
 
@@ -430,6 +420,14 @@ characters (such as semi-colons) which are
 [forbidden](https://fiware-orion.readthedocs.io/en/master/user/forbidden_characters/index.html) according to the NGSI
 specification. When provisioning devices, it is necessary that the developer provides valid `objectId`-`name` mappings
 whenever relaxed mode is used, to prevent the consumption of forbidden characters.
+
+#### `expressLimit`
+
+IotAgents, as all Express applications that use the body-parser middleware, have a default limit to the request body
+size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
+request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
+
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
 
 ### Configuration using environment variables
 
@@ -483,10 +481,8 @@ overrides.
 | IOTA_MONGO_RETRY_TIME                | `mongodb.retryTime`             |
 | IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
 | IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
-| IOTA_SINGLE_MODE                     | `singleConfigurationMode`       |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
-| IOTA_AUTOCAST                        | `autocast`                      |
 | IOTA_MULTI_CORE                      | `multiCore`                     |
 | IOTA_JSON_LD_CONTEXT                 | `jsonLdContext`                 |
 | IOTA_FALLBACK_TENANT                 | `fallbackTenant`                |
@@ -494,6 +490,7 @@ overrides.
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
+| IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 
 Note:
 

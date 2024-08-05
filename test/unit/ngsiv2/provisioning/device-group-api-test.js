@@ -61,6 +61,8 @@ const optionsCreation = {
                 entity_type: 'SensorMachine',
                 trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                 cbHost: 'http://unexistentHost:1026',
+                transport: 'HTTP',
+                endpoint: 'http://myendpoint.com',
                 commands: [
                     {
                         name: 'wheel1',
@@ -116,6 +118,19 @@ const optionsDelete = {
         apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
     }
 };
+const optionsDeleteGroup = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'DELETE',
+    json: {},
+    headers: {
+        'fiware-service': 'Testservice',
+        'fiware-servicepath': '/testingPath'
+    },
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
 const optionsDeleteDevice = {
     url: 'http://localhost:4041/iot/services',
     method: 'DELETE',
@@ -136,6 +151,8 @@ const optionsUpdate = {
     json: {
         trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
         cbHost: 'http://anotherUnexistentHost:1026',
+        transport: 'MQTT',
+        endpoint: 'http://yourendpoint.com',
         commands: [
             {
                 name: 'wheel1',
@@ -164,6 +181,49 @@ const optionsUpdate = {
     },
     headers: {
         'fiware-service': 'testservice',
+        'fiware-servicepath': '/testingPath'
+    },
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
+const optionsUpdateGroup = {
+    url: 'http://localhost:4041/iot/services',
+    method: 'PUT',
+    json: {
+        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+        cbHost: 'http://anotherUnexistentHost:1026',
+        transport: 'MQTT',
+        endpoint: 'http://yourendpoint.com',
+        commands: [
+            {
+                name: 'wheel1',
+                type: 'Wheel'
+            }
+        ],
+        lazy: [
+            {
+                name: 'luminescence',
+                type: 'Lumens'
+            }
+        ],
+        attributes: [
+            {
+                name: 'status',
+                type: 'Boolean'
+            }
+        ],
+        static_attributes: [
+            {
+                name: 'identifier',
+                type: 'UUID',
+                value: 'WERTYUIOP234567890'
+            }
+        ]
+    },
+    headers: {
+        'fiware-service': 'Testservice',
         'fiware-servicepath': '/testingPath'
     },
     qs: {
@@ -217,6 +277,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 request(optionsList, function (error, response, body) {
                     body.count.should.equal(1);
                     body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body.services[0].transport.should.equal('HTTP');
+                    body.services[0].endpoint.should.equal('http://myendpoint.com');
                     done();
                 });
             });
@@ -400,6 +462,33 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         });
         it('should remove it from the configuration', function (done) {
             request(optionsDelete, function (error, response, body) {
+                should.not.exist(iotAgentConfig.types.SensorMachine);
+                done();
+            });
+        });
+    });
+    describe('When a device group removal request arrives with service-header in uppercase', function () {
+        beforeEach(function (done) {
+            request(optionsCreation, done);
+        });
+
+        it('should return a 204 OK', function (done) {
+            request(optionsDeleteGroup, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
+                done();
+            });
+        });
+        it('should remove it from the database', function (done) {
+            request(optionsDeleteGroup, function (error, response, body) {
+                request(optionsList, function (error, response, body) {
+                    body.count.should.equal(0);
+                    done();
+                });
+            });
+        });
+        it('should remove it from the configuration', function (done) {
+            request(optionsDeleteGroup, function (error, response, body) {
                 should.not.exist(iotAgentConfig.types.SensorMachine);
                 done();
             });
@@ -664,6 +753,8 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                         ) {
                             body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
                             body.services[i].static_attributes.length.should.equal(1);
+                            body.services[i].endpoint = 'http://yourendpoint.com';
+                            body.services[i].transport = 'MQTT';
                             found = true;
                         }
                     }
@@ -690,6 +781,83 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             });
 
             request(optionsUpdate, function (error, response, body) {
+                handlerCalled.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When a device group update request arrives with service-header in uppercase', function () {
+        beforeEach(function (done) {
+            const optionsCreation1 = _.clone(optionsCreation);
+            const optionsCreation2 = _.clone(optionsCreation);
+            const optionsCreation3 = _.clone(optionsCreation);
+
+            optionsCreation1.json = { services: [] };
+            optionsCreation3.json = { services: [] };
+
+            optionsCreation1.json.services[0] = _.clone(optionsCreation.json.services[0]);
+            optionsCreation3.json.services[0] = _.clone(optionsCreation.json.services[0]);
+
+            optionsCreation1.json.services[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.services[0].apikey = 'lkjhgfds';
+
+            async.series(
+                [
+                    async.apply(request, optionsCreation1),
+                    async.apply(request, optionsCreation2),
+                    async.apply(request, optionsCreation3)
+                ],
+                done
+            );
+        });
+
+        it('should return a 204 OK', function (done) {
+            request(optionsUpdateGroup, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
+                done();
+            });
+        });
+        it('should update the appropriate values in the database', function (done) {
+            request(optionsUpdateGroup, function (error, response, body) {
+                request(optionsList, function (error, response, body) {
+                    let found = false;
+                    body.count.should.equal(3);
+
+                    for (let i = 0; i < body.services.length; i++) {
+                        if (
+                            body.services[i].apikey === '801230BJKL23Y9090DSFL123HJK09H324HV8732' &&
+                            body.services[i].resource === '/deviceTest'
+                        ) {
+                            body.services[i].cbHost.should.equal('http://anotherUnexistentHost:1026');
+                            body.services[i].static_attributes.length.should.equal(1);
+                            found = true;
+                        }
+                    }
+
+                    found.should.equal(true);
+                    done();
+                });
+            });
+        });
+        it('should call the configuration creation handler', function (done) {
+            let handlerCalled = false;
+
+            iotAgentLib.setConfigurationHandler(function (newConfiguration, callback) {
+                should.exist(newConfiguration);
+                should.exist(callback);
+                newConfiguration.cbHost.should.equal('http://anotherUnexistentHost:1026');
+                newConfiguration.trust.should.equal('8970A9078A803H3BL98PINEQRW8342HBAMS');
+                newConfiguration.service.should.equal('Testservice');
+                newConfiguration.subservice.should.equal('/testingPath');
+                newConfiguration.resource.should.equal('/deviceTest');
+                newConfiguration.apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                handlerCalled = true;
+                callback();
+            });
+
+            request(optionsUpdateGroup, function (error, response, body) {
                 handlerCalled.should.equal(true);
                 done();
             });

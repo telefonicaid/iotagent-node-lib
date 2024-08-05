@@ -165,6 +165,10 @@
     "ngsiVersion": {
         "description": "NGSI Interface for this device",
         "type": "string"
+    },
+    "payloadType": {
+        "description": "Payload type allowed for measures for this device",
+        "type": "string"
     }
   }
 }

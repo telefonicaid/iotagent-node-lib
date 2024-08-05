@@ -76,7 +76,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -88,7 +89,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:98765/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -100,7 +102,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/examples',
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -113,7 +116,8 @@ describe('dbConn.configureDb', function () {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
                         replicaSet: 'rs0',
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -125,7 +129,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -137,7 +142,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -148,13 +154,14 @@ describe('dbConn.configureDb', function () {
                     password: 'pass01'
                 },
                 expected: {
-                    url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
+                    url: 'mongodb://user01:pass01@example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
                         auth: {
                             user: 'user01',
                             password: 'pass01'
                         },
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -166,8 +173,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        authSource: 'admin',
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -182,15 +189,15 @@ describe('dbConn.configureDb', function () {
                     authSource: 'admin'
                 },
                 expected: {
-                    url: 'mongodb://example.com:98765/examples',
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin',
                     options: {
                         replicaSet: 'rs0',
                         auth: {
                             user: 'user01',
                             password: 'pass01'
                         },
-                        authSource: 'admin',
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -203,7 +210,8 @@ describe('dbConn.configureDb', function () {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
                         ssl: true,
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -217,7 +225,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true',
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -235,7 +244,8 @@ describe('dbConn.configureDb', function () {
                         dbConn.DEFAULT_DB_NAME +
                         '?retryWrites=true&readPreference=nearest',
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -247,7 +257,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -259,7 +270,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -271,7 +283,8 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             },
@@ -293,16 +306,16 @@ describe('dbConn.configureDb', function () {
                     unknownparam: 'unknown'
                 },
                 expected: {
-                    url: 'mongodb://example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority',
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin',
                     options: {
                         replicaSet: 'rs0',
                         auth: {
                             user: 'user01',
                             password: 'pass01'
                         },
-                        authSource: 'admin',
                         ssl: true,
-                        useNewUrlParser: true
+                        useNewUrlParser: true,
+                        useUnifiedTopology: true
                     }
                 }
             }
