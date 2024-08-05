@@ -1066,7 +1066,7 @@ attach timestamp information to the measures, please refer to the particular IoT
 the arrival time on the server when receiving the measurement will be used to generate a `TimeInstant` for both the
 entity attribute and the attribute metadata.
 
-This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or ENV
+This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or `IOTA_TIMESTAMP`
 variable as well as `timestamp` flag in device or group provision (in this case, the device or group level flag takes
 precedence over the global one). The default value is `true`.
 
