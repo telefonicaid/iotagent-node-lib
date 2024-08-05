@@ -1087,8 +1087,6 @@ the IoTA behaviour is described in the following table:
 | false                  | No                             | TimeInstant and metadata updated with server timestamp |
 | Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
 | Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
-                         
-                         
 Some additional considerations to take into account:
 
 -   If there is an attribute which maps a measure to `TimeInstant` attribute (after
@@ -1098,7 +1096,6 @@ Some additional considerations to take into account:
 -   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
     measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
     timestamp will take place).
-                         
 -   the timestamp of different attributes belonging to the same measurement record may not be equal.
 -   the arrival time and the measurement timestamp will not be the same in the general case (when explicitly defining
     the timestamp in the measurement)
