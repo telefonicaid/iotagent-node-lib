@@ -1052,8 +1052,9 @@ Will now generate the following NGSI v2 payload:
 As part of the device to entity mapping process, the IoT Agent creates and updates automatically a special timestamp
 attribute called `TimeInstant`. This timestamp is represented as two different properties of the mapped entity:
 
--   In the case of NGSI-v2, a `TimeInstant` **metadata** is added in each updated attribute. With NGSI-LD, the Standard
-    `observedAt` property-of-a-property is used instead.
+-   An attribute `TimeInstant` is added to updated entities in the case of NGSI-v2, which captures as an ISO8601
+    timestamp when the associated measurement was observed. With NGSI-LD, the Standard
+    `observedAt` property is used instead
 
 -   With NGSI-v2, an attribute metadata named `TimeInstant` per dynamic attribute mapped, which captures as an ISO8601
     timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
