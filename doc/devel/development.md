@@ -24,7 +24,7 @@
     -   [Function reference](#function-reference)
         -   [Generic middlewares](#generic-middlewares)
 -   [DB Models from API document](#db-models-from-api-document)
-    -   [Service group model](#service-group-model)
+    -   [Config group model](#config-group-model)
     -   [Device model](#device-model)
 -   [Developing a new IoT Agent](#developing-a-new-iot-agent)
     -   [Protocol](#protocol)
@@ -754,9 +754,9 @@ The `newConfiguration` parameter will contain the newly created configuration. T
 callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
-handler will be called once for each of the configurations (both in the case of the creations and the updates).
+handler will be called once for each of the config groups (both in the case of the creations and the updates).
 
-The handler will be also called in the case of updates related to configurations. In that situation, the
+The handler will be also called in the case of updates related to config groups. In that situation, the
 `newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e.,
 `service`, `subservice`, `resource` and `apikey`.
 
@@ -1331,7 +1331,7 @@ The IoT Agent is now ready to be used. Execute it with the following command:
 node index.js
 ```
 
-The North Port interface should now be fully functional, i.e.: management of device registrations and configurations.
+The North Port interface should now be fully functional, i.e.: management of device registrations and config groups.
 
 ### IoT Agent With Active attributes
 
@@ -1829,7 +1829,7 @@ iotAgentLib.startServer(config, iotAgent, function (error) {
 
 ### Configuration management
 
-For some IoT Agents, it will be useful to know what devices or configurations were registered in the Agent, or to do
+For some IoT Agents, it will be useful to know what devices or config groups were registered in the Agent, or to do
 some actions whenever a new device is registered. All this configuration and provisioning actions can be performed using
 two mechanisms: the provisioning handlers and the provisioning API.
 
@@ -2076,14 +2076,14 @@ addProtocols <protocols>
 
 migrate <targetDb> <service> <subservice>
 
-	Migrate all the devices and services for the selected service and subservice into the
+	Migrate all the devices and groups for the selected service and subservice into the
 	specified Mongo database. To perform the migration for all the services or all the
 	subservices, use the "*" value.
 ```
 
 The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This
 configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively.
-Their values can be changed with the `configCb` and `configIot` commands respectively. The new configurations will be
+Their values can be changed with the `configCb` and `configIot` commands respectively. The new config group will be
 deleted upon startup.
 
 ---

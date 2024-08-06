@@ -126,7 +126,7 @@ allowing the computer to interpret the rest of the data with more clarity and de
 ```
 
 Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
-be switched to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the
+be switched to **NGSI LD** at group or device provisioning time using the `ngsiVersion` field in the
 provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
 overriding the group setting.
 
@@ -318,7 +318,7 @@ added `agentPath`:
 
 #### `types`
 
-See **Type Configuration** in the [Configuration API](#configurationapi) section below.
+This parameter includes additional groups configuration as decribed into the [Config group API](api.md#config-group-api) section.
 
 #### `service`
 
@@ -356,7 +356,7 @@ if this flag is activated:
 
 #### `defaultResource`
 
-default string to use as resource for the registration of new Configurations (if no resource is provided).
+default string to use as resource for the registration of new config groups (if no resource is provided).
 
 #### `defaultKey`
 
