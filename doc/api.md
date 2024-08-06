@@ -10,7 +10,7 @@
         -   [Devices](#devices)
         -   [Uniqueness of groups and devices](#uniqueness-of-groups-and-devices)
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
-    -   [Entity attributes](#entity-attributes)
+    -   [Device to NGSI Mapping](#device-to-ngsi-mapping)
     -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
     -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
@@ -36,7 +36,7 @@
         -   [Triggering commands](#triggering-commands)
         -   [Command reception](#command-reception)
         -   [Command confirmation](#command-confirmation)
-    -   [Timestamp Processing](#timestamp-processing)
+    -   [TimeInstant and Timestamp flag](#timeinstant-and-timestamp-flag)
     -   [Multimeasure support](#multimeasure-support)
     -   [Overriding global Context Broker host](#overriding-global-context-broker-host)
     -   [Multitenancy, FIWARE Service and FIWARE ServicePath](#multitenancy-fiware-service-and-fiware-servicepath)
@@ -176,32 +176,47 @@ applies to autoprovisioned attributes and is also available at JEXL context with
 
 In case of provisioning attributes using `id` or `type` as names (please don't do that ;), they are ignored.
 
-## Entity attributes
+## Device to NGSI Mapping
 
-In the config group/device model there are four list of attributes with different purpose to configure how the
-information coming from the device (measures) is mapped to the Context Broker attributes:
+The way to map the information coming or going to the device to the NGSI attributes is defined in the group or device.
+It is possible to define the entity type and the entity ID that a device will use in the Context Broker. It can be
+configured for a single device in the device provisioning, or it can be defined for all the devices in a group.
+
+The entity type should be defined both in the group and in the device, but the entity name (entity ID) is not defined in
+the group. In that case, if there is no a existing device the same device ID, the entity name of the device generated
+will be a concatenation of the entity type and the device ID (I.E: `entityType:device_id`). It is possible to define the
+entity name as an expression, using the [Expression Language](#expression-language-support) through the `entityNameExp`
+attribute in the group.
+
+It is also possible to configure how each of the measures obtained from the device is mapped to different attributes.
+The name and type of the attribute is configured by the user (globally for all the devices in the group or in a per
+device preprovisioning). Device measures can have four different behaviors:
 
 -   **`attributes`**: Are measures that are pushed from the device to the IoT agent. This measure changes will be sent
     to the Context Broker as updateContext requests over the device entity. NGSI queries to the context broker will be
     resolved in the Broker database. For each attribute, its `name` and `type` must be provided. Additional `metadata`
-    is optional.
+    is optional. They are called internally as _active attributes_.
 
 -   **`lazy`**: Passive measures that are pulled from the device to the IoT agent. When a request for data from a lazy
-    attribute arrives to the Context Broker, it forwards the request to the Context Provider of that entity, in this
-    case the IoT Agent. The IoT Agent will then ask the device for the information needed, transform that information to
-    a NGSI format and return it to the Context Broker. This operation will be synchronous from the customer perspective:
-    the Context Broker won't return a response until the device has returned its response to the IoT Agent. For each
-    attribute, its `name` and `type` must be provided.
+    attribute arrives to the Context Broker, it forwards the request to the IoT Agent (that behaves as NGSI Context
+    Provider for all the lazy attributes or commands). The IoT Agent will then ask the device for the information
+    needed, transform that information to a NGSI format and return it to the Context Broker. This operation will be
+    synchronous from the customer perspective: the Context Broker won't return a response until the device has returned
+    its response to the IoT Agent. For each attribute, its `name` and `type` must be provided. They are called
+    internally as _lazy attributes_.
 
 -   **`static`**: It is static attributes that are persisted in the Context Broker. They are not updated by the device,
     but they can be modified by the user. They are useful to store information about the device that is not updated by
     the device itself. For instance, a `location` static attribute is can be used to store the location of a fixed
     device.
 
--   **`commands`**: Commands are actions that can be invoked in the device. They are similar to attributes, but they are
-    not updated by the device. They are updated by the Context Broker, and the IoT Agent will be in charge of
-    translating the updateContext request to the proper action in the device. Two additional attributes are created for
-    each command: `status` and `info`. For each command, its `name` and `type` must be provided.
+-   **`commands`**: Commands are actions that can be invoked in the device. They are entity attributes, but they are not
+    updated by the device, they are updated by the Context Broker. In this case, the interaction will begin by setting
+    an attribute in the device's entity, for which the IoT Agent will be regitered as Context Provider. The IoT Agent
+    will return an immediate response to the Context Broker, and will be held responsible of contacting the device to
+    perform the command itself using the device specific protocol. Special `status` and `info` attributes should be
+    update. For each command, its `name` and `type` must be provided. For further information, please refer to 
+    [Command execution](#command-execution) section.
 
 All of them have the same syntax, a list of objects with the following attributes:
 
@@ -1033,13 +1048,34 @@ Will now generate the following NGSI v2 payload:
 }
 ```
 
-## Timestamp Processing
+## TimeInstant and Timestamp flag
 
-Timestamp processing done by IOTA is as follows:
+As part of the device to entity mapping process, the IoT Agent creates and updates automatically a special timestamp
+attribute called `TimeInstant`. This timestamp is represented as two different properties of the mapped entity:
 
--   An attribute `TimeInstant` is added to updated entities
--   In the case of NGSI-v2, a `TimeInstant` metadata is added in each updated attribute. With NGSI-LD, the Standard
+-   An attribute `TimeInstant` is added to updated entities in the case of NGSI-v2, which captures as an ISO8601
+    timestamp when the associated measurement was observed. With NGSI-LD, the Standard
+    `observedAt` property is used instead
+
+-   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an ISO8601
+    timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
     `observedAt` property-of-a-property is used instead.
+
+If timestamp is not explicily defined when sending the measures through the IoT Agent (for further details on how to
+attach timestamp information to the measures, please refer to the particular IoT Agent implementation documentation),
+the arrival time on the server when receiving the measurement will be used to generate a `TimeInstant` for both the
+entity attribute and the attribute metadata.
+
+This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or `IOTA_TIMESTAMP`
+variable as well as `timestamp` flag in device or group provision (in this case, the device or group level flag takes
+precedence over the global one). The default value is `true`.
+
+The `timestamp` configuration value used, according to the priority:
+
+1.  The one defined at device level
+2.  The one defined at group level (if not defined at device level)
+3.  The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at
+    group level or device level)
 
 Depending on the `timestamp` configuration and if the measure contains a value named `TimeInstant` with a correct value,
 the IoTA behaviour is described in the following table:
@@ -1052,14 +1088,6 @@ the IoTA behaviour is described in the following table:
 | false                  | No                             | TimeInstant and metadata updated with server timestamp |
 | Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
 | Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
-
-The `timestamp` conf value used is:
-
--   The one defined at device level
--   The one defined at group level (if not defined at device level)
--   The one defined at [IoTA configuration level](admin.md#timestamp) / `IOTA_TIMESTAMP` env var (if not defined at
-    group level or device level)
-
 Some additional considerations to take into account:
 
 -   If there is an attribute which maps a measure to `TimeInstant` attribute (after
@@ -1069,6 +1097,18 @@ Some additional considerations to take into account:
 -   If the resulting `TimeInstant` not follows [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601) (either from a direct
     measure of after a mapping, as described in the previous bullet) then it is refused (so a failover to server
     timestamp will take place).
+-   the timestamp of different attributes belonging to the same measurement record may not be equal.
+-   the arrival time and the measurement timestamp will not be the same in the general case (when explicitly defining
+    the timestamp in the measurement)
+-   if `timezone` field is defined as part of the provisioning of the device or group, timestamp fields will be
+    generated using it. For instance, if `timezone` is set to `America/Los_Angeles`, a possible timestamp could be
+    `2025-08-05T00:35:01.468-07:00`. If `timezone` field is not defined, by default Zulu Time Zone (UTC +0) will be
+    used. Following the previous example, timestamp could be `2015-08-05T07:35:01.468Z`.
+
+E.g.: in the case of a device that can take measurements every hour of both temperature and humidity and sends the data
+once every day, at midnight, the `TimeInstant` reported for each measurement will be the hour when that measurement was
+observed (e.g. 4:00 PM), while all the measurements will have an arrival time around midnight. If no timestamps were
+reported with such measurements, the `TimeInstant` attribute would take those values around midnight.
 
 ## Multimeasure support
 
