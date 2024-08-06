@@ -1860,7 +1860,7 @@ const testCases = [
                                 object_id: 'a',
                                 name: 'attr_a',
                                 type: 'Number',
-                                expression: 'a*st_attr*metadata_st_attr_coef'
+                                expression: 'a*st_attr*metadata.st_attr.coef'
                             }
                         ],
                         explicitAttrs: "['attr_a']"
