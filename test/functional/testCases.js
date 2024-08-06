@@ -1844,11 +1844,33 @@ const testCases = [
                         lazy: [],
                         static_attributes: [
                             {
+                                name: 'st_attr1',
+                                type: 'Number',
+                                value: 1.5,
+                                metadata: {
+                                    coef1: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            },
+                            {
                                 name: 'st_attr',
                                 type: 'Number',
                                 value: 1.5,
                                 metadata: {
                                     coef: {
+                                        value: 0.8,
+                                        type: 'Float'
+                                    }
+                                }
+                            },
+                            {
+                                name: 'st_attr2',
+                                type: 'Number',
+                                value: 1.5,
+                                metadata: {
+                                    coef2: {
                                         value: 0.8,
                                         type: 'Float'
                                     }
