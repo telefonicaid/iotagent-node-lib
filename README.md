@@ -92,7 +92,7 @@ available, you should follow the installation instructions for each IoT Agent (f
 [previous section](#iot-agents-available)). You can find the common API provided by the **IoT Agent node library** under
 [API](doc/api.md) documentation.
 
-If you plan to use the library in your own project or IoT Agent, you should follow the
+If you plan to use the IoT Agent node library in your own project or IoT Agent, you should follow the
 [Developer manual](doc/devel/development.md), which includes the installation instructions and the usage of the library.
 
 Information about how to configure the IoT agent or the library can be found at the corresponding section of the
