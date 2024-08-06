@@ -593,8 +593,8 @@ Additionally, for attribute expressions (`expression`, `entity_name`), `entityNa
 (`expression`) measures are available in the **context** used to evaluate them.
 
 Attribute metadata and Static Attribute metadata are available in the **context** under the following convention:
-`metadata_AttributeName_MetadataName` or `metadata_StaticAttributeName_MetadataName` in a similar way of defined for
-[Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
+`metadata_<AttributeName>_<MetadataName>` or `metadata_<StaticAttributeName>_<MetadataName>` in a similar way of defined
+for [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
 ### Examples of JEXL expressions
 
