@@ -1831,7 +1831,6 @@ const testCases = [
     {
         describeName:
             '0175 - Simple group with active attribute + JEXL expression referencing metadata context attributes',
-        skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1861,9 +1860,10 @@ const testCases = [
                                 object_id: 'a',
                                 name: 'attr_a',
                                 type: 'Number',
-                                expression: 'a*st_attr*metadata.st_attr.coef'
+                                expression: 'a*st_attr*metadata_st_attr_coef'
                             }
-                        ]
+                        ],
+                        explicitAttrs: "['attr_a']"
                     }
                 ]
             },
