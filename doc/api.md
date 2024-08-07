@@ -596,7 +596,7 @@ Attribute metadata and Static Attribute metadata are available in the **context*
 `metadata.<AttributeName>.<MetadataName>` or `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined
 for [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
-Moreover if attribute metdata has an expression metadata attribute value in jexl context is updated after that
+Moreover, if attribute metadata has an expression metadata attribute value in jexl context it is updated after that
 expression is evaluated. Note that there is no order into metadata structure and there is no warranty about which
 metadata attribute expression will be evaluated first.
 
