@@ -1784,7 +1784,7 @@ const testCases = [
                                 object_id: 'a',
                                 name: 'attr_a',
                                 type: 'Text',
-                                expression: 'a+":"+service+subservice+type'
+                                expression: 'a+":"+service+subservice+id+type'
                             }
                         ]
                     }
@@ -1815,7 +1815,12 @@ const testCases = [
                     id: globalEnv.entity_name,
                     type: globalEnv.entity_type,
                     attr_a: {
-                        value: 'text:' + globalEnv.service + globalEnv.servicePath + globalEnv.entity_type,
+                        value:
+                            'text:' +
+                            globalEnv.service +
+                            globalEnv.servicePath +
+                            globalEnv.deviceId +
+                            globalEnv.entity_type,
                         type: 'Text'
                     }
                 }
@@ -1852,7 +1857,7 @@ const testCases = [
                                 object_id: 'c',
                                 name: 'attr_c',
                                 type: 'Text',
-                                expression: 'c+":"+service+subservice+type'
+                                expression: 'c+":"+service+subservice+id+type'
                             },
                             {
                                 object_id: 'd',
@@ -1916,7 +1921,12 @@ const testCases = [
                     },
                     attr_c: {
                         type: 'Text',
-                        value: 'text:' + globalEnv.service + globalEnv.servicePath + globalEnv.entity_type
+                        value:
+                            'text:' +
+                            globalEnv.service +
+                            globalEnv.servicePath +
+                            globalEnv.deviceId +
+                            globalEnv.entity_type
                     },
                     attr_d: {
                         type: 'Float',
@@ -4191,7 +4201,7 @@ const testCases = [
                                 type: 'Number',
                                 entity_name: 'TestType:TestDevice2',
                                 entity_type: 'TestType',
-                                expression: 'type+":"+(t*2*static_a)' // Only type is used as JEXL context attr due to #1523
+                                expression: 'type+":"+(t*2*static_a)'
                             }
                         ],
                         static_attributes: [
@@ -4277,7 +4287,7 @@ const testCases = [
                                 object_id: 't',
                                 name: 'temperature',
                                 type: 'Number',
-                                entity_name: 'type+":"+(t*2*static_a)', // Only type is used as JEXL context attr due to #1523
+                                entity_name: 'type+":"+(t*2*static_a)',
                                 entity_type: 'TestType'
                             }
                         ],
