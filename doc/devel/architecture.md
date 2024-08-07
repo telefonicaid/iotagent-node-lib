@@ -13,7 +13,7 @@ Be aware that the IoT Agents are only required to support NGSI10 operations `upd
 standard formats (currently in JSON format; XML deprecated) but will not answer to NGSI9 operations (or NGSI convenience
 operations of any kind).
 
-#### Configurations and Device provisioning information
+#### Config groups and Device provisioning information
 
 In order for a device to connect to the IoT Agent, the device should be provisioned (although there may be occasions
 where this registration is not needed). The provision process is meant to provide the IoT Agent with the following
@@ -33,13 +33,13 @@ information:
 In order to provide this information, the IoT Agent Northbound API provides two resources: Device and Configuration
 provisioning.
 
-**Configurations** may be used when a set of similar devices will be connected to the IoT Agent, to avoid provisioning
-the same set of information for every device. Custom APIKeys can be only provided with the use of Configurations for
+**Config groups** may be used when a set of similar devices will be connected to the IoT Agent, to avoid provisioning
+the same set of information for every device. Custom APIKeys can be only provided with the use of config group for
 device groups. When a device is provisioned, it is assigned to a configuration _if there is one that matches its type,
 its service and its subservice_. In that case, all the default information in the Configuration is merged with the
 device information to create the definitive Device object that will be stored in the system.
 
-Particular IoT Agents _may_ support autoregistration of devices into configurations, if enough information is given from
+Particular IoT Agents _may_ support autoregistration of devices into config groups, if enough information is given from
 the Southbound.
 
 #### Registration

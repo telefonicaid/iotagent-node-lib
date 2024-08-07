@@ -135,7 +135,7 @@ For every config group, the pair (resource, apikey) _must_ be unique (as it is u
 which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey`
 parameters to select the appropriate instance.
 
-Config groups can be created with preconfigured sets of attributes, service information, security information and other
+Config groups can be created with preconfigured sets of attributes, service and subservice information, security information and other
 parameters. The specific parameters that can be configured for a given config group are described in the
 [Config group datamodel](#config-group-datamodel) section.
 
@@ -163,7 +163,7 @@ parameters defined at device level in database, the parameters are inherit from 
 
 ### Uniqueness of groups and devices
 
-Group service uniqueness is defined by the combination of: service, subservice and apikey
+Group uniqueness is defined by the combination of: service, subservice and apikey
 
 Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
 with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
@@ -602,8 +602,8 @@ expression. In all cases the following data is available to all expressions:
 -   `id`: device ID
 -   `entity_name`: NGSI entity Name (principal)
 -   `type`: NGSI entity type (principal)
--   `service`: device service
--   `subservice`: device subservice
+-   `service`: device service (`Fiware-Service`) 
+-   `subservice`: device subservice (`Fiware-ServicePath`)
 -   `staticAttributes`: static attributes defined in the device or config group
 
 Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
