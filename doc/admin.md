@@ -421,6 +421,14 @@ characters (such as semi-colons) which are
 specification. When provisioning devices, it is necessary that the developer provides valid `objectId`-`name` mappings
 whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
+#### `expressLimit`
+
+IotAgents, as all Express applications that use the body-parser middleware, have a default limit to the request body
+size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
+request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
+
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -482,6 +490,7 @@ overrides.
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
+| IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 
 Note:
 
