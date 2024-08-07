@@ -1768,7 +1768,6 @@ const testCases = [
     },
     {
         describeName: '0170 - Simple group with active attribute + JEXL expression referencing context attributes',
-        skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1785,7 +1784,7 @@ const testCases = [
                                 object_id: 'a',
                                 name: 'attr_a',
                                 type: 'Text',
-                                expression: 'a+":"+service+subservice+id+type'
+                                expression: 'a+":"+service+subservice+type'
                             }
                         ]
                     }
@@ -1816,12 +1815,7 @@ const testCases = [
                     id: globalEnv.entity_name,
                     type: globalEnv.entity_type,
                     attr_a: {
-                        value:
-                            'text:' +
-                            globalEnv.service +
-                            globalEnv.servicePath +
-                            globalEnv.deviceId +
-                            globalEnv.entity_type,
+                        value: 'text:' + globalEnv.service + globalEnv.servicePath + globalEnv.entity_type,
                         type: 'Text'
                     }
                 }
@@ -1830,7 +1824,6 @@ const testCases = [
     },
     {
         describeName: '0180 - Simple group with active attributes + JEXL multiples expressions at same time',
-        skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1859,7 +1852,7 @@ const testCases = [
                                 object_id: 'c',
                                 name: 'attr_c',
                                 type: 'Text',
-                                expression: 'c+":"+service+subservice+id+type'
+                                expression: 'c+":"+service+subservice+type'
                             },
                             {
                                 object_id: 'd',
@@ -1923,12 +1916,7 @@ const testCases = [
                     },
                     attr_c: {
                         type: 'Text',
-                        value:
-                            'text:' +
-                            globalEnv.service +
-                            globalEnv.servicePath +
-                            globalEnv.deviceId +
-                            globalEnv.entity_type
+                        value: 'text:' + globalEnv.service + globalEnv.servicePath + globalEnv.entity_type
                     },
                     attr_d: {
                         type: 'Float',

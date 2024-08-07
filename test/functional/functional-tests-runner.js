@@ -65,8 +65,8 @@ describe('FUNCTIONAL TESTS AUTO', function () {
                 }
                 let type = testUtils.groupToIoTAConfigType(
                     testCase.provision.json.services[0],
-                    testCase.provision.headers.fiwareService,
-                    testCase.provision.headers.fiwareServicepath
+                    testCase.provision.headers['fiware-service'],
+                    testCase.provision.headers['fiware-servicepath']
                 );
                 config.iota.types[type.name] = type.type;
                 iotAgentLib.activate(config.iota, function (error) {
