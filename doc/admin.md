@@ -5,7 +5,6 @@
         -   [loglevel](#loglevel)
         -   [contextBroker](#contextbroker)
         -   [server](#server)
-        -   [stats](#stats)
         -   [authentication](#authentication)
         -   [deviceRegistry](#deviceregistry)
         -   [mongodb](#mongodb)
@@ -156,17 +155,6 @@ support nulls or multi-attribute requests if they are encountered.
       null: true,
       datasetId: true
     }
-}
-```
-
-#### `stats`
-
-It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings.
-
-```javascript
-stats: {
-    interval: 100;
 }
 ```
 

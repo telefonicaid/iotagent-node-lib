@@ -41,9 +41,8 @@ const iotAgentConfig = {
         host: 'localhost',
         baseRoot: '/'
     },
-    stats: {
-        interval: 50,
-        persistence: true
+    deviceRegistry: {
+        type: 'mongodb'
     },
     types: {},
     service: 'smartgondor',

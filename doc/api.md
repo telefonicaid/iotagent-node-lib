@@ -69,6 +69,8 @@
             -   [Retrieve log level `GET /admin/log`](#retrieve-log-level-get-adminlog)
         -   [About operations](#about-operations)
             -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+        -   [Metrics](#metrics)
+            -   [Retrieve metrics `GET /metrics`](#retrieve-metrics-get-metrics)
 
 <!-- /TOC -->
 
@@ -2300,6 +2302,57 @@ Example:
     "baseRoot": "/",
     "version": "1.7.0"
 }
+```
+
+### Metrics
+
+The IoT Agent Library exposes a [openmetrics-compatible](https://github.com/OpenObservability/OpenMetrics) endpoint for
+telemetry collectors to gather application statistics.
+
+#### Retrieve metrics `GET /metrics`
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `406` `Wrong Accept Header` If accept format is not supported.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response body**_
+
+Returns the current value of the server stats,
+
+-   If `Accept` header contains `application/openmetrics-text`, the response has content-type
+    `application/openmetrics-text; version=1.0.0; charset=utf-8`
+-   Else, If `Accept` header is missing or supports `text/plain` (explicitly or by `*/*`) , the response has
+    content-type `text/plain; version=0.0.4; charset=utf-8` (legacy format for [prometheus](https://prometheus.io))
+-   In any other case, returns an error message with `406` status.
+
+For the kind of metrics exposed by the application, the actual payload itself is completely the same for both
+content-types, and follows the openmetrics specification, e.g:
+
+```
+# HELP deviceCreationRequests global metric for deviceCreationRequests
+# TYPE deviceCreationRequests counter
+deviceCreationRequests 0
+# HELP deviceRemovalRequests global metric for deviceRemovalRequests
+# TYPE deviceRemovalRequests counter
+deviceRemovalRequests 0
+# HELP measureRequests global metric for measureRequests
+# TYPE measureRequests counter
+measureRequests 0
+# HELP raiseAlarm global metric for raiseAlarm
+# TYPE raiseAlarm counter
+raiseAlarm 0
+# HELP releaseAlarm global metric for releaseAlarm
+# TYPE releaseAlarm counter
+releaseAlarm 0
+# HELP updateEntityRequestsOk global metric for updateEntityRequestsOk
+# TYPE updateEntityRequestsOk counter
+updateEntityRequestsOk 2
+# HELP updateEntityRequestsError global metric for updateEntityRequestsError
+# TYPE updateEntityRequestsError counter
+updateEntityRequestsError 5
+# EOF
 ```
 
 [1]:
