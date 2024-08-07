@@ -318,7 +318,7 @@ added `agentPath`:
 
 #### `types`
 
-This parameter includes additional groups configuration as decribed into the [Config group API](api.md#config-group-api) section.
+This parameter includes additional groups configuration as described into the [Config group API](api.md#config-group-api) section.
 
 #### `service`
 
