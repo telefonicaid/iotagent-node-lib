@@ -1681,7 +1681,7 @@ Config group is represented by a JSON object with the following fields:
 
 The following actions are available under the config group endpoint:
 
-#### Retrieve config groups `GET /iot/services`
+#### Retrieve config groups GET `/iot/configGroups` or `GET /iot/services`
 
 List all the config groups for the given `fiware-service` and `fiware-servicepath`. The config groups that match the
 `fiware-servicepath` are returned in any other case.
@@ -1705,14 +1705,14 @@ Successful operations return `Content-Type` header with `application/json` value
 
 _**Response payload**_
 
-A JSON object with a services field that contains an array of services that match the request. See the
+A JSON object with a configGroups or services field that contains an array of services that match the request. See the
 [config group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
 ```json
 {
-    "services": [
+    "configGroups": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
@@ -1749,7 +1749,7 @@ Example:
 }
 ```
 
-#### Create config group `POST /iot/services`
+#### Create config group `POST /iot/configGroups` or `POST /iot/services`
 
 Creates a set of config groups for the given service and service path. The service and subservice information will taken
 from the headers, overwritting any preexisting values.
@@ -1763,14 +1763,14 @@ _**Request headers**_
 
 _**Request payload**_
 
-A JSON object with a `services` field. The value is an array of config groups objects to create. See the
-[config group datamodel](#service-group-datamodel) for more information.
+A JSON object with a `configGroups` or `services` field. The value is an array of config groups objects to create. See
+the [config group datamodel](#service-group-datamodel) for more information.
 
 Example:
 
 ```json
 {
-    "services": [
+    "configGroups": [
         {
             "resource": "/deviceTest",
             "apikey": "801230BJKL23Y9090DSFL123HJK09H324HV8732",
@@ -1804,11 +1804,11 @@ _**Response headers**_
 
 Successful operations return `Content-Type` header with `application/json` value.
 
-#### Modify config group `PUT /iot/services`
+#### Modify config group `PUT /iot/configGroups` or `PUT /iot/services`
 
-Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a service
-group body as the payload. The body does not have to be complete: for incomplete bodies, just the attributes included in
-the JSON body will be updated. The rest of the attributes will remain unchanged.
+Modifies the information of a config group, identified by the `resource` and `apikey` query parameters. Takes a
+configuration/service group body as the payload. The body does not have to be complete: for incomplete bodies, just the
+attributes included in the JSON body will be updated. The rest of the attributes will remain unchanged.
 
 _**Request query parameters**_
 
@@ -1844,7 +1844,7 @@ _**Response code**_
 -   400 MISSING_HEADERS if any of the mandatory headers is not present.
 -   500 SERVER ERROR if there was any error not contemplated above.:
 
-#### Remove config group `DELETE /iot/services`
+#### Remove config group `DELETE /iot/configGroups` or `DELETE /iot/services`
 
 Removes a config group, identified by the `resource` and `apikey` query parameters.
 
