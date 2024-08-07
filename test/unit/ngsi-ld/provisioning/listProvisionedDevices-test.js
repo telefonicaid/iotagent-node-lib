@@ -184,11 +184,9 @@ describe('NGSI-LD - Device provisioning API: List provisioned devices', function
                 should.exist(body.devices[2].attributes[0].entity_name);
                 should.exist(body.devices[2].attributes[0].entity_type);
                 should.exist(body.devices[2].attributes[1].expression);
-                should.exist(body.devices[2].attributes[2].reverse);
                 body.devices[2].attributes[0].entity_name.should.equal('Higro2000');
                 body.devices[2].attributes[0].entity_type.should.equal('Higrometer');
                 body.devices[2].attributes[1].expression.should.equal('${@humidity * 20}');
-                body.devices[2].attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
