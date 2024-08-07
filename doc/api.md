@@ -163,7 +163,7 @@ parameters defined at device level in database, the parameters are inherit from 
 
 ### Uniqueness of groups and devices
 
-Group service uniqueness is defined by the combination of: service, subservice and apikey
+Group service uniqueness is defined by the combination of: service, subservice resource and apikey
 
 Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
 with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
