@@ -249,7 +249,6 @@ The script implements expression detection and translation in the following fiel
 
 -   active.expression
 -   active.entity_name
--   active.reverse
 -   attributes.expression
 -   attributes.entity_name
 -   attributes.expression

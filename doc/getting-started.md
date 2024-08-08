@@ -10,22 +10,22 @@ custom settings may also be required dependent upon the actual IoT Agent used.
 
 ```javascript
 config = {
-    logLevel: "DEBUG",
+    logLevel: 'DEBUG',
     contextBroker: {
-        host: "orion",
-        port: "1026",
+        host: 'orion',
+        port: '1026'
     },
     server: {
         port: 4041,
-        host: "0.0.0.0",
+        host: '0.0.0.0'
     },
     deviceRegistry: {
-        type: "memory",
+        type: 'memory'
     },
-    service: "openiot",
-    subservice: "/",
-    providerUrl: "http://iot-agent:4041",
-    defaultType: "Thing",
+    service: 'openiot',
+    subservice: '/',
+    providerUrl: 'http://iot-agent:4041',
+    defaultType: 'Thing'
 };
 ```
 
@@ -40,11 +40,11 @@ at the URL `http://iot-agent:4041`.
 
 All configuration settings can also updated using Docker environment variables.
 
-### Provisioning a Service Group
+### Provisioning a Config Group
 
-Settings which are common to a group of devices can be passed to the IoT Agent using the Service API. The
-`fiware-service` and `fiware-service-path` to be used to access the API are defined within the `config.js`. Each service
-may override values previously defined in the configuration if necessary.
+Settings which are common to a group of devices can be passed to the IoT Agent using the Config Group API. The
+`fiware-service` and `fiware-service-path` to be used to access the API are defined within the `config.js`. Each config
+group may override values previously defined in the global configuration if necessary.
 
 ```bash
 curl -iX POST \
@@ -66,7 +66,7 @@ curl -iX POST \
 
 In this case an `apiKey` for identifying devices has been created and all interactions to the path `/iot/d` which
 present this `apiKey` will be created as entities of `type=Device` rather than using the configuration default of
-`type=Thing`. The service group would usual hold additional attribute mappings, commands and common static attributes as
+`type=Thing`. The config group would usual hold additional attribute mappings, commands and common static attributes as
 well.
 
 ### Provisioning an Individual Device
@@ -97,7 +97,7 @@ curl -iX POST \
 '
 ```
 
-This information is combined with the common service group information whenever a request is received at the South port
+This information is combined with the common config group information whenever a request is received at the South port
 of the IoT Agent and used to create or update the relevant entity in the Context Broker.
 
 #### Receiving a measure from a known Device
@@ -111,9 +111,9 @@ curl -iX POST \
   -d 'c|1'
 ```
 
-The IoT Agent South port is listening to the path defined in the service group, and the API key is recognized to match.
+The IoT Agent South port is listening to the path defined in the config group, and the API key is recognized to match.
 Because the `device_id` is also recognized, the provisioned device configuration is used and its settings are combined
-with the service group. A mapping has been found to rename the `c` measurement to `count` - the following context entity
+with the config group. A mapping has been found to rename the `c` measurement to `count` - the following context entity
 is created in the context broker:
 
 ```json
@@ -137,9 +137,9 @@ curl -iX POST \
   -d 't|1'
 ```
 
-The IoT Agent South port is listen to the path defined in the service group, and the API key is recognized to match, so
-the Service group configuration will be used. No mappings will be made for the Entity `id` or the attribute names and
-the following entity will be created:
+The IoT Agent South port is listen to the path defined in the config group, and the API key is recognized to match, so
+the config group configuration will be used. No mappings will be made for the Entity `id` or the attribute names and the
+following entity will be created:
 
 ```json
 {

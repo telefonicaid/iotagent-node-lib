@@ -27,6 +27,7 @@
         -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
         -   [Available functions](#available-functions)
         -   [Expressions with multiple transformations](#expressions-with-multiple-transformations)
+        -   [Expression support in metadata](#expression-support-in-metadata)
     -   [Measurement transformation](#measurement-transformation)
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
@@ -69,6 +70,8 @@
             -   [Retrieve log level `GET /admin/log`](#retrieve-log-level-get-adminlog)
         -   [About operations](#about-operations)
             -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
+        -   [Metrics](#metrics)
+            -   [Retrieve metrics `GET /metrics`](#retrieve-metrics-get-metrics)
 
 <!-- /TOC -->
 
@@ -133,9 +136,9 @@ For every config group, the pair (resource, apikey) _must_ be unique (as it is u
 which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey`
 parameters to select the appropriate instance.
 
-Config groups can be created with preconfigured sets of attributes, service information, security information and other
-parameters. The specific parameters that can be configured for a given config group are described in the
-[Config group datamodel](#config-group-datamodel) section.
+Config groups can be created with preconfigured sets of attributes, service and subservice information, security
+information and other parameters. The specific parameters that can be configured for a given config group are described
+in the [Config group datamodel](#config-group-datamodel) section.
 
 ### Devices
 
@@ -161,7 +164,7 @@ parameters defined at device level in database, the parameters are inherit from 
 
 ### Uniqueness of groups and devices
 
-Group service uniqueness is defined by the combination of: service, subservice and apikey
+Group uniqueness is defined by the combination of: service, subservice, resource and apikey
 
 Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
 with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
@@ -215,7 +218,7 @@ device preprovisioning). Device measures can have four different behaviors:
     an attribute in the device's entity, for which the IoT Agent will be regitered as Context Provider. The IoT Agent
     will return an immediate response to the Context Broker, and will be held responsible of contacting the device to
     perform the command itself using the device specific protocol. Special `status` and `info` attributes should be
-    update. For each command, its `name` and `type` must be provided. For further information, please refer to 
+    update. For each command, its `name` and `type` must be provided. For further information, please refer to
     [Command execution](#command-execution) section.
 
 All of them have the same syntax, a list of objects with the following attributes:
@@ -260,10 +263,13 @@ measure name, unless `explicitAttrs` is defined. Measures `id` or `type` names a
 ## Device autoprovision and entity creation
 
 For those agents that uses IoTA Node LIB version 3.4.0 or higher, you should consider that the entity is not created
-automatically when a device is created. This means that all entities into the Context Broker are created when data 
-arrives from a device, no matter if the device is explicitly provisioned (via [device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
+automatically when a device is created. This means that all entities into the Context Broker are created when data
+arrives from a device, no matter if the device is explicitly provisioned (via
+[device provisioning API](#create-device-post-iotdevices)) or autoprovisioned.
 
-If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the IOTAgent, you can create it in advance using the Context Broker [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
+If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the
+IOTAgent, you can create it in advance using the Context Broker
+[NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
 
 ## Multientity support
 
@@ -341,45 +347,6 @@ e.g.:
             "value": ["light"],
             "metadata": {
                 "includes": { "type": "Text", "value": ["state", "luminosity"] },
-                "alias": { "type": "Text", "value": "lamp" }
-            }
-        }
-    ]
-}
-```
-
-Metadata could also has `expression` like attributes in order to expand it:
-
-e.g.:
-
-```json
-{
-    "entity_type": "Lamp",
-    "resource": "/iot/d",
-    "protocol": "PDI-IoTA-UltraLight",
-    "commands": [
-        { "name": "on", "type": "command" },
-        { "name": "off", "type": "command" }
-    ],
-    "attributes": [
-        { "object_id": "s", "name": "state", "type": "Text" },
-        {
-            "object_id": "l",
-            "name": "luminosity",
-            "type": "Integer",
-            "metadata": {
-                "unitCode": { "type": "Text", "value": "CAL" }
-            }
-        }
-    ],
-    "static_attributes": [
-        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
-        {
-            "name": "controlledProperty",
-            "type": "Text",
-            "value": ["light"],
-            "metadata": {
-                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
                 "alias": { "type": "Text", "value": "lamp" }
             }
         }
@@ -494,7 +461,8 @@ mappings of the provision. If `explicitAttrs` is provided both at device and con
 precedence. Additionally `explicitAttrs` can be used to define which measures (identified by their attribute names, not
 by their object_id) defined in JSON/JEXL array will be propagated to NGSI interface.
 
-Note that when `explicitAttrs` is an array or a JEXL expression resulting in to Array, if this array is empty then `TimeInstant` is not propaged to CB.
+Note that when `explicitAttrs` is an array or a JEXL expression resulting in to Array, if this array is empty then
+`TimeInstant` is not propaged to CB.
 
 The different possibilities are summarized below:
 
@@ -584,6 +552,7 @@ really useful when you need to adapt measure (for example, to change the units, 
 of expression in the IoT Agent are:
 
 -   [Measurement transformation](#measurement-transformation).
+-   [Metadata](#expression-support-in-metadata)
 -   Commands payload transformation (push and pull).
 -   Auto provisioned devices entity name. It is configured at config Group level by setting the `entityNameExp`
     parameter. It defines an expression to generate the Entity Name for autoprovisioned devices.
@@ -596,12 +565,18 @@ expression. In all cases the following data is available to all expressions:
 -   `id`: device ID
 -   `entity_name`: NGSI entity Name (principal)
 -   `type`: NGSI entity type (principal)
--   `service`: device service
--   `subservice`: device subservice
+-   `service`: device service (`Fiware-Service`)
+-   `subservice`: device subservice (`Fiware-ServicePath`)
 -   `staticAttributes`: static attributes defined in the device or config group
 
 Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
-(`expression`) measures are available in the **context** used to evaluate them.
+(`expression`) the following is available in the **context** used to evalute:
+
+-   measures, as `<AttributeName>`
+-   metadata (both for attribute measurement in the case of NGSI-v2 measurements and static attribute) are available in
+    the **context** under the following convention: `metadata.<AttributeName>.<MetadataName>` or
+    `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined for
+    [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
 ### Examples of JEXL expressions
 
@@ -647,53 +622,52 @@ to incorporate new transformations from the IoT Agent configuration file in a fa
 
 Current common transformation set:
 
-| JEXL Transformation                  | Equivalent JavaScript Function                                                                                          |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| jsonparse: (str)                     | `JSON.parse(str);`                                                                                                      |
-| jsonstringify: (obj)                 | `JSON.stringify(obj);`                                                                                                  |
-| indexOf: (val, char)                 | `String(val).indexOf(char);`                                                                                            |
-| length: (val)                        | `String(val).length;`                                                                                                   |
-| trim: (val)                          | `String(val).trim();`                                                                                                   |
-| substr: (val, int1, int2)            | `String(val).substr(int1, int2);`                                                                                       |
-| addreduce: (arr)                     | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                          |
-| lengtharray: (arr)                   | `arr.length;`                                                                                                           |
-| typeof: (val)                        | `typeof val;`                                                                                                           |
-| isarray: (arr)                       | `Array.isArray(arr);`                                                                                                   |
-| isnan: (val)                         | `isNaN(val);`                                                                                                           |
-| parseint: (val)                      | `parseInt(val);`                                                                                                        |
-| parsefloat: (val)                    | `parseFloat(val);`                                                                                                      |
-| toisodate: (val)                     | `new Date(val).toISOString();`                                                                                          |
-| timeoffset:(isostr)                  | `new Date(isostr).getTimezoneOffset();`                                                                                 |
-| tostring: (val)                      | `val.toString();`                                                                                                       |
-| urlencode: (val)                     | `encodeURI(val);`                                                                                                       |
-| urldecode: (val)                     | `decodeURI(val);`                                                                                                       |
-| replacestr: (str, from, to)          | `str.replace(from, to);`                                                                                                |
-| replaceregexp: (str, reg, to)        | `str.replace(new RegExp(reg), to);`                                                                                     |
-| replaceallstr: (str, from, to)       | `str.replaceAll(from, to);`                                                                                             |
-| replaceallregexp: (str, reg, to)     | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                              |
-| split: (str, ch)                     | `str.split(ch);`                                                                                                        |
-| joinarrtostr: (arr, ch)              | `arr.join(ch);`                                                                                                         |
-| concatarr: (arr, arr2)               | `arr.concat(arr2);`                                                                                                     |
-| mapper: (val, values, choices)       | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                 |
-| thmapper: (val, values, choices)     | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code> |
-| bitwisemask: (i,mask,op,shf)         | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>        |
-| slice: (arr, init, end)              | `arr.slice(init,end);`                                                                                                  |
-| addset: (arr, x)                     | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                               |
-| removeset: (arr, x)                  | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                |
-| touppercase: (val)                   | `String(val).toUpperCase()`                                                                                             |
-| tolowercase: (val)                   | `String(val).toLowerCase()`                                                                                             |
-| round: (val)                         | `Math.round(val)`                                                                                                       |
-| floor: (val)                         | `Math.floor(val)`                                                                                                       |
-| ceil: (val)                          | `Math.ceil(val)`                                                                                                        |
-| tofixed: (val, decimals)             | `Number.parseFloat(val).toFixed(decimals)`                                                                              |
-| gettime: (d)                         | `new Date(d).getTime()`                                                                                                 |
-| toisostring: (d)                     | `new Date(d).toISOString()`                                                                                             |
-| localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                         |
-| now: ()                              | `Date.now()`                                                                                                            |
-| hextostring: (val)                   | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                        |
-| valuePicker: (val,pick)              | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code> |
-| valuePickerMulti: (val,pick)              | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code> |
-
+| JEXL Transformation                  | Equivalent JavaScript Function                                                                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| jsonparse: (str)                     | `JSON.parse(str);`                                                                                                       |
+| jsonstringify: (obj)                 | `JSON.stringify(obj);`                                                                                                   |
+| indexOf: (val, char)                 | `String(val).indexOf(char);`                                                                                             |
+| length: (val)                        | `String(val).length;`                                                                                                    |
+| trim: (val)                          | `String(val).trim();`                                                                                                    |
+| substr: (val, int1, int2)            | `String(val).substr(int1, int2);`                                                                                        |
+| addreduce: (arr)                     | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                           |
+| lengtharray: (arr)                   | `arr.length;`                                                                                                            |
+| typeof: (val)                        | `typeof val;`                                                                                                            |
+| isarray: (arr)                       | `Array.isArray(arr);`                                                                                                    |
+| isnan: (val)                         | `isNaN(val);`                                                                                                            |
+| parseint: (val)                      | `parseInt(val);`                                                                                                         |
+| parsefloat: (val)                    | `parseFloat(val);`                                                                                                       |
+| toisodate: (val)                     | `new Date(val).toISOString();`                                                                                           |
+| timeoffset:(isostr)                  | `new Date(isostr).getTimezoneOffset();`                                                                                  |
+| tostring: (val)                      | `val.toString();`                                                                                                        |
+| urlencode: (val)                     | `encodeURI(val);`                                                                                                        |
+| urldecode: (val)                     | `decodeURI(val);`                                                                                                        |
+| replacestr: (str, from, to)          | `str.replace(from, to);`                                                                                                 |
+| replaceregexp: (str, reg, to)        | `str.replace(new RegExp(reg), to);`                                                                                      |
+| replaceallstr: (str, from, to)       | `str.replaceAll(from, to);`                                                                                              |
+| replaceallregexp: (str, reg, to)     | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                               |
+| split: (str, ch)                     | `str.split(ch);`                                                                                                         |
+| joinarrtostr: (arr, ch)              | `arr.join(ch);`                                                                                                          |
+| concatarr: (arr, arr2)               | `arr.concat(arr2);`                                                                                                      |
+| mapper: (val, values, choices)       | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                  |
+| thmapper: (val, values, choices)     | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code>  |
+| bitwisemask: (i,mask,op,shf)         | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>         |
+| slice: (arr, init, end)              | `arr.slice(init,end);`                                                                                                   |
+| addset: (arr, x)                     | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                                |
+| removeset: (arr, x)                  | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                 |
+| touppercase: (val)                   | `String(val).toUpperCase()`                                                                                              |
+| tolowercase: (val)                   | `String(val).toLowerCase()`                                                                                              |
+| round: (val)                         | `Math.round(val)`                                                                                                        |
+| floor: (val)                         | `Math.floor(val)`                                                                                                        |
+| ceil: (val)                          | `Math.ceil(val)`                                                                                                         |
+| tofixed: (val, decimals)             | `Number.parseFloat(val).toFixed(decimals)`                                                                               |
+| gettime: (d)                         | `new Date(d).getTime()`                                                                                                  |
+| toisostring: (d)                     | `new Date(d).toISOString()`                                                                                              |
+| localestring: (d, timezone, options) | `new Date(d).toLocaleString(timezone, options)`                                                                          |
+| now: ()                              | `Date.now()`                                                                                                             |
+| hextostring: (val)                   | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                         |
+| valuePicker: (val,pick)              | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code>            |
+| valuePickerMulti: (val,pick)         | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code> |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
@@ -721,6 +695,50 @@ Another example using functions that return more than one value is the following
 ```
 
 For a location value `"40.4165, -3.70256"`, the result of the previous expression will be `-3.70256`.
+
+### Expression support in metadata
+
+Metadata could also has `expression` like attributes in order to expand it:
+
+e.g.:
+
+```json
+{
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
+            }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
+```
+
+Note that there is no order into metadata structure and there is no warranty about which metadata attribute expression
+will be evaluated first.
 
 ## Measurement transformation
 
@@ -1054,21 +1072,21 @@ As part of the device to entity mapping process, the IoT Agent creates and updat
 attribute called `TimeInstant`. This timestamp is represented as two different properties of the mapped entity:
 
 -   An attribute `TimeInstant` is added to updated entities in the case of NGSI-v2, which captures as an ISO8601
-    timestamp when the associated measurement was observed. With NGSI-LD, the Standard
-    `observedAt` property is used instead
+    timestamp when the associated measurement was observed. With NGSI-LD, the Standard `observedAt` property is used
+    instead
 
--   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an ISO8601
-    timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
-    `observedAt` property-of-a-property is used instead.
+-   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an
+    ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
+    Standard `observedAt` property-of-a-property is used instead.
 
 If timestamp is not explicily defined when sending the measures through the IoT Agent (for further details on how to
 attach timestamp information to the measures, please refer to the particular IoT Agent implementation documentation),
 the arrival time on the server when receiving the measurement will be used to generate a `TimeInstant` for both the
 entity attribute and the attribute metadata.
 
-This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or `IOTA_TIMESTAMP`
-variable as well as `timestamp` flag in device or group provision (in this case, the device or group level flag takes
-precedence over the global one). The default value is `true`.
+This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or
+`IOTA_TIMESTAMP` variable as well as `timestamp` flag in device or group provision (in this case, the device or group
+level flag takes precedence over the global one). The default value is `true`.
 
 The `timestamp` configuration value used, according to the priority:
 
@@ -1088,6 +1106,7 @@ the IoTA behaviour is described in the following table:
 | false                  | No                             | TimeInstant and metadata updated with server timestamp |
 | Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
 | Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
+
 Some additional considerations to take into account:
 
 -   If there is an attribute which maps a measure to `TimeInstant` attribute (after
@@ -1233,13 +1252,20 @@ In this case a batch update (`POST /v2/op/update`) to CB will be generated with 
 
 ## Command execution
 
-This section reviews the end-to-end process to trigger and receive commands into devices. The URL paths and messages format is based on the [IoT Agent JSON](https://github.com/telefonicaid/iotagent-json). It may differ in the case of using any other IoT Agent. In that case, please refer to the specific IoTA documentation.
+This section reviews the end-to-end process to trigger and receive commands into devices. The URL paths and messages
+format is based on the [IoT Agent JSON](https://github.com/telefonicaid/iotagent-json). It may differ in the case of
+using any other IoT Agent. In that case, please refer to the specific IoTA documentation.
 
 ### Triggering commands
 
-This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker defined as `command` in the [config group](#config-group-datamodel) or in the [device provision](#device-datamodel). Commands attributes are created using `command` as attribute type. Also, you can define the protocol you want the commands to be sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
+This starts the process of sending data to devices. It starts by updating an attribute into the Context Broker defined
+as `command` in the [config group](#config-group-datamodel) or in the [device provision](#device-datamodel). Commands
+attributes are created using `command` as attribute type. Also, you can define the protocol you want the commands to be
+sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
 
-For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in the Context Broker will send a command to your device. For instance, to send the `ping` command with value `Ping request` you could use the following operation in the Context Broker API:
+For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in
+the Context Broker will send a command to your device. For instance, to send the `ping` command with value
+`Ping request` you could use the following operation in the Context Broker API:
 
 ```
 PUT /v2/entities/<entity_id>/attrs/ping?type=<entity_type>
@@ -1253,30 +1279,36 @@ PUT /v2/entities/<entity_id>/attrs/ping?type=<entity_type>
 
 It is important to note that parameter `type`, with the entity type must be included.
 
-Context Broker API is quite flexible and allows to update an attribute in several ways. Please have a look to the [Orion API]([http://telefonicaid.github.io/fiware-orion/api/v2/stable](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)) for details.
+Context Broker API is quite flexible and allows to update an attribute in several ways. Please have a look to the
+[Orion API](<[http://telefonicaid.github.io/fiware-orion/api/v2/stable](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md)>)
+for details.
 
-**Important note**: don't use operations in the NGSI API with creation semantics. Otherwise, the entity/attribute will be created locally to Context Broker and the command will not progress to the device (and you will need to delete the created entity/attribute if you want to make it to work again). Thus, the following operations *must not* be used:
+**Important note**: don't use operations in the NGSI API with creation semantics. Otherwise, the entity/attribute will
+be created locally to Context Broker and the command will not progress to the device (and you will need to delete the
+created entity/attribute if you want to make it to work again). Thus, the following operations _must not_ be used:
 
-* `POST /v2/entities`
-* `POST /v2/entities/<id>/attrs`
-* `PUT /v2/entities/<id>/attrs`
-* `POST /v2/op/entites` with `actionType` `append`, `appendStrict` or `replace`
+-   `POST /v2/entities`
+-   `POST /v2/entities/<id>/attrs`
+-   `PUT /v2/entities/<id>/attrs`
+-   `POST /v2/op/entites` with `actionType` `append`, `appendStrict` or `replace`
 
 ### Command reception
 
-Once the command is triggered, it is send to the device. Depending on transport protocol, it is going to be sent to the device in a different way. After sending the command, the IoT Agent will have updated the value of `ping_status` to `PENDING` for entity into the Context Broker. Neither
-`ping_info` nor `ping` will be updated.
+Once the command is triggered, it is send to the device. Depending on transport protocol, it is going to be sent to the
+device in a different way. After sending the command, the IoT Agent will have updated the value of `ping_status` to
+`PENDING` for entity into the Context Broker. Neither `ping_info` nor `ping` will be updated.
 
 #### HTTP devices
 
 **Push commands**
 
-Push commands are those that are sent to the device once the IoT Agent receives the request from the Context Broker. In order to 
-send push commands it is needed to set the `"endpoint": "http://[DEVICE_IP]:[PORT]/"` in the device or group provision. The device 
-is supposed to be listening for commands at that URL in a synchronous way. Make sure the device endpoint is reachable by the IoT 
-Agent. Push commands are only valid for HTTP devices. For MQTT devices it is not needed to set the `endpoint` parameter. 
+Push commands are those that are sent to the device once the IoT Agent receives the request from the Context Broker. In
+order to send push commands it is needed to set the `"endpoint": "http://[DEVICE_IP]:[PORT]/"` in the device or group
+provision. The device is supposed to be listening for commands at that URL in a synchronous way. Make sure the device
+endpoint is reachable by the IoT Agent. Push commands are only valid for HTTP devices. For MQTT devices it is not needed
+to set the `endpoint` parameter.
 
-Considering using the IoTA-JSON Agent, and given the previous example, the device should receive a POST request to 
+Considering using the IoTA-JSON Agent, and given the previous example, the device should receive a POST request to
 `http://[DEVICE_IP]:[PORT]` with the following payload:
 
 ```
@@ -1288,22 +1320,29 @@ Content-Type: application/json
 
 **Poll commands**
 
-Poll commands are those that are stored in the IoT Agent waiting to be retrieved by the devices. This kind of 
-commands are typically used for devices that doesn't have a public IP or the IP cannot be reached because of 
-power or netkork constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order 
-to configure the device as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
+Poll commands are those that are stored in the IoT Agent waiting to be retrieved by the devices. This kind of commands
+are typically used for devices that doesn't have a public IP or the IP cannot be reached because of power or netkork
+constrictions. The device connects to the IoT Agent periodically to retrieve commands. In order to configure the device
+as poll commands you just need to avoid the usage of `endpoint` parameter in the device provision.
 
-Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In that moment, the status of the command is `"<command>_status": "PENDING"`. 
+Once the command request is issued to the IoT agent, the command is stored waiting to be retrieved by the device. In
+that moment, the status of the command is `"<command>_status": "PENDING"`.
 
-For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path used as `resource` in the provisioned group (`/iot/json` by default in IoTA-JSON if no `resource` is used) with the following parameters:
+For HTTP devices, in order to retrieve a poll command, the need to make a GET request to the IoT Agent to the path used
+as `resource` in the provisioned group (`/iot/json` by default in IoTA-JSON if no `resource` is used) with the following
+parameters:
 
-**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default
+one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the
+present moment, but it will when this issue gets solved.
 
-* `k`: API key of the device.
-* `i`: Device ID.
-* `getCmd`: This parameter is used to indicate the IoT Agent that the device is requesting a command. It is needed to set it to `1`
+-   `k`: API key of the device.
+-   `i`: Device ID.
+-   `getCmd`: This parameter is used to indicate the IoT Agent that the device is requesting a command. It is needed to
+    set it to `1`
 
-Taking the previous example, and considering the usage of the IoTA-JSON Agent, the device should make the following request, being the response to this request a JSON object with the command name as key and the command value as value:
+Taking the previous example, and considering the usage of the IoTA-JSON Agent, the device should make the following
+request, being the response to this request a JSON object with the command name as key and the command value as value:
 
 **Request:**
 
@@ -1316,15 +1355,20 @@ Accept: application/json
 **Response:**:
 
 ```
-200 OK  
-Content-type: application/json  
+200 OK
+Content-type: application/json
 
-{"ping":"Ping request"}  
+{"ping":"Ping request"}
 ```
 
-For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource by the corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource instead of `/iot/json`) and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent employed.
+For IoT Agents different from IoTA-JSON it is exactly the same just changing in the request the resource by the
+corresponding resource employed by the agent (i.e., IoTA-UL uses `/iot/d` as default resource instead of `/iot/json`)
+and setting the correct `<apikey>` and `<deviceId>`. The response will be also different depending on the IoT Agent
+employed.
 
-**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the present moment, but it will when this issue gets solved.
+**FIXME [#1524](https://github.com/telefonicaid/iotagent-node-lib/issues/1524)**: `resource` different to the default
+one (`/iot/json` in the case of the [IoTA-JSON](https://github.com/telefonicaid/iotagent-json)) is not working at the
+present moment, but it will when this issue gets solved.
 
 **Request**
 
@@ -1338,61 +1382,61 @@ Content-Type: application/json
 **Response**
 
 ```
-200 OK  
-Content-type: application/json  
+200 OK
+Content-type: application/json
 
 {"ping":"Ping request"}
 ```
 
+This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`,
+`<deviceId>`, payload and headers.
 
-This is also possible for IoTA-UL Agent changing in the request the resource, setting the correct `<apikey>`, `<deviceId>`, payload and headers.
-
-Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`. Note that status `DELIVERED` only make sense in the case of poll commands. In the case of push command it cannot happen.
-
+Once the command is retrieved by the device the status is updated to `"<command>_status": "DELIVERED"`. Note that status
+`DELIVERED` only make sense in the case of poll commands. In the case of push command it cannot happen.
 
 #### MQTT devices
 
-For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not used). The device 
-is supposed to be subscribed to the following MQTT topic where the IoT Agent will publish the command:
+For MQTT devices, it is not needed to declare an endpoint (i.e. if included in the provisioning request, it is not
+used). The device is supposed to be subscribed to the following MQTT topic where the IoT Agent will publish the command:
 
 ```
 /<apiKey>/<deviceId>/cmd
 ```
 
-In the case of using the IoTA-JSON Agent, the device should subscribe to the previous topic where it is going to receive a message like 
-the following one when a command is triggered in the Context Broker like the previous step:
+In the case of using the IoTA-JSON Agent, the device should subscribe to the previous topic where it is going to receive
+a message like the following one when a command is triggered in the Context Broker like the previous step:
 
 ```json
-{"ping":"Ping request"}
+{ "ping": "Ping request" }
 ```
 
-Please note that the device should subscribe to the broker using the disabled clean session mode (enabled using 
-`--disable-clean-session` option CLI parameter in `mosquitto_sub`). This option means that all of the subscriptions for the device will 
-be maintained after it disconnects, along with subsequent QoS 1 and QoS 2 commands that arrive. When the device reconnects, it will 
-receive all of the queued commands.
+Please note that the device should subscribe to the broker using the disabled clean session mode (enabled using
+`--disable-clean-session` option CLI parameter in `mosquitto_sub`). This option means that all of the subscriptions for
+the device will be maintained after it disconnects, along with subsequent QoS 1 and QoS 2 commands that arrive. When the
+device reconnects, it will receive all of the queued commands.
 
 ### Command confirmation
 
-Once the command is completely processed by the device, it should return the result of the command to the IoT 
-Agent. This result will be progressed to the Context Broker where it will be stored in the `<command>_info` 
-attribute. The status of the command will be stored in the `<command>_status` attribute (`OK` if everything 
-goes right).
+Once the command is completely processed by the device, it should return the result of the command to the IoT Agent.
+This result will be progressed to the Context Broker where it will be stored in the `<command>_info` attribute. The
+status of the command will be stored in the `<command>_status` attribute (`OK` if everything goes right).
 
-For the IoTA-JSON, the payload of the confirmation message must be a JSON object with name of the command as key 
-and the result of the command as value. For other IoT Agents, the payload must follow the corresponding protocol.
-For a given `ping` command, with a command result `status_ok`, the response payload should be:
+For the IoTA-JSON, the payload of the confirmation message must be a JSON object with name of the command as key and the
+result of the command as value. For other IoT Agents, the payload must follow the corresponding protocol. For a given
+`ping` command, with a command result `status_ok`, the response payload should be:
 
 ```JSON
 {"ping":"status_ok"}
 ```
 
-Eventually, once the device makes the response request the IoTA would update the attributes `ping_status` to 
-`OK` and `ping_info` to `status_ok` for the previous example.
+Eventually, once the device makes the response request the IoTA would update the attributes `ping_status` to `OK` and
+`ping_info` to `status_ok` for the previous example.
 
 #### HTTP
 
-In order confirm the command execution, the device must make a POST request to the IoT Agent with the result 
-of the command as payload, no matter if it is a push or a poll command. Following with the IoTAgent JSON case, the request must be made to the `/iot/json/commands`, this way:
+In order confirm the command execution, the device must make a POST request to the IoT Agent with the result of the
+command as payload, no matter if it is a push or a poll command. Following with the IoTAgent JSON case, the request must
+be made to the `/iot/json/commands`, this way:
 
 ```
 POST /iot/json/commands?k=<apikey>&i=<deviceId>
@@ -1404,14 +1448,16 @@ Accept: application/json
 
 #### MQTT
 
-The device should publish the result of the command (`{"ping":"status_ok"}` in the previous example) to a
-topic following the next pattern:
+The device should publish the result of the command (`{"ping":"status_ok"}` in the previous example) to a topic
+following the next pattern:
 
 ```
 /<iotagent-protocol>/<apiKey>/<deviceId>/cmdexe
 ```
 
-The IoTA is subscribed to that topic, so it gets the result of the command. When this happens, the status is updated to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info` attribute.
+The IoTA is subscribed to that topic, so it gets the result of the command. When this happens, the status is updated
+to`"<command>_status": "OK"`. Also the result of the command delivered by the device is stored in the `<command>_info`
+attribute.
 
 ## Overriding global Context Broker host
 
@@ -2262,6 +2308,57 @@ Example:
     "baseRoot": "/",
     "version": "1.7.0"
 }
+```
+
+### Metrics
+
+The IoT Agent Library exposes a [openmetrics-compatible](https://github.com/OpenObservability/OpenMetrics) endpoint for
+telemetry collectors to gather application statistics.
+
+#### Retrieve metrics `GET /metrics`
+
+_**Response code**_
+
+-   `200` `OK` if successful.
+-   `406` `Wrong Accept Header` If accept format is not supported.
+-   `500` `SERVER ERROR` if there was any error not contemplated above.
+
+_**Response body**_
+
+Returns the current value of the server stats,
+
+-   If `Accept` header contains `application/openmetrics-text`, the response has content-type
+    `application/openmetrics-text; version=1.0.0; charset=utf-8`
+-   Else, If `Accept` header is missing or supports `text/plain` (explicitly or by `*/*`) , the response has
+    content-type `text/plain; version=0.0.4; charset=utf-8` (legacy format for [prometheus](https://prometheus.io))
+-   In any other case, returns an error message with `406` status.
+
+For the kind of metrics exposed by the application, the actual payload itself is completely the same for both
+content-types, and follows the openmetrics specification, e.g:
+
+```
+# HELP deviceCreationRequests global metric for deviceCreationRequests
+# TYPE deviceCreationRequests counter
+deviceCreationRequests 0
+# HELP deviceRemovalRequests global metric for deviceRemovalRequests
+# TYPE deviceRemovalRequests counter
+deviceRemovalRequests 0
+# HELP measureRequests global metric for measureRequests
+# TYPE measureRequests counter
+measureRequests 0
+# HELP raiseAlarm global metric for raiseAlarm
+# TYPE raiseAlarm counter
+raiseAlarm 0
+# HELP releaseAlarm global metric for releaseAlarm
+# TYPE releaseAlarm counter
+releaseAlarm 0
+# HELP updateEntityRequestsOk global metric for updateEntityRequestsOk
+# TYPE updateEntityRequestsOk counter
+updateEntityRequestsOk 2
+# HELP updateEntityRequestsError global metric for updateEntityRequestsError
+# TYPE updateEntityRequestsError counter
+updateEntityRequestsError 5
+# EOF
 ```
 
 [1]:
