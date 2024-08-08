@@ -573,7 +573,7 @@ Additionally, for attribute expressions (`expression`, `entity_name`), `entityNa
 (`expression`) the following is available in the **context** used to evalute:
 
 - measures, as `<AttributeName>`
-- metadata (both for attribute measurement in the case of NGSIv2 measurments and static attribute) are available in the **context** under the following convention:
+- metadata (both for attribute measurement in the case of NGSI-v2 measurements and static attribute) are available in the **context** under the following convention:
 `metadata.<AttributeName>.<MetadataName>` or `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined
 for [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
