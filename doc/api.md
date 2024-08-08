@@ -2321,7 +2321,7 @@ _**Response body**_
 
 Returns the current value of the server stats,
 
--   If `Accept` header contains `application/openmetrics-text; version=(1.0.0|0.0.4|0.0.1,text/plain)`, the response has content-type
+-   If `Accept` header contains `application/openmetrics-text; version=(1.0.0|0.0.1)`, the response has content-type
     `application/openmetrics-text; version=<the requested version>; charset=utf-8`
 -   Else, If `Accept` header is missing or supports `text/plain` (explicitly or by `*/*`) , the response has
     content-type `text/plain; version=0.0.4; charset=utf-8` (legacy format for [prometheus](https://prometheus.io))
