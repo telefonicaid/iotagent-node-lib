@@ -27,10 +27,10 @@
         -   [Examples of JEXL expressions](#examples-of-jexl-expressions)
         -   [Available functions](#available-functions)
         -   [Expressions with multiple transformations](#expressions-with-multiple-transformations)
+        -   [Expression support in metadata](#expression-support-in-metadata)
     -   [Measurement transformation](#measurement-transformation)
         -   [Measurement transformation definition](#measurement-transformation-definition)
         -   [Measurement transformation execution](#measurement-transformation-execution)
-        -   [Metadata transformation](#metadata-transformation)
         -   [Measurement transformation order](#measurement-transformation-order)
         -   [Multientity measurement transformation support (`object_id`)](#multientity-measurement-transformation-support-object_id)
     -   [Command execution](#command-execution)
@@ -551,7 +551,8 @@ to adapt the information coming from the South Bound APIs to the information rep
 really useful when you need to adapt measure (for example, to change the units, or to apply a formula to). All the usage
 of expression in the IoT Agent are:
 
--   [Measurement transformation](#measurement-transformation) (attributes and their metadata)
+-   [Measurement transformation](#measurement-transformation).
+-   [Metadata](#expression-support-in-metadata)
 -   Commands payload transformation (push and pull).
 -   Auto provisioned devices entity name. It is configured at config Group level by setting the `entityNameExp`
     parameter. It defines an expression to generate the Entity Name for autoprovisioned devices.
@@ -572,7 +573,7 @@ Additionally, for attribute expressions (`expression`, `entity_name`), `entityNa
 (`expression`) the following is available in the **context** used to evalute:
 
 - measures, as `<AttributeName>`
-- metadata (both for attribute and static attribute) are available in the **context** under the following convention:
+- metadata (both for attribute measurement in the case of NGSIv2 measurments and static attribute) are available in the **context** under the following convention:
 `metadata.<AttributeName>.<MetadataName>` or `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined
 for [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
@@ -693,6 +694,49 @@ Another example using functions that return more than one value is the following
 ```
 
 For a location value `"40.4165, -3.70256"`, the result of the previous expression will be `-3.70256`.
+
+### Expression support in metadata
+
+Metadata could also has `expression` like attributes in order to expand it:
+
+e.g.:
+
+```json
+{
+    "entity_type": "Lamp",
+    "resource": "/iot/d",
+    "protocol": "PDI-IoTA-UltraLight",
+    "commands": [
+        { "name": "on", "type": "command" },
+        { "name": "off", "type": "command" }
+    ],
+    "attributes": [
+        { "object_id": "s", "name": "state", "type": "Text" },
+        {
+            "object_id": "l",
+            "name": "luminosity",
+            "type": "Integer",
+            "metadata": {
+                "unitCode": { "type": "Text", "value": "CAL" }
+            }
+        }
+    ],
+    "static_attributes": [
+        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
+        {
+            "name": "controlledProperty",
+            "type": "Text",
+            "value": ["light"],
+            "metadata": {
+                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
+                "alias": { "type": "Text", "value": "lamp" }
+            }
+        }
+    ]
+}
+```
+
+Note that there is no order into metadata structure and there is no warranty about which metadata attribute expression will be evaluated first.
 
 ## Measurement transformation
 
@@ -845,50 +889,9 @@ following to CB:
 
 [Interactive expression `spaces | trim`][5]
 
-### Metadata transformation
-
-Metadata could also has `expression` like attributes in order to define a transformation on it:
-
-e.g.:
-
-```json
-{
-    "entity_type": "Lamp",
-    "resource": "/iot/d",
-    "protocol": "PDI-IoTA-UltraLight",
-    "commands": [
-        { "name": "on", "type": "command" },
-        { "name": "off", "type": "command" }
-    ],
-    "attributes": [
-        { "object_id": "s", "name": "state", "type": "Text" },
-        {
-            "object_id": "l",
-            "name": "luminosity",
-            "type": "Integer",
-            "metadata": {
-                "unitCode": { "type": "Text", "value": "CAL" }
-            }
-        }
-    ],
-    "static_attributes": [
-        { "name": "category", "type": "Text", "value": ["actuator", "sensor"] },
-        {
-            "name": "controlledProperty",
-            "type": "Text",
-            "value": ["light"],
-            "metadata": {
-                "includes": { "type": "Text", "value": ["state", "luminosity"], "expression": "level / 100" },
-                "alias": { "type": "Text", "value": "lamp" }
-            }
-        }
-    ]
-}
-```
-
 ### Measurement transformation order
 
-With regards to **attributes**, the IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is
+The IoTA executes the transformaion looping over the `attributes` provision field. Every time a new expression is
 evaluated, the JEXL context is updated with the expression result. The order defined in the `attributes` array is taken
 for expression evaluation. This should be considered when using **nested expressions**, that uses values calculated in
 other attributes.
@@ -973,9 +976,6 @@ context was updated with the lastest execution, the value of `b` will be `2000`,
     "a": {"value": 200, "type": "Number"},
     "b": {"value": 2000, "type": "Number"}
 ```
-
-Which regards to **metadata**, note that there is no order into metadata structure and there is no warranty about which
-metadata attribute expression will be evaluated first.
 
 ### Multientity measurement transformation support (`object_id`)
 
