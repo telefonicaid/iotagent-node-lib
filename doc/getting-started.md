@@ -10,22 +10,22 @@ custom settings may also be required dependent upon the actual IoT Agent used.
 
 ```javascript
 config = {
-    logLevel: "DEBUG",
+    logLevel: 'DEBUG',
     contextBroker: {
-        host: "orion",
-        port: "1026",
+        host: 'orion',
+        port: '1026'
     },
     server: {
         port: 4041,
-        host: "0.0.0.0",
+        host: '0.0.0.0'
     },
     deviceRegistry: {
-        type: "memory",
+        type: 'memory'
     },
-    service: "openiot",
-    subservice: "/",
-    providerUrl: "http://iot-agent:4041",
-    defaultType: "Thing",
+    service: 'openiot',
+    subservice: '/',
+    providerUrl: 'http://iot-agent:4041',
+    defaultType: 'Thing'
 };
 ```
 
@@ -43,8 +43,8 @@ All configuration settings can also updated using Docker environment variables.
 ### Provisioning a Config Group
 
 Settings which are common to a group of devices can be passed to the IoT Agent using the Config Group API. The
-`fiware-service` and `fiware-service-path` to be used to access the API are defined within the `config.js`. Each config group
-may override values previously defined in the global configuration if necessary.
+`fiware-service` and `fiware-service-path` to be used to access the API are defined within the `config.js`. Each config
+group may override values previously defined in the global configuration if necessary.
 
 ```bash
 curl -iX POST \
@@ -138,8 +138,8 @@ curl -iX POST \
 ```
 
 The IoT Agent South port is listen to the path defined in the config group, and the API key is recognized to match, so
-the config group configuration will be used. No mappings will be made for the Entity `id` or the attribute names and
-the following entity will be created:
+the config group configuration will be used. No mappings will be made for the Entity `id` or the attribute names and the
+following entity will be created:
 
 ```json
 {

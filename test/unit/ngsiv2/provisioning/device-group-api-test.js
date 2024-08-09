@@ -23,6 +23,8 @@
 
 /* eslint-disable no-unused-vars */
 
+// FIXME: parallel tests in device-provisioning-configGroup-api_test.js.
+
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
 const async = require('async');
@@ -249,6 +251,20 @@ const optionsGet = {
         'fiware-servicepath': '/testingPath'
     }
 };
+
+// Add new options using the literal configGroups instead of services
+const configGroupTerm = 'configGroups';
+
+const newOptionsCreation = JSON.parse(JSON.stringify(optionsCreation));
+newOptionsCreation.url = newOptionsCreation.url.replace('services', configGroupTerm);
+newOptionsCreation.json[configGroupTerm] = newOptionsCreation.json.services;
+delete newOptionsCreation.json.services;
+
+const newOptionsList = JSON.parse(JSON.stringify(optionsList));
+newOptionsList.url = newOptionsList.url.replace('services', configGroupTerm);
+
+const newOptionsGet = JSON.parse(JSON.stringify(optionsGet));
+newOptionsGet.url = newOptionsGet.url.replace('services', configGroupTerm);
 
 describe('NGSI-v2 - Device Group Configuration API', function () {
     beforeEach(function (done) {
@@ -1153,6 +1169,89 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 should.exist(body.services);
                 body.count.should.equal(10);
                 done();
+            });
+        });
+    });
+
+    describe('When a new device group creation request arrives with the NEW API endpoint ', function () {
+        it('should return a 200 OK', function (done) {
+            request(newOptionsCreation, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+                done();
+            });
+        });
+        it('should be recovered using the OLD API endpoint', function (done) {
+            request(newOptionsCreation, function (error, response, body) {
+                request(optionsList, function (error, response, body) {
+                    body.count.should.equal(1);
+                    body.services[0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body.services[0].transport.should.equal('HTTP');
+                    body.services[0].endpoint.should.equal('http://myendpoint.com');
+
+                    body.count.should.equal(1);
+                    should.exist(body.services[0].attributes);
+                    body.services[0].attributes.length.should.equal(1);
+                    body.services[0].attributes[0].name.should.equal('status');
+
+                    should.exist(body.services[0].lazy);
+                    body.services[0].lazy.length.should.equal(1);
+                    body.services[0].lazy[0].name.should.equal('luminescence');
+
+                    should.exist(body.services[0].commands);
+                    body.services[0].commands.length.should.equal(1);
+                    body.services[0].commands[0].name.should.equal('wheel1');
+
+                    should.exist(body.services[0].static_attributes);
+                    body.services[0].static_attributes.length.should.equal(1);
+                    body.services[0].static_attributes[0].name.should.equal('bootstrapServer');
+
+                    body.count.should.equal(1);
+                    body.services[0].service.should.equal('testservice');
+                    body.services[0].subservice.should.equal('/testingPath');
+                    done();
+                });
+            });
+        });
+    });
+    describe('When a new device group creation request arrives with the NEW OLD endpoint ', function () {
+        it('should return a 200 OK', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(201);
+                done();
+            });
+        });
+        it('should be recovered using the NEW API endpoint', function (done) {
+            request(optionsCreation, function (error, response, body) {
+                request(newOptionsList, function (error, response, body) {
+                    body.count.should.equal(1);
+                    body[configGroupTerm][0].apikey.should.equal('801230BJKL23Y9090DSFL123HJK09H324HV8732');
+                    body[configGroupTerm][0].transport.should.equal('HTTP');
+                    body[configGroupTerm][0].endpoint.should.equal('http://myendpoint.com');
+
+                    body.count.should.equal(1);
+                    should.exist(body[configGroupTerm][0].attributes);
+                    body[configGroupTerm][0].attributes.length.should.equal(1);
+                    body[configGroupTerm][0].attributes[0].name.should.equal('status');
+
+                    should.exist(body[configGroupTerm][0].lazy);
+                    body[configGroupTerm][0].lazy.length.should.equal(1);
+                    body[configGroupTerm][0].lazy[0].name.should.equal('luminescence');
+
+                    should.exist(body[configGroupTerm][0].commands);
+                    body[configGroupTerm][0].commands.length.should.equal(1);
+                    body[configGroupTerm][0].commands[0].name.should.equal('wheel1');
+
+                    should.exist(body[configGroupTerm][0].static_attributes);
+                    body[configGroupTerm][0].static_attributes.length.should.equal(1);
+                    body[configGroupTerm][0].static_attributes[0].name.should.equal('bootstrapServer');
+
+                    body.count.should.equal(1);
+                    body[configGroupTerm][0].service.should.equal('testservice');
+                    body[configGroupTerm][0].subservice.should.equal('/testingPath');
+                    done();
+                });
             });
         });
     });

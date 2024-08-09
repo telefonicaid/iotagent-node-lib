@@ -1831,9 +1831,9 @@ iotAgentLib.startServer(config, iotAgent, function (error) {
 
 ### Configuration management
 
-For some IoT Agents, it will be useful to know what devices or config groups were registered in the Agent, or to do
-some actions whenever a new device is registered. All this configuration and provisioning actions can be performed using
-two mechanisms: the provisioning handlers and the provisioning API.
+For some IoT Agents, it will be useful to know what devices or config groups were registered in the Agent, or to do some
+actions whenever a new device is registered. All this configuration and provisioning actions can be performed using two
+mechanisms: the provisioning handlers and the provisioning API.
 
 #### Provisioning handlers
 
