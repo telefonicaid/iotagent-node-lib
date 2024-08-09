@@ -33,7 +33,6 @@
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/**/*.js' '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
     "prettier:text": "prettier 'README.md' 'doc/*.md' 'doc/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
     "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 8000 --ui bdd --exit --color true",
-    "test:custom": "nyc --reporter=text mocha --recursive 'test/unit/memoryRegistry/*.js' --reporter spec --timeout 5000 --ui bdd --exit --color true",
     "test:functional": "nyc --reporter=text mocha --recursive 'test/functional/*.js' --reporter spec --timeout 5000 --ui bdd --exit  --color true",
     "test:expression": "nyc --reporter=text mocha --recursive 'test/unit/expressions/*.js' --reporter spec --timeout 5000 --ui bdd --exit --color true",
     "test:multientity": "nyc --reporter=text mocha --recursive 'test/unit/ngsiv2/plugins/multientity-plugin_test.js' --reporter spec --timeout 5000 --ui bdd --exit --color true",
