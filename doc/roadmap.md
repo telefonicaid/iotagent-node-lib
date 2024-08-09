@@ -34,7 +34,6 @@ product:
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
 release(s) generated in the next 9 months after the next planned release:
 
-
 -   Cache support ([#1467](https://github.com/telefonicaid/iotagent-node-lib/issues/1467))
 -   MQTT per group advanced configuration (MQTT broker, topics) ([#1454](https://github.com/telefonicaid/iotagent-node-lib/issues/1454))
 -   Subscription based commands ([#1455](https://github.com/telefonicaid/iotagent-node-lib/issues/1455))
