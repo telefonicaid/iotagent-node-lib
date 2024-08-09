@@ -26,6 +26,8 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Bidirectinal pluging (finally removed in 3.4.0)
 -   appendMode configuration (`IOTA_APPEND_MODE` env var) (finally removed in 3.4.0)
 -   `config.stats` section, and push-mode statistics.
+-   Services API routes (`/iot/services`) in favor of the `/iot/configGroups`. Both are still supported, but the former
+    is deprecated.
 
 The use of Node.js v14 is highly recommended.
 

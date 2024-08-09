@@ -5,3 +5,4 @@
 - Add: new JEXL transformations for including into an array keys that have a certain value: valuePicker and valuePickerMulti
 - Add /iot/configGroups API endpoints (as equivalent to /iot/services) (#752)
 - Add: attribute metadata and static attributes metadata added to jexl context (#1630)
+- Deprecated: /iot/services API routes
