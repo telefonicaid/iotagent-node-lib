@@ -115,8 +115,8 @@ describe('FUNCTIONAL TESTS', function () {
         beforeEach(function (done) {
             let type = testUtils.groupToIoTAConfigType(
                 provision.json.services[0],
-                provision.headers.fiwareService,
-                provision.headers.fiwareServicepath
+                provision.headers['fiware-service'],
+                provision.headers['fiware-servicepath']
             );
             config.iota.types[type.name] = type.type;
             iotAgentLib.activate(config.iota, function (error) {
@@ -214,8 +214,8 @@ describe('FUNCTIONAL TESTS', function () {
         beforeEach(function (done) {
             let type = testUtils.groupToIoTAConfigType(
                 provision.json.services[0],
-                provision.headers.fiwareService,
-                provision.headers.fiwareServicepath
+                provision.headers['fiware-service'],
+                provision.headers['fiware-servicepath']
             );
             config.iota.types[type.name] = type.type;
             iotAgentLib.activate(config.iota, function (error) {

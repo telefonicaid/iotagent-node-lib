@@ -1768,7 +1768,6 @@ const testCases = [
     },
     {
         describeName: '0170 - Simple group with active attribute + JEXL expression referencing context attributes',
-        skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -1923,7 +1922,6 @@ const testCases = [
     },
     {
         describeName: '0180 - Simple group with active attributes + JEXL multiples expressions at same time',
-        skip: 'lib', // Explanation in #1523
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -4296,7 +4294,7 @@ const testCases = [
                                 type: 'Number',
                                 entity_name: 'TestType:TestDevice2',
                                 entity_type: 'TestType',
-                                expression: 'type+":"+(t*2*static_a)' // Only type is used as JEXL context attr due to #1523
+                                expression: 'type+":"+(t*2*static_a)'
                             }
                         ],
                         static_attributes: [
@@ -4382,7 +4380,7 @@ const testCases = [
                                 object_id: 't',
                                 name: 'temperature',
                                 type: 'Number',
-                                entity_name: 'type+":"+(t*2*static_a)', // Only type is used as JEXL context attr due to #1523
+                                entity_name: 'type+":"+(t*2*static_a)',
                                 entity_type: 'TestType'
                             }
                         ],
