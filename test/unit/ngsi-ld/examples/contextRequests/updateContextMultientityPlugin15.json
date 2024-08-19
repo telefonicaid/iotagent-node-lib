@@ -1,11 +1,6 @@
 [
         {
             "@context": "http://context.json-ld",
-            "id": "urn:ngsi-ld:GPS:gps1",
-            "type": "GPS"
-        },
-        {
-            "@context": "http://context.json-ld",
             "explicit": {
                 "type": "Property",
                 "value": 52

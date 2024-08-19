@@ -25,10 +25,7 @@ Disclaimer:
 The following list of features are planned to be addressed in the short term, and incorporated in a release of the
 product:
 
--   cgroup literal in configuration groups management API (community)
--   Refactor Append Mode & initial entity ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413))
--   Native support for NGSI-v2 and LD ingestion ([#1451](https://github.com/telefonicaid/iotagent-node-lib/issues/1451))
--   Remove plugins structure (bidirectional plugin) ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413))
+-   cgroup literal in configuration groups management API ([#752](https://github.com/telefonicaid/iotagent-node-lib/issues/752))
 -   Add init and improve log traces ([#1452](https://github.com/telefonicaid/iotagent-node-lib/issues/1452))
 -   Remove InMemory registry for Devices and Groups ([#1429](https://github.com/telefonicaid/iotagent-node-lib/issues/1429))
 
@@ -37,7 +34,6 @@ product:
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
 release(s) generated in the next 9 months after the next planned release:
 
--   Allow to add metadata to attributes from measures ([#1453](https://github.com/telefonicaid/iotagent-node-lib/issues/1453))
 -   Cache support ([#1467](https://github.com/telefonicaid/iotagent-node-lib/issues/1467))
 -   MQTT per group advanced configuration (MQTT broker, topics) ([#1454](https://github.com/telefonicaid/iotagent-node-lib/issues/1454))
 -   Subscription based commands ([#1455](https://github.com/telefonicaid/iotagent-node-lib/issues/1455))
@@ -59,6 +55,10 @@ us if you wish to get involved in the implementation or influence the roadmap:
 
 The following list contains all features that were in the roadmap and have already been implemented.
 
+-   Allow to add metadata to attributes from measures ([#1453](https://github.com/telefonicaid/iotagent-node-lib/issues/1453)) ([4.6.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/4.0.0))
+-   Refactor Append Mode & initial entity ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413)) ([4.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/4.0.0))
+-   Native support for NGSI-v2 and LD ingestion ([#1451](https://github.com/telefonicaid/iotagent-node-lib/issues/1451)) ([4.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/4.0.0))
+-   Remove plugins structure (bidirectional plugin) ([#1413](https://github.com/telefonicaid/iotagent-node-lib/issues/1413)) ([4.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/4.0.0))
 -   Refactor entities-NGSI-v2.js module ([#1166](https://github.com/telefonicaid/iotagent-node-lib/issues/1166)) ([3.0.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/3.0.0))
 -   Accept JEXL Expressions for entity name in autoprovisioned devices (entityNameExp) ([#1145](https://github.com/telefonicaid/iotagent-node-lib/issues/1145)) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))
 -   Improve command functionalities (binary data + expression + mapping) ([2.22.0](https://github.com/telefonicaid/iotagent-node-lib/releases/tag/2.22.0))

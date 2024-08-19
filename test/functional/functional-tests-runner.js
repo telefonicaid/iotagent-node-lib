@@ -63,12 +63,17 @@ describe('FUNCTIONAL TESTS AUTO', function () {
                 if (testCase.loglevel) {
                     logger.setLevel(testCase.loglevel);
                 }
-                let type = testUtils.groupToIoTAConfigType(
+                let confType = testUtils.groupToIoTAConfigType(
                     testCase.provision.json.services[0],
-                    testCase.provision.headers.fiwareService,
-                    testCase.provision.headers.fiwareServicepath
+                    testCase.provision.headers['fiware-service'],
+                    testCase.provision.headers['fiware-servicepath']
                 );
-                config.iota.types[type.name] = type.type;
+                // Inject device id into config as real typeInformation
+                if (testCase.should[0] && testCase.should[0].measure.qs.i) {
+                    confType.type['id'] = testCase.should[0].measure.qs.i;
+                }
+                config.iota.types[confType.name] = confType.type;
+
                 iotAgentLib.activate(config.iota, function (error) {
                     done(error);
                 });
