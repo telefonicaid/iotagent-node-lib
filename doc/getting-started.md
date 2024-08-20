@@ -1,6 +1,6 @@
 # Getting Started
 
--   [Intrioduction](#introduction)
+-   [Introduction](#introduction)
 -   [IoT Agent settings - `config.js`](#iot-agent-settings---configjs)
 -   [Provisioning a Config Group](#provisioning-a-config-group)
 -   [Provisioning an Individual Device](#provisioning-an-individual-device)
