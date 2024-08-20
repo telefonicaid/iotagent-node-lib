@@ -91,7 +91,7 @@ In this case an `apiKey` for identifying devices has been created and all intera
 present this `apiKey` will be created as entities of `type=Device` rather than using the configuration default of
 `type=Thing`.
 
-Additionaly, the group has defined an attribute mapping for a measurement `t` to be renamed to `temperature` when
+Additionally, the group has defined an attribute mapping for a measurement `t` to be renamed to `temperature` when
 receiving data from devices.
 
 The config group would usual hold additional attribute mappings, commands and common static attributes as well.
