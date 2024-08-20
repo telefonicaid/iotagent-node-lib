@@ -10,7 +10,7 @@
 
 ## Introduction
 
-In this guide we will be using the IoT Agent JSON as an example to demonstrate how to provision config groups, devices
+In this guide we will be using the IoT Agent JSON (which is the reference IoTAgent using the IoTAgent Library) as an example to demonstrate how to provision config groups, devices
 and how to receive measures from devices.
 
 Be aware that every IoT Agent which uses the library is different, but the concepts for provisioning IoT devices remain
