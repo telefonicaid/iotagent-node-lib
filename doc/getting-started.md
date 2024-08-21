@@ -91,7 +91,7 @@ In this case an `apiKey` for identifying devices has been created and all intera
 present this `apiKey` will be created as entities of `type=Device` rather than using the configuration default of
 `type=Thing`.
 
-Additionally, the group has defined an attribute mapping for a measurement `t` to be renamed to `temperature` when
+Additionally, the group has defined an attribute mapping for a measurement `t` to be mapped to `temperature` attribute when
 receiving data from devices.
 
 The config group would usual hold additional attribute mappings, commands and common static attributes as well.
@@ -128,7 +128,7 @@ curl -iX POST \
 
 The device `motion001` has been provisioned to persist data to the Context Broker as an entity of `type=Motion` (instead
 of the default `type=Thing`). The destination entity is identified by the `entity_name` field, which is set to
-`urn:ngsi-ld:Motion:001`. The device has a single attribute mapping for a measurement `c` to be renamed to `count`,
+`urn:ngsi-ld:Motion:001`. The device has a single attribute mapping for a measurement `c` to be mapped to `count` attribute,
 additionally to one defined in the group mapping (`temperature`). The device also has a static attribute `refStore`
 which is a relationship to the entity `urn:ngsi-ld:Store:001`.
 
@@ -166,8 +166,8 @@ context entity is created in the context broker:
 {
     "id": "urn:ngsi-ld:Motion:001",
     "type": "Motion",
-    "temperature": { "value": "23", "type": "Number" },
-    "count": { "value": "1", "type": "Number" },
+    "temperature": { "value": 23, "type": "Number" },
+    "count": { "value": 1, "type": "Number" },
     "refStore": { "value": "urn:ngsi-ld:Store:001", "type": "Relationship" }
 }
 ```
@@ -198,7 +198,7 @@ will be created as attributes with the same name. The following context entity w
 {
     "id": "Device:dev001",
     "type": "Device",
-    "temperature": { "value": "13", "type": "Number" },
-    "c": { "value": "4", "type": "Number" }
+    "temperature": { "value": 13, "type": "Number" },
+    "c": { "value": 4, "type": "Number" }
 }
 ```
