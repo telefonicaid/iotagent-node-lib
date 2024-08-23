@@ -53,7 +53,7 @@ config = {
 
 In this case the context broker hostname is `orion` and is listening on port `1026`, the IoT Agent can be provisioned by
 sending requests to port `4041` which is also the port used to receive NGSI requests. The IoT Agent is using the `iotagent` 
-collection from a MongoDB instance at `localhost:27017` to the device mappings.
+database from a MongoDB instance at `localhost:27017` to store needed information (provisioned groups and devices, etc.).
 
 The remaining settings help to define the NGSI interactions - the IoT Agent will be using the `fiware-service=openiot`
 and `fiware-service-path=/`. The default `type`for each created entity is `Thing`, although this can be overridden as
