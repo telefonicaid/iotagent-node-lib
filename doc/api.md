@@ -136,9 +136,9 @@ For every config group, the pair (resource, apikey) _must_ be unique (as it is u
 which device). Those operations of the API targeting specific resources will need the use of the `resource` and `apikey`
 parameters to select the appropriate instance.
 
-Config groups can be created with preconfigured sets of attributes, service and subservice information, security information and other
-parameters. The specific parameters that can be configured for a given config group are described in the
-[Config group datamodel](#config-group-datamodel) section.
+Config groups can be created with preconfigured sets of attributes, service and subservice information, security
+information and other parameters. The specific parameters that can be configured for a given config group are described
+in the [Config group datamodel](#config-group-datamodel) section.
 
 ### Devices
 
@@ -218,7 +218,7 @@ device preprovisioning). Device measures can have four different behaviors:
     an attribute in the device's entity, for which the IoT Agent will be regitered as Context Provider. The IoT Agent
     will return an immediate response to the Context Broker, and will be held responsible of contacting the device to
     perform the command itself using the device specific protocol. Special `status` and `info` attributes should be
-    update. For each command, its `name` and `type` must be provided. For further information, please refer to 
+    update. For each command, its `name` and `type` must be provided. For further information, please refer to
     [Command execution](#command-execution) section.
 
 All of them have the same syntax, a list of objects with the following attributes:
@@ -565,17 +565,18 @@ expression. In all cases the following data is available to all expressions:
 -   `id`: device ID
 -   `entity_name`: NGSI entity Name (principal)
 -   `type`: NGSI entity type (principal)
--   `service`: device service (`Fiware-Service`) 
+-   `service`: device service (`Fiware-Service`)
 -   `subservice`: device subservice (`Fiware-ServicePath`)
 -   `staticAttributes`: static attributes defined in the device or config group
 
 Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
 (`expression`) the following is available in the **context** used to evalute:
 
-- measures, as `<AttributeName>`
-- metadata (both for attribute measurement in the case of NGSI-v2 measurements and static attribute) are available in the **context** under the following convention:
-`metadata.<AttributeName>.<MetadataName>` or `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined
-for [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
+-   measures, as `<AttributeName>`
+-   metadata (both for attribute measurement in the case of NGSI-v2 measurements and static attribute) are available in
+    the **context** under the following convention: `metadata.<AttributeName>.<MetadataName>` or
+    `metadata.<StaticAttributeName>.<MetadataName>` in a similar way of defined for
+    [Context Broker](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#metadata-support)
 
 ### Examples of JEXL expressions
 
@@ -736,7 +737,8 @@ e.g.:
 }
 ```
 
-Note that there is no order into metadata structure and there is no warranty about which metadata attribute expression will be evaluated first.
+Note that there is no order into metadata structure and there is no warranty about which metadata attribute expression
+will be evaluated first.
 
 ## Measurement transformation
 
@@ -1070,21 +1072,21 @@ As part of the device to entity mapping process, the IoT Agent creates and updat
 attribute called `TimeInstant`. This timestamp is represented as two different properties of the mapped entity:
 
 -   An attribute `TimeInstant` is added to updated entities in the case of NGSI-v2, which captures as an ISO8601
-    timestamp when the associated measurement was observed. With NGSI-LD, the Standard
-    `observedAt` property is used instead
+    timestamp when the associated measurement was observed. With NGSI-LD, the Standard `observedAt` property is used
+    instead
 
--   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an ISO8601
-    timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the Standard
-    `observedAt` property-of-a-property is used instead.
+-   With NGSI-v2, an attribute metadata named `TimeInstant` per active or lazy attribute mapped, which captures as an
+    ISO8601 timestamp when the associated measurement (represented as attribute value) was observed. With NGSI-LD, the
+    Standard `observedAt` property-of-a-property is used instead.
 
 If timestamp is not explicily defined when sending the measures through the IoT Agent (for further details on how to
 attach timestamp information to the measures, please refer to the particular IoT Agent implementation documentation),
 the arrival time on the server when receiving the measurement will be used to generate a `TimeInstant` for both the
 entity attribute and the attribute metadata.
 
-This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or `IOTA_TIMESTAMP`
-variable as well as `timestamp` flag in device or group provision (in this case, the device or group level flag takes
-precedence over the global one). The default value is `true`.
+This functionality can be turned on and off globaly through the use of the `timestamp` configuration flag or
+`IOTA_TIMESTAMP` variable as well as `timestamp` flag in device or group provision (in this case, the device or group
+level flag takes precedence over the global one). The default value is `true`.
 
 The `timestamp` configuration value used, according to the priority:
 
@@ -1104,6 +1106,7 @@ the IoTA behaviour is described in the following table:
 | false                  | No                             | TimeInstant and metadata updated with server timestamp |
 | Not defined            | Yes                            | TimeInstant and metadata updated with measure value    |
 | Not defined            | No                             | TimeInstant and metadata updated with server timestamp |
+
 Some additional considerations to take into account:
 
 -   If there is an attribute which maps a measure to `TimeInstant` attribute (after
@@ -1689,6 +1692,54 @@ Agent itself:
 A `datasetId` is also maintained for each new attribute defined in the `reverse` field.
 
 # API Routes
+
+## Atrributes data model
+
+### `attribute`
+
+Attributes are represented by a JSON object with the following fields:
+
+| Parameter    | Optional | Type   | Expression  | Definition                                                                                                                                                                |
+| ------------ | -------- | ------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`       |          | string | Not allowed | Name of the NGSI attribute to be persisted in the Context Broker.                                                                                                         |
+| `type`       |          | string | Not allowed | NGSI Type of the attribute.                                                                                                                                               |
+| `object_id`  | ✓        | string | Not allowed | It refers to the measure name received by the IoT Agent. When creating new attributes based on expressions (virtual attributes), this field is also required.             |
+| `expression` | ✓        | string | Allowed     | Expression to be evaluated to calculate the value of the attribute. Refer to the [Expression Language Support](#expression-language-support) section for further details. |
+| `metadata`   | ✓        | object | Allowed     | Metadata of the attribute.                                                                                                                                                |
+
+### `lazy`
+
+Lazy attributes are represented by a JSON object with the following fields:
+
+| Parameter    | Optional | Type   | Expression  | Definition                                                          |
+| ------------ | -------- | ------ | ----------- | ------------------------------------------------------------------- |
+| `name`       |          | string | Not allowed | Name of the attribute.                                              |
+| `type`       |          | string | Not allowed | NGSI Type of the attribute.                                         |
+| `object_id`  | ✓        | string | Not allowed | Object ID of the attribute.                                         |
+| `expression` | ✓        | string | Allowed     | Expression to be evaluated to calculate the value of the attribute. |
+| `metadata`   | ✓        | object | Allowed     | Metadata of the attribute.                                          |
+
+### `command`
+
+Commands are represented by a JSON object with the following fields:
+
+| Parameter    | Optional | Type   | Expression  | Definition                                                        |
+| ------------ | -------- | ------ | ----------- | ----------------------------------------------------------------- |
+| `name`       |          | string | Not allowed | Name of the command.                                              |
+| `type`       |          | string | Not allowed | NGSI Type of the command.                                         |
+| `object_id`  | ✓        | string | Not allowed | Object ID of the command.                                         |
+| `expression` | ✓        | string | Allowed     | Expression to be evaluated to calculate the value of the command. |
+| `metadata`   | ✓        | object | Allowed     | Metadata of the command.                                          |
+
+### `static`
+
+Static attributes are represented by a JSON object with the following fields:
+
+| Parameter  | Optional | Type   | Expression  | Definition                |
+| ---------- | -------- | ------ | ----------- | ------------------------- |
+| `name`     |          | string | Not allowed | Name of the command.      |
+| `type`     |          | string | Not allowed | NGSI Type of the command. |
+| `metadata` | ✓        | object | Allowed     | Metadata of the command.  |
 
 ## Config group API
 
