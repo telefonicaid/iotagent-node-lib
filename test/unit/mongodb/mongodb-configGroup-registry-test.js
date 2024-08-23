@@ -1,30 +1,29 @@
 /*
-* Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
-*
-* This file is part of fiware-iotagent-lib
-*
-* fiware-iotagent-lib is free software: you can redistribute it and/or
-* modify it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the License,
-* or (at your option) any later version.
-*
-* fiware-iotagent-lib is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-* See the GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with fiware-iotagent-lib.
-* If not, see http://www.gnu.org/licenses/.
-*
-* For those usages not covered by the GNU Affero General Public License
-* please contact with::[contacto@tid.es]
-*
-* Modified by: Daniel Calvo - ATOS Research & Innovation
-*/
+ * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of fiware-iotagent-lib
+ *
+ * fiware-iotagent-lib is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * fiware-iotagent-lib is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with fiware-iotagent-lib.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Daniel Calvo - ATOS Research & Innovation
+ */
 
 /* eslint-disable no-unused-vars */
-
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
@@ -61,10 +60,10 @@ const iotAgentConfig = {
 const mongo = require('mongodb').MongoClient;
 const mongoUtils = require('./mongoDBUtils');
 const optionsCreation = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'POST',
     json: {
-        configGroups: [
+        groups: [
             {
                 resource: '/deviceTest',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -103,7 +102,7 @@ const optionsCreation = {
     }
 };
 const optionsDelete = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'DELETE',
     json: {},
     headers: {
@@ -116,7 +115,7 @@ const optionsDelete = {
     }
 };
 const optionsList = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'GET',
     json: {},
     headers: {
@@ -125,7 +124,7 @@ const optionsList = {
     }
 };
 const optionsUpdate = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'PUT',
     json: {
         apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -167,7 +166,7 @@ const optionsUpdate = {
     }
 };
 const optionsGet = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'GET',
     json: {},
     headers: {
@@ -338,14 +337,14 @@ describe('MongoDB Group Registry test', function () {
             const optionsCreation2 = _.clone(optionsCreation);
             const optionsCreation3 = _.clone(optionsCreation);
 
-            optionsCreation2.json = { configGroups: [] };
-            optionsCreation3.json = { configGroups: [] };
+            optionsCreation2.json = { groups: [] };
+            optionsCreation3.json = { groups: [] };
 
-            optionsCreation2.json.configGroups[0] = _.clone(optionsCreation.json.configGroups[0]);
-            optionsCreation3.json.configGroups[0] = _.clone(optionsCreation.json.configGroups[0]);
+            optionsCreation2.json.groups[0] = _.clone(optionsCreation.json.groups[0]);
+            optionsCreation3.json.groups[0] = _.clone(optionsCreation.json.groups[0]);
 
-            optionsCreation2.json.configGroups[0].apikey = 'qwertyuiop';
-            optionsCreation3.json.configGroups[0].apikey = 'lkjhgfds';
+            optionsCreation2.json.groups[0].apikey = 'qwertyuiop';
+            optionsCreation3.json.groups[0].apikey = 'lkjhgfds';
 
             async.series(
                 [
@@ -367,7 +366,7 @@ describe('MongoDB Group Registry test', function () {
 
     describe('When a device group listing arrives with a limit', function () {
         const optionsConstrained = {
-            url: 'http://localhost:4041/iot/configGroups',
+            url: 'http://localhost:4041/iot/groups',
             method: 'GET',
             qs: {
                 limit: 3,
@@ -386,16 +385,16 @@ describe('MongoDB Group Registry test', function () {
 
             for (let i = 0; i < 10; i++) {
                 optionsCreationList[i] = _.clone(optionsCreation);
-                optionsCreationList[i].json = { configGroups: [] };
-                optionsCreationList[i].json.configGroups[0] = _.clone(optionsCreation.json.configGroups[0]);
-                optionsCreationList[i].json.configGroups[0].apikey = 'qwertyuiop' + i;
+                optionsCreationList[i].json = { groups: [] };
+                optionsCreationList[i].json.groups[0] = _.clone(optionsCreation.json.groups[0]);
+                optionsCreationList[i].json.groups[0].apikey = 'qwertyuiop' + i;
                 creationFns.push(async.apply(request, optionsCreationList[i]));
             }
 
             async.series(creationFns, done);
         });
 
-        it('should return the appropriate count of configGroups', function (done) {
+        it('should return the appropriate count of groups', function (done) {
             request(optionsConstrained, function (error, response, body) {
                 body.count.should.equal(10);
                 done();
@@ -413,10 +412,10 @@ describe('MongoDB Group Registry test', function () {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(1);
-                should.exist(body.configGroups);
-                should.exist(body.configGroups.length);
-                body.configGroups.length.should.equal(1);
-                body.configGroups[0].service.should.equal('testservice');
+                should.exist(body.groups);
+                should.exist(body.groups.length);
+                body.groups.length.should.equal(1);
+                body.groups[0].service.should.equal('testservice');
                 done();
             });
         });
@@ -429,9 +428,9 @@ describe('MongoDB Group Registry test', function () {
 
             for (let i = 0; i < 10; i++) {
                 optionsCreationList[i] = _.clone(optionsCreation);
-                optionsCreationList[i].json = { configGroups: [] };
-                optionsCreationList[i].json.configGroups[0] = _.clone(optionsCreation.json.configGroups[0]);
-                optionsCreationList[i].json.configGroups[0].apikey = 'qwertyuiop' + i;
+                optionsCreationList[i].json = { groups: [] };
+                optionsCreationList[i].json.groups[0] = _.clone(optionsCreation.json.groups[0]);
+                optionsCreationList[i].json.groups[0].apikey = 'qwertyuiop' + i;
                 creationFns.push(async.apply(request, optionsCreationList[i]));
             }
 
@@ -443,9 +442,9 @@ describe('MongoDB Group Registry test', function () {
                 should.exist(body);
                 should.exist(body.count);
                 body.count.should.equal(10);
-                should.exist(body.configGroups);
-                should.exist(body.configGroups.length);
-                body.configGroups.length.should.equal(10);
+                should.exist(body.groups);
+                should.exist(body.groups.length);
+                body.groups.length.should.equal(10);
                 done();
             });
         });

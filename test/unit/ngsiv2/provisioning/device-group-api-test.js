@@ -252,8 +252,8 @@ const optionsGet = {
     }
 };
 
-// Add new options using the literal configGroups instead of services
-const configGroupTerm = 'configGroups';
+// Add new options using the literal groups instead of services
+const configGroupTerm = 'groups';
 
 const newOptionsCreation = JSON.parse(JSON.stringify(optionsCreation));
 newOptionsCreation.url = newOptionsCreation.url.replace('services', configGroupTerm);

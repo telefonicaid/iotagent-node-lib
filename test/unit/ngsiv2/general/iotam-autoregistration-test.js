@@ -135,10 +135,10 @@ const optionsCreation = {
     }
 };
 const configGroupCreation = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'POST',
     json: {
-        configGroups: [
+        groups: [
             {
                 resource: '/deviceTest',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -210,10 +210,10 @@ const optionsCreationStatic = {
     }
 };
 const configGroupCreationStatic = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'POST',
     json: {
-        configGroups: [
+        groups: [
             {
                 resource: '/deviceTest',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -261,7 +261,7 @@ const optionsDelete = {
     }
 };
 const configGroupDelete = {
-    url: 'http://localhost:4041/iot/configGroups',
+    url: 'http://localhost:4041/iot/groups',
     method: 'DELETE',
     json: {},
     headers: {

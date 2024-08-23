@@ -155,10 +155,10 @@ const groupCreation = {
 };
 
 const configGroupCreation = {
-    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/configGroups',
+    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/groups',
     method: 'POST',
     json: {
-        configGroups: [
+        groups: [
             {
                 resource: '',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
