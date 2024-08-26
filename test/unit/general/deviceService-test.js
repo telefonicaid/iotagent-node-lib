@@ -210,7 +210,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
         async.series([iotAgentLib.clearAll, iotAgentLib.deactivate], done);
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -277,7 +277,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {

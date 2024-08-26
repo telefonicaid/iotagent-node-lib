@@ -351,7 +351,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new service is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -422,7 +422,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a service is removed from the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -493,7 +493,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
-    //FIXME: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new service with static attributes is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();

@@ -23,7 +23,7 @@
 
 /* eslint-disable no-unused-vars */
 
-// FIXME: parallel tests in device-provisioning-configGroup-api_test.js.
+// #FIXME1649: parallel tests in device-provisioning-configGroup-api_test.js.
 
 const iotAgentLib = require('../../../../lib/fiware-iotagent-lib');
 const _ = require('underscore');
