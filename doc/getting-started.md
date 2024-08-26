@@ -10,8 +10,8 @@
 
 ## Introduction
 
-In this guide we will be using the IoT Agent JSON (which is the reference IoTAgent using the IoTAgent Library) as an example to demonstrate how to provision config groups, devices
-and how to receive measures from devices.
+In this guide we will be using the IoT Agent JSON (which is the reference IoTAgent using the IoTAgent Library) as an
+example to demonstrate how to provision config groups, devices and how to receive measures from devices.
 
 Be aware that every IoT Agent which uses the library is different, but the concepts for provisioning IoT devices remain
 the same regardless of protocol.
@@ -52,8 +52,9 @@ config = {
 ```
 
 In this case the context broker hostname is `orion` and is listening on port `1026`, the IoT Agent can be provisioned by
-sending requests to port `4041` which is also the port used to receive NGSI requests. The IoT Agent is using the `iotagent` 
-database from a MongoDB instance at `localhost:27017` to store needed information (provisioned groups and devices, etc.).
+sending requests to port `4041` which is also the port used to receive NGSI requests. The IoT Agent is using the
+`iotagent` database from a MongoDB instance at `localhost:27017` to store needed information (provisioned groups and
+devices, etc.).
 
 The remaining settings help to define the NGSI interactions - the IoT Agent will be using the `fiware-service=openiot`
 and `fiware-service-path=/`. The default `type`for each created entity is `Thing`, although this can be overridden as
@@ -73,12 +74,12 @@ config group is shown below:
 
 ```bash
 curl -iX POST \
-  'http://localhost:4041/iot/services' \
+  'http://localhost:4041/iot/groups' \
   -H 'Content-Type: application/json' \
   -H 'fiware-service: openiot' \
   -H 'fiware-servicepath: /' \
   -d '{
- "services": [
+ "groups": [
    {
      "apikey":      "4jggokgpepnvsb2uv4s40d59ov",
      "entity_type": "Device",
@@ -95,8 +96,8 @@ In this case an `apiKey` for identifying devices has been created and all intera
 present this `apiKey` will be created as entities of `type=Device` rather than using the configuration default of
 `type=Thing`.
 
-Additionally, the group has defined an attribute mapping for a measurement `t` to be mapped to `temperature` attribute when
-receiving data from devices.
+Additionally, the group has defined an attribute mapping for a measurement `t` to be mapped to `temperature` attribute
+when receiving data from devices.
 
 The config group would usual hold additional attribute mappings, commands and common static attributes as well.
 
@@ -132,12 +133,12 @@ curl -iX POST \
 
 The device `motion001` has been provisioned to persist data to the Context Broker as an entity of `type=Motion` (instead
 of the default `type=Thing`). The destination entity is identified by the `entity_name` field, which is set to
-`urn:ngsi-ld:Motion:001`. The device has a single attribute mapping for a measurement `c` to be mapped to `count` attribute,
-additionally to one defined in the group mapping (`temperature`). The device also has a static attribute `refStore`
-which is a relationship to the entity `urn:ngsi-ld:Store:001`.
+`urn:ngsi-ld:Motion:001`. The device has a single attribute mapping for a measurement `c` to be mapped to `count`
+attribute, additionally to one defined in the group mapping (`temperature`). The device also has a static attribute
+`refStore` which is a relationship to the entity `urn:ngsi-ld:Store:001`.
 
-This information is combined with the common config group information whenever a measurement is received at the IoT Agent 
-and used to create or update the relevant entity in the Context Broker.
+This information is combined with the common config group information whenever a measurement is received at the IoT
+Agent and used to create or update the relevant entity in the Context Broker.
 
 ## Receiving measures from devices
 
@@ -163,8 +164,8 @@ The IoT Agent South port is listening to the path defined in the config group, a
 Because the `device_id` is also recognized, the provisioned device configuration is used and its settings are combined
 with the config group.
 
-Mapping has been found to use the `c` measurement as `count` and the `t` measurement as `temperature` attributes values. The following
-context entity is created in the context broker:
+Mapping has been found to use the `c` measurement as `count` and the `t` measurement as `temperature` attributes values.
+The following context entity is created in the context broker:
 
 ```json
 {
@@ -179,10 +180,9 @@ context entity is created in the context broker:
 ### Receiving a measure from an anonymous Device
 
 When receiving a measure, it is not necessary to have the device provisioned. In this case, the IoT Agent will use the
-config group configuration to create the device and the entity. This process is called "autoprovision" and it is enabled 
-by default in provisioned groups (for further information, review the [Autoprovision](api.md#autoprovision-configuration-autoprovision)
-section in the API documentation).
-
+config group configuration to create the device and the entity. This process is called "autoprovision" and it is enabled
+by default in provisioned groups (for further information, review the
+[Autoprovision](api.md#autoprovision-configuration-autoprovision) section in the API documentation).
 
 Take as an example the following request from an anonymous device:
 
