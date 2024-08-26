@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2024 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -23,7 +23,7 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
-// FIXME: parallel tests in mongodb-configGroup-registry-test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
+// #FIXME1649: parallel tests in mongodb-configGroup-registry-test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
