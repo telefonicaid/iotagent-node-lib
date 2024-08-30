@@ -21,8 +21,10 @@ pattern than the one supported by the test runner).
 Each test case is defined as a JSON object in the `testCases.js` file. This file is loaded by the test suite and the
 test cases are automatically generated. Each test case is defined as an object with the following elements:
 
--   `describeName`: The name of the `DESCRIBE` test case. This will be used to generate the test case name in the mocha. Note this name is prefixed by a pure number (e.g `0010 - Simple group without attributes`) which specifies the group to which the test belong (usually meaning a feature) or by a number preced by the `#` symbol to refer to an issue number (e.g. `#1234 - Bug foobar`).
-    test suite.
+-   `describeName`: The name of the `DESCRIBE` test case. This will be used to generate the test case name in the mocha.
+    Note this name is prefixed by a pure number (e.g `0010 - Simple group without attributes`) which specifies the group
+    to which the test belong (usually meaning a feature) or by a number preced by the `#` symbol to refer to an issue
+    number (e.g. `#1234 - Bug foobar`). test suite.
 -   `provision`: The JSON object that will be sent to the IoTA JSON provisioning API. This will be used to create the
     group. It contains the following elements:
     -   `url`: The URL of the provisioning API (group)
@@ -30,17 +32,19 @@ test cases are automatically generated. Each test case is defined as an object w
     -   `json`: The JSON object that defines the group
     -   `headers`: The headers to send to the provisioning API. This should contain the `fiware-service` and
         `fiware-servicepath` headers.
-    -   `skip`: optional. Allow to skip test cases (at `describe` level). It allows diferent values: `false` (default, meaning that the test is not skipped in any circustance),
-        `true` (meaning the test is always skipped), `"lib"` (meaning the test has to be skipped when running it in IoTA Node lib repo) and
-        `"json"` (meaning the test has to be skipped when running it in IOTA JSON repo). The latter alternatives are useful to skip test cases that are not supported by
-        the lib (I.E: all tests related to the transport) or by the IOTA. Combinations (e.g `"lib,json"`) and negation (e.g. `"!lib"`) are also supported.
+    -   `skip`: optional. Allow to skip test cases (at `describe` level). It allows diferent values: `false` (default,
+        meaning that the test is not skipped in any circustance), `true` (meaning the test is always skipped), `"lib"`
+        (meaning the test has to be skipped when running it in IoTA Node lib repo) and `"json"` (meaning the test has to
+        be skipped when running it in IOTA JSON repo). The latter alternatives are useful to skip test cases that are
+        not supported by the lib (I.E: all tests related to the transport) or by the IOTA. Combinations (e.g
+        `"lib,json"`) and negation (e.g. `"!lib"`) are also supported.
 -   `should`: The array of test cases to execute. Each test case is defined as an object with the following elements:
     -   `transport`: The transport to use to send the measure. This can be `HTTP` or `MQTT`. It uses `HTTP` by default
         or if the `transport` element is not defined. See the "Advanced features" section for more information.
     -   `shouldName`: The name of the `IT` test case. This will be used to generate the test case name in the mocha test
         suite.
-    -   `type`: The type of the test case. This can be `single`, `multimeasure` or `multientity`. See the "Advanced features" section
-        for more information.
+    -   `type`: The type of the test case. This can be `single`, `multimeasure` or `multientity`. See the "Advanced
+        features" section for more information.
     -   `measure`: The JSON object that will be sent to the IoTA JSON measure API. This will be used to send the
         measure. It contains the following elements:
         -   `url`: The URL of the measure API (group)
@@ -64,10 +68,10 @@ test cases are automatically generated. Each test case is defined as an object w
 {
     describeName: 'Basic group provision with attributes',
     provision: {
-        url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+        url: 'http://localhost:' + config.iota.server.port + '/iot/groups',
         method: 'POST',
         json: {
-            services: [
+            groups: [
                 {
                     resource: '/iot/json',
                     apikey: '123456',
@@ -199,11 +203,11 @@ as a batch operation (see the following example).
 
 #### Multimeasures
 
-It is also supported to test cases in which is sent more than one measure. To do so, you need to set add to the test case 
-the parameter `should.type` to the value `'multimeasure'`.
+It is also supported to test cases in which is sent more than one measure. To do so, you need to set add to the test
+case the parameter `should.type` to the value `'multimeasure'`.
 
-You must define the measure as multimeasure. This is done by defining the `measure` JSON element as an array of
-objects. I.E:
+You must define the measure as multimeasure. This is done by defining the `measure` JSON element as an array of objects.
+I.E:
 
 ```javascript
 measure: {
@@ -276,8 +280,8 @@ expectation: {
 }
 ```
 
-Then, a batch request would be sent to the Context Broker containing the different measures. More information about
-how the IoT Agent send multimeasures to the Context Broker [here](/doc/api.md#multimeasure-support).
+Then, a batch request would be sent to the Context Broker containing the different measures. More information about how
+the IoT Agent send multimeasures to the Context Broker [here](/doc/api.md#multimeasure-support).
 
 #### Transport
 
@@ -332,7 +336,8 @@ the expectation as an empty object. I.E:
     ...
 ```
 
-Note that this means the CB *must not* receive any payload. In other words, if the CB would receive any payload, the test will fail.
+Note that this means the CB _must not_ receive any payload. In other words, if the CB would receive any payload, the
+test will fail.
 
 ### Debugging automated tests
 

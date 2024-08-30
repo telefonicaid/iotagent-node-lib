@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2024 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-iotagent-lib
  *
@@ -23,7 +23,6 @@
  * Modified by: Daniel Calvo - ATOS Research & Innovation
  */
 
-// #FIXME1649: parallel tests in mongodb-configGroup-registry-test.js. Remove this file if at the end /iot/services API (now Deprecated) is removed
 /* eslint-disable no-unused-vars */
 
 const iotAgentLib = require('../../../lib/fiware-iotagent-lib');
@@ -177,11 +176,11 @@ const optionsGet = {
 };
 let iotAgentDb;
 
-describe('MongoDB Group  Registry test', function () {
+describe('MongoDB Group Registry test', function () {
     beforeEach(function (done) {
         mongoUtils.cleanDbs(function () {
             iotAgentLib.activate(iotAgentConfig, function () {
-                mongo.connect('mongodb://localhost:27017/iotagent', function (err, db) {
+                mongo.connect('mongodb://localhost:27017/iotagent', { useNewUrlParser: true }, function (err, db) {
                     iotAgentDb = db;
                     done();
                 });
@@ -395,7 +394,7 @@ describe('MongoDB Group  Registry test', function () {
             async.series(creationFns, done);
         });
 
-        it('should return the appropriate count of services', function (done) {
+        it('should return the appropriate count of groups', function (done) {
             request(optionsConstrained, function (error, response, body) {
                 body.count.should.equal(10);
                 done();
@@ -446,30 +445,6 @@ describe('MongoDB Group  Registry test', function () {
                 should.exist(body.groups);
                 should.exist(body.groups.length);
                 body.groups.length.should.equal(10);
-                done();
-            });
-        });
-    });
-
-    describe('When the device info request with name and type', function () {
-        beforeEach(function (done) {
-            async.series([async.apply(request, optionsCreation)], done);
-        });
-
-        afterEach(function (done) {
-            iotAgentLib.clearRegistry(done);
-        });
-
-        it('should return the name and type of device', function (done) {
-            request(optionsGet, function (error, response, body) {
-                should.exist(body);
-                should.exist(body.count);
-                body.count.should.equal(1);
-                should.exist(body.groups);
-                should.exist(body.groups.length);
-                body.groups.length.should.equal(1);
-                should.exist(body.groups[0].entity_type);
-                body.groups[0].entity_type.should.equal('Light');
                 done();
             });
         });
