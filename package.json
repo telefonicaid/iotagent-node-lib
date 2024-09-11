@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "async": "2.6.4",
-    "body-parser": "~1.20.0",
+    "body-parser": "~1.20.3",
     "express": "~4.19.2",
     "got": "~11.8.5",
     "jexl": "2.3.0",
