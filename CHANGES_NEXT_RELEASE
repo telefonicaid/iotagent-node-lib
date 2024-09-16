@@ -7,3 +7,4 @@
 - Add: attribute metadata and static attributes metadata added to jexl context (#1630)
 - Add /iot/groups API endpoints (as equivalent to /iot/services) (#752)
 - Deprecated: /iot/services API routes
+- Add: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
