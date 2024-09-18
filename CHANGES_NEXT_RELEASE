@@ -1,9 +1,0 @@
-- Upgrade body-parser dep from 1.20.0 to 1.20.3
-- Add: openmetrics-compatible `/metrics` endpoint in nortbound API (#1627)
-- Remove: push-based stats (including stats section in config file)
-- Fix: service header to use uppercase in case of update and delete (#1528)
-- Fix: Allow to send to CB batch update for multimeasures for NGSI-LD (#1623)
-- Add: new JEXL transformations for including into an array keys that have a certain value: valuePicker and valuePickerMulti
-- Add: attribute metadata and static attributes metadata added to jexl context (#1630)
-- Add /iot/groups API endpoints (as equivalent to /iot/services) (#752)
-- Deprecated: /iot/services API routes
