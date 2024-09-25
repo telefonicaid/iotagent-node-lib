@@ -24,7 +24,7 @@
     -   [Function reference](#function-reference)
         -   [Generic middlewares](#generic-middlewares)
 -   [DB Models from API document](#db-models-from-api-document)
-    -   [Service group model](#service-group-model)
+    -   [Config group model](#config-group-model)
     -   [Device model](#device-model)
 -   [Developing a new IoT Agent](#developing-a-new-iot-agent)
     -   [Protocol](#protocol)
@@ -37,6 +37,7 @@
     -   [IoT Agent in multi-thread mode](#iot-agent-in-multi-thread-mode)
     -   [Configuration management](#configuration-management)
         -   [Provisioning handlers](#provisioning-handlers)
+-   [IoT Agent additional tools](#iot-agent-additional-tools)
 
 ## Preface
 
@@ -226,18 +227,20 @@ npm run prettier:text
 
 ### Stats Registry
 
-The library provides a mechanism for the periodic reporting of stats related to the library's work. In order to activate
-the use of the periodic stats, it must be configured in the config file, as described in the
-[Configuration](../admin.md#configuration) section.
-
-The Stats Registry holds two dictionaries, with the same set of stats. For each stat, one of the dictionaries holds the
-historical global value and the other one stores the value since the last value reporting (or current value).
+The library provides a mechanism for the collection of stats related to the library's work. The Stats Registry holds a
+dictionary with the historical global value of each stat.
 
 The stats library currently stores only the following values:
 
 -   **deviceCreationRequests**: number of Device Creation Requests that arrived to the API (no matter the result).
 -   **deviceRemovalRequests**: number of Removal Device Requests that arrived to the API (no matter the result).
 -   **measureRequests**: number of times the ngsiService.update() function has been invoked (no matter the result).
+-   **raiseAlarm**: number of times the alarmManagement.raise() function has been invoked.
+-   **releaseAlarm**: number of times the alarmManagement.release() function has been invoked.
+-   **updateEntityRequestsOk**: number of times the ngsiService.sendUpdateValue() function has been invoked
+    successfully.
+-   **updateEntityRequestsError**: number of times the ngsiService.sendUpdateValue() function has been invoked and
+    failed.
 
 More values will be added in the future to the library. The applications using the library can add values to the Stats
 Registry just by using the following function:
@@ -247,7 +250,7 @@ iotagentLib.statsRegistry.add('statName', statIncrementalValue, callback);
 ```
 
 The first time this function is invoked, it will add the new stat to the registry. Subsequent calls will add the value
-to the specified stat both to the current and global measures. The stat will be cleared in each interval as usual.
+to the specified stat.
 
 ### Alarm module
 
@@ -753,9 +756,9 @@ The `newConfiguration` parameter will contain the newly created configuration. T
 callback with no parameters (this handler should only be used for reconfiguration purposes of the IoT Agent).
 
 For the cases of multiple updates (a single Device Configuration POST that will create several device groups), the
-handler will be called once for each of the configurations (both in the case of the creations and the updates).
+handler will be called once for each of the config groups (both in the case of the creations and the updates).
 
-The handler will be also called in the case of updates related to configurations. In that situation, the
+The handler will be also called in the case of updates related to config groups. In that situation, the
 `newConfiguration` parameter contains also the fields needed to identify the configuration to be updated, i.e.,
 `service`, `subservice`, `resource` and `apikey`.
 
@@ -1330,7 +1333,7 @@ The IoT Agent is now ready to be used. Execute it with the following command:
 node index.js
 ```
 
-The North Port interface should now be fully functional, i.e.: management of device registrations and configurations.
+The North Port interface should now be fully functional, i.e.: management of device registrations and config groups.
 
 ### IoT Agent With Active attributes
 
@@ -1828,7 +1831,7 @@ iotAgentLib.startServer(config, iotAgent, function (error) {
 
 ### Configuration management
 
-For some IoT Agents, it will be useful to know what devices or configurations were registered in the Agent, or to do
+For some IoT Agents, it will be useful to know what devices or config groups were registered in the Agent, or to do
 some actions whenever a new device is registered. All this configuration and provisioning actions can be performed using
 two mechanisms: the provisioning handlers and the provisioning API.
 
@@ -1877,3 +1880,212 @@ iotAgentLib.setProvisioningHandler(provisioningHandler);
 Now we can test our implementation by sending provisioning requests to the North Port of the IoT Agent. If we provision
 a new device into the platform, and then we ask for the list of provisioned devices, we shall see the type of the
 provisioned device has changed to `CertifiedType`.
+
+## IoT Agent additional tools
+
+The IoT Agent Node Lib provides some additional tools that can be used to ease the development of IoT Agents and test
+their functionality.
+
+### Agent Console
+
+A command-line client to experiment with the library is packed with it. The command-line client can be started using the
+following command:
+
+```console
+bin/agentConsole.js
+```
+
+The client offers an API similar to the one offered by the library: it can start and stop an IoT agent, register and
+unregister devices, send measures mimicking the device and receive updates of the device data. Take into account that,
+by default, the console uses the same `config.js` file than the IoT Agent.
+
+The command-line client creates a console that offers the following options:
+
+```text
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command-line.
+
+start
+
+	Start the IoT Agent
+
+stop
+
+	Stop the IoT Agent
+
+register <id> <type>
+
+	Register a new device in the IoT Agent. The attributes to register will be extracted from the
+	type configuration
+
+unregister <id> <type>
+
+	Unregister the selected device
+
+showConfig
+
+	Show the current configuration file
+
+config <newConfig>
+
+	Change the configuration file to a new one
+
+updatevalue <deviceId> <deviceType> <attributes>
+
+	Update a device value in the Context Broker. The attributes should be triads with the following
+	format: "name/type/value" sepparated by commas.
+
+listdevices
+
+	List all the devices that have been registered in this IoT Agent session
+```
+
+### Agent tester
+
+#### Command-line testing
+
+The library also offers a Context Broker and IoT Agent client that can be used to:
+
+-   Simulate operations to the Context Broker used by the IoT Agent, triggering Context Provider forwardings for lazy
+    attributes and checking the appropriate values for active ones.
+-   Simulate operations to the Device Provisioning API and Configuration API of the IoT Agent.
+
+The tester can be started with the following command, from the root folder of the project:
+
+```console
+bin/iotAgentTester.js
+```
+
+From the command-line, the `help` command can be used to show a description of the currently supported features. These
+are the following:
+
+```text
+stressInit
+
+	Start recording a stress batch.
+
+stressCommit <delay> <times> <threads> <initTime>
+
+	Executes the recorded batch as many times as requested, with delay (ms) between commands.
+	The "threads" parameter indicates how many agents will repeat that same sequence. The "initTime" (ms)
+	parameter indicates the mean of the random initial waiting times for each agent.
+
+exit
+
+	Exit from the command-line.
+
+update <entity> <type> <attributes>
+
+	Update the values of the defined set of attributes, using the following format: name#type=value(|name#type=value)*
+
+append <entity> <type> <attributes>
+
+	Append a new Entity with the defined set of attributes, using the following format: name:type=value(,name:type=value)*
+
+query <entity> <type>
+
+	Get all the information on the selected object.
+
+queryAttr <entity> <type> <attributes>
+
+	Get information on the selected object for the selected attributes.
+
+discover <entity> <type>
+
+	Get all the context providers for a entity and type.
+
+configCb <host> <port> <service> <subservice>
+
+	Config a new host and port for the remote Context Broker.
+
+showConfigCb
+
+	Show the current configuration of the client for the Context Broker.
+
+configIot <host> <port> <service> <subservice>
+
+	Config a new host and port for the remote IoT Agent.
+
+showConfigIot
+
+	Show the current configuration of the client for the IoT Agent.
+
+provision <filename>
+
+	Provision a new device using the Device Provisioning API. The device configuration is
+	read from the file specified in the "filename" parameter.
+
+provisionGroup <template> <data> <type>
+
+	Provision a group of devices with the selected template, taking the information needed to
+	fill the template from a CSV with two columns, DEVICE_ID and DEVICE_NAME. The third parameter, type
+	will be used to replace the DEVICE_TYPE field in the template. All the devices will be provisioned
+	to the same IoT Agent, once the templates have been fulfilled.
+
+listProvisioned
+
+	List all the provisioned devices in an IoT Agent.
+
+removeProvisioned <deviceId>
+
+	Remove the selected provisioned device from the IoT Agent, specified by its Device ID.
+
+addGroup <filename>
+
+	Add a new device group to the specified IoT Agent through the Configuration API. The
+	body is taken from the file specified in the "filename" parameter.
+
+listGroups
+
+	List all the device groups created in the selected IoT Agent for the configured service
+
+removeGroup <apiKey> <resource>
+
+	Remove the device group corresponding to the current configured subservice.
+
+authenticate <host> <port> <user> <password> <service>
+
+	Authenticates to the given authentication server, and use the token in subsequent requests.
+
+setProtocol <protocol>
+
+	Sets the protocol to use in the requests (http or https). Defaults to http.
+
+configMigration <host> <port> <originDb>
+
+	Sets the configuration for a migration between a C++ IoTA and a Node.js one.
+
+showConfigMigration
+
+	Shows the current migration configuration.
+
+addProtocols <protocols>
+
+	Add a protocol translation table, in the following format:
+		protocolOrigin1=protocolTarget1;protocolOrigin2=protocolTarget2...
+
+
+migrate <targetDb> <service> <subservice>
+
+	Migrate all the devices and groups for the selected service and subservice into the
+	specified Mongo database. To perform the migration for all the services or all the
+	subservices, use the "*" value.
+```
+
+The agent session stores transient configuration data about the target Context Broker and the target IoT Agent. This
+configuration is independent, and can be checked with the `showConfigCb` and `showConfigIot` commands, respectively.
+Their values can be changed with the `configCb` and `configIot` commands respectively. The new config group will be
+deleted upon startup.
+
+---
