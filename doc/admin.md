@@ -415,7 +415,8 @@ IotAgents, as all Express applications that use the body-parser middleware, have
 size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
 request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
 
-The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT`
+environment variable).
 
 ### Configuration using environment variables
 
