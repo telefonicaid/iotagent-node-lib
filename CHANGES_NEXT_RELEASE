@@ -1,1 +1,2 @@
+- Fix: align group index to align with group uniqueness (iotagent-node-lib#1633,#1589)
 - Upgrade express de from 4.19.2 to 4.20.0
