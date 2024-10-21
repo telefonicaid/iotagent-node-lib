@@ -169,6 +169,9 @@ Group uniqueness is defined by the combination of: service, subservice, resource
 Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
 with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
 
+Note that existent deployments based on previous versions of iotagent-node-lib could use more restrictive unique indexes
+in mongodb (specially for groups model) still not updated.
+
 ## Special measures and attributes names
 
 In case of arriving measures with name `id` or `type`, they are automatically transformed to `measure_id` and
