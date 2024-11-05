@@ -1,1 +1,1 @@
-- Upgrade express de from 4.19.2 to 4.20.0
+- Fix attribute loss during device update when both name and object_id are defined by filtering only object_id (#1660)
