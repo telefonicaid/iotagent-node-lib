@@ -1,1 +1,2 @@
 - Set Nodejs 20 as minimum version in packages.json (effectively removing Nodev16 and Nodev18 from supported versions)
+- Fix attribute loss during device update when both name and object_id are defined by filtering only object_id (#1660)
