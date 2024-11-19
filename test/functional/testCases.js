@@ -607,7 +607,8 @@ const testCases = [
                     },
                     json: {
                         a: false,
-                        t: 10
+                        t: 10,
+                        fireDetectionThreshold: 10
                     }
                 },
                 expectation: {
@@ -625,6 +626,10 @@ const testCases = [
                     },
                     value: {
                         type: 'Number',
+                        value: 10
+                    },
+                    fireDetectionThreshold: {
+                        type: 'Text',
                         value: 10
                     }
                 }
