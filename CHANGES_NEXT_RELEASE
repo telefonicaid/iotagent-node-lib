@@ -1,1 +1,2 @@
 - Upgrade express de from 4.19.2 to 4.20.0
+- Store last measure in device (by id, apikey, service and subservice) (#1669)
