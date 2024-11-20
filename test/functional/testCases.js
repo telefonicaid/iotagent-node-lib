@@ -547,6 +547,15 @@ const testCases = [
                                 object_id: 't',
                                 name: 'value',
                                 type: 'Number'
+                            },
+                            {
+                                name: 'fireDetectionThreshold',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'fireDetectionThreshold3',
+                                name: 'fireDetectionThreshold3',
+                                type: 'Number'
                             }
                         ],
                         static_attributes: []
@@ -596,7 +605,7 @@ const testCases = [
             },
             {
                 shouldName:
-                    'A - WHEN sending defined object_ids with special format names in attributes through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                    'B - WHEN sending defined object_ids with special format names in attributes through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
                 type: 'single',
                 measure: {
                     url: 'http://localhost:' + config.http.port + '/iot/json',
@@ -608,7 +617,9 @@ const testCases = [
                     json: {
                         a: false,
                         t: 10,
-                        fireDetectionThreshold: 10
+                        fireDetectionThreshold: 10,
+                        fireDetectionThreshold2: 20,
+                        fireDetectionThreshold3: 30
                     }
                 },
                 expectation: {
@@ -629,8 +640,16 @@ const testCases = [
                         value: 10
                     },
                     fireDetectionThreshold: {
-                        type: 'Text',
+                        type: 'Number',
                         value: 10
+                    },
+                    fireDetectionThreshold2: {
+                        type: 'Text',
+                        value: 20
+                    },
+                    fireDetectionThreshold3: {
+                        type: 'Number',
+                        value: 30
                     }
                 }
             }
