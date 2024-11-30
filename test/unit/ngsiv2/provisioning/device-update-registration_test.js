@@ -73,6 +73,14 @@ const iotAgentConfig = {
             subservice: 'gardens'
         }
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com'

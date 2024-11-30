@@ -46,7 +46,7 @@ var config = {
         password: 'iotagent'
     },
     deviceRegistry: {
-        type: 'memory'
+        type: 'mongodb'
     },
     types: {
         Light: {

@@ -28,7 +28,8 @@ const utils = require('../../../tools/utils');
 const request = utils.request;
 const should = require('should');
 const async = require('async');
-const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+//const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+const groupRegistryMongoDB = require('../../../../lib/services/groups/groupRegistryMongoDB');
 
 const groupCreation = {
     url: 'http://localhost:4041/iot/services',
@@ -74,6 +75,14 @@ const iotAgentConfig = {
             subservice: '/testingPath'
         }
     },
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
@@ -84,7 +93,7 @@ const iotAgentConfig = {
 describe('Device Group utils', function () {
     afterEach(function (done) {
         iotAgentLib.deactivate(function () {
-            groupRegistryMemory.clear(done);
+            groupRegistryMongoDB.clear(done);
         });
     });
 
@@ -103,6 +112,7 @@ describe('Device Group utils', function () {
             iotAgentLib.getEffectiveApiKey('testservice', '/testingPath', 'AnotherMachine', function (error, apiKey) {
                 should.not.exist(error);
                 apiKey.should.equal('754KL23Y9090DSFL123HSFL12380KL23Y2');
+
                 done();
             });
         });

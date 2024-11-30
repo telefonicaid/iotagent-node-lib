@@ -31,7 +31,8 @@ const async = require('async');
 const nock = require('nock');
 const utils = require('../../../tools/utils');
 const request = utils.request;
-const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+//const groupRegistryMemory = require('../../../../lib/services/groups/groupRegistryMemory');
+const groupRegistryMongoDB = require('../../../../lib/services/groups/groupRegistryMongoDB');
 
 const should = require('should');
 const iotAgentConfig = {
@@ -47,6 +48,14 @@ const iotAgentConfig = {
         baseRoot: '/'
     },
     types: {},
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
+    },
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
@@ -269,7 +278,7 @@ newOptionsGet.url = newOptionsGet.url.replace('services', configGroupTerm);
 describe('NGSI-v2 - Device Group Configuration API', function () {
     beforeEach(function (done) {
         iotAgentLib.activate(iotAgentConfig, function () {
-            groupRegistryMemory.clear(done);
+            groupRegistryMongoDB.clear(done);
         });
     });
 
@@ -277,7 +286,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
         iotAgentLib.setConfigurationHandler();
 
         iotAgentLib.deactivate(function () {
-            groupRegistryMemory.clear(done);
+            groupRegistryMongoDB.clear(done);
         });
     });
     describe('When a new device group creation request arrives', function () {

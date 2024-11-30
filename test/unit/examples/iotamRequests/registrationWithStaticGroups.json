@@ -25,6 +25,8 @@
           "values": "123,12"
         }
       ],
+      "internal_attributes": [],
+      "lazy": [],
       "commands": [
         {
             "name": "wheel1",
