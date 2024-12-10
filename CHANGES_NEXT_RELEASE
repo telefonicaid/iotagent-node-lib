@@ -1,1 +1,2 @@
 - Upgrade express de from 4.19.2 to 4.20.0
+- Upgrade mongoose dep from 5.13.20 to 5.13.22
