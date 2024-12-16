@@ -75,8 +75,6 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
                     options: {
-                        // useNewUrlParser: true,
-                        // useUnifiedTopology: true
                     }
                 }
             },
