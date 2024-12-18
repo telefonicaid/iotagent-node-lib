@@ -674,7 +674,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin1.json'
                     )
@@ -712,7 +712,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin17.json'
                     )
@@ -744,7 +744,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin4.json'
                     )
@@ -781,7 +781,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin5.json'
                     )
@@ -819,7 +819,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin8.json'
                     )
@@ -862,7 +862,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin3.json'
                     )
@@ -905,7 +905,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin9.json'
                     )
@@ -948,7 +948,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
                     )
@@ -996,7 +996,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin12.json'
                     )
@@ -1044,7 +1044,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin13.json'
                     )
@@ -1077,7 +1077,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin14.json'
                     )
@@ -1120,7 +1120,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10.json'
                     )
@@ -1153,7 +1153,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin10b.json'
                     )
@@ -1177,7 +1177,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
-                '/v2/op/update',
+                '/v2/op/update?options=flowControl',
                 utils.readExampleFile(
                     // Updated test same case that updateContextMultientityPlugin4.json
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
@@ -1211,7 +1211,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin11.json'
                     )
@@ -1249,7 +1249,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin2.json'
                     )
@@ -1291,7 +1291,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin15.json'
                     )
@@ -1333,7 +1333,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin25.json'
                     )
@@ -1375,7 +1375,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin16.json'
                     )
@@ -1410,7 +1410,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post(
-                        '/v2/op/update',
+                        '/v2/op/update?options=flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin6.json'
                         )
@@ -1461,7 +1461,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
                     .post(
-                        '/v2/op/update',
+                        '/v2/op/update?options=flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityPlugin7.json'
                         )
@@ -1500,7 +1500,7 @@ describe('NGSI-v2 - Multi-entity plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityJexlExpressionPlugin1.json'
                     )
@@ -1570,7 +1570,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/op/update', function (body) {
+                .post('/v2/op/update?options=flowControl', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin1.json'
                     );
@@ -1608,7 +1608,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/op/update', function (body) {
+                .post('/v2/op/update?options=flowControl', function (body) {
                     const expectedBody = utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin2.json'
                     );
@@ -1647,7 +1647,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed before timestamp process plu
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin3.json'
                     )
@@ -1701,7 +1701,7 @@ describe('NGSI-v2 - Multi-entity plugin is executed for a command update for a r
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
             .post(
-                '/v2/entities?options=upsert',
+                '/v2/entities?options=upsert,flowControl',
                 utils.readExampleFile(
                     './test/unit/ngsiv2/examples/contextRequests/updateContextMultientityTimestampPlugin4.json'
                 )

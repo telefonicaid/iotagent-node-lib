@@ -519,7 +519,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -537,7 +537,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -1091,7 +1091,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
                 .reply(204, {});

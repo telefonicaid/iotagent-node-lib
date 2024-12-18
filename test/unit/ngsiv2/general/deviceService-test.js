@@ -219,7 +219,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -248,7 +248,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -281,7 +281,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([utils.request.bind(utils.request, groupCreation)], function (error, results) {
@@ -314,7 +314,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([utils.request.bind(utils.request, configGroupCreation)], function (error, results) {
