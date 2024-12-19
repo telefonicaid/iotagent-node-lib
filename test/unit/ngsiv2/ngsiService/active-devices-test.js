@@ -239,7 +239,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .reply(204);
@@ -283,7 +283,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextTimestamp.json')
                 )
                 .reply(204);
@@ -331,7 +331,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalse.json'
                     )
@@ -383,7 +383,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampFalseTimeInstant.json'
                     )
@@ -475,7 +475,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverrideWithoutMilis.json'
                     )
@@ -529,7 +529,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampTimezone.json'
                     )
@@ -585,7 +585,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
                     )
@@ -639,7 +639,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextTimestampOverride.json'
                     )
@@ -693,7 +693,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .reply(
@@ -725,7 +725,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .reply(
@@ -754,7 +754,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .reply(
@@ -786,7 +786,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext5.json')
                 )
                 .reply(204);
@@ -819,7 +819,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributes.json'
                     )
@@ -854,7 +854,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextStaticAttributesMetadata.json'
                     )
@@ -880,7 +880,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext.json')
                 )
                 .reply(204);
@@ -929,7 +929,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'stupiddevice1',
                     type: 'StupidDevice',
                     meas: {
@@ -984,7 +984,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'stupiddevice2',
                     type: 'StupidDevice',
                     meas: {
@@ -1031,7 +1031,7 @@ describe('NGSI-v2 - Active attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'stupiddevice3',
                     type: 'StupidDevice2',
                     meas: {
@@ -1071,7 +1071,7 @@ describe('NGSI-v2 - Active attributes test', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext6.json')
                 )
                 .reply(204);

@@ -175,7 +175,7 @@ describe('NGSI-v2 - HTTPS support tests', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                         )

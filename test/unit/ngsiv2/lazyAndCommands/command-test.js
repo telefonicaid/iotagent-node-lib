@@ -159,7 +159,7 @@ describe('NGSI-v2 - Command functionalities', function () {
     });
     describe('When a command update arrives to the IoT Agent as Context Provider', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update?options=flowControl',
             method: 'POST',
             json: {
                 actionType: 'update',
@@ -264,7 +264,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandFinish.json')
                 )
                 .reply(204);
@@ -288,7 +288,7 @@ describe('NGSI-v2 - Command functionalities', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextCommandError.json')
                 )
                 .reply(204);
@@ -309,7 +309,7 @@ describe('NGSI-v2 - Command functionalities', function () {
 
     describe('When a command update with metadata arrives to the IoT Agent as Context Provider', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update?options=flowControl',
             method: 'POST',
             json: {
                 actionType: 'update',

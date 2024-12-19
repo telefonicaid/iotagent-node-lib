@@ -97,7 +97,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             const nockBody2 = utils.readExampleFile(
@@ -115,7 +115,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -130,7 +130,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(

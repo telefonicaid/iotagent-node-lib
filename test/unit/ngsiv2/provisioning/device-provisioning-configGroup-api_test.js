@@ -74,7 +74,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.clearAll(done);
@@ -420,7 +420,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                         )
@@ -492,7 +492,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice.json'
@@ -558,7 +558,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice.json'
@@ -632,7 +632,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice2.json'
@@ -706,7 +706,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice3.json'
@@ -914,7 +914,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                     )
@@ -923,7 +923,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
             contextBrokerMock
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                     )
@@ -1074,7 +1074,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             done();

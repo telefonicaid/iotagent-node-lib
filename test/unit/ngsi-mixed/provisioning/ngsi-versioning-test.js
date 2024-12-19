@@ -189,7 +189,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             request(optionsCreationDefault, function (error, response, body) {
@@ -210,7 +210,7 @@ describe('Mixed Mode: ngsiVersion test', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             request(optionsCreationV2, function (error, response, body) {
@@ -254,10 +254,10 @@ describe('Mixed Mode: ngsiVersion test', function () {
     //         contextBrokerMock = nock('http://192.168.1.1:1026')
     //             .matchHeader('fiware-service', 'smartgondor')
     //             .matchHeader('fiware-servicepath', 'gardens')
-    //             .post('/v2/entities?options=upsert')
+    //             .post('/v2/entities?options=upsert,flowControl')
     //             .reply(204);
 
-    //         contextBrokerMock = nock('http://192.168.1.1:1026').post('/v2/entities?options=upsert').reply(204);
+    //         contextBrokerMock = nock('http://192.168.1.1:1026').post('/v2/entities?options=upsert,flowControl').reply(204);
     //         request(optionsCreationLD, function (error, response, body) {
     //             request(deviceCreationV2, function (error, response, body) {
     //                 done();

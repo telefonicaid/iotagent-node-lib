@@ -96,7 +96,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
@@ -105,7 +105,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
@@ -114,7 +114,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             async.series(
                 [
@@ -308,7 +308,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').times(10).reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').times(10).reply(204);
 
             iotAgentLib.clearAll(function () {
                 async.times(10, createDeviceRequest, function (error, results) {
