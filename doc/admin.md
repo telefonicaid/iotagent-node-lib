@@ -425,6 +425,24 @@ If this flag is activated, last measure arrived to Device IoTAgent without be pr
 lastMeasure field with in timestamp. This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
 is disabled by default.
 
+For example in a device document stored in MongoDB will be extended with a subdocument named lastMeasure like this:
+
+```json
+{
+    "lastMeasure": {
+        "timestamp": "2025-01-09T10:35:33.079Z",
+        "measure": [
+            [
+                {
+                    "name": "level",
+                    "type": "Text"
+                }
+            ]
+        ]
+    }
+}
+```
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
