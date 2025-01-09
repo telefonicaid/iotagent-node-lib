@@ -422,7 +422,8 @@ environment variable).
 #### `storeLastMeasure`
 
 If this flag is activated, last measure arrived to Device IoTAgent without be processed will be stored in Device under
-lastMeasure field with in timestamp. This flag is disabled by default.
+lastMeasure field with in timestamp. This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
+is disabled by default.
 
 ### Configuration using environment variables
 
