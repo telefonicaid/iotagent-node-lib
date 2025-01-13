@@ -125,9 +125,9 @@ allowing the computer to interpret the rest of the data with more clarity and de
 ```
 
 Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
-be switched to **NGSI LD** at group or device provisioning time using the `ngsiVersion` field in the
-provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
-overriding the group setting.
+be switched to **NGSI LD** at group or device provisioning time using the `ngsiVersion` field in the provisioning API.
+The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group
+setting.
 
 #### `server`
 
@@ -306,7 +306,8 @@ added `agentPath`:
 
 #### `types`
 
-This parameter includes additional groups configuration as described into the [Config group API](api.md#config-group-api) section.
+This parameter includes additional groups configuration as described into the
+[Config group API](api.md#config-group-api) section.
 
 #### `service`
 
@@ -415,7 +416,33 @@ IotAgents, as all Express applications that use the body-parser middleware, have
 size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
 request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
 
-The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT` environment variable).
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT`
+environment variable).
+
+#### `storeLastMeasure`
+
+If this flag is activated, last measure arrived to Device IoTAgent without be processed will be stored in Device under
+`lastMeasure` field (composed of sub-fields `timestamp` and `measure` for the measure itself, in multi-measure format). This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
+is disabled by default.
+
+For example in a device document stored in MongoDB will be extended with a subdocument named lastMeasure like this:
+
+```json
+{
+    "lastMeasure": {
+        "timestamp": "2025-01-09T10:35:33.079Z",
+        "measure": [
+            [
+                {
+                    "name": "level",
+                    "type": "Text",
+                    "value": 33
+                }
+            ]
+        ]
+    }
+}
+```
 
 ### Configuration using environment variables
 
@@ -479,6 +506,7 @@ overrides.
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
 | IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
+| IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
 
 Note:
 
