@@ -436,7 +436,7 @@ For example in a device document stored in MongoDB will be extended with a subdo
                 {
                     "name": "level",
                     "type": "Text",
-                    "value": "33"
+                    "value": 33
                 }
             ]
         ]
