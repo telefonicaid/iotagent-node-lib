@@ -58,7 +58,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const device = {
     id: 'somelight',

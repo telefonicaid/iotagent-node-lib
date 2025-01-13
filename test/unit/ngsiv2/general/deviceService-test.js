@@ -126,7 +126,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const groupCreation = {
     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',

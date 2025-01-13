@@ -730,7 +730,8 @@ const iotAgentConfig = {
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S'
+    throttling: 'PT5S',
+    useCBflowControl: true
 };
 
 const iotAgentConfigTS = {
@@ -812,7 +813,8 @@ const iotAgentConfigTS = {
     timestamp: true,
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('Java expression language (JEXL) based transformations plugin', function () {

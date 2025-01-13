@@ -49,7 +49,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    explicitAttrs: false
+    explicitAttrs: false,
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Device provisioning API: Provision devices', function () {

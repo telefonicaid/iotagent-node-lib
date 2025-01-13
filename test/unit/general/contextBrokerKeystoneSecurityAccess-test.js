@@ -85,7 +85,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Secured access to the Context Broker with Keystone', function () {

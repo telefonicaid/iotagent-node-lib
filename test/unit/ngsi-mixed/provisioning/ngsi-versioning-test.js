@@ -55,7 +55,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    useCBflowControl: true
 };
 const mongo = require('mongodb').MongoClient;
 const mongoUtils = require('../../mongodb/mongoDBUtils');

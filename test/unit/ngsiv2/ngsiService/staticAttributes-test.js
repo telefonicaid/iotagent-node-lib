@@ -176,7 +176,8 @@ const iotAgentConfig = {
     timestamp: true,
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Static attributes test', function () {

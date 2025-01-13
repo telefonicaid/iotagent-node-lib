@@ -77,7 +77,8 @@ var config = {
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
-    expressLimit: '1Mb'
+    expressLimit: '1Mb',
+    useCBflowControl: false
 };
 
 module.exports = config;

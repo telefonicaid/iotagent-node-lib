@@ -50,7 +50,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    useCBflowControl: true
 };
 const optionsCreation = {
     url: 'http://localhost:4041/iot/services',
