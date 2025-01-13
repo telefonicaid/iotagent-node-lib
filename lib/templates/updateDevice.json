@@ -198,6 +198,10 @@
     "payloadType": {
         "description": "Payload type allowed for measures for this device",
         "type": "string"
+    },
+    "storeLastMeasure": {
+      "description": "Store last measure",
+      "type": "boolean"
     }
   }
 }

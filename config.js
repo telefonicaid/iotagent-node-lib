@@ -78,7 +78,8 @@ var config = {
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
     expressLimit: '1Mb',
-    useCBflowControl: false
+    useCBflowControl: false,
+    storeLastMeasure: false
 };
 
 module.exports = config;

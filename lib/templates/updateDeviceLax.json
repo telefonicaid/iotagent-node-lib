@@ -151,5 +151,9 @@
         "description": "use CB flowControl option",
         "type": "boolean"
     }
+    "storeLastMeasure": {
+      "description": "Store last measure",
+      "type": "boolean"
+    }
   }
 }
