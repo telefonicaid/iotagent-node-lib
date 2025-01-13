@@ -422,7 +422,7 @@ environment variable).
 #### `storeLastMeasure`
 
 If this flag is activated, last measure arrived to Device IoTAgent without be processed will be stored in Device under
-lastMeasure field with in timestamp. This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
+`lastMeasure` field (composed of sub-fields `timestamp` and `measure` for the measure itself, in multi-measure format). This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
 is disabled by default.
 
 For example in a device document stored in MongoDB will be extended with a subdocument named lastMeasure like this:
