@@ -45,7 +45,7 @@ config.amqp = {
 };
 
 config.iota = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -61,7 +61,8 @@ config.iota = {
     service: 'smartgondor',
     subservice: '/gardens',
     providerUrl: 'http://localhost:4041',
-    types: {}
+    types: {},
+    useCBflowControl: true
 };
 
 config.defaultKey = '1234';

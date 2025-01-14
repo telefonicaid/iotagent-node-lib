@@ -730,7 +730,8 @@ const iotAgentConfig = {
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S'
+    throttling: 'PT5S',
+    useCBflowControl: true
 };
 
 const iotAgentConfigTS = {
@@ -812,7 +813,8 @@ const iotAgentConfigTS = {
     timestamp: true,
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('Java expression language (JEXL) based transformations plugin', function () {
@@ -849,7 +851,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
                     )
@@ -882,7 +884,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'testNull1',
                     type: 'testNull',
                     v: {
@@ -938,7 +940,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'testNull2',
                     type: 'testNull',
                     z: {
@@ -994,7 +996,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'testNullSkip1',
                     type: 'testNullSkip',
                     v: {
@@ -1058,7 +1060,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'testNullSkip2',
                     type: 'testNullSkip',
                     z: {
@@ -1122,7 +1124,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'testNullExplicit1',
                     type: 'testNullExplicit',
                     c: {
@@ -1179,7 +1181,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
@@ -1219,7 +1221,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
@@ -1253,7 +1255,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
@@ -1287,7 +1289,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
@@ -1322,7 +1324,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
@@ -1357,7 +1359,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
@@ -1391,7 +1393,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
@@ -1426,7 +1428,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
@@ -1460,7 +1462,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
@@ -1495,7 +1497,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
@@ -1549,7 +1551,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
@@ -1587,7 +1589,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
@@ -1620,7 +1622,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
                     )
@@ -1661,7 +1663,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29b.json'
                     )
@@ -1694,7 +1696,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin31.json'
                     )
@@ -1737,7 +1739,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
                     )
@@ -1780,7 +1782,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin35.json'
                     )
@@ -1828,7 +1830,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin41.json'
                     )
@@ -1871,7 +1873,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
@@ -1914,7 +1916,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
@@ -1962,7 +1964,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
                     )
@@ -2000,7 +2002,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36b.json'
                     )
@@ -2033,7 +2035,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
                     )
@@ -2081,7 +2083,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin37.json'
                     )
@@ -2128,7 +2130,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionSkip.json'
                     )
@@ -2163,7 +2165,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nested1',
                     type: 'nestedExpressionsObj',
                     v: {
@@ -2206,7 +2208,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nested2',
                     type: 'nestedExpressionsName',
                     t: {
@@ -2253,7 +2255,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nested3',
                     type: 'nestedExpressionsSkip',
                     prefix: {
@@ -2296,7 +2298,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nestedDirect',
                     type: 'nestedExpressionsDirect',
                     level: {
@@ -2343,7 +2345,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nestedReverse',
                     type: 'nestedExpressionsReverse',
                     level: {
@@ -2391,7 +2393,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'nestedAnti',
                     type: 'nestedExpressionsAnti',
                     a: {
@@ -2467,7 +2469,7 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin33.json'
                     )
@@ -2508,7 +2510,7 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin40.json'
                     )

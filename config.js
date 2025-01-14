@@ -78,6 +78,7 @@ var config = {
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
     expressLimit: '1Mb',
+    useCBflowControl: false,
     storeLastMeasure: false
 };
 

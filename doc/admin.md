@@ -422,8 +422,8 @@ environment variable).
 #### `storeLastMeasure`
 
 If this flag is activated, last measure arrived to Device IoTAgent without be processed will be stored in Device under
-`lastMeasure` field (composed of sub-fields `timestamp` and `measure` for the measure itself, in multi-measure format). This flag is overwritten by `storeLastMeasure` flag in group or device. This flag
-is disabled by default.
+`lastMeasure` field (composed of sub-fields `timestamp` and `measure` for the measure itself, in multi-measure format).
+This flag is overwritten by `storeLastMeasure` flag in group or device. This flag is disabled by default.
 
 For example in a device document stored in MongoDB will be extended with a subdocument named lastMeasure like this:
 
@@ -443,6 +443,11 @@ For example in a device document stored in MongoDB will be extended with a subdo
     }
 }
 ```
+
+#### `useCBflowControl`
+
+If this flag is activated, when iotAgent invokes Context Broker will use [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism). This flag is overwritten by
+`useCBflowControl` flag in group or device. This flag is disabled by default.
 
 ### Configuration using environment variables
 
@@ -507,6 +512,7 @@ overrides.
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
 | IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 | IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
+| IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
 
 Note:
 

@@ -149,6 +149,10 @@
               "description": "Payload type",
               "type": "string"
           },
+          "useCBflowControl": {
+              "description": "use CB flowControl option",
+              "type": "boolean"
+          },
           "contentType": {
               "description": "Content type",
               "type": "string"

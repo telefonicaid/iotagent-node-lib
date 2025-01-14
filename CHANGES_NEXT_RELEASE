@@ -1,5 +1,7 @@
+- Add: option to force to use CB flow control with new API field useCBflowControl at group and device device level  (#1420)
+- Add: useCBflowControl config setting (IOTA_CB_FLOW_CONTROL env var) to set CB flow control behaviour at instance level (#1420)
 - Add: store last measure in device (by id, apikey, service and subservice) and new API field storeLastMeasure at group and device levels (#1669)
-- Add: IOTA_STORE_LAST_MEASURE env var to set default store last measure behaviour at instance level (#1669)
+- Add: storeLastMeasure config setting  (IOTA_STORE_LAST_MEASURE env var) to set default store last measure behaviour at instance level (#1669)
 - Upgrade express dep from 4.19.2 to 4.20.0
 - Upgrade mongodb devdep from 4.17.1 to 4.17.2
 - Upgrade mongoose dep from 5.13.20 to 8.8.4 (solving vulnerability CVE-2024-53900) (#1674)
