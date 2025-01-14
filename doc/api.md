@@ -1778,6 +1778,7 @@ Config group is represented by a JSON object with the following fields:
 | `transport`                    | ✓        | `string`       |            | Transport protocol used by the group of devices to send updates, for the IoT Agents with multiple transport protocols.                                                                                                                                                                                                                                                                                                              |
 | `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                                                                                                                                                                            |
 | `storeLastMeasure`             | ✓        | `boolean`      |            | Store in device last measure received. See more info [in this section](admin.md#storelastmeasure). False by default                                                                                                                                                                                                                                                                                                                 |
+| `useCBflowControl`             | ✓        | `boolean`      |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default                                                                                                                                                                                                                                                                                                                       |
 
 ### Config group operations
 
@@ -2000,7 +2001,10 @@ the API resource fields and the same fields in the database model.
 | `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                           |
 
 | `storeLastMeasure` | ✓ | `boolean` | | Store in device last measure received. See more info
-[in this section](admin.md#storelastmeasure). False by default. |
+[in this section](admin.md#storelastmeasure). False by default.
+
+| `useCBflowControl` | ✓ | `boolean` | | Use Context Broker flow control. See more info
+[in this section](admin.md#useCBflowControl). False by default.
 
 ### Device operations
 

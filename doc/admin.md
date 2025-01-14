@@ -444,6 +444,11 @@ For example in a device document stored in MongoDB will be extended with a subdo
 }
 ```
 
+#### `useCBflowControl`
+
+If this flag is activated, when iotAgent invokes Context Broker will use flowControl option. This flag is overwritten by
+`useCBflowControl` flag in group or device. This flag is disabled by default.
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -507,6 +512,7 @@ overrides.
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
 | IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 | IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
+| IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
 
 Note:
 
