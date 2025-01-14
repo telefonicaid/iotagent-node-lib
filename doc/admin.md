@@ -446,7 +446,7 @@ For example in a device document stored in MongoDB will be extended with a subdo
 
 #### `useCBflowControl`
 
-If this flag is activated, when iotAgent invokes Context Broker will use flowControl option. This flag is overwritten by
+If this flag is activated, when iotAgent invokes Context Broker will use [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism). This flag is overwritten by
 `useCBflowControl` flag in group or device. This flag is disabled by default.
 
 ### Configuration using environment variables
