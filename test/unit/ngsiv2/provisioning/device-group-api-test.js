@@ -66,6 +66,7 @@ const optionsCreation = {
                 cbHost: 'http://unexistentHost:1026',
                 transport: 'HTTP',
                 endpoint: 'http://myendpoint.com',
+                useCBflowControl: true,
                 commands: [
                     {
                         name: 'wheel1',

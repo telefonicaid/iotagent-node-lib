@@ -69,6 +69,7 @@ const optionsCreationDefault = {
                 apikey: 'default-test',
                 entity_type: 'Device',
                 resource: '/iot/default',
+                useCBflowControl: true,
                 attributes: [
                     {
                         object_id: 's',
@@ -94,6 +95,7 @@ const optionsCreationV2 = {
                 ngsiVersion: 'v2',
                 entity_type: 'Device',
                 resource: '/iot/v2',
+                useCBflowControl: true,
                 attributes: [
                     {
                         object_id: 's',
