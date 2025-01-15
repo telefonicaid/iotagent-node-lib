@@ -253,8 +253,7 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S'
+    deviceRegistrationDuration: 'P1M'
 };
 
 const iotAgentConfigTS = {
