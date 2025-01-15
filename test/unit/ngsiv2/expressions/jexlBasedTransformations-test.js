@@ -730,7 +730,6 @@ const iotAgentConfig = {
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S',
     useCBflowControl: true
 };
 
