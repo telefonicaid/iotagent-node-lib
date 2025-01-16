@@ -1999,15 +1999,12 @@ the API resource fields and the same fields in the database model.
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                                                                                                                                                                               |
 | `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                                                                                                                                                                                        |
 | `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                           |
-| `storeLastMeasure` | ✓ | `boolean` | | Store in device last measure received. See more info
-[in this section](admin.md#storelastmeasure). False by default.
-                  |
-| `lastMeasure` | ✓ | `object` | | last measure stored on device when `storeLastMeasure` is enabled. See more info
-[in this section](admin.md#storelastmeasure).
-                  |
-| `useCBflowControl` | ✓ | `boolean` | | Use Context Broker flow control. See more info
-[in this section](admin.md#useCBflowControl). False by default.
-                  |
+| `storeLastMeasure`    | ✓        | `boolean` |            | Store in device last measure received. See more info [in this section](admin.md#storelastmeasure). False by default.
+                                                                                 |
+| `lastMeasure`         | ✓        | `object` |             | last measure stored on device when `storeLastMeasure` is enabled. See more info [in this section](admin.md#storelastmeasure).
+                                                                                 |
+| `useCBflowControl`    | ✓        | `boolean` |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default.
+                                                                                  |
 ### Device operations
 
 #### Retrieve devices /iot/devices `GET /iot/devices`
