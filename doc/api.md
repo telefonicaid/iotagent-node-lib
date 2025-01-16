@@ -2003,7 +2003,7 @@ the API resource fields and the same fields in the database model.
 | `storeLastMeasure` | ✓ | `boolean` | | Store in device last measure received. See more info
 [in this section](admin.md#storelastmeasure). False by default.
                   |
-| `lastMeasure` | ✓ | `object` | | last measure stored om device quen storeLastMeasure is enabled. See more info
+| `lastMeasure` | ✓ | `object` | | last measure stored on device when `storeLastMeasure` is enabled. See more info
 [in this section](admin.md#storelastmeasure).
                   |
 | `useCBflowControl` | ✓ | `boolean` | | Use Context Broker flow control. See more info
