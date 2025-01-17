@@ -5,4 +5,3 @@
 - Upgrade express dep from 4.19.2 to 4.20.0
 - Upgrade mongodb devdep from 4.17.1 to 4.17.2
 - Upgrade mongoose dep from 5.13.20 to 8.9.5 (solving vulnerabilies CVE-2024-53900 and CVE-2025-23061) (#1674)
-- Upgrade jinja2 dep from 3.1.4 to 3.1.5 (solving vulnerabilities CVE-2024-56201 and CVE-2024-56326)
