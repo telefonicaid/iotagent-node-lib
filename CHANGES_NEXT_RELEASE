@@ -4,4 +4,4 @@
 - Add: storeLastMeasure config setting  (IOTA_STORE_LAST_MEASURE env var) to set default store last measure behaviour at instance level (#1669)
 - Upgrade express dep from 4.19.2 to 4.20.0
 - Upgrade mongodb devdep from 4.17.1 to 4.17.2
-- Upgrade mongoose dep from 5.13.20 to 8.8.4 (solving vulnerability CVE-2024-53900) (#1674)
+- Upgrade mongoose dep from 5.13.20 to 8.9.5 (solving vulnerability CVE-2024-53900 and CVE-2025-23061) (#1674)
