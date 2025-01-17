@@ -202,6 +202,10 @@
     "storeLastMeasure": {
       "description": "Store last measure",
       "type": "boolean"
+    },
+    "lastMeasure": {
+      "description": "last measure",
+      "type": "object"
     }
   }
 }
