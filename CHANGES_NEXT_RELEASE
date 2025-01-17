@@ -1,3 +1,4 @@
+- Fix: set polling and transport for autoprovisioned devices
 - Add: option to force to use CB flow control with new API field useCBflowControl at group and device device level  (#1420)
 - Add: useCBflowControl config setting (IOTA_CB_FLOW_CONTROL env var) to set CB flow control behaviour at instance level (#1420)
 - Add: store last measure in device (by id, apikey, service and subservice) and new API field storeLastMeasure at group and device levels (#1669)
