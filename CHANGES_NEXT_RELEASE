@@ -1,5 +1,6 @@
 - Add: option to force to use CB flow control with new API field useCBflowControl at group and device device level  (#1420)
 - Add: useCBflowControl config setting (IOTA_CB_FLOW_CONTROL env var) to set CB flow control behaviour at instance level (#1420)
+- Add: allow remove last measure in device
 - Add: store last measure in device (by id, apikey, service and subservice) and new API field storeLastMeasure at group and device levels (#1669)
 - Add: storeLastMeasure config setting  (IOTA_STORE_LAST_MEASURE env var) to set default store last measure behaviour at instance level (#1669)
 - Upgrade express dep from 4.19.2 to 4.21.2
