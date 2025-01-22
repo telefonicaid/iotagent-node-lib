@@ -176,7 +176,8 @@ const iotAgentConfig = {
     timestamp: true,
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Static attributes test', function () {
@@ -208,10 +209,10 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(4)
                 .reply(204)
-                .post('/v2/entities?options=upsert', function (body) {
+                .post('/v2/entities?options=upsert,flowControl', function (body) {
                     let metadatas = 0;
                     for (const i in body) {
                         if (body[i].metadata) {
@@ -258,7 +259,7 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'light2',
                     type: 'Light_Explicit_True',
                     pressure: {
@@ -303,7 +304,7 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'light2',
                     type: 'Light_Explicit_True',
                     pressure: {
@@ -347,7 +348,7 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'light2',
                     type: 'Light_Explicit_Array',
                     pressure: {
@@ -388,7 +389,7 @@ describe('NGSI-v2 - Static attributes test', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert', {
+                .post('/v2/entities?options=upsert,flowControl', {
                     id: 'light2',
                     type: 'Light_Explicit_Expression',
                     pressure: {

@@ -58,7 +58,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const device = {
     id: 'somelight',
@@ -82,7 +83,7 @@ describe('NGSI-v2 - Update attribute functionalities', function () {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', 'gardens')
-            .post('/v2/entities?options=upsert')
+            .post('/v2/entities?options=upsert,flowControl')
             .reply(204);
 
         iotAgentLib.activate(iotAgentConfig, done);
@@ -103,7 +104,7 @@ describe('NGSI-v2 - Update attribute functionalities', function () {
 
     describe('When a attribute update arrives to the IoT Agent as Context Provider', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update?options=flowControl',
             method: 'POST',
             json: {
                 actionType: 'update',

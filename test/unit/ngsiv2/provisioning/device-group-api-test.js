@@ -50,7 +50,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    useCBflowControl: true
 };
 const optionsCreation = {
     url: 'http://localhost:4041/iot/services',
@@ -65,6 +66,7 @@ const optionsCreation = {
                 cbHost: 'http://unexistentHost:1026',
                 transport: 'HTTP',
                 endpoint: 'http://myendpoint.com',
+                useCBflowControl: true,
                 commands: [
                     {
                         name: 'wheel1',
@@ -519,7 +521,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -537,7 +539,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -1091,7 +1093,7 @@ describe('NGSI-v2 - Device Group Configuration API', function () {
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContext3WithStatic.json')
                 )
                 .reply(204, {});

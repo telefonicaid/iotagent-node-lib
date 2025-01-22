@@ -48,7 +48,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    useCBflowControl: true
 };
 let contextBrokerMock;
 
@@ -64,7 +65,7 @@ describe('NGSI-v2 - In memory device registry', function () {
     describe('When a the registry is queried for a device using an arbitrary attribute', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(10)
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
@@ -116,7 +117,7 @@ describe('NGSI-v2 - In memory device registry', function () {
     describe('When a the registry is queried for devices in multiple services', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(10)
                 .reply(204);
 
@@ -159,7 +160,7 @@ describe('NGSI-v2 - In memory device registry', function () {
     describe('When a the registry is queried for devices in a particular service', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(10)
                 .reply(204);
 
@@ -202,7 +203,7 @@ describe('NGSI-v2 - In memory device registry', function () {
     describe('When a the registry is queried for device in a particular name and type', function () {
         beforeEach(function (done) {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(10)
                 .reply(204);
 

@@ -84,7 +84,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createProvisionedDeviceMultientity.json'
                     )

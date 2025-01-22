@@ -1,10 +1,10 @@
-- Upgrade body-parser dep from 1.20.0 to 1.20.3
-- Add: openmetrics-compatible `/metrics` endpoint in nortbound API (#1627)
-- Remove: push-based stats (including stats section in config file)
-- Fix: service header to use uppercase in case of update and delete (#1528)
-- Fix: Allow to send to CB batch update for multimeasures for NGSI-LD (#1623)
-- Add: new JEXL transformations for including into an array keys that have a certain value: valuePicker and valuePickerMulti
-- Add: attribute metadata and static attributes metadata added to jexl context (#1630)
-- Add /iot/groups API endpoints (as equivalent to /iot/services) (#752)
-- Deprecated: /iot/services API routes
 - Add: extend handleNotificationNgsi2 to allow receive commands from CB notifications (#1455)
+- Fix: set polling and transport for autoprovisioned devices
+- Add: option to force to use CB flow control with new API field useCBflowControl at group and device device level  (#1420)
+- Add: useCBflowControl config setting (IOTA_CB_FLOW_CONTROL env var) to set CB flow control behaviour at instance level (#1420)
+- Add: allow remove last measure in device
+- Add: store last measure in device (by id, apikey, service and subservice) and new API field storeLastMeasure at group and device levels (#1669)
+- Add: storeLastMeasure config setting  (IOTA_STORE_LAST_MEASURE env var) to set default store last measure behaviour at instance level (#1669)
+- Upgrade express dep from 4.19.2 to 4.21.2
+- Upgrade mongodb devdep from 4.17.1 to 4.17.2
+- Upgrade mongoose dep from 5.13.20 to 8.9.5 (solving vulnerabilies CVE-2024-53900 and CVE-2025-23061) (#1674)
