@@ -204,9 +204,9 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     let cbMockRoute = '';
     // Set the correct route depending if the test is multientity or not
     if (type === 'multientity' || type === 'multimeasure') {
-        cbMockRoute = '/v2/op/update';
+        cbMockRoute = '/v2/op/update?options=flowControl';
     } else {
-        cbMockRoute = '/v2/entities?options=upsert';
+        cbMockRoute = '/v2/entities?options=upsert,flowControl';
     }
 
     // Set the correct mock times depending if the test is multimeasure or not
