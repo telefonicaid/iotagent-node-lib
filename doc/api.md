@@ -623,7 +623,7 @@ expression. In all cases the following data is available to all expressions:
 -   `service`: device service (`Fiware-Service`)
 -   `subservice`: device subservice (`Fiware-ServicePath`)
 -   `staticAttributes`: static attributes defined in the device or config group
--   `oldCtxt`: previous jexl context (related to last processed measure)
+-   `oldCtxt`: previous JEXL context (related to last processed measure)
 
 Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
 (`expression`) the following is available in the **context** used to evalute:
