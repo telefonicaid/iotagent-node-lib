@@ -1,3 +1,4 @@
+- Add: store (and recover) previous jexlctxt and make available in current jexlctxt (#1690)
 - Fix: set polling and transport for autoprovisioned devices
 - Add: option to force to use CB flow control with new API field useCBflowControl at group and device device level  (#1420)
 - Add: useCBflowControl config setting (IOTA_CB_FLOW_CONTROL env var) to set CB flow control behaviour at instance level (#1420)
