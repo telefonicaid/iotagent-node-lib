@@ -579,8 +579,8 @@ Case 5:
 
 depending on the JEXL expression evaluation:
 
--   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
--   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
+-   If it evaluates to `false` every measure will be propagated to NGSI interface (as in case 1)
+-   If it evaluates to `true` just measures defined in active, static (plus conditionally TimeInstant) will be
     propagated to NGSI interface (as in case 2)
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
