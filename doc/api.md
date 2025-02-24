@@ -165,7 +165,7 @@ parameters defined at device level in database, the parameters are inherit from 
 
 ### Uniqueness of groups and devices
 
-Group uniqueness is defined by the combination of: resource and apikey.
+Group uniqueness is defined by the combination of: resource and apikey. This is so because given a measure (identified by an apikey) there is no way to identify group related if apikey is not unique for all services and subservices.
 
 Device uniqueness is defined by the combination of: service, subservice, device_id and apikey. Note that several devices
 with the same device_id are allowed in the same service and subservice as long as their apikeys are different.
@@ -579,8 +579,8 @@ Case 5:
 
 depending on the JEXL expression evaluation:
 
--   If it evaluates to `true` every measure will be propagated to NGSI interface (as in case 1)
--   If it evaluates to `false` just measures defined in active, static (plus conditionally TimeInstant) will be
+-   If it evaluates to `false` every measure will be propagated to NGSI interface (as in case 1)
+-   If it evaluates to `true` just measures defined in active, static (plus conditionally TimeInstant) will be
     propagated to NGSI interface (as in case 2)
 -   If it evaluates to an array just measures defined in the array (identified by their attribute names, not by their
     object_id) will be will be propagated to NGSI interface (as in case 3)
@@ -623,6 +623,7 @@ expression. In all cases the following data is available to all expressions:
 -   `service`: device service (`Fiware-Service`)
 -   `subservice`: device subservice (`Fiware-ServicePath`)
 -   `staticAttributes`: static attributes defined in the device or config group
+-   `oldCtxt`: previous JEXL context (related to last processed measure)
 
 Additionally, for attribute expressions (`expression`, `entity_name`), `entityNameExp` and metadata expressions
 (`expression`) the following is available in the **context** used to evalute:
@@ -1998,10 +1999,11 @@ the API resource fields and the same fields in the database model.
 | `internal_attributes` | ✓        | `array`   |            | List of internal attributes with free format for specific IoT Agent configuration.                                                                                                                                                                                                                                                                                                                                         |
 | `explicitAttrs`       | ✓        | `boolean` | ✓          | Field to support selective ignore of measures so that IOTA doesn’t progress. See details in [specific section](#explicitly-defined-attributes-explicitattrs)                                                                                                                                                                                                                                                               |
 | `ngsiVersion`         | ✓        | `string`  |            | string value used in mixed mode to switch between **NGSI-v2** and **NGSI-LD** payloads. The default is `v2`. When not running in mixed mode, this field is ignored.                                                                                                                                                                                                                                                        |
-| `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                          |
-| `storeLastMeasure`    | ✓        | `boolean` |            | Store in device last measure received. See more info [in this section](admin.md#storelastmeasure). False by default.                                                                                                    |
-| `lastMeasure`         | ✓        | `object` |             | last measure stored on device when `storeLastMeasure` is enabled. See more info [in this section](admin.md#storelastmeasure). This field can be cleared using `{}` in a device update request. In that case, `lastMeasure` is removed from device (until a next measure is received and `lastMesuare` gets created again).                                                                            |
-| `useCBflowControl`    | ✓        | `boolean` |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default.                                                                                                          |
+| `payloadType`         | ✓        | `string`  |            | optional string value used to switch between **IoTAgent**, **NGSI-v2** and **NGSI-LD** measure payloads types. Possible values are: `iotagent`, `ngsiv2` or `ngsild`. The default is `iotagent`.                                                                                                                                                                                                                           |
+| `storeLastMeasure`    | ✓        | `boolean` |            | Store in device last measure received. Useful just for debugging purpose. See more info [in this section](admin.md#storelastmeasure). False by default.                                                                                                                                                                                                                                                                    |
+| `lastMeasure`         | ✓        | `object`  |            | last measure stored on device when `storeLastMeasure` is enabled. See more info [in this section](admin.md#storelastmeasure). This field can be cleared using `{}` in a device update request. In that case, `lastMeasure` is removed from device (until a next measure is received and `lastMesuare` gets created again).                                                                                                 |
+| `useCBflowControl`    | ✓        | `boolean` |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default.                                                                                                                                                                                                                                                                                                             |
+
 ### Device operations
 
 #### Retrieve devices /iot/devices `GET /iot/devices`
