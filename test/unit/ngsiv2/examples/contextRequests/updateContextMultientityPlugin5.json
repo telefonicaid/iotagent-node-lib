@@ -1,17 +1,7 @@
 {
   "actionType": "append",
   "entities": [
-    { "id": "ws6",
-      "type": "WeatherStation"
-    },
-    {
-      "id": "Higro2000",
-      "type": "Higrometer",
-      "pressure": {
-        "type": "Hgmm",
-        "value": "16"
-      }
-    },
+
     {
       "id": "Higro2002",
       "type": "Higrometer",
@@ -19,6 +9,14 @@
         "type": "Hgmm",
         "value": "17"
       }
-    }
+    },
+      {
+        "id": "Higro2000",
+        "type": "Higrometer",
+        "pressure": {
+          "type": "Hgmm",
+          "value": "16"
+        }
+      }
   ]
 }

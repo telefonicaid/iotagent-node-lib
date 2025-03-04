@@ -33,7 +33,6 @@ const nock = require('nock');
 const timekeeper = require('timekeeper');
 let contextBrokerMock;
 const iotAgentConfig = {
-    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -62,7 +61,8 @@ const iotAgentConfig = {
                 {
                     object_id: 'a',
                     name: 'alive',
-                    type: 'None'
+                    type: 'None',
+                    skipValue: 'null passes'
                 },
                 {
                     object_id: 'u',
@@ -96,7 +96,8 @@ const iotAgentConfig = {
                     object_id: 'p',
                     name: 'pressure',
                     type: 'Number',
-                    expression: 'pressure * / 20'
+                    expression: 'pressure * / 20',
+                    skipValue: 'null passes'
                 }
             ]
         },
@@ -138,6 +139,20 @@ const iotAgentConfig = {
                     name: 'updated',
                     type: 'Boolean',
                     expression: 'updated * 20'
+                }
+            ]
+        },
+        WeatherStationWithIdNumber: {
+            commands: [],
+            type: 'WeatherStation',
+            entityNameExp: 'id',
+            lazy: [],
+            active: [
+                {
+                    object_id: 'p',
+                    name: 'pressure',
+                    type: 'Number',
+                    expression: 'pressure * 20'
                 }
             ]
         },
@@ -271,7 +286,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -295,7 +310,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -319,7 +334,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -343,11 +358,11 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'string',
-                    value: '52'
+                    value: 52
                 }
             ],
             active: [
@@ -362,13 +377,13 @@ const iotAgentConfig = {
                     expression: "{coordinates: [lon,lat], type: 'Point'}"
                 }
             ],
-            explicitAttrs: "theLocation ? [{object_id: 'theLocation'}] : []"
+            explicitAttrs: "mylocation ? [{object_id: 'theLocation'}] : []"
         },
         GPS6: {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'lat',
                     type: 'Number',
@@ -393,7 +408,7 @@ const iotAgentConfig = {
             commands: [],
             type: 'GPS',
             lazy: [],
-            static: [
+            staticAttributes: [
                 {
                     name: 'color',
                     type: 'string',
@@ -440,6 +455,273 @@ const iotAgentConfig = {
                     object_id: 'condition',
                     name: 'condition',
                     type: 'Number'
+                },
+                {
+                    object_id: 'nonProgressAtt1',
+                    name: 'nonProgressatt1',
+                    type: 'Number',
+                    expression: 'nonexistent * 2'
+                },
+                {
+                    object_id: 'nonProgressAtt2',
+                    name: 'nonProgressatt2',
+                    type: 'Number',
+                    expression: 'nonexistent * 2',
+                    skipValue: null
+                }
+            ]
+        },
+        nestedExpressionsObj: {
+            commands: [],
+            type: 'nestedExpressionsObj',
+            lazy: [],
+            active: [
+                {
+                    name: 'value3',
+                    object_id: 'v3',
+                    type: 'Number',
+                    expression: 'v*2'
+                },
+                {
+                    name: 'value2',
+                    object_id: 'v2',
+                    type: 'Number',
+                    expression: 'v3*2'
+                },
+                {
+                    name: 'value1',
+                    object_id: 'v1',
+                    type: 'Number',
+                    expression: 'v2*2'
+                }
+            ]
+        },
+        nestedExpressionsName: {
+            commands: [],
+            type: 'nestedExpressionsName',
+            lazy: [],
+            active: [
+                {
+                    name: 'prefix',
+                    object_id: 't1',
+                    type: 'text',
+                    expression: '"pre_"+t'
+                },
+                {
+                    name: 'postfix',
+                    object_id: 't2',
+                    type: 'text',
+                    expression: 'prefix+"_post"'
+                }
+            ]
+        },
+        nestedExpressionsSkip: {
+            commands: [],
+            type: 'nestedExpressionsSkip',
+            lazy: [],
+            active: [
+                {
+                    name: 'prefix',
+                    object_id: 't1',
+                    type: 'text',
+                    expression: '"pre_"+t'
+                },
+                {
+                    name: 'postfix',
+                    object_id: 't2',
+                    type: 'text',
+                    expression: 'prefix+"_post"'
+                },
+                {
+                    name: 't',
+                    object_id: 't',
+                    type: 'text',
+                    expression: 'null'
+                }
+            ]
+        },
+        nestedExpressionDirect: {
+            commands: [],
+            type: 'nestedExpressionsDirect',
+            lazy: [],
+            active: [
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                },
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                }
+            ]
+        },
+        nestedExpressionReverse: {
+            commands: [],
+            type: 'nestedExpressionsReverse',
+            lazy: [],
+            active: [
+                {
+                    name: 'normalizedLevel',
+                    type: 'Number',
+                    expression: 'correctedLevel / 100'
+                },
+                {
+                    name: 'correctedLevel',
+                    type: 'Number',
+                    expression: 'level * 0.897'
+                }
+            ]
+        },
+        nestedExpressionsAnti: {
+            commands: [],
+            type: 'nestedExpressionsAnti',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'b*10'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'a*10'
+                }
+            ]
+        },
+        testNull: {
+            commands: [],
+            type: 'testNull',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'"
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined'
+                }
+            ]
+        },
+        testNullSkip: {
+            commands: [],
+            type: 'testNullSkip',
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null',
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'",
+                    skipValue: 'avoidNull'
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined',
+                    skipValue: 'avoidNull'
+                }
+            ]
+        },
+        testNullExplicit: {
+            type: 'testNullExplicit',
+            explicitAttrs: true,
+            commands: [],
+            lazy: [],
+            active: [
+                {
+                    name: 'a',
+                    type: 'Number',
+                    expression: 'v'
+                },
+                {
+                    name: 'b',
+                    type: 'Number',
+                    expression: 'v*3'
+                },
+                {
+                    name: 'c',
+                    type: 'Boolean',
+                    expression: 'v==null'
+                },
+                {
+                    name: 'd',
+                    type: 'Text',
+                    expression: "v?'no soy null':'soy null'"
+                },
+                {
+                    name: 'e',
+                    type: 'Text',
+                    expression: "v==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'f',
+                    type: 'Text',
+                    expression: "(v*3)==null?'soy null':'no soy null'"
+                },
+                {
+                    name: 'g',
+                    type: 'Boolean',
+                    expression: 'v == undefined'
                 }
             ]
         }
@@ -448,11 +730,10 @@ const iotAgentConfig = {
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S'
+    useCBflowControl: true
 };
 
 const iotAgentConfigTS = {
-    logLevel: 'FATAL',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -531,7 +812,8 @@ const iotAgentConfigTS = {
     timestamp: true,
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('Java expression language (JEXL) based transformations plugin', function () {
@@ -568,7 +850,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin30.json'
                     )
@@ -578,6 +860,298 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         it('should ignore the expression and send the values', function (done) {
             iotAgentLib.update('light1', 'LightError', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with null values', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'testNull1',
+                    type: 'testNull',
+                    v: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNull1', 'testNull', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions without values (NaN)', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'z',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'testNull2',
+                    type: 'testNull',
+                    z: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNull2', 'testNull', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with null values - Skip values disabled', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'testNullSkip1',
+                    type: 'testNullSkip',
+                    v: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    a: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullSkip1', 'testNullSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions without values (NaN) - Skip values disabled', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'z',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'testNullSkip2',
+                    type: 'testNullSkip',
+                    z: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    a: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: null,
+                        type: 'Number'
+                    },
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullSkip2', 'testNullSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When applying expressions with not explicit measures - explicitAttrs = true', function () {
+        // Case: Update for an attribute with bad expression
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: null
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'testNullExplicit1',
+                    type: 'testNullExplicit',
+                    c: {
+                        value: true,
+                        type: 'Boolean'
+                    },
+                    d: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    e: {
+                        value: 'soy null',
+                        type: 'Text'
+                    },
+                    f: {
+                        value: 'no soy null',
+                        type: 'Text'
+                    },
+                    g: {
+                        value: true,
+                        type: 'Boolean'
+                    }
+                })
+                .reply(204);
+        });
+
+        it('it should be handled properly', function (done) {
+            iotAgentLib.update('testNullExplicit1', 'testNullExplicit', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -602,12 +1176,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin2.json'
                     )
@@ -647,7 +1220,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin4.json'
                     )
@@ -681,7 +1254,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin11.json'
                     )
@@ -715,7 +1288,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin1.json'
                     )
@@ -750,7 +1323,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin3.json'
                     )
@@ -785,7 +1358,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin8.json'
                     )
@@ -815,12 +1388,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin5.json'
                     )
@@ -855,7 +1427,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin9.json'
                     )
@@ -889,7 +1461,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin6.json'
                     )
@@ -924,7 +1496,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin7.json'
                     )
@@ -952,23 +1524,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', 'gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin12.json'
-                    )
-                )
-                .reply(204);
         });
 
         it('should apply the expression before sending the values', function (done) {
             iotAgentLib.update('light1', 'Light', '', values, function (error) {
                 should.not.exist(error);
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -990,7 +1550,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
@@ -1028,7 +1588,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin13.json'
                     )
@@ -1061,7 +1621,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29.json'
                     )
@@ -1077,6 +1637,48 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             });
         });
     });
+
+    describe('When a measure arrives with id number', function () {
+        const values = [
+            {
+                name: 'p',
+                type: 'centigrades',
+                value: '52'
+            }
+        ];
+        const typeInformation = {
+            service: 'smartgondor',
+            subservice: 'gardens',
+            name: '1234',
+            id: '1234',
+            type: 'WeatherStation',
+            active: [{ object_id: 'p', name: 'pressure', type: 'Number', expression: 'pressure * 20' }]
+        };
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert,flowControl',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin29b.json'
+                    )
+                )
+                .reply(204);
+        });
+
+        it('should calculate the expression', function (done) {
+            iotAgentLib.update(1234, 'WeatherStationWithIdNumber', '', values, typeInformation, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
     describe('When a measure arrives and there is not enough information to calculate an expression', function () {
         const values = [
             {
@@ -1093,7 +1695,7 @@ describe('Java expression language (JEXL) based transformations plugin', functio
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin31.json'
                     )
@@ -1132,12 +1734,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin32.json'
                     )
@@ -1176,12 +1777,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin35.json'
                     )
@@ -1225,12 +1825,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin41.json'
                     )
@@ -1269,14 +1868,13 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
                 )
                 .reply(204);
@@ -1313,14 +1911,13 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34b.json'
                     )
                 )
                 .reply(204);
@@ -1362,12 +1959,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
                     )
@@ -1401,14 +1997,13 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36.json'
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin36b.json'
                     )
                 )
                 .reply(204);
@@ -1435,12 +2030,11 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin34.json'
                     )
@@ -1484,6 +2078,16 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert,flowControl',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin37.json'
+                    )
+                )
+                .reply(204);
         });
 
         it('should calculate them and remove non-explicitAttrs by jexl expression with context from the payload ', function (done) {
@@ -1521,16 +2125,57 @@ describe('Java expression language (JEXL) based transformations plugin', functio
 
         beforeEach(function () {
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionSkip.json'
                     )
                 )
+                .reply(204);
+        });
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should not propagate skipped values', function (done) {
+            iotAgentLib.update('skip1', 'skipvalue', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions by pointing to previous objetc_ids in a device ', function () {
+        const values = [
+            {
+                name: 'v',
+                type: 'Number',
+                value: 5
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nested1',
+                    type: 'nestedExpressionsObj',
+                    v: {
+                        value: 5,
+                        type: 'Number'
+                    },
+                    value3: {
+                        value: 10,
+                        type: 'Number'
+                    }
+                })
                 .reply(204);
         });
 
@@ -1538,8 +2183,236 @@ describe('Java expression language (JEXL) based transformations plugin', functio
             done();
         });
 
-        it('should not propagate skipped values', function (done) {
-            iotAgentLib.update('skip1', 'skipvalue', '', values, function (error) {
+        it('should not calculate values using nested object_ids', function (done) {
+            iotAgentLib.update('nested1', 'nestedExpressionsObj', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions by pointing to previous attributes names in a device ', function () {
+        const values = [
+            {
+                name: 't',
+                type: 'Text',
+                value: 'nestedText'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nested2',
+                    type: 'nestedExpressionsName',
+                    t: {
+                        value: 'nestedText',
+                        type: 'Text'
+                    },
+                    prefix: {
+                        value: 'pre_nestedText',
+                        type: 'text'
+                    },
+                    postfix: {
+                        value: 'pre_nestedText_post',
+                        type: 'text'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names', function (done) {
+            iotAgentLib.update('nested2', 'nestedExpressionsName', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions by pointing to previous attributes names and skipValue ', function () {
+        const values = [
+            {
+                name: 't',
+                type: 'Text',
+                value: 'nestedText'
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nested3',
+                    type: 'nestedExpressionsSkip',
+                    prefix: {
+                        value: 'pre_nestedText',
+                        type: 'text'
+                    },
+                    postfix: {
+                        value: 'pre_nestedText_post',
+                        type: 'text'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nested3', 'nestedExpressionsSkip', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Direct case', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nestedDirect',
+                    type: 'nestedExpressionsDirect',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    },
+                    normalizedLevel: {
+                        value: 0.897,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedDirect', 'nestedExpressionDirect', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Reverse case - Antipattern', function () {
+        const values = [
+            {
+                name: 'level',
+                type: 'Number',
+                value: 100
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nestedReverse',
+                    type: 'nestedExpressionsReverse',
+                    level: {
+                        value: 100,
+                        type: 'Number'
+                    },
+                    correctedLevel: {
+                        value: 89.7,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedReverse', 'nestedExpressionReverse', '', values, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When using nested expressions - Antipattern', function () {
+        const values = [
+            {
+                name: 'a',
+                type: 'Number',
+                value: 10
+            },
+            {
+                name: 'b',
+                type: 'Number',
+                value: 20
+            }
+        ];
+
+        beforeEach(function () {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post('/v2/entities?options=upsert,flowControl', {
+                    id: 'nestedAnti',
+                    type: 'nestedExpressionsAnti',
+                    a: {
+                        value: 200,
+                        type: 'Number'
+                    },
+                    b: {
+                        value: 2000,
+                        type: 'Number'
+                    }
+                })
+                .reply(204);
+        });
+
+        afterEach(function (done) {
+            done();
+        });
+
+        it('should calculate values using nested attributes names and skip measures', function (done) {
+            iotAgentLib.update('nestedAnti', 'nestedExpressionsAnti', '', values, function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -1595,7 +2468,7 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin33.json'
                     )
@@ -1632,12 +2505,11 @@ describe('Java expression language (JEXL) based transformations plugin - Timesta
 
             timekeeper.freeze(time);
             nock.cleanAll();
-
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/op/update',
+                    '/v2/op/update?options=flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/updateContextExpressionPlugin40.json'
                     )

@@ -11,8 +11,8 @@ Broker using their own native protocols. IoT Agents should also be able to deal 
 platform (authentication and authorization of the channel) and provide other common services to the device programmer.
 
 Github's [README.md](https://github.com/telefonicaid/iotagent-node-lib/blob/master/README.md) provides a good
-documentation summary. The [User Manual](usermanual.md) and the [Admin Guide](installationguide.md) cover more advanced
-topics.
+documentation summary. The [API reference](api.md) and the [Development documentation](devel/development.md) cover
+more advanced topics.
 
 ## Background
 
@@ -26,8 +26,6 @@ functions.
     communications are left to the library.
 -   Standardized OAuth2-based security is available to enable each IoT Agent to connect to several common Identity
     Managers (e.g. Keystone and Keyrock) so that communications can be restricted to trusted components.
--   A series of additional plugins are offered where necessary to allow for expression parsing, attribute aliasing and
-    the processing of timestamp metadata.
 
 Each individual IoT Agent offers is driven by a `config.js` configuration file contains explicit custom settings based
 on the protocol and payload the IoT Agent is translating. It will also contain some common flags for common
@@ -51,5 +49,5 @@ IoT Agent
 In order to use the library within your own IoT Agent, you must first you require it before use:
 
 ```javascript
-const iotagentLib = require("iotagent-node-lib");
+const iotagentLib = require('iotagent-node-lib');
 ```

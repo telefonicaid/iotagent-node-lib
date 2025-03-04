@@ -49,7 +49,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    explicitAttrs: false
+    explicitAttrs: false,
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
@@ -74,7 +75,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.clearAll(done);
@@ -311,7 +312,6 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             nock.cleanAll();
             done();
         });
-
         it('should send the appropriate requests to the Context Broker', function (done) {
             request(options, function (error, response, body) {
                 contextBrokerMock.done();
@@ -367,11 +367,10 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     done();
                 });
             });
-            it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            it('should store the device without explicitAttrs', function (done) {
                 request(options, function (error, response, body) {
                     iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
-                        should.exist(results.devices[0].explicitAttrs);
-                        results.devices[0].explicitAttrs.should.equal(false);
+                        should.not.exist(results.devices[0].explicitAttrs);
                         done();
                     });
                 });
@@ -421,7 +420,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                         )
@@ -431,12 +430,11 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 done();
             });
 
-            it('should store the device with explicitAttrs value provided in configuration', function (done) {
+            it('should store the device without explicitAttrs value', function (done) {
                 request(groupCreation, function (error, response, body) {
                     request(options, function (error, response, body) {
                         iotAgentLib.listDevices('smartgondor', '/gardens', function (error, results) {
-                            should.exist(results.devices[0].explicitAttrs);
-                            results.devices[0].explicitAttrs.should.equal(true);
+                            should.not.exist(results.devices[0].explicitAttrs);
                             done();
                         });
                     });
@@ -494,7 +492,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice.json'
@@ -560,7 +558,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice.json'
@@ -634,7 +632,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice2.json'
@@ -703,7 +701,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice4.json'
                     )
@@ -775,7 +773,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', '/gardens')
                     .post(
-                        '/v2/entities?options=upsert',
+                        '/v2/entities?options=upsert,flowControl',
                         utils.readExampleFile(
                             './test/unit/ngsiv2/examples/' +
                                 'contextRequests/createStaticAttributesProvisionDevice3.json'
@@ -813,31 +811,19 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             iotAgentLib.deactivate(function () {
-                iotAgentConfig.appendMode = false;
                 iotAgentLib.activate(iotAgentConfig, done);
             });
         });
 
-        afterEach(function () {
-            iotAgentConfig.appendMode = false;
-        });
+        afterEach(function () {});
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/createAutoprovisionDevice.json')
-                )
-                .reply(204);
             done();
         });
 
-        it('should send the appropriate requests to the Context Broker', function (done) {
+        it('should should not appropriate requests to the Context Broker', function (done) {
             request(options, function (error, response, body) {
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -867,36 +853,11 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert', function (body) {
-                    const expectedBody = utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createTimeInstantMinimumDevice.json'
-                    );
-                    if (!body.TimeInstant.value) {
-                        return false;
-                    } else if (moment(body.TimeInstant.value, 'YYYY-MM-DDTHH:mm:ss.SSSZ').isValid()) {
-                        const timeInstantDiff = moment().diff(body.TimeInstant.value, 'milliseconds');
-                        if (timeInstantDiff < 500) {
-                            delete body.TimeInstant;
-
-                            return JSON.stringify(body) === JSON.stringify(expectedBody);
-                        }
-
-                        return false;
-                    } else {
-                        return false;
-                    }
-                })
-                .reply(204);
-
             done();
         });
 
-        it('should send the appropriate requests to the Context Broker', function (done) {
+        it('should not send any requests to the Context Broker', function (done) {
             request(options, function (error, response, body) {
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -915,23 +876,11 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
 
-        it('should send the appropriate requests to the Context Broker', function (done) {
+        it('should not send any requests to the Context Broker', function (done) {
             request(options, function (error, response, body) {
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -974,23 +923,10 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createGeopointProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
-
-        it('should send the appropriate initial values to the Context Broker', function (done) {
+        it('should not send any initial values to the Context Broker', function (done) {
             request(options, function (error, response, body) {
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -1009,23 +945,10 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
         beforeEach(function (done) {
             nock.cleanAll();
-            contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post(
-                    '/v2/entities?options=upsert',
-                    utils.readExampleFile(
-                        './test/unit/ngsiv2/examples/contextRequests/createDatetimeProvisionedDevice.json'
-                    )
-                )
-                .reply(204);
-
             done();
         });
-
-        it('should send the appropriate initial values to the Context Broker', function (done) {
+        it('should not send any initial values to the Context Broker', function (done) {
             request(options, function (error, response, body) {
-                contextBrokerMock.done();
                 done();
             });
         });
@@ -1055,7 +978,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                     )
@@ -1064,7 +987,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
 
             contextBrokerMock
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile(
                         './test/unit/ngsiv2/examples/contextRequests/createMinimumProvisionedDevice.json'
                     )
@@ -1122,23 +1045,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
-                .replyWithError({ message: 'Description of the error', code: 'STRING_CODE' });
-
             done();
         });
 
         it('should return a valid return code', function (done) {
             request(options, function (error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(500);
+                response.statusCode.should.equal(201);
 
                 done();
             });
@@ -1165,22 +1078,13 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
                 .post('/v2/registrations')
                 .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
-            // This mock does not check the payload since the aim of the test is not to verify
-            // device provisioning functionality. Appropriate verification is done in tests under
-            // provisioning folder
-            contextBrokerMock
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
-                .replyWithError({ message: 'Description of the error', code: 123456789 });
-
             done();
         });
 
         it('should return a valid return code (three character number)', function (done) {
             request(options, function (error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(500);
+                response.statusCode.should.equal(201);
 
                 done();
             });
@@ -1234,7 +1138,7 @@ describe('NGSI-v2 - Device provisioning API: Provision devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             done();

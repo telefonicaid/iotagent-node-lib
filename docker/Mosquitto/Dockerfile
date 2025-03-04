@@ -1,4 +1,4 @@
-ARG  IMAGE_TAG=12.1-slim
+ARG  IMAGE_TAG=12.9-slim
 FROM debian:${IMAGE_TAG}
 
 ARG CLEAN_DEV_TOOLS
@@ -16,7 +16,7 @@ RUN \
     # Install dependencies
     apt-get -y install \
        wget \
-       mosquitto && \
+       mosquitto mosquitto-clients && \
     cp /etc/mosquitto/mosquitto.conf /etc/mosquitto/mosquitto.conf.orig && \
     chmod 755 /bin/startMosquitto.sh && \
     mkdir -p /var/log/mosquitto && \

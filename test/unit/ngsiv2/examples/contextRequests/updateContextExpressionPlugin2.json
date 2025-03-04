@@ -12,17 +12,5 @@
   "weather":{
     "type": "Summary",
     "value": "Humidity 6 and pressure 1040"    
-  },
-  "consumption":{
-      "type":"Number",
-      "value":null
-  },
-  "alive":{
-      "type":"None",
-      "value":null
-  },
-  "updated":{
-      "type":"Boolean",
-      "value":null
   }
 }

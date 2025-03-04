@@ -387,7 +387,7 @@ describe('NGSI-v2 - MongoDB Device Registry', function () {
         });
 
         it('should be removed from MongoDB', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, null, 'smartgondor', 'gardens', function (error) {
                 iotAgentDb
                     .db()
                     .collection('devices')

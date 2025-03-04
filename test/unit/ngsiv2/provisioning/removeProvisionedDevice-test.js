@@ -48,7 +48,8 @@ const iotAgentConfig = {
     types: {},
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', function () {
@@ -97,7 +98,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             const nockBody2 = utils.readExampleFile(
@@ -115,7 +116,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -130,7 +131,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -161,7 +162,7 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             method: 'DELETE'
         };
 
-        it('should return a 200 OK and no errors', function (done) {
+        it('should return a 204 OK and no errors', function (done) {
             request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
@@ -231,7 +232,42 @@ describe('NGSI-v2 - Device provisioning API: Remove provisioned devices', functi
             method: 'DELETE'
         };
 
-        it('should return a 200 OK and no errors', function (done) {
+        it('should return a 204 OK and no errors', function (done) {
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
+                done();
+            });
+        });
+    });
+
+    describe('When a request to remove a provision devices arrives', function () {
+        const options = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/op/delete',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            method: 'POST',
+            json: {
+                devices: [
+                    {
+                        deviceId: 'Light1',
+                        apikey: ''
+                    },
+                    {
+                        deviceId: 'Light2',
+                        apikey: ''
+                    },
+                    {
+                        deviceId: 'Light3',
+                        apikey: ''
+                    }
+                ]
+            }
+        };
+
+        it('should return a 204 OK and no errors', function (done) {
             request(options, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);

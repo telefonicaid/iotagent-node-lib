@@ -48,7 +48,8 @@ const iotAgentConfig = {
     types: {},
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Device provisioning API: Update provisioned devices', function () {
@@ -107,7 +108,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             const nockBody2 = utils.readExampleFile(
@@ -126,7 +127,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             // FIXME: When https://github.com/telefonicaid/fiware-orion/issues/3007 is merged into master branch,
@@ -181,7 +182,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateProvisionDevice.json')
                 )
                 .reply(204);
@@ -240,7 +241,6 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
 
                 request(options, function (error, response, body) {
                     /* jshint camelcase:false */
-
                     body.entity_name.should.equal('ANewLightName');
                     body.timezone.should.equal('Europe/Madrid');
                     done();
@@ -286,6 +286,41 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             request(optionsUpdate, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
+                done();
+            });
+        });
+    });
+    describe('When an update request arrives with a new Apikey', function () {
+        const optionsUpdate = {
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/devices/Light1',
+            method: 'PUT',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': '/gardens'
+            },
+            json: utils.readExampleFile(
+                './test/unit/examples/deviceProvisioningRequests/updateProvisionDeviceWithApikey.json'
+            )
+        };
+
+        beforeEach(function () {
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .delete('/v2/registrations/6319a7f5254b05844116584d', '')
+                .reply(204);
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/registrations')
+                .reply(201, null, { Location: '/v2/registrations/4419a7f5254b058441165849' });
+        });
+
+        it('should raise a 204 error', function (done) {
+            request(optionsUpdate, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
                 done();
             });
         });
@@ -340,7 +375,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -408,7 +443,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             contextBrokerMock
@@ -470,7 +505,7 @@ describe('NGSI-v2 - Device provisioning API: Update provisioned devices', functi
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([iotAgentLib.clearAll, async.apply(request, provisioning4Options)], done);

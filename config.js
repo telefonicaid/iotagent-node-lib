@@ -76,7 +76,10 @@ var config = {
     subservice: '/gardens',
     providerUrl: 'http://192.168.56.1:4041',
     deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing'
+    defaultType: 'Thing',
+    expressLimit: '1Mb',
+    useCBflowControl: false,
+    storeLastMeasure: false
 };
 
 module.exports = config;

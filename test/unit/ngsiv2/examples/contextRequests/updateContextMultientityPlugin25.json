@@ -12,10 +12,10 @@
           "type": "number",
           "value": 13
       },
-      "nonexpectedAtt": {
-          "type": "number",
-          "value": null
-      }        
+      "alsoexpectedAtt": {
+          "value": null,
+          "type": "number"
+      }
     },
     {
       "explicit": {

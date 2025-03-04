@@ -76,19 +76,22 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const device1 = {
     id: 'light1',
     type: 'Light',
     service: 'smartgondor',
-    subservice: 'gardens'
+    subservice: 'gardens',
+    apikey: null
 };
 const device2 = {
     id: 'term2',
     type: 'Termometer',
     service: 'smartgondor',
-    subservice: 'gardens'
+    subservice: 'gardens',
+    apikey: null
 };
 
 describe('NGSI-v2 - IoT Agent Device Registration', function () {
@@ -213,7 +216,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
@@ -223,7 +226,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
 
         it("should return all the device's information", function (done) {
             iotAgentLib.register(device1, function (error) {
-                iotAgentLib.getDevice('light1', 'smartgondor', 'gardens', function (error, data) {
+                iotAgentLib.getDevice('light1', null, 'smartgondor', 'gardens', function (error, data) {
                     should.not.exist(error);
                     should.exist(data);
                     data.type.should.equal('Light');
@@ -254,7 +257,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
 
         it('should return a ENTITY_NOT_FOUND error', function (done) {
             iotAgentLib.register(device1, function (error) {
-                iotAgentLib.getDevice('lightUnexistent', 'smartgondor', 'gardens', function (error, data) {
+                iotAgentLib.getDevice('lightUnexistent', null, 'smartgondor', 'gardens', function (error, data) {
                     should.exist(error);
                     should.not.exist(data);
                     error.code.should.equal(404);
@@ -301,7 +304,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
         });
 
         it('should update the devices information in Context Broker', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, null, 'smartgondor', 'gardens', function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
@@ -319,7 +322,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
@@ -328,7 +331,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d', '').reply(500);
 
@@ -346,7 +349,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
 
         it('should not remove the device from the internal registry');
         it('should return a UNREGISTRATION_ERROR error to the caller', function (done) {
-            iotAgentLib.unregister(device1.id, 'smartgondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device1.id, null, 'smartgondor', 'gardens', function (error) {
                 should.exist(error);
                 should.exist(error.name);
                 error.name.should.equal('UNREGISTRATION_ERROR');

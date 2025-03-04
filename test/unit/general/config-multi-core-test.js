@@ -54,8 +54,7 @@ const iotAgentConfig = {
         }
     },
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M',
-    throttling: 'PT5S'
+    deviceRegistrationDuration: 'P1M'
 };
 
 describe('Startup Multi-Core tests', function () {
