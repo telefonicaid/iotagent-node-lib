@@ -230,7 +230,7 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     if (transport === 'MQTT') {
         try {
             let client = await MQTT.connectAsync('mqtt://' + config.mqtt.host);
-            await client.publish('/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
+            await client.publish('/json/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
             await client.end();
         } catch (error) {
             expect.fail(ERR_MQTT + error);
