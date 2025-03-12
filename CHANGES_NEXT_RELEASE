@@ -1,1 +1,1 @@
-- Fix: modified JEXL transformations (toisostring, gettime, parseint, etc.) to return null instead of NaN when some unexpected situation occurs (#1702).
+- Fix: modified JEXL transformations (toisostring, gettime, parseint, etc.) to return null instead of NaN when some unexpected situation occurs (#1701)
