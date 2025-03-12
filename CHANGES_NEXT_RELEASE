@@ -1,0 +1,3 @@
+- Fix: Added try-catch error handling to functions like jsonparse, jsonstringify, toisodate, etc. (#1702).
+- Fix: Modified functions (toisostring, gettime, parseint, etc.) to return null instead of NaN (#1702).
+- Add: Added tests for error scenarios, including a specific test for expressionParser.parse() (#1702).
