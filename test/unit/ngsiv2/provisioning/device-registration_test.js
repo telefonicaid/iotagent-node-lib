@@ -76,7 +76,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const device1 = {
     id: 'light1',
@@ -215,7 +216,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, function (error) {
@@ -321,7 +322,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post('/v2/registrations')
@@ -330,7 +331,7 @@ describe('NGSI-v2 - IoT Agent Device Registration', function () {
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock.delete('/v2/registrations/6319a7f5254b05844116584d', '').reply(500);
 

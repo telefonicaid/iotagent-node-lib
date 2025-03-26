@@ -45,13 +45,12 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mongodb:
-        image: mongo:6.0
+        image: mongo:8.0
         ports:
         - 27017:27017
     strategy:
       matrix:
         node-version:
-          - 14.x
           - 16.x
           - 18.x
     steps:
@@ -72,7 +71,7 @@ jobs:
     needs: unit-test
     services:
       mongodb:
-        image: mongo:6.0
+        image: mongo:8.0
         ports:
         - 27017:27017
     steps:

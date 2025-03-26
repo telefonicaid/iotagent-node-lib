@@ -98,28 +98,61 @@ function sendMeasureIotaLib(measure, provision) {
  * @param {Object} json
  * @returns {Array} measures
  */
-function jsonToIotaMeasures(json) {
-    let measures = [];
-    for (let key in json) {
-        /* eslint-disable-next-line  no-prototype-builtins */
-        if (json.hasOwnProperty(key)) {
-            let measure = {
-                name: key,
-                value: json[key]
-            };
-            // A bit of Magic. If the key is TimeInstant, we set the type to DateTime.
-            // When sending the data through iot
-            if (key === 'TimeInstant') {
-                measure.type = 'DateTime';
-            } else {
-                // Although the type is not meaningfull and we could have picked any string for this,
-                // we have aligned with DEFAULT_ATTRIBUTE_TYPE constant in IOTA-JSON and IOTA-UL repositories
-                measure.type = 'Text';
+function jsonToIotaMeasures(originJson) {
+    // FIXME: maybe this could be refactored to use less code
+    if (originJson && originJson[0]) {
+        // multimeasure case
+        let finalMeasures = [];
+
+        for (let json of originJson) {
+            let measures = [];
+            for (let key in json) {
+                /* eslint-disable-next-line  no-prototype-builtins */
+                if (json.hasOwnProperty(key)) {
+                    let measure = {
+                        name: key,
+                        value: json[key]
+                    };
+                    // A bit of Magic. If the key is TimeInstant, we set the type to DateTime.
+                    // When sending the data through iot
+                    if (key === 'TimeInstant') {
+                        measure.type = 'DateTime';
+                    } else {
+                        // Although the type is not meaningfull and we could have picked any string for this,
+                        // we have aligned with DEFAULT_ATTRIBUTE_TYPE constant in IOTA-JSON and IOTA-UL repositories
+                        measure.type = 'Text';
+                    }
+                    measures.push(measure);
+                }
             }
-            measures.push(measure);
+            finalMeasures.push(measures);
         }
+        return finalMeasures;
+    } else {
+        let json = originJson;
+
+        let measures = [];
+        for (let key in json) {
+            /* eslint-disable-next-line  no-prototype-builtins */
+            if (json.hasOwnProperty(key)) {
+                let measure = {
+                    name: key,
+                    value: json[key]
+                };
+                // A bit of Magic. If the key is TimeInstant, we set the type to DateTime.
+                // When sending the data through iot
+                if (key === 'TimeInstant') {
+                    measure.type = 'DateTime';
+                } else {
+                    // Although the type is not meaningfull and we could have picked any string for this,
+                    // we have aligned with DEFAULT_ATTRIBUTE_TYPE constant in IOTA-JSON and IOTA-UL repositories
+                    measure.type = 'Text';
+                }
+                measures.push(measure);
+            }
+        }
+        return measures;
     }
-    return measures;
 }
 
 /**
@@ -170,10 +203,10 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     let receivedContext = [];
     let cbMockRoute = '';
     // Set the correct route depending if the test is multientity or not
-    if (type === 'multientity') {
-        cbMockRoute = '/v2/op/update';
+    if (type === 'multientity' || type === 'multimeasure') {
+        cbMockRoute = '/v2/op/update?options=flowControl';
     } else {
-        cbMockRoute = '/v2/entities?options=upsert';
+        cbMockRoute = '/v2/entities?options=upsert,flowControl';
     }
 
     // Set the correct mock times depending if the test is multimeasure or not
@@ -197,7 +230,7 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     if (transport === 'MQTT') {
         try {
             let client = await MQTT.connectAsync('mqtt://' + config.mqtt.host);
-            await client.publish('/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
+            await client.publish('/json/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
             await client.end();
         } catch (error) {
             expect.fail(ERR_MQTT + error);

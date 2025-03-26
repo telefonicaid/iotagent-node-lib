@@ -134,6 +134,43 @@ const optionsCreation = {
         'fiware-servicepath': 'theSubService'
     }
 };
+const configGroupCreation = {
+    url: 'http://localhost:4041/iot/groups',
+    method: 'POST',
+    json: {
+        groups: [
+            {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'SensorMachine',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://unexistentHost:1026',
+                commands: [
+                    {
+                        name: 'wheel1',
+                        type: 'Wheel'
+                    }
+                ],
+                lazy: [
+                    {
+                        name: 'luminescence',
+                        type: 'Lumens'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ]
+            }
+        ]
+    },
+    headers: {
+        'fiware-service': 'theservice',
+        'fiware-servicepath': 'theSubService'
+    }
+};
 const optionsCreationStatic = {
     url: 'http://localhost:4041/iot/services',
     method: 'POST',
@@ -172,8 +209,59 @@ const optionsCreationStatic = {
         'fiware-servicepath': 'theSubService'
     }
 };
+const configGroupCreationStatic = {
+    url: 'http://localhost:4041/iot/groups',
+    method: 'POST',
+    json: {
+        groups: [
+            {
+                resource: '/deviceTest',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'SensorMachine',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://unexistentHost:1026',
+                commands: [
+                    {
+                        name: 'wheel1',
+                        type: 'Wheel'
+                    }
+                ],
+                static_attributes: [
+                    {
+                        name: 'position',
+                        type: 'location',
+                        values: '123,12'
+                    }
+                ],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ]
+            }
+        ]
+    },
+    headers: {
+        'fiware-service': 'theservice',
+        'fiware-servicepath': 'theSubService'
+    }
+};
 const optionsDelete = {
     url: 'http://localhost:4041/iot/services',
+    method: 'DELETE',
+    json: {},
+    headers: {
+        'fiware-service': 'theservice',
+        'fiware-servicepath': 'theSubService'
+    },
+    qs: {
+        resource: '/deviceTest',
+        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732'
+    }
+};
+const configGroupDelete = {
+    url: 'http://localhost:4041/iot/groups',
     method: 'DELETE',
     json: {},
     headers: {
@@ -263,6 +351,7 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new service is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -298,6 +387,42 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
+    describe('When a new configGroup is created in the IoT Agent', function () {
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post(
+                    '/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                done();
+            });
+        });
+
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function (done) {
+            request(configGroupCreation, function (error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a service is removed from the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -333,6 +458,42 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
         });
     });
 
+    describe('When a configGroup is removed from the IoT Agent', function () {
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post(
+                    '/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithGroups.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            groupRegistryMemory.create(groupCreation, function () {
+                iotAgentLib.activate(iotAgentConfig, done);
+            });
+        });
+
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function (done) {
+            request(configGroupDelete, function (error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When a new service with static attributes is created in the IoT Agent', function () {
         beforeEach(function (done) {
             nock.cleanAll();
@@ -361,6 +522,40 @@ describe('NGSI-v2 - IoT Manager autoregistration', function () {
 
         it('should update the registration in the IoT Manager', function (done) {
             request(optionsCreationStatic, function (error, result, body) {
+                should.not.exist(error);
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+    describe('When a new configGroup with static attributes is created in the IoT Agent', function () {
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            iotamMock = nock('http://mockediotam.com:9876')
+                .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotamMock
+                .post(
+                    '/protocols',
+                    utils.readExampleFile('./test/unit/examples/iotamRequests/registrationWithStaticGroups.json')
+                )
+                .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                done();
+            });
+        });
+
+        afterEach(function (done) {
+            groupRegistryMemory.clear(function () {
+                iotAgentLib.deactivate(done);
+            });
+        });
+
+        it('should update the registration in the IoT Manager', function (done) {
+            request(configGroupCreationStatic, function (error, result, body) {
                 should.not.exist(error);
                 iotamMock.done();
                 done();

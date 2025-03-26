@@ -1,14 +1,8 @@
 [
   {
     "@context": "http://context.json-ld",
-    "luminosity": {
-      "type": "Property",
-      "value": 87,
-      "providedBy": {
-        "type": "Relationship",
-        "object": "urn:ngsi-ld:Lamp:lamp1"
-      }
-    },
+    "id": "urn:ngsi-ld:Lamp:lamp1",
+    "type": "Lamp",
     "controlledAsset": {
       "type": "Relationship",
       "object": "urn:ngsi-ld:Building:001"
@@ -21,8 +15,15 @@
         "value": "bell"
       }
     },
-    "id": "urn:ngsi-ld:Lamp:lamp1",
-    "type": "Lamp"
+    "luminosity": {
+      "type": "Property",
+      "value": 87,
+      "unitCode": "CAL",
+      "providedBy": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:Lamp:lamp1"
+      }
+    }
   },
   {
     "@context": "http://context.json-ld",
@@ -31,6 +32,7 @@
     "luminosity": {
       "type": "Property",
       "value": 87,
+      "unitCode": "CAL",
       "providedBy": {
         "type": "Relationship",
         "object": "urn:ngsi-ld:Lamp:lamp1"

@@ -25,6 +25,9 @@ A list of deprecated features and the version in which they were deprecated foll
 -   Support to legacy expressions (finally removed in 3.2.0)
 -   Bidirectinal pluging (finally removed in 3.4.0)
 -   appendMode configuration (`IOTA_APPEND_MODE` env var) (finally removed in 3.4.0)
+-   `config.stats` section, and push-mode statistics.
+-   Services API routes (`/iot/services`) in favor of the `/iot/groups`. Both are still supported, but the former is
+    deprecated.
 
 The use of Node.js v14 is highly recommended.
 
@@ -57,3 +60,4 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Legacy Expressions                         | 3.1.0                                                 | April 25th, 2023              |
 | bidirectional plugin                                  | 3.3.0                                                 | August 24th, 2023             |
 | appendMode configuration (`IOTA_APPEND_MODE` env var) | 3.3.0                                                 | August 24th, 2023             |
+| push-mode stats                                       | 4.5.0                                                 | June 11th, 2024               |

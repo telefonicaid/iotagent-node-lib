@@ -126,13 +126,42 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const groupCreation = {
     url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/services',
     method: 'POST',
     json: {
         services: [
+            {
+                resource: '',
+                apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                entity_type: 'TheLightType',
+                trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                cbHost: 'http://192.168.1.1:1026',
+                commands: [],
+                lazy: [],
+                attributes: [
+                    {
+                        name: 'status',
+                        type: 'Boolean'
+                    }
+                ],
+                static_attributes: []
+            }
+        ]
+    },
+    headers: {
+        'fiware-service': 'testservice',
+        'fiware-servicepath': '/testingPath'
+    }
+};
+const configGroupCreation = {
+    url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/groups',
+    method: 'POST',
+    json: {
+        groups: [
             {
                 resource: '',
                 apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
@@ -182,7 +211,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
         nock.cleanAll();
         async.series([iotAgentLib.clearAll, iotAgentLib.deactivate], done);
     });
-
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
     describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
         beforeEach(function (done) {
             // This mock does not check the payload since the aim of the test is not to verify
@@ -191,7 +220,7 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -212,6 +241,71 @@ describe('NGSI-v2 - Device Service: utils', function () {
             });
         });
     });
+    describe('When an existing device tries to be retrieved with retrieveOrCreate()', function () {
+        beforeEach(function (done) {
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'testservice')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v2/entities?options=upsert,flowControl')
+                .reply(204);
+
+            async.series(
+                [
+                    utils.request.bind(utils.request, configGroupCreation),
+                    utils.request.bind(utils.request, deviceCreation)
+                ],
+                function (error, results) {
+                    done();
+                }
+            );
+        });
+
+        it('should return the existing device', function (done) {
+            iotAgentLib.retrieveDevice('Light1', '801230BJKL23Y9090DSFL123HJK09H324HV8732', function (error, device) {
+                should.not.exist(error);
+                should.exist(device);
+
+                device.id.should.equal('Light1');
+                done();
+            });
+        });
+    });
+    // #FIXME1649: this test will be removed if at the end /iot/services API (now Deprecated) is removed
+    describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
+        beforeEach(function (done) {
+            // This mock does not check the payload since the aim of the test is not to verify
+            // device provisioning functionality. Appropriate verification is done in tests under
+            // provisioning folder
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'testservice')
+                .matchHeader('fiware-servicepath', '/testingPath')
+                .post('/v2/entities?options=upsert,flowControl')
+                .reply(204);
+
+            async.series([utils.request.bind(utils.request, groupCreation)], function (error, results) {
+                done();
+            });
+        });
+
+        it('should register the device and return it', function (done) {
+            iotAgentLib.retrieveDevice(
+                'UNEXISTENT_DEV',
+                '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                function (error, device) {
+                    should.not.exist(error);
+                    should.exist(device);
+
+                    device.id.should.equal('UNEXISTENT_DEV');
+                    should.exist(device.protocol);
+                    device.protocol.should.equal('MQTT_UL');
+                    done();
+                }
+            );
+        });
+    });
 
     describe('When an unexisting device tries to be retrieved for an existing APIKey', function () {
         beforeEach(function (done) {
@@ -221,10 +315,10 @@ describe('NGSI-v2 - Device Service: utils', function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .matchHeader('fiware-service', 'testservice')
                 .matchHeader('fiware-servicepath', '/testingPath')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
-            async.series([utils.request.bind(utils.request, groupCreation)], function (error, results) {
+            async.series([utils.request.bind(utils.request, configGroupCreation)], function (error, results) {
                 done();
             });
         });

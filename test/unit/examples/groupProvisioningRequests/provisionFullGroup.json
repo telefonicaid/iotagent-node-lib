@@ -6,6 +6,7 @@
       "entity_type": "SensorMachine",
       "trust": "8970A9078A803H3BL98PINEQRW8342HBAMS",
       "cbHost": "http://unexistentHost:1026",
+      "useCBflowControl": true,
       "commands": [
         {
           "name": "wheel1",

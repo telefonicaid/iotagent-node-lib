@@ -114,7 +114,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 const device1 = {
     id: 'light1',
@@ -170,7 +171,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
 
     describe('When the IoT Agent receives an update on the device data in JSON format', function () {
         const options = {
-            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+            url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update?options=flowControl',
             method: 'POST',
             json: {
                 actionType: 'update',
@@ -208,7 +209,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
@@ -279,7 +280,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
@@ -341,7 +342,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series(
@@ -414,7 +415,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
@@ -485,7 +486,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device2)], done);
@@ -517,7 +518,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             'internalAttributes',
         function () {
             const options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update',
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/v2/op/update?options=flowControl',
                 method: 'POST',
                 json: {
                     actionType: 'update',
@@ -555,7 +556,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
                 contextBrokerMock
                     .matchHeader('fiware-service', 'smartgondor')
                     .matchHeader('fiware-servicepath', 'gardens')
-                    .post('/v2/entities?options=upsert')
+                    .post('/v2/entities?options=upsert,flowControl')
                     .reply(204);
 
                 async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device3)], done);
@@ -634,7 +635,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(3)
                 .reply(204);
 
@@ -717,7 +718,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .times(3)
                 .reply(204);
 
@@ -789,7 +790,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
@@ -852,7 +853,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -917,7 +918,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);
@@ -984,7 +985,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
@@ -1052,7 +1053,7 @@ describe('NGSI-v2 - IoT Agent Lazy Devices', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
-                .post('/v2/entities?options=upsert')
+                .post('/v2/entities?options=upsert,flowControl')
                 .reply(204);
 
             iotAgentLib.activate(iotAgentConfig, done);

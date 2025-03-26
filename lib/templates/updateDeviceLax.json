@@ -89,29 +89,6 @@
             "description": "Optional entity type for multientity updatess",
             "type": "string",
             "pattern": "^([^<>;'=\"]+)+$"
-          },
-          "reverse": {
-            "description": "Define the attribute as bidirectional",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "object_id": {
-                  "description": "ID of the attribute in the device",
-                  "type": "string"
-                },
-                "type": {
-                  "description": "Type of the attribute in the target entity",
-                  "type": "string",
-                  "pattern": "^([^<>();'=\"]+)+$"
-                },
-                "expression": {
-                  "description": "Optional expression for measurement transformation",
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       }
@@ -169,6 +146,18 @@
     "payloadType": {
         "description": "Payload type allowed for measures for this device",
         "type": "string"
+    },
+    "useCBflowControl": {
+        "description": "use CB flowControl option",
+        "type": "boolean"
+    },
+    "storeLastMeasure": {
+      "description": "Store last measure",
+      "type": "boolean"
+    },
+    "lastMeasure": {
+      "description": "last measure",
+      "type": "object"
     }
   }
 }

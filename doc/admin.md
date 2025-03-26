@@ -5,7 +5,6 @@
         -   [loglevel](#loglevel)
         -   [contextBroker](#contextbroker)
         -   [server](#server)
-        -   [stats](#stats)
         -   [authentication](#authentication)
         -   [deviceRegistry](#deviceregistry)
         -   [mongodb](#mongodb)
@@ -126,9 +125,9 @@ allowing the computer to interpret the rest of the data with more clarity and de
 ```
 
 Under mixed mode, **NGSI v2** payloads are used for context broker communications by default, but this payload may also
-be switched to **NGSI LD** at service group or device provisioning time using the `ngsiVersion` field in the
-provisioning API. The `ngsiVersion` field switch may be added at either group or device level, with the device level
-overriding the group setting.
+be switched to **NGSI LD** at group or device provisioning time using the `ngsiVersion` field in the provisioning API.
+The `ngsiVersion` field switch may be added at either group or device level, with the device level overriding the group
+setting.
 
 #### `server`
 
@@ -156,17 +155,6 @@ support nulls or multi-attribute requests if they are encountered.
       null: true,
       datasetId: true
     }
-}
-```
-
-#### `stats`
-
-It configures the periodic collection of statistics. Use `interval` in milliseconds to set the time between stats
-writings.
-
-```javascript
-stats: {
-    interval: 100;
 }
 ```
 
@@ -260,13 +248,13 @@ the `mongob` section (as described bellow). E.g.:
 
 It configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of
 comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional property
-`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`),
-password (`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any
-validation of the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect
-the database. If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection
-database, extraArgs (`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup
-time `retries` times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are
-5 and 5 respectively). E.g.:
+`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`), password
+(`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any validation of
+the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect the database.
+If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection database, extraArgs
+(`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup time `retries`
+times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are 5 and 5
+respectively). E.g.:
 
 ```javascript
 {
@@ -318,7 +306,8 @@ added `agentPath`:
 
 #### `types`
 
-See **Type Configuration** in the [Configuration API](#configurationapi) section below.
+This parameter includes additional groups configuration as described into the
+[Config group API](api.md#config-group-api) section.
 
 #### `service`
 
@@ -356,7 +345,7 @@ if this flag is activated:
 
 #### `defaultResource`
 
-default string to use as resource for the registration of new Configurations (if no resource is provided).
+default string to use as resource for the registration of new config groups (if no resource is provided).
 
 #### `defaultKey`
 
@@ -421,6 +410,45 @@ characters (such as semi-colons) which are
 specification. When provisioning devices, it is necessary that the developer provides valid `objectId`-`name` mappings
 whenever relaxed mode is used, to prevent the consumption of forbidden characters.
 
+#### `expressLimit`
+
+IotAgents, as all Express applications that use the body-parser middleware, have a default limit to the request body
+size that the application will handle. This default limit for ioiotagnets are 1Mb. So, if your IotAgent receives a
+request with a body that exceeds this limit, the application will throw a “Error: Request entity too large”.
+
+The 1Mb default can be changed setting the `expressLimit` configuration parameter (or equivalente `IOTA_EXPRESS_LIMIT`
+environment variable).
+
+#### `storeLastMeasure`
+
+If this flag is activated, last measure arrived to Device IoTAgent without be processed will be stored in Device under
+`lastMeasure` field (composed of sub-fields `timestamp` and `measure` for the measure itself, in multi-measure format).
+This flag is overwritten by `storeLastMeasure` flag in group or device. This flag is disabled by default.
+
+For example in a device document stored in MongoDB will be extended with a subdocument named lastMeasure like this:
+
+```json
+{
+    "lastMeasure": {
+        "timestamp": "2025-01-09T10:35:33.079Z",
+        "measure": [
+            [
+                {
+                    "name": "level",
+                    "type": "Text",
+                    "value": 33
+                }
+            ]
+        ]
+    }
+}
+```
+
+#### `useCBflowControl`
+
+If this flag is activated, when iotAgent invokes Context Broker will use [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism). This flag is overwritten by
+`useCBflowControl` flag in group or device. This flag is disabled by default.
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -482,6 +510,9 @@ overrides.
 | IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
 | IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
 | IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
+| IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
+| IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
+| IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
 
 Note:
 

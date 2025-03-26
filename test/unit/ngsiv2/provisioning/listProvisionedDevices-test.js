@@ -48,7 +48,8 @@ const iotAgentConfig = {
     types: {},
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Device provisioning API: List provisioned devices', function () {
@@ -96,7 +97,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
@@ -105,7 +106,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             contextBrokerMock
                 .post('/v2/registrations')
@@ -114,7 +115,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').reply(204);
 
             async.series(
                 [
@@ -183,11 +184,9 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
                 should.exist(body.devices[2].attributes[0].entity_name);
                 should.exist(body.devices[2].attributes[0].entity_type);
                 should.exist(body.devices[2].attributes[1].expression);
-                should.exist(body.devices[2].attributes[2].reverse);
                 body.devices[2].attributes[0].entity_name.should.equal('Higro2000');
                 body.devices[2].attributes[0].entity_type.should.equal('Higrometer');
                 body.devices[2].attributes[1].expression.should.equal('${@humidity * 20}');
-                body.devices[2].attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
@@ -242,11 +241,9 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
                 should.exist(body.attributes[0].entity_name);
                 should.exist(body.attributes[0].entity_type);
                 should.exist(body.attributes[1].expression);
-                should.exist(body.attributes[2].reverse);
                 body.attributes[0].entity_name.should.equal('Higro2000');
                 body.attributes[0].entity_type.should.equal('Higrometer');
                 body.attributes[1].expression.should.equal('${@humidity * 20}');
-                body.attributes[2].reverse.length.should.equal(2);
                 done();
             });
         });
@@ -312,7 +309,7 @@ describe('NGSI-v2 - Device provisioning API: List provisioned devices', function
             // This mock does not check the payload since the aim of the test is not to verify
             // device provisioning functionality. Appropriate verification is done in tests under
             // provisioning folder
-            contextBrokerMock.post('/v2/entities?options=upsert').times(10).reply(204);
+            contextBrokerMock.post('/v2/entities?options=upsert,flowControl').times(10).reply(204);
 
             iotAgentLib.clearAll(function () {
                 async.times(10, createDeviceRequest, function (error, results) {
