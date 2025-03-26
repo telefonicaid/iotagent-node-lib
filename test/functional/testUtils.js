@@ -80,10 +80,16 @@ function sendMeasureIotaLib(measure, provision) {
             // TBD: id. type, staticAttributes, oldCtxt..
         };
         let type;
+        let staticAttrs;
         if (Array.isArray(provision.json.services) && provision.json.services.length > 0) {
             type = provision.json.services[0].entity_type;
+            staticAttrs = provision.json.services[0].static_attributes;
         } else {
             type = DEF_TYPE;
+        }
+        typeInformation.type = type;
+        if (staticAttrs) {
+            typeInformation.staticAttributes = staticAttrs;
         }
         iotAgentLib.update(
             type + ':' + measure.qs.i,
