@@ -77,7 +77,6 @@ function sendMeasureIotaLib(measure, provision) {
         let typeInformation = {
             service: provision.headers['fiware-service'],
             subservice: provision.headers['fiware-servicepath']
-            // TBD: id. type, staticAttributes, oldCtxt..
         };
         let type;
         let staticAttrs;
