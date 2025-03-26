@@ -91,6 +91,7 @@ function sendMeasureIotaLib(measure, provision) {
         if (staticAttrs) {
             typeInformation.staticAttributes = staticAttrs;
         }
+        typeInformation.id = measure.qs.i;
         iotAgentLib.update(
             type + ':' + measure.qs.i,
             type,
