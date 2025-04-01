@@ -40,7 +40,12 @@ describe('Jexl expression interpreter', function () {
         object: {
             name: 'John',
             surname: 'Doe'
-        }
+        },
+        invalidJson: '{"name": "John", surname": "Doe"}', // Invalid JSON for jsonparse
+        invalidDate: 'invalid-date', // Invalid date for toisodate and other date functions
+        emptyArray: [], // Empty array for addreduce
+        invalidHex: 'zz', // Invalid hex string for hextostring
+        nonNumeric: 'not-a-number' // Non-numeric input for parseint, parsefloat
     };
 
     describe('When a expression with a single value is parsed', function () {
@@ -389,6 +394,165 @@ describe('Jexl expression interpreter', function () {
                 should.not.exist(error);
                 should.equal(result, null);
                 done();
+            });
+        });
+    });
+
+    // Check errors
+    describe('When invalid inputs are used', function () {
+        describe('When an invalid JSON string is parsed', function () {
+            it('should return null for jsonparse', function (done) {
+                expressionParser.parse('invalidJson|jsonparse', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When an invalid date string is parsed', function () {
+            it('should return null for toisodate', function (done) {
+                expressionParser.parse('invalidDate|toisodate', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+
+            it('should return null for timeoffset', function (done) {
+                expressionParser.parse('invalidDate|timeoffset', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When an empty array is processed with addreduce', function () {
+            it('should return null for addreduce', function (done) {
+                expressionParser.parse('emptyArray|addreduce', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When a non-numeric string is parsed by parseint and parsefloat', function () {
+            it('should return null for parseint', function (done) {
+                expressionParser.parse('nonNumeric|parseint', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+
+            it('should return null for parsefloat', function (done) {
+                expressionParser.parse('nonNumeric|parsefloat', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When an invalid hex string is processed by hextostring', function () {
+            it('should return null for hextostring', function (done) {
+                expressionParser.parse('invalidHex|hextostring', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When invalid regular expressions are used in replace functions', function () {
+            it('should return null for replaceregexp with invalid regex', function (done) {
+                expressionParser.parse(
+                    'theString|replaceregexp("[a-z", "replacement")',
+                    scope,
+                    function (error, result) {
+                        should.not.exist(error);
+                        should(result).be.Null();
+                        done();
+                    }
+                );
+            });
+
+            it('should return null for replaceallregexp with invalid regex', function (done) {
+                expressionParser.parse(
+                    'theString|replaceallregexp("[a-z", "replacement")',
+                    scope,
+                    function (error, result) {
+                        should.not.exist(error);
+                        should(result).be.Null();
+                        done();
+                    }
+                );
+            });
+        });
+
+        describe('When tostring is used with null or undefined', function () {
+            it('should return null for tostring(null)', function (done) {
+                expressionParser.parse('null|tostring', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+
+            it('should return null for tostring(undefined)', function (done) {
+                expressionParser.parse('undefined|tostring', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When urldecode is used with an invalid URI', function () {
+            it('should return null for urldecode with malformed URI', function (done) {
+                expressionParser.parse('"%%%invalidURI"|urldecode', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When tofixed is used with invalid inputs', function () {
+            it('should return null for tofixed with non-numeric value', function (done) {
+                expressionParser.parse('"notANumber"|tofixed(2)', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+
+            it('should return null for tofixed with invalid decimal value', function (done) {
+                expressionParser.parse('"123.456"|tofixed("invalid")', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+        });
+
+        describe('When gettime is used with invalid date', function () {
+            it('should return null for gettime with invalid date string', function (done) {
+                expressionParser.parse('"invalidDate"|gettime', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
+            });
+
+            it('should return null for gettime with null', function (done) {
+                expressionParser.parse('null|gettime', scope, function (error, result) {
+                    should.not.exist(error);
+                    should(result).be.Null();
+                    done();
+                });
             });
         });
     });

@@ -74,16 +74,27 @@ function sendMeasureIotaLib(measure, provision) {
          *  This is not a problem for the tests using other transports than Lib, in that case, the type will be retrieved
          *  from the real provision.
          */
+        let typeInformation = {
+            service: provision.headers['fiware-service'],
+            subservice: provision.headers['fiware-servicepath']
+        };
         let type;
+        let staticAttrs;
         if (Array.isArray(provision.json.services) && provision.json.services.length > 0) {
             type = provision.json.services[0].entity_type;
+            staticAttrs = provision.json.services[0].static_attributes;
         } else {
             type = DEF_TYPE;
         }
+        typeInformation.type = type;
+        if (staticAttrs) {
+            typeInformation.staticAttributes = staticAttrs;
+        }
+        typeInformation.id = measure.qs.i;
         iotAgentLib.update(
             type + ':' + measure.qs.i,
             type,
-            '',
+            typeInformation,
             jsonToIotaMeasures(measure.json),
             function (error, result, body) {
                 error ? reject(error) : resolve(result);
@@ -230,7 +241,7 @@ async function testCase(measure, expectation, provision, env, config, type, tran
     if (transport === 'MQTT') {
         try {
             let client = await MQTT.connectAsync('mqtt://' + config.mqtt.host);
-            await client.publish('/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
+            await client.publish('/json/' + measure.qs.k + '/' + measure.qs.i + '/attrs', JSON.stringify(measure.json));
             await client.end();
         } catch (error) {
             expect.fail(ERR_MQTT + error);
