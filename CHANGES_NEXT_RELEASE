@@ -1,4 +1,4 @@
-- FIX: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys)
+- Fix: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys) (#1713)
 - Add: index for Device model based on {service: 1, subservice: 1, id: 1, apikey: 1} (#1576)
 - Fix: Duplicated Devices when burst measures to non provisioned Device (iotagent-json#865)
 - Fix: modified JEXL transformations (toisostring, gettime, parseint, etc.) to return null instead of NaN when some unexpected situation occurs (#1701)
