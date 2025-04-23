@@ -914,7 +914,9 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd` and `params`. The rest of fields like
 `execTs`, `status`, `info`, `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration` will be
-relevant in future when new command flow will be implemented in Context Broker.
+relevant in future when new command flow will be implemented in Context Broker. `targetEntityId` and `targetEntityType`
+optional are used if provided to find device involved in command, if not `id` and `type` of notification are used
+instead of them.
 
 In both cases (update or notify) the IoT Agent detects the selected attribute is a command, and replies to the Context
 Broker with the following payload (200 OK):
