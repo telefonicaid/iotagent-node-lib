@@ -1,1 +1,2 @@
+- FIX: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys)
 - Fix: modified JEXL transformations (toisostring, gettime, parseint, etc.) to return null instead of NaN when some unexpected situation occurs (#1701)
