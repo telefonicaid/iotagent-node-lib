@@ -169,7 +169,7 @@
                 },
                 "headers": {
                   "description": "Optional headers to include with command",
-                  "type": "string"
+                  "type": "object"
                 },
                 "mqtt": {
                   "description": "Mqtt properties",
