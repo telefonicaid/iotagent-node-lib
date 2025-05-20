@@ -167,6 +167,10 @@
                     "description": "Content type",
                     "type": "string"
                 },
+                "headers": {
+                  "description": "Optional headers to include with command",
+                  "type": "object"
+                },
                 "mqtt": {
                   "description": "Mqtt properties",
                   "type": "object",
