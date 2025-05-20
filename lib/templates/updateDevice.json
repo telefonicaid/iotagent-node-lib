@@ -145,6 +145,10 @@
               "description": "Optional expression for command transformation",
               "type": "string"
           },
+          "headers": {
+              "description": "Optional headers to include with command",
+              "type": "object"
+          },
           "payloadType": {
               "description": "Payload type",
               "type": "string"
