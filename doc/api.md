@@ -257,6 +257,9 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
+-   **headers**: extra customer headers used when send command by HTTP transport (ignored in other kinds of
+    transports)
+Check full detail of these fields in [comand-transformations](https://github.com/telefonicaid/iotagent-json/blob/master/docs/usermanual.md#commands-transformations)
 
 Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
 device, the IoT agent will store that information into the destination entity using the same attribute name than the
