@@ -1,4 +1,4 @@
-4.8.0 (May 21th, 2025)
+4.8.0 (May 22nd, 2025)
 
 - Add: allow define headers in device commands (iotagent-json#873)
 - Add: index for Device model based on {service: 1, subservice: 1, id: 1, apikey: 1} (#1576)
