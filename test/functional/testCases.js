@@ -542,6 +542,11 @@ const testCases = [
                                 object_id: '.1.0.0.1',
                                 name: 'psBatteryVoltage',
                                 type: 'Number'
+                            },
+                            {
+                                object_id: 'f_dt',
+                                name: 'fireDetectionThreshold',
+                                type: 'Number'
                             }
                         ],
                         static_attributes: []
@@ -586,6 +591,41 @@ const testCases = [
                     psBatteryVoltage: {
                         type: 'Number',
                         value: 23.5
+                    }
+                }
+            },
+            {
+                shouldName:
+                    'A - WHEN sending defined measures by attribute names through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        a: false,
+                        fireDetectionThreshold: 10
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    attr_a: {
+                        value: false,
+                        type: 'Boolean',
+                        metadata: {
+                            accuracy: {
+                                value: 0.8,
+                                type: 'Float'
+                            }
+                        }
+                    },
+                    fireDetectionThreshold: {
+                        type: 'Number',
+                        value: 10
                     }
                 }
             }
