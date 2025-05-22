@@ -1045,11 +1045,6 @@ desired behaviour, which are described next:
 * Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`,
 `status`, `info`, `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By
 the moment they are stored in the commands model (commands collection) but nothing is done with them appart from storing.
-* If `targetEntityId` and `targetEntityType` are not found to find device involved in command, then `id` and `type` of
-notification are used instead of them. This should not be done (as the `id` and `type` in the notification are the ones of
-a transient entity, not the entity associated to the device) but this behaviour is kept by the moment to provide a smooth
-transition to the new approach (so, at the present moment, as we don't have transient entities representing command executions,
-the command notification is sent based on a subscription done on the entity associated to the device).
 * The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device,
 but using the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would typically
 be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
