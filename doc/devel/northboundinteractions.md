@@ -827,21 +827,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 }
 ```
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with the following payload
-(200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch": {
-            "type": "command",
-            "value": ""
-        }
-    }
-]
-```
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without payload).
 
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
 the requested information or command execution.
@@ -955,7 +941,7 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd` and `params`.
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 200 OK (without payload).
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without payload).
 
 #### Result reporting
 
