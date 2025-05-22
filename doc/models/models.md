@@ -1,3 +1,7 @@
+# MongoDB Datamodel 
+
+This file displays IoT Agent datamodel stored in the MongoDB database. 
+
 ## Collections
 
 ### Devices
