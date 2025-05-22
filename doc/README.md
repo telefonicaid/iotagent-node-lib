@@ -7,6 +7,7 @@
 -   [Administration manual](admin.md)
 -   [Deprecated features](deprecated.md)
 -   [Roadmap](roadmap.md)
+-   [Data models](models/models.md)
 
 ## Development documentation
 
