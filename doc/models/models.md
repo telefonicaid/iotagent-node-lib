@@ -201,6 +201,15 @@ Fields:
 -   **value** _object_: value of the command
 -   **service** _string_: service which the device command belongs to
 -   **subservice** _string_: subservice which the device command belongs to
+-   **execTs** _date_: related with new commands functionality (stored but not yet in use)
+-   **status** _string_: related with new commands functionality (stored but not yet in use)
+-   **info** _string_: related with new commands functionality (stored but not yet in use)
+-   **onDelivered** _Object_: related with new commands functionality (stored but not yet in use)
+-   **onOk**: _Object_: related with new commands functionality (stored but not yet in use)
+-   **onError** _Object_: related with new commands functionality (stored but not yet in use)
+-   **onInfo** _Object_: related with new commands functionality (stored but not yet in use)
+-   **cmdExecution** _boolean__: related with new commands functionality (stored but not yet in use)
+-   **dateExpiration**: { type: Date }: related with new commands functionality (stored but not yet in use)
 -   **creationDate** _date_: creation date of command
 
 Example:
