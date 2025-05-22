@@ -775,6 +775,8 @@ The registration of the commands is performed once in the lifetime of the Device
 
 #### Command Execution
 
+##### Based in update (classic way)
+
 Scenario 3 begins with the request for a command from the User to the Context Broker (P1):
 
 ```bash
@@ -824,6 +826,45 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
   "updateAction" : "append"
 }
 ```
+
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with the following payload
+(200 OK):
+
+```json
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
+        }
+    }
+]
+```
+
+This response just indicates that the IoT Agent has received the command successfully, and gives no information about
+the requested information or command execution.
+
+The Context Broker, forwards the same response to the user, thus replying the original request (200 OK):
+
+```json
+[
+    {
+        "type": "device",
+        "id": "Dev0001",
+        "switch": {
+            "type": "command",
+            "value": ""
+        }
+    }
+]
+```
+
+At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
+request will be.
+
+##### Based in notification (new way)
 
 A new way to ContextBroker provides a command to a IoTAgent is through notifications. In this case CB notify the command
 to the IotAgent with a request like the following:
@@ -912,48 +953,9 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 }
 ```
 
-In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd` and `params`. The rest of fields like
-`execTs`, `status`, `info`, `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration` are part of
-command model, are just stored, but will be relevant in future when new command flow will be implemented in Context
-Broker. `targetEntityId` and `targetEntityType` optional are used if provided to find device involved in command, if not
-`id` and `type` of notification are used instead of them.
+In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd` and `params`.
 
-In both cases (update or notify) the IoT Agent detects the selected attribute is a command, and replies to the Context
-Broker with the following payload (200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch": {
-            "type": "command",
-            "value": ""
-        }
-    }
-]
-```
-
-This response just indicates that the IoT Agent has received the command successfully, and gives no information about
-the requested information or command execution.
-
-The Context Broker, forwards the same response to the user, thus replying the original request (200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch": {
-            "type": "command",
-            "value": ""
-        }
-    }
-]
-```
-
-At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
-request will be.
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 200 OK (without payload).
 
 #### Result reporting
 
@@ -1046,6 +1048,32 @@ The Context Broker replies with all the desired data, in R2 format (200 OK):
         }
     }
 ]
+```
+
+#### Differences regarding the new commands mode
+
+A new commands flow has been defined (involving also modifications at ContextBroker). As part of that design, commands
+are not sent to IOTAs using NGSIv2 notifications, but the current implementation has some differences regarding the
+desired behaviour, which are described next:
+
+* Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`,
+`status`, `info`, `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By
+the moment they are stored in the commands model (commands collection) but nothing is done with them appart from storing.
+* If `targetEntityId` and `targetEntityType` are not found to find device involved in command, then `id` and `type` of
+notification are used instead of them. This should not be done (as the `id` and `type` in the notification are the ones of
+a transient entity, not the entity associated to the device) but this behaviour is kept by the moment to provide a smooth
+transition to the new approach (so, at the present moment, as we don't have transient entities representing command executions,
+the command notification is sent based on a subscription done on the entity associated to the device).
+* The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device,
+but using the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would typically
+be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
+entity to be updated in that HATEOAS would be the transient entity corresponding to command execuion, not the entity associated to the device.
+
+```
+PUT /v2/entities/123456abcdefg/attrs/status?type=switchExecution
+content-type: text/plain
+
+OK
 ```
 
 ### Scenario 3: commands (error)
