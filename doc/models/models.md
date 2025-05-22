@@ -208,7 +208,7 @@ Fields:
 -   **onOk**: _Object_: related with new commands functionality (stored but not yet in use)
 -   **onError** _Object_: related with new commands functionality (stored but not yet in use)
 -   **onInfo** _Object_: related with new commands functionality (stored but not yet in use)
--   **cmdExecution** _boolean__: related with new commands functionality (stored but not yet in use)
+-   **cmdExecution** _Boolean__: related with new commands functionality (stored but not yet in use)
 -   **dateExpiration**: { type: Date }: related with new commands functionality (stored but not yet in use)
 -   **creationDate** _date_: creation date of command
 
