@@ -1,5 +1,6 @@
-4.8.0 (May 22nd, 2025)
+4.8.0 (May 23rd, 2025)
 
+- Add: notification-based commands (#1455)
 - Add: allow define headers in device commands (iotagent-json#873)
 - Add: index for Device model based on {service: 1, subservice: 1, id: 1, apikey: 1} (#1576)
 - Fix: Duplicated Devices when burst measures to non provisioned Device (iotagent-json#865)
