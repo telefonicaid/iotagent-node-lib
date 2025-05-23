@@ -18,3 +18,780 @@
 - Upgrade express dep from 4.19.2 to 4.21.2
 - Upgrade mongodb devdep from 4.17.1 to 4.17.2
 - Upgrade mongoose dep from 5.13.20 to 8.9.5 (solving vulnerabilies CVE-2024-53900 and CVE-2025-23061) (#1674)
+
+4.6.0 (September 18th, 2024)
+
+- Add: openmetrics-compatible /metrics endpoint in nortbound API (#1627)
+- Add: new JEXL transformations for including into an array keys that have a certain value: valuePicker and valuePickerMulti
+- Add: attribute metadata and static attributes metadata added to jexl context (#1630)
+- Add: /iot/groups API endpoints (as equivalent to /iot/services) (#752)
+- Fix: service header to use uppercase in case of update and delete (#1528)
+- Fix: Allow to send to CB batch update for multimeasures for NGSI-LD (#1623)
+- Upgrade body-parser dep from 1.20.0 to 1.20.3
+- Deprecated: /iot/services API routes
+- Remove: push-based stats (including stats section in config file)
+
+4.5.0 (June 11th, 2024)
+
+- Fix: do not propage TimeInstant when explicitAttrs is empty array (#1606)
+- Fix: update device using previous device apikey to avoid error when apikey is updated (iotagent-json#833)
+- Fix: allow send multiple measures to CB in a batch (POST /v2/op/update) and sorted by TimeInstant when possible, instead of using multiples single request (iotagent-json#825, #1612)
+- Fix: default express limit to 1Mb instead default 100Kb and allow change it throught a conf env var 'IOTA_EXPRESS_LIMIT' (iotagent-json#827)
+- Fix: accept 201 status code from context broker with NGSI-LD interface when first measure is sent and device is created in it (#1617)
+
+4.4.0 (April 26th, 2024)
+
+- Add: allow devices with the same device_id in the same service and subservice but different apikey (#1589)
+- Add: process JEXL expressions in metadata attributes (#1598)
+- Fix: TimeInstant mapped from attribute overrides default behaviours (#1557)
+- Fix: reduce information showed handling errors to just config flags (#1594)
+- Upgrade pymongo dep from 4.3.3 to 4.6.3
+- Upgrade express dep from 4.18.1 to 4.19.2
+
+4.3.0 (February 27th, 2024)
+
+- Add: POST /iot/op/delete operation to delete multiple devices at once (#1578)
+- Add: log and return device/group information when EntityGenericError, TypeNotFound, DeviceNotFound, BadTimestamp, BadGeocoordinates, CommandNotFound, GroupNotFound, MissingAttributes, DuplicateDeviceId and DuplicateGroup errors (iotagent-json#815)
+- Fix: store device subscriptions updates (#1086)
+- Fix: badtimestamp error should not progress to ContextBroker
+- Hardening: simplify implementation so typeInformation contains global config values (#1515)
+
+4.2.0 (January 30th, 2024)
+
+- Add: progress non expected id and type in measures under measure_ prefix
+
+4.1.0 (January 8th, 2024)
+
+- Add: include apikey in queries to memory registry for groups
+- Add: transport and endpoint to Group model (#1542)
+- Fix: store commands from Group at Device level at provision device time
+- Fix: log device id when BadTimestamp error (*)
+
+(*) Also in hotfix version 4.0.1
+
+4.0.0 (January 8th, 2024)
+
+- Large refactor of IOTA Lib code to make it simpler
+- Add: payloadType to device and groups model to support NGSI-v2 and NGSI-LD formats in southbound measures (iotagent-json#778)
+- Fix: use but not store timestamp and explicitAttrs from group with autoprovisioned devices (#1504, partially)
+- Fix: MongoDB connection authentication (user and password were not actually used) (#1510)
+- Fix: add static attributes when use explicitAttrs (#1506)
+- Fix: ensure service and subservice in context of error handlers using req headers
+- Fix: remove attribute of measures with name id or type to avoid collisions (#1485)
+- Fix: ensure entity id and type are string (#1476)
+- Fix: update ctxt allow nested expressions (#1493)
+- Fix: change log level contextAvailable expression exception (from WARN to INFO)
+- Fix: null values arithmetics in JEXL expressions (#1440)
+- Fix: remove mongo DeprecationWarning: current Server Discovery and Monitoring engine is deprecated by setting useUnifiedTopology = true
+- Fix: mongodb.authSource / IOTA_MONGO_AUTH_SOURCE was not correctly supported (#1526)
+- Upgrade mongodb dev dep from 4.17.0 to 4.17.1
+- Remove: single configuration mode (along with IOTA_SINGLE_MODE env var) (#1469)
+- Remove: extractVariables from jexl plugin (no needed anymore since the removal of bidireational plugin)
+- Remove: time compression support
+- Remove: autocast (including env var IOTA_AUTOCAST) (#1498)
+
+3.4.0 (September 20th, 2023)
+
+- Fix: for non evaluable expressions which should not be propagated to attrs values (#1440)
+- Fix: try to use apikey from measure/group to find, update, remove device in first attempt (#1426, #1435)
+- Fix: ensure device apikey in already provisioned device (#1430)
+- Upgrade mongodb dev dep from 4.7.0 to 4.17.0
+- Upgrade mongoose dep from 5.13.14 to 5.13.20
+- Remove: bidirectional plugin (#1413)
+- Remove: appendMode and creation of initial entity (#1413)
+
+3.3.0 (August 24th, 2023)
+
+- Add: do not create initial entity when a new device is provisioned and appendMode is false or NGSI-LD is used
+- Add: evaluate group entityNameExp with a context including measures (#1334)
+- Add: allow update timestamp and other config fields of device
+- Fix: check array access in extractVariables of jexlPlugin when bidirectionalPlugin is enabled
+- Fix: explicitAttrs of device was tainted even if not defined
+- Fix: do not include static, lazy and commands from group to device to avoid duplicate them in device (#1377)
+- Fix: use 'options=upsert' when update ngsiv2 CB entities and appendMode is enabled (#956)
+- Fix: do not propagate group config (timestamp and explicitAttrs) to autoprovisioned devices (at database level) (#1377)
+- Fix: appendMode at general level (config.js / env var) changes its default from false to true
+- Fix: remove sensitive MongoDB connection parameters from log traces (remove 'option' object from logs)
+- Deprecate: bidirectional plugin
+- Deprecate: appendMode
+- Remove: expressionLanguage field (as it it not longer needed, due to only one expression language is supported, after the removal of legacy expressions in 3.2.0) (#1384)
+
+3.2.0 (May 23rd, 2023)
+
+- Add: save result of apply expression attribute into current context for futher usages (#1305)
+- Add: skipValue for expression to allow skip attribute when match with result of apply expression (#1353)
+- Add: add hextostring transformation jexl function (#1367)
+- Add: JEXL support to bidirectinal plugin
+- Fix: avoid usage of newlines in logs (#1342)
+- Fix: explicitAttributes true case: should progress just active attributes which receives measures and all active attributes with expressions
+- Fix: add missed active attributes (with expressions) for ctxt for evaluate explicitAttrs expression (#1351)
+- Fix: allow use static attributes from group in entityNameExp of group
+- Fix: disable device attribute entity_name validation using pattern
+- Fix: re-enable invocation of custom plugins on update (#1348)
+- Fix: change level of log about not context available for apply expression from warn to info
+- Remove: remove legacy expression support (removing IOTA_DEFAULT_EXPRESSION_LANGUAGE env var and associated defaultExpressionLanguage config.js setting) (#1340)
+
+3.1.0 (April 25th, 2023)
+
+- Add: support to run tests with node 18
+- Fix: propagate TimeInstant to all metadata attributes when TimeInstant is provided as measure
+- Set Nodejs 16 as minimum version in packages.json (effectively removing Nodev14 from supported versions)
+
+3.0.0 (March 30th, 2023)
+
+- Refactor replace alias, multientity, expressions and timestamp plugins by a single processing (#1195, #1314)
+- Refactor NGSI-LD processing to align with alias, multientity, expressions and timestamp plugin changes (#1322)
+- Fix: simplify cast to native attributes type: use just JSON.parse (#1323)
+
+2.26.0 (March 15th, 2023)
+
+- Add NGSI-LD Merge-Patch Support Handling (#1283)
+- Update to offer NGSI-LD 1.6.1. Registrations (#1302)
+- Document removal of support for NGSI-LD 1.3.1 Interface
+
+2.25.0 (January 24th, 2023)
+
+- Add: missing JEXL default transformations: joinarrtostr, concatarr, floor, ceiling, round, tofixed, gettime, toisostring, localestring, now (#1308)
+- Fix: save group apikey in device when autoprovision device (#1245)
+- Fix: INVALID EXPRESSION policy at JEXL expression in attributes and entity_names (default values will be propagated and a warn will be logged instead of exception) (#1292)
+- Fix: empty device_id on device registration (#1298)
+- Hardening: export pluginUtils (so they can be used by IOTA code importing the library)
+- Set Nodejs 14 as minimum version in packages.json (effectively removing Nodev12 from supported versions)
+
+2.24.0 (September 2nd, 2022)
+
+- Add: metadata support to NGSI-v2 notifications (bidirectional attributes)
+- Add: update bidirectional plugin to reuse expressionPlugin (#1281)
+- Add: NGSI-LD Unsupported Endpoints return valid error responses (#1277)
+- Add: datasetId and metadata support for NGSI-LD PATCH+PUT operations (commands)
+- Add: datasetId and metadata support for NGSI-LD Notifications (bidirectional attributes)
+- Add: exception control for bad JEXL expression
+- Fix: support empty entityNameExp and exp
+- Fix: device id, type, service, subservice and entity name were not available to NGSI attrs JEXL expressions (#1282)
+- Fix: protect explicitAttrs evaluation of a bad formed expression (#1175)
+- Fix: ensure GET /ngsi-ld/v1/entities/ returns a valid response (#1276)
+- Fix: ensure circular error objects are logged correctly (#1280)
+
+2.23.0 (August 2nd, 2022)
+
+- Add: support of object_id as part of explicitAttrs list (#1267)
+- Fix: make available measures in JEXL context for explicitAttrs (#1269)
+
+2.22.0 (July 15th, 2022)
+
+- Add: add id, type, service and subservice to context expression of multientity plugin
+- Add: set jexl as default parser for generic plugin
+- Add: entityNameExp to Group Model to allow define device.name using expressions (#1222, #1145)
+- Add: identify each flow of mongo alarms about device group
+- Add: support for NGSI-LD LanguageProperty
+- Add: NGSI-LD PUT support
+- Add: NGSI-LD support for multiple attribute updates
+- Fix: apply expressions to pull commands (#1263)
+- Fix: return error to client if expression or multientity plugins get error
+- Fix: multientity just with entity_type but not entity_name, then use device.name (#1220)
+- Fix: allow use JEXL expresions in explicitAttrs for conditional propagation of measures (reopen #1179, for Devices)
+- Fix: avoid raising mongo alarm (DEVICE_GROUP_NOT_FOUND) before launch op against CB
+- Fix: fix issue with unrecognized NGSILD-Tenant and NGSILD-Path headers
+- Fix: mongodb dependency moved to devDependencies (as it is used only in test code)
+- Upgrade mongodb dep from 3.6.12 to 4.7.0
+- Upgrade body-parser dependency from 1.19.0 to 1.20.0
+- Upgrade express dependency from 4.16.4 to 4.18.1
+- Upgrade got dependency from 11.8.2 to 11.8.5
+- Upgrade moment-timezone dependency from 0.5.25 to 0.5.34
+- Upgrade mongoose dependency from 5.7.14 to 5.13.14
+- Upgrade query-string dependency from 6.5.0 to 7.1.1
+- Upgrade underscore dependency from 1.12.1 to 1.13.4
+- Upgrade uuid dependency from 3.3.2 to 8.3.2
+- Upgrade coveralls dev dependency from 3.1.0 to 3.1.1
+- Upgrade eslint dev dependency from 7.5.0 to 8.18.0
+- Upgrade eslint-config-tamia dev dependency from 7.2.5 to 8.0.0
+- Upgrade eslint-plugin-prettier dev dependency from 3.1.4 to 4.0.0
+- Upgrade lint-staged dev dependency from 10.2.11 to 12.3.8
+- Upgrade prettier dev dependency from 2.0.5 to 2.7.1
+- Upgrade mocha dev dependency from 8.0.1 to 10.0.0
+- Upgrade nock dev dependency from 13.0.3 to 13.2.7
+- Upgrade remark-cli dev dependency from 8.0.1 to 10.0.1
+- Upgrade remark-preset-lint-recommended dev dependency from 4.0.1 to 6.1.2
+- Upgrade sinon dev dependency from 9.0.2 to 14.0.0
+- Upgrade textlint dev dependency from 11.7.6 to 12.2.1
+- Upgrade textlint-rule-terminology dev dependency from 2.1.4 to 3.0.2
+- Upgrade textlint-rule-write-good dev dependency from 1.6.2 to 2.0.0
+
+2.21.0 (April 29th, 2022)
+
+- Add: new JEXL transformations for handle upper and low case: touppercase, tolowercase
+- Add: do not process attr expressions when current attr update is of type 'commandStatus' or 'commandResult'
+- Add: add expressions, payloadType and contentType to commands models
+- Fix: exclude all attrs when explicitAttrs is an empty array (#1235)
++- Fix: bad query searching for group using resource instead of type by executeUpdateSideEffects (commands) (#1216)
+- Fix: search device and group for a command using entity type when provided to proper match (#1211)
+- Upgrade mongodb dep from 3.6.8 to 3.6.12
+- Upgrade mongoose dep from 5.7.7 to 5.7.14
+- Upgrade moment dep from 2.24.0 to 2.29.2 due to security vulnerability (CVE-2022-24785)
+- Upgrade async dep from 2.6.2 to 2.6.4 due to security vulnerability (CWE-1321)
+
+2.20.0 (Marth 3rd, 2022)
+
+- Fix: clean service and subservice domain fields when clean domain so logs now show correct serv= and subserv= (#1201)
+- Remove: obsolete NGSIv1-based commandLine utility (along with command-shell-lib and mu2 dependencies)
+- Remove: long time unused agentConsole utility
+
+2.19.0 (February 7th, 2022)
+
+- Add: extend explicitAttrs to allow JEXL expression for conditional propagation of measures (#1179)
+- Add: new JEXL transformations for adding and removing elements to/from Array: addset, removeset
+- Add: allow to use static attributes into JEXL expressions (#1184)
+- Add: add underscore to legacy expression parser (#1191)
+- Add: support for adding and updating device handler (iota-json#602)
+- Add: support both WARN and WARNING log levels (#1146)
+- Add: allow update polling device field (iota-json#602)
+- Fix: fill serv/subserv properly in context log of plugins (#1189)
+- Fix: change severity from WARN to INFO when invalid context in contextAvailable of legacy expression plugin occcurs
+- Fix: try get group by type using current type if no type is provided (#1155)
+- Fix: JEXL NGSI-LD null processing extended to remove invalid calculated values (#1164)
+- Fix: Remove preprocess stripping of explicitAttrs (#1151)
+- Fix: NGSI-LD commands are invalid (#1185)
+- Fix: replace request obsolete library by got (#858)
+- Upgrade logops dep from 2.1.0 to 2.1.2 due to colors dependency corruption
+
+2.18.0 (November 12th, 2021)
+
+- Add: new JEXL get TimeZone Offset (valid for summer winter schedulles) and binary shifting for bitwise operator
+- Add: new JEXL transformation for Array.slice(init, end) in order to simplify binary-frame-string field extraction
+- Fix: IOTA sends illegal entity type or entity id to CB (#1124)
+- Fix: include attribute metadata in attribute device info for API requests (#1115)
+- Fix: set status code response from CB for EntityGenericError is raised (#1109)
+- Fix: export fillDomains function to iotagent-node-lib available functions (needed to fix logs in iotagent-json#587 and iotagent-ul#508)
+- Fix: keep internalAttributes stored in device mongo collection when update it (#1092)
+- Fix: accept the entry internal_attributes in a PUT /iot/devices/:deviceId (#1083)
+- Fix: amend null processing for NGSI-LD (#1118)
+- Fix: support of same entity_id and diferent entity_type in multientity plugin (#1127)
+- Fix: align the NGSI-v2 provisioning keywords Text and TextUnrestricted to map directly to NGSI-LD Property (#1131)
+_ Fix: JEXL undefined, null and falsy values support (#1132)
+- Updated JEXL dependecy from 2.1.1 to 2.3.0 to allow the usage of NGSI operators ($inc, etc.)
+- Remove: NGSI-v1 implementation (#966)
+
+2.17.0 (August 30th, 2021)
+
+- Add: new JEXL transformation for JSON parse/stringify (#1087)
+- Add: support for externalised JEXL transformations, at libraty level and inyected via API (#1056)
+- Fix: try to search for a device group service in base of not only by apikey but also type (#1076)
+- Fix: rename provided jexl function sumaarray to addreduce (#1073)
+
+2.16.0 (June 18, 2021)
+
+- Add: more functions to JEXL transformations (#1052)
+- Add: db uri and options in mongo connection log INFO trace
+ Fix: prevent to update an entity with an empty payload
+- Fix: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
+- Fix: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
+- Fix: add getTypeSilently for device group and use in device registration to avoid false mongo alarm
+- Fix: check isNaN value in JEXL extractContext to avoid misbehaviours (#1066)
+- Fix: simplify contextAvailable for JEXL perser allowing null and undefined substitutions (#1053)
+- Fix: do not transform attribute value using attribute type after apply expression plugin JEXL (#1036)
+- Fix: use explicitAttrs defined in group is not defined at device level (#1045, #1016)
+- Fix: autoprovision feature, removing the relationship with appendMode (#1003)
+- Fix: autoprovision functionality not working as expected when configured at device/group level in NGSIv1 API (#1003)
+- Fix: appendMode not working in NGSIv2
+- Fix: apply NGSIv2 timestamp properly to array of entities
+- Fix: check expression context before apply it in entity_name (#1040)
+- Fix: check entityId is valid after apply expression in multientity plugin (#1039)
+- Fix: check access to data in fillService facility
+- Fix: use expressionLanguage defined in group is not defined at device level (#1027)
+- Fix: ensure service of groups, device and commands is stored in mongo in lowercase (#1023)
+- Fix: group command is not provisioned in device when entity_type is different (#1011)
+- Fix: avoid automatic conversion from geo:xxxx ('xxxx' diferent from 'json') to geo:json (reverts the work done in PR #854) (*)
+- Fix: update MongoDB accesses to use lean() for faster retrieval
+- Fix: PUT /iot/devices/:deviceId operation to implement proper update of entity_name and entity_type (#770)
+- Fix: Include @context on NGSI-LD subscription (#1019)
+- Upgrade underscore dep from 1.9.1 to 1.12.1 due to security vulnerability
+- Upgrade mongodb dep from 3.2.3 to 3.6.8
+- Upgrade mongoose dep from 5.7.5 to 5.7.7
+- Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
+
+(*) Also included in 2.15.1
+
+2.15.0 (February 18th, 2021)
+
+- Add: return apikey in GET device if device was provisioned with explicit apikey (#977)
+- Add: allow update device apikey using Update (put) API (#978)
+- Add: defaultEntityNameConjunction config (env var IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION) and configuration group API field for default entity_name conjunction (#944)
+- Add: prettier code formatting
+- Add: husky and lint-staged
+- Add: basic NGSI-LD support as experimental feature (#842)
+    - Active measures
+        - GeoJSON and DateTime, unitCode and observedAt NGSI-LD support
+            The NGSI v2 TimeInstant element has been mapped onto the NGSI-LD observedAt property
+            The NGSI v2 metadata.unitCode attribute has been mapped onto the NGSI-LD unitCode property
+        - Multi-measures
+        - Lazy Attributes
+        - Commands
+        - Mixed mode (based in ngsiVersion field in the provisioning API)
+        - Support to linked data entities to enable the traversal of the nodes of the knowledge graph
+- Fix: ensure use proper expression parser in multientity plugin (#989)
+- Fix: ensure registrationId is updated when device with commands is updated
+- Fix: use null instead of ' ' as default attribute value in entity provisioned (#938)
+- Fix: Add support for lazy and internal_attributes in service notifications to Manager (#768)
+- Fix: combine multi-entity and expressions with duplicate attribute name, by enabling expression over object_id (which are not duplicated in a attribute mapping contrary to name) (#941)
+- Fix: bug in legacy and JEXL expression that was not converting "0" to 0
+- Fix: support for mapping different attributes to the same entity_name
+- Fix: Ensure GeoJSON is correctly encoded in NGSI-v2 requests (#961)
+- Update codebase to use ES6
+    - Remove JSHint and jshint overrides
+    - Add esLint using standard tamia presets
+    - Replace var with let/const
+    - Fix or disable eslint errors
+
+2.14.0 (Noviembre 16th, 2020)
+
+- Add: enable use group commands in device and register it in iotagent-manager
+- Add: extends commands definition to add mqtt options (qos, retain)
+- Add: include findTypeSilently for groups to log some false errors as debug instead of alarm
+- Add: include description field in group schema
+- Add: include from in log context (#918)
+- Add: lax validation mode using IOTA_RELAX_TEMPLATE_VALIDATION (#920)
+- Fix: add missed expressionLanguage to deviceProvisioningServer
+- Fix: bad type in check expressionLanguage at device provision
+- Fix: Update internal attributes in Group update (#917)
+- Fix: Static attributes from service not applied if device has static attributes (#757)
+- Fix: IOTA_EXPLICIT_ATTRS env var was not working
+- Move Docker secret support inside the Node Application - remove Entrypoint (#885)
+
+2.13.0 (September 14th, 2020)
+
+- Add: support for JEXL as expression language (#801, #687, #868)
+- Add: expressionLanguage to save/update device and group
+- Add: mongodb additional options (ssl and extraArgs) to be able to connect "MongoDB as a Cloud Service" (#859)
+- Add: template to allow metadata to be set via the Device API (#870)
+- Add: selectively ignore some of the measures (iotagent-json#416, iotagent-ul#372)
+- Fix: multientity when more than 2 attribute with same name and object_id (#877)
+- Fix: log always writing the same correlator id and transaction id (iota-json#426, iota-ul#326)
+- Fix: log device group error detail when group not found
+- Fix: fix and use fillService to fix logs in provision
+- Fix: some ngsi service log levels
+- Fix: listing service groups returns only a single service group (#894)
+- Fix: do not intercept error about DEVICE_GROUP_NOT_FOUND in checkApiKeyAndResource (#889)
+- Fix: do not intercept error about DEVICE_NOT_FOUND in findOrCreate and checkDUplicates device (#889)
+- Overall update of dev package dependencies
+- Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
+
+2.12.0 (April 7th, 2020)
+
+- Add: NGSIv2 metadata support to device provisioned attributes
+- Add NGSIv2 metadata support to attributeAlias plugin.
+- Add mongodb authentication: IOTA_MONGO_USER, IOTA_MONGO_PASSWORD and IOTA_MONGO_AUTH_SOURCE (#844)
+- Fix: Error message when sending measures with unknown/undefined attribute
+- Fix: add null check within executeWithSecurity() to avoid crash (#829)
+
+2.11.0 (November 4th, 2019)
+
+- Add: NGSIv2 context forwarding (lazy attributes and commands) (#527)
+- Add: autoprovision (appendMode) in device and group provision (#805)
+- Add: configure multithreading using cluster nodejs module (through multicore config.js parameter or IOTA_MULTI_CORE environment variable).
+- Fix: avoid using throttling in subscriptions (both in NGSIv1 and NGSIv2 configurations)
+- Fix: deviceRegistrationDuration ignored in NGSIv2 registrations and subscriptions creation so they are created non-expirable
+- Fix: possible startup fail using IOTA_CB_ and IOTA_NORTH_ env vars due to uninitization of config object
+- Fix: using "append" instead of "APPEND" (which is deprecated) in NGSIv2 operations
+- Fix: allow blank as an override for defaultResource
+- Upgrade mongoose dependency from 5.5.4 to 5.7.5 due to security warning
+
+2.10.0 (August 13th, 2019)
+
+- Set Nodejs 8 as minimum version in packages.json (effectively removing Nodev6 from supported versions)
+- Add: to use apikey to search group configuration at device registration time
+- Upgrade async dependency from 2.6.1 to 2.6.2
+- Upgrade body-parser dependency from ~1.18.3 to ~1.19.0
+- Upgrade moment dependency from ~2.22.2 to ~2.24.0
+- Upgrade moment-timezone dependency from ~0.5.21 to ~0.5.25
+- Upgrade mongodb dependency from 3.1.8 to 3.2.3
+- Upgrade mongoose dependency from 5.3.6 to 5.5.4
+- Upgrade query-string dependency from 6.2.0 to 6.5.0
+- Upgrade coveralls dev dependency from ~3.0.2 to ~3.0.3
+- Upgrade jshint dev dependency from ~2.9.6 to ~2.10.2
+- Upgrade mocha dev dependency from 5.2.0 to 6.1.4
+- Upgrade nock dev dependency from 10.0.1 to 10.0.6
+- Upgrade timekeeper dev dependency from 2.1.2 to 2.2.0
+
+2.9.0 (May 22nd, 2019)
+
+- Set Nodejs 6 version in packages.json (effectively removing Nodev4 as supported version)
+- Add: new functions to set callbacks for removal of devices and groups (#735)
+- Add: support for authentication to NGSI subscription requests (#592)
+- Add: IOTA_AUTH_URL, IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET and IOTA_AUTH_TOKEN_PATH env vars
+- Add: handlers defined with setConfigurationHandler receive as argument the service, subservice, resource and apikey (#769)
+- Fix: process dies if reconnection to DB fails instead of remain in a zombie state (#772)
+- Fix: incomplete HTTPS support for NGSI subscriptions (#593)
+- Fix: user provider timestamp correctly propagated to mapped entities when multientity pluging is used (#748)
+- Fix: add ?type parameter in CB request updates to avoid potential entity ambiguities (#733)
+- Upgrade from logops 1.0.8 to 2.1.0
+- Upgrade from node-uuid ~1.4.1 to uuid ~3.3.2.
+
+2.8.1 (December 19th, 2018)
+
+- Add: extends OAuth2 authentication to support integration with FIWARE Keyrock IDM (#663)
+- Add: implements OAuth2 authentication as part of device provisioning requests (#663)
+- Add: uses provisioned timezone to generate TimeInstant values (#672)
+- Add: missed conf env vars about authentication (#704)
+- Add: timestamp in device and group provision (#655)
+- Add: protocol in device provision if not provided (#652)
+- Fix: conf env var about contextbroker host
+- Fix: use trust and cbHost from deviceGroup (#685)
+- Fix: multientity multimeasure with the same att name
+- Fix: missing support for device=true in the delete service endpoint (see #596)
+- Fix: timestamp is now included just in non empty (more than id and type) multienty entitites
+- Fix: object_id fields are not introduced in CB requests by alias plugin (#660)
+- Fix: isDomain is not used anymore for context availability registration (#701)
+- Fix: checks ISO8601 timeinstants provided by devices (#679)
+- Fix: corrects linting and includes npm run lint in travis CI
+- Fix: mosquitto.conf.example file not found by iot/mosquitto Dockerfile (#554)
+- Upgrade: logops dependence from 1.0.0 to 1.0.8
+- Upgrade: async dependence from 1.5.2 to 2.6.1
+- Upgrade: body-parser dependence from ~1.11.0 to ~1.18.3
+- Upgrade: express dependence from ~4.11.2 to ~4.16.4
+- Upgrade: jison dependence from 0.4.17 to 0.4.18
+- Upgrade: moment dependence from ~2.19.4 to ~2.22.2
+- Upgrade: mongodb dependence from 2.2.35 to 3.1.8
+- Upgrade: mongoose dependence from 4.13.12 to 5.3.6
+- Upgrade: mustache dependence from 2.2.1 to 3.0.0
+- Upgrade: query-string dependence from 4.3.4 to 6.2.0
+- Upgrade: request dependence from 2.39.0 - 2.81.0 to 2.88.0
+- Upgrade: underscore dependence from ~1.7.0 to ~1.9.1
+- Ensure precise dependencies (~=) are used in packages.json
+- Remove: XML related code, dependencies and files (#691)
+- Remove: old unused dependencies (sax, grunt, closure-linter-wrapper)
+
+2.7.0 (August 6th, 2018)
+
+- Add: allow NGSIv2 for updating active attributes at CB, through configuration, supporting all plugins (Timestamp Compression, Timestamp Processing, Expression Translation, Attribute Alias, Event, Bidirectionality and Multientity) (#527)
+- Add: supports NGSIv2 for device provisioning (entity creation and context registration) at CB (#527)
+- Add: casting attribute's values to JSON native types (activable by config.autocast)
+- Add: support HTTPS requests toward Keystone (if url is used in the authorization configuration)
+- Add: support OAuth2 provider as authentication backend (#591)
+- Add: support for HTTPS requests toward CB (if IOTA_CB_URL is used) (#578)
+- Add: support HTTPS requests toward IOTAManager (if IOTA_IOTAM_URL is used) (#578)
+- Add: log mongo error before raise alarm (#577)
+- Add: configuration service is exposed as part of the module
+- Fix: Check boolean config fields against right boolean value
+- Fix: IOTA_SIGLE_MODE, IOTA_APPEND_MODE, IOTA_POLLING_EXPIRATION, IOTA_POLLING_DAEMON_FREQ env vars are now taken into account (previously there were ignored)
+- Fix: IOTA_MONGO_RETRIES and IOTA_MONGO_RETRY_TIME env vars are now taken into account (previously there were ignored)
+- Fix: automatic device provisioning by means of Configuration Group fails due to a bug in findConfigurationGroup function (#544)
+- Fix: static attributes seem not supported in Configuration Group provisioning (#550)
+- Fix: documentation and examples, using correctly "attributes" field in the Configuration API instead of "active" (#558)
+- Fix: correctly return 404 when asking to remove a not existing device (#585)
+- Fix: Context broker environment variables are correctly loaded
+- Fix: GET call to northbound group endpoint returns multiple services (#604)
+- Fix: timestampProcessPlugin supports processing an array of NGSI entities in NGSIv2 (#621)
+- Fix: undefined MONGO-ALARMS in logs due to a bad mongo query. (#630, #577)
+- Fix: multientity ngsiv1 duplicated attributes in entity (#627)
+- Fix: match attributes by object_id using multientity plugin and alias in ngsiv2 (#629)
+- Fix: check foundGroup count in generateDuplicateHandle (#633)
+- Fix: allow provision device entity with multientity attributes (#628)
+- Fix: multientity with multiple measures in ngsiv2 (#635)
+- Fix: aligns expression plugin and config.autocast casting (#643)
+- Fix: replace context by ctx name var to avoid weird collisions
+- Upgrade mongodb dependency version to 2.2.35
+- Upgrade mongoose dependency version to 4.13.12
+
+2.6.0 (February 26th, 2018)
+
+- Upgrade mongoose dependence version to 4.13.3 (*)
+- Fix command name in some commands logs at debug log level
+- Fix bug in mergeArrays function of deviceService, precluding updates to work when internalAttributes of type Array were used (#571)
+
+(*) Also in release 2.5.1
+
+2.5.0 (November 17th, 2017)
+
+- Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
+- Alarm raises with null error (#521)
+- Capture Mongo DB connection errors
+- Update MongoDB driver in order to fix NODE-818 error (#545)
+
+2.4.1 (November 21th, 2016)
+
+- Alarm raises with null error (#521)
+- Capture mongo Connection Errors
+
+2.4.0 (November 10th, 2016)
+
+- Add an Attribute Expression Plugin (#440)
+- Add Multientity plugin (#468)
+- Add bidirectionality mechanisms for composed attributes (#474)
+- Add String composition functions for expressions
+- Bidirectional plugin doesn't apply to active attributes defined in a Configuration Group (#479)
+- FIX Multiple values not allowed in polling commands
+- FIX [Docu] Remove "Remove tag" from examples (#481)
+- FIX Notifications return 404 instead of a 200 OK (#484)
+- FIX Device creation with attribute named "TimeInstant" is not allowed (#486)
+- FIX Iota transformation plugins regex validation error (#489)
+- ADD Add single quotes as valid string marks
+- FIX Get device info does not include the plugins fields (#492)
+- FIX Transformation plugin for indexof (#493)
+- FIX Entities in multientity scenarios cannot be defined as expressions (#488)
+- FIX Cast needed for transformation plugin (#497)
+- FIX Delete service should return 204 instead 200 (#174)
+- FIX Bidirectional plugin provision fails (#503)
+- FIX Missing context in logger entries (#454)
+- FIX Transformation plugin variable names set (#506)
+- FIX Transformation plugin - More than one variable name with numbers (#508)
+- FIX Pool command expired but CB not updated (#509)
+- ADD an alarm management module (#512)
+- FIX Missing operations manual (#485)
+- ADD a mechanism to share constants and error definitions between IoTAs (#386)
+
+2.3.0 (October 5th, 2016)
+
+- Add polling command support for the Library #455
+- FIX Entity name used instead of id in command identification
+- Add expiration time for Polling commands (#460)
+- FIX It is not possible to create two devices with the same ID (#462)
+- ADD At service start-up retry if dependencies (mongo, orion, etc.) are not available #357
+
+2.2.0 (September 9th, 2016)
+
+- Fix precedence in merging device and configuration attributes.
+- Merge configuration information in the retrieveDevice() function (#405)
+- Expose the singleConfigurationMode attribute using environment variables (#404)
+- Devices provisioned with no configuration are not found in HTTP measure reporting (#124)
+- In MongoDB32 no group is found if undefined resource is passed (#410)
+- Extract common middleware to a new module (#415)
+- Add an administrative operation to get the log level (#417)
+- Add the 'comp' field to the IoTA's log (#419)
+- Fix Static attributes not shown in device group updates (#423)
+- Fix IoTAgent returns non-NGSI error as a response to an error in the Context Providers (#422)
+- Fix Documentation typos and aspects to fix (#426)
+- Add the names of the DB fields to the documentation (#427)
+- FIX IOTAM Registrations won't send static attributes in group information #430
+- Make the IoTA path in the IoTAM registration request configurable
+- Document TimeInstant entity attribute and metadata (#435)
+- FIX Update device operation ignores static attributes (#438)
+- FIX Logger modules not being singleton cause logging inconsistencies (#442)
+- Remove Device ID Index (#445)
+
+2.1.4 (September 8th, 2016)
+
+- Minor bugfixing
+
+2.1.3 (September 8th, 2016)
+
+- Minor bugfixing
+
+2.1.2 (July 4th, 2016)
+
+- Minor bugfixing
+
+2.1.1 (June 24th, 2016)
+
+- Minor bugfixing.
+
+2.1.0 (June 20th, 2016)
+
+- ADD migration tool to migrate data from C++ IoTAgents to Node.js based ones (#388)
+- FIX changing the log level with environment variables did not work
+- Add functions to allow the IoTAs to check or create devices (#392)
+- ADD version retrieval path (#395)
+- Use the attributes defined in the Configuration as default alias values (#397)
+
+2.0.0 (June 1st, 2016)
+
+- 'Mongodb' module not found when using the --production (#325)
+- Fix Domain objects not working properly (#331).
+- Enable IPv6 for HTTP protocol for the Northbound APIs (#333).
+- Fix Timestamp addition for static attributes generate multiple identical timestamp attributes (#335)
+- Fixes Error deleting service (#328)
+- Command line client raises a 404 when listing groups (#338)
+- When persistence is defined for stats but not for the registries, the IOTA crashes (#340)
+- Refactor the tests in order to ease the creation of new ones (#341)
+- Configurations should allow adding static attributes (#319)
+- Command updates not implemented (#308)
+- Add a new plugin for the creation of Event attributes (#297)
+- Change the way the Configurations work (#343)
+- Initial entity provisioning does not take configurations into account (#263)
+- Entity retrieval on incoming notifications or queries uses the entity name without the type (#260)
+- Change the Identification of the Devices. (#17)
+- Allow the getDevicesByAttribute() function of the In-Memory repository to search through all the services (#353)
+- Fix Pass service and subservice as arguments in command handlers (#355)
+- Update the documentation to reflect the changes in function signatures (#352)
+- Add defaultAPIKey and utils to retrieve the APIKey for a device (#360)
+- Fix Command handler doesn't work if no update handler is defined (#363)
+- Read configuration values from environment variables (#365)
+- Fix Endpoint attribute not stored in mongo (#369)
+- Fix Add a prefix for all the environment variables (#375)
+- Assess command_result field (#374)
+- Environment IOTA_MONGO_REPLICASET missing (#378)
+- Add TimeInstant processing plugin (#380)
+
+1.0.0 (May 3rd, 2016)
+
+- Change log level using the administration API (#289)
+- Use headers to track global transaction ID (#288)
+- Include service and subservice in log traces (#290)
+- Add endpoint attribute to the Device model
+- Update test shell to allow Stress test commands
+- Add support for MongoDB Replica Sets (#303)
+- Update commands to make them asynchronous under stress testing
+- Integrate with IoT Manager
+- Add new transport field (#309)
+- When a query comes to the IOTA the Static Attributes should not be returned (#312)
+- Add required files for integration with Sonar (#295)
+- Configuration API Should allow to modify API Key (#318)
+- Timestamp and level missing in logs (#320)
+
+0.10.0 (February 22nd, 2016)
+
+- Fix InternalAttributes type in create Device JSON Schema Template.
+- Updating device provisioning for new attributes was not working (#277)
+- Wrong references in logs, while creating new configurations (#279).
+- Create a config service to avoid multiple initializations (#167).
+- Use a single database configuration for all persistence services (#173).
+
+0.9.8 (February 12th, 2016)
+
+- Minor bugfixing.
+
+0.9.7 (February 10th, 2016)
+
+- Add a subscription mechanism in the NGSI service (#259).
+- Use a constants file to gather all the string constants in the system (#254).
+- Change timestamp type to 'ISO8601' (#265).
+- Fix documentation problems (#257) and (#262).
+- Update and fix dependencies with shrinkwrap.
+
+0.9.6 (February 10th, 2016)
+
+- FIX Getting the information of a provisioned device returns an spurious 'id' attribute in attribute descriptions (#245).
+
+0.9.5 (January 27th, 2016)
+
+- FIX Getting the information of a provisioned device returns an spurious 'id' attribute in attribute descriptions (#245).
+
+0.9.4 (January 26th, 2016)
+
+- FIX Library errors make HTTP Response invalid (#239).
+
+0.9.3 (January 14th, 2016)
+
+- FIX Alias plugin do not change attribute type.
+- ADD Extract the command line handlers to a single module (#178).
+- ADD global error handler (#231).
+- FIX Improve device provisioning documentation (#232).
+- FIX Crash with malformed PUT /devices/:id (#228).
+- ADD JSON Schema validation for the Device Provisioning API (#230).
+- FIX Attribute id in alias should be named 'object_id' (#233).
+
+0.9.2 (December 23rd, 2015)
+
+- FIX Typo dealing with attributes with metadata.
+
+0.9.1 (December 23rd, 2015)
+
+- Query middlewares won't work due to an extra parameter in callbacks (#220).
+
+0.9.0 (December 22nd, 2015)
+
+- Add groupRegistry.clear() to the clearAll function.
+- Add a plugin mechanism to perform translations in the entity data (#193).
+- Add /iot prefix in IOTA url for IOTAM integration.
+- Modify the answer for the GET devices and GET groups operations (#196).
+- Add APPEND Mode for Context Broker updates.
+- Add Timestamp compression plugin.
+- Add Metadata filtering to data filtering plugins (#204).
+- Fix Device DELETE should return 204 instead of 200 (#203).
+- Refactor the generic functions used in the time compression plugin to a common module (#205).
+- Modify the answer for the GET devices and GET groups operations (#196).
+- Fix List devices: the returned count value should be the total count of registered devices (#199).
+- Fix Asking for the list of configurations of a subservice return results for all services #(209).
+- Fix Integrate Node.js IOTAgents with the IOTA Manager (and the administration portal) (#159).
+- Fix Service based filtering in MongoDB registries won't work.
+- Add attribute aliases in updates (#182).
+- Fix bug when trying to stop an unstarted agent (#179).
+- Fix create device: the default value for entity_name should be [entity_type]:device_id.
+
+0.8.4 (November 24th, 2015)
+
+- Allow listDevices() to use a single param (#180).
+- Implement generic find function for the device registries.
+- Get info about iotA Version in IoTA-lib request (#184).
+
+0.8.3 (October 22nd, 2015)
+
+- FIX 500 error while removing devices (#151)
+- FIX Change Device Not Found to 404 instead of 500 (#161).
+- ADD First version of the stats registry (#160).
+- FIX Reestructure files and folders (#164).
+- ADD Mongodb action to persist stats.
+- FIX Use Express Methods to check content type (#170).
+
+0.8.2 (October 2nd, 2015)
+
+- ADD Command attributes to the initial entity
+- ADD Checking for multiple context responses (#153)
+- ADD Command option for the IoT Agent Tester to provision lists of devices.
+
+0.6.1 (September 4th, 2015)
+
+- FIX Return meaningful JSON error in ENTITY_GENERIC_ERROR.
+- FIX Add information to generic transport errors (#139).
+
+0.6.0 (September 4th, 2015)
+
+- ADD Authentication mechanisms for the IoT Agent tester.
+- ADD Examples of service and device provisioning for Thinking Things IOTAs.
+- FIX Add error information to generic NGSI errors in updates and queries (#125).
+- FIX Improve general maintainability (#126).
+- ADD Continuous integration using Travis (#131).
+- FIX Change the old temporary fiware-node-logger to use logops (#95).
+- ADD Device provisioning handler (#86).
+- ADD Support for MongoDB 3.0 (#119).
+- FIX Unstability in MongoDB tests (#128).
+
+0.5.1 (June 22nd, 2015)
+
+This minor release modifies the package.json file in order to make the included commands globally executable in a global installation of the module.
+
+0.5.0 (June 21st, 2015)
+
+- ADD Documentation about the release process.
+- FIX Crash when an update arrives and commands attribute is not defined.
+- ADD exit commands.
+- FIX missing headers in group operations.
+- ADD command to show and change IoTAgent console configuration.
+- FIX missing device in 'store()' function of the Memory Registry.
+
+0.4.0 (May 22nd, 2015)
+
+- Fix signature problems in agent console (#69 and #70).
+- Add implementation for the command attributes (#67).
+- Add missing headers in device provisioning with the IoT Agent Tester (#73).
+- Support for string quotes in IoT Agent Tester (#75)
+- Remove commandlineUtils files and substitute with command-node module.
+- Add InternalAttributes attribute for Configuration groups (#85).
+- Add configuration checks at startup (#84 and #83).
+
+0.3.0 (April 10th, 2015)
+
+- ADD Keywords to the package.json.
+- ADD Configuration API for dynamically creating configuration groups.
+- ADD Device Provisioning API and Device Configuration API commands in the testing clients.
+- ADD Pagination in the Device List operations.
+- FIX Remove mandatory constraint for service, servicepath and commands in Device Provisioning (#46).
+- FIX List devices based on the service and servicepath (#45).
+- FIX Lazy attributes mandatory in Device Provisioning (#51).
+- FIX Should allow to provision devices with unconfigured type (#50)
+- ADD Handler for configuration changes from the Configuration API.
+- ADD Constraint to forbid multiple devices with the same ID (#48).
+- ADD Constraint to ensure uniqueness of device configurations (#53).
+
+0.2.0 (February 11th, 2015)
+
+- Complete the Provisioning API with CRUD Operations.
+- Change signature of unregister() funciton to remove unneeded type.
+- Support XML in Context Provider updates and queries.
+- Fix multiple errors found during preparation of CPBR8 Workshop.
+- Improve the documentation to add: Configuration, Security, and IoT Library testing sections.
+- Fix package.json information to prepare the package for publishing.
+
+
+0.1.0 (February 11th, 2015)
+
+- First draft of the IoT Agent library.
