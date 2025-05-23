@@ -827,7 +827,8 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 }
 ```
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without payload).
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without
+payload).
 
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
 the requested information or command execution.
@@ -941,7 +942,8 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd` and `params`.
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without payload).
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without
+payload).
 
 #### Result reporting
 
@@ -1042,13 +1044,16 @@ A new commands flow has been defined (involving also modifications at ContextBro
 are not sent to IOTAs using NGSIv2 notifications, but the current implementation has some differences regarding the
 desired behaviour, which are described next:
 
-* Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`,
-`status`, `info`, `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By
-the moment they are stored in the commands model (commands collection) but nothing is done with them appart from storing.
-* The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device,
-but using the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would typically
-be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
-entity to be updated in that HATEOAS would be the transient entity corresponding to command execuion, not the entity associated to the device.
+-   Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`, `status`, `info`,
+    `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By the
+    moment they are stored in the commands model (commands collection) but nothing is done with them appart from
+    storing.
+-   The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device, but using
+    the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would
+    typically be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this
+    `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
+    entity to be updated in that HATEOAS would be the transient entity corresponding to command execuion, not the entity
+    associated to the device.
 
 ```
 PUT /v2/entities/123456abcdefg/attrs/status?type=switchExecution

@@ -1,3 +1,11 @@
+4.8.0 (May 23rd, 2025)
+
+- Add: notification-based commands (#1455)
+- Add: allow define headers in device commands (iotagent-json#873)
+- Add: index for Device model based on {service: 1, subservice: 1, id: 1, apikey: 1} (#1576)
+- Fix: Duplicated Devices when burst measures to non provisioned Device (iotagent-json#865)
+- Fix: modified JEXL transformations (toisostring, gettime, parseint, etc.) to return null instead of NaN when some unexpected situation occurs (#1701)
+
 4.7.0 (February 3rd, 2025)
 
 - Add: store (and recover) previous jexlctxt and make available in current jexlctxt (#1690)

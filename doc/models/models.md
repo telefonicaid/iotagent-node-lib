@@ -1,6 +1,6 @@
-# MongoDB Datamodel 
+# MongoDB Datamodel
 
-This file displays IoT Agent datamodel stored in the MongoDB database. 
+This file displays IoT Agent datamodel stored in the MongoDB database.
 
 ## Collections
 
@@ -208,7 +208,7 @@ Fields:
 -   **onOk**: _Object_: related with new commands functionality (stored but not yet in use)
 -   **onError** _Object_: related with new commands functionality (stored but not yet in use)
 -   **onInfo** _Object_: related with new commands functionality (stored but not yet in use)
--   **cmdExecution** _Boolean__: related with new commands functionality (stored but not yet in use)
+-   **cmdExecution** \_Boolean\_\_: related with new commands functionality (stored but not yet in use)
 -   **dateExpiration**: { type: Date }: related with new commands functionality (stored but not yet in use)
 -   **creationDate** _date_: creation date of command
 
