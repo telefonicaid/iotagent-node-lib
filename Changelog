@@ -282,7 +282,7 @@ _ Fix: JEXL undefined, null and falsy values support (#1132)
 
 - Add: more functions to JEXL transformations (#1052)
 - Add: db uri and options in mongo connection log INFO trace
- Fix: prevent to update an entity with an empty payload
+- Fix: prevent to update an entity with an empty payload
 - Fix: use getDeviceSilently in checkDuplicates to avoid raise a false mongo alarm.
 - Fix: expose getConfigurationSilently to enable retrieve a configuration without raise a false mongo alarm (#1007)
 - Fix: add getTypeSilently for device group and use in device registration to avoid false mongo alarm
