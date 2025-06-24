@@ -146,6 +146,18 @@
     "payloadType": {
         "description": "Payload type allowed for measures for this device",
         "type": "string"
+    },
+    "useCBflowControl": {
+        "description": "use CB flowControl option",
+        "type": "boolean"
+    },
+    "storeLastMeasure": {
+      "description": "Store last measure",
+      "type": "boolean"
+    },
+    "lastMeasure": {
+      "description": "last measure",
+      "type": "object"
     }
   }
 }

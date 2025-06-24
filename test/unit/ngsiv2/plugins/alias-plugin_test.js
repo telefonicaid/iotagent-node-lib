@@ -107,7 +107,8 @@ const iotAgentConfig = {
     },
     service: 'smartgondor',
     subservice: 'gardens',
-    providerUrl: 'http://smartgondor.com'
+    providerUrl: 'http://smartgondor.com',
+    useCBflowControl: true
 };
 
 describe('NGSI-v2 - Attribute alias plugin', function () {
@@ -146,7 +147,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin1.json')
                 )
                 .reply(204);
@@ -176,7 +177,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin2.json')
                 )
                 .reply(204);
@@ -206,7 +207,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
                 .reply(204);
@@ -237,7 +238,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin3.json')
                 )
                 .reply(204);
@@ -268,7 +269,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin4.json')
                 )
                 .reply(204);
@@ -299,7 +300,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin5.json')
                 )
                 .reply(204);
@@ -329,7 +330,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin6.json')
                 )
                 .reply(204);
@@ -360,7 +361,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin7.json')
                 )
                 .reply(204);
@@ -391,7 +392,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin8.json')
                 )
                 .reply(204);
@@ -422,7 +423,7 @@ describe('NGSI-v2 - Attribute alias plugin', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', 'gardens')
                 .post(
-                    '/v2/entities?options=upsert',
+                    '/v2/entities?options=upsert,flowControl',
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateContextAliasPlugin9.json')
                 )
                 .reply(204);

@@ -145,9 +145,17 @@
               "description": "Optional expression for command transformation",
               "type": "string"
           },
+          "headers": {
+              "description": "Optional headers to include with command",
+              "type": "object"
+          },
           "payloadType": {
               "description": "Payload type",
               "type": "string"
+          },
+          "useCBflowControl": {
+              "description": "use CB flowControl option",
+              "type": "boolean"
           },
           "contentType": {
               "description": "Content type",
@@ -194,6 +202,14 @@
     "payloadType": {
         "description": "Payload type allowed for measures for this device",
         "type": "string"
+    },
+    "storeLastMeasure": {
+      "description": "Store last measure",
+      "type": "boolean"
+    },
+    "lastMeasure": {
+      "description": "last measure",
+      "type": "object"
     }
   }
 }
