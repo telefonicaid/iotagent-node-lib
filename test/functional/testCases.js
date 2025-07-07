@@ -592,6 +592,77 @@ const testCases = [
         ]
     },
     {
+        describeName: '0021c - Simple group with active attributes with special names in object_id',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                object_id: 'fdt',
+                                name: 'fireDetectionThreshold',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'fireDetectionThreshold3',
+                                name: 'fireDetectionThreshold3',
+                                type: 'Number'
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids with special format names in attributes through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        fdt: 10,
+                        fireDetectionThreshold2: 20,
+                        fireDetectionThreshold3: 30
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    fireDetectionThreshold: {
+                        type: 'Number',
+                        value: 10
+                    },
+                    fireDetectionThreshold2: {
+                        type: 'Text',
+                        value: 20
+                    },
+                    fireDetectionThreshold3: {
+                        type: 'Number',
+                        value: 30
+                    }
+                }
+            }
+        ]
+    },
+    {
         describeName: '0022 - Simple group with active attributes and multimeasures',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
