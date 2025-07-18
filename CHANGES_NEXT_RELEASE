@@ -1,1 +1,1 @@
-
+- Add: Support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)

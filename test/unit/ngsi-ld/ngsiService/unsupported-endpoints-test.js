@@ -108,16 +108,6 @@ describe('NGSI-LD - Unsupported Endpoints', function () {
     });
 
     describe('When accessing an Unsupported Endpoint', function () {
-        it('GET /entities should return a valid NSGI-LD error message', function (done) {
-            const options = {
-                url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities',
-                method: 'GET'
-            };
-            request(options, function (error, response, body) {
-                response.statusCode.should.equal(501);
-                done();
-            });
-        });
         it('POST /entities should return a valid NSGI-LD error message', function (done) {
             const options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/ngsi-ld/v1/entities',
