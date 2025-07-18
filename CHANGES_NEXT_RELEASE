@@ -1,1 +1,2 @@
 - Add: Support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
+- Add: Support for NGSI-LD valueType and more NGSI-LD sub-property types (#1723)
