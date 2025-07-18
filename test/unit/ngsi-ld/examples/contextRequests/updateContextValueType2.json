@@ -39,6 +39,27 @@
                         2
                     ]
                 }
+            },
+            "date": {
+                "type": "Property",
+                "value": {
+                    "@type": "Date",
+                    "@value": "2025-07-18"
+                }
+            },
+            "time": {
+                "type": "Property",
+                "value": {
+                    "@type": "Time",
+                    "@value": "14:22:11"
+                }
+            },
+            "datetime": {
+                "type": "Property",
+                "value": {
+                    "@type": "DateTime",
+                    "@value": "2025-07-18T14:22:11.000Z"
+                }
             }
         }
     ]

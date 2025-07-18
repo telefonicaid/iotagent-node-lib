@@ -77,6 +77,21 @@ const iotAgentConfig = {
                     object_id: 'r',
                     name: 'revisions',
                     type: 'Array'
+                },
+                {
+                    object_id: 'd',
+                    name: 'date',
+                    type: 'Date'
+                },
+                {
+                    object_id: 't',
+                    name: 'time',
+                    type: 'Time'
+                },
+                {
+                    object_id: 'dt',
+                    name: 'datetime',
+                    type: 'DateTime'
                 }
             ]
         }
@@ -114,6 +129,21 @@ describe('NGSI-LD: Value Type', function () {
             name: 'r',
             type: 'Array',
             value: '[1,2]'
+        },
+        {
+            name: 'd',
+            type: 'Date',
+            value: '2025-07-18'
+        },
+        {
+            name: 't',
+            type: 'Time',
+            value: '14:22:11Z'
+        },
+        {
+            name: 'dt',
+            type: 'Datetime',
+            value: '2025-07-18T14:22:11Z'
         }
     ];
 

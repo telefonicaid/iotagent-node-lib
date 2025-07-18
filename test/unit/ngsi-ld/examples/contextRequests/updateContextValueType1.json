@@ -31,6 +31,21 @@
                 2
             ],
             "valueType": "Array"
+        },
+        "date": {
+            "type": "Property",
+            "value": "2025-07-18",
+            "valueType": "Date"
+        },
+        "time": {
+            "type": "Property",
+            "value": "14:22:11",
+            "valueType": "Time"
+        },
+        "datetime": {
+            "type": "Property",
+            "value": "2025-07-18T14:22:11.000Z",
+            "valueType": "DateTime"
         }
     }
 ]
