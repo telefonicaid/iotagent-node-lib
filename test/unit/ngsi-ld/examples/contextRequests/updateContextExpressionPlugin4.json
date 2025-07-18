@@ -5,10 +5,7 @@
         "type": "WeatherStation",
         "weather": {
             "type": "Property",
-            "value": {
-                "@type": "Summary",
-                "@value": "Humidity 6 and pressure 1040"
-            }
+            "value": "Humidity 6 and pressure 1040"
         },
         "pressure25": {
             "type": "Property",
@@ -16,10 +13,7 @@
         },
         "humidity12": {
             "type": "Property",
-            "value": {
-                "@type": "Percentage",
-                "@value": "12"
-            }
+            "value": "12"
         }
     }
 ]

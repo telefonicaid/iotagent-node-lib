@@ -105,6 +105,7 @@ It configures the connection parameters to stablish a connection to the Context 
     host: '192.168.56.101',
     port: '1026',
     ngsiVersion: 'ld',
+    valueType: 'valueType',
     jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
 }
 ```
@@ -120,6 +121,7 @@ allowing the computer to interpret the rest of the data with more clarity and de
     host: '192.168.56.101',
     port: '1026',
     ngsiVersion: 'mixed',
+    valueType: 'valueType',
     jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
 }
 ```
@@ -446,8 +448,9 @@ For example in a device document stored in MongoDB will be extended with a subdo
 
 #### `useCBflowControl`
 
-If this flag is activated, when iotAgent invokes Context Broker will use [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism). This flag is overwritten by
-`useCBflowControl` flag in group or device. This flag is disabled by default.
+If this flag is activated, when iotAgent invokes Context Broker will use
+[flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism).
+This flag is overwritten by `useCBflowControl` flag in group or device. This flag is disabled by default.
 
 ### Configuration using environment variables
 
@@ -463,6 +466,7 @@ overrides.
 | IOTA_CB_HOST                         | `contextBroker.host`            |
 | IOTA_CB_PORT                         | `contextBroker.port`            |
 | IOTA_CB_NGSI_VERSION                 | `contextBroker.ngsiVersion`     |
+| IOTA_CB_NGSI_VALUE_TYPE              | `contextBroker.valueType`       |
 | IOTA_NORTH_HOST                      | `server.host`                   |
 | IOTA_NORTH_PORT                      | `server.port`                   |
 | IOTA_LD_SUPPORT_NULL                 | `server.ldSupport.null`         |

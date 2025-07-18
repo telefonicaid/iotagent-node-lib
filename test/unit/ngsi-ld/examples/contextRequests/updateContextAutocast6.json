@@ -4,13 +4,10 @@
         "id": "urn:ngsi-ld:Light:light1",
         "tags": {
             "type": "Property",
-            "value": {
-                "@type": "Array",
-                "@value": [
+            "value": [
                     "iot",
                     "device"
-                ]
-            }
+            ]
         },
         "type": "Light"
     }
