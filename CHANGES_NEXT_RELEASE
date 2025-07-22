@@ -1,2 +1,2 @@
 - Add: Support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
-- Add: Support for NGSI-LD valueType and more NGSI-LD sub-property types (#1723)
+- Add: Support for NGSI-LD valueType and more NGSI-LD sub-property types (new config contextBroker.valueType and associated env var IOTA_CB_NGSI_VALUE_TYPE) (#1723)
