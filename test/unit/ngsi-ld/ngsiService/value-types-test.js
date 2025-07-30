@@ -36,11 +36,13 @@ const iotAgentConfig = {
         host: '192.168.1.1',
         port: '1026',
         ngsiVersion: 'ld',
-        valueType: 'valueType',
         jsonLdContext: 'http://context.json-ld'
     },
     server: {
-        port: 4041
+        port: 4041,
+        ldSupport: {
+            dataType: 'valueType'
+        }
     },
     types: {
         Light: {
@@ -184,7 +186,7 @@ describe('NGSI-LD: Value Type', function () {
     });
     describe('When valueType is set to @type', function () {
         beforeEach(function (done) {
-            iotAgentConfig.contextBroker.valueType = '@type';
+            iotAgentConfig.server.ldSupport.dataType = '@type';
             iotAgentLib.activate(iotAgentConfig, function () {
                 iotAgentLib.clearAll(function () {
                     done();

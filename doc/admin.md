@@ -105,7 +105,6 @@ It configures the connection parameters to stablish a connection to the Context 
     host: '192.168.56.101',
     port: '1026',
     ngsiVersion: 'ld',
-    valueType: 'valueType',
     jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
 }
 ```
@@ -121,7 +120,6 @@ allowing the computer to interpret the rest of the data with more clarity and de
     host: '192.168.56.101',
     port: '1026',
     ngsiVersion: 'mixed',
-    valueType: 'valueType',
     jsonLdContext: 'http://context.json-ld' // or ['http://context1.json-ld','http://context2.json-ld'] if you need more than one
 }
 ```
@@ -147,7 +145,8 @@ used by default. E.g.:
 When connected to an **NGSI-LD** context broker, an IoT Agent is able to indicate whether it is willing to accept `null`
 values and also whether it is able to process the **NGSI-LD** `datasetId` metadata element. Setting these values to
 `false` will cause the IoT Agent to return a 400 **Bad Request** HTTP status code explaining that the IoT Agent does not
-support nulls or multi-attribute requests if they are encountered.
+support nulls or multi-attribute requests if they are encountered. It is also possible to pass on attribute datatypes
+using `@type` or `valueType` if desired.
 
 ```javascript
 {
@@ -155,7 +154,8 @@ support nulls or multi-attribute requests if they are encountered.
     port: 4041,
     ldSupport : {
       null: true,
-      datasetId: true
+      datasetId: true,
+      datatype: 'valueType'
     }
 }
 ```
@@ -466,9 +466,9 @@ overrides.
 | IOTA_CB_HOST                         | `contextBroker.host`            |
 | IOTA_CB_PORT                         | `contextBroker.port`            |
 | IOTA_CB_NGSI_VERSION                 | `contextBroker.ngsiVersion`     |
-| IOTA_CB_NGSI_VALUE_TYPE              | `contextBroker.valueType`       |
 | IOTA_NORTH_HOST                      | `server.host`                   |
 | IOTA_NORTH_PORT                      | `server.port`                   |
+| IOTA_LD_SUPPORT_DATA_TYPE            | `server.ldSupport.datatype`     |
 | IOTA_LD_SUPPORT_NULL                 | `server.ldSupport.null`         |
 | IOTA_LD_SUPPORT_DATASET_ID           | `server.ldSupport.datasetId`    |
 | IOTA_PROVIDER_URL                    | `providerUrl`                   |

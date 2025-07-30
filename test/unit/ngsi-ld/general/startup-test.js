@@ -68,7 +68,6 @@ describe('NGSI-LD - Startup tests', function () {
             process.env.IOTA_CB_HOST = 'cbhost';
             process.env.IOTA_CB_PORT = '1111';
             process.env.IOTA_CB_NGSI_VERSION = 'ld';
-            process.env.IOTA_CB_NGSI_VALUE_TYPE = 'valueType';
             process.env.IOTA_NORTH_HOST = 'localhost';
             process.env.IOTA_NORTH_PORT = '2222';
             process.env.IOTA_PROVIDER_URL = 'provider:3333';
@@ -90,6 +89,7 @@ describe('NGSI-LD - Startup tests', function () {
             process.env.IOTA_FALLBACK_PATH = 'smartgondor';
             process.env.IOTA_LD_SUPPORT_NULL = 'false';
             process.env.IOTA_LD_SUPPORT_DATASET_ID = 'false';
+            process.env.IOTA_LD_SUPPORT_DATA_TYPE = 'valueType';
 
             nock.cleanAll();
 
@@ -105,7 +105,6 @@ describe('NGSI-LD - Startup tests', function () {
             delete process.env.IOTA_CB_HOST;
             delete process.env.IOTA_CB_PORT;
             delete process.env.IOTA_CB_NGSI_VERSION;
-            delete process.env.IOTA_CB_NGSI_VALUE_TYPE;
             delete process.env.IOTA_NORTH_HOST;
             delete process.env.IOTA_NORTH_PORT;
             delete process.env.IOTA_PROVIDER_URL;
@@ -127,6 +126,7 @@ describe('NGSI-LD - Startup tests', function () {
             delete process.env.IOTA_FALLBACK_PATH;
             delete process.env.IOTA_LD_SUPPORT_NULL;
             delete process.env.IOTA_LD_SUPPORT_DATASET_ID;
+            delete process.env.IOTA_LD_SUPPORT_DATA_TYPE;
         });
 
         afterEach(function (done) {
@@ -137,7 +137,6 @@ describe('NGSI-LD - Startup tests', function () {
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 config.getConfig().contextBroker.url.should.equal('http://cbhost:1111');
                 config.getConfig().contextBroker.ngsiVersion.should.equal('ld');
-                config.getConfig().contextBroker.valueType.should.equal('valueType');
                 config.getConfig().contextBroker.jsonLdContext.should.equal('http://context.jsonld');
                 config.getConfig().contextBroker.fallbackTenant.should.equal('openiot');
                 config.getConfig().contextBroker.fallbackPath.should.equal('smartgondor');
@@ -158,6 +157,7 @@ describe('NGSI-LD - Startup tests', function () {
                 config.getConfig().mongodb.port.should.equal('5555');
                 config.getConfig().mongodb.db.should.equal('themongodb');
                 config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                config.getConfig().server.ldSupport.dataType.should.equal('valueType');
                 done();
             });
         });
