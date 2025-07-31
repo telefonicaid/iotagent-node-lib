@@ -1,1 +1,2 @@
 - Fix: init express trust proxy to proper fill from field of domain logger
+- Add: Support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
