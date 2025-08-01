@@ -145,7 +145,8 @@ used by default. E.g.:
 When connected to an **NGSI-LD** context broker, an IoT Agent is able to indicate whether it is willing to accept `null`
 values and also whether it is able to process the **NGSI-LD** `datasetId` metadata element. Setting these values to
 `false` will cause the IoT Agent to return a 400 **Bad Request** HTTP status code explaining that the IoT Agent does not
-support nulls or multi-attribute requests if they are encountered.
+support nulls or multi-attribute requests if they are encountered. It is also possible to pass on attribute datatypes
+using `@type` or `valueType` if desired.
 
 ```javascript
 {
@@ -153,7 +154,8 @@ support nulls or multi-attribute requests if they are encountered.
     port: 4041,
     ldSupport : {
       null: true,
-      datasetId: true
+      datasetId: true,
+      datatype: 'valueType'
     }
 }
 ```
@@ -446,8 +448,9 @@ For example in a device document stored in MongoDB will be extended with a subdo
 
 #### `useCBflowControl`
 
-If this flag is activated, when iotAgent invokes Context Broker will use [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism). This flag is overwritten by
-`useCBflowControl` flag in group or device. This flag is disabled by default.
+If this flag is activated, when iotAgent invokes Context Broker will use
+[flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism).
+This flag is overwritten by `useCBflowControl` flag in group or device. This flag is disabled by default.
 
 ### Configuration using environment variables
 
@@ -465,6 +468,7 @@ overrides.
 | IOTA_CB_NGSI_VERSION                 | `contextBroker.ngsiVersion`     |
 | IOTA_NORTH_HOST                      | `server.host`                   |
 | IOTA_NORTH_PORT                      | `server.port`                   |
+| IOTA_LD_SUPPORT_DATA_TYPE            | `server.ldSupport.datatype`     |
 | IOTA_LD_SUPPORT_NULL                 | `server.ldSupport.null`         |
 | IOTA_LD_SUPPORT_DATASET_ID           | `server.ldSupport.datasetId`    |
 | IOTA_PROVIDER_URL                    | `providerUrl`                   |

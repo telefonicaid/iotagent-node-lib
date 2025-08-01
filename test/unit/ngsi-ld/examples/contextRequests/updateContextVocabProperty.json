@@ -1,0 +1,11 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "category": {
+        "type": "VocabProperty",
+        "vocab": "actuator"
+    },
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]

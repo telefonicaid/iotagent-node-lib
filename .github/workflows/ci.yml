@@ -53,6 +53,9 @@ jobs:
         node-version:
           - 16.x
           - 18.x
+          - 20.x
+          - 22.x
+          - 24.x
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
@@ -60,7 +63,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '${{ matrix.node-version }}'
-      - name: 'Unit Tests with Node.js ${{ matrix.node-version }}'
+      - name: 'Unit and Functional Tests with Node.js ${{ matrix.node-version }}'
         run: |
           npm install
           npm test
