@@ -9,10 +9,7 @@
     },
     "bootstrapServer": {
       "type": "Property",
-      "value": {
-        "@type": "Address",
-        "@value": "127.0.0.1"
-      }
+      "value": "127.0.0.1"
     }
   }
 ]

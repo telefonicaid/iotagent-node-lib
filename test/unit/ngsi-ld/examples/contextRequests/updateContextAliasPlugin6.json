@@ -5,10 +5,7 @@
         "type": "Light",
         "keep_alive": {
                 "type": "Property",
-                "value": {
-                    "@type": "None",
-                    "@value": "null"
-                }
+                "value": "null"
             }        
     }
 ]

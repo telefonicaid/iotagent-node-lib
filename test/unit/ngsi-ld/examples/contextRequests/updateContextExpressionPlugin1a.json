@@ -9,10 +9,7 @@
     },
     "weather": {
       "type": "Property",
-      "value": {
-        "@type": "Summary",
-        "@value": "Humidity NaN and pressure 20800"
-      }
+      "value": "Humidity NaN and pressure 20800"
     }
   }
 ]

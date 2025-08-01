@@ -1,0 +1,51 @@
+[
+    {
+        "@context": "http://context.json-ld",
+        "id": "urn:ngsi-ld:Light:ws1",
+        "type": "Light",
+        "consumption": {
+            "type": "Property",
+            "value": 1,
+            "valueType": "Number"
+        },
+        "alive": {
+            "type": "Property",
+            "value": "foo"
+        },
+        "updated": {
+            "type": "Property",
+            "value": false,
+            "valueType": "Boolean"
+        },
+        "manufacturer": {
+            "type": "Property",
+            "value": {
+                "hello": "world"
+            },
+            "valueType": "Object"
+        },
+        "revisions": {
+            "type": "Property",
+            "value": [
+                1,
+                2
+            ],
+            "valueType": "Array"
+        },
+        "date": {
+            "type": "Property",
+            "value": "2025-07-18",
+            "valueType": "Date"
+        },
+        "time": {
+            "type": "Property",
+            "value": "14:22:11",
+            "valueType": "Time"
+        },
+        "datetime": {
+            "type": "Property",
+            "value": "2025-07-18T14:22:11.000Z",
+            "valueType": "DateTime"
+        }
+    }
+]
