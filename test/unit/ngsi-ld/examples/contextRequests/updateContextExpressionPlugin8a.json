@@ -7,10 +7,7 @@
             },
             "weather": {
                 "type": "Property",
-                "value": {
-                    "@type": "Summary",
-                    "@value": "Humidity NaN and pressure NaN"
-                }
+                "value":  "Humidity NaN and pressure NaN"
             },
             "id": "urn:ngsi-ld:WeatherStation:ws1",
             "type": "WeatherStation"

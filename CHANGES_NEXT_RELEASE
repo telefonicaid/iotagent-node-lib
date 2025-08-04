@@ -1,2 +1,3 @@
 - FIX: store as lastMeasure just orignal measure when is provided (#1669)
 - Add: Support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
+- Add: Support for NGSI-LD valueType and more NGSI-LD sub-property types (new config server.ldSupport.datatype and associated env var IOTA_LD_SUPPORT_DATA_TYPE) (#1723)

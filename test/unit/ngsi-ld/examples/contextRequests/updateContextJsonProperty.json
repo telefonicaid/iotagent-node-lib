@@ -1,0 +1,13 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "config": {
+      "type": "JsonProperty",
+      "json": {
+          "foo": "bar"
+      }
+    },
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]

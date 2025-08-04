@@ -89,6 +89,7 @@ describe('NGSI-LD - Startup tests', function () {
             process.env.IOTA_FALLBACK_PATH = 'smartgondor';
             process.env.IOTA_LD_SUPPORT_NULL = 'false';
             process.env.IOTA_LD_SUPPORT_DATASET_ID = 'false';
+            process.env.IOTA_LD_SUPPORT_DATA_TYPE = 'valueType';
 
             nock.cleanAll();
 
@@ -125,6 +126,7 @@ describe('NGSI-LD - Startup tests', function () {
             delete process.env.IOTA_FALLBACK_PATH;
             delete process.env.IOTA_LD_SUPPORT_NULL;
             delete process.env.IOTA_LD_SUPPORT_DATASET_ID;
+            delete process.env.IOTA_LD_SUPPORT_DATA_TYPE;
         });
 
         afterEach(function (done) {
@@ -155,6 +157,7 @@ describe('NGSI-LD - Startup tests', function () {
                 config.getConfig().mongodb.port.should.equal('5555');
                 config.getConfig().mongodb.db.should.equal('themongodb');
                 config.getConfig().mongodb.replicaSet.should.equal('customReplica');
+                config.getConfig().server.ldSupport.dataType.should.equal('valueType');
                 done();
             });
         });
