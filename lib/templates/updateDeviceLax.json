@@ -158,6 +158,10 @@
     "lastMeasure": {
       "description": "last measure",
       "type": "object"
+    },
+    "useCmdBySubs": {
+        "description": "use Cmd by subs",
+        "type": "boolean"
     }
   }
 }
