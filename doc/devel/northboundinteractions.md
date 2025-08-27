@@ -1041,7 +1041,7 @@ The Context Broker replies with all the desired data, in R2 format (200 OK):
 #### Differences regarding the new commands mode
 
 A new commands flow has been defined (involving also modifications at ContextBroker). As part of that design, commands
-are not sent to IOTAs using NGSIv2 notifications, but the current implementation has some differences regarding the
+are now sent to IOTAs using NGSIv2 notifications, but the current implementation has some differences regarding the
 desired behaviour, which are described next:
 
 -   Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`, `status`, `info`,
