@@ -157,9 +157,9 @@
               "description": "use CB flowControl option",
               "type": "boolean"
           },
-          "useCmdBySubs": {
-              "description": "use Cmd by subs",
-              "type": "boolean"
+          "cmdMode": {
+              "description": "CB commands mode",
+              "type": "string"
           },
           "contentType": {
               "description": "Content type",
