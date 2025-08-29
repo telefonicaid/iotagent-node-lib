@@ -79,7 +79,8 @@ var config = {
     defaultType: 'Thing',
     expressLimit: '1Mb',
     useCBflowControl: false,
-    storeLastMeasure: false
+    storeLastMeasure: false,
+    useCmdBySubs: false
 };
 
 module.exports = config;

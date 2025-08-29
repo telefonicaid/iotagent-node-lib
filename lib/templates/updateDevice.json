@@ -157,6 +157,10 @@
               "description": "use CB flowControl option",
               "type": "boolean"
           },
+          "cmdMode": {
+              "description": "CB commands mode",
+              "type": "string"
+          },
           "contentType": {
               "description": "Content type",
               "type": "string"
