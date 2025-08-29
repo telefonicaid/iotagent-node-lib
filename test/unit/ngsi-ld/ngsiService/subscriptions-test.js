@@ -181,7 +181,7 @@ describe('NGSI-LD - Subscription tests', function () {
     describe('When a new notification comes to the IoTAgent', function () {
         beforeEach(function (done) {
             iotAgentLib.getDevice('MicroLight1', null, 'smartgondor', '/gardens', function (error, device) {
-                iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, 'normalized', function (error) {
                     done();
                 });
             });
