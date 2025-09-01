@@ -257,9 +257,9 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
--   **headers**: extra customer headers used when send command by HTTP transport (ignored in other kinds of
-    transports)
-Check full detail of these fields in [comand-transformations](https://github.com/telefonicaid/iotagent-json/blob/master/docs/usermanual.md#commands-transformations)
+-   **headers**: extra customer headers used when send command by HTTP transport (ignored in other kinds of transports)
+    Check full detail of these fields in
+    [comand-transformations](https://github.com/telefonicaid/iotagent-json/blob/master/docs/usermanual.md#commands-transformations)
 
 Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
 device, the IoT agent will store that information into the destination entity using the same attribute name than the
@@ -1784,6 +1784,7 @@ Config group is represented by a JSON object with the following fields:
 | `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                                                                                                                                                                            |
 | `storeLastMeasure`             | ✓        | `boolean`      |            | Store in device last measure received. See more info [in this section](admin.md#storelastmeasure). False by default                                                                                                                                                                                                                                                                                                                 |
 | `useCBflowControl`             | ✓        | `boolean`      |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default                                                                                                                                                                                                                                                                                                                       |
+| `cmdMode`                      | ✓        | `string`       |            | Command mode that will use iotagent with CB: **legacy**, **notification** and **advancedNotification**. **Legacy** by default                                                                                                                                                                                                                                                                                                       |
 
 ### Config group operations
 
@@ -2007,6 +2008,7 @@ the API resource fields and the same fields in the database model.
 | `storeLastMeasure`    | ✓        | `boolean` |            | Store in device last measure received. Useful just for debugging purpose. See more info [in this section](admin.md#storelastmeasure). False by default.                                                                                                                                                                                                                                                                    |
 | `lastMeasure`         | ✓        | `object`  |            | last measure stored on device when `storeLastMeasure` is enabled. See more info [in this section](admin.md#storelastmeasure). This field can be cleared using `{}` in a device update request. In that case, `lastMeasure` is removed from device (until a next measure is received and `lastMesuare` gets created again).                                                                                                 |
 | `useCBflowControl`    | ✓        | `boolean` |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default.                                                                                                                                                                                                                                                                                                             |
+| `cmdMode`             | ✓        | `string`  |            | Command mode that will use iotagent with CB: **legacy**, **notification** and **advancedNotification**. **Legacy** by default                                                                                                                                                                                                                                                                                              |
 
 ### Device operations
 
