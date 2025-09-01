@@ -80,7 +80,7 @@ var config = {
     expressLimit: '1Mb',
     useCBflowControl: false,
     storeLastMeasure: false,
-    useCmdBySubs: false
+    cmdMode: 'legacy'
 };
 
 module.exports = config;
