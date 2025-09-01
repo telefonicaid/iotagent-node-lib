@@ -113,6 +113,14 @@ const device3 = {
     subservice: 'gardens'
 };
 
+const device4 = {
+    id: 'r2d2',
+    type: 'Robot',
+    service: 'smartgondor',
+    subservice: 'gardens',
+    cmdMode: 'notification'
+};
+
 describe('NGSI-v2 - Command functionalities', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
@@ -409,6 +417,53 @@ describe('NGSI-v2 - Command functionalities', function () {
 
             request(options, function (error, response, body) {
                 serviceAndSubservice.should.equal(true);
+                done();
+            });
+        });
+    });
+});
+
+describe('NGSI-v2 - Command notification functionalities', function () {
+    beforeEach(function (done) {
+        logger.setLevel('FATAL');
+        const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
+        timekeeper.freeze(time);
+        nock.cleanAll();
+
+        contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'smartgondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post(
+                '/v2/subscriptions',
+                utils.readExampleFile(
+                    './test/unit/ngsiv2/examples/contextAvailabilityRequests/subscribeIoTAgentCommands.json'
+                )
+            )
+            .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+
+        iotAgentLib.activate(iotAgentConfig, done);
+    });
+
+    afterEach(function (done) {
+        timekeeper.reset();
+        delete device3.registrationId;
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(function () {
+                mongoUtils.cleanDbs(function () {
+                    nock.cleanAll();
+                    iotAgentLib.setDataUpdateHandler();
+                    iotAgentLib.setCommandHandler();
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('When a device with commands by notifications is registered with with commands', function () {
+        it('should subscribe a Context Provider of the commands', function (done) {
+            iotAgentLib.register(device4, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
                 done();
             });
         });

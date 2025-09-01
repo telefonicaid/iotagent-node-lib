@@ -1,0 +1,23 @@
+{
+    "subject": {
+        "entities":[
+            {
+                "id":"Robot:r2d2","type":"Robot"
+            }
+        ],
+        "condition": {
+            "attrs":["position"]
+        }
+    },
+    "notification":{
+        "http":{
+            "url":"http://smartgondor.com"
+        },
+        "attrs":["position"],
+        "attrsFormat":"simplifiedNormalized",
+        "onlyChangedAttrs":true
+    }
+}
+
+
+
