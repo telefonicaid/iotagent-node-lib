@@ -346,6 +346,8 @@ queries (and thus P2 and R2 payloads).
 
 ![General ](./img/scenario3.png 'Scenario 3: commands')
 
+**FIXME:** this scenario describes the registration-based commanding mechanism, which is currently deprecated. It should be reworked
+
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section
 of this document. It's worth mentioning that Orion Context Broker **will not** store locally any data about attributes
@@ -729,55 +731,58 @@ error, that error must follow the NGSI payloads described in the Scenario 1 erro
 
 ### Scenario 3: commands (happy path)
 
-#### Context Provider Registration
+The interactions depend on the command mode (`cmdMode`):
 
-Scenario 3 relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent must
+* `legacy`
+* `notification`
+* `advancedNotification`
+
+The way of setting up Context Broker to IotAgent communication and the interaction between Context Broker and IoTAgent when the command is executed depends on the mode (thus specific subsections about it are provided next for the three modes). However, the way in which the command result is provided is the same to all modes (so it is described in a [common section](#result-reporting)).
+
+#### `legacy` mode
+
+##### Set up Context Broker to IotAgent comunication mechanism
+
+This mode relies on the Context Provider mechanism of the Context Broker. For this scenario to work, the IoTAgent must
 register its commands for each device, with a request like the following:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
   -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
-    "contextRegistrations": [
-        {
-            "entities": [
-                {
-                    "type": "device",
-                    "isPattern": "false",
-                    "id": "Dev0001"
-                }
-            ],
-            "attributes": [
-                {
-                    "name": "switch",
-                    "type": "command",
-                    "isDomain": "false"
-                }
-            ],
-            "providingApplication": "http://<target-host>:1026/v1"
-        }
-    ],
-    "duration": "P1M"
+   "dataProvided": {
+     "entities": [
+       {
+         "id": "Dev0001",
+         "type": "Device"
+       }
+     ],
+     "attrs": [ "switch" ]
+   },
+   "provider": {
+     "http": {
+       "url": "<TBD>"
+     }
+   }
 }' "https://<platform-ip>:1026/v2/registrations"
 ```
 
-If everything has gone OK, the Context Broker will return the following payload:
+If everything has gone OK, the Context Broker will return 201 Created with the ID of the registration in the `Location` header:
 
-```json
-{
-    "duration": "P1M",
-    "registrationId": "41adf79dc5a0bba830a6f3824"
-}
+```
+HTTP/1.1 201 Created
+Date: ...
+Fiware-Correlator: ...
+Location: /v2/registrations/41adf79dc5a0bba830a6f3824
+Content-Length: 0
 ```
 
 This ID can be used to update the registration in the future.
 
 The registration of the commands is performed once in the lifetime of the Device.
 
-#### Command Execution
+##### Command Execution
 
-##### Based in update (classic way)
-
-Scenario 3 begins with the request for a command from the User to the Context Broker (P1):
+Execution begins with the request for a command from the User to the Context Broker (P1):
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
@@ -785,7 +790,6 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     "entities": [
         {
             "type": "device",
-            "isPattern": "false",
             "id": "Dev0001",
             "switch": {
                 "type": "command",
@@ -793,7 +797,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
             }
         }
     ],
-    "updateAction": "append"
+    "updateAction": "update"
 } ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
@@ -823,7 +827,109 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
       }
     }
   ],
-  "updateAction" : "append"
+  "updateAction" : "update"
+}
+```
+
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 No Content (without
+payload).
+
+This response just indicates that the IoT Agent has received the command successfully, and gives no information about
+the requested information or command execution.
+
+The Context Broker, forwards the same response to the user, thus replying the original request with 204 No Content.
+
+At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
+request will be.
+
+#### `notification` mode
+
+##### Set up Context Broker to IoTAgent comunication mechanism
+
+This mode relies on the notification mechanism of the Context Broker. For this scenario to work, the IoTAgent must
+subscribe its commands for each device, with a request like the following:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-service: workshop" \
+  -H "fiware-servicepath:  /iota2ngsi " -H "x-auth-token: <token>" -d '{
+    "subject": {
+        "entities": [
+            {
+              "type": "device",
+              "id": "Dev0001",
+            }
+        ],
+        "condition": {
+            "attrs": [ "switch" ]
+        }
+    },
+    "notification": {
+        "http": {
+            "url": "http://<TBD>"
+        },
+        "attrsFormat": "simplifiedNormalized",
+        "attrs": [ "switch" ]
+    }
+}' "https://<platform-ip>:1026/v2/subscriptions"
+```
+
+If everything has gone OK, the Context Broker will return 201 Created with the ID of the subscription in the `Location` header:
+
+```
+HTTP/1.1 201 Created
+Date: ...
+Fiware-Correlator: ...
+Location: /v2/subscription/60b0cedd497e8b681d40b58e
+Content-Length: 0
+```
+
+This ID can be used to update the subscription in the future.
+
+The subscription of the commands is performed once in the lifetime of the Device.
+
+##### Command Execution
+
+As in the legacy mode, execution begins with the request for a command from the User to the Context Broker (P1):
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
+  -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
+    "entities": [
+        {
+            "type": "device",
+            "id": "Dev0001",
+            "switch": {
+                "type": "command",
+                "value": "54, 12"
+            }
+        }
+    ],
+    "updateAction": "update"
+} ' "https://<platform-ip>:1026/v2/op/update"
+```
+
+The Context Broker receives this update and detects that it triggers the subscription, so it
+notifies to the IoT Agent, as follows:
+
+```bash
+POST /notify HTTP/1.1
+Host: <target-host>:<northbound_port>
+Fiware-service: workshop
+Fiware-ServicePath: /iota2ngsi
+Accept: application/json
+Content-length: ...
+Content-type: application/json; charset=utf-8
+Ngsiv2-Attrsformat: simplifiedNormalized
+Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
+
+{
+    "id": "Dev0001",
+    "type": "device",
+    "switch": {
+        "type": "command",
+        "value": "54, 12",
+        "metadata": {}
+    }
 }
 ```
 
@@ -833,28 +939,42 @@ payload).
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
 the requested information or command execution.
 
-The Context Broker, forwards the same response to the user, thus replying the original request (200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch": {
-            "type": "command",
-            "value": ""
-        }
-    }
-]
-```
-
 At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
 request will be.
 
-##### Based in notification (new way)
+#### `advancedNotification` mode
 
-A new way to ContextBroker provides a command to a IoTAgent is through notifications. In this case CB notify the command
-to the IotAgent with a request like the following:
+##### Set up ContextBroker to IOTA comunication mechanism
+
+The communication mechanism will be based on subscriptions, although a different one than the one used in `notification` mode. Note this mode has not been implemented yet, so following should be taken as a draft:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
+  -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
+    "subject": {
+        "entities": [
+            {
+                "idPattern": ".*",
+                "type": "switchExecution"
+            }
+        ],
+        "condition": {
+            "expression": {
+                "q": "status:FORWARDED;targetEntityType:StreetLight"
+            }
+        }
+    },
+    "notification": {
+        "http": {
+            "url": "<TBD>"
+        }
+    }
+}' "https://<platform-ip>:1026/v2/subscriptions"
+```
+
+##### Command Execution
+
+Command execution involves to create a *command execution entity* (details are yet to be implemented), which in sequence triggers a notification to IoTAgent as this one (draft)
 
 ```bash
 POST /notify HTTP/1.1
@@ -864,6 +984,7 @@ Fiware-ServicePath: /iota2ngsi
 Accept: application/json
 Content-length: 290
 Content-type: application/json; charset=utf-8
+Ngsiv2-Attrsformat: normalized
 Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 {
@@ -945,7 +1066,35 @@ In this case relevant fields are just `targetEntityId`, `targetEntityType`, `cmd
 The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 OK (without
 payload).
 
+This response just indicates that the IoT Agent has received the command successfully, and gives no information about
+the requested information or command execution.
+
+At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
+request will be.
+
+As mentioned before, advanced notification mode has not been yet implemented. The following considerations are gap in the current implementation at IoT Agent side that should be addressed:
+
+-   Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`, `status`, `info`,
+    `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By the
+    moment they are stored in the commands model (commands collection) but nothing is done with them appart from
+    storing.
+-   The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device, but using
+    the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would
+    typically be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this
+    `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
+    entity to be updated in that HATEOAS would be the transient entity corresponding to command execuion, not the entity
+    associated to the device.
+
+```
+PUT /v2/entities/123456abcdefg/attrs/status?type=switchExecution
+content-type: text/plain
+
+OK
+```
+
 #### Result reporting
+
+No matter the command mode (legacy or notification based), the result reporting is the same in all cases.
 
 Once the IoT Agent has executed the command or retrieved the information from the device, it reports the results to the
 Context Broker, with an updateContext (P1):
@@ -956,7 +1105,6 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     "entities": [
         {
             "type": "device",
-            "isPattern": "false",
             "id": "Dev0001",
             "switch_info": {
                 "type": "commandResult",
@@ -975,24 +1123,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 This update does not modify the original command attribute, but two auxiliary attributes, that are not provided by the
 IoT Agent (usually, those attributes has the same name as the command, with an added suffix).
 
-The Context Broker replies to the IoT Agent with a R1 payload (200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch_info": {
-            "type": "commandResult",
-            "value": ""
-        },
-        "switch_status": {
-            "type": "commandStatus",
-            "value": ""
-        }
-    }
-]
-```
+The Context Broker replies to the IoT Agent with 204 No Content response (no payload).
 
 This operation stores the retrieved values locally in the Context Broker, so it can be retrieved with standard NGSI
 mechanisms.
@@ -1007,7 +1138,6 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
   -H "Fiware-ServicePath:  /iota2ngsi " -H "X-Auth-Token: <token>" -d '{
     "entities": [
         {
-            "isPattern": "false",
             "id": "Dev0001",
             "type": "device"
         }
@@ -1038,30 +1168,6 @@ The Context Broker replies with all the desired data, in R2 format (200 OK):
 ]
 ```
 
-#### Differences regarding the new commands mode
-
-A new commands flow has been defined (involving also modifications at ContextBroker). As part of that design, commands
-are now sent to IOTAs using NGSIv2 notifications, but the current implementation has some differences regarding the
-desired behaviour, which are described next:
-
--   Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`, `status`, `info`,
-    `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By the
-    moment they are stored in the commands model (commands collection) but nothing is done with them appart from
-    storing.
--   The "Result reporting" should not be a "hardwired" behaviour updating the entity associated to the device, but using
-    the corresponding `on*` attribute in the notificaiton (e.g. `onOk` in the case of success). That attribute would
-    typically be a [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) object like this
-    `"onOk": { "href": "/v2/entities/123456abcdefg/attrs/status?type=switchExecution", "method": "PUT" }`. Moreover, the
-    entity to be updated in that HATEOAS would be the transient entity corresponding to command execuion, not the entity
-    associated to the device.
-
-```
-PUT /v2/entities/123456abcdefg/attrs/status?type=switchExecution
-content-type: text/plain
-
-OK
-```
-
 ### Scenario 3: commands (error)
 
 In Scenario 3, errors can happen asynchronously, out of the main interactions. When the IoTAgent detects an error
@@ -1074,7 +1180,6 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     "entities": [
         {
             "type": "device",
-            "isPattern": "false",
             "id": "Dev0001",
             "switch_info":{
                 "type": "commandResult",
@@ -1090,23 +1195,6 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 } ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
-In this case, the Context Broker reply with the following response (200 OK):
-
-```json
-[
-    {
-        "type": "device",
-        "id": "Dev0001",
-        "switch_info": {
-            "type": "commandResult",
-            "value": ""
-        },
-        "switch_status": {
-            "type": "commandStatus",
-            "value": ""
-        }
-    }
-]
-```
+In this case, the Context Broker reply with the a 204 No Content response (no payload).
 
 The User will acknowledge the error the next time he queries the Context Broker for information about the command.
