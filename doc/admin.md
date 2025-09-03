@@ -452,6 +452,12 @@ If this flag is activated, when iotAgent invokes Context Broker will use
 [flowControl option](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/admin/perf_tuning.md#updates-flow-control-mechanism).
 This flag is overwritten by `useCBflowControl` flag in group or device. This flag is disabled by default.
 
+#### `cmdMode`
+
+If this option is defined as `legacy`, as a default,, when iotAgent commands will use Context Broker registers
+mechanims. If is defined as `notification` iotagent commands will use subscriptions to be notified for Context Broker
+commands. This flag is overwritten by `cmdMode` flag in group or device. This flag is disabled by default.
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -517,6 +523,7 @@ overrides.
 | IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
 | IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
 | IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
+| IOTA_CMD_MODE                        | `cmdMode`                       |
 
 Note:
 
