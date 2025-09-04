@@ -426,8 +426,6 @@ describe('NGSI-v2 - Command functionalities', function () {
 describe('NGSI-v2 - Command notification functionalities', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
-        const time = new Date(1438760101468); // 2015-08-05T07:35:01.468+00:00
-        timekeeper.freeze(time);
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -445,8 +443,6 @@ describe('NGSI-v2 - Command notification functionalities', function () {
     });
 
     afterEach(function (done) {
-        timekeeper.reset();
-        delete device3.registrationId;
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(function () {
                 mongoUtils.cleanDbs(function () {
