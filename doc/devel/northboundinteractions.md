@@ -760,7 +760,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
    },
    "provider": {
      "http": {
-       "url": "<TBD>"
+       "url": "<value of the IOTA_PROVIDER_URL>"
      }
    }
 }' "https://<platform-ip>:1026/v2/registrations"
@@ -865,7 +865,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     },
     "notification": {
         "http": {
-            "url": "http://<TBD>"
+            "url": "<value of the IOTA_PROVIDER_URL>/notify"
         },
         "attrsFormat": "simplifiedNormalized",
         "attrs": [ "switch" ]
@@ -966,7 +966,7 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
     },
     "notification": {
         "http": {
-            "url": "<TBD>"
+            "url": "<value of the IOTA_PROVIDER_URL>/notify"
         }
     }
 }' "https://<platform-ip>:1026/v2/subscriptions"
