@@ -1,2 +1,2 @@
-- Add command modes: legacy, normalized normalizedAdvanced (#1732)
+- Add: command modes: legacy, notification and notificationAdvanced (#1732)
 - Set Nodejs 20 as minimum version in packages.json (effectively removing Nodev16 and Nodev18 from supported versions)
