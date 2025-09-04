@@ -461,7 +461,7 @@ mechanims.
 * `notification`:  IoTAgent commands will use subscriptions to be notified for Context Broker commands.
 * `advancedNotification`: IoTAgent commands will use subscriptions to be notified for Context Broker commands (but in a different way as in `notification` mode)
 
-Have a look to [this document](doc/devel/northboundinteractions.md) for more detail on how this modes work.
+Have a look to [this document](devel/northboundinteractions.md) for more detail on how this modes work.
 
 ### Configuration using environment variables
 
