@@ -456,7 +456,7 @@ This flag is overwritten by `useCBflowControl` flag in group or device. This fla
 
 Set command mode for the IoTAgent instance (it can be overriden by the `cmdMode` at group or device level). Possible values are:
 
-* `legacy`, (used as default if this setting is not defined): IoTAgent commands will use Context Broker registers
+* `legacy` (used as default if this setting is not defined): IoTAgent commands will use Context Broker registers
 mechanims.
 * `notification`:  IoTAgent commands will use subscriptions to be notified for Context Broker commands.
 * `advancedNotification`: IoTAgent commands will use subscriptions to be notified for Context Broker commands (but in a different way as in `notification` mode)
