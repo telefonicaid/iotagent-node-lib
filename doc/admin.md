@@ -454,7 +454,6 @@ This flag is overwritten by `useCBflowControl` flag in group or device. This fla
 
 #### `cmdMode`
 
-
 Set command mode for the IoTAgent instance (it can be overriden by the `cmdMode` at group or device level). Possible values are:
 
 * `legacy`, (used as default if this setting is not defined): IoTAgent commands will use Context Broker registers
