@@ -11,7 +11,7 @@
     },
     "notification":{
         "http":{
-            "url":"http://smartgondor.com"
+            "url":"http://smartgondor.com/notify"
         },
         "attrs":["position"],
         "attrsFormat":"simplifiedNormalized",
