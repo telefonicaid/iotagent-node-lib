@@ -100,6 +100,18 @@ const iotAgentConfig = {
             lazy: [],
             staticAttributes: [],
             active: []
+        },
+        RobotT: {
+            commands: [
+                {
+                    name: 'position',
+                    type: 'Array'
+                }
+            ],
+            lazy: [],
+            staticAttributes: [],
+            active: [],
+            cmdMode: 'notification'
         }
     },
     service: 'smartgondor',
@@ -125,10 +137,9 @@ const device4 = {
 
 const device5 = {
     id: 'r2d3',
-    type: 'Robot',
+    type: 'RobotT',
     service: 'smartgondor',
     subservice: 'gardens',
-    cmdMode: 'notification',
     apikey: null
 };
 
@@ -486,7 +497,7 @@ describe('NGSI-v2 - Command unsubscribe notification functionalities', function 
 
     describe('When a device with commands by notifications is registered with with commands', function () {
         beforeEach(function (done) {
-            logger.setLevel('DEBUG');
+            logger.setLevel('FATAL');
             nock.cleanAll();
             contextBrokerMock = nock('http://192.168.1.1:1026')
                 .post(

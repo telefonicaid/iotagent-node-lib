@@ -1,9 +1,9 @@
 {
-    "description": "Managed by IOTA: Robot:r2d3 Robot position",
+    "description": "Managed by IOTA: RobotT:r2d3 RobotT position",
     "subject": {
         "entities":[
             {
-                "id":"Robot:r2d3","type":"Robot"
+                "id":"RobotT:r2d3","type":"RobotT"
             }
         ],
         "condition": {
