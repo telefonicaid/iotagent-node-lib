@@ -1,0 +1,24 @@
+{
+    "description": "Managed by IOTA: Robot:r2d3 Robot position",
+    "subject": {
+        "entities":[
+            {
+                "id":"Robot:r2d3","type":"Robot"
+            }
+        ],
+        "condition": {
+            "attrs":["position"]
+        }
+    },
+    "notification":{
+        "http":{
+            "url":"http://smartgondor.com/notify"
+        },
+        "attrs":["position"],
+        "attrsFormat":"simplifiedNormalized",
+        "onlyChangedAttrs":true
+    }
+}
+
+
+

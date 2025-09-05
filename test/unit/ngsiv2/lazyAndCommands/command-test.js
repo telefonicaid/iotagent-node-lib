@@ -31,6 +31,7 @@ const request = utils.request;
 const should = require('should');
 const logger = require('logops');
 const nock = require('nock');
+const async = require('async');
 const mongoUtils = require('../../mongodb/mongoDBUtils');
 
 const timekeeper = require('timekeeper');
@@ -118,7 +119,17 @@ const device4 = {
     type: 'Robot',
     service: 'smartgondor',
     subservice: 'gardens',
-    cmdMode: 'notification'
+    cmdMode: 'notification',
+    apikey: null
+};
+
+const device5 = {
+    id: 'r2d3',
+    type: 'Robot',
+    service: 'smartgondor',
+    subservice: 'gardens',
+    cmdMode: 'notification',
+    apikey: null
 };
 
 describe('NGSI-v2 - Command functionalities', function () {
@@ -458,6 +469,43 @@ describe('NGSI-v2 - Command notification functionalities', function () {
     describe('When a device with commands by notifications is registered with with commands', function () {
         it('should subscribe a Context Provider of the commands', function (done) {
             iotAgentLib.register(device4, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+});
+
+describe('NGSI-v2 - Command unsubscribe notification functionalities', function () {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When a device with commands by notifications is registered with with commands', function () {
+        beforeEach(function (done) {
+            logger.setLevel('DEBUG');
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post(
+                    '/v2/subscriptions',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/subscribeIoTAgentCommands2.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            contextBrokerMock
+                .delete('/v2/subscriptions/6319a7f5254b05844116584d')
+                .reply(204, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                async.series([async.apply(iotAgentLib.clearAll), async.apply(iotAgentLib.register, device5)], done);
+            });
+        });
+
+        it('should unsubscribe a Context Provider of the commands', function (done) {
+            iotAgentLib.unregister(device5.id, null, 'smartgondor', 'gardens', function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
