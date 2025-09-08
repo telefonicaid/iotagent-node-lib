@@ -462,7 +462,7 @@ describe('NGSI-v2 - Command notification functionalities', function () {
                 )
             )
             .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
-
+        iotAgentConfig.cmdMode = 'notification';
         iotAgentLib.activate(iotAgentConfig, done);
     });
 
