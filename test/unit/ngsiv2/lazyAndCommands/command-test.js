@@ -117,13 +117,15 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    useCBflowControl: true
+    useCBflowControl: true,
+    cmdMode: 'legacy'
 };
 const device3 = {
     id: 'r2d2',
     type: 'Robot',
     service: 'smartgondor',
-    subservice: 'gardens'
+    subservice: 'gardens',
+    cmdMode: 'legacy'
 };
 
 const device4 = {
