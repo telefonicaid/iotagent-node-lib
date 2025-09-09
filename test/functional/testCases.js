@@ -611,7 +611,7 @@ const testCases = [
                                 type: 'Number'
                             },
                             {
-                                object_id: 'fireDetectionThreshold3',
+                                object_id: 'fireDetectionThreshold',
                                 name: 'fireDetectionThreshold3',
                                 type: 'Number'
                             }
@@ -640,7 +640,7 @@ const testCases = [
                     json: {
                         fdt: 10,
                         fireDetectionThreshold2: 20,
-                        fireDetectionThreshold3: 30
+                        fireDetectionThreshold: 30
                     }
                 },
                 expectation: {
