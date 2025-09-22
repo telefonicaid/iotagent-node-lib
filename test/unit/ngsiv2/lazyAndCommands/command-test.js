@@ -462,6 +462,15 @@ describe('NGSI-v2 - Command notification functionalities', function () {
                 )
             )
             .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+
+        contextBrokerMock
+            .matchHeader('fiware-service', 'smartgondor')
+            .matchHeader('fiware-servicepath', 'gardens')
+            .post(
+                '/v2/entities?options=upsert',
+                utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateEntity.json')
+            )
+            .reply(204);
         iotAgentConfig.cmdMode = 'notification';
         iotAgentLib.activate(iotAgentConfig, done);
     });
@@ -509,6 +518,14 @@ describe('NGSI-v2 - Command unsubscribe notification functionalities', function 
                     )
                 )
                 .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateEntity2.json')
+                )
+                .reply(204);
             contextBrokerMock
                 .delete('/v2/subscriptions/6319a7f5254b05844116584d')
                 .reply(204, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
