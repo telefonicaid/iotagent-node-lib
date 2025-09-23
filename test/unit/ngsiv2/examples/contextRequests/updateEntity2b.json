@@ -1,0 +1,14 @@
+{
+    "pressure": {
+        "type": "Hgmm",
+        "value": null
+    },
+    "reset_status": {
+        "type": "commandStatus",
+        "value": "UNKNOWN"
+    },
+    "reset_info": {
+        "type": "commandResult",
+        "value": " "
+    }
+}

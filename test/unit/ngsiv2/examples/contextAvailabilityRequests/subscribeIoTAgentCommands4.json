@@ -1,0 +1,24 @@
+{
+    "description": "Managed by IOTA: RobotT:r2d3 RobotT reset",
+    "subject": {
+        "entities":[
+            {
+                "id":"RobotT:r2d3","type":"RobotT"
+            }
+        ],
+        "condition": {
+            "attrs":["reset"]
+        }
+    },
+    "notification":{
+        "http":{
+            "url":"http://smartgondor.com/notify"
+        },
+        "attrs":["reset"],
+        "attrsFormat":"simplifiedNormalized",
+        "onlyChangedAttrs":true
+    }
+}
+
+
+

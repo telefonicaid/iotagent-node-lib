@@ -145,6 +145,54 @@ const device5 = {
     apikey: null
 };
 
+const device5old = {
+    id: 'r2d3',
+    name: 'RobotT:r2d3',
+    type: 'RobotT',
+    service: 'smartgondor',
+    subservice: 'gardens',
+    apikey: null,
+    cmdMode: 'notification',
+    commands: [
+        {
+            name: 'position',
+            type: 'Array'
+        }
+    ],
+    subscriptions: [{ id: '6319a7f5254b05844116584d', triggers: ['position'] }],
+    subscriptionId: '6319a7f5254b05844116584d'
+};
+
+const device5updated = {
+    id: 'r2d3',
+    name: 'RobotT:r2d3',
+    type: 'RobotT',
+    service: 'smartgondor',
+    subservice: 'gardens',
+    apikey: null,
+    active: [
+        {
+            name: 'pressure',
+            type: 'Hgmm'
+        }
+    ],
+    commands: [
+        {
+            name: 'reset',
+            type: 'Array'
+        }
+    ],
+    cmdMode: 'notification'
+};
+
+const device6 = {
+    id: 'r2d4',
+    type: 'RobotT',
+    service: 'smartgondor',
+    subservice: 'gardens',
+    apikey: null
+};
+
 describe('NGSI-v2 - Command functionalities', function () {
     beforeEach(function (done) {
         logger.setLevel('FATAL');
@@ -499,14 +547,14 @@ describe('NGSI-v2 - Command notification functionalities', function () {
     });
 });
 
-describe('NGSI-v2 - Command unsubscribe notification functionalities', function () {
+describe('NGSI-v2 - Command update subscription and notification functionalities', function () {
     afterEach(function (done) {
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
         });
     });
 
-    describe('When a device with commands by notifications is registered with with commands', function () {
+    describe('When a device with commands by notifications is registered with with commands and its updated', function () {
         beforeEach(function (done) {
             logger.setLevel('FATAL');
             nock.cleanAll();
@@ -526,16 +574,81 @@ describe('NGSI-v2 - Command unsubscribe notification functionalities', function 
                     utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateEntity2.json')
                 )
                 .reply(204);
+
             contextBrokerMock
+                .post(
+                    '/v2/subscriptions',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/subscribeIoTAgentCommands4.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities/RobotT:r2d3/attrs?type=RobotT',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateEntity2b.json')
+                )
+                .reply(204);
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
                 .delete('/v2/subscriptions/6319a7f5254b05844116584d')
                 .reply(204, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+
             iotAgentLib.activate(iotAgentConfig, function (error) {
                 async.series([async.apply(iotAgentLib.clearAll), async.apply(iotAgentLib.register, device5)], done);
             });
         });
 
+        it('should update subscription in a Context Provider of the commands', function (done) {
+            iotAgentLib.updateRegister(device5updated, device5old, false, function (error) {
+                should.not.exist(error);
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+});
+
+describe('NGSI-v2 - Command unsubscribe notification functionalities', function () {
+    afterEach(function (done) {
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When a device with commands by notifications is registered with with commands', function () {
+        beforeEach(function (done) {
+            logger.setLevel('FATAL');
+            nock.cleanAll();
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .post(
+                    '/v2/subscriptions',
+                    utils.readExampleFile(
+                        './test/unit/ngsiv2/examples/contextAvailabilityRequests/subscribeIoTAgentCommands3.json'
+                    )
+                )
+                .reply(201, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', 'gardens')
+                .post(
+                    '/v2/entities?options=upsert',
+                    utils.readExampleFile('./test/unit/ngsiv2/examples/contextRequests/updateEntity3.json')
+                )
+                .reply(204);
+            contextBrokerMock
+                .delete('/v2/subscriptions/6319a7f5254b05844116584d')
+                .reply(204, null, { Location: '/v2/subscriptions/6319a7f5254b05844116584d' });
+            iotAgentLib.activate(iotAgentConfig, function (error) {
+                async.series([async.apply(iotAgentLib.clearAll), async.apply(iotAgentLib.register, device6)], done);
+            });
+        });
+
         it('should unsubscribe a Context Provider of the commands', function (done) {
-            iotAgentLib.unregister(device5.id, null, 'smartgondor', 'gardens', function (error) {
+            iotAgentLib.unregister(device6.id, null, 'smartgondor', 'gardens', function (error) {
                 should.not.exist(error);
                 contextBrokerMock.done();
                 done();
