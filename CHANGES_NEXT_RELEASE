@@ -1,2 +1,3 @@
+- Fix update device with useCBflowControl
 - Add: command modes (new field cmdMode): legacy, notification and advancedNotification (#1732)
 - Set Nodejs 20 as minimum version in packages.json (effectively removing Nodev16 and Nodev18 from supported versions)
