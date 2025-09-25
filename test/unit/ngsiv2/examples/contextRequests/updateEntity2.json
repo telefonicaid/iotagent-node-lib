@@ -1,7 +1,5 @@
 {
     "id":"RobotT:r2d3",
     "type":"RobotT",
-    "position":{"type":"command","value":null},
-    "position_status":{"type":"commandStatus","value":"UNKNOWN"},
-    "position_info":{"type":"commandResult","value":" "}
+    "position":{"type":"command","value":null}
 }
