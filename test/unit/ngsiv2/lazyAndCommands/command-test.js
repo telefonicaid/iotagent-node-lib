@@ -142,7 +142,8 @@ const device5 = {
     type: 'RobotT',
     service: 'smartgondor',
     subservice: 'gardens',
-    apikey: null
+    apikey: null,
+    cmdMode: 'notification'
 };
 
 const device5old = {
