@@ -12,6 +12,7 @@
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Device to NGSI Mapping](#device-to-ngsi-mapping)
     -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
+    -   [Entity creation when `cmdMode` is `notification`](#entity-creation-when-cmdmode-is-notification)
     -   [Entity Name expression support](#entity-name-expression-support)
     -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
@@ -275,6 +276,29 @@ arrives from a device, no matter if the device is explicitly provisioned (via
 If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the
 IOTAgent, you can create it in advance using the Context Broker
 [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
+
+## Entity creation when `cmdMode` is `notification`
+
+Even when an entity should not be created (see [above section](#device-autoprovision-and-entity-creation)), when the device uses `cmdMode` is set to `notification` an entity is created. In particular:
+
+* An entity is created at device provision time
+* That entity is created with an attribute corresponding to each commands. The value of that attribute at creation time is `null` (specifying in some way that the command has not been triggered yet).
+
+For instance, if device has commands `ping` and `switch` the entity corresponding to that device will be created at provising time with the following attributes:
+
+```
+...
+{
+    "ping": {
+        "type": "command",
+        "value": null
+    },
+    "switch": {
+        "type": "command",
+        "value": null
+    },
+}
+```
 
 ## Entity Name expression support
 
