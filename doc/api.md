@@ -279,7 +279,7 @@ IOTAgent, you can create it in advance using the Context Broker
 
 ## Entity creation when `cmdMode` is `notification`
 
-Even when an entity should not be created (see [above section](#device-autoprovision-and-entity-creation)), when the device uses `cmdMode` is set to `notification` an entity is created. In particular:
+Even when an entity should not be created (see [above section](#device-autoprovision-and-entity-creation)), when the device uses `cmdMode` set to `notification` an entity is created. In particular:
 
 * An entity is created at device provision time
 * That entity is created with an attribute corresponding to each commands. The value of that attribute at creation time is `null` (specifying in some way that the command has not been triggered yet). Note that if the attribute doesn't have any command, the entity is not created (even if `cmdMode` is `notification`).
@@ -301,6 +301,7 @@ For instance, if device has commands `ping` and `switch` the entity correspondin
 ```
 
 **NOTE:** `command` is the usual type for attributes associated to commands, but the one used at provisioning time (`"command": [ ...]` field) will be actually used.
+
 ## Entity Name expression support
 
 By default, the entity name used to persist the device measures in the Context Broker can be defined in the device
