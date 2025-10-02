@@ -12,6 +12,7 @@
     -   [Special measures and attributes names](#special-measures-and-attributes-names)
     -   [Device to NGSI Mapping](#device-to-ngsi-mapping)
     -   [Device autoprovision and entity creation](#device-autoprovision-and-entity-creation)
+    -   [Entity creation when `cmdMode` is `notification`](#entity-creation-when-cmdmode-is-notification)
     -   [Entity Name expression support](#entity-name-expression-support)
     -   [Multientity support](#multientity-support)
     -   [Metadata support](#metadata-support)
@@ -257,9 +258,9 @@ Additionally for commands (which are attributes of type `command`) the following
     particular IOTAs documentation for allowed values of this field in each case.
 -   **contentType**: `content-type` header used when send command by HTTP transport (ignored in other kinds of
     transports)
--   **headers**: extra customer headers used when send command by HTTP transport (ignored in other kinds of
-    transports)
-Check full detail of these fields in [comand-transformations](https://github.com/telefonicaid/iotagent-json/blob/master/docs/usermanual.md#commands-transformations)
+-   **headers**: extra customer headers used when send command by HTTP transport (ignored in other kinds of transports)
+    Check full detail of these fields in
+    [comand-transformations](https://github.com/telefonicaid/iotagent-json/blob/master/docs/usermanual.md#commands-transformations)
 
 Note that, when information coming from devices, this means measures, are not defined neither in the group, nor in the
 device, the IoT agent will store that information into the destination entity using the same attribute name than the
@@ -275,6 +276,31 @@ arrives from a device, no matter if the device is explicitly provisioned (via
 If for any reason you need the entity at CB before the first measure of the corresponding device arrives to the
 IOTAgent, you can create it in advance using the Context Broker
 [NGSI v2 API](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md).
+
+## Entity creation when `cmdMode` is `notification`
+
+Even when an entity should not be created (see [above section](#device-autoprovision-and-entity-creation)), when the device uses `cmdMode` set to `notification` an entity is created. In particular:
+
+* An entity is created at device provision time
+* That entity is created with an attribute corresponding to each commands. The value of that attribute at creation time is `null` (specifying in some way that the command has not been triggered yet). Note that if the attribute doesn't have any command, the entity is not created (even if `cmdMode` is `notification`).
+
+For instance, if device has commands `ping` and `switch` the entity corresponding to that device will be created at provising time with the following attributes:
+
+```
+...
+{
+    "ping": {
+        "type": "command",
+        "value": null
+    },
+    "switch": {
+        "type": "command",
+        "value": null
+    },
+}
+```
+
+**NOTE:** `command` is the usual type for attributes associated to commands, but the one used at provisioning time (`"command": [ ...]` field) will be actually used.
 
 ## Entity Name expression support
 
@@ -1323,6 +1349,8 @@ as `command` in the [config group](#config-group-datamodel) or in the [device pr
 attributes are created using `command` as attribute type. Also, you can define the protocol you want the commands to be
 sent (HTTP/MQTT) with the `transport` parameter at the provisioning process.
 
+**NOTE**: in `advancedNotification` mode the command is not triggered updating an attribute, but creating a command execution entity. However, this mode has not been implemented yet so details are to be clarified.
+
 For a given device provisioned with a `ping` command defined, any update on this attribute "ping" at the NGSI entity in
 the Context Broker will send a command to your device. For instance, to send the `ping` command with value
 `Ping request` you could use the following operation in the Context Broker API:
@@ -1784,6 +1812,7 @@ Config group is represented by a JSON object with the following fields:
 | `endpoint`                     | ✓        | `string`       |            | Endpoint where the group of device is going to receive commands, if any.                                                                                                                                                                                                                                                                                                                                                            |
 | `storeLastMeasure`             | ✓        | `boolean`      |            | Store in device last measure received. See more info [in this section](admin.md#storelastmeasure). False by default                                                                                                                                                                                                                                                                                                                 |
 | `useCBflowControl`             | ✓        | `boolean`      |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default                                                                                                                                                                                                                                                                                                                       |
+| `cmdMode`                      | ✓        | `string`       |            | Command mode that will use iotagent with CB: **legacy**, **notification** and **advancedNotification**. **Legacy** is based on registers. **notification** based on simplified schema of subscriptions. **Legacy** by default. More information on how the different modes work can be found in [the northbound interactions documents](devel/northboundinteractions.md).                                                                                                                                                                                                       |
 
 ### Config group operations
 
@@ -2007,6 +2036,7 @@ the API resource fields and the same fields in the database model.
 | `storeLastMeasure`    | ✓        | `boolean` |            | Store in device last measure received. Useful just for debugging purpose. See more info [in this section](admin.md#storelastmeasure). False by default.                                                                                                                                                                                                                                                                    |
 | `lastMeasure`         | ✓        | `object`  |            | last measure stored on device when `storeLastMeasure` is enabled. See more info [in this section](admin.md#storelastmeasure). This field can be cleared using `{}` in a device update request. In that case, `lastMeasure` is removed from device (until a next measure is received and `lastMesuare` gets created again).                                                                                                 |
 | `useCBflowControl`    | ✓        | `boolean` |            | Use Context Broker flow control. See more info [in this section](admin.md#useCBflowControl). False by default.                                                                                                                                                                                                                                                                                                             |
+| `cmdMode`             | ✓        | `string`  |            | Command mode that will use iotagent with CB: **legacy**, **notification** and **advancedNotification**. **Legacy** is based on registers. **notification** based on simplified schema of subscriptions. **Legacy** by default. More information on how the different modes work can be found in [the northbound interactions documents](devel/northboundinteractions.md).                                                                                                                                                                                              |
 
 ### Device operations
 
