@@ -300,6 +300,7 @@ For instance, if device has commands `ping` and `switch` the entity correspondin
 }
 ```
 
+**NOTE:** `command` is the usual type for attributes associated to commands, but the one used at provisioning time (`"command": [ ...]` field) will be actually used.
 ## Entity Name expression support
 
 By default, the entity name used to persist the device measures in the Context Broker can be defined in the device
