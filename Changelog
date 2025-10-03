@@ -1,3 +1,9 @@
+4.10.0 (Oct 3rd, 2025)
+
+- Add: command modes (new field cmdMode): legacy, notification and advancedNotification (#1732)
+- Fix: update device with useCBflowControl
+- Set Nodejs 20 as minimum version in packages.json (effectively removing Nodev16 and Nodev18 from supported versions)
+
 4.9.0 (Aug 22nd, 2025)
 
 - Add: support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
