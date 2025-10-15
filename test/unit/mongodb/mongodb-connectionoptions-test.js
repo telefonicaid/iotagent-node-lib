@@ -30,6 +30,7 @@ const config = require('../../../lib/commonConfig');
 const mongoose = require('mongoose');
 const sinon = require('sinon');
 const should = require('should');
+
 const iotAgentConfig = {
     logLevel: 'FATAL',
     contextBroker: {
@@ -50,6 +51,7 @@ const iotAgentConfig = {
     providerUrl: 'http://smartgondor.com',
     deviceRegistrationDuration: 'P1M'
 };
+
 let oldConfig;
 
 describe('dbConn.configureDb', function () {
@@ -66,7 +68,7 @@ describe('dbConn.configureDb', function () {
         }
     });
 
-    describe('When set mongodb options, it should call mongoose.createCOnnection by using below params', function () {
+    describe('When set mongodb options, it should call mongoose.connect using expected params', function () {
         const tests = [
             {
                 mongodb: {
@@ -74,8 +76,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -85,8 +86,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:98765/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -96,8 +96,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/examples',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -119,8 +118,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -130,8 +128,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -142,12 +139,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
-                    }
+                    options: {}
                 }
             },
             {
@@ -156,9 +148,8 @@ describe('dbConn.configureDb', function () {
                     authSource: 'admin'
                 },
                 expected: {
-                    url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?authSource=admin',
+                    options: {}
                 }
             },
             {
@@ -174,11 +165,7 @@ describe('dbConn.configureDb', function () {
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin',
                     options: {
-                        replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
+                        replicaSet: 'rs0'
                     }
                 }
             },
@@ -203,8 +190,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -220,8 +206,7 @@ describe('dbConn.configureDb', function () {
                         'mongodb://example.com:27017/' +
                         dbConn.DEFAULT_DB_NAME +
                         '?retryWrites=true&readPreference=nearest',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -231,8 +216,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -242,8 +226,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -253,8 +236,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -275,18 +257,17 @@ describe('dbConn.configureDb', function () {
                     unknownparam: 'unknown'
                 },
                 expected: {
-                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin',
+                    url:
+                        'mongodb://user01:pass01@example.com:98765/examples?' +
+                        'authSource=admin&retryWrites=true&readPreference=nearest&w=majority',
                     options: {
                         replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        },
                         ssl: true
                     }
                 }
             }
         ];
+
         tests.forEach(function (params) {
             it(
                 'mongodb options = ' +
@@ -298,15 +279,18 @@ describe('dbConn.configureDb', function () {
                     const cfg = Object.assign({}, iotAgentConfig, {
                         mongodb: params.mongodb
                     });
+
                     stub = sinon.stub(mongoose, 'connect').callsFake(function (url, options, fn) {
                         url.should.be.equal(params.expected.url);
                         options.should.be.eql(params.expected.options);
                         done();
                     });
+
                     config.setConfig(cfg);
+
                     dbConn.configureDb(function (error) {
                         if (error) {
-                            should.fail();
+                            should.fail('configureDb returned an unexpected error');
                         }
                     });
                 }
@@ -314,7 +298,7 @@ describe('dbConn.configureDb', function () {
         });
     });
 
-    describe('When no mongodb options or "host" is empty, it should returns an error callback', function () {
+    describe('When no mongodb options or "host" is empty, it should return an error callback', function () {
         const tests = [
             {
                 mongodb: undefined
@@ -328,18 +312,22 @@ describe('dbConn.configureDb', function () {
                 }
             }
         ];
+
         tests.forEach(function (params) {
             it('mongodb options = ' + JSON.stringify(params.mongodb), function (done) {
                 const cfg = Object.assign({}, iotAgentConfig, {
                     mongodb: params.mongodb
                 });
-                stub = sinon.stub(mongoose, 'connect').callsFake(function (url, options, fn) {
-                    should.fail();
+
+                stub = sinon.stub(mongoose, 'connect').callsFake(() => {
+                    should.fail('mongoose.connect should not be called');
                 });
+
                 config.setConfig(cfg);
+
                 dbConn.configureDb(function (error) {
                     if (!error) {
-                        should.fail();
+                        should.fail('Expected error when MongoDB host is missing');
                     }
                     done();
                 });
