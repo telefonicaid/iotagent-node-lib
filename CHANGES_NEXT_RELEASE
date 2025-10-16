@@ -1,1 +1,1 @@
-- FIX mongodb auth configuration (#1741)
+- FIX: do not pass auth options to mongoose init, because is redundant (#1741)
