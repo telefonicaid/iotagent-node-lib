@@ -1,1 +1,2 @@
 - Add IOTA_MONGO_URI env var which overrides other mongo options, now deprecated.
+- ADD: add locale string number jexl function (#1737)
