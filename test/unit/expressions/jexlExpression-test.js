@@ -398,6 +398,36 @@ describe('Jexl expression interpreter', function () {
         });
     });
 
+    describe('When number localization functions are executed', function () {
+        it('should return the localized string representation of the number', function (done) {
+            const scope = {
+                theNumber: 1234567.89,
+                locale: 'es-ES',
+                options: { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+            };
+
+            expressionParser.parse('theNumber|localestringnumber(locale, options)', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('1.234.567,89');
+                done();
+            });
+        });
+
+        it('should return null for invalid number input', function (done) {
+            const scope = {
+                theNumber: 'not_a_number',
+                locale: 'en-US',
+                options: {}
+            };
+
+            expressionParser.parse('theNumber|localestringnumber(locale, options)', scope, function (error, result) {
+                should.not.exist(error);
+                should.equal(result, null);
+                done();
+            });
+        });
+    });
+
     // Check errors
     describe('When invalid inputs are used', function () {
         describe('When an invalid JSON string is parsed', function () {
