@@ -1,1 +1,1 @@
-
+- Fix: use normalized in attrsFormat for commands subscriptions (#1743)
