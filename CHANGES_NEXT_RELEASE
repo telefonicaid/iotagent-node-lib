@@ -1,1 +1,2 @@
 - FIX: do not pass auth options to mongoose init, because is redundant (#1741)
+- ADD: add locale string number jexl function (#1737)
