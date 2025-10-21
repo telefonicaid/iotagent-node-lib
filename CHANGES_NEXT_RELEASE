@@ -1,1 +1,1 @@
-
+- Fix: allow use commands by notifications without provide targetEntityId and targetEntityType
