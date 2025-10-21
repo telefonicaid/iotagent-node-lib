@@ -15,7 +15,7 @@
             "url":"http://smartgondor.com/notify"
         },
         "attrs":["position"],
-        "attrsFormat":"simplifiedNormalized",
+        "attrsFormat":"normalized",
         "onlyChangedAttrs":true
     }
 }
