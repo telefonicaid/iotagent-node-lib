@@ -1,1 +1,2 @@
 - Fix: allow use commands by notifications without provide targetEntityId and targetEntityType
+- ADD: add locale string number jexl function (#1737)
