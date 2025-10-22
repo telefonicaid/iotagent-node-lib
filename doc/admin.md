@@ -248,7 +248,8 @@ the `mongob` section (as described bellow). E.g.:
 
 #### `mongodb`
 
-It configures the MongoDB driver for those repositories with 'mongodb' type, using the `uri` parameter (which format is available in [this referece](http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html)).
+It configures the MongoDB driver for those repositories with 'mongodb' type, using the `uri` parameter (which format is
+available in [this referece](http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html)).
 
 ```javascript
 {
@@ -500,17 +501,6 @@ overrides.
 | IOTA_IOTAM_PROTOCOL                  | `iotManager.protocol`           |
 | IOTA_IOTAM_DESCRIPTION               | `iotManager.description`        |
 | IOTA_MONGO_URI                       | `mongodb.uri`                   |
-| IOTA_MONGO_HOST                      | `mongodb.host`                  |
-| IOTA_MONGO_PORT                      | `mongodb.port`                  |
-| IOTA_MONGO_DB                        | `mongodb.db`                    |
-| IOTA_MONGO_REPLICASET                | `mongodb.replicaSet`            |
-| IOTA_MONGO_USER                      | `mongodb.user`                  |
-| IOTA_MONGO_PASSWORD                  | `mongodb.password`              |
-| IOTA_MONGO_AUTH_SOURCE               | `mongodb.authSource`            |
-| IOTA_MONGO_RETRIES                   | `mongodb.retries`               |
-| IOTA_MONGO_RETRY_TIME                | `mongodb.retryTime`             |
-| IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
-| IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
 | IOTA_MULTI_CORE                      | `multiCore`                     |

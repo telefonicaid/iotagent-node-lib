@@ -61,3 +61,14 @@ The following table provides information about the last iotagent-node-lib versio
 | bidirectional plugin                                  | 3.3.0                                                 | August 24th, 2023             |
 | appendMode configuration (`IOTA_APPEND_MODE` env var) | 3.3.0                                                 | August 24th, 2023             |
 | push-mode stats                                       | 4.5.0                                                 | June 11th, 2024               |
+| mongodb.host                                          | 4.10.0                                                | October 6th, 2025             |
+| mongodb.port                                          | 4.10.0                                                | October 6th, 2025             |
+| mongodb.db                                            | 4.10.0                                                | October 6th, 2025             |
+| mongodb.replicaSet                                    | 4.10.0                                                | October 6th, 2025             |
+| mongodb.user                                          | 4.10.0                                                | October 6th, 2025             |
+| mongodb.password                                      | 4.10.0                                                | October 6th, 2025             |
+| mongodb.authSource                                    | 4.10.0                                                | October 6th, 2025             |
+| mongodb.retries                                       | 4.10.0                                                | October 6th, 2025             |
+| mongodb.retryTime                                     | 4.10.0                                                | October 6th, 2025             |
+| mongodb.ssl                                           | 4.10.0                                                | October 6th, 2025             |
+| mongodb.extraArgs                                     | 4.10.0                                                | October 6th, 2025             |
