@@ -1,2 +1,3 @@
-- Fix: allow use commands by notifications without provide targetEntityId and targetEntityType
-- ADD: add locale string number jexl function (#1737)
+- Fix: broken notification command mode (it was not working without providing targetEntityId and targetEntityType in the notification, which corresponds to another command mode: advancedNotification)
+- Fix: use normalized in attrsFormat for commands subscriptions (#1743)
+- Add: locale string number jexl function (#1737)
