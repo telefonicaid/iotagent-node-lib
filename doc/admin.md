@@ -249,7 +249,7 @@ the `mongob` section (as described bellow). E.g.:
 #### `mongodb`
 
 It configures the MongoDB driver for those repositories with 'mongodb' type, using the `uri` parameter (which format is
-available in [this referece](http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html)).
+available in [this reference](http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html)).
 
 ```javascript
 {
