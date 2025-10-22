@@ -346,7 +346,8 @@ queries (and thus P2 and R2 payloads).
 
 ![General ](./img/scenario3.png 'Scenario 3: commands')
 
-**FIXME:** this scenario describes the registration-based commanding mechanism, which is currently deprecated. It should be reworked
+**FIXME:** this scenario describes the registration-based commanding mechanism, which is currently deprecated. It should
+be reworked
 
 This scenario requires that the attributes that are going to be requested are marked as provided by the IoT Agent,
 through a registration process (NGSIv9). Examples of this registration process will be provided in the practical section
@@ -733,11 +734,14 @@ error, that error must follow the NGSI payloads described in the Scenario 1 erro
 
 The interactions depend on the command mode (`cmdMode`):
 
-* `legacy`
-* `notification`
-* `advancedNotification`
+-   `legacy`
+-   `notification`
+-   `advancedNotification`
 
-The way of setting up Context Broker to IotAgent communication and the interaction between Context Broker and IoTAgent when the command is executed depends on the mode (thus specific subsections about it are provided next for the three modes). However, the way in which the command result is provided is the same to all modes (so it is described in a [common section](#result-reporting)).
+The way of setting up Context Broker to IotAgent communication and the interaction between Context Broker and IoTAgent
+when the command is executed depends on the mode (thus specific subsections about it are provided next for the three
+modes). However, the way in which the command result is provided is the same to all modes (so it is described in a
+[common section](#result-reporting)).
 
 #### `legacy` mode
 
@@ -766,7 +770,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 }' "https://<platform-ip>:1026/v2/registrations"
 ```
 
-If everything has gone OK, the Context Broker will return 201 Created with the ID of the registration in the `Location` header:
+If everything has gone OK, the Context Broker will return 201 Created with the ID of the registration in the `Location`
+header:
 
 ```
 HTTP/1.1 201 Created
@@ -831,8 +836,8 @@ Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 }
 ```
 
-The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 No Content (without
-payload).
+The IoT Agent detects the selected attribute is a command, and replies to the Context Broker with a 204 No Content
+(without payload).
 
 This response just indicates that the IoT Agent has received the command successfully, and gives no information about
 the requested information or command execution.
@@ -867,13 +872,14 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
         "http": {
             "url": "<value of the IOTA_PROVIDER_URL>/notify"
         },
-        "attrsFormat": "simplifiedNormalized",
+        "attrsFormat": "normalized",
         "attrs": [ "switch" ]
     }
 }' "https://<platform-ip>:1026/v2/subscriptions"
 ```
 
-If everything has gone OK, the Context Broker will return 201 Created with the ID of the subscription in the `Location` header:
+If everything has gone OK, the Context Broker will return 201 Created with the ID of the subscription in the `Location`
+header:
 
 ```
 HTTP/1.1 201 Created
@@ -908,8 +914,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 } ' "https://<platform-ip>:1026/v2/op/update"
 ```
 
-The Context Broker receives this update and detects that it triggers the subscription, so it
-notifies to the IoT Agent, as follows:
+The Context Broker receives this update and detects that it triggers the subscription, so it notifies to the IoT Agent,
+as follows:
 
 ```bash
 POST /notify HTTP/1.1
@@ -919,17 +925,20 @@ Fiware-ServicePath: /iota2ngsi
 Accept: application/json
 Content-length: ...
 Content-type: application/json; charset=utf-8
-Ngsiv2-Attrsformat: simplifiedNormalized
+Ngsiv2-Attrsformat: normalized
 Fiware-Correlator: 9cae9496-8ec7-11e6-80fc-fa163e734aab
 
 {
-    "id": "Dev0001",
-    "type": "device",
-    "switch": {
-        "type": "command",
-        "value": "54, 12",
-        "metadata": {}
-    }
+    "subscriptionId": "60b0cedd497e8b681d40b58e",
+    "data": [{
+      "id": "Dev0001",
+      "type": "device",
+      "switch": {
+          "type": "command",
+          "value": "54, 12",
+          "metadata": {}
+      }
+    }]
 }
 ```
 
@@ -946,7 +955,8 @@ request will be.
 
 ##### Set up ContextBroker to IOTA comunication mechanism
 
-The communication mechanism will be based on subscriptions, although a different one than the one used in `notification` mode. Note this mode has not been implemented yet, so following should be taken as a draft:
+The communication mechanism will be based on subscriptions, although a different one than the one used in `notification`
+mode. Note this mode has not been implemented yet, so following should be taken as a draft:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -H "Fiware-Service: workshop" \
@@ -974,7 +984,8 @@ curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -
 
 ##### Command Execution
 
-Command execution involves to create a *command execution entity* (details are yet to be implemented), which in sequence triggers a notification to IoTAgent as this one (draft)
+Command execution involves to create a _command execution entity_ (details are yet to be implemented), which in sequence
+triggers a notification to IoTAgent as this one (draft)
 
 ```bash
 POST /notify HTTP/1.1
@@ -1072,7 +1083,8 @@ the requested information or command execution.
 At this point, the command has been issued to the IoTAgent and the User doesn't still know what the result of its
 request will be.
 
-As mentioned before, advanced notification mode has not been yet implemented. The following considerations are gap in the current implementation at IoT Agent side that should be addressed:
+As mentioned before, advanced notification mode has not been yet implemented. The following considerations are gap in
+the current implementation at IoT Agent side that should be addressed:
 
 -   Fields others than `targetEntityId`, `targetEntityType`, `cmd` and `params` (i.e. `execTs`, `status`, `info`,
     `onDelivered`, `onOk`, `onError`, `onInfo`, `cmdExecution` and `dataExpiration`), are not actually used. By the
