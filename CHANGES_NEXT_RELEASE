@@ -1,2 +1,2 @@
 - Fix: use normalized in attrsFormat for commands subscriptions (#1743)
-- ADD: add locale string number jexl function (#1737)
+- Add: locale string number jexl function (#1737)
