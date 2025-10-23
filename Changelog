@@ -1,3 +1,11 @@
+4.11.0 (Oct 23th, 2025)
+
+- Add IOTA_MONGO_URI env var
+- Add: locale string number jexl function (#1737)
+- Deprecated: IOTA_MONGO_ different from IOTA_MONGO_URI (use IOTA_MONGO_URI instead)
+- Fix: broken notification command mode (it was not working without providing targetEntityId and targetEntityType in the notification, which belongs to another command mode: advancedNotification)
+- Fix: use normalized in attrsFormat for commands subscriptions (#1743)
+
 4.10.0 (Oct 6th, 2025)
 
 - Add: command modes (new field cmdMode): legacy, notification and advancedNotification (#1732)
