@@ -248,15 +248,8 @@ the `mongob` section (as described bellow). E.g.:
 
 #### `mongodb`
 
-It configures the MongoDB driver for those repositories with 'mongodb' type. If the `host` parameter is a list of
-comma-separated IPs, they will be considered to be part of a Replica Set. In that case, the optional property
-`replicaSet` should contain the Replica Set name. If the database requires authentication, username (`user`), password
-(`password`) and authSource (`authSource`) can be set. If the database requires TLS/SSL connection but any validation of
-the certificate chain is not mandatory, all you need is to set the ssl (`ssl`) option as `true` to connect the database.
-If you need to add more complex option(s) such as `retryWrites=true` or `w=majority` when connection database, extraArgs
-(`extraArgs`) can be used to perform it. For The MongoBD driver will retry the connection at startup time `retries`
-times, waiting `retryTime` seconds between attempts, if those attributes are present (default values are 5 and 5
-respectively). E.g.:
+It configures the MongoDB driver for those repositories with 'mongodb' type, using the `uri` parameter (which format is
+available in [this reference](http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html)).
 
 ```javascript
 {
@@ -454,12 +447,14 @@ This flag is overwritten by `useCBflowControl` flag in group or device. This fla
 
 #### `cmdMode`
 
-Set command mode for the IoTAgent instance (it can be overriden by the `cmdMode` at group or device level). Possible values are:
+Set command mode for the IoTAgent instance (it can be overriden by the `cmdMode` at group or device level). Possible
+values are:
 
-* `legacy` (used as default if this setting is not defined): IoTAgent commands will use Context Broker registers
-mechanims.
-* `notification`:  IoTAgent commands will use subscriptions to be notified for Context Broker commands.
-* `advancedNotification`: IoTAgent commands will use subscriptions to be notified for Context Broker commands (but in a different way as in `notification` mode)
+-   `legacy` (used as default if this setting is not defined): IoTAgent commands will use Context Broker registers
+    mechanims.
+-   `notification`: IoTAgent commands will use subscriptions to be notified for Context Broker commands.
+-   `advancedNotification`: IoTAgent commands will use subscriptions to be notified for Context Broker commands (but in
+    a different way as in `notification` mode)
 
 Have a look to [this document](devel/northboundinteractions.md) for more detail on how this modes work.
 
@@ -505,17 +500,7 @@ overrides.
 | IOTA_IOTAM_AGENTPATH                 | `iotManager.agentPath`          |
 | IOTA_IOTAM_PROTOCOL                  | `iotManager.protocol`           |
 | IOTA_IOTAM_DESCRIPTION               | `iotManager.description`        |
-| IOTA_MONGO_HOST                      | `mongodb.host`                  |
-| IOTA_MONGO_PORT                      | `mongodb.port`                  |
-| IOTA_MONGO_DB                        | `mongodb.db`                    |
-| IOTA_MONGO_REPLICASET                | `mongodb.replicaSet`            |
-| IOTA_MONGO_USER                      | `mongodb.user`                  |
-| IOTA_MONGO_PASSWORD                  | `mongodb.password`              |
-| IOTA_MONGO_AUTH_SOURCE               | `mongodb.authSource`            |
-| IOTA_MONGO_RETRIES                   | `mongodb.retries`               |
-| IOTA_MONGO_RETRY_TIME                | `mongodb.retryTime`             |
-| IOTA_MONGO_SSL                       | `mongodb.ssl`                   |
-| IOTA_MONGO_EXTRAARGS                 | `mongodb.extraArgs`             |
+| IOTA_MONGO_URI                       | `mongodb.uri`                   |
 | IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
 | IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
 | IOTA_MULTI_CORE                      | `multiCore`                     |

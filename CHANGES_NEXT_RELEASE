@@ -1,3 +1,5 @@
+- Add IOTA_MONGO_URI env var
+- Deprecated: IOTA_MONGO_ different from IOTA_MONGO_URI (use IOTA_MONGO_URI instead)
 - Fix: broken notification command mode (it was not working without providing targetEntityId and targetEntityType in the notification, which belongs to another command mode: advancedNotification)
 - Fix: use normalized in attrsFormat for commands subscriptions (#1743)
 - Add: locale string number jexl function (#1737)
