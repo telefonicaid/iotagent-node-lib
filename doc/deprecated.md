@@ -12,13 +12,16 @@ longer. In particular:
 
 A list of deprecated features and the version in which they were deprecated follows:
 
--   Config `mongodb.*` different from `mongodb.uri` (and associated env vars `IOTA_MONGO_*` except `IOTA_MONGO_URI`)
+-   Config `mongodb.*` different from `mongodb.uri` (and associated env vars `IOTA_MONGO_*` except `IOTA_MONGO_URI`) in 4.11.0
 -   Support to NGSI v1 (finally removed in 2.18.0)
 -   Support to Node.js v4 in iotagent-node-lib 2.8.1 (finally removed in 2.9.0)
 -   Support to Node.js v6 in iotagent-node-lib 2.9.0 (finally removed in 2.10.0)
 -   Support to Node.js v8 in iotagent-node-lib 2.12.0 (finally removed in 2.13.0)
 -   Support to Node.js v10 in iotagent-node-lib 2.15.0 (finally removed in 2.16.0)
 -   Support to Node.js v12 in iotagent-node-lib 2.24.0 (finally removed in 2.25.0)
+-   Support to Node.js v14 in iotagent-node-lib 3.0.0 (finally removed in 3.1.0)
+-   Support to Node.js v16 in iotagent-node-lib 4.9.0 (finally removed in 4.10.0)
+-   Support to Node.js v18 in iotagent-node-lib 4.9.0 (finally removed in 4.10.0)
 -   Support to NGSI-LD v1.3 in iotagent-node-lib 2.25.0 (finally removed in 2.26.0)
 -   Support groups (provision) statically defined by configuration
 -   Support to in-memory registry (i.e.`deviceRegistry.type=memory`)
@@ -56,20 +59,23 @@ The following table provides information about the last iotagent-node-lib versio
 | Support to Node.js v8                                 | 2.12.0                                                | April 7th, 2020               |
 | Support to Node.js v10                                | 2.15.0                                                | February 18th, 2021           |
 | Support to Node.js v12                                | 2.24.0                                                | September 2nd, 2022           |
+| Support to Node.js v14                                | 3.0.0                                                 | March 30th, 2023              |
+| Support to Node.js v16                                | 4.9.0                                                 | August 22nd, 2025             |
+| Support to Node.js v18                                | 4.9.0                                                 | August 22nd, 2025             |
 | Support to NGSI-LD 1.3                                | 2.25.0                                                | January 24th, 2023            |
 | eventType configuration                               | 2.26.0                                                | March 15th, 2023              |
 | Support to Legacy Expressions                         | 3.1.0                                                 | April 25th, 2023              |
 | bidirectional plugin                                  | 3.3.0                                                 | August 24th, 2023             |
 | appendMode configuration (`IOTA_APPEND_MODE` env var) | 3.3.0                                                 | August 24th, 2023             |
 | push-mode stats                                       | 4.5.0                                                 | June 11th, 2024               |
-| config `mongodb.host` (env var `IOTA_MONGO_HOST`)              | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.port` (env var `IOTA_MONGO_PORT`)              | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.db` (env var `IOTA_MONGO_DB`)                  | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.user` (env var `IOTA_MONGO_USER`)              | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.password` (env var `IOTA_MONGO_PASSWORD`)      | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.authSource` (env var `IOTA_MONGO_AUTH_SOURCE`) | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.retries` (env var `IOTA_MONGO_RETRIES`)        | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.retryTime` (env var `IOTA_MONGO_RETRY_TIME`)   | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.ssl` (env var `IOTA_MONGO_SSL`)                | 4.10.0                                       | October 6th, 2025             |
-| config `mongodb.extraArgs` (env var `IOTA_MONGO_EXTRAARGS`)    | 4.10.0                                       | October 6th, 2025             |
+| config `mongodb.host` (env var `IOTA_MONGO_HOST`)              | Not yet                                      | Not yet             |
+| config `mongodb.port` (env var `IOTA_MONGO_PORT`)              | Not yet                                      | Not yet             |
+| config `mongodb.db` (env var `IOTA_MONGO_DB`)                  | Not yet                                      | Not yet             |
+| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | Not yet                                      | Not yet             |
+| config `mongodb.user` (env var `IOTA_MONGO_USER`)              | Not yet                                      | Not yet             |
+| config `mongodb.password` (env var `IOTA_MONGO_PASSWORD`)      | Not yet                                      | Not yet             |
+| config `mongodb.authSource` (env var `IOTA_MONGO_AUTH_SOURCE`) | Not yet                                      | Not yet             |
+| config `mongodb.retries` (env var `IOTA_MONGO_RETRIES`)        | Not yet                                      | Not yet             |
+| config `mongodb.retryTime` (env var `IOTA_MONGO_RETRY_TIME`)   | Not yet                                      | Not yet             |
+| config `mongodb.ssl` (env var `IOTA_MONGO_SSL`)                | Not yet                                      | Not yet             |
+| config `mongodb.extraArgs` (env var `IOTA_MONGO_EXTRAARGS`)    | Not yet                                      | Not yet             |
