@@ -12,7 +12,7 @@ longer. In particular:
 
 A list of deprecated features and the version in which they were deprecated follows:
 
--   `mongodb.*` different from `mongodb.uri` (and associated env vars `IOTA_MONGO_*` except `IOTA_MONGO_URI`)
+-   Config `mongodb.*` different from `mongodb.uri` (and associated env vars `IOTA_MONGO_*` except `IOTA_MONGO_URI`)
 -   Support to NGSI v1 (finally removed in 2.18.0)
 -   Support to Node.js v4 in iotagent-node-lib 2.8.1 (finally removed in 2.9.0)
 -   Support to Node.js v6 in iotagent-node-lib 2.9.0 (finally removed in 2.10.0)
