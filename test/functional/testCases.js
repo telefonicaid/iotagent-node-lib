@@ -606,14 +606,18 @@ const testCases = [
                         lazy: [],
                         attributes: [
                             {
-                                object_id: 'fdt',
-                                name: 'fireDetectionThreshold',
-                                type: 'Number'
+                                name: 'mainDoorEvent',
+                                type: 'Boolean'
                             },
                             {
-                                object_id: 'fireDetectionThreshold3',
-                                name: 'fireDetectionThreshold3',
-                                type: 'Number'
+                                name: 'psSMDUHPower14',
+                                type: 'Text',
+                                object_id: '.1.3.6.1.4.1.6302.2.1.2.17.1.1.15.1702'
+                            },
+                            {
+                                name: 'psSMDUHPower17',
+                                type: 'Number',
+                                object_id: '.1.3.6.1.4.1.6302.2.1.2.17.1.1.18.1702'
                             }
                         ],
                         static_attributes: []
@@ -638,25 +642,25 @@ const testCases = [
                         k: globalEnv.apikey
                     },
                     json: {
-                        fdt: 10,
-                        fireDetectionThreshold2: 20,
-                        fireDetectionThreshold3: 30
+                        '.1.3.6.1.4.1.6302.2.1.2.17.1.1.18.1702': 3,
+                        mainDoorEvent: 1,
+                        psSMDUHPower14: 2
                     }
                 },
                 expectation: {
                     id: globalEnv.entity_name,
                     type: globalEnv.entity_type,
-                    fireDetectionThreshold: {
-                        type: 'Number',
-                        value: 10
+                    mainDoorEvent: {
+                        type: 'Boolean',
+                        value: 1
                     },
-                    fireDetectionThreshold2: {
+                    psSMDUHPower17: {
+                        type: 'Number',
+                        value: 3
+                    },
+                    psSMDUHPower14: {
                         type: 'Text',
-                        value: 20
-                    },
-                    fireDetectionThreshold3: {
-                        type: 'Number',
-                        value: 30
+                        value: 2
                     }
                 }
             }
