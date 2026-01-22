@@ -9,17 +9,11 @@
     },
     "humidity": {
       "type": "Property",
-      "value": {
-        "@type": "Percentage",
-        "@value": "12"
-      }
+      "value": "12"
     },
     "weather": {
       "type": "Property",
-      "value": {
-        "@type": "Summary",
-        "@value": "Humidity 6 and pressure 20800"
-      }
+      "value": "Humidity 6 and pressure 20800"
     }
   }
 ]

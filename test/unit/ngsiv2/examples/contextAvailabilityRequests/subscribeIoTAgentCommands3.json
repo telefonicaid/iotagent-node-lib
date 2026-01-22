@@ -1,0 +1,24 @@
+{
+    "description": "Managed by IOTA: RobotT:r2d4 RobotT position",
+    "subject": {
+        "entities":[
+            {
+                "id":"RobotT:r2d4","type":"RobotT"
+            }
+        ],
+        "condition": {
+            "attrs":["position"]
+        }
+    },
+    "notification":{
+        "http":{
+            "url":"http://smartgondor.com/notify"
+        },
+        "attrs":["position"],
+        "attrsFormat":"normalized",
+        "onlyChangedAttrs":true
+    }
+}
+
+
+

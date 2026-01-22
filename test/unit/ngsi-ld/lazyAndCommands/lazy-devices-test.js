@@ -226,7 +226,7 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
         it('should call the device handler for each of the contexts');
     });
 
-    describe('When a context query arrives to the IoT Agent', function () {
+    describe('When a context query arrives to the IoT Agent using retrieveEntity', function () {
         const options = {
             url:
                 'http://localhost:' +
@@ -274,6 +274,76 @@ describe('NGSI-LD - IoT Agent Lazy Devices', function () {
             const expectedResponse = utils.readExampleFile(
                 './test/unit/ngsi-ld/examples/contextProviderResponses/queryInformationResponse.json'
             );
+
+            iotAgentLib.setDataUpdateHandler(function (id, type, service, subservice, attributes, callback) {
+                callback(null);
+            });
+
+            iotAgentLib.setDataQueryHandler(function (id, type, service, subservice, attributes, callback) {
+                id.should.equal('urn:ngsi-ld:' + device1.type + ':' + device1.id);
+                type.should.equal(device1.type);
+                attributes[0].should.equal('dimming');
+                callback(null, sensorData[0]);
+            });
+
+            request(options, function (error, response, body) {
+                should.not.exist(error);
+                body.should.eql(expectedResponse);
+                done();
+            });
+        });
+    });
+
+    describe('When a context query arrives to the IoT Agent using queryEntities', function () {
+        const options = {
+            url:
+                'http://localhost:' +
+                iotAgentConfig.server.port +
+                '/ngsi-ld/v1/entities/?id=urn:ngsi-ld:Light:light1&attrs=dimming',
+            method: 'GET',
+            headers: {
+                'fiware-service': 'smartgondor',
+                'fiware-servicepath': 'gardens'
+            }
+        };
+        const sensorData = [
+            {
+                id: 'Light:light1',
+                type: 'Light',
+                dimming: {
+                    type: 'Percentage',
+                    value: 19
+                }
+            }
+        ];
+
+        beforeEach(function (done) {
+            nock.cleanAll();
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .post(
+                    '/ngsi-ld/v1/csourceRegistrations/',
+                    utils.readExampleFile(
+                        './test/unit/ngsi-ld/examples/contextAvailabilityRequests/registerIoTAgent1.json'
+                    )
+                )
+                .reply(201, null, { Location: '/ngsi-ld/v1/csourceRegistrations/6319a7f5254b05844116584d' });
+
+            contextBrokerMock
+                .matchHeader('fiware-service', 'smartgondor')
+                .post('/ngsi-ld/v1/entityOperations/upsert/')
+                .reply(204);
+
+            async.series([apply(iotAgentLib.activate, iotAgentConfig), apply(iotAgentLib.register, device1)], done);
+        });
+
+        it('should return the information querying the underlying devices', function (done) {
+            const expectedResponse = [
+                utils.readExampleFile(
+                    './test/unit/ngsi-ld/examples/contextProviderResponses/queryInformationResponse.json'
+                )
+            ];
 
             iotAgentLib.setDataUpdateHandler(function (id, type, service, subservice, attributes, callback) {
                 callback(null);

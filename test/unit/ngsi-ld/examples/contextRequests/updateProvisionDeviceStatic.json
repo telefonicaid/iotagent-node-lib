@@ -18,10 +18,7 @@
         },
         "serverURL": {
             "type": "Property",
-            "value": {
-                "@type": "URL",
-                "@value": "http://fakeserver.com"
-            }
+            "value": "http://fakeserver.com"
         },
         "type": "MicroLights"
     }
