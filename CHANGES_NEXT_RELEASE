@@ -1,0 +1,2 @@
+- Fix: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys) (#1713)
+
