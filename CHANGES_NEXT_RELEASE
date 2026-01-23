@@ -1,0 +1,1 @@
+- FIX: set default value for defaultTransport to allow set polling and transport for autoprovisioned devices when no IOTA_DEFAULT_TRANSPORT en var is used (#1751)
