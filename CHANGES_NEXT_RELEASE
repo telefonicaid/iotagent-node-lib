@@ -1,2 +1,0 @@
-- Fix: set default value for defaultTransport to allow set polling and transport for autoprovisioned devices when no IOTA_DEFAULT_TRANSPORT en var is used (#1751)
-- Fix: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys) (#1713)
