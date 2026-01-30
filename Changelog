@@ -1,3 +1,5 @@
+- Add: hash jexl function 
+
 4.12.0 (Jan 28th, 2026)
 
 - Fix: set default value for defaultTransport to allow set polling and transport for autoprovisioned devices when no IOTA_DEFAULT_TRANSPORT en var is used (#1751)
