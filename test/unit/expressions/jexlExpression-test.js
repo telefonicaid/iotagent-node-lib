@@ -586,4 +586,44 @@ describe('Jexl expression interpreter', function () {
             });
         });
     });
+
+    describe('When hash function is executed', function () {
+        it('should return an 8-character uppercase hexadecimal hash', function (done) {
+            expressionParser.parse('"test"|hash', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.match(/^[0-9A-F]{8}$/);
+                result.should.equal('00364492');
+                done();
+            });
+        });
+
+        it('should return consistent hash for the same input', function (done) {
+            expressionParser.parse('value|hash', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.match(/^[0-9A-F]{8}$/);
+                const firstHash = result;
+                expressionParser.parse('value|hash', scope, function (error, result) {
+                    should.not.exist(error);
+                    result.should.equal(firstHash);
+                    done();
+                });
+            });
+        });
+
+        it('should handle numeric values', function (done) {
+            expressionParser.parse('number|hash', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.match(/^[0-9A-F]{8}$/);
+                done();
+            });
+        });
+
+        it('should handle empty string', function (done) {
+            expressionParser.parse('""|hash', scope, function (error, result) {
+                should.not.exist(error);
+                result.should.equal('00000000');
+                done();
+            });
+        });
+    });
 });

@@ -760,6 +760,7 @@ Current common transformation set:
 | hextostring: (val)                       | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                         |
 | valuePicker: (val,pick)                  | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code>            |
 | valuePickerMulti: (val,pick)             | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code> |
+| hash: (val)                              | <code>Math.abs(String(val).split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0)).toString(16).toUpperCase().padStart(8, '0')</code> |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
 test all the functions described above.
