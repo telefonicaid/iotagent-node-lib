@@ -296,7 +296,7 @@ describe('Jexl expression interpreter', function () {
         it('it should detect when it is not a map', function (done) {
             const [error, message, resultMap] = expressionParser.checkTransformationMap(noMap);
             should.exist(error);
-            message.should.equal('No trasformations were added to JEXL Parser');
+            message.should.equal('No transformations were added to JEXL Parser');
             resultMap.should.eql({});
             done();
         });
@@ -304,7 +304,7 @@ describe('Jexl expression interpreter', function () {
         it('it should be empty {}', function (done) {
             const [error, message, resultMap] = expressionParser.checkTransformationMap({});
             should.not.exist(error);
-            message.should.equal('No trasformations were added to JEXL Parser');
+            message.should.equal('No transformations were added to JEXL Parser');
             resultMap.should.eql({});
             done();
         });
@@ -312,7 +312,7 @@ describe('Jexl expression interpreter', function () {
         it('it should be empty null', function (done) {
             const [error, message, resultMap] = expressionParser.checkTransformationMap(null);
             should.not.exist(error);
-            message.should.equal('No trasformations were added to JEXL Parser');
+            message.should.equal('No transformations were added to JEXL Parser');
             resultMap.should.eql({});
             done();
         });
@@ -330,7 +330,7 @@ describe('Jexl expression interpreter', function () {
         it('it should be correct (map of funtions)', function (done) {
             const [error, message, resultMap] = expressionParser.checkTransformationMap(niceMap);
             should.not.exist(error);
-            message.should.equal('Trasformations can be added to JEXL parser');
+            message.should.equal('Transformations can be added to JEXL parser');
             resultMap.should.eql(niceMap);
             done();
         });
