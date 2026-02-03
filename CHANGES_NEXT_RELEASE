@@ -1,1 +1,2 @@
 - Add: hash jexl transformation
+- Fix: change log level to warn when error loading extra jexl transformation
