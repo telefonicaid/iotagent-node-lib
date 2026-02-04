@@ -1,6 +1,8 @@
-4.13.0 (Feb 2nd, 2026)
+4.13.0 (Feb 4th, 2026)
 
 - Add: hash jexl transformation
+- Fix: change log level to warn when error loading extra jexl transformation
+- Fix: meassure by name was not progressed if object_id is defined also in the same attribute (#1660)
 
 4.12.0 (Jan 28th, 2026)
 
