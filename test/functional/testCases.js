@@ -731,11 +731,7 @@ const testCases = [
                     },
                     psSMDUHPower17: {
                         type: 'Number',
-                        value: 999
-                    },
-                    psSMDUHPower14: {
-                        type: 'Text',
-                        value: 999
+                        value: 2
                     }
                 }
             }
