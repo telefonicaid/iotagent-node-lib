@@ -1,2 +1,3 @@
-- Fix: meassure by name was not progressed if object_id is defined also in the same attribute (#1660)
 - Add: hash jexl transformation
+- Fix: change log level to warn when error loading extra jexl transformation
+- Fix: meassure by name was not progressed if object_id is defined also in the same attribute (#1660)
