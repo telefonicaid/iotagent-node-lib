@@ -3,10 +3,7 @@
         "@context": "http://context.json-ld",
         "bootstrapServer": {
             "type": "Property",
-            "value": {
-                "@type": "Address",
-                "@value": "127.0.0.1"
-            }
+            "value":  "Address"
         },
         "id": "urn:ngsi-ld:Light:light1",
         "status": {

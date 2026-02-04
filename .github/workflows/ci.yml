@@ -14,10 +14,10 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-      - name: Use Node.js 16.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 24.x
       - name: Run Remark Markdown Linter
         run: |
           npm install
@@ -31,10 +31,10 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-      - name: Use Node.js 16.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 24.x
       - name: Run EsLint Node.js Linter
         run: |
           npm install
@@ -51,8 +51,9 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 16.x
-          - 18.x
+          - 20.x
+          - 22.x
+          - 24.x
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
@@ -60,7 +61,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '${{ matrix.node-version }}'
-      - name: 'Unit Tests with Node.js ${{ matrix.node-version }}'
+      - name: 'Unit and Functional Tests with Node.js ${{ matrix.node-version }}'
         run: |
           npm install
           npm test
@@ -77,10 +78,10 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-      - name: 'Test Coverage with Node.js 16.x'
+      - name: 'Test Coverage with Node.js 24.x'
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 24.x
       - run: |
           npm install
           npm run test:coverage

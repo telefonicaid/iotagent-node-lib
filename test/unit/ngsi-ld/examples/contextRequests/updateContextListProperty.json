@@ -1,0 +1,14 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "lightValues": {
+      "type": "ListProperty",
+      "listValue": [
+          0,
+          1
+      ]
+    },
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]

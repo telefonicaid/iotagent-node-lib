@@ -5,10 +5,7 @@
     "type": "WeatherStation",
     "pressure": {
       "type": "Property",
-      "value": {
-        "@type": "Hgmm",
-        "@value": "52"
-      }
+      "value":  "52"
     }
   },
   {
@@ -17,10 +14,7 @@
     "type": "Higrometer",
     "humidity": {
       "type": "Property",
-      "value": {
-        "@type": "Percentage",
-        "@value": "12"
-      }
+      "value": "12"
     }
   }
 ]

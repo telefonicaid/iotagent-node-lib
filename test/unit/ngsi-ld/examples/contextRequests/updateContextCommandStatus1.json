@@ -5,17 +5,12 @@
     "type": "Robot",
     "position_status": {
       "type": "Property",
-      "value": {
-        "@type": "commandStatus",
-        "@value": "UNKNOWN"
-      }
+      "value": "UNKNOWN"
+
     },
     "position_info": {
       "type": "Property",
-      "value": {
-        "@type": "commandResult",
-        "@value": " "
-      }
+      "value": " "
     }
   }
 ]

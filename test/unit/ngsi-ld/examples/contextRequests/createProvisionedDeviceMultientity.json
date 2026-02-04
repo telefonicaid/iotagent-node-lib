@@ -3,24 +3,15 @@
         "@context": "http://context.json-ld",
         "commandAttr_info": {
             "type": "Property",
-            "value": {
-                "@type": "commandResult",
-                "@value": " "
-            }
+            "value":  " "
         },
         "commandAttr_status": {
             "type": "Property",
-            "value": {
-                "@type": "commandStatus",
-                "@value": "UNKNOWN"
-            }
+            "value": "UNKNOWN"
         },
         "hardcodedAttr": {
             "type": "Property",
-            "value": {
-                "@type": "hardcodedType",
-                "@value": "hardcodedValue"
-            }
+            "value":  "hardcodedType"
         },
         "id": "urn:ngsi-ld:TheLightType:TheFirstLight",
         "type": "TheLightType"

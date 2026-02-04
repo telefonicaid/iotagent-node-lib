@@ -1,3 +1,30 @@
+4.12.0 (Jan 28th, 2026)
+
+- Fix: set default value for defaultTransport to allow set polling and transport for autoprovisioned devices when no IOTA_DEFAULT_TRANSPORT en var is used (#1751)
+- Fix: allow match auto-provisioned devices and groups when the same type is used by several groups (which always uses different apikeys) (#1713)
+
+4.11.0 (Oct 23th, 2025)
+
+- Add: IOTA_MONGO_URI env var
+- Add: locale string number jexl function (#1737)
+- Deprecated: IOTA_MONGO_ different from IOTA_MONGO_URI (use IOTA_MONGO_URI instead)
+- Fix: broken notification command mode (it was not working without providing targetEntityId and targetEntityType in the notification, which belongs to another command mode: advancedNotification)
+- Fix: use normalized in attrsFormat for commands subscriptions (#1743)
+
+4.10.0 (Oct 6th, 2025)
+
+- Add: command modes (new field cmdMode): legacy, notification and advancedNotification (#1732)
+- Fix: update device with useCBflowControl
+- Set Nodejs 20 as minimum version in packages.json (effectively removing Nodev16 and Nodev18 from supported versions)
+
+4.9.0 (Aug 22nd, 2025)
+
+- Add: support NGSI-LD QueryEntities endpoint for lazy attributes (#1722)
+- Add: support for NGSI-LD valueType and more NGSI-LD sub-property types (new config server.ldSupport.datatype and associated env var IOTA_LD_SUPPORT_DATA_TYPE) (#1723)
+- Fix: store as lastMeasure just orignal measure when is provided (#1669)
+- Fix: init express trust proxy to proper fill from field of domain logger
+- Fix: fill from log field with real IP
+
 4.8.0 (May 23rd, 2025)
 
 - Add: notification-based commands (#1455)

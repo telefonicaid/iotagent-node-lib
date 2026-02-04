@@ -1187,7 +1187,7 @@ describe('NGSI-LD - Command functionalities', function () {
         });
 
         it('should update its value and status in the Context Broker', function (done) {
-            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', '[72, 368, 1]', 'FINISHED', function (error) {
+            iotAgentLib.setCommandResult('r2d2', 'Robot', '', 'position', [72, 368, 1], 'FINISHED', function (error) {
                 should.not.exist(error);
                 statusAttributeMock.done();
                 done();

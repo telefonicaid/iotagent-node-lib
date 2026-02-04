@@ -1,0 +1,11 @@
+[
+  {
+    "@context": "http://context.json-ld",
+    "locatedIn": {
+        "type": "Relationship",
+        "object": "urn:ngsi-ld:XXX"
+    },
+    "id": "urn:ngsi-ld:Light:light1",
+    "type": "Light"
+  }
+]

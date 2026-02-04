@@ -243,7 +243,7 @@ describe('NGSI-v2 - In memory device registry', function () {
                 should.exist(device.type);
                 device.name.should.equal('name5');
                 device.type.should.equal('Light5');
-                Object.keys(device).length.should.equal(12);
+                Object.keys(device).length.should.equal(14);
                 done();
             });
         });

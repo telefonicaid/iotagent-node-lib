@@ -211,7 +211,7 @@ describe('NGSI-v2 - HTTPS support tests', function () {
 
         it('should send the appropriate request to the Context Broker', function (done) {
             iotAgentLib.getDevice('MicroLight1', null, 'smartgondor', '/gardens', function (error, device) {
-                iotAgentLib.subscribe(device, ['attr_name'], null, function (error) {
+                iotAgentLib.subscribe(device, ['attr_name'], null, 'normalized', function (error) {
                     should.not.exist(error);
 
                     contextBrokerMock.done();
