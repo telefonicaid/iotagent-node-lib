@@ -18,6 +18,7 @@
     -   [Metadata support](#metadata-support)
         -   [NGSI LD data and metadata considerations](#ngsi-ld-data-and-metadata-considerations)
     -   [Advice on Attribute definitions](#advice-on-attribute-definitions)
+        -   [Using object_id and name at the same time](#using-object_id-and-name-at-the-same-time)
         -   [Reuse of attribute names](#reuse-of-attribute-names)
         -   [Reuse of attribute types](#reuse-of-attribute-types)
         -   [How to specify attribute Units of Measurement](#how-to-specify-attribute-units-of-measurement)
@@ -488,6 +489,31 @@ Other unrecognised `type` attributes will be passed as NGSI-LD data using the fo
 ```
 
 ## Advice on Attribute definitions
+
+### Using object_id and name at the same time
+
+In the case a measure includes an object_id and a name that refers to the same attribute the name takes precedence over object_id.
+
+For example, if we have the following provission
+
+```json
+{
+    "name": "psSMDUHPower17",
+    "type": "Number",
+    "object_id": "p"
+}
+```
+
+and the measure is the following
+
+```json
+{
+    "p": 1,
+    "psSMDUHPower17": 2
+}
+```
+
+then the attribute at ContextBroker will take value `2`.
 
 ### Reuse of attribute names
 
