@@ -1,7 +1,7 @@
 # Welcome to the FIWARE IoT Agent Framework
 
-[![FIWARE IoT Agents](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
-[![](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
+[![FIWARE IoT Agents](https://fiware.github.io/catalogue/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
+[![](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 
 This project aims to provide a Node.js library to enable IoT Agent developers to build custom agents for their devices
 that can easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ).
