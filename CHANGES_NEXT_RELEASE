@@ -1,2 +1,2 @@
-- Fix attribute loss during device update when both name and object_id are defined by filtering only object_id (#1660)
+- Fix: meassure by name was not progressed if object_id is defined also in the same attribute (#1660)
 - Add: hash jexl transformation
