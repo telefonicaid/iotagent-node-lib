@@ -1,0 +1,1 @@
+- Add to endpoint /about  info about status of CB, IotaM, Mongo and MQTT broker (#1763)
