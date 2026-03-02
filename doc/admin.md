@@ -458,6 +458,20 @@ values are:
 
 Have a look to [this document](devel/northboundinteractions.md) for more detail on how this modes work.
 
+#### `healthCheckInterval`
+
+Time interval (in milliseconds) between consecutive health checks. Default: 20000 (20 seconds)
+
+#### `healthCheckTimeout`
+
+Maximum time (in milliseconds) to wait for a single health check operation (HTTP request, MongoDB ping, MQTT connect)
+before considering it failed. Default: 1500 (1.5 seconds)
+
+#### `healthCheckDownAfterFails`
+
+Number of consecutive failed checks required before marking a connection as DOWN (ok: false). Until this threshold is
+reached, transient failures are tolerated. Default: 3
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -514,6 +528,9 @@ overrides.
 | IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
 | IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
 | IOTA_CMD_MODE                        | `cmdMode`                       |
+| IOTA_HEALTH_CHECK_INTERVAL           | `healthCheckInterval`           |
+| IOTA_HEALTH_CHECK_TIMEOUT            | `healthCheckTimeout`            |
+| IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS   | `healthCheckDownAfterFails`     |
 
 Note:
 

@@ -713,53 +713,53 @@ to incorporate new transformations from the IoT Agent configuration file in a fa
 
 Current common transformation set:
 
-| JEXL Transformation                      | Equivalent JavaScript Function                                                                                           |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| jsonparse: (str)                         | `JSON.parse(str);`                                                                                                       |
-| jsonstringify: (obj)                     | `JSON.stringify(obj);`                                                                                                   |
-| indexOf: (val, char)                     | `String(val).indexOf(char);`                                                                                             |
-| length: (val)                            | `String(val).length;`                                                                                                    |
-| trim: (val)                              | `String(val).trim();`                                                                                                    |
-| substr: (val, int1, int2)                | `String(val).substr(int1, int2);`                                                                                        |
-| addreduce: (arr)                         | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                           |
-| lengtharray: (arr)                       | `arr.length;`                                                                                                            |
-| typeof: (val)                            | `typeof val;`                                                                                                            |
-| isarray: (arr)                           | `Array.isArray(arr);`                                                                                                    |
-| isnan: (val)                             | `isNaN(val);`                                                                                                            |
-| parseint: (val)                          | `parseInt(val);`                                                                                                         |
-| parsefloat: (val)                        | `parseFloat(val);`                                                                                                       |
-| toisodate: (val)                         | `new Date(val).toISOString();`                                                                                           |
-| timeoffset:(isostr)                      | `new Date(isostr).getTimezoneOffset();`                                                                                  |
-| tostring: (val)                          | `val.toString();`                                                                                                        |
-| urlencode: (val)                         | `encodeURI(val);`                                                                                                        |
-| urldecode: (val)                         | `decodeURI(val);`                                                                                                        |
-| replacestr: (str, from, to)              | `str.replace(from, to);`                                                                                                 |
-| replaceregexp: (str, reg, to)            | `str.replace(new RegExp(reg), to);`                                                                                      |
-| replaceallstr: (str, from, to)           | `str.replaceAll(from, to);`                                                                                              |
-| replaceallregexp: (str, reg, to)         | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                               |
-| split: (str, ch)                         | `str.split(ch);`                                                                                                         |
-| joinarrtostr: (arr, ch)                  | `arr.join(ch);`                                                                                                          |
-| concatarr: (arr, arr2)                   | `arr.concat(arr2);`                                                                                                      |
-| mapper: (val, values, choices)           | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                  |
-| thmapper: (val, values, choices)         | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code>  |
-| bitwisemask: (i,mask,op,shf)             | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>         |
-| slice: (arr, init, end)                  | `arr.slice(init,end);`                                                                                                   |
-| addset: (arr, x)                         | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                                |
-| removeset: (arr, x)                      | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                 |
-| touppercase: (val)                       | `String(val).toUpperCase()`                                                                                              |
-| tolowercase: (val)                       | `String(val).toLowerCase()`                                                                                              |
-| round: (val)                             | `Math.round(val)`                                                                                                        |
-| floor: (val)                             | `Math.floor(val)`                                                                                                        |
-| ceil: (val)                              | `Math.ceil(val)`                                                                                                         |
-| tofixed: (val, decimals)                 | `Number.parseFloat(val).toFixed(decimals)`                                                                               |
-| gettime: (d)                             | `new Date(d).getTime()`                                                                                                  |
-| toisostring: (d)                         | `new Date(d).toISOString()`                                                                                              |
-| localestring: (d, timezone, options)     | `new Date(d).toLocaleString(timezone, options)`                                                                          |
-| localestringnumber: (n, locale, options) | `n.toLocaleStringNumber(locale, options)`                                                                                |
-| now: ()                                  | `Date.now()`                                                                                                             |
-| hextostring: (val)                       | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                         |
-| valuePicker: (val,pick)                  | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code>            |
-| valuePickerMulti: (val,pick)             | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code> |
+| JEXL Transformation                      | Equivalent JavaScript Function                                                                                                                 |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| jsonparse: (str)                         | `JSON.parse(str);`                                                                                                                             |
+| jsonstringify: (obj)                     | `JSON.stringify(obj);`                                                                                                                         |
+| indexOf: (val, char)                     | `String(val).indexOf(char);`                                                                                                                   |
+| length: (val)                            | `String(val).length;`                                                                                                                          |
+| trim: (val)                              | `String(val).trim();`                                                                                                                          |
+| substr: (val, int1, int2)                | `String(val).substr(int1, int2);`                                                                                                              |
+| addreduce: (arr)                         | <code>arr.reduce((i, v) &vert; i + v));</code>                                                                                                 |
+| lengtharray: (arr)                       | `arr.length;`                                                                                                                                  |
+| typeof: (val)                            | `typeof val;`                                                                                                                                  |
+| isarray: (arr)                           | `Array.isArray(arr);`                                                                                                                          |
+| isnan: (val)                             | `isNaN(val);`                                                                                                                                  |
+| parseint: (val)                          | `parseInt(val);`                                                                                                                               |
+| parsefloat: (val)                        | `parseFloat(val);`                                                                                                                             |
+| toisodate: (val)                         | `new Date(val).toISOString();`                                                                                                                 |
+| timeoffset:(isostr)                      | `new Date(isostr).getTimezoneOffset();`                                                                                                        |
+| tostring: (val)                          | `val.toString();`                                                                                                                              |
+| urlencode: (val)                         | `encodeURI(val);`                                                                                                                              |
+| urldecode: (val)                         | `decodeURI(val);`                                                                                                                              |
+| replacestr: (str, from, to)              | `str.replace(from, to);`                                                                                                                       |
+| replaceregexp: (str, reg, to)            | `str.replace(new RegExp(reg), to);`                                                                                                            |
+| replaceallstr: (str, from, to)           | `str.replaceAll(from, to);`                                                                                                                    |
+| replaceallregexp: (str, reg, to)         | `str.replaceAll(new RegExp(reg,"g"), to);`                                                                                                     |
+| split: (str, ch)                         | `str.split(ch);`                                                                                                                               |
+| joinarrtostr: (arr, ch)                  | `arr.join(ch);`                                                                                                                                |
+| concatarr: (arr, arr2)                   | `arr.concat(arr2);`                                                                                                                            |
+| mapper: (val, values, choices)           | <code>choices[values.findIndex((target) &vert; target == val)]);</code>                                                                        |
+| thmapper: (val, values, choices)         | <code>choices[values.reduce((acc,curr,i,arr) &vert; (acc==0)&vert;&vert;acc?acc:val<=curr?acc=i:acc=null,null)];</code>                        |
+| bitwisemask: (i,mask,op,shf)             | <code>(op==="&"?parseInt(i)&mask: op==="&vert;"?parseInt(i)&vert;mask: op==="^"?parseInt(i)^mask:i)>>shf;</code>                               |
+| slice: (arr, init, end)                  | `arr.slice(init,end);`                                                                                                                         |
+| addset: (arr, x)                         | <code>{ return Array.from((new Set(arr)).add(x)) }</code>                                                                                      |
+| removeset: (arr, x)                      | <code>{ let s = new Set(arr); s.delete(x); return Array.from(s) }</code>                                                                       |
+| touppercase: (val)                       | `String(val).toUpperCase()`                                                                                                                    |
+| tolowercase: (val)                       | `String(val).toLowerCase()`                                                                                                                    |
+| round: (val)                             | `Math.round(val)`                                                                                                                              |
+| floor: (val)                             | `Math.floor(val)`                                                                                                                              |
+| ceil: (val)                              | `Math.ceil(val)`                                                                                                                               |
+| tofixed: (val, decimals)                 | `Number.parseFloat(val).toFixed(decimals)`                                                                                                     |
+| gettime: (d)                             | `new Date(d).getTime()`                                                                                                                        |
+| toisostring: (d)                         | `new Date(d).toISOString()`                                                                                                                    |
+| localestring: (d, timezone, options)     | `new Date(d).toLocaleString(timezone, options)`                                                                                                |
+| localestringnumber: (n, locale, options) | `n.toLocaleStringNumber(locale, options)`                                                                                                      |
+| now: ()                                  | `Date.now()`                                                                                                                                   |
+| hextostring: (val)                       | `new TextDecoder().decode(new Uint8Array(val.match(/.{1,2}/g).map(byte => parseInt(byte, 16))))`                                               |
+| valuePicker: (val,pick)                  | <code>valuePicker: (val,pick) => Object.entries(val).filter(([_, v]) => v === pick).map(([k, _]) => k)</code>                                  |
+| valuePickerMulti: (val,pick)             | <code>valuePickerMulti: (val,pick) => Object.entries(val).filter(([_, v]) => pick.includes(v)).map(([k, _]) => k)</code>                       |
 | hash: (val)                              | <code>Math.abs(String(val).split('').reduce((h, c) => ((h << 5) - h) + c.charCodeAt(0), 0)).toString(16).toUpperCase().padStart(8, '0')</code> |
 
 You have available this [JEXL interactive playground][99] with all the transformations already loaded, in which you can
@@ -2390,7 +2390,13 @@ Example:
 #### List IoTA Information `GET /iot/about`
 
 Returns a useful information about component version and deployment information. It can be used as a heartbeat operation
-to check the health of the IoT Agent if required.
+to check the health of the IoT Agent if required since includes a health-check system for some dependencies: the Context
+Broker, the IoT Agent Manager, MongoDB, and the MQTT broker. Each dependency is checked using the most appropriate
+mechanism (HTTP requests for the Context Broker and IoT Agent Manager, a native database ping via Mongoose for MongoDB,
+and a real connection handshake for MQTT). The checks run at a configurable interval, use short timeouts, and tolerate
+transient errors by requiring several consecutive failures before marking a dependency as DOWN. Results are cached in
+memory and exposed through the /iot/about endpoint, providing real-time visibility into both configuration status and
+runtime connectivity without impacting normal agent operation.
 
 _**Response payload**_
 
@@ -2409,7 +2415,27 @@ Example:
     "libVersion": "2.7.0",
     "port": "4041",
     "baseRoot": "/",
-    "version": "1.7.0"
+    "version": "1.7.0",
+    "connections":{
+        "contextBroker":{
+           "ok":true,
+           "configured":true,
+           "url":"http://iot-orion:1026",
+           "lastOk":"2026-02-27T13:28:53.484Z",
+           "lastError":null,
+           "latencyMs":7,
+           "consecutiveFails":0
+        },
+        "iotagentManager":{
+           ...
+        }
+        "mongodb":{
+           ...
+        },
+        "mqtt":{
+           ...
+        }
+    }
 }
 ```
 
