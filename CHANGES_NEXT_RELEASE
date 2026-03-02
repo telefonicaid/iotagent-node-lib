@@ -1,1 +1,5 @@
+<<<<<<< task/add_health_middleware
 - Add to endpoint /about  info about status of CB, IotaM, Mongo and MQTT broker (#1763)
+=======
+- Upgrade express dep from 4.21.2 to 4.22.1
+>>>>>>> master
