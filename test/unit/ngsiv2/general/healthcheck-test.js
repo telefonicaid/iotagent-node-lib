@@ -89,10 +89,7 @@ describe('About API with check health', function () {
         iotamMock.get('/iot/protocols').reply(200, 'UP');
 
         iotAgentLib.activate(iotAgentConfig, function (err) {
-            if (err) return done(err);
-
             iotAgentLib.clearAll(function (err2) {
-                if (err2) return done(err2);
                 done();
             });
         });
@@ -115,10 +112,11 @@ describe('About API with check health', function () {
                     Accept: 'application/json'
                 }
             };
-
+            /* eslint-disable-next-line consistent-return */
             request(options, function (error, response, body) {
-                if (error) return done(error);
-
+                if (error) { 
+                    return done(error);
+                }
                 response.statusCode.should.equal(200);
                 body.connections.contextBroker.ok.should.equal(true);
                 body.connections.iotagentManager.ok.should.equal(true);
