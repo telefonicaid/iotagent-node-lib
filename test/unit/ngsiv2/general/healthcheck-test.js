@@ -82,6 +82,36 @@ const iotAgentConfig = {
     deviceRegistrationDuration: 'P1M'
 };
 
+const iotAgentConfig2 = {
+    logLevel: 'FATAL',
+    server: {
+        port: 4041,
+        host: 'localhost'
+    },
+    types: {
+        Light: {
+            commands: [],
+            type: 'Light',
+            lazy: [
+                {
+                    name: 'temperature',
+                    type: 'centigrades'
+                }
+            ],
+            attributes: [
+                {
+                    name: 'pressure',
+                    type: 'Hgmm'
+                }
+            ]
+        }
+    },
+    service: 'smartgondor',
+    subservice: 'gardens',
+    providerUrl: 'http://smartgondor.com',
+    deviceRegistrationDuration: 'P1M'
+};
+
 let contextBrokerMock;
 let iotamMock;
 
@@ -134,9 +164,116 @@ describe('About API with check health', function () {
                 response.statusCode.should.equal(200);
                 body.connections.contextBroker.ok.should.equal(true);
                 body.connections.iotagentManager.ok.should.equal(true);
+                body.connections.mongodb.ok.should.equal(true);
+                body.connections.mqtt.configured.should.equal(false);
 
                 contextBrokerMock.done();
                 iotamMock.done();
+                done();
+            });
+        });
+    });
+});
+
+describe('About API with check health with errors in endpoints', function () {
+    beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
+        process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
+        process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 1;
+        nock.cleanAll();
+
+        contextBrokerMock = nock('http://192.168.1.1:1026').get('/version').reply(500);
+
+        iotamMock = nock('http://192.168.1.1:9876')
+            .post('/protocols', utils.readExampleFile('./test/unit/examples/iotamRequests/registrationEmpty.json'))
+            .reply(200, utils.readExampleFile('./test/unit/examples/iotamResponses/registrationSuccess.json'));
+        iotamMock.get('/iot/protocols').reply(500, 'DOWN');
+
+        iotAgentLib.activate(iotAgentConfig, function (err) {
+            iotAgentLib.clearAll(function (err2) {
+                done();
+            });
+        });
+    });
+
+    afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
+        delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
+        delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
+        nock.cleanAll();
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When the IoT Agent is started with health check', function () {
+        it('should respond health check state in about API', function (done) {
+            const options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/about',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
+            };
+            /* eslint-disable-next-line consistent-return */
+            request(options, function (error, response, body) {
+                if (error) {
+                    return done(error);
+                }
+                response.statusCode.should.equal(200);
+                body.connections.contextBroker.ok.should.equal(false);
+                body.connections.iotagentManager.ok.should.equal(false);
+                body.connections.mongodb.ok.should.equal(true);
+                body.connections.mqtt.configured.should.equal(false);
+
+                contextBrokerMock.done();
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+});
+
+describe('About API with check health without endpoints', function () {
+    beforeEach(function (done) {
+        nock.cleanAll();
+
+        iotAgentLib.activate(iotAgentConfig2, function (err) {
+            iotAgentLib.clearAll(function (err2) {
+                done();
+            });
+        });
+    });
+
+    afterEach(function (done) {
+        nock.cleanAll();
+        iotAgentLib.clearAll(function () {
+            iotAgentLib.deactivate(done);
+        });
+    });
+
+    describe('When the IoT Agent is started with health check', function () {
+        it('should respond health check state in about API', function (done) {
+            const options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/about',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
+            };
+            /* eslint-disable-next-line consistent-return */
+            request(options, function (error, response, body) {
+                if (error) {
+                    return done(error);
+                }
+                response.statusCode.should.equal(200);
+                body.connections.contextBroker.configured.should.equal(false);
+                body.connections.iotagentManager.configured.should.equal(false);
+                body.connections.mongodb.configured.should.equal(false);
+                body.connections.mqtt.configured.should.equal(false);
+
                 done();
             });
         });
