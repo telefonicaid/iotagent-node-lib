@@ -42,6 +42,14 @@ const iotAgentConfig = {
         port: 4041,
         host: 'localhost'
     },
+    iotManager: {
+        host: '192.168.1.1',
+        port: 9876,
+        path: '/protocols',
+        protocol: 'GENERIC_PROTOCOL',
+        description: 'A generic protocol',
+        agentPath: '/iot'
+    },
     types: {
         Light: {
             commands: [],
@@ -60,13 +68,13 @@ const iotAgentConfig = {
             ]
         }
     },
-    iotManager: {
-        host: '192.168.1.1',
-        port: 9876,
-        path: '/protocols',
-        protocol: 'GENERIC_PROTOCOL',
-        description: 'A generic protocol',
-        agentPath: '/iot'
+    deviceRegistry: {
+        type: 'mongodb'
+    },
+    mongodb: {
+        host: 'localhost',
+        port: '27017',
+        db: 'iotagent'
     },
     service: 'smartgondor',
     subservice: 'gardens',
@@ -79,6 +87,9 @@ let iotamMock;
 
 describe('About API with check health', function () {
     beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
+        process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
+        process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 2;
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026').get('/version').reply(200, '4.9.0');
@@ -96,6 +107,9 @@ describe('About API with check health', function () {
     });
 
     afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
+        delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
+        delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
         nock.cleanAll();
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
@@ -114,7 +128,7 @@ describe('About API with check health', function () {
             };
             /* eslint-disable-next-line consistent-return */
             request(options, function (error, response, body) {
-                if (error) { 
+                if (error) {
                     return done(error);
                 }
                 response.statusCode.should.equal(200);
