@@ -162,6 +162,7 @@ describe('About API with check health', function () {
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 2;
+        process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP = false;
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026').get('/version').reply(200, '4.9.0');
@@ -182,6 +183,7 @@ describe('About API with check health', function () {
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
+        delete process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP;
         nock.cleanAll();
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
@@ -245,6 +247,7 @@ describe('About API with check health with errors in endpoints', function () {
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 1;
+        process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP = false;
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026').get('/version').reply(500);
@@ -265,6 +268,7 @@ describe('About API with check health with errors in endpoints', function () {
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
+        delete process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP;
         nock.cleanAll();
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
@@ -305,6 +309,7 @@ describe('About API with check health with bad urls in endpoints', function () {
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 1;
+        process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP = true;
         nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig3, function (err) {
@@ -318,6 +323,7 @@ describe('About API with check health with bad urls in endpoints', function () {
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
+        delete process.env.IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP;
         nock.cleanAll();
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);

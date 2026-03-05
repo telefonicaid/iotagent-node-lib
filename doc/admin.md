@@ -472,6 +472,11 @@ before considering it failed. Default: 1500 (1.5 seconds)
 Number of consecutive failed checks required before marking a connection as DOWN (ok: false). Until this threshold is
 reached, transient failures are tolerated. Default: 3
 
+#### `healthCheckConsiderHttpResponseUp`
+
+Consider an Http response code minor than 500 as endpoint is working. Default false, an http response code minor
+than 400.
+
 ### Configuration using environment variables
 
 Some of the configuration parameters can be overriden with environment variables, to ease the use of those parameters
@@ -480,57 +485,58 @@ with container-based technologies, like Docker, Heroku, etc...
 The following table shows the accepted environment variables, as well as the configuration parameter the variable
 overrides.
 
-| Environment variable                 | Configuration attribute         |
-| :----------------------------------- | :------------------------------ |
-| IOTA_CB_URL                          | `contextBroker.url`             |
-| IOTA_CB_HOST                         | `contextBroker.host`            |
-| IOTA_CB_PORT                         | `contextBroker.port`            |
-| IOTA_CB_NGSI_VERSION                 | `contextBroker.ngsiVersion`     |
-| IOTA_NORTH_HOST                      | `server.host`                   |
-| IOTA_NORTH_PORT                      | `server.port`                   |
-| IOTA_LD_SUPPORT_DATA_TYPE            | `server.ldSupport.datatype`     |
-| IOTA_LD_SUPPORT_NULL                 | `server.ldSupport.null`         |
-| IOTA_LD_SUPPORT_DATASET_ID           | `server.ldSupport.datasetId`    |
-| IOTA_PROVIDER_URL                    | `providerUrl`                   |
-| IOTA_AUTH_ENABLED                    | `authentication.enabled`        |
-| IOTA_AUTH_TYPE                       | `authentication.type`           |
-| IOTA_AUTH_HEADER                     | `authentication.header`         |
-| IOTA_AUTH_URL                        | `authentication.url`            |
-| IOTA_AUTH_HOST                       | `authentication.host`           |
-| IOTA_AUTH_PORT                       | `authentication.port`           |
-| IOTA_AUTH_USER                       | `authentication.user`           |
-| IOTA_AUTH_PASSWORD                   | `authentication.password`       |
-| IOTA_AUTH_CLIENT_ID                  | `authentication.clientId`       |
-| IOTA_AUTH_CLIENT_SECRET              | `authentication.clientSecret`   |
-| IOTA_AUTH_TOKEN_PATH                 | `authentication.tokenPath`      |
-| IOTA_AUTH_PERMANENT_TOKEN            | `authentication.permanentToken` |
-| IOTA_REGISTRY_TYPE                   | `deviceRegistry.type`           |
-| IOTA_LOG_LEVEL                       | `logLevel`                      |
-| IOTA_TIMESTAMP                       | `timestamp`                     |
-| IOTA_IOTAM_URL                       | `iotManager.url`                |
-| IOTA_IOTAM_HOST                      | `iotManager.host`               |
-| IOTA_IOTAM_PORT                      | `iotManager.port`               |
-| IOTA_IOTAM_PATH                      | `iotManager.path`               |
-| IOTA_IOTAM_AGENTPATH                 | `iotManager.agentPath`          |
-| IOTA_IOTAM_PROTOCOL                  | `iotManager.protocol`           |
-| IOTA_IOTAM_DESCRIPTION               | `iotManager.description`        |
-| IOTA_MONGO_URI                       | `mongodb.uri`                   |
-| IOTA_POLLING_EXPIRATION              | `pollingExpiration`             |
-| IOTA_POLLING_DAEMON_FREQ             | `pollingDaemonFrequency`        |
-| IOTA_MULTI_CORE                      | `multiCore`                     |
-| IOTA_JSON_LD_CONTEXT                 | `jsonLdContext`                 |
-| IOTA_FALLBACK_TENANT                 | `fallbackTenant`                |
-| IOTA_FALLBACK_PATH                   | `fallbackPath`                  |
-| IOTA_EXPLICIT_ATTRS                  | `explicitAttrs`                 |
-| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION | `defaultEntityNameConjunction`  |
-| IOTA_RELAX_TEMPLATE_VALIDATION       | `relaxTemplateValidation`       |
-| IOTA_EXPRESS_LIMIT                   | `expressLimit`                  |
-| IOTA_STORE_LAST_MEASURE              | `storeLastMeasure`              |
-| IOTA_CB_FLOW_CONTROL                 | `useCBflowControl`              |
-| IOTA_CMD_MODE                        | `cmdMode`                       |
-| IOTA_HEALTH_CHECK_INTERVAL           | `healthCheckInterval`           |
-| IOTA_HEALTH_CHECK_TIMEOUT            | `healthCheckTimeout`            |
-| IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS   | `healthCheckDownAfterFails`     |
+| Environment variable                             | Configuration attribute             |
+| :----------------------------------------------- | :---------------------------------- |
+| IOTA_CB_URL                                      | `contextBroker.url`                 |
+| IOTA_CB_HOST                                     | `contextBroker.host`                |
+| IOTA_CB_PORT                                     | `contextBroker.port`                |
+| IOTA_CB_NGSI_VERSION                             | `contextBroker.ngsiVersion`         |
+| IOTA_NORTH_HOST                                  | `server.host`                       |
+| IOTA_NORTH_PORT                                  | `server.port`                       |
+| IOTA_LD_SUPPORT_DATA_TYPE                        | `server.ldSupport.datatype`         |
+| IOTA_LD_SUPPORT_NULL                             | `server.ldSupport.null`             |
+| IOTA_LD_SUPPORT_DATASET_ID                       | `server.ldSupport.datasetId`        |
+| IOTA_PROVIDER_URL                                | `providerUrl`                       |
+| IOTA_AUTH_ENABLED                                | `authentication.enabled`            |
+| IOTA_AUTH_TYPE                                   | `authentication.type`               |
+| IOTA_AUTH_HEADER                                 | `authentication.header`             |
+| IOTA_AUTH_URL                                    | `authentication.url`                |
+| IOTA_AUTH_HOST                                   | `authentication.host`               |
+| IOTA_AUTH_PORT                                   | `authentication.port`               |
+| IOTA_AUTH_USER                                   | `authentication.user`               |
+| IOTA_AUTH_PASSWORD                               | `authentication.password`           |
+| IOTA_AUTH_CLIENT_ID                              | `authentication.clientId`           |
+| IOTA_AUTH_CLIENT_SECRET                          | `authentication.clientSecret`       |
+| IOTA_AUTH_TOKEN_PATH                             | `authentication.tokenPath`          |
+| IOTA_AUTH_PERMANENT_TOKEN                        | `authentication.permanentToken`     |
+| IOTA_REGISTRY_TYPE                               | `deviceRegistry.type`               |
+| IOTA_LOG_LEVEL                                   | `logLevel`                          |
+| IOTA_TIMESTAMP                                   | `timestamp`                         |
+| IOTA_IOTAM_URL                                   | `iotManager.url`                    |
+| IOTA_IOTAM_HOST                                  | `iotManager.host`                   |
+| IOTA_IOTAM_PORT                                  | `iotManager.port`                   |
+| IOTA_IOTAM_PATH                                  | `iotManager.path`                   |
+| IOTA_IOTAM_AGENTPATH                             | `iotManager.agentPath`              |
+| IOTA_IOTAM_PROTOCOL                              | `iotManager.protocol`               |
+| IOTA_IOTAM_DESCRIPTION                           | `iotManager.description`            |
+| IOTA_MONGO_URI                                   | `mongodb.uri`                       |
+| IOTA_POLLING_EXPIRATION                          | `pollingExpiration`                 |
+| IOTA_POLLING_DAEMON_FREQ                         | `pollingDaemonFrequency`            |
+| IOTA_MULTI_CORE                                  | `multiCore`                         |
+| IOTA_JSON_LD_CONTEXT                             | `jsonLdContext`                     |
+| IOTA_FALLBACK_TENANT                             | `fallbackTenant`                    |
+| IOTA_FALLBACK_PATH                               | `fallbackPath`                      |
+| IOTA_EXPLICIT_ATTRS                              | `explicitAttrs`                     |
+| IOTA_DEFAULT_ENTITY_NAME_CONJUNCTION             | `defaultEntityNameConjunction`      |
+| IOTA_RELAX_TEMPLATE_VALIDATION                   | `relaxTemplateValidation`           |
+| IOTA_EXPRESS_LIMIT                               | `expressLimit`                      |
+| IOTA_STORE_LAST_MEASURE                          | `storeLastMeasure`                  |
+| IOTA_CB_FLOW_CONTROL                             | `useCBflowControl`                  |
+| IOTA_CMD_MODE                                    | `cmdMode`                           |
+| IOTA_HEALTH_CHECK_INTERVAL                       | `healthCheckInterval`               |
+| IOTA_HEALTH_CHECK_TIMEOUT                        | `healthCheckTimeout`                |
+| IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS               | `healthCheckDownAfterFails`         |
+| IOTA_IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP | `healthCheckConsiderHttpResponseUp` |
 
 Note:
 
