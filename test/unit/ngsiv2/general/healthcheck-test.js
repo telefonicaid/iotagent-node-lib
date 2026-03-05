@@ -188,7 +188,7 @@ describe('About API with check health', function () {
         });
     });
 
-    describe('When the IoT Agent is started with health check', function () {
+    describe('When the IoT Agent is started with health check in /iot/about', function () {
         it('should respond health check state in about API', function (done) {
             const options = {
                 url: 'http://localhost:' + iotAgentConfig.server.port + '/iot/about',
@@ -209,6 +209,29 @@ describe('About API with check health', function () {
                 body.connections.mongodb.ok.should.equal(true);
                 body.connections.mqtt.configured.should.equal(false);
 
+                contextBrokerMock.done();
+                iotamMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is started with health check in /metrics', function () {
+        it('should respond health check state in about API', function (done) {
+            const options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/metrics',
+                method: 'GET',
+                headers: {
+                    Accept: 'text/plain'
+                },
+                responseType: 'text'
+            };
+            /* eslint-disable-next-line consistent-return */
+            request(options, function (error, response, body) {
+                if (error) {
+                    return done(error);
+                }
+                response.statusCode.should.equal(200);
                 contextBrokerMock.done();
                 iotamMock.done();
                 done();
@@ -367,6 +390,27 @@ describe('About API with check health without endpoints', function () {
                 body.connections.mongodb.configured.should.equal(false);
                 body.connections.mqtt.configured.should.equal(false);
 
+                done();
+            });
+        });
+    });
+
+    describe('When the IoT Agent is started with health check in /ready', function () {
+        it('should respond health check state in about API', function (done) {
+            const options = {
+                url: 'http://localhost:' + iotAgentConfig.server.port + '/ready',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
+            };
+            /* eslint-disable-next-line consistent-return */
+            request(options, function (error, response, body) {
+                if (error) {
+                    return done(error);
+                }
+                response.statusCode.should.equal(503);
                 done();
             });
         });
