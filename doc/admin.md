@@ -458,6 +458,10 @@ values are:
 
 Have a look to [this document](devel/northboundinteractions.md) for more detail on how this modes work.
 
+#### `healthCheck`
+
+Enable or not internal health check. Default false.
+
 #### `healthCheckInterval`
 
 Time interval (in milliseconds) between consecutive health checks. Default: 20000 (20 seconds)
@@ -533,6 +537,7 @@ overrides.
 | IOTA_STORE_LAST_MEASURE                          | `storeLastMeasure`                  |
 | IOTA_CB_FLOW_CONTROL                             | `useCBflowControl`                  |
 | IOTA_CMD_MODE                                    | `cmdMode`                           |
+| IOTA_HEALTH_CHECK                                | `healthCheck`                       |
 | IOTA_HEALTH_CHECK_INTERVAL                       | `healthCheckInterval`               |
 | IOTA_HEALTH_CHECK_TIMEOUT                        | `healthCheckTimeout`                |
 | IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS               | `healthCheckDownAfterFails`         |

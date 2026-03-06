@@ -159,6 +159,7 @@ let iotamMock;
 
 describe('About API with check health', function () {
     beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK = true;
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 2;
@@ -180,6 +181,7 @@ describe('About API with check health', function () {
     });
 
     afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK;
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
@@ -244,6 +246,7 @@ describe('About API with check health', function () {
 
 describe('About API with check health with errors in endpoints', function () {
     beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK = true;
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 1;
@@ -265,6 +268,7 @@ describe('About API with check health with errors in endpoints', function () {
     });
 
     afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK;
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
@@ -306,6 +310,7 @@ describe('About API with check health with errors in endpoints', function () {
 
 describe('About API with check health with bad urls in endpoints', function () {
     beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK = true;
         process.env.IOTA_HEALTH_CHECK_INTERVAL = 10000;
         process.env.IOTA_HEALTH_CHECK_TIMEOUT = 1500;
         process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS = 1;
@@ -320,6 +325,7 @@ describe('About API with check health with bad urls in endpoints', function () {
     });
 
     afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK;
         delete process.env.IOTA_HEALTH_CHECK_INTERVAL;
         delete process.env.IOTA_HEALTH_CHECK_TIMEOUT;
         delete process.env.IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS;
@@ -359,6 +365,7 @@ describe('About API with check health with bad urls in endpoints', function () {
 
 describe('About API with check health without endpoints', function () {
     beforeEach(function (done) {
+        process.env.IOTA_HEALTH_CHECK = true;
         nock.cleanAll();
 
         iotAgentLib.activate(iotAgentConfig2, function (err) {
@@ -369,6 +376,7 @@ describe('About API with check health without endpoints', function () {
     });
 
     afterEach(function (done) {
+        delete process.env.IOTA_HEALTH_CHECK;
         nock.cleanAll();
         iotAgentLib.clearAll(function () {
             iotAgentLib.deactivate(done);
