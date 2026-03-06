@@ -74,6 +74,8 @@
             -   [List IoTA Information `GET /iot/about`](#list-iota-information-get-iotabout)
         -   [Metrics](#metrics)
             -   [Retrieve metrics `GET /metrics`](#retrieve-metrics-get-metrics)
+        -   [Ready](#ready)
+            -   [Retrieve ready `GET /ready`](#retrieve-ready-get-ready)
 
 <!-- /TOC -->
 
@@ -2489,6 +2491,50 @@ updateEntityRequestsOk 2
 updateEntityRequestsError 5
 # EOF
 ```
+
+Also are included health check metrics for endpoints used by iotagent (CB, IotaM, MongoDb, ..) like:
+
+```
+mqttOK true
+mqttLastOk 2026-03-06T07:19:39.923Z
+mqttLastError null
+mqttLatencyMs 5
+mqttConsecutiveFails 0
+contextBrokerOK true
+contextBrokerLastOk 2026-03-06T07:19:39.924Z
+contextBrokerLastError null
+contextBrokerLatencyMs 8
+contextBrokerConsecutiveFails 0
+mongodbOK true
+mongodbLastOK 2026-03-06T07:19:39.922Z
+mongodbLastError null
+mongodbLatencyMs 4
+mongodbConsecutiveFails 0
+iotagentManagerOK true
+iotagentManagerLastOk 2026-03-06T07:19:39.927Z
+iotagentManagerLastError null
+iotagentManagerLatencyMs 10
+iotagentManagerConsecutiveFails 0
+ready 1
+
+```
+
+### Ready
+
+The IoT Agent Library exposes a [openmetrics-compatible](https://github.com/OpenObservability/OpenMetrics) endpoint for
+telemetry collectors to gather application statistics.
+
+#### Retrieve ready `GET /ready`
+
+_**Response code**_
+
+-   `200` `OK` if iotagent was successful started (specially iotagent-manager registration).
+-   `503` `SERVICE UNAVAILABLE` if there was any error when iotagent was startged (i.e. iotagent was not register into
+    iotagent-manager).
+
+_**Response body**_
+
+-   Empty body is returned in any case.
 
 [1]:
     https://czosel.github.io/jexl-playground/#/?context=%7B%0A%20%20%22longitude%22%3A%205%2C%0A%20%20%22latitude%22%3A%2037%2C%0A%20%20%22level%22%3A223%0A%7D&input=%7Bcoordinates%3A%20%5Blongitude%2Clatitude%5D%2C%20type%3A%20'Point'%7D&transforms=%7B%0A%7D
