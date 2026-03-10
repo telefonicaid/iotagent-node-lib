@@ -127,7 +127,8 @@ const iotAgentConfig = {
     providerUrl: 'http://smartgondor.com',
     pollingExpiration: 200,
     pollingDaemonFrequency: 20,
-    useCBflowControl: true
+    useCBflowControl: true,
+    healthCheck: true
 };
 const device3 = {
     id: 'r2d2',
