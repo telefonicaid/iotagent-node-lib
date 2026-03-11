@@ -1,4 +1,4 @@
-- Add: info about status of CB, IotaM, Mongo and MQTT broker to endpoints /iot/about, /metrics and /version (#1763)
+- Add: info about status of CB, IotaM, Mongo and MQTT broker to endpoints /iot/about (and /version) and /metrics (#1763)
 - Add: endpoint /ready about if iotagent was started properly (#1763)
 - Add: new env vars about healthcheck IOTA_HEALTH_CHECK, IOTA_HEALTH_CHECK_INTERVAL, IOTA_HEALTH_CHECK_TIMEOUT, IOTA_HEALTH_CHECK_DOWN_AFTER_FAILS and IOTA_HEALTH_CHECK_CONSIDER_HTTP_RESPONSE_UP (#1763)
 - Upgrade express dep from 4.21.2 to 4.22.1
