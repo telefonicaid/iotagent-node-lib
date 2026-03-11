@@ -48,7 +48,8 @@ const iotAgentConfig = {
     service: 'smartgondor',
     subservice: 'gardens',
     providerUrl: 'http://smartgondor.com',
-    deviceRegistrationDuration: 'P1M'
+    deviceRegistrationDuration: 'P1M',
+    healthCheck: true
 };
 let oldConfig;
 
@@ -74,8 +75,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -85,8 +85,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:98765/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -96,8 +95,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/examples',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -119,8 +117,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -130,8 +127,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -157,8 +153,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -203,8 +198,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -220,8 +214,7 @@ describe('dbConn.configureDb', function () {
                         'mongodb://example.com:27017/' +
                         dbConn.DEFAULT_DB_NAME +
                         '?retryWrites=true&readPreference=nearest',
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -231,8 +224,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -242,8 +234,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {
@@ -253,8 +244,7 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                    }
+                    options: {}
                 }
             },
             {

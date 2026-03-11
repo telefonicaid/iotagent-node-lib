@@ -115,6 +115,7 @@ describe('Startup tests', function () {
             process.env.IOTA_MONGO_DB = 'themongodb';
             process.env.IOTA_MONGO_REPLICASET = 'customReplica';
             process.env.IOTA_DEFAULT_RESOURCE = '/iot/custom';
+            process.env.IOTA_HEALTH_CHECK = true;
 
             nock.cleanAll();
 
@@ -142,6 +143,7 @@ describe('Startup tests', function () {
             delete process.env.IOTA_MONGO_DB;
             delete process.env.IOTA_MONGO_REPLICASET;
             delete process.env.IOTA_DEFAULT_RESOURCE;
+            delete process.env.IOTA_HEALTH_CHECK;
         });
 
         afterEach(function (done) {
@@ -182,6 +184,7 @@ describe('Startup tests', function () {
             process.env.IOTA_MONGO_AUTH_SOURCE = 'customAuthSource';
             process.env.IOTA_MONGO_RETRIES = '10';
             process.env.IOTA_MONGO_RETRY_TIME = '5';
+            process.env.IOTA_HEALTH_CHECK = true;
 
             nock.cleanAll();
 
@@ -202,6 +205,7 @@ describe('Startup tests', function () {
             delete process.env.IOTA_MONGO_RETRY_TIME;
             delete process.env.IOTA_MONGO_SSL;
             delete process.env.IOTA_MONGO_EXTRAARGS;
+            delete process.env.IOTA_HEALTH_CHECK;
         });
 
         afterEach(function (done) {
