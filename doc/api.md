@@ -2391,6 +2391,8 @@ Example:
 
 #### List IoTA Information `GET /iot/about`
 
+*NOTE*: this endpoint has `GET /version` as alias.
+
 Returns a useful information about component version and deployment information. It can be used as a heartbeat operation
 to check the health of the IoT Agent if required since includes a health-check system for some dependencies: the Context
 Broker, the IoT Agent Manager, MongoDB, and the MQTT broker. Each dependency is checked using the most appropriate
