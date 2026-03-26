@@ -80,10 +80,6 @@ describe('NGSI-LD - Startup tests', function () {
             process.env.IOTA_IOTAM_PROTOCOL = 'PDI_PROTOCOL';
             process.env.IOTA_IOTAM_DESCRIPTION = 'The IoTAM Protocol';
             process.env.IOTA_MONGO_URI = 'mongodb://mongohost:5555/themongodb?replicaSet=customReplica';
-            // process.env.IOTA_MONGO_HOST = 'mongohost';
-            // process.env.IOTA_MONGO_PORT = '5555';
-            // process.env.IOTA_MONGO_DB = 'themongodb';
-            // process.env.IOTA_MONGO_REPLICASET = 'customReplica';
             process.env.IOTA_DEFAULT_RESOURCE = '/iot/custom';
             process.env.IOTA_JSON_LD_CONTEXT = 'http://context.jsonld';
             process.env.IOTA_FALLBACK_TENANT = 'openiot';
@@ -117,10 +113,6 @@ describe('NGSI-LD - Startup tests', function () {
             delete process.env.IOTA_IOTAM_PATH;
             delete process.env.IOTA_IOTAM_PROTOCOL;
             delete process.env.IOTA_IOTAM_DESCRIPTION;
-            // delete process.env.IOTA_MONGO_HOST;
-            // delete process.env.IOTA_MONGO_PORT;
-            // delete process.env.IOTA_MONGO_DB;
-            // delete process.env.IOTA_MONGO_REPLICASET;
             delete process.env.IOTA_MONGO_URI;
             delete process.env.IOTA_DEFAULT_RESOURCE;
             delete process.env.IOTA_JSON_LD_CONTEXT;
@@ -158,10 +150,6 @@ describe('NGSI-LD - Startup tests', function () {
                 config
                     .getConfig()
                     .mongodb.uri.should.equal('mongodb://mongohost:5555/themongodb?replicaSet=customReplica');
-                // config.getConfig().mongodb.host.should.equal('mongohost');
-                // config.getConfig().mongodb.port.should.equal('5555');
-                // config.getConfig().mongodb.db.should.equal('themongodb');
-                // config.getConfig().mongodb.replicaSet.should.equal('customReplica');
                 config.getConfig().server.ldSupport.dataType.should.equal('valueType');
                 done();
             });

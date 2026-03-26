@@ -110,10 +110,6 @@ describe('Startup tests', function () {
             process.env.IOTA_IOTAM_PATH = '/iotampath';
             process.env.IOTA_IOTAM_PROTOCOL = 'PDI_PROTOCOL';
             process.env.IOTA_IOTAM_DESCRIPTION = 'The IoTAM Protocol';
-            // process.env.IOTA_MONGO_HOST = 'mongohost';
-            // process.env.IOTA_MONGO_PORT = '5555';
-            // process.env.IOTA_MONGO_DB = 'themongodb';
-            // process.env.IOTA_MONGO_REPLICASET = 'customReplica';
             process.env.IOTA_MONGO_URI = 'mongodb://mongohost:5555/themongodb?replicaSet=customReplica';
             process.env.IOTA_DEFAULT_RESOURCE = '/iot/custom';
             process.env.IOTA_HEALTH_CHECK = true;
@@ -140,10 +136,6 @@ describe('Startup tests', function () {
             delete process.env.IOTA_IOTAM_PROTOCOL;
             delete process.env.IOTA_IOTAM_DESCRIPTION;
             delete process.env.IOTA_MONGO_URI;
-            // delete process.env.IOTA_MONGO_HOST;
-            // delete process.env.IOTA_MONGO_PORT;
-            // delete process.env.IOTA_MONGO_DB;
-            // delete process.env.IOTA_MONGO_REPLICASET;
             delete process.env.IOTA_DEFAULT_RESOURCE;
             delete process.env.IOTA_HEALTH_CHECK;
         });
@@ -166,10 +158,6 @@ describe('Startup tests', function () {
                 config.getConfig().iotManager.protocol.should.equal('PDI_PROTOCOL');
                 config.getConfig().iotManager.description.should.equal('The IoTAM Protocol');
                 config.getConfig().defaultResource.should.equal('/iot/custom');
-                // config.getConfig().mongodb.host.should.equal('mongohost');
-                // config.getConfig().mongodb.port.should.equal('5555');
-                // config.getConfig().mongodb.db.should.equal('themongodb');
-                // config.getConfig().mongodb.replicaSet.should.equal('customReplica');
                 config
                     .getConfig()
                     .mongodb.uri.should.equal('mongodb://mongohost:5555/themongodb?replicaSet=customReplica');
@@ -182,15 +170,6 @@ describe('Startup tests', function () {
         beforeEach(function () {
             process.env.IOTA_MONGO_URI =
                 'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource';
-            // process.env.IOTA_MONGO_HOST = 'mongohost';
-            // process.env.IOTA_MONGO_PORT = '5555';
-            // process.env.IOTA_MONGO_DB = 'themongodb';
-            // process.env.IOTA_MONGO_REPLICASET = 'customReplica';
-            // process.env.IOTA_MONGO_USER = 'customUser';
-            // process.env.IOTA_MONGO_PASSWORD = 'customPassword';
-            // process.env.IOTA_MONGO_AUTH_SOURCE = 'customAuthSource';
-            // process.env.IOTA_MONGO_RETRIES = '10';
-            // process.env.IOTA_MONGO_RETRY_TIME = '5';
             process.env.IOTA_HEALTH_CHECK = true;
 
             nock.cleanAll();
@@ -202,17 +181,6 @@ describe('Startup tests', function () {
 
         afterEach(function () {
             delete process.env.IOTA_MONGO_URI;
-            // delete process.env.IOTA_MONGO_HOST;
-            // delete process.env.IOTA_MONGO_PORT;
-            // delete process.env.IOTA_MONGO_DB;
-            // delete process.env.IOTA_MONGO_REPLICASET;
-            // delete process.env.IOTA_MONGO_USER;
-            // delete process.env.IOTA_MONGO_PASSWORD;
-            // delete process.env.IOTA_MONGO_AUTH_SOURCE;
-            // delete process.env.IOTA_MONGO_RETRIES;
-            // delete process.env.IOTA_MONGO_RETRY_TIME;
-            // delete process.env.IOTA_MONGO_SSL;
-            // delete process.env.IOTA_MONGO_EXTRAARGS;
             delete process.env.IOTA_HEALTH_CHECK;
         });
 
@@ -222,7 +190,6 @@ describe('Startup tests', function () {
 
         ['true', 'True', 'TRUE'].forEach(function (t) {
             it('should load ssl=ture with ssl=' + t, function (done) {
-                //process.env.IOTA_MONGO_SSL = t;
                 process.env.IOTA_MONGO_URI =
                     'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource&ssl=true';
 
@@ -232,17 +199,6 @@ describe('Startup tests', function () {
                         .mongodb.uri.should.equal(
                             'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource&ssl=true'
                         );
-                    // config.getConfig().mongodb.host.should.equal('mongohost');
-                    // config.getConfig().mongodb.port.should.equal('5555');
-                    // config.getConfig().mongodb.db.should.equal('themongodb');
-                    // config.getConfig().mongodb.replicaSet.should.equal('customReplica');
-                    // config.getConfig().mongodb.user.should.equal('customUser');
-                    // config.getConfig().mongodb.password.should.equal('customPassword');
-                    // config.getConfig().mongodb.authSource.should.equal('customAuthSource');
-                    // config.getConfig().mongodb.retries.should.equal('10');
-                    // config.getConfig().mongodb.retryTime.should.equal('5');
-                    // config.getConfig().mongodb.ssl.should.be.true;
-                    // should.not.exist(config.getConfig().mongodb.extraArgs);
                     done();
                 });
             });
@@ -250,7 +206,6 @@ describe('Startup tests', function () {
 
         ['false', 'False', 'FALSE', 'invalid'].forEach(function (t) {
             it('should load ssl=false with ssl=' + t, function (done) {
-                //process.env.IOTA_MONGO_SSL = t;
                 process.env.IOTA_MONGO_URI =
                     'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource&ssl=false';
 
@@ -260,17 +215,6 @@ describe('Startup tests', function () {
                         .mongodb.uri.should.equal(
                             'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource&ssl=false'
                         );
-                    // config.getConfig().mongodb.host.should.equal('mongohost');
-                    // config.getConfig().mongodb.port.should.equal('5555');
-                    // config.getConfig().mongodb.db.should.equal('themongodb');
-                    // config.getConfig().mongodb.replicaSet.should.equal('customReplica');
-                    // config.getConfig().mongodb.user.should.equal('customUser');
-                    // config.getConfig().mongodb.password.should.equal('customPassword');
-                    // config.getConfig().mongodb.authSource.should.equal('customAuthSource');
-                    // config.getConfig().mongodb.retries.should.equal('10');
-                    // config.getConfig().mongodb.retryTime.should.equal('5');
-                    // config.getConfig().mongodb.ssl.should.be.not.true;
-                    // should.not.exist(config.getConfig().mongodb.extraArgs);
                     done();
                 });
             });
@@ -279,7 +223,6 @@ describe('Startup tests', function () {
         ['', 'undefined'].forEach(function (t) {
             it('should load no ssl parameter with ssl=' + t, function (done) {
                 if (t !== 'undefined') {
-                    //process.env.IOTA_MONGO_SSL = t;
                     process.env.IOTA_MONGO_URI =
                         'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource';
                 }
@@ -290,70 +233,9 @@ describe('Startup tests', function () {
                         .mongodb.uri.should.equal(
                             'mongodb://customUser:customPassword@mongohost:5555/themongodb?replicaSet=customReplica&authSource=customAuthSource'
                         );
-                    // config.getConfig().mongodb.host.should.equal('mongohost');
-                    // config.getConfig().mongodb.port.should.equal('5555');
-                    // config.getConfig().mongodb.db.should.equal('themongodb');
-                    // config.getConfig().mongodb.replicaSet.should.equal('customReplica');
-                    // config.getConfig().mongodb.user.should.equal('customUser');
-                    // config.getConfig().mongodb.password.should.equal('customPassword');
-                    // config.getConfig().mongodb.authSource.should.equal('customAuthSource');
-                    // config.getConfig().mongodb.retries.should.equal('10');
-                    // config.getConfig().mongodb.retryTime.should.equal('5');
-                    // should.not.exist(config.getConfig().mongodb.ssl);
-                    // should.not.exist(config.getConfig().mongodb.extraArgs);
                     done();
                 });
             });
         });
-
-        // [
-        //     { in: '{"a": "b"}', expect: { a: 'b' } },
-        //     { in: '{"a": "b", "c": "d"}', expect: { a: 'b', c: 'd' } },
-        //     {
-        //         in: '{"a": "b", "c": [1, 2], "d": -5, "e": {"f": "g"}}',
-        //         expect: { a: 'b', c: [1, 2], d: -5, e: { f: 'g' } }
-        //     },
-        //     { in: '{}', expect: {} }
-        // ].forEach(function (param) {
-        //     it('should load estraArgs with param=' + param.in, function (done) {
-        //         process.env.IOTA_MONGO_EXTRAARGS = param.in;
-
-        //         iotAgentLib.activate(iotAgentConfig, function (error) {
-        //             config.getConfig().mongodb.host.should.equal('mongohost');
-        //             config.getConfig().mongodb.port.should.equal('5555');
-        //             config.getConfig().mongodb.db.should.equal('themongodb');
-        //             config.getConfig().mongodb.replicaSet.should.equal('customReplica');
-        //             config.getConfig().mongodb.user.should.equal('customUser');
-        //             config.getConfig().mongodb.password.should.equal('customPassword');
-        //             config.getConfig().mongodb.authSource.should.equal('customAuthSource');
-        //             config.getConfig().mongodb.retries.should.equal('10');
-        //             config.getConfig().mongodb.retryTime.should.equal('5');
-        //             should.not.exist(config.getConfig().mongodb.ssl);
-        //             config.getConfig().mongodb.extraArgs.should.eql(param.expect);
-        //             done();
-        //         });
-        //     });
-        // });
-
-        // ['', 'str', '[]'].forEach(function (param) {
-        //     it('should not load estraArgs with param=' + param, function (done) {
-        //         process.env.IOTA_MONGO_EXTRAARGS = param;
-
-        //         iotAgentLib.activate(iotAgentConfig, function (error) {
-        //             config.getConfig().mongodb.host.should.equal('mongohost');
-        //             config.getConfig().mongodb.port.should.equal('5555');
-        //             config.getConfig().mongodb.db.should.equal('themongodb');
-        //             config.getConfig().mongodb.replicaSet.should.equal('customReplica');
-        //             config.getConfig().mongodb.user.should.equal('customUser');
-        //             config.getConfig().mongodb.password.should.equal('customPassword');
-        //             config.getConfig().mongodb.authSource.should.equal('customAuthSource');
-        //             config.getConfig().mongodb.retries.should.equal('10');
-        //             config.getConfig().mongodb.retryTime.should.equal('5');
-        //             should.not.exist(config.getConfig().mongodb.ssl);
-        //             should.not.exist(config.getConfig().mongodb.extraArgs);
-        //             done();
-        //         });
-        //     });
-        // });
     });
 });
