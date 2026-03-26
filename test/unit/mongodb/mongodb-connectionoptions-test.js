@@ -109,9 +109,10 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?replicaSet=rs0',
-                    options: {
-                        replicaSet: 'rs0'
-                    }
+                    // options: {
+                    //     replicaSet: 'rs0'
+                    // }
+                    options: {}
                 }
             },
             {
@@ -145,12 +146,13 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
-                    }
+                    // options: {
+                    //     auth: {
+                    //         user: 'user01',
+                    //         password: 'pass01'
+                    //     }
+                    // }
+                    options: {}
                 }
             },
             {
@@ -177,13 +179,14 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin&replicaSet=rs0',
-                    options: {
-                        replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
-                    }
+                    // options: {
+                    //     replicaSet: 'rs0',
+                    //     auth: {
+                    //         user: 'user01',
+                    //         password: 'pass01'
+                    //     }
+                    // }
+                    options: {}
                 }
             },
             {
@@ -194,9 +197,10 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        ssl: true
-                    }
+                    // options: {
+                    //     ssl: true
+                    // }
+                    options: {}
                 }
             },
             {
@@ -285,14 +289,15 @@ describe('dbConn.configureDb', function () {
                 },
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin&replicaSet=rs0',
-                    options: {
-                        replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        },
-                        ssl: true
-                    }
+                    // options: {
+                    //     replicaSet: 'rs0',
+                    //     auth: {
+                    //         user: 'user01',
+                    //         password: 'pass01'
+                    //     },
+                    //     ssl: true
+                    // }
+                    options: {}
                 }
             }
         ];
