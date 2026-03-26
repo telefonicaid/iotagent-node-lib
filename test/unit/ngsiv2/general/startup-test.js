@@ -87,6 +87,8 @@ describe('NGSI-v2 - Startup tests', function () {
             process.env.IOTA_CMD_MODE = 'notification';
             process.env.IOTA_USE_CB_FLOW_CONTROL = true;
             process.env.IOTA_STORE_LAST_MEASURE = true;
+            process.env.IOTA_ENTITY_NAME_CONJUNCTION = ':';
+            process.env.IOTA_RELAX_TEMPLATE_VALIDATION = true;
             process.env.IOTA_HEALTH_CHECK = true;
 
             nock.cleanAll();
@@ -120,6 +122,8 @@ describe('NGSI-v2 - Startup tests', function () {
             delete process.env.IOTA_CMD_MODE;
             delete process.env.IOTA_USE_CB_FLOW_CONTROL;
             delete process.env.IOTA_STORE_LAST_MEASURE;
+            delete process.env.IOTA_ENTITY_NAME_CONJUNCTION;
+            delete process.env.IOTA_RELAX_TEMPLATE_VALIDATION;
             delete process.env.IOTA_HEALTH_CHECK;
         });
 
