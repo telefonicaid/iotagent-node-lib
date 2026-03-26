@@ -229,4 +229,4 @@ function testRegistry(registryType) {
 }
 
 testRegistry('memory');
-//testRegistry('mongodb');
+testRegistry('mongodb');
