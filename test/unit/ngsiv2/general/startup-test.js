@@ -83,6 +83,10 @@ describe('NGSI-v2 - Startup tests', function () {
             process.env.IOTA_IOTAM_DESCRIPTION = 'The IoTAM Protocol';
             process.env.IOTA_MONGO_URI = 'mongodb://mongohost:5555/themongodb?replicaSet=customReplica';
             process.env.IOTA_DEFAULT_RESOURCE = '/iot/custom';
+            process.env.IOTA_EXPRESS_LIMIT = '10000';
+            process.env.IOTA_CMD_MODE = 'notification';
+            process.env.IOTA_USE_CB_FLOW_CONTROL = true;
+            process.env.IOTA_STORE_LAST_MEASURE = true;
             process.env.IOTA_HEALTH_CHECK = true;
 
             nock.cleanAll();
@@ -112,6 +116,10 @@ describe('NGSI-v2 - Startup tests', function () {
             delete process.env.IOTA_IOTAM_DESCRIPTION;
             delete process.env.IOTA_MONGO_URI;
             delete process.env.IOTA_DEFAULT_RESOURCE;
+            delete process.env.IOTA_EXPRESS_LIMIT;
+            delete process.env.IOTA_CMD_MODE;
+            delete process.env.IOTA_USE_CB_FLOW_CONTROL;
+            delete process.env.IOTA_STORE_LAST_MEASURE;
             delete process.env.IOTA_HEALTH_CHECK;
         });
 
