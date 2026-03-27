@@ -71,7 +71,7 @@ describe('dbConn.configureDb', function () {
         const tests = [
             {
                 mongodb: {
-                    host: 'example.com'
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -80,8 +80,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    port: '98765'
+                    uri: 'mongodb://example.com:98765/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:98765/' + dbConn.DEFAULT_DB_NAME,
@@ -90,8 +89,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    db: 'examples'
+                    uri: 'mongodb://example.com:27017/examples'
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/examples',
@@ -100,20 +98,16 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    replicaSet: 'rs0'
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?replicaSet=rs0'
                 },
                 expected: {
-                    url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        replicaSet: 'rs0'
-                    }
+                    url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?replicaSet=rs0',
+                    options: {}
                 }
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    user: 'user01'
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -122,8 +116,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    password: 'pass01'
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -132,24 +125,16 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    user: 'user01',
-                    password: 'pass01'
+                    uri: 'mongodb://user01:pass01@example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://user01:pass01@example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
-                    }
+                    options: {}
                 }
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    authSource: 'admin'
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -158,43 +143,25 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    port: '98765',
-                    db: 'examples',
-                    replicaSet: 'rs0',
-                    user: 'user01',
-                    password: 'pass01',
-                    authSource: 'admin'
+                    uri: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin&replicaSet=rs0'
                 },
                 expected: {
-                    url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin',
-                    options: {
-                        replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        }
-                    }
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?authSource=admin&replicaSet=rs0',
+                    options: {}
                 }
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    ssl: true
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
-                    options: {
-                        ssl: true
-                    }
+                    options: {}
                 }
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    extraArgs: {
-                        retryWrites: true
-                    }
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true'
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME + '?retryWrites=true',
@@ -203,11 +170,10 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    extraArgs: {
-                        retryWrites: true,
-                        readPreference: 'nearest'
-                    }
+                    uri:
+                        'mongodb://example.com:27017/' +
+                        dbConn.DEFAULT_DB_NAME +
+                        '?retryWrites=true&readPreference=nearest'
                 },
                 expected: {
                     url:
@@ -219,8 +185,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    extraArgs: {}
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -229,8 +194,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    extraArgs: []
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -239,8 +203,7 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    extraArgs: null
+                    uri: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME
                 },
                 expected: {
                     url: 'mongodb://example.com:27017/' + dbConn.DEFAULT_DB_NAME,
@@ -249,31 +212,11 @@ describe('dbConn.configureDb', function () {
             },
             {
                 mongodb: {
-                    host: 'example.com',
-                    port: '98765',
-                    db: 'examples',
-                    replicaSet: 'rs0',
-                    user: 'user01',
-                    password: 'pass01',
-                    authSource: 'admin',
-                    ssl: true,
-                    extraArgs: {
-                        retryWrites: true,
-                        readPreference: 'nearest',
-                        w: 'majority'
-                    },
-                    unknownparam: 'unknown'
+                    uri: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin&replicaSet=rs0'
                 },
                 expected: {
-                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin',
-                    options: {
-                        replicaSet: 'rs0',
-                        auth: {
-                            user: 'user01',
-                            password: 'pass01'
-                        },
-                        ssl: true
-                    }
+                    url: 'mongodb://user01:pass01@example.com:98765/examples?retryWrites=true&readPreference=nearest&w=majority&authSource=admin&replicaSet=rs0',
+                    options: {}
                 }
             }
         ];

@@ -13,7 +13,7 @@ longer. In particular:
 A list of deprecated features and the version in which they were deprecated follows:
 
 -   Config `mongodb.*` different from `mongodb.uri` (and associated env vars `IOTA_MONGO_*` except `IOTA_MONGO_URI`) in
-    4.11.0
+    4.11.0 (finally removed in 4.14.0)
 -   Support to NGSI v1 (finally removed in 2.18.0)
 -   Support to Node.js v4 in iotagent-node-lib 2.8.1 (finally removed in 2.9.0)
 -   Support to Node.js v6 in iotagent-node-lib 2.9.0 (finally removed in 2.10.0)
@@ -69,14 +69,14 @@ The following table provides information about the last iotagent-node-lib versio
 | bidirectional plugin                                           | 3.3.0                                                 | August 24th, 2023             |
 | appendMode configuration (`IOTA_APPEND_MODE` env var)          | 3.3.0                                                 | August 24th, 2023             |
 | push-mode stats                                                | 4.5.0                                                 | June 11th, 2024               |
-| config `mongodb.host` (env var `IOTA_MONGO_HOST`)              | Not yet                                               | Not yet                       |
-| config `mongodb.port` (env var `IOTA_MONGO_PORT`)              | Not yet                                               | Not yet                       |
-| config `mongodb.db` (env var `IOTA_MONGO_DB`)                  | Not yet                                               | Not yet                       |
-| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | Not yet                                               | Not yet                       |
-| config `mongodb.user` (env var `IOTA_MONGO_USER`)              | Not yet                                               | Not yet                       |
-| config `mongodb.password` (env var `IOTA_MONGO_PASSWORD`)      | Not yet                                               | Not yet                       |
-| config `mongodb.authSource` (env var `IOTA_MONGO_AUTH_SOURCE`) | Not yet                                               | Not yet                       |
-| config `mongodb.retries` (env var `IOTA_MONGO_RETRIES`)        | Not yet                                               | Not yet                       |
-| config `mongodb.retryTime` (env var `IOTA_MONGO_RETRY_TIME`)   | Not yet                                               | Not yet                       |
-| config `mongodb.ssl` (env var `IOTA_MONGO_SSL`)                | Not yet                                               | Not yet                       |
-| config `mongodb.extraArgs` (env var `IOTA_MONGO_EXTRAARGS`)    | Not yet                                               | Not yet                       |
+| config `mongodb.host` (env var `IOTA_MONGO_HOST`)              | 4.13.0                                                | February 4th, 2026 |
+| config `mongodb.port` (env var `IOTA_MONGO_PORT`)              | 4.13.0                                                | February 4th, 2026 |
+| config `mongodb.db` (env var `IOTA_MONGO_DB`)                  | 4.13.0                                                | February 4th, 2026 |
+| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.user` (env var `IOTA_MONGO_USER`)              | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.password` (env var `IOTA_MONGO_PASSWORD`)      | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.authSource` (env var `IOTA_MONGO_AUTH_SOURCE`) | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.retries` (env var `IOTA_MONGO_RETRIES`)        | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.retryTime` (env var `IOTA_MONGO_RETRY_TIME`)   | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.ssl` (env var `IOTA_MONGO_SSL`)                | 4.13.0                                                | February 4th, 2026                        |
+| config `mongodb.extraArgs` (env var `IOTA_MONGO_EXTRAARGS`)    | 4.13.0                                                | February 4th, 2026                        |
