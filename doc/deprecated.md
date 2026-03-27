@@ -72,7 +72,7 @@ The following table provides information about the last iotagent-node-lib versio
 | config `mongodb.host` (env var `IOTA_MONGO_HOST`)              | 4.13.0                                                | February 4th, 2026 |
 | config `mongodb.port` (env var `IOTA_MONGO_PORT`)              | 4.13.0                                                | February 4th, 2026 |
 | config `mongodb.db` (env var `IOTA_MONGO_DB`)                  | 4.13.0                                                | February 4th, 2026 |
-| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | 4.13.0                                                | 4.13.0                        |
+| config `mongodb.replicaSet` (env var `IOTA_MONGO_REPLICASET`)  | 4.13.0                                                | February 4th, 2026                        |
 | config `mongodb.user` (env var `IOTA_MONGO_USER`)              | 4.13.0                                                | February 4th, 2026                        |
 | config `mongodb.password` (env var `IOTA_MONGO_PASSWORD`)      | 4.13.0                                                | February 4th, 2026                        |
 | config `mongodb.authSource` (env var `IOTA_MONGO_AUTH_SOURCE`) | 4.13.0                                                | February 4th, 2026                        |
