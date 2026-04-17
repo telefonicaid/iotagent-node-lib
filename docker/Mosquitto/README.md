@@ -4,6 +4,7 @@ is just an auxiliary material in this repository.
 
 The following releases matches with eclipse-mosquitto version:
 
+-   2.3.0 uses mosquitto-2.0.21 from Debian 13
 -   2.2.0 uses mosquitto-2.0.11 from Debian 12
 -   2.1.0 uses mosquitto-2.0.11 from Debian 12
 -   2.0.0 uses mosquitto-2.0.11 from Debian 11
