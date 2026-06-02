@@ -8,17 +8,6 @@ name: CI
       - master
   workflow_dispatch:
 jobs:
-  build:
-    name: Build and analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - uses: SonarSource/sonarqube-scan-action@v6
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   lint-markdown:
     name: Lint Markdown
     runs-on: ubuntu-latest
