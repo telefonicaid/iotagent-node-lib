@@ -667,6 +667,77 @@ const testCases = [
         ]
     },
     {
+        describeName: '0021d - Simple group with active attributes with special names in object_id - name overrides object_id',
+        provision: {
+            url: 'http://localhost:' + config.iota.server.port + '/iot/services',
+            method: 'POST',
+            json: {
+                services: [
+                    {
+                        resource: '/iot/json',
+                        apikey: globalEnv.apikey,
+                        entity_type: globalEnv.entity_type,
+                        commands: [],
+                        lazy: [],
+                        attributes: [
+                            {
+                                name: 'mainDoorEvent',
+                                type: 'Boolean'
+                            },
+                            {
+                                name: 'psSMDUHPower14',
+                                type: 'Text',
+                                object_id: '.1.3.6.1.4.1.6302.2.1.2.17.1.1.15.1702'
+                            },
+                            {
+                                name: 'psSMDUHPower17',
+                                type: 'Number',
+                                object_id: '.1.3.6.1.4.1.6302.2.1.2.17.1.1.18.1702'
+                            }
+                        ],
+                        static_attributes: []
+                    }
+                ]
+            },
+            headers: {
+                'fiware-service': globalEnv.service,
+                'fiware-servicepath': globalEnv.servicePath
+            }
+        },
+        should: [
+            {
+                shouldName:
+                    'A - WHEN sending defined object_ids with special format names in attributes through http IT should send measures to Context Broker preserving value types, name mappings and metadatas',
+                type: 'single',
+                measure: {
+                    url: 'http://localhost:' + config.http.port + '/iot/json',
+                    method: 'POST',
+                    qs: {
+                        i: globalEnv.deviceId,
+                        k: globalEnv.apikey
+                    },
+                    json: {
+                        '.1.3.6.1.4.1.6302.2.1.2.17.1.1.18.1702': 3,
+                        mainDoorEvent: 1,
+                        psSMDUHPower17: 2
+                    }
+                },
+                expectation: {
+                    id: globalEnv.entity_name,
+                    type: globalEnv.entity_type,
+                    mainDoorEvent: {
+                        type: 'Boolean',
+                        value: 1
+                    },
+                    psSMDUHPower17: {
+                        type: 'Number',
+                        value: 2
+                    }
+                }
+            }
+        ]
+    },
+    {
         describeName: '0022 - Simple group with active attributes and multimeasures',
         provision: {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
