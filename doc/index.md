@@ -3,6 +3,10 @@
 [![FIWARE IoT Agents](https://fiware.github.io/catalogue/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 
+**This repository is now archived. The IoT Agent Node Library is now developed as part of the
+[IOTAgent-JSON](https://github.com/telefonicaid/iotagent-json) repository (under the `iotagent-node-lib` folder), and
+no new versions will be published in this repository or as npm package.**
+
 This project aims to provide a Node.js library to enable IoT Agent developers to build custom agents for their devices
 that can easily connect to NGSI Context Brokers (such as [Orion](https://github.com/telefonicaid/fiware-orion) ).
 

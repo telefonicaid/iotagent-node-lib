@@ -7,8 +7,12 @@
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-node-lib.readthedocs.org/en/latest/?badge=latest)
 [![CI](https://github.com/telefonicaid/iotagent-node-lib/workflows/CI/badge.svg)](https://github.com/telefonicaid/iotagent-node-lib/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/iotagent-node-lib/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/iotagent-node-lib?branch=master)
-![Status](https://fiware.github.io/catalogue/badges/statuses/status-full.svg)
+![Status](https://fiware.github.io/catalogue/badges/statuses/status-deprecated.svg)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4671/badge)](https://bestpractices.coreinfrastructure.org/projects/4671)
+
+**This repository is now archived. The IoT Agent Node Library is now developed as part of the
+[IOTAgent-JSON](https://github.com/telefonicaid/iotagent-json) repository (under the `iotagent-node-lib` folder), and
+no new versions will be published in this repository or as npm package.**
 
 An IoT Agent is a component that lets groups of IoT devices send their data to a NGSI Context Broker (such as
 [Orion Context Broker](https://github.com/telefonicaid/fiware-orion)) using their own native protocols and translating
@@ -30,8 +34,8 @@ to a Conext Broker or for authenticating with an Identity Manager).Some of commo
 -   Standardized OAuth2-based security is available to enable each IoT Agent to connect to several common Identity
     Managers (e.g. Keystone and Keyrock) so that communications can be restricted to trusted components.
 
-This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
-[IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
+Whilst active, this project was part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE
+Catalogue entry for the [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-node-lib.rtfd.io) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/roadmap.md) |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
